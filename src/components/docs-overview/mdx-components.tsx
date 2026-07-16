@@ -633,6 +633,8 @@ function SolutionCard({
   description,
   href,
   icon,
+  imageAlt,
+  imageSrc,
   size = 'large',
   showDescription = true,
   tags = [],
@@ -643,6 +645,8 @@ function SolutionCard({
   description: string;
   href?: string;
   icon?: SolutionCardIconKind;
+  imageAlt?: string;
+  imageSrc?: string;
   size?: 'large' | 'small';
   showDescription?: boolean;
   tags?: string[];
@@ -650,31 +654,48 @@ function SolutionCard({
   tone?: SolutionCardTone;
 }) {
   const cardClasses = cn(
-    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    'group relative flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
     size === 'small' && 'min-h-32 p-4',
   );
 
   const content = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        {icon ? (
-          <span
-            className={cn(
-              'flex size-10 items-center justify-center rounded-lg',
-              getSolutionToneClasses(tone),
-              size === 'small' && 'size-9',
-            )}
-          >
-            <SolutionCardIcon kind={icon} />
-          </span>
-        ) : (
-          <span />
-        )}
-        {href ? (
-          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-        ) : null}
-      </div>
-      <div className="mt-4 flex-1">
+      {imageSrc ? (
+        <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
+          <img
+            alt={imageAlt ?? title}
+            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+            loading="lazy"
+            src={imageSrc}
+          />
+        </div>
+      ) : null}
+      {imageSrc && href ? (
+        <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
+          <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+        </span>
+      ) : null}
+      {imageSrc ? null : (
+        <div className="flex items-start justify-between gap-3">
+          {icon ? (
+            <span
+              className={cn(
+                'flex size-10 items-center justify-center rounded-lg',
+                getSolutionToneClasses(tone),
+                size === 'small' && 'size-9',
+              )}
+            >
+              <SolutionCardIcon kind={icon} />
+            </span>
+          ) : (
+            <span />
+          )}
+          {href ? (
+            <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          ) : null}
+        </div>
+      )}
+      <div className={cn('mt-4 flex-1', imageSrc && 'mt-0')}>
         <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
         {showDescription && description ? (
           <p className="mt-2 text-sm leading-6 text-muted-foreground">

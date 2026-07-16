@@ -3,7 +3,13 @@ title: 实时消息 RTM 概览
 description: 通过实时消息 RTM SDK 接入低延时消息、信令、状态同步和频道管理能力。
 ---
 
-实时消息 RTM 为开发者提供低延时、高并发、可扩展、高可靠的实时消息及状态同步能力。你可以用它在用户、设备、房间和业务服务之间同步轻量级实时数据，支撑聊天、呼叫邀请、互动控制、在线状态、频道管理和业务状态同步等场景。
+import { PlanCards } from '@/components/mdx/PlanCards';
+
+## RTM 是什么？
+
+实时消息（Real-Time Messaging，RTM）负责管理应用实时通信层所需的基础设施。它可以在保障服务可用性的同时，帮助开发者快速接入消息、信令、Presence、Storage 和 Topic 等能力，避免自行开发和运维实时状态同步网络带来的成本和风险。
+
+RTM 适合和 RTC、白板、云端录制、业务服务等能力组合使用。例如，在音视频通话中用 RTM 发送呼叫邀请、麦位变化、礼物消息或房间状态；在 IoT 场景中同步设备状态；在协同场景中同步用户在线状态和业务控制指令。
 
 ## 开始构建
 
@@ -13,12 +19,6 @@ description: 通过实时消息 RTM SDK 接入低延时消息、信令、状态�
   <Card title="构建功能" href="/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup" description="配置应用、管理频道、发送消息、同步状态并接入鉴权。" />
   <Card title="参考信息" href="/zh-CN/realtime-media/rtm/reference/release-notes" description="查看版本、平台支持、错误码、配额、安全和迁移说明。" />
 </Cards>
-
-## RTM 是什么？
-
-实时消息（Real-Time Messaging，RTM）负责管理应用实时通信层所需的基础设施。它可以在保障服务可用性的同时，帮助开发者快速接入消息、信令、Presence、Storage 和 Topic 等能力，避免自行开发和运维实时状态同步网络带来的成本和风险。
-
-RTM 适合和 RTC、白板、云端录制、业务服务等能力组合使用。例如，在音视频通话中用 RTM 发送呼叫邀请、麦位变化、礼物消息或房间状态；在 IoT 场景中同步设备状态；在协同场景中同步用户在线状态和业务控制指令。
 
 ## RTM 应用场景
 
@@ -30,22 +30,73 @@ RTM 可用于以下类型的实时互动场景：
 - **IoT 和智能设备**：同步设备在线状态、控制指令、告警消息和设备侧事件。
 - **远程医疗、交通运输和金融科技**：同步业务状态、流程节点、位置更新和安全相关事件。
 
+## 套餐选择
+
+<PlanCards
+  plans={[
+    {
+      name: '体验套餐',
+      description: '适合免费试用和验证产品能力。',
+      accent: 'blue',
+      features: [
+        '包含每月消息数、峰值连接数和存储容量等基础额度。',
+        '适合 PoC、Demo 和小规模内部测试。',
+        '可在用量增长后平滑评估升级到自助套餐。',
+      ],
+      cta: {
+        label: '查看计费说明',
+        href: '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
+      },
+    },
+    {
+      name: '自助套餐',
+      description: '适合业务增长阶段，兼顾灵活用量和服务保障。',
+      accent: 'green',
+      badge: '推荐',
+      features: [
+        '支持按业务规模选择更合适的套餐额度。',
+        '覆盖线上业务需要的服务支持和 SLA 保障。',
+        '适合稳定增长的消息、Presence 和状态同步场景。',
+      ],
+      cta: {
+        label: '比较套餐权益',
+        href: '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
+      },
+    },
+    {
+      name: '企业套餐',
+      description: '适合高服务支持、架构指导、用量折扣和合规需求。',
+      accent: 'purple',
+      features: [
+        '可结合项目规模获取架构方案和容量规划建议。',
+        '支持更高服务支持等级、商务折扣和定制化诉求。',
+        '适合复杂生产环境、大规模连接和重点项目上线。',
+      ],
+      cta: {
+        label: '联系商务支持',
+        href: 'https://www.agora.io/cn/contact-sales/',
+      },
+    },
+  ]}
+/>
+
+<Cards>
+  <Card
+    className="col-span-full"
+    title="计费说明"
+    href="/zh-CN/realtime-media/rtm/reference/billing/billing-strategy"
+    description="了解关于价格、套餐及服务的更多信息。"
+  />
+</Cards>
+
 ## 阅读路径
 
 如果你首次集成 RTM，请先完成[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)，跑通登录和收发消息。进入生产环境前，继续完成[应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)、[Token 鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)和[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)检查。
 
 如果你是 RTM 旧版本用户，想升级至 v2，请先阅读[迁移指南](/zh-CN/realtime-media/rtm/reference/migration-guide)，再对照当前 SDK 的频道、消息、Presence、Storage 和 Topic 能力调整实现。
 
-## RTM 如何计费？
+## 下一步
 
-RTM 为不同业务阶段提供体验版、自助版和企业版三种套餐服务，你可以根据业务用量选择合适套餐，优化成本支出。
-
-- **体验套餐**：免费体验产品能力，包含每月消息数、峰值连接数和存储容量等免费额度。
-- **自助套餐**：适合进入业务增长阶段的项目，支持灵活选择套餐，并提供服务支持和 SLA 保障。
-- **企业套餐**：适合对服务支持、架构指导、用量折扣和合规要求更高的项目。
-
-上线前请查看[计费说明](/zh-CN/realtime-media/rtm/reference/account-and-billing)和[配额限制](/zh-CN/realtime-media/rtm/reference/api-limits)，确认你的业务规模是否需要提前申请更高配额。
-
-## 常见问题
-
-如果你在集成过程中遇到登录、消息收发、Token、频道、Presence、Storage 或旧版本迁移相关问题，可以先查看[常见问题](/zh-CN/api-reference/faq/integration)，再结合错误码和事件日志定位问题。
+- 查看 [RTM 计费说明](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)，了解套餐额度、权益和后续计费表之间的关系。
+- 查看 [配额限制](/zh-CN/realtime-media/rtm/reference/api-limits)，确认你的业务规模是否需要提前申请更高配额。
+- 查看 [常见问题](/zh-CN/api-reference/faq/integration?product=实时消息)，排查登录、消息收发、Token、频道、Presence、Storage 或旧版本迁移相关问题。

@@ -1,0 +1,58 @@
+---
+title: "错误码"
+---
+调用声网 RTC 小程序 API 或运行时，SDK 可能会返回一个错误码对象，也可能会返回一个错误码：
+
+- 错误码对象：包含错误码和对报错原因的描述，你可以根据 `reason` 中的描述自行判断发生引起错误的原因，然后进行排查
+- 错误码：该类错误码中没有相应的`reason`，你可以对照错误码参考本文进行排查。
+
+| 错误码 | 报错原因 | 排查方法 |
+| --- | --- | --- |
+| `401` | 请求异常 | 根据 `reason` 描述检查使用是否符合要求；如果报的是 `invalid vendor key`，请开通小程序服务权限，详见[开启小程序服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#enable)。 |
+| `429` | 请求太频繁 | 根据 `reason` 描述检查使用是否符合要求。 |
+| `430` | <Slot name="error-code-mini-program-html-0-3-1" /> | 根据 `reason` 描述检查使用是否符合要求。 |
+| `431` | <Slot name="error-code-mini-program-html-0-4-1" /> | 根据 `reason` 描述检查使用是否符合要求。 |
+| `432` | 订阅了一个非主播的 `uid` | 根据 `reason` 描述检查使用是否符合要求。 |
+| `433` | <Slot name="error-code-mini-program-html-0-6-1" /> | 根据 `reason` 描述检查使用是否符合要求。 |
+| `434` | <Slot name="error-code-mini-program-html-0-7-1" /> | 根据 `reason` 描述检查使用是否符合要求。 |
+| `500` | 内部错误 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |
+| `501` | 服务进程异常失去连接 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |
+| `502` | 当前服务器过载 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |
+| `503` | 服务进程正常退出 | 无。 |
+| `901` | 未找到服务器 | 检查是否开启小程序的服务权限；也可能是没有配置域名或 `uid` 参数格式不正确；你还可以检查网络；检查传入的 `App ID`、Token 是否有效。 |
+| `903` | 发送消息超时 | 鉴权失败，可能是因为未填入 Token；也可能是因为网络连接状况不理想，请检查网络。 |
+| `904` | websocket 断开 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |
+| `905` | websocket 连接失败 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |
+
+<Slot for="error-code-mini-program-html-0-3-1">
+
+- 在订阅前尝试 mute 远端流
+        - 在订阅前尝试 unmute 远端流
+        - 请求异常
+
+</Slot>
+
+<Slot for="error-code-mini-program-html-0-4-1">
+
+- `setRole` 传入的参数错误
+        - 加入频道失败
+        - 登录时的 role 传入出错
+        - 加入频道时的 `uid` 传入出错
+        - 重复加入频道，且 `uid` 不匹配
+
+</Slot>
+
+<Slot for="error-code-mini-program-html-0-6-1">
+
+- 观众端无法发布流
+        - 观众端无法取消发布流
+
+</Slot>
+
+<Slot for="error-code-mini-program-html-0-7-1">
+
+- 在加入频道前尝试退出在加入频道前尝试`setRole`发布流时的 `uid` 和加入频道时的 `uid` 不一致
+        - 取消发布流时的 `uid` 和加入频道时的 `uid` 不一致
+        - 更新 URL 时的 `uid` 和加入频道时的 `uid` 不一致
+
+</Slot>

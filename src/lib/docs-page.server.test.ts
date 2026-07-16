@@ -3640,6 +3640,11 @@ Web body
       publishPage.url,
       receivePage.url,
     ]);
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/zh-CN/realtime-media/rtm',
+      backLabel: '实时消息 RTM',
+      title: '实时消息 RTM',
+    });
     expect(payload.navigation.previous).toBeUndefined();
     expect(payload.navigation.next).toEqual({
       title: '接收历史消息',

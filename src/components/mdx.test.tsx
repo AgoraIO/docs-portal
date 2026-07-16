@@ -234,7 +234,7 @@ describe('common MDX registry', () => {
     expect(components.img).not.toBe(defaults.img);
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
-    expect(components.Cards).toBe(defaults.Cards);
+    expect(components.Cards).not.toBe(defaults.Cards);
     expect(components.Callout).toBe(defaults.Callout);
 
     expect(components.a).not.toBe(defaults.a);

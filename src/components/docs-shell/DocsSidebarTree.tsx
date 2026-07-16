@@ -690,7 +690,7 @@ function normalizeRootSections(
 
 function shouldKeepRootSectionCollapsible(
   node: DocsSidebarNode | RenderableSidebarSectionNode,
-) {
+): boolean {
   if (
     node.type !== 'section' ||
     (node.title !== '计费与限制' && node.title !== '计费说明')
@@ -710,7 +710,10 @@ function shouldKeepRootSectionCollapsible(
   );
 }
 
-function isNodeUnderOneOfProducts(node: DocsSidebarNode, products: string[]) {
+function isNodeUnderOneOfProducts(
+  node: DocsSidebarNode,
+  products: string[],
+): boolean {
   if (node.type === 'page') {
     return products.some((product) =>
       node.url.includes(`/realtime-media/${product}/`),
@@ -866,6 +869,10 @@ function SidebarPageLabel({
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
+  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
+    return '概览';
+  }
+
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;
@@ -873,4 +880,12 @@ function getSidebarDisplayTitle(title: string, url: string) {
   }
 
   return title;
+}
+
+function isZhCnProductOverviewUrl(url: string): boolean {
+  if (url.endsWith('/overview')) {
+    return false;
+  }
+
+  return /^\/zh-CN\/(?:realtime-media|solutions)\/.+$/.test(url);
 }
