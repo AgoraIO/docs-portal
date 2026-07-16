@@ -1,18 +1,16 @@
 ---
 title: 安全最佳实践
-description: "了解如何在声网安全与合规文档中安全最佳实践，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解声网实时互动场景中的资源隔离、频道隔离、身份认证、数据加密和限定访问区域等安全最佳实践。"
 ---
-安全与合规是实时互动的基本要求。
-
-声网遵守不同国家和行业的合规性要求，打造安全可靠的云服务，目前已通过 ISO/IEC 27001、ISO/IEC 27017、ISO/IEC 27018、ISO/IEC 27701 认证、公安部网络安全等级保护三级认证，并获得 SOC2 Type II 报告。
+安全与合规是实时互动的基本要求。声网遵守不同国家和行业的合规性要求，打造安全可靠的云服务，目前已通过 ISO/IEC 27001、ISO/IEC 27017、ISO/IEC 27018、ISO/IEC 27701 认证、公安部网络安全等级保护三级认证，并获得 SOC2 Type II 报告。
 
 此外，声网产品在设计和构建过程中，根据音视频传输领域常见的攻击类型和安全需求，还集成了多重防护措施，满足客户及终端用户的数据安全要求。
 
 | 防护措施 | 是否默认应用 | 推荐场景 |
-| ---------------- | ---------------- | ---------------- |
-| 资源隔离      | 是      | 所有实时场景。      |
+| --- | --- | --- |
+| 资源隔离 | 是 | 所有实时场景。 |
 | 频道隔离 | 是 | 所有实时场景。 |
-| 身份认证 | 否 |声网推荐正式生产阶段的 App 均使用该措施。 |
+| 身份认证 | 否 | 声网推荐正式生产阶段的 App 均使用该措施。 |
 | 加密 | 否 | 对于有保密需求的实时互动场景，声网推荐使用该措施。 |
 | 限定访问区域 | 否 | 适用于将音视频数据及实时消息数据传输限定在某一区域范围内的场景。 |
 
@@ -38,7 +36,7 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 - 支持自定义 Token 有效期。Token 的默认有效期为 24 小时。客户可以根据自己的安全需求自定义 Token 的服务有效期。
 - 支持定制不同的服务权限。
 
-详细的生成 Token 的方法及注意事项，请参考[使用 Token 鉴权](https://docportal.shengwang.cn/cn/video-call-4.x/token_server_android_ng?platform=Android)。
+详细的生成 Token 的方法及注意事项，请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 ## 数据加密
 
@@ -55,13 +53,24 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 
 下图分别展示了 RTC Native SDK 和 Web SDK 应用加密功能后的数据传输流程：
 
-#### Native SDK
+<Tabs defaultValue="native" groupId="security-encryption-flow" persist>
+<TabsList>
+  <TabsTrigger value="native">Native SDK</TabsTrigger>
+  <TabsTrigger value="web">Web SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="native">
 
 ![Native 平台加密传输](https://web-cdn.agora.io/docs-portal/img/security/encryption-native.png)
 
-#### Web SDK
+</TabsContent>
+
+<TabsContent value="web">
 
 ![Web 平台加密传输](https://web-cdn.agora.io/docs-portal/img/security/encryption-web.png)
+
+</TabsContent>
+</Tabs>
 
 #### 内置加密
 
@@ -75,11 +84,13 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 
 不同平台设置加密方案的步骤详见：
 
-- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_android_ng?platform=Android)
-- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=iOS)
-- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=macOS)
-- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_web_ng?platform=Web)
-- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_windows_ng?platform=Windows)
+<Cards>
+  <Card title="Android" href="/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=android" />
+  <Card title="iOS" href="/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=ios" />
+  <Card title="macOS" href="/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=macos" />
+  <Card title="Web" href="/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=web" />
+  <Card title="Windows" href="/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=windows" />
+</Cards>
 
 ## 限定访问区域
 
@@ -89,18 +100,20 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 
 | 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
 | --- | --- | --- | --- |
-| 北美 | 北美 | 北美 | 正常 |
-| 北美 | 中国 | 北美 | 可能受到较大影响 |
+| 北美 | 北美 | 北美 | 正常¹ |
+| 北美 | 中国 | 北美 | 可能受到较大影响² |
 
-:::info[信息]
-- 如果指定区域的服务器都不可用，SDK 会直接报错。
-- 如果指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。
+:::note
+- ¹ 如果指定区域的服务器都不可用，SDK 会直接报错。
+- ² 如果指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。
 :::
 
 具体使用方法，详见：
 
-- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_android_ng?platform=Android)
-- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=iOS)
-- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=macOS)
-- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_web_ng_rtc?platform=Web)
-- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_windows_ng?platform=Windows)
+<Cards>
+  <Card title="Android" href="/zh-CN/realtime-media/rtc/build/security-and-auth/region?platform=android" />
+  <Card title="iOS" href="/zh-CN/realtime-media/rtc/build/security-and-auth/region?platform=ios" />
+  <Card title="macOS" href="/zh-CN/realtime-media/rtc/build/security-and-auth/region?platform=macos" />
+  <Card title="Web" href="/zh-CN/realtime-media/rtc/build/security-and-auth/region?platform=web" />
+  <Card title="Windows" href="/zh-CN/realtime-media/rtc/build/security-and-auth/region?platform=windows" />
+</Cards>
