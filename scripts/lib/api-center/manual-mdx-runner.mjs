@@ -7,6 +7,13 @@ import {
   migrateLegacyPage,
 } from '../../migrate-legacy-docs.mjs';
 import {
+  buildLocalFragmentIndex,
+  collectLocalFragmentReferences,
+  insertFragmentAliases,
+  rewriteLocalFragmentLinks,
+  targetPathToRoute,
+} from './local-fragment-index.mjs';
+import {
   ApiCenterMigrationRun,
   assetTargetPath,
   buildLegacyRouteMap,
@@ -16,13 +23,6 @@ import {
   renderGeneratedMdx,
   rewriteLegacyHref,
 } from './migration-framework.mjs';
-import {
-  buildLocalFragmentIndex,
-  collectLocalFragmentReferences,
-  insertFragmentAliases,
-  rewriteLocalFragmentLinks,
-  targetPathToRoute,
-} from './local-fragment-index.mjs';
 import { parseCsv } from './source-resolver.mjs';
 
 const PLATFORM_ALIASES = new Map([
@@ -36,7 +36,9 @@ function normalizePlatform(value) {
 }
 
 function splitFrontmatter(source) {
-  const match = String(source).match(/^---\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
+  const match = String(source).match(
+    /^---\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/,
+  );
   if (!match) return { data: {}, body: String(source) };
   return {
     data: yaml.load(match[1]) ?? {},
@@ -46,6 +48,72 @@ function splitFrontmatter(source) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function normalizeLegacyUrl(value) {
+  if (!value) return null;
+  const url = new URL(value, 'https://doc.shengwang.cn');
+  url.hash = '';
+  url.pathname = url.pathname.replace(/\.html$/i, '');
+  return url.href;
+}
+
+function sourceScopeKey(value) {
+  if (!value) return null;
+  const segments = new URL(value, 'https://doc.shengwang.cn').pathname
+    .split('/')
+    .filter(Boolean);
+  return segments.slice(0, 3).join('/');
+}
+
+function buildSourceLabels(manifest) {
+  const byUrl = new Map();
+  const byScope = new Map();
+  for (const entry of manifest.entries ?? []) {
+    const value = {
+      platformLabel: entry.label,
+      productLabel: entry.product,
+    };
+    for (const sourceUrl of [
+      entry.legacyUrl,
+      ...(entry.pageGraph?.pages ?? []).map((page) => page.url),
+    ]) {
+      const key = normalizeLegacyUrl(sourceUrl);
+      if (!key) continue;
+      const current = byUrl.get(key);
+      if (
+        current &&
+        (current.productLabel !== value.productLabel ||
+          current.platformLabel !== value.platformLabel)
+      ) {
+        byUrl.set(key, {
+          platformLabel:
+            current.platformLabel === value.platformLabel
+              ? value.platformLabel
+              : null,
+          productLabel:
+            current.productLabel === value.productLabel
+              ? value.productLabel
+              : null,
+        });
+      } else if (!current) {
+        byUrl.set(key, value);
+      }
+    }
+    const scopeKey = sourceScopeKey(entry.legacyUrl);
+    const currentScope = byScope.get(scopeKey);
+    if (!currentScope) byScope.set(scopeKey, value);
+    else if (currentScope.productLabel !== value.productLabel) {
+      byScope.set(scopeKey, {
+        platformLabel:
+          currentScope.platformLabel === value.platformLabel
+            ? value.platformLabel
+            : null,
+        productLabel: null,
+      });
+    }
+  }
+  return { byScope, byUrl };
 }
 
 function groupByTarget(pages) {
@@ -62,11 +130,29 @@ function groupByTarget(pages) {
 }
 
 function classifyConverterIssues(conversions) {
-  const rawIssues = unique(conversions.flatMap((conversion) => conversion.issues));
+  const rawIssues = unique(
+    conversions.flatMap((conversion) => conversion.issues),
+  );
   const warnings = [];
+  const missingSourceText = rawIssues.filter((value) =>
+    value.startsWith('missing-source-text:'),
+  );
+  for (const value of missingSourceText) {
+    warnings.push(
+      createWarning(
+        'missing-source-text',
+        value.slice('missing-source-text:'.length),
+        {
+          signal: value,
+        },
+      ),
+    );
+  }
   const normalized = rawIssues.filter(
     (value) =>
-      /^(?:normalized-|escaped-|needs-(?:image-width|landing-page)-review)/.test(value) ||
+      /^(?:normalized-|escaped-|needs-(?:image-width|landing-page)-review)/.test(
+        value,
+      ) ||
       value === 'normalized-tab-item-fallback' ||
       value === 'dropped-hidden-index-span',
   );
@@ -79,11 +165,14 @@ function classifyConverterIssues(conversions) {
       ),
     );
   }
-  const ignoredReferenceReview = rawIssues.filter(
-    (value) => /^(?:断链|图片):\d+$/.test(value),
+  const ignoredReferenceReview = rawIssues.filter((value) =>
+    /^(?:断链|图片):\d+$/.test(value),
   );
   const remaining = rawIssues.filter(
-    (value) => !normalized.includes(value) && !ignoredReferenceReview.includes(value),
+    (value) =>
+      !normalized.includes(value) &&
+      !ignoredReferenceReview.includes(value) &&
+      !missingSourceText.includes(value),
   );
   const residue = remaining.filter(
     (value) =>
@@ -93,7 +182,9 @@ function classifyConverterIssues(conversions) {
       value.startsWith('circular-shared-import:'),
   );
   for (const value of residue) {
-    warnings.push(createWarning('manual-mdx-residue', value, { signal: value }));
+    warnings.push(
+      createWarning('manual-mdx-residue', value, { signal: value }),
+    );
   }
   for (const value of remaining.filter((item) => !residue.includes(item))) {
     warnings.push(createWarning('manual-mdx-review', value, { signal: value }));
@@ -104,7 +195,7 @@ function classifyConverterIssues(conversions) {
 export function rewriteBodyLinks(body, { routeMap, sourceUrl }) {
   const warnings = [];
   const rewritten = body.replace(
-    /(?<!!)\[((?:[^\[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
     (raw, label, href) => {
       const relative =
         !href.startsWith('#') &&
@@ -139,7 +230,9 @@ async function localizeAssets(body, { oldRoot, run, sourcePath, sourceUrl }) {
   const warnings = [];
   let output = '';
   let cursor = 0;
-  const matches = [...body.matchAll(/!\[([^\]\n]*)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)];
+  const matches = [
+    ...body.matchAll(/!\[([^\]\n]*)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g),
+  ];
   for (const match of matches) {
     output += body.slice(cursor, match.index);
     cursor = match.index + match[0].length;
@@ -154,7 +247,11 @@ async function localizeAssets(body, { oldRoot, run, sourcePath, sourceUrl }) {
     const pathname = /^https?:\/\//.test(source)
       ? new URL(source).pathname
       : source.split(/[?#]/, 1)[0];
-    const absolute = path.resolve(oldRoot, 'static', pathname.replace(/^\//, ''));
+    const absolute = path.resolve(
+      oldRoot,
+      'static',
+      pathname.replace(/^\//, ''),
+    );
     try {
       const contents = await fs.readFile(absolute);
       const targetPath = assetTargetPath(absolute, contents);
@@ -194,14 +291,19 @@ function augmentPathMap(pathMap, manifest) {
     pathMap.set(resolution.sourcePath, {
       ...prior,
       targetPath: resolution.targetPath,
-      targetPaths: unique([...(prior.targetPaths ?? []), resolution.targetPath]),
+      targetPaths: unique([
+        ...(prior.targetPaths ?? []),
+        resolution.targetPath,
+      ]),
     });
   }
 }
 
 async function usablePathMapRows(repoRoot, pathMapPath) {
   try {
-    return parseCsv(await fs.readFile(path.resolve(repoRoot, pathMapPath), 'utf8'));
+    return parseCsv(
+      await fs.readFile(path.resolve(repoRoot, pathMapPath), 'utf8'),
+    );
   } catch (error) {
     if (error.code === 'ENOENT') return [];
     throw error;
@@ -222,6 +324,7 @@ export async function runManualMdxMigration({
   const manifest = JSON.parse(
     await fs.readFile(path.resolve(repoRoot, manifestPath), 'utf8'),
   );
+  const sourceLabels = buildSourceLabels(manifest);
   const pathMap = await loadPathMap(path.resolve(repoRoot, pathMapPath));
   augmentPathMap(pathMap, manifest);
   const componentMap = await loadComponentMap(
@@ -249,7 +352,10 @@ export async function runManualMdxMigration({
   );
   const pending = [];
   for (const page of pages) {
-    if (page.sourceResolution.targetExists && !run.ownsTarget(page.sourceResolution.targetPath)) {
+    if (
+      page.sourceResolution.targetExists &&
+      !run.ownsTarget(page.sourceResolution.targetPath)
+    ) {
       run.preserveExisting({ page });
     } else {
       pending.push(page);
@@ -268,10 +374,16 @@ export async function runManualMdxMigration({
     const conversions = [];
     for (const page of canonicalPages) {
       const resolution = page.sourceResolution;
+      const pageSourceLabels =
+        sourceLabels.byUrl.get(normalizeLegacyUrl(page.requestedUrl)) ??
+        sourceLabels.byScope.get(resolution.route?.scopeKey) ??
+        {};
       const converted = await migrateLegacyPage({
         componentMap,
         pathMap,
         platform: normalizePlatform(resolution.route?.platform),
+        platformLabel: pageSourceLabels.platformLabel,
+        productLabel: pageSourceLabels.productLabel,
         sourcePath: resolution.sourcePath,
         sourceRoot: oldRoot,
         targetPath,
@@ -280,9 +392,13 @@ export async function runManualMdxMigration({
       conversions.push({ page, converted, ...parsed });
     }
     const sourceUrls = unique(targetPages.map((page) => page.requestedUrl));
-    const sourcePaths = unique(targetPages.map((page) => page.sourceResolution.sourcePath));
+    const sourcePaths = unique(
+      targetPages.map((page) => page.sourceResolution.sourcePath),
+    );
     const platforms = unique(
-      targetPages.map((page) => normalizePlatform(page.sourceResolution.route?.platform)),
+      targetPages.map((page) =>
+        normalizePlatform(page.sourceResolution.route?.platform),
+      ),
     );
     let body =
       conversions.length === 1
@@ -291,11 +407,15 @@ export async function runManualMdxMigration({
             .map(
               (conversion) =>
                 `<PlatformStructured platform=${JSON.stringify(
-                  normalizePlatform(conversion.page.sourceResolution.route?.platform),
+                  normalizePlatform(
+                    conversion.page.sourceResolution.route?.platform,
+                  ),
                 )}>\n\n${conversion.body}\n\n</PlatformStructured>`,
             )
             .join('\n\n');
-    let warnings = classifyConverterIssues(conversions.map((item) => item.converted));
+    const warnings = classifyConverterIssues(
+      conversions.map((item) => item.converted),
+    );
     if (conversions.length > 1) {
       warnings.push(
         createWarning(
@@ -319,7 +439,12 @@ export async function runManualMdxMigration({
     body = localized.body;
     warnings.push(...localized.warnings);
     const first = conversions[0];
-    const title = first.data.title ?? path.basename(targetPath, '.mdx');
+    const title = first.data.title;
+    if (!title) {
+      throw new Error(
+        `Missing source-derived title for ${sourcePaths.join(', ')}; request source copy instead of synthesizing a target filename title.`,
+      );
+    }
     const description = first.data.description;
     const extraFrontmatter = Object.fromEntries(
       Object.entries(first.data).filter(
@@ -347,7 +472,10 @@ export async function runManualMdxMigration({
   const requestedByRoute = new Map();
   for (const draft of drafts) {
     const sourceRoute = targetPathToRoute(draft.targetPath);
-    for (const reference of collectLocalFragmentReferences(draft.body, sourceRoute)) {
+    for (const reference of collectLocalFragmentReferences(
+      draft.body,
+      sourceRoute,
+    )) {
       if (!draftsByRoute.has(reference.route)) continue;
       const fragments = requestedByRoute.get(reference.route) ?? new Set();
       fragments.add(reference.fragment);
@@ -379,8 +507,12 @@ export async function runManualMdxMigration({
       sourceRoute: targetPathToRoute(draft.targetPath),
     });
     draft.body = normalized.body;
-    const resolved = normalized.warnings.filter((warning) => !warning.unresolved);
-    const unresolved = normalized.warnings.filter((warning) => warning.unresolved);
+    const resolved = normalized.warnings.filter(
+      (warning) => !warning.unresolved,
+    );
+    const unresolved = normalized.warnings.filter(
+      (warning) => warning.unresolved,
+    );
     if (resolved.length > 0) {
       draft.warnings.push(
         createWarning(

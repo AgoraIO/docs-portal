@@ -25,7 +25,7 @@ _migration:
 
 ## 多路任务保障
 
-如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路cloud-recording任务单独计费，计费方式详见[单流和合流录制计费](/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/billing)。实现步骤如下：
+如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路云端录制任务单独计费，计费方式详见[单流和合流录制计费](/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/billing)。实现步骤如下：
 
 1. 同时发起主任务和备份任务，实现对同一个频道进行多路录制。为此，你需要使用相同 `appId` 和 `cname`，以及不同的 `uid` 来发起多个录制任务。
 

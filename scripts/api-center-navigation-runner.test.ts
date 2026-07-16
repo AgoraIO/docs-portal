@@ -9,9 +9,9 @@ const roots: string[] = [];
 
 afterEach(async () => {
   await Promise.all(
-    roots.splice(0).map((root) =>
-      fs.rm(root, { recursive: true, force: true }),
-    ),
+    roots
+      .splice(0)
+      .map((root) => fs.rm(root, { recursive: true, force: true })),
   );
 });
 
@@ -24,13 +24,16 @@ describe('API Center navigation runner', () => {
     const manifestPath = 'docs/migration/api-center-html-manifest.json';
     const rtcOverviewUrl =
       'https://doc.shengwang.cn/api-ref/rtc/android/overview';
-    const rtcClientUrl =
-      'https://doc.shengwang.cn/api-ref/rtc/android/client';
+    const rtcClientUrl = 'https://doc.shengwang.cn/api-ref/rtc/android/client';
     const speechUrl =
       'https://doc.shengwang.cn/doc/speech-to-text/restful/v7/operations/join';
     const manifest = {
       source: { commit: 'fixture' },
-      live: { capturedAt: '2026-07-16T00:00:00.000Z' },
+      live: {
+        capturedAt: '2026-07-16T00:00:00.000Z',
+        heroTitle: 'API 中心',
+        heroDescription: '查看声网 API 的详细信息。',
+      },
       entries: [
         {
           category: '基础能力',
@@ -177,12 +180,14 @@ describe('API Center navigation runner', () => {
       await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
         recursive: true,
       });
-      await fs.writeFile(path.join(repoRoot, target), '---\ntitle: Fixture\n---\n');
+      await fs.writeFile(
+        path.join(repoRoot, target),
+        '---\ntitle: Fixture\n---\n',
+      );
     }
-    await fs.mkdir(
-      path.join(repoRoot, 'content/docs/zh-CN/api-reference'),
-      { recursive: true },
-    );
+    await fs.mkdir(path.join(repoRoot, 'content/docs/zh-CN/api-reference'), {
+      recursive: true,
+    });
     await fs.writeFile(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/overview.mdx'),
       'old overview\n',
@@ -253,6 +258,11 @@ describe('API Center navigation runner', () => {
     expect(overview.indexOf('实时互动 RTC')).toBeLessThan(
       overview.indexOf('即时通讯 IM'),
     );
+    expect(overview).toContain('title: API 中心');
+    expect(overview).toContain('description: 查看声网 API 的详细信息。');
+    expect(overview).toContain('查看声网 API 的详细信息。');
+    expect(overview).not.toContain('API 参考概览');
+    expect(overview).not.toContain('按旧站 API Center');
     expect(overview).toContain('https://im.shengwang.cn/docs/sdk/web.html');
     expect(rootMeta.root).toBe(true);
     expect(rootMeta.pages).toContain('api-ref');
@@ -274,15 +284,21 @@ describe('API Center navigation runner', () => {
     expect(speechMeta.pages[0]).toBe('index');
     expect(speechMeta.pages).toContain('---服务端 API---');
     expect(speechMeta.pages).toContain('join');
-    expect(
-      await fs.readFile(
-        path.join(
-          repoRoot,
-          'content/docs/zh-CN/api-reference/api-ref/speech-to-text/index.mdx',
-        ),
-        'utf8',
+    const speechLanding = await fs.readFile(
+      path.join(
+        repoRoot,
+        'content/docs/zh-CN/api-reference/api-ref/speech-to-text/index.mdx',
       ),
-    ).toContain('[开始转写](/zh-CN/api-reference/api-ref/speech-to-text/join)');
+      'utf8',
+    );
+    expect(speechLanding).toContain('title: 实时转录翻译');
+    expect(speechLanding).toContain('description: 把频道语音转成文本。');
+    expect(speechLanding).toContain(
+      '[开始转写](/zh-CN/api-reference/api-ref/speech-to-text/join)',
+    );
+    expect(speechLanding).not.toContain('## 接口目录');
+    expect(speechLanding).not.toContain('实时转录翻译 API');
+    expect(speechLanding).toContain('content/openapi/speech.yaml');
 
     await expect(
       runApiCenterNavigation({

@@ -25,7 +25,10 @@ function normalizeBlocks(value) {
 }
 
 function stripHeadingLinks(value) {
-  return String(value).replace(/\[([^\]\n]+)\]\((?:<[^>\n]+>|[^)\n]+)\)/g, '$1');
+  return String(value).replace(
+    /\[([^\]\n]+)\]\((?:<[^>\n]+>|[^)\n]+)\)/g,
+    '$1',
+  );
 }
 
 function anchorFor(element) {
@@ -38,7 +41,11 @@ function elementName(node) {
 }
 
 function classNames(element) {
-  return new Set(String(element.attr('class') ?? '').split(/\s+/).filter(Boolean));
+  return new Set(
+    String(element.attr('class') ?? '')
+      .split(/\s+/)
+      .filter(Boolean),
+  );
 }
 
 function calloutType(element) {
@@ -92,16 +99,6 @@ function selectArticle($) {
   return $('body').first();
 }
 
-function collectFragments(article) {
-  const fragments = [];
-  article.find('[id], a[name]').each((_, node) => {
-    const element = article.constructor(node);
-    const value = element.attr('id') ?? element.attr('name');
-    if (value && !fragments.includes(value)) fragments.push(value);
-  });
-  return fragments;
-}
-
 function createState(options) {
   return {
     ...options,
@@ -126,7 +123,11 @@ async function renderInlineNode($, node, state) {
   if (node.type !== 'tag') return '';
   const element = $(node);
   const name = elementName(node);
-  const content = await renderInlineNodes($, element.contents().toArray(), state);
+  const content = await renderInlineNodes(
+    $,
+    element.contents().toArray(),
+    state,
+  );
   if (name === 'br') return '  \n';
   if (name === 'code' || name === 'kbd') {
     const linkedCode = content.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
@@ -157,13 +158,25 @@ async function renderInlineNode($, node, state) {
   return content;
 }
 
-async function renderImage($, element, state) {
+async function renderImage(_$, element, state) {
   const source = element.attr('src');
   if (!source) return '';
-  const alt = cleanText(element.attr('alt') || element.attr('title') || 'API 文档图片');
+  const alt = cleanText(element.attr('alt') || element.attr('title'));
+  if (!alt) {
+    state.warnings.push(
+      createWarning(
+        'missing-source-text',
+        `The source image ${source} has no alt or title text; the migrated image keeps an empty alt instead of synthesized copy.`,
+        { source },
+      ),
+    );
+  }
   if (!state.onAsset) {
     state.warnings.push(
-      createWarning('asset-missing', `No asset handler is configured for ${source}.`),
+      createWarning(
+        'asset-missing',
+        `No asset handler is configured for ${source}.`,
+      ),
     );
     return `![${escapeMdxText(alt)}](${source})`;
   }
@@ -241,7 +254,10 @@ async function renderTable($, table, state) {
     const renderedCells = [];
     for (const cell of cells) {
       const element = $(cell);
-      const span = Math.max(1, Number.parseInt(element.attr('colspan') ?? '1', 10) || 1);
+      const span = Math.max(
+        1,
+        Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
+      );
       const rich =
         rowIndex > 0 &&
         element.find(
@@ -264,9 +280,7 @@ async function renderTable($, table, state) {
       const slotName = `api-center-table-${state.tableSlotCounter++}`;
       renderedCells.push(`<Slot name="${slotName}" />`);
       renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
-      definitions.push(
-        `<Slot for="${slotName}">\n\n${body}\n\n</Slot>`,
-      );
+      definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
     }
     width = Math.max(width, renderedCells.length);
     values.push(renderedCells);
@@ -286,7 +300,9 @@ async function renderDefinitionList($, list, state) {
   let term = null;
   for (const child of list.children('dt, dd').toArray()) {
     if (elementName(child) === 'dt') {
-      term = cleanText(await renderInlineNodes($, $(child).contents().toArray(), state));
+      term = cleanText(
+        await renderInlineNodes($, $(child).contents().toArray(), state),
+      );
     } else {
       const body = await renderChildren($, $(child), state);
       if (term) blocks.push(`### ${term}\n\n${body}`);
@@ -304,31 +320,32 @@ async function renderChildren($, element, state) {
     const name = elementName(child);
     const isHeadingAnchor =
       name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
-    const isBlock = [
-      'article',
-      'aside',
-      'blockquote',
-      'details',
-      'div',
-      'dl',
-      'figure',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'hr',
-      'iframe',
-      'object',
-      'ol',
-      'p',
-      'pre',
-      'section',
-      'table',
-      'ul',
-      'video',
-    ].includes(name) || isHeadingAnchor;
+    const isBlock =
+      [
+        'article',
+        'aside',
+        'blockquote',
+        'details',
+        'div',
+        'dl',
+        'figure',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'hr',
+        'iframe',
+        'object',
+        'ol',
+        'p',
+        'pre',
+        'section',
+        'table',
+        'ul',
+        'video',
+      ].includes(name) || isHeadingAnchor;
     if (isBlock) {
       if (inline.trim()) {
         blocks.push(inline.trim());
@@ -362,9 +379,9 @@ async function renderBlockNode($, node, state) {
   }
   const detectedCallout = calloutType(element);
   if (detectedCallout && ['aside', 'div', 'section'].includes(name)) {
-    const titleNode = element.find(
-      '> .admonition-heading, > .title, > strong:first-child',
-    ).first();
+    const titleNode = element
+      .find('> .admonition-heading, > .title, > strong:first-child')
+      .first();
     const title = cleanText(titleNode.text());
     if (titleNode.length > 0) titleNode.remove();
     const body = await renderChildren($, element, state);
@@ -381,10 +398,9 @@ async function renderBlockNode($, node, state) {
       .filter(Boolean);
     const title = cleanText(
       stripHeadingLinks(
-        (await renderInlineNodes($, element.contents().toArray(), state)).replace(
-          /<a id=(?:"[^"]*"|'[^']*')><\/a>/g,
-          '',
-        ),
+        (
+          await renderInlineNodes($, element.contents().toArray(), state)
+        ).replace(/<a id=(?:"[^"]*"|'[^']*')><\/a>/g, ''),
       ),
     );
     return [anchor, ...nestedAnchors, `${'#'.repeat(level)} ${title}`]
@@ -392,7 +408,11 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'p') {
-    const body = await renderInlineNodes($, element.contents().toArray(), state);
+    const body = await renderInlineNodes(
+      $,
+      element.contents().toArray(),
+      state,
+    );
     return [anchor, body].filter(Boolean).join('\n\n');
   }
   if (name === 'pre') {

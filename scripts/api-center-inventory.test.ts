@@ -7,11 +7,11 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   buildManifest,
   compareLiveAndSource,
+  mergeManifestProgress,
   normalizeSourceApiCenter,
   parseLiveApiCenterBaseline,
   parseLiveApiCenterHtml,
   renderManifestMarkdown,
-  mergeManifestProgress,
 } from './lib/api-center/inventory.mjs';
 
 const SCRIPT = path.resolve(
@@ -79,6 +79,8 @@ const platforms = [
 function renderedHtml() {
   return `<!doctype html>
 <html><head><title>API 中心</title></head><body>
+  <div class="custom-banner-title">API 中心</div>
+  <div>查看声网 API 的详细信息。</div>
   <section>
     <div><div class="custom-category-title">产品 A</div><div>产品描述</div>
       <div>客户端 API</div><div><div class="custom-api-card">Android</div></div>
@@ -98,9 +100,7 @@ describe('api-center inventory', () => {
     await Promise.all(
       tempDirs
         .splice(0)
-        .map((directory) =>
-          fs.rm(directory, { force: true, recursive: true }),
-        ),
+        .map((directory) => fs.rm(directory, { force: true, recursive: true })),
     );
   });
 
@@ -109,10 +109,7 @@ describe('api-center inventory', () => {
 
     expect(
       source.categories.map((category: { title: string }) => category.title),
-    ).toEqual([
-      '基础能力',
-      '解决方案',
-    ]);
+    ).toEqual(['基础能力', '解决方案']);
     expect(source.products).toHaveLength(2);
     expect(source.entries).toHaveLength(3);
     expect(source.entries[2]).toMatchObject({
@@ -138,6 +135,8 @@ describe('api-center inventory', () => {
 
     expect(live.productCount).toBe(2);
     expect(live.apiEntryCount).toBe(3);
+    expect(live.heroTitle).toBe('API 中心');
+    expect(live.heroDescription).toBe('查看声网 API 的详细信息。');
     expect(live.products[1]).toMatchObject({
       title: '产品 B',
       useCases: [
@@ -163,6 +162,8 @@ describe('api-center inventory', () => {
 
     const baseline = parseLiveApiCenterBaseline({
       title: 'API 中心',
+      heroTitle: 'API 中心',
+      heroDescription: '查看声网 API 的详细信息。',
       url: 'https://doc.shengwang.cn/api-center',
       productCount: 2,
       apiEntryCount: 3,
@@ -175,6 +176,10 @@ describe('api-center inventory', () => {
       status: 'matched',
       basis: 'visible-product-and-entry-labels',
       warnings: [],
+    });
+    expect(baseline).toMatchObject({
+      heroTitle: 'API 中心',
+      heroDescription: '查看声网 API 的详细信息。',
     });
   });
 
@@ -244,11 +249,18 @@ describe('api-center inventory', () => {
       warnings: [],
     };
     previous.pageGraphSummary = { entryCount: 3, uniquePageCount: 1 };
+    previous.sourceResolutionSummary = {
+      resolvedEntries: 1,
+      pendingEntries: 2,
+    };
 
     const merged = mergeManifestProgress(initial, previous);
     expect(merged.entries[0].pageGraph.status).toBe('resolved');
     expect(merged.counts.resolvedPageGraphs).toBe(1);
     expect(merged.pageGraphSummary).toEqual(previous.pageGraphSummary);
+    expect(merged.sourceResolutionSummary).toEqual(
+      previous.sourceResolutionSummary,
+    );
   });
 
   it('writes and checks the same manifest from fixtures', async () => {
@@ -265,6 +277,8 @@ describe('api-center inventory', () => {
       baselinePath,
       JSON.stringify({
         title: 'API 中心',
+        heroTitle: 'API 中心',
+        heroDescription: '查看声网 API 的详细信息。',
         url: 'https://doc.shengwang.cn/api-center',
         productCount: 2,
         apiEntryCount: 3,
@@ -278,7 +292,15 @@ describe('api-center inventory', () => {
     execFileSync('git', ['add', '.'], { cwd: sourceRoot });
     execFileSync(
       'git',
-      ['-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-qm', 'fixture'],
+      [
+        '-c',
+        'user.name=Test',
+        '-c',
+        'user.email=test@example.com',
+        'commit',
+        '-qm',
+        'fixture',
+      ],
       { cwd: sourceRoot },
     );
 

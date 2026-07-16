@@ -27,7 +27,8 @@ describe('API Center shared HTML to MDX converter', () => {
           '/zh-CN/api-reference/rtc/web/classes/result',
         ],
       ]),
-      onAsset: async ({ source }) => `/img/api-center-generated/${source.split('/').at(-1)}`,
+      onAsset: async ({ source }) =>
+        `/img/api-center-generated/${source.split('/').at(-1)}`,
     });
 
     expect(result).toMatchObject({
@@ -51,7 +52,9 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain('```ts\nconst x = 1;\n```');
     expect(result.body).toContain('### uid\n\nUser ID.');
     expect(result.body).toContain('| Name | Type |');
-    expect(result.body).toContain('![Client diagram](/img/api-center-generated/client.png)');
+    expect(result.body).toContain(
+      '![Client diagram](/img/api-center-generated/client.png)',
+    );
     expect(result.body).not.toContain('<table');
     expect(result.body).not.toContain('<img');
   });
@@ -65,13 +68,25 @@ describe('API Center shared HTML to MDX converter', () => {
 
     expect(
       result.warnings.map((warning: { code: string }) => warning.code),
-    ).toEqual([
-      'unresolved-link',
-      'unsupported-html-structure',
-    ]);
+    ).toEqual(['unresolved-link', 'unsupported-html-structure']);
     expect(result.body).toContain('Missing');
     expect(result.body).not.toContain('/api-ref/missing');
     expect(result.body).not.toContain('<iframe');
+  });
+
+  it('keeps a source image without alt text empty and reports the missing source text', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>Page</h1><img src="diagram.png"></article>',
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/example/page',
+      sourcePath: 'page.html',
+      onAsset: async () => '/img/api-center-generated/diagram.png',
+    });
+
+    expect(result.body).toContain('![](/img/api-center-generated/diagram.png)');
+    expect(result.body).not.toContain('API 文档图片');
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'missing-source-text' }),
+    );
   });
 
   it('reuses the approved Slot component for block-rich table cells', async () => {
@@ -102,7 +117,9 @@ describe('API Center shared HTML to MDX converter', () => {
     });
 
     expect(result.body).toContain('| Enum value |  |');
-    expect(result.body).toContain('| READY | <Slot name="api-center-table-0" /> |');
+    expect(result.body).toContain(
+      '| READY | <Slot name="api-center-table-0" /> |',
+    );
     expect(result.body).toContain('<Slot for="api-center-table-0">');
   });
 
@@ -124,7 +141,9 @@ describe('API Center shared HTML to MDX converter', () => {
 
     expect(result.body).toContain('<Slot name="api-center-table-0" />');
     expect(result.body).toContain('<Slot for="api-center-table-0">');
-    expect(result.body).toContain('<a id="user-offline-quit"></a>USER_OFFLINE_QUIT');
+    expect(result.body).toContain(
+      '<a id="user-offline-quit"></a>USER_OFFLINE_QUIT',
+    );
     expect(result.body).not.toContain('&lt;a id=');
     expect(result.warnings).toEqual([]);
   });
@@ -174,7 +193,10 @@ describe('API Center shared HTML to MDX converter', () => {
       sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/javascript/page',
       sourcePath: 'page.html',
       routeMap: new Map([
-        ['https://doc.shengwang.cn/doc/rtc/javascript/enable', '/zh-CN/rtc/enable'],
+        [
+          'https://doc.shengwang.cn/doc/rtc/javascript/enable',
+          '/zh-CN/rtc/enable',
+        ],
       ]),
     });
 
@@ -297,15 +319,12 @@ describe('API Center shared HTML to MDX converter', () => {
   });
 
   it('uses audited path-map redirects for cross-scope legacy links', () => {
-    const routeMap = buildLegacyRouteMap(
-      { pageEvidence: [] },
-      [
-        {
-          old_url: '/doc/rtc/javascript/error-code.html',
-          new_url: '/zh-CN/realtime-media/rtc/reference/error-code',
-        },
-      ],
-    );
+    const routeMap = buildLegacyRouteMap({ pageEvidence: [] }, [
+      {
+        old_url: '/doc/rtc/javascript/error-code.html',
+        new_url: '/zh-CN/realtime-media/rtc/reference/error-code',
+      },
+    ]);
 
     expect(routeMap.get('/doc/rtc/javascript/error-code')).toBe(
       '/zh-CN/realtime-media/rtc/reference/error-code',

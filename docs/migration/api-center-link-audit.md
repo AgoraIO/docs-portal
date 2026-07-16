@@ -8,7 +8,7 @@
 - Missing local paths: 0
 - Missing fragments: 0
 - Errors: 0
-- Warning-severity frontmatter signals: 44
+- Warning-severity frontmatter signals: 88
 
 ## Migration/output types
 
@@ -25,6 +25,7 @@
 - `manual-fragment-normalized` (69, info): A legacy fragment was rewritten to the unique stable anchor exposed by its local target.
 - `manual-mdx-normalized` (146, info): Legacy MDX syntax was normalized to the repository Markdown/MDX authoring standard.
 - `manual-platform-merge` (10, info): Multiple platform-specific legacy MDX sources were merged with PlatformStructured blocks.
+- `missing-source-text` (44, warning): The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.
 - `source-only-link-removed` (763, info): A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.
 - `unresolved-fragment` (14, warning): A legacy fragment could not be mapped to a stable target fragment.
 - `unresolved-link` (30, warning): A legacy internal link has no resolved local target route.

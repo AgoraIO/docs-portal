@@ -64,6 +64,11 @@ export const API_CENTER_WARNING_DEFINITIONS = {
     explanation:
       'A legacy fragment was rewritten to the unique stable anchor exposed by its local target.',
   },
+  'missing-source-text': {
+    severity: 'warning',
+    explanation:
+      'The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.',
+  },
   'missing-live-fragment': {
     severity: 'warning',
     explanation:
@@ -170,7 +175,10 @@ async function readJsonIfPresent(filePath, fallback) {
 
 function isWithin(root, candidate) {
   const relative = path.relative(root, candidate);
-  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+  return (
+    relative === '' ||
+    (!relative.startsWith('..') && !path.isAbsolute(relative))
+  );
 }
 
 export function assertApiCenterOutputPath(repoRoot, targetPath) {
@@ -181,7 +189,9 @@ export function assertApiCenterOutputPath(repoRoot, targetPath) {
   ).replace(/^\.\//, '');
   const absolute = path.resolve(repoRoot, relative);
   if (!isWithin(path.resolve(repoRoot), absolute)) {
-    throw new Error(`Unsafe API Center output path outside repository: ${targetPath}`);
+    throw new Error(
+      `Unsafe API Center output path outside repository: ${targetPath}`,
+    );
   }
   const allowed = API_CENTER_OUTPUT_ROOTS.some(
     (root) => relative === root || relative.startsWith(`${root}/`),
@@ -303,9 +313,7 @@ export function stableAnchorId(value) {
 }
 
 function markdownSafeFragment(value) {
-  return String(value)
-    .replace(/\(/g, '%28')
-    .replace(/\)/g, '%29');
+  return String(value).replace(/\(/g, '%28').replace(/\)/g, '%29');
 }
 
 export function renderStableAnchor(value) {
@@ -358,9 +366,7 @@ export function rewriteLegacyHref(
     };
   }
   const target =
-    existingTarget ??
-    routeMap.get(key) ??
-    routeMap.get(url.pathname);
+    existingTarget ?? routeMap.get(key) ?? routeMap.get(url.pathname);
   if (!target) {
     return {
       href: null,
@@ -435,7 +441,10 @@ export function createWarning(code, message, details = {}) {
 function normalizedWarnings(warnings) {
   return (warnings ?? []).map((warning) =>
     typeof warning === 'string'
-      ? createWarning(warning, API_CENTER_WARNING_DEFINITIONS[warning].explanation)
+      ? createWarning(
+          warning,
+          API_CENTER_WARNING_DEFINITIONS[warning].explanation,
+        )
       : warning,
   );
 }
@@ -479,12 +488,14 @@ export function renderMigrationFrontmatter({
       })),
     },
   };
-  return `---\n${yaml.dump(frontmatter, {
-    lineWidth: 100,
-    noRefs: true,
-    quotingType: '"',
-    forceQuotes: false,
-  }).trimEnd()}\n---\n`;
+  return `---\n${yaml
+    .dump(frontmatter, {
+      lineWidth: 100,
+      noRefs: true,
+      quotingType: '"',
+      forceQuotes: false,
+    })
+    .trimEnd()}\n---\n`;
 }
 
 /**
@@ -723,15 +734,20 @@ function buildReport({ manifest, inputHash, results, removedOwnedFiles }) {
     capturedAt: manifest.live?.capturedAt ?? manifest.generatedAt ?? null,
     inputHash,
     counts: {
-      plannedFiles: results.filter((result) => result.status === 'generated').length,
-      generatedFiles: results.filter((result) => result.status === 'generated').length,
+      plannedFiles: results.filter((result) => result.status === 'generated')
+        .length,
+      generatedFiles: results.filter((result) => result.status === 'generated')
+        .length,
       preservedExistingFiles: results.filter(
         (result) => result.status === 'preserved-existing',
       ).length,
       removedOwnedFiles,
-      pendingPages: results.filter((result) => result.status === 'pending').length,
-      excludedPages: results.filter((result) => result.status === 'excluded').length,
-      warnings: warnings.filter((warning) => warning.severity === 'warning').length,
+      pendingPages: results.filter((result) => result.status === 'pending')
+        .length,
+      excludedPages: results.filter((result) => result.status === 'excluded')
+        .length,
+      warnings: warnings.filter((warning) => warning.severity === 'warning')
+        .length,
       errors: warnings.filter((warning) => warning.severity === 'error').length,
     },
     migrationTypes,
@@ -815,20 +831,13 @@ export class ApiCenterMigrationRun {
     return record;
   }
 
-  planMdx({
-    page,
-    title,
-    description,
-    body,
-    warnings = [],
-    extraFrontmatter,
-  }) {
+  planMdx({ page, title, description, body, warnings = [], extraFrontmatter }) {
     const resolution = page.sourceResolution;
     if (!resolution?.targetPath?.endsWith('.mdx')) {
       throw new Error(`MDX page has no .mdx target: ${page.requestedUrl}`);
     }
-    const allWarnings = [...warnings, ...(page.warnings ?? [])].filter((warning) =>
-      API_CENTER_WARNING_DEFINITIONS[warning.code],
+    const allWarnings = [...warnings, ...(page.warnings ?? [])].filter(
+      (warning) => API_CENTER_WARNING_DEFINITIONS[warning.code],
     );
     const contents = renderGeneratedMdx({
       title,
@@ -995,8 +1004,12 @@ export class ApiCenterMigrationRun {
         [this.reportJsonPath, reportContents],
         [this.reportMarkdownPath, reportMarkdown],
       ]) {
-        const actual = await fs.readFile(path.resolve(this.repoRoot, relative), 'utf8');
-        if (actual !== expected) throw new Error(`Generated file is stale: ${relative}`);
+        const actual = await fs.readFile(
+          path.resolve(this.repoRoot, relative),
+          'utf8',
+        );
+        if (actual !== expected)
+          throw new Error(`Generated file is stale: ${relative}`);
       }
     } else if (this.mode === 'write') {
       for (const [relative, contents] of [

@@ -5,8 +5,8 @@ import {
   ApiCenterMigrationRun,
   assetTargetPath,
   buildLegacyRouteMap,
-  loadFaqMappingRows,
   createWarning,
+  loadFaqMappingRows,
 } from './migration-framework.mjs';
 import { parseCsv } from './source-resolver.mjs';
 
@@ -48,7 +48,11 @@ function pageMatches(page, { generators, scope, urls }) {
 
 function canonicalPageScore(page) {
   const url = new URL(page.requestedUrl);
-  return [url.search ? 1 : 0, url.pathname.endsWith('.html') ? 1 : 0, url.href.length];
+  return [
+    url.search ? 1 : 0,
+    url.pathname.endsWith('.html') ? 1 : 0,
+    url.href.length,
+  ];
 }
 
 function compareCanonicalPages(left, right) {
@@ -84,7 +88,9 @@ function selectCanonicalPages(pages) {
         `generated-target-collision: ${targetPath} has multiple distinct legacy sources.`,
       );
     }
-    const [canonical, ...duplicates] = [...candidates].sort(compareCanonicalPages);
+    const [canonical, ...duplicates] = [...candidates].sort(
+      compareCanonicalPages,
+    );
     selected.add(canonical.requestedUrl);
     for (const duplicate of duplicates) {
       aliases.set(duplicate.requestedUrl, canonical.requestedUrl);
@@ -140,7 +146,8 @@ function assetHandler({ run, sourceAbsolutePath, oldRoot }) {
     const local = cleanSource.startsWith('/img/')
       ? path.resolve(oldRoot, 'static', cleanSource.slice(1))
       : path.resolve(path.dirname(sourceAbsolutePath), cleanSource);
-    if (!(await exists(local))) throw new Error(`Local asset not found: ${local}`);
+    if (!(await exists(local)))
+      throw new Error(`Local asset not found: ${local}`);
     const contents = await fs.readFile(local);
     const targetPath = assetTargetPath(local, contents);
     run.planFile({
@@ -193,7 +200,13 @@ export async function runHtmlGenerators({
   });
   const urlSet = new Set(urls);
   const matched = manifest.pageEvidence.filter(
-    (page) => !page.aliasOf && pageMatches(page, { generators: requestedGenerators, scope, urls: urlSet }),
+    (page) =>
+      !page.aliasOf &&
+      pageMatches(page, {
+        generators: requestedGenerators,
+        scope,
+        urls: urlSet,
+      }),
   );
   const canonicalSelection = selectCanonicalPages(
     limit > 0 ? matched.slice(0, limit) : matched,
@@ -224,17 +237,11 @@ export async function runHtmlGenerators({
       else run.recordPageResult({ page, status: 'pending' });
       continue;
     }
-    if (
-      resolution.targetExists &&
-      !run.ownsTarget(resolution.targetPath)
-    ) {
+    if (resolution.targetExists && !run.ownsTarget(resolution.targetPath)) {
       run.preserveExisting({ page });
       continue;
     }
-    const sourceAbsolutePath = path.resolve(
-      oldRoot,
-      resolution.sourcePath,
-    );
+    const sourceAbsolutePath = path.resolve(oldRoot, resolution.sourcePath);
     const html = await fs.readFile(sourceAbsolutePath, 'utf8');
     const converted = await convertHtmlToMdx({
       html,
@@ -272,9 +279,15 @@ export async function runHtmlGenerators({
         ),
       );
     }
+    const title = converted.title || page.title;
+    if (!title) {
+      throw new Error(
+        `Missing source-derived title for ${page.requestedUrl}; request source copy instead of synthesizing a filename title.`,
+      );
+    }
     run.planMdx({
       page,
-      title: converted.title || page.title || path.basename(resolution.sourcePath, '.html'),
+      title,
       description: converted.description || undefined,
       body: converted.body,
       warnings,

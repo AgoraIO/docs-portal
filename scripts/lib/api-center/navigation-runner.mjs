@@ -1,12 +1,12 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { OPENAPI_LANES } from '../../../src/lib/openapi/lanes.ts';
+import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 import {
   ApiCenterMigrationRun,
   buildLegacyRouteMap,
   renderGeneratedMdx,
 } from './migration-framework.mjs';
-import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 
 const API_CENTER_URL = 'https://doc.shengwang.cn/api-center';
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference';
@@ -172,7 +172,8 @@ function commonDirectory(filePaths) {
   for (const filePath of filePaths.slice(1)) {
     const candidate = path.posix.dirname(filePath).split('/');
     let index = 0;
-    while (index < parts.length && parts[index] === candidate[index]) index += 1;
+    while (index < parts.length && parts[index] === candidate[index])
+      index += 1;
     parts = parts.slice(0, index);
   }
   return parts.join('/');
@@ -187,18 +188,26 @@ function routeForDocsDirectory(directory) {
 }
 
 function landingLocalRoot(entry, pageEvidence) {
-  const localPages = pageEvidence.filter((page) =>
-    page?.sourceResolution?.targetPath?.startsWith(`${API_REFERENCE_ROOT}/`) &&
-    page.sourceResolution.targetPath.endsWith('.mdx'),
+  const localPages = pageEvidence.filter(
+    (page) =>
+      page?.sourceResolution?.targetPath?.startsWith(
+        `${API_REFERENCE_ROOT}/`,
+      ) && page.sourceResolution.targetPath.endsWith('.mdx'),
   );
   if (localPages.length === 0) return null;
-  const landing = localPages.find(
-    (page) => normalizeLegacyKey(page.requestedUrl) === normalizeLegacyKey(entry.legacyUrl),
-  ) ?? localPages[0];
+  const landing =
+    localPages.find(
+      (page) =>
+        normalizeLegacyKey(page.requestedUrl) ===
+        normalizeLegacyKey(entry.legacyUrl),
+    ) ?? localPages[0];
   const landingPath = landing.sourceResolution.targetPath;
   const currentMarker = '/(current)/';
   if (landingPath.includes(currentMarker)) {
-    return landingPath.slice(0, landingPath.indexOf(currentMarker) + '/(current)'.length);
+    return landingPath.slice(
+      0,
+      landingPath.indexOf(currentMarker) + '/(current)'.length,
+    );
   }
   const common = commonDirectory(
     localPages.map((page) => page.sourceResolution.targetPath),
@@ -207,11 +216,15 @@ function landingLocalRoot(entry, pageEvidence) {
     ?.slice(`${API_REFERENCE_ROOT}/`.length)
     .split('/')
     .filter(Boolean);
-  return relativeSegments?.length >= 2 ? common : path.posix.dirname(landingPath);
+  return relativeSegments?.length >= 2
+    ? common
+    : path.posix.dirname(landingPath);
 }
 
 function entryEvidence(entry, byUrl) {
-  return unique((entry.pageGraph?.pages ?? []).map((page) => normalizeLegacyKey(page.url)))
+  return unique(
+    (entry.pageGraph?.pages ?? []).map((page) => normalizeLegacyKey(page.url)),
+  )
     .map((key) => resolveEvidence(byUrl.get(key), byUrl))
     .filter(Boolean);
 }
@@ -239,7 +252,8 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
   const openApiEntries = new Map();
 
   for (const entry of manifest.entries ?? []) {
-    if (entry.urlFamily === 'external' || !entry.pageGraph?.navigation) continue;
+    if (entry.urlFamily === 'external' || !entry.pageGraph?.navigation)
+      continue;
     const evidence = entryEvidence(entry, byUrl);
     const roots = [];
     const localRoot = landingLocalRoot(entry, evidence);
@@ -329,17 +343,23 @@ function collapsedRootActions(entries) {
   return actions;
 }
 
-function buildOverviewBody(entries) {
-  const lines = [
-    '旧站 API Center 中可见的产品、平台和语言入口均按原顺序列在下方。选择入口后，可在本地文档目录中继续浏览完整参考内容。',
-    '',
-  ];
+function buildOverviewBody(entries, live) {
+  if (!live?.heroTitle || !live?.heroDescription) {
+    throw new Error(
+      'The live API Center snapshot must include heroTitle and heroDescription; do not synthesize overview copy.',
+    );
+  }
+  const lines = [live.heroDescription, ''];
   const categories = unique(entries.map((entry) => entry.category));
   for (const category of categories) {
     lines.push(`## ${category}`, '');
-    const categoryEntries = entries.filter((entry) => entry.category === category);
+    const categoryEntries = entries.filter(
+      (entry) => entry.category === category,
+    );
     const subcategories = unique(
-      categoryEntries.map((entry) => entry.subcategories?.join(' / ') || '全部'),
+      categoryEntries.map(
+        (entry) => entry.subcategories?.join(' / ') || '全部',
+      ),
     );
     for (const subcategory of subcategories) {
       if (subcategory !== '全部') lines.push(`### ${subcategory}`, '');
@@ -348,15 +368,18 @@ function buildOverviewBody(entries) {
       );
       lines.push('<SolutionCardGrid size="small">', '');
       for (const group of productGroups(scoped)) {
-        const useCases = unique(group.entries.map((entry) => entry.useCase || ''));
-        const cardGroups = useCases.length > 1 || useCases[0]
-          ? useCases.map((useCase) => ({
-              useCase,
-              entries: group.entries.filter(
-                (entry) => (entry.useCase || '') === useCase,
-              ),
-            }))
-          : [{ useCase: '', entries: group.entries }];
+        const useCases = unique(
+          group.entries.map((entry) => entry.useCase || ''),
+        );
+        const cardGroups =
+          useCases.length > 1 || useCases[0]
+            ? useCases.map((useCase) => ({
+                useCase,
+                entries: group.entries.filter(
+                  (entry) => (entry.useCase || '') === useCase,
+                ),
+              }))
+            : [{ useCase: '', entries: group.entries }];
         for (const card of cardGroups) {
           const first = card.entries[0];
           const title = card.useCase
@@ -391,7 +414,6 @@ function rootMetaPages(entries) {
     '[示例配方](/zh-CN/api-reference/recipes)',
     'faq',
     ...FOCUSED_LANE_ROOTS,
-    '---API Center 产品---',
   ];
   let lastCategory = null;
   let lastSubcategory = null;
@@ -426,9 +448,16 @@ function rootMetaPages(entries) {
 
 async function readMeta(repoRoot, metaPath, fallbackTitle) {
   try {
-    return JSON.parse(await fs.readFile(path.resolve(repoRoot, metaPath), 'utf8'));
+    return JSON.parse(
+      await fs.readFile(path.resolve(repoRoot, metaPath), 'utf8'),
+    );
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
+    if (!fallbackTitle) {
+      throw new Error(
+        `Required existing navigation metadata is missing: ${metaPath}`,
+      );
+    }
     return { title: fallbackTitle };
   }
 }
@@ -457,8 +486,12 @@ function navigationParityReport({
   rootPages,
   routeMap,
 }) {
-  const internalEntries = entries.filter((entry) => entry.urlFamily !== 'external');
-  const externalEntries = entries.filter((entry) => entry.urlFamily === 'external');
+  const internalEntries = entries.filter(
+    (entry) => entry.urlFamily !== 'external',
+  );
+  const externalEntries = entries.filter(
+    (entry) => entry.urlFamily === 'external',
+  );
   const missingEntryTargets = internalEntries
     .filter((entry) => !entry.targetRoute)
     .map((entry) => ({ product: entry.product, label: entry.label }));
@@ -468,11 +501,13 @@ function navigationParityReport({
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
   const collapsedRootDuplicates = entries.length - rootActions;
   const visibleLeaves = internalEntries.flatMap((entry) =>
-    visibleNavigationLeaves(entry.pageGraph?.navigation, routeMap).map((leaf) => ({
-      ...leaf,
-      product: entry.product,
-      entryLabel: entry.label,
-    })),
+    visibleNavigationLeaves(entry.pageGraph?.navigation, routeMap).map(
+      (leaf) => ({
+        ...leaf,
+        product: entry.product,
+        entryLabel: entry.label,
+      }),
+    ),
   );
   const missingNavigationTargets = visibleLeaves.filter(
     (leaf) => !leaf.targetRoute,
@@ -589,7 +624,8 @@ async function writeOrCheckGenerated({ repoRoot, mode, files }) {
     const absolute = path.resolve(repoRoot, targetPath);
     if (mode === 'check') {
       const actual = await fs.readFile(absolute, 'utf8');
-      if (actual !== contents) throw new Error(`Generated file is stale: ${targetPath}`);
+      if (actual !== contents)
+        throw new Error(`Generated file is stale: ${targetPath}`);
     } else {
       await fs.mkdir(path.dirname(absolute), { recursive: true });
       await fs.writeFile(absolute, contents, 'utf8');
@@ -627,14 +663,14 @@ export async function runApiCenterNavigation({
     reportMarkdownPath: 'docs/migration/api-center-navigation-report.md',
   });
 
-  const overviewBody = buildOverviewBody(entries);
+  const overviewBody = buildOverviewBody(entries, manifest.live);
   const rootPages = rootMetaPages(entries);
   const overviewPath = `${API_REFERENCE_ROOT}/overview.mdx`;
   run.planFile({
     targetPath: overviewPath,
     contents: renderGeneratedMdx({
-      title: 'API 参考概览',
-      description: '按旧站 API Center 的产品、平台和语言顺序浏览完整 API 参考。',
+      title: manifest.live.heroTitle,
+      description: manifest.live.heroDescription,
       body: overviewBody,
       extraFrontmatter: { hideToc: true },
       migration: {
@@ -652,7 +688,7 @@ export async function runApiCenterNavigation({
   });
 
   const rootMetaPath = `${API_REFERENCE_ROOT}/meta.json`;
-  const rootMeta = await readMeta(repoRoot, rootMetaPath, '参考中心');
+  const rootMeta = await readMeta(repoRoot, rootMetaPath, null);
   run.planFile({
     targetPath: rootMetaPath,
     contents: serializeJson({ ...rootMeta, pages: rootPages }),
@@ -723,27 +759,31 @@ export async function runApiCenterNavigation({
       }
     }
     const first = laneEntries[0];
+    const sourceUrls = unique([API_CENTER_URL, first.legacyUrl]);
+    const sourcePaths = unique([manifestPath, lane.sourcePath['zh-CN']]);
     run.planFile({
       targetPath: indexPath,
       contents: renderGeneratedMdx({
-        title: `${first.product} API`,
+        title: first.product,
         description: first.productDescription,
         body: [
-          first.productDescription ?? `${first.product} 的服务端接口参考。`,
-          '',
-          '## 接口目录',
-          '',
+          first.productDescription,
+          first.productDescription ? '' : null,
           ...unique(body),
-        ].join('\n'),
+        ]
+          .filter((line) => line !== null && line !== undefined)
+          .join('\n'),
         migration: {
           type: 'navigation',
           sourceUrl: first.legacyUrl,
-          sourcePath: lane.sourcePath['zh-CN'],
+          sourcePath: manifestPath,
+          sourceUrls,
+          sourcePaths,
           generator: 'api-center-navigation',
           warnings: [],
         },
       }),
-      sourcePath: lane.sourcePath['zh-CN'],
+      sourcePath: manifestPath,
       sourceUrl: first.legacyUrl,
       type: 'navigation',
       adoptExisting: run.ownsTarget(indexPath),
@@ -769,6 +809,8 @@ export async function runApiCenterNavigation({
     report,
     parity,
     entries: entries.length,
-    metaFiles: [...run.planned.values()].filter((file) => file.type === 'navigation-meta').length,
+    metaFiles: [...run.planned.values()].filter(
+      (file) => file.type === 'navigation-meta',
+    ).length,
   };
 }

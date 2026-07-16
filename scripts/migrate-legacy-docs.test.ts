@@ -206,9 +206,7 @@ describe('migrate-legacy-docs helpers', () => {
     expect(migrated).toContain(
       '<Tabs defaultValue="android" groupId="language" persist>',
     );
-    expect(migrated).toContain(
-      '<TabsTrigger value="ios">iOS</TabsTrigger>',
-    );
+    expect(migrated).toContain('<TabsTrigger value="ios">iOS</TabsTrigger>');
     expect(migrated).toContain('<TabsContent value="web">');
     expect(migrated).toContain('- 已启用 RTM 服务。');
     expect(migrated).not.toContain('#### Android');
@@ -287,7 +285,9 @@ Web 集成说明。
     expect(migrated).toContain(
       '<Tabs defaultValue="all" groupId="platform" persist>',
     );
-    expect(migrated).toContain('<TabsTrigger value="macos">macOS</TabsTrigger>');
+    expect(migrated).toContain(
+      '<TabsTrigger value="macos">macOS</TabsTrigger>',
+    );
   });
 
   it('outdents legacy Tabs that were nested under list items', () => {
@@ -414,7 +414,9 @@ engine.joinChannel(token)
   });
 
   it('keeps same-line heading suffixes without swallowing following sections', () => {
-    const state = createState('docs-api-reference/iot-apaas/client-api/call.android.mdx');
+    const state = createState(
+      'docs-api-reference/iot-apaas/client-api/call.android.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '<H3 className="anchor" id="initparam">InitParam</H3> 类',
@@ -504,7 +506,8 @@ engine.joinChannel(token)
       state,
     );
 
-    expect(migrated).toContain('![guide](/img/watch.png)');
+    expect(migrated).toContain('![](/img/watch.png)');
+    expect(migrated).not.toContain('![guide]');
     expect(migrated).toContain('- [场景介绍](');
     expect(migrated).toContain('### 首次集成 RTM');
     expect(migrated).toContain('- [开通服务](');
@@ -512,6 +515,9 @@ engine.joinChannel(token)
     expect(migrated).not.toContain('QuickGuide');
     expect(migrated).not.toContain('LinkList');
     expect(migrated).not.toContain('ImageGallery');
+    expect(state.issues).toContain(
+      'missing-source-text:image-alt:docs/rtm2/landing-page.mdx:/img/watch.png',
+    );
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -697,7 +703,9 @@ public class MyScoringView extends ScoringView {
   });
 
   it('outdents a converted Detail that follows a legacy list item', () => {
-    const state = createState('docs/cloud-recording/get-started/quick-start-go.mdx');
+    const state = createState(
+      'docs/cloud-recording/get-started/quick-start-go.mdx',
+    );
     const migrated = transformLegacyMdx(
       `- 开通云存储服务。
 
@@ -1056,7 +1064,9 @@ export const TableHeaders = [
   });
 
   it('rewrites legacy Image components inside markdown table cells to table slots', () => {
-    const state = createState('docs/multi-usecase/non-scenario-based/resources.mdx');
+    const state = createState(
+      'docs/multi-usecase/non-scenario-based/resources.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '| Demo 名称 | Demo 下载二维码 |',
@@ -1082,7 +1092,9 @@ export const TableHeaders = [
   });
 
   it('rewrites multiline table cells expanded from shared snippets to table slots', () => {
-    const state = createState('docs-api-reference/flexible-classroom/classroom-sdk.android.mdx');
+    const state = createState(
+      'docs-api-reference/flexible-classroom/classroom-sdk.android.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '| 属性 | 描述 |',
@@ -1374,9 +1386,7 @@ export const FaceCapture = [
     expect(migrated).toContain(
       '| `RtmLost` | `16` | <Slot name="call-api-android-html-0-1-2" /> |',
     );
-    expect(migrated).toContain(
-      '<Slot for="call-api-android-html-0-1-2">',
-    );
+    expect(migrated).toContain('<Slot for="call-api-android-html-0-1-2">');
     expect(migrated).toContain(':::error[已删除]');
     expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
     expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
@@ -1401,9 +1411,7 @@ export const FaceCapture = [
     expect(migrated).toContain(
       '| `RtmLost` | `16` | <Slot name="call-api-android-markdown-0-1-2" /> |',
     );
-    expect(migrated).toContain(
-      '<Slot for="call-api-android-markdown-0-1-2">',
-    );
+    expect(migrated).toContain('<Slot for="call-api-android-markdown-0-1-2">');
     expect(migrated).toContain(':::error[已删除]');
     expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
     expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
@@ -1458,9 +1466,11 @@ export const FaceCapture = [
   });
 
   it('rewrites inline legacy admonitions and bare generic type literals', () => {
-    const state = createState('docs-api-reference/one-to-one-live/call-api.android.mdx');
+    const state = createState(
+      'docs-api-reference/one-to-one-live/call-api.android.mdx',
+    );
     const migrated = transformLegacyMdx(
-      "变成呼叫中。 <Admonition type=\"danger\" title=\"已删除\">对应事件变更为：`LocalVideoCall`</Admonition>\n\n- `appOptions`：Map<String, Object>。初始化参数。\n| `files` | {'Array<Object>'} | 文件列表 |",
+      '变成呼叫中。 <Admonition type="danger" title="已删除">对应事件变更为：`LocalVideoCall`</Admonition>\n\n- `appOptions`：Map<String, Object>。初始化参数。\n| `files` | {\'Array<Object>\'} | 文件列表 |',
       state,
     );
 
@@ -1538,6 +1548,44 @@ export const FaceCapture = [
     expect(migrated).toContain('| 参数 | 说明 |');
     expect(migrated).toContain('| `uid` | 用户 ID。 |');
     expect(state.issues).toContain('normalized-table-header:TableHeaderabc');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('preserves blank exported TableHeader column spans without synthetic labels', () => {
+    const state = createState();
+    state.tableHeaders.set('TableHeaderabc', [
+      '',
+      '',
+      'Fastboard SDK',
+      'Whiteboard SDK',
+    ]);
+    const migrated = transformLegacyMdx(
+      `<Table header={TableHeaderabc}>
+  <Tr>
+    <Td col={2}>产品定位</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+  <Tr>
+    <Td row={2}>产品边界</Td>
+    <Td>UI</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+  <Tr>
+    <Td>插件</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+</Table>`,
+      state,
+    );
+
+    expect(migrated).toContain('|  |  | Fastboard SDK | Whiteboard SDK |');
+    expect(migrated).toContain('| 产品定位 |  | 支持 | 不支持 |');
+    expect(migrated).toContain('| 产品边界 | UI | 支持 | 不支持 |');
+    expect(migrated).toContain('|  | 插件 | 支持 | 不支持 |');
+    expect(migrated).not.toContain('Column');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -1646,7 +1694,9 @@ export const FaceCapture = [
   });
 
   it('quotes raw inline HTML attributes for valid MDX JSX', () => {
-    const state = createState('docs-api-reference/rtm/cpp-api/configuration.mdx');
+    const state = createState(
+      'docs-api-reference/rtm/cpp-api/configuration.mdx',
+    );
     const migrated = transformLegacyMdx(
       '<code class="index-api" id=onMessageEvent>onMessageEvent</code>',
       state,
@@ -2459,9 +2509,12 @@ syntaxPatterns:
     const sourceRoot = path.join(tempRoot, 'source');
     const sourcePath = 'docs/marketplace/integrate-extensions/moderation.mdx';
 
-    await mkdir(path.join(sourceRoot, 'docs/marketplace/integrate-extensions'), {
-      recursive: true,
-    });
+    await mkdir(
+      path.join(sourceRoot, 'docs/marketplace/integrate-extensions'),
+      {
+        recursive: true,
+      },
+    );
     await mkdir(path.join(sourceRoot, 'docs/shared/marketplace'), {
       recursive: true,
     });
@@ -2770,7 +2823,11 @@ title: 普通指南
       '',
       'utf8',
     );
-    await writeFile(path.join(repoRoot, 'pages.txt'), `${sourcePath}\n`, 'utf8');
+    await writeFile(
+      path.join(repoRoot, 'pages.txt'),
+      `${sourcePath}\n`,
+      'utf8',
+    );
 
     const report = await migrateLegacyBatch({
       outDir: 'out',

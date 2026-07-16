@@ -8,9 +8,9 @@ const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
   await Promise.all(
-    temporaryDirectories.splice(0).map((directory) =>
-      fs.rm(directory, { recursive: true, force: true }),
-    ),
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => fs.rm(directory, { recursive: true, force: true })),
   );
 });
 
@@ -49,6 +49,22 @@ async function writeManifest(repoRoot: string, pageEvidence: unknown[]) {
   );
 }
 
+async function writeManifestWithEntries(
+  repoRoot: string,
+  pageEvidence: unknown[],
+  entries: unknown[],
+) {
+  await fs.writeFile(
+    path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
+    JSON.stringify({
+      source: { commit: 'legacy-fixture' },
+      live: { capturedAt: '2026-07-16T00:00:00.000Z' },
+      entries,
+      pageEvidence,
+    }),
+  );
+}
+
 function manualPage({
   platform,
   requestedUrl,
@@ -80,6 +96,46 @@ function manualPage({
 }
 
 describe('API Center manual MDX runner', () => {
+  it('substitutes runtime product and platform labels from the API Center source inventory', async () => {
+    const { oldRoot, repoRoot } = await createFixture();
+    const sourcePath = 'docs/cloud-recording/get-started/enable-service.mdx';
+    const targetPath =
+      'content/docs/zh-CN/api-reference/cloud-recording/restful/get-started/enable-service.mdx';
+    const requestedUrl =
+      'https://doc.shengwang.cn/doc/cloud-recording/restful/get-started/enable-service';
+    await writeLegacyPage(
+      oldRoot,
+      sourcePath,
+      `---\ntitle: 开通服务\n---\n\n本文介绍如何开通{frontMatter.ag_product_label}服务，并使用 {frontMatter.ag_platform_label} API。\n`,
+    );
+    const page = manualPage({
+      platform: 'restful',
+      requestedUrl,
+      sourcePath,
+      targetPath,
+    });
+    await writeManifestWithEntries(
+      repoRoot,
+      [page],
+      [
+        {
+          product: '云端录制',
+          label: 'RESTful',
+          legacyUrl: requestedUrl,
+          pageGraph: { pages: [{ url: requestedUrl }] },
+        },
+      ],
+    );
+
+    await runManualMdxMigration({ repoRoot, oldRoot });
+    const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
+
+    expect(output).toContain(
+      '本文介绍如何开通云端录制服务，并使用 RESTful API。',
+    );
+    expect(output).not.toContain('cloud-recording服务');
+  });
+
   it('migrates one legacy MDX page and rewrites old-site links locally', async () => {
     const { oldRoot, repoRoot } = await createFixture();
     const sourcePath = 'docs/rtc/overview.mdx';
@@ -102,8 +158,7 @@ describe('API Center manual MDX runner', () => {
         sourceResolution: {
           status: 'resolved',
           type: 'generated-html',
-          targetPath:
-            'content/docs/zh-CN/api-reference/rtc/android/target.mdx',
+          targetPath: 'content/docs/zh-CN/api-reference/rtc/android/target.mdx',
           targetRoute: '/zh-CN/api-reference/rtc/android/target',
           route: { platform: 'android', scopeKey: 'doc/rtc/android' },
         },
@@ -117,7 +172,10 @@ describe('API Center manual MDX runner', () => {
     });
     const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
 
-    expect(result.report.counts).toMatchObject({ errors: 0, generatedFiles: 1 });
+    expect(result.report.counts).toMatchObject({
+      errors: 0,
+      generatedFiles: 1,
+    });
     expect(output).toContain('title: RTC 概览');
     expect(output).toContain(
       '[目标页](/zh-CN/api-reference/rtc/android/target)',
@@ -193,7 +251,8 @@ describe('API Center manual MDX runner', () => {
           status: 'resolved',
           type: 'openapi',
           targetPath: 'content/openapi/cloud-recording.yaml',
-          targetRoute: '/zh-CN/api-reference/api-ref/cloud-recording/get-ncs-ip',
+          targetRoute:
+            '/zh-CN/api-reference/api-ref/cloud-recording/get-ncs-ip',
           route: { platform: 'restful', scopeKey: 'doc/convoai/restful' },
         },
       },
@@ -229,8 +288,7 @@ describe('API Center manual MDX runner', () => {
     await writeManifest(repoRoot, [
       manualPage({
         platform: 'android',
-        requestedUrl:
-          'https://doc.shengwang.cn/doc/meeting/android/client-api',
+        requestedUrl: 'https://doc.shengwang.cn/doc/meeting/android/client-api',
         sourcePath: androidSource,
         targetPath,
       }),

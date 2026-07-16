@@ -164,13 +164,7 @@ export function normalizeSourceApiCenter(apiData, platforms = []) {
   for (const [categoryOrder, category] of apiData.entries()) {
     const title = normalizeText(category.category);
     categories.push({ order: categoryOrder, title });
-    walkCategoryChildren(
-      category.children,
-      title,
-      [],
-      categoryOrder,
-      state,
-    );
+    walkCategoryChildren(category.children, title, [], categoryOrder, state);
   }
 
   return {
@@ -222,9 +216,7 @@ export function parseLiveApiCenterHtml(html, finalUrl) {
     const container = $(titleNode).parent();
     const useCaseContainers = container
       .children()
-      .filter((_, child) =>
-        $(child).children().first().hasClass('w-text-lg'),
-      )
+      .filter((_, child) => $(child).children().first().hasClass('w-text-lg'))
       .toArray();
 
     const product = {
@@ -253,7 +245,16 @@ export function parseLiveApiCenterHtml(html, finalUrl) {
   });
 
   const title = normalizeText($('title').first().text());
-  const model = { title, url: finalUrl, products };
+  const hero = $('.custom-banner-title').first();
+  const heroTitle = normalizeText(hero.text());
+  const heroDescription = normalizeText(hero.next().text());
+  const model = {
+    title,
+    heroTitle,
+    heroDescription,
+    url: finalUrl,
+    products,
+  };
   return {
     ...model,
     productCount: products.length,
@@ -293,6 +294,8 @@ export function parseLiveApiCenterBaseline(baseline) {
   }));
   return {
     title: normalizeText(baseline.title),
+    heroTitle: normalizeText(baseline.heroTitle),
+    heroDescription: normalizeText(baseline.heroDescription),
     url: baseline.url,
     products,
     productCount: baseline.productCount,
@@ -331,8 +334,7 @@ function sourceProductProjection(source) {
         description: useCase.description,
         apiGroups: projectGroups(useCase.title),
       })),
-      apiGroups:
-        product.useCases.length === 0 ? projectGroups(null) : [],
+      apiGroups: product.useCases.length === 0 ? projectGroups(null) : [],
     };
   });
 }
@@ -423,6 +425,8 @@ export function buildManifest({ live, source, sourceCommit, sourcePath }) {
     },
     live: {
       title: live.title,
+      heroTitle: live.heroTitle,
+      heroDescription: live.heroDescription,
       finalUrl: live.url,
       productCount: live.productCount,
       apiEntryCount: live.apiEntryCount,
@@ -489,6 +493,9 @@ export function mergeManifestProgress(manifest, previousManifest) {
   if (previousManifest.pageEvidence) {
     manifest.pageEvidence = previousManifest.pageEvidence;
   }
+  if (previousManifest.sourceResolutionSummary) {
+    manifest.sourceResolutionSummary = previousManifest.sourceResolutionSummary;
+  }
   return refreshManifestCounts(manifest);
 }
 
@@ -546,7 +553,9 @@ export function renderManifestMarkdown(manifest) {
 
   for (const [index, entry] of manifest.entries.entries()) {
     const categoryPath = [entry.category, ...entry.subcategories].join(' / ');
-    const productPath = [entry.product, entry.useCase].filter(Boolean).join(' / ');
+    const productPath = [entry.product, entry.useCase]
+      .filter(Boolean)
+      .join(' / ');
     lines.push(
       `| ${index + 1} | ${markdownEscape(categoryPath)} | ${markdownEscape(productPath)} | ${entry.apiGroup} | ${markdownEscape(entry.label)} | [${markdownEscape(entry.legacyPath)}](${entry.legacyUrl}) | ${entry.sourceType} | ${entry.pageGraph.status} |`,
     );
