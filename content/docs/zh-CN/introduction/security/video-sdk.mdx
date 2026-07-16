@@ -34,28 +34,145 @@ Android 操作系统应用权限列表：
 | INTERNET 访问网络 | 用于在加入频道时接入网络 | 必选 | 当需要接入网络时 |
 | ACCESS_NETWORK_STATE 查看网络状态 | 用于查看网络连接状态 | 可选 | 当需要查看网络状态时 |
 | ACCESS_WIFI_STATE 查看 WiFi 状态 | 用于查看 WiFi 连接状态 | 可选 | 当需要查看 WiFi 状态时 |
-| CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | 当 App 需要使用摄像头时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | 当 App 需要使用麦克风时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | <Slot name="videosdk-table-0-row-5-cell-3" /> |
+| RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | <Slot name="videosdk-table-0-row-6-cell-3" /> |
 | MODIFY_AUDIO_SETTINGS 麦克风设置权限 | 用于提供音视频通话设置功能 | 可选 | 当用户设置麦克风时 |
-| BLUETOOTH_CONNECT 蓝牙连接权限 | 用于支持蓝牙耳机和耳麦的接入<br /><br />注意：仅针对 Android 12 及以上版本的设备。 | 可选 | 当 App 需要开启蓝牙时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| READ_PHONE_STATE 读取电话状态权限 | 用于识别设备接到电话呼入状态，当电话呼入时，停止音频传输和交互<br /><br />注意：仅针对 Android 12 及以上版本的设备。 | 可选 | 当用户设备电话呼入时，SDK 会识别来电状态，并会停止 SDK 音频传输和交互。 |
+| BLUETOOTH_CONNECT 蓝牙连接权限 | <Slot name="videosdk-table-0-row-8-cell-1" /> | 可选 | <Slot name="videosdk-table-0-row-8-cell-3" /> |
+| READ_PHONE_STATE 读取电话状态权限 | <Slot name="videosdk-table-0-row-9-cell-1" /> | 可选 | 当用户设备电话呼入时，SDK 会识别来电状态，并会停止 SDK 音频传输和交互。 |
+
+<Slot for="videosdk-table-0-row-5-cell-3">
+
+当 App 需要使用摄像头时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-0-row-6-cell-3">
+
+当 App 需要使用麦克风时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-0-row-8-cell-1">
+
+用于支持蓝牙耳机和耳麦的接入
+
+:::note
+仅针对 Android 12 及以上版本的设备。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-0-row-8-cell-3">
+
+当 App 需要开启蓝牙时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-0-row-9-cell-1">
+
+用于识别设备接到电话呼入状态，当电话呼入时，停止音频传输和交互
+
+:::note
+仅针对 Android 12 及以上版本的设备。
+:::
+
+</Slot>
 
 iOS 操作系统应用权限列表：
 
 | 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
 | --- | --- | --- | --- |
-| Camera Usage Description 摄像头权限 | 用于提供视频通话和互动功能，传输和交互视频画面 | 可选 | 当 App 需要使用摄像头时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| Microphone Usage Description 麦克风权限 | 用于提供语音通话和互动功能，传输和交互语音信息 | 可选 | 当 App 需要使用麦克风时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| Camera Usage Description 摄像头权限 | 用于提供视频通话和互动功能，传输和交互视频画面 | 可选 | <Slot name="videosdk-table-1-row-2-cell-3" /> |
+| Microphone Usage Description 麦克风权限 | 用于提供语音通话和互动功能，传输和交互语音信息 | 可选 | <Slot name="videosdk-table-1-row-3-cell-3" /> |
+
+<Slot for="videosdk-table-1-row-2-cell-3">
+
+当 App 需要使用摄像头时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-1-row-3-cell-3">
+
+当 App 需要使用麦克风时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
 
 HarmonyOS 操作系统应用权限列表：
 
 | 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
 | --- | --- | --- | --- |
 | ohos.permission.INTERNET 网络权限 | 使用网络传输音视频数据 | 必选 | 当 App 需要接入网络时 |
-| ohos.permission.CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | 当 App 需要使用摄像头时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| ohos.permission.MICROPHONE 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | 当 App 需要使用麦克风时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| ohos.permission.GET_NETWORK_INFO 网络信息权限 | 用于监测网络变化以便规划网络链接节点 | 可选 | 当 App 需要获取网络信息时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| ohos.permission.KEEP_BACKGROUND_RUNNING<br />后台运行权限 | 用于 App 在后台运行时可以正常进行音频互动 | 可选 | 当 App 需要在后台继续进行音频互动时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| ohos.permission.CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | <Slot name="videosdk-table-2-row-3-cell-3" /> |
+| ohos.permission.MICROPHONE 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | <Slot name="videosdk-table-2-row-4-cell-3" /> |
+| ohos.permission.GET_NETWORK_INFO 网络信息权限 | 用于监测网络变化以便规划网络链接节点 | 可选 | <Slot name="videosdk-table-2-row-5-cell-3" /> |
+| <Slot name="videosdk-table-2-row-6-cell-0" /> | 用于 App 在后台运行时可以正常进行音频互动 | 可选 | <Slot name="videosdk-table-2-row-6-cell-3" /> |
+
+<Slot for="videosdk-table-2-row-3-cell-3">
+
+当 App 需要使用摄像头时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-2-row-4-cell-3">
+
+当 App 需要使用麦克风时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-2-row-5-cell-3">
+
+当 App 需要获取网络信息时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="videosdk-table-2-row-6-cell-0">
+
+ohos.permission.KEEP_BACKGROUND_RUNNING
+后台运行权限
+
+</Slot>
+
+<Slot for="videosdk-table-2-row-6-cell-3">
+
+当 App 需要在后台继续进行音频互动时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
 
 ### 2. SDK 初始化及业务功能调用时机说明
 
@@ -72,17 +189,250 @@ SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`RTCEngine.joinChannel(String token,  String channelId, int uid, ChannelMediaOptions options)；`<br /><br />参数：<br />- `token`：在服务端生成的用于鉴权的动态密钥<br />- `channel Id`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `options`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.leaveChannel()` | 用户加入频道开启音视频通话时 |
-| Android | 极速直播 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启、关闭示例：**<br /><br />`RTCEngine.setClientRole(int role,  ClientRoleOptions options)；`<br /><br />参数：<br />- `role`：直播场景中用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则就关闭极速直播 | 用户加入频道开启极速直播时 |
-| Android | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | **配置开始示例：**<br /><br />`RTCEngine.startScreenCapture(ScreenCaptureParameters  screenCaptureParameters);`<br /><br />参数：`screenCaptureParameters`：屏幕共享的编码参数配置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopScreenCapture()` | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
-| Android | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | **配置开启示例：**<br /><br />`RTCEngine.startAudioMixing(String  filePath, boolean loopback, int cycle, int startPos);`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件播放次数<br />- `startPos`：音乐文件播放位置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopAudioMixing()` | 用户加入频道后，在音视频互动时播放音乐文件时 |
-| iOS | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`agoraKit.joinChannel(byToken:  <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions:  option)`<br /><br />参数：<br />- `byToken`：在服务端生成的用于鉴权的动态密钥<br />- `channelId`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `option`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`agoraKit.leaveChannel()` | 用户加入频道开启音视频通话时 |
-| iOS | 极速直播 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启、关闭示例：**<br /><br />`agoraKit.setClientRole(role, options:  options)；`<br /><br />参数：<br />- `role`：直播场景中的用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则关闭极速直播 | 用户加入频道开启极速直播时 |
-| iOS | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | **配置开始示例：**<br /><br />`agoraKit.startScreenCapture(screenParams);`<br /><br />参数：`screenCaptureParameters`：屏幕共享的编码参数配置<br /><br />**配置关闭示例：**<br />`agoraKit.stopScreenCapture()` | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
-| iOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | **配置开启示例：**<br /><br />`agoraKit.startAudioMixing(filePath,  loopback: loopback, replace: replace, cycle: cycle)`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件的播放次数<br />- `startPos`：音乐文件的播放位置<br /><br />**配置关闭示例：**<br />`agoraKit.stopAudioMixing();` | 用户加入频道后，在音视频互动时播放音乐文件时 |
-| HarmonyOS | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限、网络权限 | **配置开启示例：**<br /><br />`RTCEngine.joinChannel(token:string, channelId:string, uid:number, options:ChannelMediaOptions)；`<br /><br />参数：<br />- `token`：在服务端生成的用于鉴权的动态密钥<br />- `channelId`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `options`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.leaveChannel()` | 用户加入频道开启音视频通话时 |
-| HarmonyOS | 极速直播 | 必要：设备品牌、设备型号、操作系统版本；<br /><br />权限：摄像头权限、麦克风权限、网络权限 | **配置开启、关闭示例：**<br /><br />`RTCEngine.setClientRole(role:number,options:ClientRoleOptions)；`<br /><br />参数：<br />- `role`，直播场景中用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `Constants.AudienceLatencyLevel.LOW_LATENCY` 时开启极速直播，否则就关闭极速直播 | 用户加入频道开启极速直播时 |
-| HarmonyOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本 | **配置开启示例：**<br /><br />`RTCEngine.startAudioMixing(filepath: string, loopback: boolean, cycle: number,startpos :number);`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件播放次数<br />- `startPos`：音乐文件播放位置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopAudioMixing()` | 用户加入频道后，在音视频互动时播放音乐文件时 |
+| Android | 音视频互动 | <Slot name="videosdk-table-3-row-2-cell-2" /> | <Slot name="videosdk-table-3-row-2-cell-3" /> | 用户加入频道开启音视频通话时 |
+| Android | 极速直播 | <Slot name="videosdk-table-3-row-3-cell-2" /> | <Slot name="videosdk-table-3-row-3-cell-3" /> | 用户加入频道开启极速直播时 |
+| Android | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | <Slot name="videosdk-table-3-row-4-cell-3" /> | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
+| Android | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | <Slot name="videosdk-table-3-row-5-cell-3" /> | 用户加入频道后，在音视频互动时播放音乐文件时 |
+| iOS | 音视频互动 | <Slot name="videosdk-table-3-row-6-cell-2" /> | <Slot name="videosdk-table-3-row-6-cell-3" /> | 用户加入频道开启音视频通话时 |
+| iOS | 极速直播 | <Slot name="videosdk-table-3-row-7-cell-2" /> | <Slot name="videosdk-table-3-row-7-cell-3" /> | 用户加入频道开启极速直播时 |
+| iOS | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | <Slot name="videosdk-table-3-row-8-cell-3" /> | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
+| iOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | <Slot name="videosdk-table-3-row-9-cell-3" /> | 用户加入频道后，在音视频互动时播放音乐文件时 |
+| HarmonyOS | 音视频互动 | <Slot name="videosdk-table-3-row-10-cell-2" /> | <Slot name="videosdk-table-3-row-10-cell-3" /> | 用户加入频道开启音视频通话时 |
+| HarmonyOS | 极速直播 | <Slot name="videosdk-table-3-row-11-cell-2" /> | <Slot name="videosdk-table-3-row-11-cell-3" /> | 用户加入频道开启极速直播时 |
+| HarmonyOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本 | <Slot name="videosdk-table-3-row-12-cell-3" /> | 用户加入频道后，在音视频互动时播放音乐文件时 |
+
+<Slot for="videosdk-table-3-row-2-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；
+
+可选：频道内用户 ID；
+
+权限：摄像头权限、麦克风权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-2-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.joinChannel(String token,  String channelId, int uid, ChannelMediaOptions options)；`
+
+参数：
+
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `channel Id`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息
+- `options`：频道媒体设置选项
+
+**配置关闭示例：**
+
+`RTCEngine.leaveChannel()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-3-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；
+
+权限：摄像头权限、麦克风权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-3-cell-3">
+
+**配置开启、关闭示例：**
+
+`RTCEngine.setClientRole(int role,  ClientRoleOptions options)；`
+
+参数：
+
+- `role`：直播场景中用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则就关闭极速直播
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-4-cell-3">
+
+**配置开始示例：**
+
+`RTCEngine.startScreenCapture(ScreenCaptureParameters  screenCaptureParameters);`
+
+参数：`screenCaptureParameters`：屏幕共享的编码参数配置
+
+**配置关闭示例：**
+
+`RTCEngine.stopScreenCapture()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-5-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.startAudioMixing(String  filePath, boolean loopback, int cycle, int startPos);`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件播放次数
+- `startPos`：音乐文件播放位置
+
+**配置关闭示例：**
+
+`RTCEngine.stopAudioMixing()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-6-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；
+
+可选：频道内用户 ID；
+
+权限：摄像头权限、麦克风权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-6-cell-3">
+
+**配置开启示例：**
+
+`agoraKit.joinChannel(byToken:  <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions:  option)`
+
+参数：
+
+- `byToken`：在服务端生成的用于鉴权的动态密钥
+- `channelId`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息
+- `option`：频道媒体设置选项
+
+**配置关闭示例：**
+
+`agoraKit.leaveChannel()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-7-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；
+
+权限：摄像头权限、麦克风权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-7-cell-3">
+
+**配置开启、关闭示例：**
+
+`agoraKit.setClientRole(role, options:  options)；`
+
+参数：
+
+- `role`：直播场景中的用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则关闭极速直播
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-8-cell-3">
+
+**配置开始示例：**
+
+`agoraKit.startScreenCapture(screenParams);`
+
+参数：`screenCaptureParameters`：屏幕共享的编码参数配置
+
+**配置关闭示例：**
+`agoraKit.stopScreenCapture()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-9-cell-3">
+
+**配置开启示例：**
+
+`agoraKit.startAudioMixing(filePath,  loopback: loopback, replace: replace, cycle: cycle)`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件的播放次数
+- `startPos`：音乐文件的播放位置
+
+**配置关闭示例：**
+`agoraKit.stopAudioMixing();`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-10-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本；
+
+可选：频道内用户 ID；
+
+权限：摄像头权限、麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-10-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.joinChannel(token:string, channelId:string, uid:number, options:ChannelMediaOptions)；`
+
+参数：
+
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `channelId`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息
+- `options`：频道媒体设置选项
+
+**配置关闭示例：**
+
+`RTCEngine.leaveChannel()`
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-11-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本；
+
+权限：摄像头权限、麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-11-cell-3">
+
+**配置开启、关闭示例：**
+
+`RTCEngine.setClientRole(role:number,options:ClientRoleOptions)；`
+
+参数：
+
+- `role`，直播场景中用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `Constants.AudienceLatencyLevel.LOW_LATENCY` 时开启极速直播，否则就关闭极速直播
+
+</Slot>
+
+<Slot for="videosdk-table-3-row-12-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.startAudioMixing(filepath: string, loopback: boolean, cycle: number,startpos :number);`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件播放次数
+- `startPos`：音乐文件播放位置
+
+**配置关闭示例：**
+
+`RTCEngine.stopAudioMixing()`
+
+</Slot>
 
 ### 3. 配置可选个人信息
 
@@ -90,8 +440,18 @@ SDK 功能、接口配置方式及示例说明：
 
 | 个人信息名称 | 处理目的 | 使用场景 | 处理方式 |
 | --- | --- | --- | --- |
-| 视频信息 | 对视频进行录制或转码 | 视频录制、视频转码场景、美颜场景 | 录制场景中视频信息处理完成后会传输至客户指定的存储地点，除非客户有存储需求我们不会做任何存储。<br /><br />在转码场景中视频信息仅作转码处理，不会进行任何形式的存储。<br /><br />在美颜场景中，我们不会收集任何个人信息，仅会在客户端本地使用部分面部特征值信息对视频中的人脸进行美颜处理，不会回传、储存或共享终端用户的任何面部特征值信息。 |
+| 视频信息 | 对视频进行录制或转码 | 视频录制、视频转码场景、美颜场景 | <Slot name="videosdk-table-4-row-2-cell-3" /> |
 | 音频信息 | 对音频内容进行转文本处理 | 语音智能识别 | 音频信息处理完成后即时删除，我们不会在服务器中留存；生成的文本在完成识别后即时删除，除非您开启了查错模式，我们不会在服务器中留存。 |
+
+<Slot for="videosdk-table-4-row-2-cell-3">
+
+录制场景中视频信息处理完成后会传输至客户指定的存储地点，除非客户有存储需求我们不会做任何存储。
+
+在转码场景中视频信息仅作转码处理，不会进行任何形式的存储。
+
+在美颜场景中，我们不会收集任何个人信息，仅会在客户端本地使用部分面部特征值信息对视频中的人脸进行美颜处理，不会回传、储存或共享终端用户的任何面部特征值信息。
+
+</Slot>
 
 由于扩展功能均需要您在声网控制台单独开通，并在配置中写入必要的参数方可启用。请您查阅以下文档理解扩展业务功能可选个人信息的具体调用方法并进行相应配置:
 - [云端录制](/zh-CN/realtime-media/cloud-recording)

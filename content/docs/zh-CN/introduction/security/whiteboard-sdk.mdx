@@ -38,10 +38,129 @@ SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><br /><pre><code class="language-java">WhiteSdk.joinRoom(<br />RoomParams roomParams,<br />RoomListener roomListener,<br />Promise&lt;Room&gt; roomPromise<br />)</code></pre><br />参数：<br />- `roomParams`：互动白板实时房间的参数配置<br />- `roomListener`：房间事件回调<br />- `roomPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">Room.disconnect()</code></pre> | 加入互动白板房间时 |
-| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**  <br /><br /><pre><code class="language-java">/// 创建 Player<br />WhiteSdk.createPlayer(<br />PlayerConfiguration configuration,<br />PlayerListener listener,<br />Promise&lt;Player&gt; playerPromise)<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `configuration`：白板回放的参数配置<br />- `listener`：白板回放事件的回调<br />- `playerPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">player.stop()</code></pre> | 当展示互动白板内容时 |
-| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">joinRoomWithConfig:(WhiteRoomConfig *)config<br />callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)callbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhiteRoom * _Nullable room,<br />NSError * _Nullable error<br />)<br />)completionHandler;</code></pre><br />参数：<br />- `config`：互动白板实时房间的参数配置<br />- `callbacks`：房间事件回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br />```swift<br />aRoom.disconnect:(void (^ _Nullable) (void))completeHandler<br />```<br />参数：<br />- `completeHandler`: 关闭回调 | 开启和加入互动白板房间时 |
-| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">// 创建 Player<br />createReplayerWithConfig:(WhitePlayerConfig *)config<br />callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)eventCallbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhitePlayer * _Nullable player,<br />NSError * _Nullable error<br />)<br />)completionHandler;<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `config`：白板回放的参数配置<br />- `callbacks`：白板回放事件的回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">player.stop()</code></pre> | 当展示互动白板内容时 |
+| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="whiteboardsdk-table-0-row-2-cell-3" /> | 加入互动白板房间时 |
+| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="whiteboardsdk-table-0-row-3-cell-3" /> | 当展示互动白板内容时 |
+| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="whiteboardsdk-table-0-row-4-cell-3" /> | 开启和加入互动白板房间时 |
+| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="whiteboardsdk-table-0-row-5-cell-3" /> | 当展示互动白板内容时 |
+
+<Slot for="whiteboardsdk-table-0-row-2-cell-3">
+
+**配置开启示例：**
+
+```java
+WhiteSdk.joinRoom(
+RoomParams roomParams,
+RoomListener roomListener,
+Promise<Room> roomPromise
+)
+```
+
+参数：
+
+- `roomParams`：互动白板实时房间的参数配置
+- `roomListener`：房间事件回调
+- `roomPromise`：调用结果回调
+
+**配置关闭示例：**
+
+```java
+Room.disconnect()
+```
+
+</Slot>
+
+<Slot for="whiteboardsdk-table-0-row-3-cell-3">
+
+**配置开启示例：**
+
+```java
+/// 创建 Player
+WhiteSdk.createPlayer(
+PlayerConfiguration configuration,
+PlayerListener listener,
+Promise<Player> playerPromise)
+// 开始演示
+player.play()
+```
+
+参数：
+
+- `configuration`：白板回放的参数配置
+- `listener`：白板回放事件的回调
+- `playerPromise`：调用结果回调
+
+**配置关闭示例：**
+
+```java
+player.stop()
+```
+
+</Slot>
+
+<Slot for="whiteboardsdk-table-0-row-4-cell-3">
+
+**配置开启示例：**
+
+```swift
+joinRoomWithConfig:(WhiteRoomConfig *)config
+callbacks:(nullable id<WhiteRoomCallbackDelegate>)callbacks
+completionHandler:(void (^) (
+BOOL success,
+WhiteRoom * _Nullable room,
+NSError * _Nullable error
+)
+)completionHandler;
+```
+
+参数：
+
+- `config`：互动白板实时房间的参数配置
+- `callbacks`：房间事件回调
+- `completionHandler`：调用结果回调
+
+**配置关闭示例：**
+
+```swift
+aRoom.disconnect:(void (^ _Nullable) (void))completeHandler
+```
+
+参数：
+
+- `completeHandler`: 关闭回调
+
+</Slot>
+
+<Slot for="whiteboardsdk-table-0-row-5-cell-3">
+
+**配置开启示例：**
+
+```swift
+// 创建 Player
+createReplayerWithConfig:(WhitePlayerConfig *)config
+callbacks:(nullable id<WhitePlayerEventDelegate>)eventCallbacks
+completionHandler:(void (^) (
+BOOL success,
+WhitePlayer * _Nullable player,
+NSError * _Nullable error
+)
+)completionHandler;
+// 开始演示
+player.play()
+```
+
+参数：
+
+- `config`：白板回放的参数配置
+- `callbacks`：白板回放事件的回调
+- `completionHandler`：调用结果回调
+
+**配置关闭示例：**
+
+```swift
+player.stop()
+```
+
+</Slot>
 
 ### 3. SDK 隐私政策披露要求与示例说明
 

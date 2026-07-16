@@ -24,21 +24,112 @@ SDK 只会检查 App 是否获得相应授权，不会主动向最终用户申�
 | INTERNET 访问网络 | 用于在加入频道时接入网络 | 必选 | 当需要接入网络时 |
 | ACCESS_NETWORK_STATE 查看网络状态 | 用于查看网络连接状态 | 可选 | 当需要查看网络状态时 |
 | ACCESS_WIFI_STATE 查看 WiFi 状态 | 用于查看 WiFi 连接状态 | 可选 | 当需要查看 WiFi 状态时 |
-| CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | <Slot name="flexibleclassroomsdk-table-0-row-5-cell-3" /> |
+| RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | <Slot name="flexibleclassroomsdk-table-0-row-6-cell-3" /> |
 | MODIFY_AUDIO_SETTINGS 麦克风设置权限 | 用于提供音视频通话设置功能 | 可选 | 当用户设置麦克风时 |
-| BLUETOOTH 蓝牙连接权限 | 用于支持蓝牙耳机和耳麦的接入 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| READ_PHONE_STATE 读取电话状态权限 | 用于识别设备接到电话呼入状态，当电话呼入时，停止音频传输和交互。<br /><br />注意：仅针对 Android 12 及以上版本的设备。 | 可选 | 当用户设备电话呼入时，SDK 会识别来电状态，并会停止 SDK 音频传输和交互。 |
-| WRITE_EXTERNAL_STORAGE 写存储权限 | 用于将白板板书图片和日志文件写入设备的外部存储 | 可选 | - 当用户使用白板功能，将白板日志文件写入设备外部存储，并且同意开启权限时。<br />- 当 SDK 在运行过程中，将日志写入设备外部存储，并且用户同意开启权限时。<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| READ_EXTERNAL_STORAGE 读取存储权限 | 用于读取日志文件进行上传 | 可选 | 当 SDK 在运行过程中，读取设备的日志文件用于故障排查，并且用户同意开启权限时。<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| BLUETOOTH 蓝牙连接权限 | 用于支持蓝牙耳机和耳麦的接入 | 可选 | <Slot name="flexibleclassroomsdk-table-0-row-8-cell-3" /> |
+| READ_PHONE_STATE 读取电话状态权限 | <Slot name="flexibleclassroomsdk-table-0-row-9-cell-1" /> | 可选 | 当用户设备电话呼入时，SDK 会识别来电状态，并会停止 SDK 音频传输和交互。 |
+| WRITE_EXTERNAL_STORAGE 写存储权限 | 用于将白板板书图片和日志文件写入设备的外部存储 | 可选 | <Slot name="flexibleclassroomsdk-table-0-row-10-cell-3" /> |
+| READ_EXTERNAL_STORAGE 读取存储权限 | 用于读取日志文件进行上传 | 可选 | <Slot name="flexibleclassroomsdk-table-0-row-11-cell-3" /> |
+
+<Slot for="flexibleclassroomsdk-table-0-row-5-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-0-row-6-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-0-row-8-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-0-row-9-cell-1">
+
+用于识别设备接到电话呼入状态，当电话呼入时，停止音频传输和交互。
+
+:::note
+仅针对 Android 12 及以上版本的设备。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-0-row-10-cell-3">
+
+- 当用户使用白板功能，将白板日志文件写入设备外部存储，并且同意开启权限时。
+- 当 SDK 在运行过程中，将日志写入设备外部存储，并且用户同意开启权限时。
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-0-row-11-cell-3">
+
+当 SDK 在运行过程中，读取设备的日志文件用于故障排查，并且用户同意开启权限时。
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
 
 **iOS 操作系统应用权限列表：**
 
 | 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
 | --- | --- | --- | --- |
-| Camera Usage Description 摄像头权限 | 用于提供视频通话和互动功能，传输和交互视频画面 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| Microphone Usage Description 麦克风权限 | 用于提供语音通话和互动功能，传输和交互语音信息 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
-| Photo Library Usage Description 相册权限 | 用于在实时互动时传输和发送图片 | 可选 | 当用户同意开启权限时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
+| Camera Usage Description 摄像头权限 | 用于提供视频通话和互动功能，传输和交互视频画面 | 可选 | <Slot name="flexibleclassroomsdk-table-1-row-2-cell-3" /> |
+| Microphone Usage Description 麦克风权限 | 用于提供语音通话和互动功能，传输和交互语音信息 | 可选 | <Slot name="flexibleclassroomsdk-table-1-row-3-cell-3" /> |
+| Photo Library Usage Description 相册权限 | 用于在实时互动时传输和发送图片 | 可选 | <Slot name="flexibleclassroomsdk-table-1-row-4-cell-3" /> |
+
+<Slot for="flexibleclassroomsdk-table-1-row-2-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-1-row-3-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-1-row-4-cell-3">
+
+当用户同意开启权限时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
 
 ### 2. SDK 初始化及业务功能调用时机说明
 
@@ -54,12 +145,68 @@ SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 加入教室 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID | **配置开启示例：**<br />`roomContext.joinRoom()`<br />**配置关闭示例：**<br />`roomContext.leaveRoom()` | 用户加入教室时 |
-| Android | 打开摄像头 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）、频道内用户 ID；权限：摄像头权限 | **配置开启示例：**<br />`mediaContext.openLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备 | 用户打开摄像头设备时 |
-| Android | 打开麦克风 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID；权限：麦克风权限 | **配置开启示例：**<br />`mediaContext.openLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备<br />**配置关闭示例：**<br />`mediaContext.closeLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备 | 用户打开麦克风设备时 |
-| iOS | 加入教室 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID | **配置开启示例：**<br />`roomContext.joinRoom()`<br />**配置关闭示例：**<br />`roomContext.leaveRoom()` | 用户加入教室时 |
-| iOS | 打开摄像头 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）、频道内用户 ID；权限：摄像头权限 | **配置开启示例：**<br />`mediaContext.openLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备 | 用户打开摄像头设备时 |
-| iOS | 打开麦克风 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID；权限：麦克风权限 | **配置开启示例：**<br />`mediaContext.openLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备<br />**配置关闭示例：**<br />`mediaContext.closeLocalDevice(systemDevice: camera)`<br />参数：systemDevice：系统设备 | 用户打开麦克风设备时 |
+| Android | 加入教室 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID | <Slot name="flexibleclassroomsdk-table-2-row-2-cell-3" /> | 用户加入教室时 |
+| Android | 打开摄像头 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）、频道内用户 ID；权限：摄像头权限 | <Slot name="flexibleclassroomsdk-table-2-row-3-cell-3" /> | 用户打开摄像头设备时 |
+| Android | 打开麦克风 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID；权限：麦克风权限 | <Slot name="flexibleclassroomsdk-table-2-row-4-cell-3" /> | 用户打开麦克风设备时 |
+| iOS | 加入教室 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID | <Slot name="flexibleclassroomsdk-table-2-row-5-cell-3" /> | 用户加入教室时 |
+| iOS | 打开摄像头 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）、频道内用户 ID；权限：摄像头权限 | <Slot name="flexibleclassroomsdk-table-2-row-6-cell-3" /> | 用户打开摄像头设备时 |
+| iOS | 打开麦克风 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、频道内用户 ID；权限：麦克风权限 | <Slot name="flexibleclassroomsdk-table-2-row-7-cell-3" /> | 用户打开麦克风设备时 |
+
+<Slot for="flexibleclassroomsdk-table-2-row-2-cell-3">
+
+**配置开启示例：**
+`roomContext.joinRoom()`
+**配置关闭示例：**
+`roomContext.leaveRoom()`
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-2-row-3-cell-3">
+
+**配置开启示例：**
+`mediaContext.openLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-2-row-4-cell-3">
+
+**配置开启示例：**
+`mediaContext.openLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+**配置关闭示例：**
+`mediaContext.closeLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-2-row-5-cell-3">
+
+**配置开启示例：**
+`roomContext.joinRoom()`
+**配置关闭示例：**
+`roomContext.leaveRoom()`
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-2-row-6-cell-3">
+
+**配置开启示例：**
+`mediaContext.openLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+
+</Slot>
+
+<Slot for="flexibleclassroomsdk-table-2-row-7-cell-3">
+
+**配置开启示例：**
+`mediaContext.openLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+**配置关闭示例：**
+`mediaContext.closeLocalDevice(systemDevice: camera)`
+参数：systemDevice：系统设备
+
+</Slot>
 
 ### 3. SDK 隐私政策披露要求与示例说明
 

@@ -38,10 +38,131 @@ SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-java">// 初始化<br />Fastboard.createFastRoom(FastRoomOptions roomOptions)<br />// 加入房间<br />FastRoom.join();</code></pre><br />参数：<br />- `roomOptions`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">// 销毁房间<br />Room.disconnect()</code></pre> | 加入互动白板房间时 |
-| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-java">FastRoom.insertPptx(<br />String taskUuid,<br />String prefixUrl,<br />String title,<br />FastResult&lt;String&gt; result<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">FastRoom.getRoom().closeApp(<br />String appId,<br />Promise&lt;Boolean&gt; result<br />)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调<br /> | 当展示互动白板内容时 |
-| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">// 初始化<br />Fastboard.createFastRoom(FastRoomConfiguration config)<br />// 加入房间<br />FastRoom.joinRoom();</code></pre><br />参数：<br />- `config`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">// 销毁房间<br />FastRoom.disconnectRoom()</code></pre> | 开启和加入互动白板房间时 |
-| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">FastRoom.insertPptx(<br />uuid: String,<br />url: String,<br />title: String,<br />completionHandler: ((String)-&gt;Void)? = nil<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">FastRoom.room.closeApp:(NSString *)appId<br />completionHandler:(void (^)(<br />BOOL success,<br />NSError *error<br />))completionHandler)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调 | 当展示互动白板内容时 |
+| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="fastboardsdk-table-0-row-2-cell-3" /> | 加入互动白板房间时 |
+| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="fastboardsdk-table-0-row-3-cell-3" /> | 当展示互动白板内容时 |
+| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="fastboardsdk-table-0-row-4-cell-3" /> | 开启和加入互动白板房间时 |
+| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | <Slot name="fastboardsdk-table-0-row-5-cell-3" /> | 当展示互动白板内容时 |
+
+<Slot for="fastboardsdk-table-0-row-2-cell-3">
+
+**配置开启示例：**
+
+```java
+// 初始化
+Fastboard.createFastRoom(FastRoomOptions roomOptions)
+// 加入房间
+FastRoom.join();
+```
+
+参数：
+
+- `roomOptions`：房间配置
+
+**配置关闭示例：**
+
+```java
+// 销毁房间
+Room.disconnect()
+```
+
+</Slot>
+
+<Slot for="fastboardsdk-table-0-row-3-cell-3">
+
+**配置开启示例：**
+
+```java
+FastRoom.insertPptx(
+String taskUuid,
+String prefixUrl,
+String title,
+FastResult<String> result
+)
+```
+
+参数：
+
+- `taskUuid`：文档转换任务的 Task UUID
+- `prefixUrl`：文档转换 URL 前缀
+- `title`：文档显示名称
+- `result`：插入成功/失败回调
+
+**配置关闭示例：**
+
+```java
+FastRoom.getRoom().closeApp(
+String appId,
+Promise<Boolean> result
+)
+```
+
+参数：
+
+- `appId`：打开的文档标识
+- `result`：关闭成功/失败回调
+
+</Slot>
+
+<Slot for="fastboardsdk-table-0-row-4-cell-3">
+
+**配置开启示例：**
+
+```swift
+// 初始化
+Fastboard.createFastRoom(FastRoomConfiguration config)
+// 加入房间
+FastRoom.joinRoom();
+```
+
+参数：
+
+- `config`：房间配置
+
+**配置关闭示例：**
+
+```swift
+// 销毁房间
+FastRoom.disconnectRoom()
+```
+
+</Slot>
+
+<Slot for="fastboardsdk-table-0-row-5-cell-3">
+
+**配置开启示例：**
+
+```swift
+FastRoom.insertPptx(
+uuid: String,
+url: String,
+title: String,
+completionHandler: ((String)->Void)? = nil
+)
+```
+
+参数：
+
+- `taskUuid`：文档转换任务的 Task UUID
+- `prefixUrl`：文档转换 URL 前缀
+- `title`：文档显示名称
+- `result`：插入成功/失败回调
+
+**配置关闭示例：**
+
+```swift
+FastRoom.room.closeApp:(NSString *)appId
+completionHandler:(void (^)(
+BOOL success,
+NSError *error
+))completionHandler)
+```
+
+参数：
+
+- `appId`：打开的文档标识
+- `result`：关闭成功/失败回调
+
+</Slot>
 
 ### 3. SDK 隐私政策披露要求与示例说明
 
