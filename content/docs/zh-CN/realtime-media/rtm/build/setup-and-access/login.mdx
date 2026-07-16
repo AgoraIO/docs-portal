@@ -2,9 +2,7 @@
 title: "登录服务"
 description: "了解如何在实时消息 RTM 中登录服务，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-你需要登录才能真正连接上 RTM 服务器、访问 RTM 的网络资源，如发送消息、订阅频道等。
-
-在登录 RTM 服务之前，你需要确保你的设备处于网络连接的状态并完成了[应用设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)。
+你需要登录才能真正连接上 RTM 服务器、访问 RTM 的网络资源，如发送消息、订阅频道等。在登录 RTM 服务之前，你需要确保你的设备处于网络连接的状态并完成了[应用设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)。
 
 ## 登录服务
 
@@ -114,7 +112,7 @@ try {
 }
 ```
 
-你可以通过 `config.login` 的返回值或监听 `config.onlinkstateevent` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `enumv.linkstateconnecting`；登录成功后，其状态会更新为 `enumv.linkstateconnected` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `config.onlinkstateevent` 事件通知，详见[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)。
+你可以通过 `config.login` 的返回值或监听 `config.onlinkstateevent` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `enumv.linkstateconnecting`；登录成功后，其状态会更新为 `enumv.linkstateconnected` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `config.onlinkstateevent` 事件通知，详见[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)。
 
 :::info[信息]
 用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。

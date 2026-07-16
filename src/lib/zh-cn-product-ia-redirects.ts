@@ -385,7 +385,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc-server-sdk/get-started/send-receive.go':
     '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive?platform=go',
   'realtime-media/rtc-server-sdk/index.go':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/index.go',
+    '/zh-CN/realtime-media/rtc-server-sdk',
   'realtime-media/rtc-server-sdk/overview/product-overview':
     '/zh-CN/realtime-media/rtc-server-sdk',
   'realtime-media/rtc-server-sdk/overview/release-notes':
@@ -1417,7 +1417,10 @@ export function resolveZhCnProductIaRedirect(
 
   const path = `${tab}/${slugSegments.join('/')}`;
 
-  for (const [sourcePrefix, targetPrefix] of ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS) {
+  for (const [
+    sourcePrefix,
+    targetPrefix,
+  ] of ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS) {
     if (path === sourcePrefix || path.startsWith(`${sourcePrefix}/`)) {
       return `${targetPrefix}${path.slice(sourcePrefix.length)}`;
     }

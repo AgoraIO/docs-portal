@@ -81,13 +81,14 @@ type HelpHubComponent = ComponentType<{
     cta: string;
     description: string;
     href: string;
-    icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+    icon: 'blog' | 'discord' | 'stack-overflow' | 'status' | 'ticket';
     title: string;
   }>;
   knowledgeBase: Array<{
     href: string;
     label: string;
   }>;
+  locale?: 'en' | 'zh-CN';
   topics: Array<{
     href: string;
     label: string;
@@ -239,6 +240,51 @@ describe('overview MDX components', () => {
     expect(
       screen.getByRole('link', { name: /Integration issues/i }),
     ).toHaveAttribute('href', '/en/introduction/support');
+  });
+
+  it('renders localized help hub copy for Chinese pages', () => {
+    const components = getOverviewMDXComponents();
+    const HelpHub = components.HelpHub as HelpHubComponent;
+
+    render(
+      <HelpHub
+        locale="zh-CN"
+        cards={[
+          {
+            cta: '查看博客',
+            description: '阅读产品动态、技术实践和开发者案例。',
+            href: 'https://www.shengwang.cn/blog/',
+            icon: 'blog',
+            title: '声网博客',
+          },
+        ]}
+        knowledgeBase={[
+          {
+            href: '/zh-CN/api-reference/faq/quality/video_blank',
+            label: '如何排查黑屏问题？',
+          },
+        ]}
+        topics={[
+          {
+            href: '/zh-CN/api-reference/faq/integration',
+            label: '集成问题',
+          },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByText(
+        '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+      ),
+    ).toBeVisible();
+    expect(screen.getByText('热门知识库')).toBeVisible();
+    expect(screen.getByText('快速解答')).toBeVisible();
+    expect(screen.getByText('按主题浏览')).toBeVisible();
+    expect(screen.getByRole('link', { name: /声网博客/ })).toHaveAttribute(
+      'href',
+      'https://www.shengwang.cn/blog/',
+    );
   });
 
   it('renders feature cards for editorial introduction pages', () => {

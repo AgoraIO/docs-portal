@@ -2,9 +2,7 @@
 title: "频道元数据"
 description: "了解如何在实时消息 RTM 中频道元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。
-
-hannel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
+Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。Channel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
 
 Channel Metadata 属于永久存储数据，一旦被设置将会长期保存在 RTM 数据库，不会因为你的频道被销毁而丢失，除非你手动删除。这将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
@@ -12,7 +10,7 @@ Channel Metadata 属于永久存储数据，一旦被设置将会长期保存在
 
 你可以为指定频道设置一组 Channel Metadata，用以实现业务上房间级别的数据存储和实时通知，例如房间内的道具信息、拍卖品价格更新、群公告等。每个频道只能有一组 Channel Metadata，但每组 Channel Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含 `key`、`value`、`revision` 等预定义字段。
 
-如果当前 Channel Metadata 或者 Metadata Item 不存在，该方法将为指定频道新增属性；如果 Channel Metadata 或者 Metadata Item 已存在，则会使用新值覆盖原有值。关于 `storage.setchannel` 接口的更多信息详见 [Storage API 参考](/api-ref/rtm2//toc-storage/storage)。
+如果当前 Channel Metadata 或者 Metadata Item 不存在，该方法将为指定频道新增属性；如果 Channel Metadata 或者 Metadata Item 已存在，则会使用新值覆盖原有值。关于 `storage.setchannel` 接口的更多信息详见 [Storage API 参考](/zh-CN/api-reference/rtm/android/storage)。
 
 以下示例展示了如何设置 Channel Metadata：
 
@@ -275,7 +273,7 @@ public void onSuccess(Void responseInfo) {
 
 ## 获取频道元数据
 
-你可以调用 `storage.getchannel` 方法获得指定频道的全部 Channel Metadata。关于 `storage.getchannel` 接口的更多信息见 [Storage API 参考](/api-ref/rtm2//toc-storage/storage)。
+你可以调用 `storage.getchannel` 方法获得指定频道的全部 Channel Metadata。关于 `storage.getchannel` 接口的更多信息见 [Storage API 参考](/zh-CN/api-reference/rtm/android/storage)。
 
 以下示例代码展示了如何获得 Channel Metadata：
 

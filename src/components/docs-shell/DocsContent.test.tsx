@@ -429,7 +429,7 @@ describe('DocsContent', () => {
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
   });
 
-  it('uses a tight header-to-body gap on non-platform-tabs pages', async () => {
+  it('uses a compact header-to-body gap on non-platform-tabs pages', async () => {
     renderWithRouter(
       <DocsContent
         contentPath="en/introduction/about-agora.md"
@@ -482,10 +482,16 @@ describe('DocsContent', () => {
     expect(
       await screen.findByRole('heading', { name: 'Split platform page' }),
     ).toBeInTheDocument();
+    expect(await screen.findByRole('article')).toHaveClass('gap-3');
     expect(await screen.findByTestId('platform-header-tabs')).toHaveTextContent(
       '["ios","android"]',
     );
-    expect(screen.getByText('en/ai/get-started/platform-split/index.mdx'));
+    const commonBody = screen.getByText(
+      'en/ai/get-started/platform-split/index.mdx',
+    );
+    expect(commonBody.closest('[data-platform-group-shell]')).toHaveClass(
+      'gap-4',
+    );
     expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
   });
 
@@ -655,6 +661,7 @@ describe('DocsContent', () => {
     const tabs = await screen.findByTestId('platform-header-tabs');
     const body = await screen.findByTestId('docs-content-body');
 
+    expect(await screen.findByRole('article')).toHaveClass('gap-3');
     expect(tabs).toHaveTextContent('["web","android"]');
     expect(tabs).toHaveAttribute('data-default-platform', 'android');
     expect(tabs).toHaveAttribute('data-initial-platform', 'android');

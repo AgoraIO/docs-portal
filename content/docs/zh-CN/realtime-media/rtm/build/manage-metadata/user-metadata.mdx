@@ -2,9 +2,7 @@
 title: "用户元数据"
 description: "了解如何在实时消息 RTM 中用户元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Storage 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。
-
-ser Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
 
 需要注意的是，User Metadata 属于永久存储，一旦被设置将会长期保存在 RTM 数据库，不会因为你的用户注销而丢失，直到你手动删除它们为止。知道这一点非常重要，因为它将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
@@ -231,7 +229,7 @@ try {
 
 上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。上述代码使用了 `await/async` 编程模式，所以需要被定义在一个异步函数中。
 
-关于 `storage.setuser` 接口详见 [Storage API 参考](/api-ref/rtm2//toc-storage/storage)。
+关于 `storage.setuser` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/android/storage)。
 
 当上述操作成功后，RTM SDK 会返回如下数据结构：
 
