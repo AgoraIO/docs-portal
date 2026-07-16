@@ -59,6 +59,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { PlanCards, PricingCards } from './mdx/PlanCards';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -66,6 +67,9 @@ type MDXContext = {
 };
 
 const FumadocsAnchor = defaultMdxComponents.a;
+const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
+  ComponentProps<'div'>
+>;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
@@ -84,6 +88,9 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
 };
 type DocsCardProps = ComponentProps<typeof FumadocsCard> &
   Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'download' | 'rel' | 'target'>;
+type DocsCardsProps = ComponentProps<'div'> & {
+  columns?: 2 | 3 | 4;
+};
 type AccordionsRootProps = Omit<
   ComponentProps<typeof FumadocsAccordions>,
   'defaultValue' | 'onValueChange' | 'type' | 'value'
@@ -1057,6 +1064,25 @@ function createDocsCard(contentPath?: string) {
   return DocsCard;
 }
 
+function Cards({ className, columns, ...props }: DocsCardsProps) {
+  if (!columns) {
+    return <FumadocsCards className={className} {...props} />;
+  }
+
+  return (
+    <div
+      className={cn(
+        'grid gap-3 @container',
+        columns === 2 && 'grid-cols-1 md:grid-cols-2',
+        columns === 3 && 'grid-cols-1 lg:grid-cols-3',
+        columns === 4 && 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 function createPlanCardsComponent(contentPath?: string) {
   function DocsPlanCards(props: ComponentProps<typeof PlanCards>) {
     return <PlanCards {...props} contentPath={contentPath} />;
@@ -1156,6 +1182,7 @@ export function getMDXComponents(
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
+    Cards,
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,
@@ -1176,8 +1203,8 @@ export function getMDXComponents(
     Step,
     Steps,
     RTCMinutesCalculator,
-    PlanCards: DocsPlanCards,
-    PricingCards: DocsPricingCards,
+    PlanCards: createPlanCardsComponent(context?.contentPath),
+    PricingCards: createPricingCardsComponent(context?.contentPath),
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
