@@ -719,13 +719,11 @@ export function DocsTableOfContents({
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const items = useMemo(
-    () =>
-      (toc.length > 0 ? toc : derivedItems).filter(
-        (item) => typeof item.title === 'string',
-      ),
-    [derivedItems, toc],
-  );
+  const items = useMemo(() => {
+    const source = derivedItems.length > toc.length ? derivedItems : toc;
+
+    return source.filter((item) => typeof item.title === 'string');
+  }, [derivedItems, toc]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -745,11 +743,6 @@ export function DocsTableOfContents({
   }, []);
 
   useEffect(() => {
-    if (toc.length > 0) {
-      setDerivedItems([]);
-      return;
-    }
-
     let frame = 0;
     const updateDerivedItems = () => {
       if (frame) {
