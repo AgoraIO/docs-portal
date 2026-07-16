@@ -668,7 +668,7 @@ function getFolderPageNode(
   const href = getFolderHref(node);
   return {
     id: href,
-    title: getMetaTitle(meta, node),
+    title: meta.sidebarIndexTitle ?? getMetaTitle(meta, node),
     type: 'page',
     url: href,
   };

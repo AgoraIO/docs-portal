@@ -74,6 +74,88 @@ const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
+const ZH_CN_REST_API_PRODUCT_BACK_LINKS: Array<{
+  backHref: string;
+  backLabel: string;
+  prefix: string;
+}> = [
+  {
+    backHref: '/zh-CN/realtime-media/cloud-recording',
+    backLabel: '云端录制',
+    prefix: '/zh-CN/api-reference/api-ref/cloud-recording',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/transcoding',
+    backLabel: '云端转码',
+    prefix: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+  },
+  {
+    backHref: '/zh-CN/ai',
+    backLabel: '对话式 AI 引擎',
+    prefix: '/zh-CN/api-reference/api-ref/conversational-ai',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/danmaku',
+    backLabel: '弹幕玩法',
+    prefix: '/zh-CN/api-reference/api-ref/danmaku',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/fusion-cdn',
+    backLabel: '融合 CDN 直播',
+    prefix: '/zh-CN/api-reference/api-ref/fusion-cdn',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/usage-analytics',
+    backLabel: '水晶球',
+    prefix: '/zh-CN/api-reference/api-ref/agora-analytics',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/media-pull',
+    backLabel: '输入在线媒体流',
+    prefix: '/zh-CN/api-reference/api-ref/media-pull',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/media-push',
+    backLabel: '旁路推流',
+    prefix: '/zh-CN/api-reference/api-ref/media-push',
+  },
+  {
+    backHref: '/zh-CN/solutions/ppt-transcoding',
+    backLabel: 'PPT 转码服务',
+    prefix: '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/rtc',
+    backLabel: '实时互动 RTC',
+    prefix: '/zh-CN/api-reference/api-ref/rtc',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/rtm',
+    backLabel: '实时消息 RTM',
+    prefix: '/zh-CN/api-reference/api-ref/signaling',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/speech-to-text',
+    backLabel: '实时转录翻译',
+    prefix: '/zh-CN/api-reference/api-ref/speech-to-text',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/rtmp-gateway',
+    backLabel: 'RTMP 网关',
+    prefix: '/zh-CN/api-reference/api-ref/rtmp-gateway',
+  },
+  {
+    backHref: '/zh-CN/realtime-media/whiteboard/fastboard-sdk',
+    backLabel: '互动白板',
+    prefix: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  },
+  {
+    backHref: '/zh-CN/solutions/voip-call',
+    backLabel: 'VoIP 呼叫服务',
+    prefix: '/zh-CN/api-reference/api-ref/voip-callkit',
+  },
+];
+
 const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
   history: 'history',
   interrupt: 'interrupt',
@@ -2864,15 +2946,24 @@ function resolveDocsSidebarHeader({
     return undefined;
   }
 
+  const restApiProductBackLink = getZhCnRestApiProductBackLink(activePath);
+  const baseHeader = restApiProductBackLink
+    ? {
+        ...navScope.header,
+        backHref: restApiProductBackLink.backHref,
+        backLabel: restApiProductBackLink.backLabel,
+      }
+    : navScope.header;
+
   if (hidePlatformTabs) {
     return {
-      ...navScope.header,
+      ...baseHeader,
       versionSwitcher: undefined,
     };
   }
 
   if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
-    return navScope.header;
+    return baseHeader;
   }
 
   const versionLinks = getNavScopeVersionLinks({
@@ -2888,22 +2979,32 @@ function resolveDocsSidebarHeader({
     !versionLinks.some((link) => link.href === activePath)
   ) {
     return {
-      ...navScope.header,
+      ...baseHeader,
       versionSwitcher: undefined,
     };
   }
 
   return {
-    ...navScope.header,
+    ...baseHeader,
     versionSwitcher: {
       currentId:
         versionLinks.find((item) => item.href === activePath)?.id ??
-        navScope.header.versionSwitcher?.currentId ??
+        baseHeader.versionSwitcher?.currentId ??
         versionLinks[0].id,
       presentation: 'tabs' as const,
       versions: versionLinks,
     },
   };
+}
+
+function getZhCnRestApiProductBackLink(activePath: string) {
+  return ZH_CN_REST_API_PRODUCT_BACK_LINKS.find((entry) =>
+    isSamePathOrDescendant(activePath, entry.prefix),
+  );
+}
+
+function isSamePathOrDescendant(activePath: string, prefix: string) {
+  return activePath === prefix || activePath.startsWith(`${prefix}/`);
 }
 
 function shouldUseSharedPlatformSidebar(
