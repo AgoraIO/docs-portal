@@ -32,8 +32,8 @@ description: "了解 App 使用实时消息 SDK 时的权限、初始化时机�
 
 SDK 初始化和相关功能配置，请查阅配置文档：
 
-- Android: [实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
-- iOS: [实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
+- Android：[实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
+- iOS：[实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
 
 实时消息 SDK 功能及接口配置方式及示例说明：
 
@@ -50,20 +50,20 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置开启示例：**
 
-    `void login(String token, ResultCallback<Void> resultCallback);`
+`void login(String token, ResultCallback<Void> resultCallback);`
 
-    参数：
+参数：
 
-    - `token`：在服务端生成的用于鉴权的动态密钥
-    - `resultCallback`：执行结果的回调通知
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `resultCallback`：执行结果的回调通知
 
-    **配置关闭示例：**
+**配置关闭示例：**
 
-    `void logout(ResultCallback<Void> resultCallback);`
+`void logout(ResultCallback<Void> resultCallback);`
 
-    参数：
+参数：
 
-    - `resultCallback`：执行结果的回调通知
+- `resultCallback`：执行结果的回调通知
 
 </Slot>
 
@@ -71,14 +71,14 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置示例：**
 
-    `void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback);`
+`void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback);`
 
-    参数：
+参数：
 
-    - `channelName`：频道名称
-    - `message`：消息载体
-    - `options`：消息选项
-    - `resultCallback`：执行结果的回调通知
+- `channelName`：频道名称
+- `message`：消息载体
+- `options`：消息选项
+- `resultCallback`：执行结果的回调通知
 
 </Slot>
 
@@ -86,14 +86,14 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置示例：**
 
-    `void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback);`
+`void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback);`
 
-    参数：
+参数：
 
-    - `channelName`：频道名称
-    - `channelType`：频道类型
-    - `options`：用户信息选项
-    - `resultCallback`：执行结果的回调通知
+- `channelName`：频道名称
+- `channelType`：频道类型
+- `options`：用户信息选项
+- `resultCallback`：执行结果的回调通知
 
 </Slot>
 
@@ -101,20 +101,20 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置开启示例：**
 
-    `- (void) loginByToken: (NSString _Nullable)token completion: (AgoraRtmOperationBlock _Nullable)completionBlock;`
+`- (void) loginByToken: (NSString _Nullable)token completion: (AgoraRtmOperationBlock _Nullable)completionBlock;`
 
-    参数：
+参数：
 
-    - `token`：在服务端生成的用于鉴权的动态密钥
-    - `completionBlock`：执行结果的回调通知
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `completionBlock`：执行结果的回调通知
 
-    **配置关闭示例：**
+**配置关闭示例：**
 
-    `- (void) logout: (AgoraRtmOperationBlock _Nullable)completionBlock;`
+`- (void) logout: (AgoraRtmOperationBlock _Nullable)completionBlock;`
 
-     参数：
+参数：
 
-     - `completion`：执行结果回调通知
+- `completion`：执行结果回调通知
 
 </Slot>
 
@@ -122,14 +122,14 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置示例：**
 
-    `- (void) publish:(NSString _Nonnull)channelName message:(NSString _Nonnull)message option:(AgoraRtmPublishOptions _Nullable)publishOption completion:(AgoraRtmOperationBlock _Nullable)completionBlock`
+`- (void) publish:(NSString _Nonnull)channelName message:(NSString _Nonnull)message option:(AgoraRtmPublishOptions _Nullable)publishOption completion:(AgoraRtmOperationBlock _Nullable)completionBlock`
 
-    参数：
+参数：
 
-    - `channelName`：频道名称
-    - `message`：消息载体
-    - `option`：消息选项
-    - `completion`：执行结果的回调通知
+- `channelName`：频道名称
+- `message`：消息载体
+- `option`：消息选项
+- `completion`：执行结果的回调通知
 
 </Slot>
 
@@ -137,14 +137,14 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 **配置示例：**
 
-    `-(void) whoNow: (NSString _Nonnull) channelName channelType: (AgoraRtmChannelType)channelType options: (AgoraRtmPresenceOptions _Nullable)options completion: (AgoraRtmWhoNowBlock _Nullable)completionBlock;`
+`-(void) whoNow: (NSString _Nonnull) channelName channelType: (AgoraRtmChannelType)channelType options: (AgoraRtmPresenceOptions _Nullable)options completion: (AgoraRtmWhoNowBlock _Nullable)completionBlock;`
 
-    参数：
+参数：
 
-    - `channelName`：频道名称
-    - `channelType`：频道类型
-    - `options`：用户信息选项
-    - `completion`：执行结果的回调通知
+- `channelName`：频道名称
+- `channelType`：频道类型
+- `options`：用户信息选项
+- `completion`：执行结果的回调通知
 
 </Slot>
 
@@ -156,7 +156,7 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 第三方 SDK 披露示例（仅供参考）：
 
-#### Android 示例：
+#### Android 示例
 
 - SDK 名称：实时消息 SDK
 - SDK 公司名称：上海声网科技有限公司
@@ -165,7 +165,7 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 - 实现 SDK 功能所需权限：无
 - SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
 
-#### iOS 示例：
+#### iOS 示例
 
 - SDK 名称：实时消息 SDK
 - SDK 公司名称：上海声网科技有限公司
@@ -178,7 +178,7 @@ SDK 初始化和相关功能配置，请查阅配置文档：
 
 App 首次运行时应当有隐私弹窗，隐私弹窗中应公示隐私政策内容并附完整隐私政策链接，并明确提示最终用户阅读并选择是否同意隐私政策；隐私弹窗应提供同意按钮和拒绝同意的按钮，并由最终用户主动选择。
 
-![](https://web-cdn.agora.io/docs-portal/img/security/app-alert.png)
+![App 隐私弹窗示例](https://web-cdn.agora.io/docs-portal/img/security/app-alert.png)
 
 ### 5. 最终用户行使权利的配置说明
 
@@ -190,11 +190,11 @@ App 开发者应根据相关法律法规为最终用户提供行使个人信息�
 
 相关配置操作，请查阅相关配置文档：
 
-- Android:
+- Android：
   - [实现收发消息-4. 登录服务](/zh-CN/realtime-media/rtm/get-started/quick-start#4-登录服务)
   - [实现收发消息-6. 登出服务](/zh-CN/realtime-media/rtm/get-started/quick-start#6-登出服务)
 
-- iOS:
+- iOS：
   - [实现收发消息-4. 登录服务](/zh-CN/realtime-media/rtm/get-started/quick-start#4-登录服务)
   - [实现收发消息-6. 登出服务](/zh-CN/realtime-media/rtm/get-started/quick-start#6-登出服务)
 
