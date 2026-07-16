@@ -1,0 +1,217 @@
+---
+title: agora::rtc::ILocalVideoTrack类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_video_track
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_video_track.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
+        as local text.
+---
+
+继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track).
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual void | [setEnabled](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a9f297ef1b10e76ee54bb9102059e8ab8) (bool enable, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual int | [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a0c5423ecd9dcde4fda0ac56d329f456d) (const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) &config, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual int | [setSimulcastStreamMode](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#ae9f954672d4b7a99e645459ce4c1083a) ([SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) mode, const [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) &config, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) | [getState](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a36640f215f62a7fa34ba9cae81497468) ()=0 |
+|  |  |
+| virtual bool | [getStatistics](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a1aa1259d42007c44273b3e0a0369efe1) ([LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) &stats)=0 |
+|  |  |
+| <Slot name="api-center-table-0" /> |  |
+| virtual bool | [addRenderer](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#ae7d2f01bc4b60103254b7781ceb7f8e4) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; videoRenderer, media::base::VIDEO_MODULE_POSITION position=media::base::POSITION_POST_FILTERS, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual bool | [removeRenderer](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a3a9f95dd2b82c66244ae3547506e7143) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; videoRenderer, media::base::VIDEO_MODULE_POSITION position=media::base::POSITION_POST_FILTERS, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) | [getType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a7b7a35053b6b3aea7ad9cec08a6f0033) ()=0 |
+|  |  |
+| <Slot name="api-center-table-1" /> |  |
+| virtual void | AddRef () const =0 |
+|  |  |
+| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
+|  |  |
+| virtual bool | HasOneRef () const =0 |
+|  |  |
+
+<Slot for="api-center-table-0">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track)
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+| <a id="pro-methods"></a> Protected 成员函数 |  |
+| --- | --- |
+|  | [~ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a7e36626a9d79baabffb6010356a48aeb) () |
+|  |  |
+| <Slot name="api-center-table-2" /> |  |
+|  | [~IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a7730b63c7a347813939f94880b12de9e) () |
+|  |  |
+| <Slot name="api-center-table-3" /> |  |
+| virtual | ~RefCountInterface () |
+|  |  |
+
+<Slot for="api-center-table-2">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track)
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+<a id="details"></a>
+
+## 详细描述
+
+[`ILocalVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 类提供本地视频轨道的基本方法。
+
+你可以通过 [publishVideo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#a40690b61671aa9e6ceef1e7347fd3e38) 方法发布一个或多个视频轨道。
+
+## 构造及析构函数说明
+
+<a id="a7e36626a9d79baabffb6010356a48aeb"></a>
+
+## ◆~ILocalVideoTrack()
+
+| agora::rtc::ILocalVideoTrack::~ILocalVideoTrack () | inlineprotected |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="a9f297ef1b10e76ee54bb9102059e8ab8"></a>
+
+## ◆setEnabled()
+
+| virtual void agora::rtc::ILocalVideoTrack::setEnabled ( bool *enable*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
+| --- | --- |
+
+开启或关闭本地视频轨道。
+
+本地视频轨道开启之后，SDK 可以对采集、处理和编码本地视频。
+
+### 参数
+
+| enable | 开启或关闭本地视频轨道。`true`: 开启本地视频轨道。 `false`: 关闭本地视频轨道。 |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+<a id="a0c5423ecd9dcde4fda0ac56d329f456d"></a>
+
+## ◆setVideoEncoderConfiguration()
+
+| virtual int agora::rtc::ILocalVideoTrack::setVideoEncoderConfiguration ( const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
+| --- | --- |
+
+设置视频编码属性。
+
+### 参数
+
+| config | 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration)。 |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae9f954672d4b7a99e645459ce4c1083a"></a>
+
+## ◆setSimulcastStreamMode()
+
+| virtual int agora::rtc::ILocalVideoTrack::setSimulcastStreamMode ( [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) *mode*, const [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
+| --- | --- |
+
+在发送端设置双流模式并设置视频小流。
+
+### 参数
+
+| mode | 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4)。 |
+| --- | --- |
+| config | 视频小流的配置。详见 [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal)。当设置 `mode` 参数为 `DISABLE_SIMULCAST_STREAM` 时，`config` 参数不会生效。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a36640f215f62a7fa34ba9cae81497468"></a>
+
+## ◆getState()
+
+| virtual [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) agora::rtc::ILocalVideoTrack::getState () | pure virtual |
+| --- | --- |
+
+获取本地视频流状态。
+
+### 返回
+
+本地视频流状态： [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) 。
+
+<a id="a1aa1259d42007c44273b3e0a0369efe1"></a>
+
+## ◆getStatistics()
+
+| virtual bool agora::rtc::ILocalVideoTrack::getStatistics ( [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) & *stats*) | pure virtual |
+| --- | --- |
+
+获取本地视频轨道的统计信息。
+
+### 参数
+
+| [out] | stats | 统计信息： [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats)。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -1,0 +1,77 @@
+---
+title: io.agora.rtc.INetworkObserver接口 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_network_observer.html
+  sourcePath: html-docs/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_network_observer.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_i_network_observer_8java.html as local text.
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| void | [onUplinkNetworkInfoUpdated](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer#af8fe286a5a737aacc13448bc251786c4) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [UplinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-uplink-network-info) info) |
+| void | [onDownlinkNetworkInfoUpdated](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer#af0d9876c0127fed7d217b81e632f4ff8) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [DownlinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-downlink-network-info) info) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+INetworkObserver 接口。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="af0d9876c0127fed7d217b81e632f4ff8"></a>
+
+## ◆onDownlinkNetworkInfoUpdated()
+
+| void io.agora.rtc.INetworkObserver.onDownlinkNetworkInfoUpdated | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
+| --- | --- | --- | --- |
+|  |  | [DownlinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-downlink-network-info) | *info*) |
+
+下行网络信息更新时触发。
+
+该回调用于提醒用户根据需要切换大小流。
+
+### 参数
+
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| --- | --- |
+| info | 下行网络信息集合。 |
+
+<a id="af8fe286a5a737aacc13448bc251786c4"></a>
+
+## ◆onUplinkNetworkInfoUpdated()
+
+| void io.agora.rtc.INetworkObserver.onUplinkNetworkInfoUpdated | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
+| --- | --- | --- | --- |
+|  |  | [UplinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-uplink-network-info) | *info*) |
+
+上行网络信息更新时触发。
+
+该回调用于提醒用户基于目标码率调整发送节奏。
+
+### 参数
+
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| --- | --- |
+| info | 上行网络信息集合。 |
+
+---
+
+该接口的文档由以下文件生成:
+
+- INetworkObserver.java

@@ -1,0 +1,217 @@
+---
+title: agora::rtc::IRemoteVideoTrack类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_video_track
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_video_track.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
+        as local text.
+---
+
+继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track).
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual bool | [getStatistics](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#aea7a83b6554e74c363969eb80495ecb9) ([RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) &stats)=0 |
+|  |  |
+| virtual [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) | [getState](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#a9198277c30a29b82237876d7bd63fb63) ()=0 |
+|  |  |
+| virtual bool | [getTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#aae079a7139538bc5e9980b1259534c2e) ([VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info) &info)=0 |
+|  |  |
+| virtual int | [registerVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#a450b18c898cedacc369267fdd3b73725) ([IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) *videoReceiver, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual int | [unregisterVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#a2542a5a5622488bc1aefe76348393fc2) ([IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) *videoReceiver)=0 |
+|  |  |
+| <Slot name="api-center-table-0" /> |  |
+| virtual bool | [addRenderer](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#ae7d2f01bc4b60103254b7781ceb7f8e4) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; videoRenderer, media::base::VIDEO_MODULE_POSITION position=media::base::POSITION_POST_FILTERS, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual bool | [removeRenderer](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a3a9f95dd2b82c66244ae3547506e7143) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; videoRenderer, media::base::VIDEO_MODULE_POSITION position=media::base::POSITION_POST_FILTERS, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
+|  |  |
+| virtual [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) | [getType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a7b7a35053b6b3aea7ad9cec08a6f0033) ()=0 |
+|  |  |
+| <Slot name="api-center-table-1" /> |  |
+| virtual void | AddRef () const =0 |
+|  |  |
+| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
+|  |  |
+| virtual bool | HasOneRef () const =0 |
+|  |  |
+
+<Slot for="api-center-table-0">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track)
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+| <a id="pro-methods"></a> Protected 成员函数 |  |
+| --- | --- |
+|  | [~IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track#a83206958fae1976ea8b63acaeec7f7ac) () |
+|  |  |
+| <Slot name="api-center-table-2" /> |  |
+|  | [~IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track#a7730b63c7a347813939f94880b12de9e) () |
+|  |  |
+| <Slot name="api-center-table-3" /> |  |
+| virtual | ~RefCountInterface () |
+|  |  |
+
+<Slot for="api-center-table-2">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track)
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+<a id="details"></a>
+
+## 详细描述
+
+[IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) 类。
+
+## 构造及析构函数说明
+
+<a id="a83206958fae1976ea8b63acaeec7f7ac"></a>
+
+## ◆~IRemoteVideoTrack()
+
+| agora::rtc::IRemoteVideoTrack::~IRemoteVideoTrack () | inlineprotected |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="aea7a83b6554e74c363969eb80495ecb9"></a>
+
+## ◆getStatistics()
+
+| virtual bool agora::rtc::IRemoteVideoTrack::getStatistics ( [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) & *stats*) | pure virtual |
+| --- | --- |
+
+获取远端视频轨道的统计信息。
+
+### 参数
+
+| [out] | stats | 远端视频轨道的统计信息： [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats)。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9198277c30a29b82237876d7bd63fb63"></a>
+
+## ◆getState()
+
+| virtual [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) agora::rtc::IRemoteVideoTrack::getState () | pure virtual |
+| --- | --- |
+
+获取远端视频轨道的状态。
+
+### 返回
+
+远端视频轨道的状态： [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) 。
+
+<a id="aae079a7139538bc5e9980b1259534c2e"></a>
+
+## ◆getTrackInfo()
+
+| virtual bool agora::rtc::IRemoteVideoTrack::getTrackInfo ( [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info) & *info*) | pure virtual |
+| --- | --- |
+
+获取远端视频轨道的信息。
+
+### 参数
+
+| [out] | info | 远端视频轨道的信息: [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info)。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a450b18c898cedacc369267fdd3b73725"></a>
+
+## ◆registerVideoEncodedImageReceiver()
+
+| virtual int agora::rtc::IRemoteVideoTrack::registerVideoEncodedImageReceiver ( [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) * *videoReceiver*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
+| --- | --- |
+
+注册 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+注册成功之后， SDK 在收到已编码视频帧时触发 [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) 回调。
+
+### 参数
+
+| videoReceiver | [`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。 |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2542a5a5622488bc1aefe76348393fc2"></a>
+
+## ◆unregisterVideoEncodedImageReceiver()
+
+| virtual int agora::rtc::IRemoteVideoTrack::unregisterVideoEncodedImageReceiver ( [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) * *videoReceiver*) | pure virtual |
+| --- | --- |
+
+销毁 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+### 参数
+
+| videoReceiver | [`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。 |
+| --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

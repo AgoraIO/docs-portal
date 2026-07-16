@@ -1,0 +1,138 @@
+---
+title: agora::rtc::IRtmpConnectionObserver类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtmp_connection_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtmp_connection_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual void | [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a4048ee1d38dff83649d33bfef93a30f6) (const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) &connectionInfo)=0 |
+|  |  |
+| virtual void | [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a676896b8556082f878cb2abfff4f60db) (const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) &connectionInfo)=0 |
+|  |  |
+| virtual void | [onReconnecting](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a52b17ca702ecc8c0aad58565313a2280) (const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) &connectionInfo)=0 |
+|  |  |
+| virtual void | [onReconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a735ef894c2d4e077c3302a248cc42bbf) (const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) &connectionInfo)=0 |
+|  |  |
+| virtual void | [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a86658e80515ca6a85ebde8c230c71f16) (const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) &connectionInfo, [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) errCode)=0 |
+|  |  |
+| virtual void | [onTransferStatistics](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a8a4b5e4b8b9357a4881284b7f56bf99f) (uint64_t video_width, uint64_t video_height, uint64_t video_bitrate, uint64_t audio_bitrate, uint64_t video_frame_rate, uint64_t push_video_frame_cnt, uint64_t pop_video_frame_cnt)=0 |
+|  |  |
+| virtual | [~IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a60abbbec58ed6a9ab1688f1e60a501d3) () |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IRtmpConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 类，用于监听 SDK 与 CDN 的连接状态。
+
+## 构造及析构函数说明
+
+<a id="a60abbbec58ed6a9ab1688f1e60a501d3"></a>
+
+## ◆~IRtmpConnectionObserver()
+
+| virtual agora::rtc::IRtmpConnectionObserver::~IRtmpConnectionObserver () | inlinevirtual |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="a4048ee1d38dff83649d33bfef93a30f6"></a>
+
+## ◆onConnected()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onConnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
+| --- | --- |
+
+SDK 与 CDN 的连接状态变更为 `STATE_CONNECTED(3)` 时触发。
+
+### 参数
+
+| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
+| --- | --- |
+
+<a id="a676896b8556082f878cb2abfff4f60db"></a>
+
+## ◆onDisconnected()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onDisconnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
+| --- | --- |
+
+SDK 与 CDN 的连接状态变更为 `STATE_DISCONNECTED(1)` 时触发。
+
+### 参数
+
+| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
+| --- | --- |
+
+<a id="a52b17ca702ecc8c0aad58565313a2280"></a>
+
+## ◆onReconnecting()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onReconnecting ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
+| --- | --- |
+
+SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTING(4)` 时触发。
+
+### 参数
+
+| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
+| --- | --- |
+
+<a id="a735ef894c2d4e077c3302a248cc42bbf"></a>
+
+## ◆onReconnected()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onReconnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
+| --- | --- |
+
+SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTED(6)` 时触发。
+
+### 参数
+
+| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
+| --- | --- |
+
+<a id="a86658e80515ca6a85ebde8c230c71f16"></a>
+
+## ◆onConnectionFailure()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onConnectionFailure ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*, [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) *errCode*) | pure virtual |
+| --- | --- |
+
+SDK 与 CDN 的连接状态变更为 `STATE_FAILED(5)` 时触发。
+
+### 参数
+
+| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
+| --- | --- |
+| errCode | 连接失败的错误码： [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de)。 |
+
+<a id="a8a4b5e4b8b9357a4881284b7f56bf99f"></a>
+
+## ◆onTransferStatistics()
+
+| virtual void agora::rtc::IRtmpConnectionObserver::onTransferStatistics ( uint64_t *video_width*, uint64_t *video_height*, uint64_t *video_bitrate*, uint64_t *audio_bitrate*, uint64_t *video_frame_rate*, uint64_t *push_video_frame_cnt*, uint64_t *pop_video_frame_cnt*) | pure virtual |
+| --- | --- |
+
+CDN 推流统计数据回调。
+
+在主播端直接向 CDN 推流的过程中，SDK 每隔 1 秒触发一次该回调。
+
+### 参数
+
+| video_width | 已推送视频的宽度（px）。 |
+| --- | --- |
+| video_height | 已推送视频的高度（px）。 |
+| video_bitrate | 已推送视频的码率（bps）。 |
+| audio_bitrate | 已推送音频的码率（bps）。 |
+| video_frame_rate | 已推送视频的帧率（fps）。 |
+| push_video_frame_cnt | 已推送的视频帧数。 |
+| pop_video_frame_cnt | 实际推送到 CDN 的视频帧数。 |

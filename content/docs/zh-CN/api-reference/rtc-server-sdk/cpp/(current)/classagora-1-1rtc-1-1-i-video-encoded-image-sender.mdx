@@ -1,0 +1,122 @@
+---
+title: agora::rtc::IVideoEncodedImageSender类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_encoded_image_sender
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_encoded_image_sender.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
+        as local text.
+---
+
+继承自 agora::RefCountInterface.
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual bool | [sendEncodedVideoImage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender#ab3e92d1574bdb798c1f10d431bf3fd8f) (const uint8_t *imageBuffer, size_t length, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) &videoEncodedFrameInfo)=0 |
+|  |  |
+| <Slot name="api-center-table-0" /> |  |
+| virtual void | AddRef () const =0 |
+|  |  |
+| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
+|  |  |
+| virtual bool | HasOneRef () const =0 |
+|  |  |
+
+<Slot for="api-center-table-0">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+| <a id="pro-methods"></a> Protected 成员函数 |  |
+| --- | --- |
+|  | [~IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender#a4d805af61155f864722a53372188329e) () |
+|  |  |
+| <Slot name="api-center-table-1" /> |  |
+| virtual | ~RefCountInterface () |
+|  |  |
+
+<Slot for="api-center-table-1">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 agora::RefCountInterface
+
+</Slot>
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IVideoEncodedImageSender`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender) 类。
+
+## 构造及析构函数说明
+
+<a id="a4d805af61155f864722a53372188329e"></a>
+
+## ◆~IVideoEncodedImageSender()
+
+| agora::rtc::IVideoEncodedImageSender::~IVideoEncodedImageSender () | inlineprotected |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="ab3e92d1574bdb798c1f10d431bf3fd8f"></a>
+
+## ◆sendEncodedVideoImage()
+
+| virtual bool agora::rtc::IVideoEncodedImageSender::sendEncodedVideoImage ( const uint8_t * *imageBuffer*, size_t *length*, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) & *videoEncodedFrameInfo*) | pure virtual |
+| --- | --- |
+
+将已编码的视频帧发送到视频轨道。
+
+### 参数
+
+| imageBuffer | 视频缓冲区。 |
+| --- | --- |
+| length | 视频数据长度（字节）。 |
+| videoEncodedFrameInfo | 已编码视频帧信息： [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

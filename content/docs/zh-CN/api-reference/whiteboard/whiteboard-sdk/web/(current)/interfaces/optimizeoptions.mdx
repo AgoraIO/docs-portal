@@ -1,0 +1,68 @@
+---
+title: Interface OptimizeOptions
+description: 白板绘制性能优化设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/optimizeoptions
+  sourcePath: html-docs/whiteboard/Web/interfaces/optimizeoptions.html
+  generator: typedoc
+  warnings: []
+---
+
+白板绘制性能优化设置。
+
+### since
+
+2.16.48
+
+### Hierarchy
+
+- OptimizeOptions
+
+## Index
+
+### Properties
+
+- [useLowTaskAnimation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions#uselowtaskanimation)
+- [useSinglerCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions#usesinglercanvas)
+- [useTopFloatOriginCoord](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions#usetopfloatorigincoord)
+
+## Properties
+
+<a id="uselowtaskanimation"></a>
+
+### useLowTaskAnimation
+
+useLowTaskAnimation: [LowTaskAnimationInterval](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/lowtaskanimationinterval)
+
+- Defined in [index-zh.d.ts:124](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L124)
+
+设置白板绘制的刷新间隔。详见 [LowTaskAnimationInterval](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/lowtaskanimationinterval)。
+
+<a id="usesinglercanvas"></a>
+
+### useSinglerCanvas
+
+useSinglerCanvas: boolean
+
+- Defined in [index-zh.d.ts:133](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L133)
+
+是否使用单个画布：
+
+- `true`：使用单个画布，应用浮动画布优化策略。
+- `false`：（默认）使用双画布交替绘制。
+
+白板默认使用两个画布交替绘制以避免在部分设备上绘制时可能出现的画面闪烁现象，使用单个画布绘制可以避免重绘，降低性能消耗。
+
+<a id="usetopfloatorigincoord"></a>
+
+### useTopFloatOriginCoord
+
+useTopFloatOriginCoord: [OriginCoordType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/origincoordtype)
+
+- Defined in [index-zh.d.ts:140](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L140)
+
+浮动画布生成的位置和绘制点的对应关系，默认为绘制点位于浮动画布的左上角。详见 [OriginCoordType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/origincoordtype)。
+
+仅在 `useSinglerCanvas` 为 `true` 时生效。

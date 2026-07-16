@@ -1,0 +1,159 @@
+---
+title: agora::linuxsdk::VideoMixingLayout结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/structagora_1_1linuxsdk_1_1_video_mixing_layout
+  sourcePath: html-docs/recording/cpp/structagora_1_1linuxsdk_1_1_video_mixing_layout.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="nested-classes"></a> 类 |  |
+| --- | --- |
+| struct | [Region](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout-1-1-region) |
+|  |  |
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#abb3d1ffd1269badf23786b6a7abe0bdb) () |
+|  |  |
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+| int | [canvasWidth](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a09a574878b5dafddbdf59e9adbf45ffd) |
+|  |  |
+| int | [canvasHeight](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a011af6f6292ab39c1f2ee7c4950cc9eb) |
+|  |  |
+| const char * | [backgroundColor](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a59784f6c634084dc87716ceaef078ed7) |
+|  |  |
+| uint32_t | [regionCount](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#ae034bcbe563211de2cd87f73754a19ea) |
+|  |  |
+| const [Region](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout-1-1-region) * | [regions](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a9c56a5301108b7454d4c1d0e2460d924) |
+|  |  |
+| const char * | [appData](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a254753d7bed161a7eafb66974f6e9eb6) |
+|  |  |
+| int | [appDataLength](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#ac57e9fd3b6d3a60fa4a7ef7788a480c7) |
+|  |  |
+| bool | [keepLastFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a6c5850b474169021fc5524db1c063d7b) |
+|  |  |
+| uint32_t | [wm_num](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a9f447f0fc595f461265fd41efea6048a) |
+|  |  |
+| [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config) * | [wm_configs](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout#a50485f8dd8ccd1e968e0cdc18a508b1e) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+视频合流布局的具体设置。
+
+## 构造及析构函数说明
+
+<a id="abb3d1ffd1269badf23786b6a7abe0bdb"></a>
+
+## ◆VideoMixingLayout()
+
+| agora::linuxsdk::VideoMixingLayout::VideoMixingLayout () | inline |
+| --- | --- |
+
+## 类成员变量说明
+
+<a id="a09a574878b5dafddbdf59e9adbf45ffd"></a>
+
+## ◆canvasWidth
+
+| int agora::linuxsdk::VideoMixingLayout::canvasWidth |
+| --- |
+
+整个屏幕（画布）的宽度。
+
+<a id="a011af6f6292ab39c1f2ee7c4950cc9eb"></a>
+
+## ◆canvasHeight
+
+| int agora::linuxsdk::VideoMixingLayout::canvasHeight |
+| --- |
+
+整个屏幕（画布）的高度。
+
+<a id="a59784f6c634084dc87716ceaef078ed7"></a>
+
+## ◆backgroundColor
+
+| const char* agora::linuxsdk::VideoMixingLayout::backgroundColor |
+| --- |
+
+屏幕（画布）的背景颜色。可根据所需颜色填写对应的 6 位 RGB 值，如 "#000000"。
+
+### 注解
+
+如果你调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 方法加入频道时设置了 [Recordingconfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [defaultVideoBg](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#abf37d73566b06c334822c77564912ac5) 参数，`backgroundColor` 不会生效。
+
+<a id="ae034bcbe563211de2cd87f73754a19ea"></a>
+
+## ◆regionCount
+
+| uint32_t agora::linuxsdk::VideoMixingLayout::regionCount |
+| --- |
+
+频道内显示头像或视频的用户（通信模式）/主播（直播模式）的数量。
+
+<a id="a9c56a5301108b7454d4c1d0e2460d924"></a>
+
+## ◆regions
+
+| const [Region](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout-1-1-region)* agora::linuxsdk::VideoMixingLayout::regions |
+| --- |
+
+频道内每位用户（通信模式）/主播（直播模式）在屏幕上的画面。具体设置见 [Region](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout-1-1-region)。
+
+<a id="a254753d7bed161a7eafb66974f6e9eb6"></a>
+
+## ◆appData
+
+| const char* agora::linuxsdk::VideoMixingLayout::appData |
+| --- |
+
+应用程序自定义的数据。
+
+<a id="ac57e9fd3b6d3a60fa4a7ef7788a480c7"></a>
+
+## ◆appDataLength
+
+| int agora::linuxsdk::VideoMixingLayout::appDataLength |
+| --- |
+
+应用程序自定义的数据的长度。
+
+<a id="a6c5850b474169021fc5524db1c063d7b"></a>
+
+## ◆keepLastFrame
+
+| bool agora::linuxsdk::VideoMixingLayout::keepLastFrame |
+| --- |
+
+用户（通信模式）/主播（直播模式）离开频道后，是否显示其视频的最后一帧：
+
+- true: 显示视频最后一帧。
+- false: （默认）不显示视频的最后一帧。
+
+<a id="a9f447f0fc595f461265fd41efea6048a"></a>
+
+## ◆wm_num
+
+| uint32_t agora::linuxsdk::VideoMixingLayout::wm_num |
+| --- |
+
+设置水印的个数。
+
+录制 SDK 最多支持 15 个水印，其中文字水印最多 10 个，时间戳水印最多 1 个，图片水印最多 4 个。
+
+<a id="a50485f8dd8ccd1e968e0cdc18a508b1e"></a>
+
+## ◆wm_configs
+
+| [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config)* agora::linuxsdk::VideoMixingLayout::wm_configs |
+| --- |
+
+水印的详细设置。WatermarkConfig 组成的数组。

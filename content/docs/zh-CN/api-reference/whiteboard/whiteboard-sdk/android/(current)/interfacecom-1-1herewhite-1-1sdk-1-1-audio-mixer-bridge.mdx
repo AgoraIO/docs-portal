@@ -1,0 +1,138 @@
+---
+title: com.herewhite.sdk.AudioMixerBridge接口 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/interfacecom_1_1herewhite_1_1sdk_1_1_audio_mixer_bridge
+  sourcePath: html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1_audio_mixer_bridge.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| void | [startAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a6ec58c0aa178a1efc687c7825c088914) (String filepath, boolean loopback, boolean replace, int cycle) |
+|  |  |
+| void | [stopAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a7bae27d4001ab200ba0800faf64a5c76) () |
+|  |  |
+| void | [setAudioMixingPosition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a591d888b0e40ab022a1d1a0d9ac7ad52) (int position) |
+|  |  |
+| void | [pauseAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a1033eec3c9df95156650be1864e27df0) () |
+|  |  |
+| void | [resumeAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#adace83b509fdfc63f4816a04ad202903) () |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+[`AudioMixerBridge`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge) 接口，用于桥接 Agora RTC SDK 的混音方法和白板 SDK。
+
+### 自从
+
+2.9.15
+
+当用户同时使用音视频功能和互动白板，且在互动白板中展示的动态 PPT 包含音频文件时，可能遇到以下问题：
+
+- 播放 PPT 内的音频时声音很小。
+- 播放 PPT 内的音频时有回声。
+
+为解决上述问题，你可以使用 [`AudioMixerBridge`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge) 接口，以调用 RTC SDK 的混音方法播放动态 PPT 中的音频文件。
+
+### 注解
+
+该接口基于 Agora RTC SDK 的混音方法设计，如果你使用的实时音视频 SDK 不是 Agora RTC SDK，但也具有混音接口和混音状态回调，你也可以调用 [`AudioMixerBridge`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge) 接口。
+
+## 成员函数说明
+
+<a id="a6ec58c0aa178a1efc687c7825c088914"></a>
+
+## ◆startAudioMixing()
+
+| void com.herewhite.sdk.AudioMixerBridge.startAudioMixing | ( | String | *filepath*, |
+| --- | --- | --- | --- |
+|  |  | boolean | *loopback*, |
+|  |  | boolean | *replace*, |
+|  |  | int | *cycle* |
+|  | ) |  |  |
+
+开始播放音乐文件及混音。
+
+进行混音后，需要将混音结果通过 [`setMediaState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-mixer-implement#a243f0cb117c353fc1aefac24a3689d78) 传递给动态 PPT 内部。
+
+### 参数
+
+| filepath | 指定需要混音的本地或在线音频文件的绝对路径。 |
+| --- | --- |
+| loopback | <Slot name="api-center-table-0" /> |
+| replace | <Slot name="api-center-table-1" /> |
+| cycle | <Slot name="api-center-table-2" /> |
+
+<Slot for="api-center-table-0">
+
+是否只有本地用户可以听到混音后的音频流：
+
+- `true`：只有本地可以听到混音的音频流。
+- `false`：本地和对方都可以听到混音的音频流。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+是否播放麦克风采集的音频：
+
+- `true`： 只播放音频文件，不播放麦克风采集的音频。
+- `false`: 将音频文件和麦克风采集的音频混音后播放。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+音乐文件的播放次数。
+
+- ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
+- -1: 无限循环播放。
+
+</Slot>
+
+<a id="a7bae27d4001ab200ba0800faf64a5c76"></a>
+
+## ◆stopAudioMixing()
+
+| void com.herewhite.sdk.AudioMixerBridge.stopAudioMixing | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+停止播放音乐文件及混音。
+
+<a id="a591d888b0e40ab022a1d1a0d9ac7ad52"></a>
+
+## ◆setAudioMixingPosition()
+
+| void com.herewhite.sdk.AudioMixerBridge.setAudioMixingPosition | ( | int | *position* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+设置音乐文件的播放位置。
+
+### 参数
+
+| position | 整数。进度条位置，单位为毫秒。 |
+| --- | --- |
+
+<a id="a1033eec3c9df95156650be1864e27df0"></a>
+
+## ◆pauseAudioMixing()
+
+| void com.herewhite.sdk.AudioMixerBridge.pauseAudioMixing | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+暂停播放音乐文件及混音。
+
+<a id="adace83b509fdfc63f4816a04ad202903"></a>
+
+## ◆resumeAudioMixing()
+
+| void com.herewhite.sdk.AudioMixerBridge.resumeAudioMixing | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+恢复播放音乐文件及混音。

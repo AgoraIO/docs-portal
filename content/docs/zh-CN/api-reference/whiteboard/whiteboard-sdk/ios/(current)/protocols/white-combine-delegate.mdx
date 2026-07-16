@@ -1,0 +1,133 @@
+---
+title: WhiteCombineDelegate Protocol Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteCombineDelegate
+  sourcePath: html-docs/whiteboard/iOS/Protocols/WhiteCombineDelegate.html
+  generator: appledoc
+  warnings: []
+---
+
+| Conforms to | NSObject |
+| --- | --- |
+| Declared in | WhiteCombinePlayer.h |
+
+<a id="overview"></a>
+
+## Overview
+
+[`WhiteCombinePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 的回调。
+
+<a id="tasks"></a>
+
+<a id="//api/name/combinePlayerStartBuffering"></a>
+
+### `– combinePlayerStartBuffering`
+
+白板回放播放器或本地播放器开始缓冲回调。
+
+`- (void)combinePlayerStartBuffering`
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/combinePlayerEndBuffering"></a>
+
+### `– combinePlayerEndBuffering`
+
+白板回放播放器和本地播放器全部缓冲结束回调。
+
+`- (void)combinePlayerEndBuffering`
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/nativePlayerStartBuffering"></a>
+
+### `– nativePlayerStartBuffering`
+
+本地播放器开始缓冲回调。
+
+`- (void)nativePlayerStartBuffering`
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/nativePlayerEndBuffering"></a>
+
+### `– nativePlayerEndBuffering`
+
+本地播放器结束缓冲回调。
+
+`- (void)nativePlayerEndBuffering`
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/nativePlayerDidFinish"></a>
+
+### `– nativePlayerDidFinish`
+
+本地播放器播放结束回调。
+
+`- (void)nativePlayerDidFinish`
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/combineVideoPlayStateChange:"></a>
+
+### `– combineVideoPlayStateChange:`
+
+[`WhiteCombinePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 播放状态发生改变回调。
+
+`- (void)combineVideoPlayStateChange:(BOOL)*isPlaying*`
+
+#### Parameters
+
+| `isPlaying` | 是否正在播放 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/combineVideoPlayerError:"></a>
+
+### `– combineVideoPlayerError:`
+
+[`WhiteCombinePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 无法进行播放，需要重新创建 [WhiteCombinePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 进行播放。
+
+`- (void)combineVideoPlayerError:(NSError *)*error*`
+
+#### Parameters
+
+| `error` | 错误原因 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/loadedTimeRangeChange:"></a>
+
+### `– loadedTimeRangeChange:`
+
+[`WhiteCombinePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 加载时间范围发生改变回调。
+
+`- (void)loadedTimeRangeChange:(NSArray&lt;NSValue*&gt; *)*loadedTimeRanges*`
+
+#### Parameters
+
+| `loadedTimeRanges` | 加载时间范围。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteCombinePlayer.h`

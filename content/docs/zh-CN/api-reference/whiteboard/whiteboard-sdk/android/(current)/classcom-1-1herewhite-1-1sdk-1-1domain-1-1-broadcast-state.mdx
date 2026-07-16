@@ -1,0 +1,98 @@
+---
+title: com.herewhite.sdk.domain.BroadcastState类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_broadcast_state
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_broadcast_state.html
+  generator: doxygen
+  warnings: []
+---
+
+类 com.herewhite.sdk.domain.BroadcastState 继承关系图:
+
+![API 文档图片](/img/api-center-generated/aef94349ab93-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_broadcast_state.png)
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| [ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-view-mode) | [getMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state#ab14fce0e852bff5e0649b4c7fbf96759) () |
+|  |  |
+| Long | [getBroadcasterId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state#a4afd9153c77ee5734daae0506eada3d6) () |
+|  |  |
+| [RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member) | [getBroadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state#a5653cc0358539917a83e02d8068afa63) () |
+|  |  |
+| <Slot name="api-center-table-0" /> |  |
+| <Slot name="api-center-table-1" /> | **toString** () |
+|  |  |
+| <Slot name="api-center-table-2" /> | **toJSON** () |
+|  |  |
+
+<Slot for="api-center-table-0">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 [com.herewhite.sdk.domain.WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object)
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+<a id="ac4a4a61fe5d2698214c4827498432401"></a>
+String
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="a475dfb520f117f519abeb16409f90bc2"></a>
+JSONObject
+
+</Slot>
+
+<a id="details"></a>
+
+## 详细描述
+
+视角状态，包含视角为主播模式的用户信息。
+
+## 成员函数说明
+
+<a id="ab14fce0e852bff5e0649b4c7fbf96759"></a>
+
+## ◆getMode()
+
+| [ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-view-mode) com.herewhite.sdk.domain.BroadcastState.getMode | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取用户的视角模式。
+
+### 返回
+
+用户的视角模式。
+
+<a id="a4afd9153c77ee5734daae0506eada3d6"></a>
+
+## ◆getBroadcasterId()
+
+| Long com.herewhite.sdk.domain.BroadcastState.getBroadcasterId | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取主播模式用户在房间中的用户 ID。
+
+2.4.8 版本前，当房间中没有主播时，错误地返回了 0。 2.4.8 版本修复了该问题。修复后，当房间内没有主播时，返回值为 null。
+
+### 返回
+
+主播模式用户的用户 ID。
+
+<a id="a5653cc0358539917a83e02d8068afa63"></a>
+
+## ◆getBroadcasterInformation()
+
+| [RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member) com.herewhite.sdk.domain.BroadcastState.getBroadcasterInformation | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取主播模式用户的用户信息。
+
+### 返回
+
+用户信息。详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。

@@ -1,0 +1,60 @@
+---
+title: Interface ConstrainLong
+description: 约束对象，一般用于在 VideoEncoderConfiguration 中指定采集分辨率/帧率的范围。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/constrainlong
+  sourcePath: html-docs/rtc/Web/interfaces/constrainlong.html
+  generator: typedoc
+  warnings: []
+---
+
+约束对象，一般用于在 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 中指定采集分辨率/帧率的范围。
+
+### Hierarchy
+
+- ConstrainLong
+
+## Index
+
+### Properties
+
+- [exact](/zh-CN/api-reference/rtc/web/interfaces/constrainlong#exact)
+- [ideal](/zh-CN/api-reference/rtc/web/interfaces/constrainlong#ideal)
+- [max](/zh-CN/api-reference/rtc/web/interfaces/constrainlong#max)
+- [min](/zh-CN/api-reference/rtc/web/interfaces/constrainlong#min)
+
+## Properties
+
+<a id="exact"></a>
+
+### Optional exact
+
+exact: number
+
+严格指定采集设备最终输出的值，如果设备不支持指定的值，采集会失败。
+
+<a id="ideal"></a>
+
+### Optional ideal
+
+ideal: number
+
+期望采集设备最终输出的值，如果设备不支持指定的值，会尽量输出一个最靠近的值。
+
+<a id="max"></a>
+
+### Optional max
+
+max: number
+
+采集设备最终输出的值上限。
+
+<a id="min"></a>
+
+### Optional min
+
+min: number
+
+采集设备最终输出的值下限。

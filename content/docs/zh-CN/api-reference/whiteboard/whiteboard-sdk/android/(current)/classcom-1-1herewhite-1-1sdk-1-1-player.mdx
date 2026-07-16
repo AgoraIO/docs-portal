@@ -1,0 +1,459 @@
+---
+title: com.herewhite.sdk.Player类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_player.html
+  generator: doxygen
+  warnings: []
+---
+
+类 com.herewhite.sdk.Player 继承关系图:
+
+![API 文档图片](/img/api-center-generated/4013dfa5e043-classcom_1_1herewhite_1_1sdk_1_1_player.png)
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| double | [getPlaybackSpeed](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ac4d5da09b9af9aba4fa3b31dc26980f6) () |
+|  |  |
+| void | [setPlaybackSpeed](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#af654c75ee033ccb5d3636c83553b09a6) (double playbackSpeed) |
+|  |  |
+| void | [getPlaybackSpeed](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad466294818d8245c43d32666c01848a1) (final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Double &gt; promise) |
+|  |  |
+| void | [play](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) () |
+|  |  |
+| void | [pause](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) () |
+|  |  |
+| void | [stop](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3) () |
+|  |  |
+| void | [seekToScheduleTime](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a2cdff830a4a940a377ddffb97fbc54de) (long seekTime) |
+|  |  |
+| void | [setObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a4b611db510d583279ad3aabd6a58bfc5) ([PlayerObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-observer-mode) mode) |
+|  |  |
+| [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) | [getPlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) () |
+|  |  |
+| void | [getPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79) (final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) &gt; promise) |
+|  |  |
+| [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) | [getPlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad18a956ac130dc58b2b3220e25864efd) () |
+|  |  |
+| void | [getPlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#afb3235211d0f04c675a4670e8415abaa) (final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) &gt; promise) |
+|  |  |
+| [PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) | [getPlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a180372d211ae3760cbc0c3f9c74e0b6b) () |
+|  |  |
+| void | [getPlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad3aa2fc1c1f96fb580d2c8010e178c19) (final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) &gt; promise) |
+|  |  |
+| void | [addPlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a8ad1cf8a6b7eb05f1c07058a2590bf5f) (@NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) playerListener) |
+|  |  |
+| void | [removePlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a3086a2d58fb3b24ad47a6d29e4e3d05d) (@NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) playerListener) |
+|  |  |
+| <Slot name="api-center-table-0" /> |  |
+| void | [postIframeMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a218d273792fc859b2f343f9185368407) (String string) |
+|  |  |
+| void | [postIframeMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aafcea84ae1fc2539996f6d0e2710a362) ([WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) object) |
+|  |  |
+| void | [getScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac47409b4e5ca783e080e11e0c032c145) (String path, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-scene-path-type) &gt; promise) |
+|  |  |
+| void | [getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac8467c97aecb62aa78d8520dabd108bd) (String path, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene) &gt; promise) |
+|  |  |
+| void | [getEntireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a8fd708269f78c0a4d8fbee3f3ec465f2) (final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Map&lt; String, [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[]&gt; &gt; promise) |
+|  |  |
+| void | [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a20be8e5cc145577cd66706d9012989a6) () |
+|  |  |
+| void | [scaleIframeToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a65bbfa5b2fd5fa7d0cb1e1cfe03413f7) () |
+|  |  |
+| void | [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b8ecbbc38569db7868c25790f191fbe) () |
+|  |  |
+| void | [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a29f2d682f7d728e53767ded3889c60ee) ([AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) mode) |
+|  |  |
+| void | [addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a5789b995344ae4c9bd0872dfb3fd8cae) (String eventName, [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener) eventListener) |
+|  |  |
+| void | [addHighFrequencyEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a53b433bf7d24a786c4976ba85dee9940) (String eventName, [FrequencyEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener) eventListener, Integer fireInterval) |
+|  |  |
+| void | [removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a071edba37f99285bbea69988481eb3ae) (String eventName) |
+|  |  |
+| void | [convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a1bfd39e7482e2937908a2dea49db1c27) (double x, double y, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-point) &gt; promise) |
+|  |  |
+| void | [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a7ebc499b1f6ca5457d41fcec9bad214e) ([CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) bound) |
+|  |  |
+| void | [setBackgroundColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a67b020e6d15247e1bdc7dbd9b86bcfbe) (@ColorInt int intColor) |
+|  |  |
+| int | [getBackgroundColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa164b4edc632f73ac9a83b3f1bdab64c) () |
+|  |  |
+| void | [getScenePreviewImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a01268dd20584fcebfa1aecc5d98e3616) (String scenePath, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; promise) |
+|  |  |
+| void | [getSceneSnapshotImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a0995da14d5d9b20d5f98c2639018700e) (String scenePath, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; promise) |
+|  |  |
+| void | [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b4ee486693efafc4683e312244d1129) (Boolean disable) |
+|  |  |
+| void | [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) ([CameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config) camera) |
+|  |  |
+| void | [moveCameraToContainer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#af19ee0561ddd8b547b22040e58309549) ([RectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) rectangle) |
+|  |  |
+
+<Slot for="api-center-table-0">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 [com.herewhite.sdk.Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer)
+
+</Slot>
+
+| <a id="inherited"></a> 额外继承的成员函数 |  |
+| --- | --- |
+| <Slot name="api-center-table-1" /> |  |
+| <Slot name="api-center-table-2" /> | **post** (Runnable runnable) |
+|  |  |
+| <Slot name="api-center-table-3" /> |  |
+| <Slot name="api-center-table-4" /> | **bridge** |
+|  |  |
+| <Slot name="api-center-table-5" /> | **uuid** |
+|  |  |
+| <Slot name="api-center-table-6" /> | **densityDpi** |
+|  |  |
+| <Slot name="api-center-table-7" /> |  |
+| <Slot name="api-center-table-8" /> | **gson** = new Gson() |
+|  |  |
+
+<Slot for="api-center-table-1">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 [com.herewhite.sdk.Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer)
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="a4d458fff12f71d54244faa1d5d2033f4"></a>
+void
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 属性 继承自 [com.herewhite.sdk.Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer)
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+<a id="a2f502cfaf3e55d4e017b009e2be0ae62"></a>
+final JsBridgeInterface
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+<a id="a2b652afa746380527d36fc9ce75841c9"></a>
+String
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+<a id="a37d72fc386a43d07e05596a19b3a46d2"></a>
+int
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+![-](/img/api-center-generated/c98c02adc573-closed.png) 静态 Protected 属性 继承自 [com.herewhite.sdk.Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer)
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+<a id="a881a29543fbd8fbb1c985de43626359c"></a>
+static final Gson
+
+</Slot>
+
+<a id="details"></a>
+
+## 详细描述
+
+[`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类，用于操作白板的回放。
+
+## 成员函数说明
+
+<a id="ac4d5da09b9af9aba4fa3b31dc26980f6"></a>
+
+## ◆getPlaybackSpeed() [1/2]
+
+| double com.herewhite.sdk.Player.getPlaybackSpeed | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取白板回放的倍速。
+
+### 自从
+
+2.5.2
+
+### 注解
+
+- 该方法为同步调用。
+- 该方法获取的是播放倍速。例如，当返回值为 `2.0` 时，表示当前得播放速度是原速的 2 倍。
+- 回放暂停时，返回值也不会为 0。
+
+### 返回
+
+白板回放的播放倍速。
+
+<a id="af654c75ee033ccb5d3636c83553b09a6"></a>
+
+## ◆setPlaybackSpeed()
+
+| void com.herewhite.sdk.Player.setPlaybackSpeed | ( | double | *playbackSpeed* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+设置白板回放的倍速。
+
+### 自从
+
+2.5.2
+
+### 参数
+
+| playbackSpeed | 白板回放的倍速。取值必须大于 0，设为 1 表示按原速播放。 |
+| --- | --- |
+
+<a id="ad466294818d8245c43d32666c01848a1"></a>
+
+## ◆getPlaybackSpeed() [2/2]
+
+| void com.herewhite.sdk.Player.getPlaybackSpeed | ( | final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Double &gt; | *promise* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+获取白板回放的倍速。
+
+### 自从
+
+2.5.2
+
+### 注解
+
+- 该方位为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ac4d5da09b9af9aba4fa3b31dc26980f6)[1/2] 获取播放速度。
+- 该方法获取的是播放倍速。例如，当返回值为 `2.0` 时，表示当前得播放速度是原速的 2 倍。
+- 回放暂停时，返回值也不会为 0。
+
+### 参数
+
+| promise | Promise&lt;Double&gt; 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlaybackSpeed` 的调用结果：如果获取成功，将返回白板回放的倍速。 如果获取失败，将返回错误信息。 |
+| --- | --- |
+
+<a id="a694d6ad377bc1572de892f0139b45e76"></a>
+
+## ◆play()
+
+| void com.herewhite.sdk.Player.play | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+开始白板回放。
+
+暂停回放后，也可以调用该方法继续白板回放。
+
+<a id="a0dd55afd7520e8698da247b52d3c2127"></a>
+
+## ◆pause()
+
+| void com.herewhite.sdk.Player.pause | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+暂停白板回放。
+
+<a id="a97a63621cc47b043e577e6c472280ed3"></a>
+
+## ◆stop()
+
+| void com.herewhite.sdk.Player.stop | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+停止白板回放。
+
+白板回放停止后，[`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 资源会被释放。如果想要重新播放，需要重新初始化 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例。
+
+<a id="a2cdff830a4a940a377ddffb97fbc54de"></a>
+
+## ◆seekToScheduleTime()
+
+| void com.herewhite.sdk.Player.seekToScheduleTime | ( | long | *seekTime* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+设置白板回放的播放位置。
+
+白板回放的起始时间点为 0，成功调用该方法后，白板回放会在指定位置开始播放。
+
+### 参数
+
+| seekTime | 播放进度，单位为毫秒。 |
+| --- | --- |
+
+<a id="a4b611db510d583279ad3aabd6a58bfc5"></a>
+
+## ◆setObserverMode()
+
+| void com.herewhite.sdk.Player.setObserverMode | ( | [PlayerObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-observer-mode) | *mode* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+设置白板回放的查看模式。
+
+### 参数
+
+| mode | 白板回放的查看模式，详见 [`PlayerObserverMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-observer-mode)。 |
+| --- | --- |
+
+<a id="aedec2772fc9d3ab9300da2c207e96b1e"></a>
+
+## ◆getPlayerPhase()
+
+| [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) com.herewhite.sdk.Player.getPlayerPhase | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取白板回放的阶段。
+
+### 自从
+
+2.4.0
+
+在 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 生命周期内，你可以调用该方法获取白板回放当前所处的阶段。
+
+### 注解
+
+- 该方法为同步调用。
+- 成功调用 [`stop`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3)、[`play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) 或 [`pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) 等方法均会影响白板回放的阶段，但是通过该方法无法立即获取最新的白板回放阶段。 此时，你可以调用 [`getPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79) 获取最新的回放阶段。
+
+### 返回
+
+白板回放的阶段，详见 [`PlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase)。
+
+<a id="a70282d3b516dafb6852755e7c7c9aa79"></a>
+
+## ◆getPhase()
+
+| void com.herewhite.sdk.Player.getPhase | ( | final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) &gt; | *promise* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+获取白板回放的阶段。
+
+在 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 生命周期内，你可以调用该方法获取白板回放当前所处的阶段。
+
+### 注解
+
+- 该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) 获取回放阶段。
+- 成功调用 [`stop`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3)、[`play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) 或 [`pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) 等方法后，你无法通过 [`getPlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) 立即获取最新的白板回放阶段。 此时，你可以调用 [`getPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79)。
+
+### 参数
+
+| promise | `Promise&lt;PlayerPhase&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPhase` 方法的调用结果：如果方法调用成功，将返回白板回放的阶段。 如果方法调用失败，将返回错误信息。 |
+| --- | --- |
+
+<a id="ad18a956ac130dc58b2b3220e25864efd"></a>
+
+## ◆getPlayerState() [1/2]
+
+| [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) com.herewhite.sdk.Player.getPlayerState | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取白板回放的状态。
+
+### 自从
+
+2.4.0
+
+### 注解
+
+- 该方法为同步调用。
+- 如果白板回放处于 `waitingFirstFrame` 阶段，则该方法返回 `null`。
+
+### 返回
+
+白板回放的状态，详见 [`PlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state)。
+
+<a id="afb3235211d0f04c675a4670e8415abaa"></a>
+
+## ◆getPlayerState() [2/2]
+
+| void com.herewhite.sdk.Player.getPlayerState | ( | final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) &gt; | *promise* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+获取白板回放的状态。
+
+### 注解
+
+- 该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad18a956ac130dc58b2b3220e25864efd)[1/2] 获取。
+- 如果白板回放处于 `waitingFirstFrame` 阶段，则该方法返回 `null`。
+
+### 参数
+
+| promise | `Promise&lt;PlayerState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlayerState` 方法调用的结果：如果方法调用成功，将返回白板回放状态，详见 [`PlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state)。 如果方法调用失败，将返回错误信息。 |
+| --- | --- |
+
+<a id="a180372d211ae3760cbc0c3f9c74e0b6b"></a>
+
+## ◆getPlayerTimeInfo() [1/2]
+
+| [PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) com.herewhite.sdk.Player.getPlayerTimeInfo | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取白板回放的时间信息。
+
+### 自从
+
+2.4.0
+
+该方法获取的时间信息，包含当前的播放进度，回放的总时长，以及回放的起始时间，单位为毫秒。
+
+### 注解
+
+- 该方法为同步调用。
+- 该方法获取的当前播放进度可能不准确。
+
+### 返回
+
+白板回放的时间信息，详见 [`PlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info)。
+
+<a id="ad3aa2fc1c1f96fb580d2c8010e178c19"></a>
+
+## ◆getPlayerTimeInfo() [2/2]
+
+| void com.herewhite.sdk.Player.getPlayerTimeInfo | ( | final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) &gt; | *promise* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+获取白板回放的时间信息，该方法为异步调用。
+
+该方法获取的时间信息，包含当前的播放进度，回放的总时长，以及回放的起始时间，单位为毫秒。
+
+### 注解
+
+该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a180372d211ae3760cbc0c3f9c74e0b6b) 进行获取。
+
+### 参数
+
+| promise | `Promise&lt;PlayerTimeInfo&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlayerTimeInfo` 方法的调用结果：如果方法调用成功，将返回白板回放的时间信息，详见 [`PlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info)。 如果方法调用失败，将返回错误信息。 |
+| --- | --- |
+
+<a id="a8ad1cf8a6b7eb05f1c07058a2590bf5f"></a>
+
+## ◆addPlayerListener()
+
+| void com.herewhite.sdk.Player.addPlayerListener | ( | @NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) | *playerListener* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+添加白板回放的回调。
+
+### 参数
+
+| playerListener | 白板回放的回调。详见 [`PlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener)。 |
+| --- | --- |
+
+<a id="a3086a2d58fb3b24ad47a6d29e4e3d05d"></a>
+
+## ◆removePlayerListener()
+
+| void com.herewhite.sdk.Player.removePlayerListener | ( | @NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) | *playerListener* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+删除白板回放的回调。
+
+### 参数
+
+| playerListener | 白板回放的回调。详见 [`PlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener)。 |
+| --- | --- |

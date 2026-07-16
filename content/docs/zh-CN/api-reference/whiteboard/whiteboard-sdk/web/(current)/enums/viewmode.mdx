@@ -1,0 +1,72 @@
+---
+title: Enumeration ViewMode
+description: 用户的视角模式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/viewmode
+  sourcePath: html-docs/whiteboard/Web/enums/viewmode.html
+  generator: typedoc
+  warnings: []
+---
+
+用户的视角模式。
+
+## Index
+
+### Enumeration members
+
+- [Broadcaster](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#broadcaster)
+- [Follower](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#follower)
+- [Freedom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#freedom)
+
+## Enumeration members
+
+<a id="broadcaster"></a>
+
+### Broadcaster
+
+Broadcaster: = "broadcaster"
+
+- Defined in [index-zh.d.ts:887](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L887)
+
+主播模式。
+
+该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
+
+**Note**
+
+- 每个房间只能有一个主播模式视角的用户。
+- 当一个用户的视角设置为主播模式后，房间内所有其他用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+
+<a id="follower"></a>
+
+### Follower
+
+Follower: = "follower"
+
+- Defined in [index-zh.d.ts:877](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L877)
+
+跟随模式。
+
+该模式下用户的视角会跟随主播的视角。
+
+**Note**
+
+- 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+- 跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。
+
+<a id="freedom"></a>
+
+### Freedom
+
+Freedom: = "freedom"
+
+- Defined in [index-zh.d.ts:867](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L867)
+
+（默认）自由模式。
+
+该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+
+**Note**
+ 当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。

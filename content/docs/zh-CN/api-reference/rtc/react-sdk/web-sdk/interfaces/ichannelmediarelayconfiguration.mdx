@@ -1,0 +1,96 @@
+---
+title: Interface IChannelMediaRelayConfiguration
+description: 跨频道媒体流转发的配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/ichannelmediarelayconfiguration
+  sourcePath: html-docs/rtc/React/interfaces/ichannelmediarelayconfiguration.html
+  generator: typedoc
+  warnings: []
+---
+
+跨频道媒体流转发的配置。
+
+在调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay) 和 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 时，通过该接口设置跨频道媒体流转发的具体信息。
+
+```javascript
+const configuration = AgoraRTC.createChannelMediaRelayConfiguration();
+configuration.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 12345 });
+configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
+```
+
+### Hierarchy
+
+- IChannelMediaRelayConfiguration
+
+## Index
+
+### Methods
+
+- [addDestChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo)
+- [removeDestChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#removedestchannelinfo)
+- [setSrcChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#setsrcchannelinfo)
+
+## Methods
+
+<a id="adddestchannelinfo"></a>
+
+### addDestChannelInfo
+
+- addDestChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)):void
+
+- Returns void
+
+  添加目标频道信息。
+
+  如果你想将流转发到多个目标频道，可以多次调用该方法。该方法支持最多设置 4 个目标频道。
+
+  ```javascript
+  const config = AgoraRTC.createChannelMediaRelayConfiguration();
+  config.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
+  config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
+  ```
+
+  Parameters
+
+  - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
+
+    频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。
+
+<a id="removedestchannelinfo"></a>
+
+### removeDestChannelInfo
+
+- removeDestChannelInfo(channelName:string):void
+
+- Returns void
+
+  删除通过 [addDestChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 添加的目标频道。
+
+  Parameters
+
+  - channelName: string
+
+    待删除的目标频道名。
+
+<a id="setsrcchannelinfo"></a>
+
+### setSrcChannelInfo
+
+- setSrcChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)):void
+
+- Returns void
+
+  设置源频道信息。
+
+  ```javascript
+  const config = AgoraRTC.createChannelMediaRelayConfiguration();
+  config.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 123456 });
+  ```
+
+  Parameters
+
+  - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
+
+    频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。

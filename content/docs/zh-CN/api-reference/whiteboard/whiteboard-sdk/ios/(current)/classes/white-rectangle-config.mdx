@@ -1,0 +1,264 @@
+---
+title: WhiteRectangleConfig Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteRectangleConfig
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteRectangleConfig.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteRectangleConfig.h |
+
+<a id="overview"></a>
+
+## Overview
+
+配置白板的视觉矩形。
+
+视觉矩形是用户的视角必须容纳的区域。设置好视觉矩形后，视角会自动调整到刚好可以完整展示视觉矩形所表示的范围。
+
+该方法可用于保证同样的内容在不同的设备上都可以显示完整。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithInitialPosition:height:"></a>
+
+### `– initWithInitialPosition:height:`
+
+初始化一个 `WhiteRectangleConfig` 对象。
+
+`- (instancetype)initWithInitialPosition:(CGFloat)*width* height:(CGFloat)*height*`
+
+#### Parameters
+
+| `width` | 白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| --- | --- |
+| `height` | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width) 和 [`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height)。SDK 会根据你传入 [`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width) 和 [`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 计算视觉矩形左上角原点
+在世界坐标系中的位置 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX) 和 [`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY), 即 ``originX`= -`width`/ 2.0d`，``originY`= -`height`/ 2.0d`。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/initWithInitialPosition:height:animation:"></a>
+
+### `– initWithInitialPosition:height:animation:`
+
+设置视觉矩形的动画模式初始化一个 `WhiteRectangleConfig` 对象。
+
+`- (instancetype)initWithInitialPosition:(CGFloat)*width* height:(CGFloat)*height* animation:(WhiteAnimationMode)*mode*`
+
+#### Parameters
+
+| `width` | 白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| --- | --- |
+| `height` | <Slot name="api-center-table-1" /> |
+| `mode` | <Slot name="api-center-table-2" /> |
+
+<Slot for="api-center-table-1">
+
+白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+视觉矩形的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width)，[`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 和 `mode`。SDK 会根据你传入 [`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width) 和 [`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 计算视觉矩形左上角原点
+在世界坐标系中的位置 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX) 和 [`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY), 即 ``originX`= -`width`/ 2.0d`，``originY`= -`height`/ 2.0d`。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/initWithOriginX:originY:width:height:"></a>
+
+### `– initWithOriginX:originY:width:height:`
+
+设置视觉矩形的坐标并初始化一个 `WhiteRectangleConfig` 对象。
+
+`- (instancetype)initWithOriginX:(CGFloat)*originX* originY:(CGFloat)*originY* width:(CGFloat)*width* height:(CGFloat)*height*`
+
+#### Parameters
+
+| `originX` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
+| --- | --- |
+| `originY` | <Slot name="api-center-table-3" /> |
+| `width` | <Slot name="api-center-table-4" /> |
+| `height` | <Slot name="api-center-table-5" /> |
+
+<Slot for="api-center-table-3">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX)、[`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY)、[`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width)、[`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 和 `mode`。
+SDK 会根据你传入的 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX)、[`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY)、[`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width) 和 [`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 确定视觉矩形在白板坐标系（即世界坐标系）中的位置、大小和动画模式。
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/initWithOriginX:originY:width:height:animation:"></a>
+
+### `– initWithOriginX:originY:width:height:animation:`
+
+设置视觉矩形的坐标和动画模式并初始化一个 `WhiteRectangleConfig` 对象。
+
+`- (instancetype)initWithOriginX:(CGFloat)*originX* originY:(CGFloat)*originY* width:(CGFloat)*width* height:(CGFloat)*height* animation:(WhiteAnimationMode)*mode*`
+
+#### Parameters
+
+| `originX` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
+| --- | --- |
+| `originY` | <Slot name="api-center-table-6" /> |
+| `width` | <Slot name="api-center-table-7" /> |
+| `height` | <Slot name="api-center-table-8" /> |
+| `mode` | <Slot name="api-center-table-9" /> |
+
+<Slot for="api-center-table-6">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+视觉矩形的动画模式，详见[WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX)、[`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY)、[`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width)、[`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 和 `mode`。
+SDK 会根据你传入的 [`originX`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originX)、[`originY`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/originY)、[`width`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/width)、[`height`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config#//api/name/height) 和 `mode` 确定视觉矩形在白板坐标系（即世界坐标系）中的位置、大小和动画模式。
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/originX"></a>
+
+### `originX`
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+`@property (nonatomic, assign) CGFloat originX`
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/originY"></a>
+
+### `originY`
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+`@property (nonatomic, assign) CGFloat originY`
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/width"></a>
+
+### `width`
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+`@property (nonatomic, assign) CGFloat width`
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/height"></a>
+
+### `height`
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+`@property (nonatomic, assign) CGFloat height`
+
+#### Declared In
+
+`WhiteRectangleConfig.h`
+
+<a id="//api/name/animationMode"></a>
+
+### `animationMode`
+
+视觉矩形的动画模式，详见[WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+
+`@property (nonatomic, assign) WhiteAnimationMode animationMode`
+
+#### Declared In
+
+`WhiteRectangleConfig.h`

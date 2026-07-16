@@ -1,0 +1,148 @@
+---
+title: io.agora.rtc.AgoraLocalVideoTrack类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_video_track
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_video_track.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_local_video_track_8java.html as local text.
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#ab7c00feaaf9f2d465fdbb42a48c0c64e) (long cptr) |
+| void | [destroy](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#aa1e2f083df08f0f4b962676d0fca73d4) () |
+| native void | [setEnabled](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a66065a64360dec77fec958daebbf69c1) (int enable) |
+| native int | [setVideoEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a0b7181834aa7210c14e4ae52fd857a03) ([VideoEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-encoder-config) config) |
+| native int | [enableSimulcastStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#acae2e10be2a7e51bb68613b6da4342cc) (int enabled, [SimulcastStreamConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-simulcast-stream-config) config) |
+| native int | [getState](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a538047d008eaeaffe0186a3368eb18da) () |
+| native [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-local-video-track-stats) | [getStatistics](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a8140767b17e261507fc65033029d25b9) () |
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="ab7c00feaaf9f2d465fdbb42a48c0c64e"></a>
+
+## ◆AgoraLocalVideoTrack()
+
+| io.agora.rtc.AgoraLocalVideoTrack.AgoraLocalVideoTrack | ( | long | *cptr* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="aa1e2f083df08f0f4b962676d0fca73d4"></a>
+
+## ◆destroy()
+
+| void io.agora.rtc.AgoraLocalVideoTrack.destroy | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+析构函数。
+
+<a id="acae2e10be2a7e51bb68613b6da4342cc"></a>
+
+## ◆enableSimulcastStream()
+
+| native int io.agora.rtc.AgoraLocalVideoTrack.enableSimulcastStream | ( | int | *enabled*, |
+| --- | --- | --- | --- |
+|  |  | [SimulcastStreamConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-simulcast-stream-config) | *config*) |
+
+启用/禁用视频多流模式。
+
+### 参数
+
+| enabled | 是否启用视频多流模式：true: 是 false: 否 |
+| --- | --- |
+| config | 多流模式配置，SimulcastStreamConfig。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a538047d008eaeaffe0186a3368eb18da"></a>
+
+## ◆getState()
+
+| native int io.agora.rtc.AgoraLocalVideoTrack.getState | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+查询本地视频流的状态。
+
+### 返回
+
+本地视频流状态。
+
+<a id="a8140767b17e261507fc65033029d25b9"></a>
+
+## ◆getStatistics()
+
+| native [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-local-video-track-stats) io.agora.rtc.AgoraLocalVideoTrack.getStatistics | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取本地视频的质量数据。
+
+### 返回
+
+本地视频的质量数据。
+
+<a id="a66065a64360dec77fec958daebbf69c1"></a>
+
+## ◆setEnabled()
+
+| native void io.agora.rtc.AgoraLocalVideoTrack.setEnabled | ( | int | *enable* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+启用或禁用本地视频轨道。
+
+启用本地视频轨道后，SDK 会允许本地视频录制、处理和编码。
+
+### 参数
+
+| enable | 是否启用本地视频轨道:true: 是 false: 否 |
+| --- | --- |
+
+<a id="a0b7181834aa7210c14e4ae52fd857a03"></a>
+
+## ◆setVideoEncoderConfig()
+
+| native int io.agora.rtc.AgoraLocalVideoTrack.setVideoEncoderConfig | ( | [VideoEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-encoder-config) | *config* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+设置视频编码属性。
+
+视频编码属性对应一套视频参数，包括分辨率、帧率、码率和方向属性。
+
+该方法中指定的属性是理想网络条件下的最大值。如果视频引擎因网络等问题无法按指定参数渲染视频，SDK 会取最接近最大值的那个值。
+
+### 参数
+
+| config | 视频编码属性：VideoEncoderConfig。 |
+| --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraLocalVideoTrack.java

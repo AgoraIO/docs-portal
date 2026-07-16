@@ -1,0 +1,117 @@
+---
+title: Interface LocalAudioTrackStats
+description: 本地音频轨道的基本信息，可以通过 AgoraRTCClient.getLocalAudioStats 获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/localaudiotrackstats
+  sourcePath: html-docs/rtc/React/interfaces/localaudiotrackstats.html
+  generator: typedoc
+  warnings: []
+---
+
+本地音频轨道的基本信息，可以通过 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats) 获取。
+
+### Hierarchy
+
+- LocalAudioTrackStats
+
+## Index
+
+### Properties
+
+- [codecType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#codectype)
+- [currentPacketLossRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#currentpacketlossrate)
+- [sendBitrate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendbitrate)
+- [sendBytes](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendbytes)
+- [sendJitterMs](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendjitterms)
+- [sendPackets](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendpackets)
+- [sendPacketsLost](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendpacketslost)
+- [sendRttMs](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendrttms)
+- [sendVolumeLevel](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats#sendvolumelevel)
+
+## Properties
+
+<a id="codectype"></a>
+
+### Optional codecType
+
+codecType: "opus"|"aac"|"PCMU"|"PCMA"|"G722"
+
+音频的编码格式。
+
+- `"opus"`: 音频编码格式为 OPUS。
+- `"aac"`: 音频编码格式为 AAC。
+- `"pcmu"`: 预留参数，暂不支持。
+- `"pcma"`: 预留参数，暂不支持。
+- `"g722"`: 预留参数，暂不支持。
+
+> Firefox 上无法获取该值。
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+currentPacketLossRate: number
+
+发送的音频 400ms 内的丢包率。
+
+<a id="sendbitrate"></a>
+
+### sendBitrate
+
+sendBitrate: number
+
+发送的音频码率 (bps)。
+
+<a id="sendbytes"></a>
+
+### sendBytes
+
+sendBytes: number
+
+发送的音频总字节数 (bytes)。
+
+<a id="sendjitterms"></a>
+
+### sendJitterMs
+
+sendJitterMs: number
+
+发送音频数据包的抖动 (ms)。
+
+<a id="sendpackets"></a>
+
+### sendPackets
+
+sendPackets: number
+
+发送的音频总包数。
+
+<a id="sendpacketslost"></a>
+
+### sendPacketsLost
+
+sendPacketsLost: number
+
+发送的音频总丢包数。
+
+> Safari 上无法获取该值。
+
+<a id="sendrttms"></a>
+
+### sendRttMs
+
+sendRttMs: number
+
+发送音频数据包的往返时延 (ms)。
+
+<a id="sendvolumelevel"></a>
+
+### sendVolumeLevel
+
+sendVolumeLevel: number
+
+发送的音频音量等级，范围为 [0,32767]。
+
+> 该值通过 WebRTC-Stats 获取，不能确保实时性。如果你想获取当前实时的音量等级，调用 [LocalAudioTrack.getVolumeLevel](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#getvolumelevel)。

@@ -1,0 +1,1468 @@
+---
+title: WhiteRoom Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteRoom
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteRoom.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | [WhiteDisplayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer): NSObject |
+| --- | --- |
+| Declared in | WhiteRoom.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用于操作互动白板实时房间。
+
+<a id="tasks"></a>
+
+## Other Methods
+
+<a id="//api/name/observerId"></a>
+
+### `observerId`
+
+用户在当前房间中的用户 ID。与该用户在 [WhiteRoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-member) 中的 `memberId` 相同。
+
+`@property (nonatomic, strong, readonly) NSNumber *observerId`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/uuid"></a>
+
+### `uuid`
+
+房间 UUID，即房间唯一标识符。
+
+`@property (nonatomic, copy, readonly) NSString *uuid`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/globalState"></a>
+
+### `globalState`
+
+房间的全局状态。详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。
+
+`@property (nonatomic, strong, readonly) WhiteGlobalState *globalState`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/memberState"></a>
+
+### `memberState`
+
+工具信息。详见 [WhiteReadonlyMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-readonly-member-state)。
+
+`@property (nonatomic, strong, readonly) WhiteReadonlyMemberState *memberState`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/roomMembers"></a>
+
+### `roomMembers`
+
+在线成员信息。详见 [WhiteRoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-member)。
+
+`@property (nonatomic, strong, readonly) NSArray&lt;WhiteRoomMember*&gt; *roomMembers`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/broadcastState"></a>
+
+### `broadcastState`
+
+用户视角状态信息， 包括用户当前场景状态、主播信息。详见 [WhiteBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state)。
+
+`@property (nonatomic, strong, readonly) WhiteBroadcastState *broadcastState`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/scale"></a>
+
+### `scale`
+
+视角缩放比例。
+
+`@property (nonatomic, assign, readonly) CGFloat scale`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/state"></a>
+
+### `state`
+
+房间状态信息，详见 [WhiteDisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer-state)。
+
+`@property (nonatomic, strong, readonly) WhiteRoomState *state`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/sceneState"></a>
+
+### `sceneState`
+
+白板页面（场景）状态。详见 [WhiteSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state)。
+
+`@property (nonatomic, strong, readonly) WhiteSceneState *sceneState`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/phase"></a>
+
+### `phase`
+
+房间连接状态。详见 [WhiteRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-room-phase)。
+
+`@property (nonatomic, assign, readonly) WhiteRoomPhase phase`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setDrawOnlyApplePencil:"></a>
+
+### `– setDrawOnlyApplePencil:`
+
+设置是否只允许用户使用 Apple Pencil 在白板上绘制和书写。
+
+`- (void)setDrawOnlyApplePencil:(BOOL)*drawOnlyPencil*`
+
+#### Parameters
+
+| `drawOnlyPencil` | 是否只允许用户使用 Apple Pencil 绘制和书写： `YES`：只允许使用 Apple Pencil 在白板上绘制和书写。 `NO`：（默认）允许使用 Apple Pencil 或手指在白板上绘制和书写。 |
+| --- | --- |
+
+#### Discussion
+
+设置 `setDrawOnlyApplePencil(YES)` 后，用户只能使用 Apple Pencil 在白板上绘制和书写，无法使用手指绘制和书写。
+如果用户用手指触碰白板，SDK 会触发两个 [fireRoomStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireRoomStateChanged:) 回调，报告当前使用的白板工具 ([`memberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/memberState)) 在 `ApplianceClicker` 和 `AppliancePencil` 之间发生了切换。
+
+**Note:**
+
+- 该属性仅在 iPad 设备上生效。
+- 该属性的设置建议跟随 `UIPencilInteraction.prefersPencilOnlyDrawing` 的设置。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setGlobalState:"></a>
+
+### `– setGlobalState:`
+
+修改互动白板实时房间的公共全局状态。
+
+`- (void)setGlobalState:(WhiteGlobalState *)*globalState*`
+
+#### Parameters
+
+| `globalState` | 房间公共全局状态，自定义字段。详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。 |
+| --- | --- |
+
+#### Discussion
+
+实时房间的 [`globalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/globalState) 属性为公共全局变量，房间内所有用户看到的都是相同的 [`globalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/globalState)，所有互动模式用户都可以读写。修改 [`globalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/globalState) 属性会立即生效并同步给所有用户。
+
+1.0 迁移用户，请阅读文档站中 [页面（场景）管理]，使用 `setScencePath`。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setMemberState:"></a>
+
+### `– setMemberState:`
+
+修改房间内的工具状态。
+
+`- (void)setMemberState:(WhiteMemberState *)*modifyState*`
+
+#### Parameters
+
+| `modifyState` | 需要修改的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。 |
+| --- | --- |
+
+#### Discussion
+
+调用该方法会立刻更新房间的 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。
+
+你可以调用 [getMemberStateWithResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/getMemberStateWithResult:) 获取最新设置的工具状态。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setViewMode:"></a>
+
+### `– setViewMode:`
+
+切换视角模式。
+
+`- (void)setViewMode:(WhiteViewMode)*viewMode*`
+
+#### Parameters
+
+| `viewMode` | 视角模式。 |
+| --- | --- |
+
+#### Discussion
+
+互动白板实时房间支持对用户设置以下视角模式：
+
+- `Broadcaster`: 主播模式。该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
+- `Follower`：跟随模式。该模式下用户的视角会跟随主播的视角。
+- `Freedom`：（默认）自由模式。该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+
+该方法的设置会影响房间内所有用户的视角模式：
+
+- 当房间内不存在主播模式的用户时，所有用户的视角都默认为自由模式。
+- 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+- 当跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。你可以调用 [disableOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableOperations:) 禁止跟随模式的用户操作白板，以保证其保持跟随模式。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/debugInfo:"></a>
+
+### `– debugInfo:`
+
+获取 debug 信息。
+
+`- (void)debugInfo:(void ( ^ _Nullable) ( NSDictionary *_Nullable dict))*completionHandler*`
+
+#### Parameters
+
+| `completionHandler` | 方法调用结果： 如果方法调用成功，则返回调试日志信息。 如果方法调用失败，则返回错误信息。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disconnect:"></a>
+
+### `– disconnect:`
+
+主动断开与互动白板实时房间的连接。
+
+`- (void)disconnect:(void ( ^ _Nullable) ( void))*completeHandler*`
+
+#### Parameters
+
+| `completeHandler` | 调用结果： 如果方法调用成功，则返回房间的全局状态。 如果方法调用失败，则返回错误信息。 |
+| --- | --- |
+
+#### Discussion
+
+该方法会把与当前房间对象相关的所有资源释放掉。如果要再次加入房间，需要重新调用 [joinRoomWithConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/joinRoomWithConfig:callbacks:completionHandler:)。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disconnectedBySelf"></a>
+
+### `disconnectedBySelf`
+
+用户是否主动断开与白板房间的连接。在调用 [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disconnect:) 主动断连时，该值会被立即赋值为 `YES`。
+
+`@property (nonatomic, assign, readonly) BOOL disconnectedBySelf`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setWritable:completionHandler:"></a>
+
+### `– setWritable:completionHandler:`
+
+设置用户在房间中是否为互动模式。
+在加入房间前，就可以在 [WhiteRoomConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config) 中设置 [isWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/isWritable)，来决定该模式。
+
+`- (void)setWritable:(BOOL)*writable* completionHandler:(void ( ^ _Nullable) ( BOOL isWritable, NSError *_Nullable error))*completionHandler*`
+
+#### Parameters
+
+| `writable` | 用户在房间中是否为互动模式： `YES`：互动模式，即具有读写权限。 `NO`：订阅模式，即具有只读权限。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+方法调用结果：
+
+- 如果方法调用成功，则返回用户在房间中的读写状态。
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/writable"></a>
+
+### `writable`
+
+本地用户在当前互动白板实时房间是否为互动模式。
+
+`@property (nonatomic, assign, readonly, getter=isWritable) BOOL writable`
+
+#### Discussion
+
+- `YES`：互动模式，即具有读写权限。
+- `NO`：订阅模式，即具有只读权限。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disableCameraTransform:"></a>
+
+### `– disableCameraTransform:`
+
+禁止/允许用户调整（移动或缩放）视角。
+
+`- (void)disableCameraTransform:(BOOL)*disableCameraTransform*`
+
+#### Parameters
+
+| `disableCameraTransform` | 是否禁止用户调整视角： `YES`：禁止用户调整视角。 `NO`：（默认）允许用户调整视角。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disableDeviceInputs:"></a>
+
+### `– disableDeviceInputs:`
+
+禁止/允许用户操作工具。
+
+`- (void)disableDeviceInputs:(BOOL)*disable*`
+
+#### Parameters
+
+| `disable` | 是否禁止用户操作工具： `YES`：禁止用户操作工具操作。 `NO`：（默认）允许用户操作工具输入操作。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/dispatchMagixEvent:payload:"></a>
+
+### `– dispatchMagixEvent:payload:`
+
+发送自定义事件。
+
+`- (void)dispatchMagixEvent:(NSString *)*eventName* payload:(NSDictionary *)*payload*`
+
+#### Parameters
+
+| `eventName` | 自定义事件名称，详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。 |
+| --- | --- |
+| `payload` | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-1">
+
+自定义事件内容，详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+
+</Slot>
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/pptNextStep"></a>
+
+### `– pptNextStep`
+
+播放动态 PPT 下一页。
+
+`- (void)pptNextStep`
+
+#### Discussion
+
+当前 PPT 页面的动画已全部执行完成时，SDK 会将场景切换至下一页 PPT。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/pptPreviousStep"></a>
+
+### `– pptPreviousStep`
+
+返回动态 PPT 上一页。
+
+`- (void)pptPreviousStep`
+
+#### Discussion
+
+当前 PPT 页面的动画全部回退完成时，SDK 会将场景切回至上一页 PPT。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/insertText:y:textContent:completionHandler:"></a>
+
+### `– insertText:y:textContent:completionHandler:`
+
+在指定位置插入文字。
+
+`- (void)insertText:(CGFloat)*x* y:(CGFloat)*y* textContent:(NSString *)*textContent* completionHandler:(void ( ^) ( NSString *textId))*completionHandler*`
+
+#### Parameters
+
+| `x` | 第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。 |
+| --- | --- |
+| `y` | <Slot name="api-center-table-2" /> |
+| `textContent` | <Slot name="api-center-table-3" /> |
+| `completionHandler` | <Slot name="api-center-table-4" /> |
+
+<Slot for="api-center-table-2">
+
+第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+初始的文字内容，不传则为空。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+方法调用结果：
+
+- 如果方法调用成功，则返回文字的标识符。
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/updateText:textContent:"></a>
+
+### `– updateText:textContent:`
+
+更新指定文本的内容。
+
+`- (void)updateText:(NSString *)*textId* textContent:(NSString *)*textContent*`
+
+#### Parameters
+
+| `textId` | 文字标识符。 |
+| --- | --- |
+| `textContent` | <Slot name="api-center-table-5" /> |
+
+<Slot for="api-center-table-5">
+
+文字内容。
+
+</Slot>
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/insertImage:src:"></a>
+
+### `– insertImage:src:`
+
+插入图片显示区域。
+
+`- (void)insertImage:(WhiteImageInformation *)*imageInfo* src:(NSString *)*src*`
+
+#### Parameters
+
+| `imageInfo` | 图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。 |
+| --- | --- |
+| `src` | <Slot name="api-center-table-6" /> |
+
+<Slot for="api-center-table-6">
+
+图片 URL 地址，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。
+
+</Slot>
+
+#### Discussion
+
+SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示区域。
+
+**Note:**
+
+你也可以调用 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/insertImage:src:) 方法同时传入图片信息和图片的 URL 地址，在白板中插入并展示图片。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/insertImage:"></a>
+
+### `– insertImage:`
+
+插入图片显示区域。
+
+`- (void)insertImage:(WhiteImageInformation *)*imageInfo*`
+
+#### Parameters
+
+| `imageInfo` | 图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。 |
+| --- | --- |
+
+#### Discussion
+
+SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示区域。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/completeImageUploadWithUuid:src:"></a>
+
+### `– completeImageUploadWithUuid:src:`
+
+展示图片。
+
+`- (void)completeImageUploadWithUuid:(NSString *)*uuid* src:(NSString *)*src*`
+
+#### Parameters
+
+| `uuid` | 图片显示区域的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/insertImage:src:) 方法的 `imageInfo` 中传入的图片 UUID。 |
+| --- | --- |
+| `src` | <Slot name="api-center-table-7" /> |
+
+<Slot for="api-center-table-7">
+
+图片的 URL 地址。必须确保 app 客户端能访问该 URL，否则无法正常展示图片。
+
+</Slot>
+
+#### Discussion
+
+该方法可以将指定的网络图片展示到指定的图片显示区域。
+
+**Note:**
+
+调用该方法前，请确保你已经调用 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/insertImage:src:) 方法在白板上插入了图片的显示区域。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disableEraseImage:"></a>
+
+### `– disableEraseImage:`
+
+关闭/开启橡皮擦擦除图片功能。
+
+`- (void)disableEraseImage:(BOOL)*disable*`
+
+#### Parameters
+
+| `disable` | 是否关闭橡皮擦擦除图片功能： `YES`：禁止橡皮擦擦除图片。 `NO`：（默认）允许橡皮擦擦除图片。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/syncBlockTimestamp:"></a>
+
+### `– syncBlockTimestamp:`
+
+设置本地显示远端白板内容的 Unix 时间戳。
+
+`- (void)syncBlockTimestamp:(NSTimeInterval)*timestamp*`
+
+#### Parameters
+
+| `timestamp` | 远端白板内容在本地显示的 Unix 时间戳，单位为秒。 |
+| --- | --- |
+
+#### Availability
+
+2.12.24
+
+调用该方法后，SDK 会根据你设置的 `timestamp` 的值显示接收到的远端白板内容。
+
+在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setTimeDelay:"></a>
+
+### `– setTimeDelay:`
+
+设置本地显示远端白板内容的延时。
+
+`- (void)setTimeDelay:(NSTimeInterval)*delay*`
+
+#### Parameters
+
+| `delay` | 延时时长，单位为秒，默认值为 0，取值大于等于 0。 |
+| --- | --- |
+
+#### Discussion
+
+设置该参数后，当本地用户接收到远端白板内容后，SDK 会根据你设置的 [`delay`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/delay) 的值延迟显示白板内容。
+
+在音视频传输延时较大的场景中，如使用 CDN 推送音视频流时，你可以使用该参数延迟显示接收到的远端白板内容，以确保白板内容与音视频同步。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/delay"></a>
+
+### `delay`
+
+本地显示远端白板内容的延时，单位为秒，默认值为 0。取值大于等于 0。
+
+`@property (nonatomic, assign, readonly) NSTimeInterval delay`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="task_Deprecated-Methods"></a>
+
+## Deprecated Methods
+
+<a id="//api/name/disableOperations:"></a>
+
+### `– disableOperations:`
+
+该方法已废弃，请使用 [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableDeviceInputs:) 和 [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/disableCameraTransform:)。
+
+`- (void)disableOperations:(BOOL)*disable*`
+
+#### Parameters
+
+| `disable` | 是否禁止操作，`true` 为禁止。 |
+| --- | --- |
+
+#### Discussion
+
+禁止操作。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/zoomChange:"></a>
+
+### `– zoomChange:`
+
+该方法已废弃，请使用 [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/moveCamera:)。
+
+`- (void)zoomChange:(CGFloat)*scale*`
+
+#### Parameters
+
+| `scale` | 相对于原始大小的比例。 |
+| --- | --- |
+
+#### Discussion
+
+缩小放大白板。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getPptImagesWithResult:"></a>
+
+### `– getPptImagesWithResult:`
+
+该方法已废弃，请使用 [getScenesWithResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/getScenesWithResult:)。
+
+`- (void)getPptImagesWithResult:(void ( ^) ( NSArray&lt;NSString*&gt; *pptPages))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回所有 ppt 图片的地址。 |
+| --- | --- |
+
+#### Discussion
+
+获取所有 ppt 图片。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="task_Scene-Methods"></a>
+
+## Scene Methods
+
+<a id="//api/name/getSceneStateWithResult:"></a>
+
+### `– getSceneStateWithResult:`
+
+获取房间当前场景目录下的场景状态。
+
+`- (void)getSceneStateWithResult:(void ( ^) ( WhiteSceneState *state))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前场景目录下的场景状态，详见 [WhiteSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state)。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getScenesWithResult:"></a>
+
+### `– getScenesWithResult:`
+
+获取房间当前场景目录下的场景列表。
+
+`- (void)getScenesWithResult:(void ( ^) ( NSArray&lt;WhiteScene*&gt; *scenes))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前场景目录下的场景列表，详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setScenePath:"></a>
+
+### `– setScenePath:`
+
+切换至指定的场景。
+
+`- (void)setScenePath:(NSString *)*path*`
+
+#### Parameters
+
+| `path` | 想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`。 |
+| --- | --- |
+
+#### Discussion
+
+方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+**Note:**
+
+- 该方法为同步调用。
+- 调用 `setScenePath` 方法修改或新增场景后，无法通过 [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setScenePath:) 立即获取最新的场景状态。此时，如果需要立即获取最新的场景状态，可以调用 [setScenePath:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setScenePath:completionHandler:)。
+
+场景切换失败可能有以下原因：
+
+- 路径不合法，请确保场景路径以 “/"，由场景目录和场景名构成。
+- 场景路径对应的场景不存在。
+- 传入的路径是场景目录的路径，而不是场景路径。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setScenePath:completionHandler:"></a>
+
+### `– setScenePath:completionHandler:`
+
+切换至指定的场景。
+
+`- (void)setScenePath:(NSString *)*dirOrPath* completionHandler:(void ( ^ _Nullable) ( BOOL success, NSError *_Nullable error))*completionHandler*`
+
+#### Parameters
+
+| `dirOrPath` | 想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`. |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-8" /> |
+
+<Slot for="api-center-table-8">
+
+方法调用结果：
+
+- 如果方法调用成功，则返回 `YES`.
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Discussion
+
+方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+**Note:**
+
+- 该方法为异步调用。
+- 调用 `setScenePath` 方法修改或新增场景后，你可以通过 [getSceneStateWithResult:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/getSceneStateWithResult:) 立即获取最新的场景状态。
+- 场景切换失败可能有以下原因：
+
+  - 路径不合法，请确保场景路径以 “/"，由场景目录和场景名构成。
+  - 场景路径对应的场景不存在。
+  - 传入的路径是场景目录的路径，而不是场景路径。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/setSceneIndex:completionHandler:"></a>
+
+### `– setSceneIndex:completionHandler:`
+
+切换至当前场景目录下的指定场景。
+
+`- (void)setSceneIndex:(NSUInteger)*index* completionHandler:(void ( ^ _Nullable) ( BOOL success, NSError *_Nullable error))*completionHandler*`
+
+#### Parameters
+
+| `index` | 目标场景在当前场景目录下的索引号。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-9" /> |
+
+<Slot for="api-center-table-9">
+
+方法调用结果：
+
+- 如果方法调用成功，则返回 `YES`.
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Discussion
+
+方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+**Note:**
+
+指定的场景必须在当前场景目录中，否则，方法调用会失败。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/putScenes:scenes:index:"></a>
+
+### `– putScenes:scenes:index:`
+
+在指定场景目录下插入多个场景。
+
+`- (void)putScenes:(NSString *)*dir* scenes:(NSArray&lt;WhiteScene*&gt; *)*scenes* index:(NSUInteger)*index*`
+
+#### Parameters
+
+| `dir` | 场景目录名称，必须以 `/` 开头。不能为场景路径。 |
+| --- | --- |
+| `scenes` | <Slot name="api-center-table-10" /> |
+| `index` | <Slot name="api-center-table-11" /> |
+
+<Slot for="api-center-table-10">
+
+由多个场景构成的数组。单个场景的字段详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+待插入的多个场景中，第一个场景在该场景目录的索引号。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。
+
+</Slot>
+
+#### Discussion
+
+**Note:**
+
+调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setScenePath:)。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/cleanScene:"></a>
+
+### `– cleanScene:`
+
+清除当前场景的所有内容。
+
+`- (void)cleanScene:(BOOL)*retainPPT*`
+
+#### Parameters
+
+| `retainPPT` | 是否保留 PPT 内容： `YES`：保留 PPT。 `NO`：连 PPT 一起清空。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/removeScenes:"></a>
+
+### `– removeScenes:`
+
+删除场景或者场景目录。
+
+`- (void)removeScenes:(NSString *)*dirOrPath*`
+
+#### Parameters
+
+| `dirOrPath` | 场景目录路径或者场景路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。 **Note:** 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下： 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至 `dirB` 中的第一个场景（index 为 0）。 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。 以上都不满足，则继续向上递归执行该逻辑。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/moveScene:target:"></a>
+
+### `– moveScene:target:`
+
+移动场景。
+
+`- (void)moveScene:(NSString *)*source* target:(NSString *)*target*`
+
+#### Parameters
+
+| `source` | 需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。 |
+| --- | --- |
+| `target` | <Slot name="api-center-table-12" /> |
+
+<Slot for="api-center-table-12">
+
+目标场景目录的路径或目标场景的路径：
+
+- 当 `target` 设置为场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。
+- 当 `target` 设置为场景时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。
+
+</Slot>
+
+#### Discussion
+
+成功移动场景后，场景路径也会改变。
+
+**Note:**
+
+- 该方法只能移动场景，不能移动场景目录，即 `source` 只能是场景路径，不能是场景目录路径。
+- 该方法支持改变指定场景在当前所属场景目录下的位置，也支持将指定场景移至其他场景目录。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/copy"></a>
+
+### `– copy`
+
+复制选中内容。
+
+`- (void)copy`
+
+#### Discussion
+
+该方法会将选中的内容存储到内存中，不会粘贴到白板中。
+
+**Note:**
+
+该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableSerialization:) 设为 `NO` 时生效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/paste"></a>
+
+### `– paste`
+
+粘贴复制的内容。
+
+`- (void)paste`
+
+#### Discussion
+
+该方法会将 [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/copy) 方法复制的内容粘贴到白板中（用户当前的视角中间）。
+
+**Note:**
+
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableSerialization:) 设为 `NO` 时生效。
+- 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中间，可能会出现随机偏移。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/duplicate"></a>
+
+### `– duplicate`
+
+复制并粘贴选中的内容。
+
+`- (void)duplicate`
+
+#### Discussion
+
+该方法会将选中的内容复制并粘贴到白板中（用户当前的视角中间）。
+
+**Note:**
+
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableSerialization:) 设为 `NO` 时生效。
+- 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中间，可能会出现随机偏移。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/deleteOperation"></a>
+
+### `– deleteOperation`
+
+删除选中内容。
+
+`- (void)deleteOperation`
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/disableSerialization:"></a>
+
+### `– disableSerialization:`
+
+开启/禁止本地序列化。
+
+`- (void)disableSerialization:(BOOL)*disable*`
+
+#### Parameters
+
+| `disable` | 是否禁止本地序列化： `YES`：（默认）禁止开启本地序列化； `NO`： 开启本地序列化，即可以对本地操作进行解析。 |
+| --- | --- |
+
+#### Discussion
+
+设置 `disableSerialization(true)` 后，以下方法将不生效：
+
+- [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/redo)
+- [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/undo)
+- [duplicate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/duplicate)
+- [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/copy)
+- [paste](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/paste)
+
+**Warning:**
+
+如果要设置 `disableSerialization(false)`，必须确保同一房间内所有用户使用的 SDK 满足以下版本要求，否则会导致 app 客户端崩溃。
+
+- Web SDK 2.9.2 或之后版本
+- Android SDK 2.9.3 或之后版本
+- iOS SDK 2.9.3 或之后版本
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/redo"></a>
+
+### `– redo`
+
+重做，即回退撤销操作。
+
+`- (void)redo`
+
+#### Discussion
+
+**Note:**
+
+该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableSerialization:) 设为 `NO` 时生效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/undo"></a>
+
+### `– undo`
+
+撤销上一步操作。
+
+`- (void)undo`
+
+#### Discussion
+
+**Note:**
+
+该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableSerialization:) 设为 `NO` 时生效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="task_MainView-Methods"></a>
+
+## MainView Methods
+
+<a id="//api/name/addApp:completionHandler:"></a>
+
+### `– addApp:completionHandler:`
+
+插入小窗应用。
+
+`- (void)addApp:(WhiteAppParam *)*appParams* completionHandler:(void ( ^) ( NSString *appId))*completionHandler*`
+
+#### Parameters
+
+| `appParams` | 小窗应用属性，详见 [WhiteAppParam](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param)。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-13" /> |
+
+<Slot for="api-center-table-13">
+
+方法调用结果：
+
+- 如果方法调用成功，则返回 `appId`，即小窗应用 ID。
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Discussion
+
+多窗口模式下，PPT 或自定义插件等可以作为小窗应用插入白板，在一个新的窗口中展示。
+
+:::note
+**Note:** 多次插入同一个小窗应用返回的 `appId` 为 `nil`，表示插入失败。
+:::
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/closeApp:completionHandler:"></a>
+
+### `– closeApp:completionHandler:`
+
+关闭指定小窗应用的窗口。
+
+`- (void)closeApp:(NSString *)*appId* completionHandler:(void ( ^) ( void))*completionHandler*`
+
+#### Parameters
+
+| `appId` | 小窗应用 ID。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-14" /> |
+
+<Slot for="api-center-table-14">
+
+方法调用结果：
+
+- 如果方法调用成功，则窗口关闭。
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Discussion
+
+该方法仅在多窗口模式下有效, 无论应用 ID 是否有效都会触发回调。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/focusApp:"></a>
+
+### `– focusApp:`
+
+切换聚焦窗口为指定小窗应用的窗口。
+
+`- (void)focusApp:(NSString *)*appId*`
+
+#### Parameters
+
+| `appId` | 小窗应用 ID。 |
+| --- | --- |
+
+#### Discussion
+
+该方法仅在多窗口模式下有效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/queryAllAppsWithCompletionHandler:"></a>
+
+### `– queryAllAppsWithCompletionHandler:`
+
+查询所有小窗应用的信息。
+
+`- (void)queryAllAppsWithCompletionHandler:(void ( ^) ( NSDictionary&lt;NSString*,WhiteAppSyncAttributes*&gt; *apps, NSError *_Nullable error))*completionHandler*`
+
+#### Parameters
+
+| `completionHandler` | 查询结果回调。 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 [WhiteAppSyncAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-sync-attributes)。 如果方法调用失败，则返回错误信息。 |
+| --- | --- |
+
+#### Discussion
+
+该方法仅在多窗口下有效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/queryApp:completionHandler:"></a>
+
+### `– queryApp:completionHandler:`
+
+查询指定小窗应用的信息。
+
+`- (void)queryApp:(NSString *)*appId* completionHandler:(void ( ^) ( WhiteAppSyncAttributes *appParam, NSError *_Nullable error))*completionHandler*`
+
+#### Parameters
+
+| `appId` | 小窗应用 ID。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-15" /> |
+
+<Slot for="api-center-table-15">
+
+查询结果回调。
+
+- 如果方法调用成功，则返回小窗应用相关信息，详见 [WhiteAppSyncAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-sync-attributes)。
+- 如果方法调用失败，则返回错误信息。
+
+</Slot>
+
+#### Discussion
+
+该方法仅在多窗口下有效。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/dispatchDocsEvent:options:completionHandler:"></a>
+
+### `– dispatchDocsEvent:options:completionHandler:`
+
+发送文档操作事件。
+在多窗口模式下，该方法可以用来操作当前聚焦的文档窗口。
+
+`- (void)dispatchDocsEvent:(WhiteWindowDocsEventKey)*docsEvent* options:(WhiteWindowDocsEventOptions *_Nullable)*options* completionHandler:(void ( ^) ( bool success))*completionHandler*`
+
+#### Parameters
+
+| `docsEvent` | 事件类型。可传入以下事件： - `WhiteWindowDocsEventPrevPage`：上一页。 - `WhiteWindowDocsEventNextPage`：下一页。 - `WhiteWindowDocsEventPrevStep`：上一步。 - `WhiteWindowDocsEventNextStep`：下一步。 - `WhiteWindowDocsEventJumpToPage`：跳转到指定页码。需配合 `options` 参数使用。 |
+| --- | --- |
+| `options` | <Slot name="api-center-table-16" /> |
+| `completionHandler` | <Slot name="api-center-table-17" /> |
+
+<Slot for="api-center-table-16">
+
+可选事件参数。该参数仅在设置 `docsEvent` 为 `WhiteWindowDocsEventJumpToPage` 时有效，用于传入跳转的页码。详见 [WhiteWindowDocsEventOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-window-docs-event-options)。
+
+</Slot>
+
+<Slot for="api-center-table-17">
+
+方法调用结果。
+
+</Slot>
+
+#### Discussion
+
+:::warning
+**Warning:** 该方法只有在文档视图加载完毕时才能调用。不支持多次连续调用，只有当前的转场动画播放完毕之后才能进行下一次调用。
+:::
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="task_Asynchronous-Methods"></a>
+
+## Asynchronous Methods
+
+<a id="//api/name/getGlobalStateWithResult:"></a>
+
+### `– getGlobalStateWithResult:`
+
+获取房间的全局状态。
+
+`- (void)getGlobalStateWithResult:(void ( ^) ( WhiteGlobalState *state))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回房间的全局状态，详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+- 该方法为异步调用。
+- 通过 [setCustomGlobalStateClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer-state#//api/name/setCustomGlobalStateClass:) 设置自定义状态后，如需异步获取，可以通过 `getRoomStateWithResult` 获取自定义的当前房间状态。
+- 调用 [setGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/globalState) 方法后，可以立刻调用该方法。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getMemberStateWithResult:"></a>
+
+### `– getMemberStateWithResult:`
+
+获取当前的工具状态。
+
+`- (void)getMemberStateWithResult:(void ( ^) ( WhiteMemberState *state))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+该方法为异步调用。调用 [setMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/memberState) 方法后，可以立刻调用该方法。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getRoomMembersWithResult:"></a>
+
+### `– getRoomMembersWithResult:`
+
+获取实时房间用户列表。
+
+`- (void)getRoomMembersWithResult:(void ( ^) ( NSArray&lt;WhiteRoomMember*&gt; *roomMembers))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前房间的用户列表，详见 [WhiteRoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-member)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+- 该方法为异步调用。
+- 房间的用户列表仅包含互动模式（具有读写权限）的用户，不包含订阅模式（只读权限）的用户。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getBroadcastStateWithResult:"></a>
+
+### `– getBroadcastStateWithResult:`
+
+获取用户视角状态。
+
+`- (void)getBroadcastStateWithResult:(void ( ^) ( WhiteBroadcastState *state))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前用户视角状态，详见 [WhiteBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+该方法为异步调用。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getRoomPhaseWithResult:"></a>
+
+### `– getRoomPhaseWithResult:`
+
+获取房间连接状态。
+
+`- (void)getRoomPhaseWithResult:(void ( ^) ( WhiteRoomPhase phase))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前房间连接状态，详见 [WhiteRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-room-phase)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+该方法为异步调用。
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getZoomScaleWithResult:"></a>
+
+### `– getZoomScaleWithResult:`
+
+获取用户当前的视角缩放比例。该方法为异步调用。
+
+`- (void)getZoomScaleWithResult:(void ( ^) ( CGFloat scale))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前视角缩放比例。 |
+| --- | --- |
+
+#### Declared In
+
+`WhiteRoom.h`
+
+<a id="//api/name/getRoomStateWithResult:"></a>
+
+### `– getRoomStateWithResult:`
+
+获取当前房间状态。
+
+`- (void)getRoomStateWithResult:(void ( ^) ( WhiteRoomState *state))*result*`
+
+#### Parameters
+
+| `result` | 回调。返回当前房间状态，详见 [WhiteRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-state)。 |
+| --- | --- |
+
+#### Discussion
+
+**Note:**
+
+该方法为异步调用。
+
+#### Declared In
+
+`WhiteRoom.h`

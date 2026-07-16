@@ -1,0 +1,94 @@
+---
+title: Interface CameraVideoTrackInitConfig
+description: 创建摄像头视频流时的配置对象，用于 AgoraRTC.createCameraVideoTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/cameravideotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/cameravideotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+创建摄像头视频流时的配置对象，用于 [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcameravideotrack)。
+
+### Hierarchy
+
+- CameraVideoTrackInitConfig
+
+## Index
+
+### Properties
+
+- [cameraId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig#cameraid)
+- [encoderConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig#encoderconfig)
+- [facingMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig#facingmode)
+- [optimizationMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig#optimizationmode)
+
+## Properties
+
+<a id="cameraid"></a>
+
+### Optional cameraId
+
+cameraId: string
+
+指定摄像头的设备 ID。
+
+你可以通过 [AgoraRTC.getCameras](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getcameras) 来获取当前的摄像头设备列表。
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+encoderConfig: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset)
+
+控制视频的编码配置。
+
+你可以通过以下方式设置该属性：
+
+- 通过 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset) 传入 SDK 内置的编码配置。
+- 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) 对象来自定义视频编码配置。
+- 不传或留空，使用 SDK 的默认值 `"480p_1"`（分辨率 640 × 480、帧率 15 fps、码率 500 Kbps）。
+
+<a id="facingmode"></a>
+
+### Optional facingMode
+
+facingMode: VideoFacingModeEnum
+
+指定使用前置/后置摄像头来采集视频。
+
+在移动设备上，可以设置该参数选择使用前置或后置摄像头：
+
+- `"user"`: 前置摄像头
+- `"environment"`: 后置摄像头
+
+<a id="optimizationmode"></a>
+
+### Optional optimizationMode
+
+optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#optimizationmode)
+
+### 自从
+
+*4.2.0*
+
+设置视频传输优化模式。
+
+你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
+
+> 注意事项：该方法只支持 Chrome 浏览器。
+
+### param
+
+视频传输优化模式：
+
+- `"detail"`: 清晰优先。
+
+  - SDK 会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
+- `"motion"`: 自 4.21.0 开始，SDK 默认开启流畅优先模式。
+
+  - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，SDK 不会降低帧率，但是可能会降低发送分辨率。

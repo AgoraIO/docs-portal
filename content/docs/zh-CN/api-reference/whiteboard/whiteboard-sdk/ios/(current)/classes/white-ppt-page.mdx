@@ -1,0 +1,155 @@
+---
+title: WhitePptPage Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhitePptPage
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhitePptPage.html
+  generator: appledoc
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /doc/whiteboard/ios/whiteboard-sdk/advanced-features/convert-files as local text.
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhitePptPage.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用于配置待插入场景的图片或动态 PPT 页的参数。场景中可插入的图片或动态 PPT 包括：
+
+- PNG、JPG/JPEG、WEBP 格式的图片，或由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG/JPEG、WEBP 格式的图片。
+- 使用 文档转换服务转换过的 PPTX 文件。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithSrc:size:"></a>
+
+### `– initWithSrc:size:`
+
+创建待插入场景的图片或动态 PPT 并初始化一个 `WhitePptPage` 对象。
+
+`- (instancetype)initWithSrc:(NSString *)*src* size:(CGSize)*size*`
+
+#### Parameters
+
+| `src` | [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。 |
+| --- | --- |
+| `size` | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+图片或动态 PPT 在白板中的尺寸，单位为像素。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhitePptPage` 对象。
+
+#### Discussion
+
+**Note：**
+
+- 每个场景中只能插入一张图片和一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+#### Declared In
+
+`WhitePptPage.h`
+
+<a id="//api/name/initWithSrc:preview:size:"></a>
+
+### `– initWithSrc:preview:size:`
+
+创建待插入场景的图片或动态 PPT 的预览图并初始化一个 `WhitePptPage` 对象。
+
+`- (instancetype)initWithSrc:(NSString *)*src* preview:(NSString *)*url* size:(CGSize)*size*`
+
+#### Parameters
+
+| `src` | [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。 |
+| --- | --- |
+| `url` | <Slot name="api-center-table-1" /> |
+| `size` | <Slot name="api-center-table-2" /> |
+
+<Slot for="api-center-table-1">
+
+图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中的 `preview` 字段获取，例如，"[https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png](https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png)“。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+图片或动态 PPT 在白板中的尺寸，单位为像素。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhitePptPage` 对象。
+
+#### Discussion
+
+**Note：**
+
+- 每个场景中只能插入一张图片和一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+#### Declared In
+
+`WhitePptPage.h`
+
+<a id="//api/name/src"></a>
+
+### `src`
+
+场景图片或动态 PPT 的地址。
+
+`@property (nonatomic, copy) NSString *src`
+
+#### Declared In
+
+`WhitePptPage.h`
+
+<a id="//api/name/width"></a>
+
+### `width`
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
+
+`@property (nonatomic, assign) CGFloat width`
+
+#### Declared In
+
+`WhitePptPage.h`
+
+<a id="//api/name/height"></a>
+
+### `height`
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+`@property (nonatomic, assign) CGFloat height`
+
+#### Declared In
+
+`WhitePptPage.h`
+
+<a id="//api/name/previewURL"></a>
+
+### `previewURL`
+
+图片的或动态 PPT 预览图的 URL 地址。
+
+`@property (nonatomic, copy, readonly) NSString *previewURL`
+
+#### Declared In
+
+`WhitePptPage.h`

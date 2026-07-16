@@ -1,0 +1,3540 @@
+---
+title: agora_rtc_api.h 文件参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h
+  sourcePath: html-docs/rtsa/c/agora__rtc__api_8h.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/deprecated.html#_deprecated000001
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved generated-source link /doc/rtsa/c/basic-features/license as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/deprecated.html#_deprecated000002
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved generated-source link /doc/rtsa/c/basic-features/license as local text.
+---
+
+`#include &lt;stdint.h&gt;`
+
+`#include &lt;stddef.h&gt;`
+
+`#include &lt;stdbool.h&gt;`
+
+浏览该文件的源代码.
+
+| <a id="nested-classes"></a> 结构体 |  |
+| --- | --- |
+| struct | [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) |
+| struct | [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) |
+| struct | [log_config_t](/zh-CN/api-reference/rtsa/c/structlog-config-t) |
+| struct | [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) |
+| struct | [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t) |
+| struct | [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t) |
+| struct | [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) |
+| struct | [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info) |
+| struct | [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t) |
+| struct | [user_info_s](/zh-CN/api-reference/rtsa/c/structuser-info-s) |
+| struct | [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t) |
+| struct | [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) |
+
+| <a id="define-members"></a> 宏定义 |  |
+| --- | --- |
+| #define | [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) |
+| #define | [AGORA_RTC_CHANNEL_NAME_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a8ab8ce37c96cb9358e1c0a45d9a17e33) (64) |
+| #define | [AGORA_RTC_PRODUCT_ID_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a3720a5f468d3696ba1bbe0b6da18f1b5) (63) |
+| #define | [AGORA_RTC_USER_ACCOUNT_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a4a80dc25913d06d6d97733ad84cab41f) (256) |
+| #define | [AGORA_RTC_DATA_STREAM_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6d84b5cdaf9bb0359ff264d775dada92) (1024) |
+| #define | [AGORA_RTM_UID_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a8c77142e1de005c4963d70f3478bff19) (64) |
+| #define | [AGORA_RTM_DATA_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a07dce5cb1ed7d6476ab69f8bf06deef8) (31 * 1024) |
+| #define | [AGORA_CREDENTIAL_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a02e5aee7d86c93a30696a11c2da69fb4) (256) |
+| #define | [AGORA_CERTIFICATE_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a577bd541ae1fdc5a3d1ae28b185948e2) (1024) |
+| #define | [AGORA_LICENSE_VALUE_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6969509dce36d0a1cb63a7d0e00804ae) (32) |
+| #define | [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) (([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c))0) |
+| #define | [CONNECTION_ID_INVALID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a859d556be254db709863d0cf23b08180) (([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c))-1) |
+
+| <a id="typedef-members"></a> 类型定义 |  |
+| --- | --- |
+| typedef uint16_t | [video_frame_rate_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a2c71f0de17ad14a7e165d7fdc19472e4) |
+| typedef enum [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) | [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) |
+| typedef enum [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84) | [rdt_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab926f577ba6171a33930da45236aaa83) |
+| typedef struct [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info) | [rdt_status_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa8f682dca66b0793fbf74d1d467f5327) |
+| typedef uint32_t | [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) |
+| typedef struct [user_info_s](/zh-CN/api-reference/rtsa/c/structuser-info-s) | [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) |
+
+| <a id="enum-members"></a> 枚举 |  |
+| --- | --- |
+| enum | [agora_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abf) \\\{ [ERR_OKAY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfabcb41b97c22a8baf624c10fd32b85110) = 0, [ERR_FAILED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa55adea41deb55430ff7582871e1b58cb) = 1, [ERR_INVALID_PARAM](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfac5bbc85b8893c0f0329cb0407509a0a1) = 2, [ERR_INVALID_STATE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfac60ad9ef7b73386b49d5c93a2391c447) = 3, [ERR_NOT_SUPPORTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa994a3ba85904a4ea1ee0b3330aa15609) = 4, [ERR_NOT_IN_CHANNEL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa2f87aab99ad1db39b351e6000370df7b) = 6, [ERR_NOT_INITIALIZED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfae44179d4dc47349972e3ab7702aaf435) = 7, [ERR_NOT_EXIST_CONNECTION](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfae657a7c7b27629afeae9381997bff18c) = 8, [ERR_TIMEDOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa2dcd571426340223f3ed818480204ca7) = 10, [ERR_NO_MEMORY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa308199736159a4f167ad4f58db8a3830) = 11, [ERR_CALL_FAILED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaacacefd86c7bfed65ec51d9275ce15c5) = 12, [ERR_NET_DOWN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaec8c71d0c16bfcc54d23dd02c5dbf6b9) = 14, [ERR_JOIN_CHANNEL_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa20c11704c3a4c6e57c047ecb67ba6648) = 17, [ERR_LEAVE_CHANNEL_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaefb42a42d62890259d40c9d73945b964) = 18, [ERR_LICENSE_VERIFICATION_FAILURE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa273015d0d91c9f93595eb15bbac08550) = 23, [ERR_ENCRYPTION](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa04c61d0652a8afc0bb9f2d3707dc5277) = 30, [ERR_DECRYPTION](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa66ab18623c7421ccf79f748c2b066da8) = 31, [ERR_INVALID_APP_ID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa1c52fe8e89c2871494d31c729151463d) = 101, [ERR_INVALID_CHANNEL_NAME](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfac7b431735b63f0e628a0485f6e8178d3) = 102, [ERR_NO_SERVER_RESOURCES](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad95c9e3f9fd45a6bae14031cdd188d61) = 103, [ERR_LOOKUP_CHANNEL_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaeaa2194a4cd76b1da02398ec04a96a68) = 105, [ERR_OPEN_CHANNEL_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaa64b29f1436017ee0b8cb3baa743139a) = 107, [ERR_TOKEN_EXPIRED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaa07e19d62b749a5f803a3c416a70fbc5) = 109, [ERR_INVALID_TOKEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa14ec9241bfc66e2f18c024ab5a9e073a) = 110, [ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfadce0b07f244bd3ce132a78e6ada3ce7e) = 115, [ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa4dc0b750cc3baf482934846598ad8dd8) = 119, [ERR_DECRYPTION_FAILED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa97ee2db4a99b5d5db4efc635cd6afa7e) = 120, [ERR_OPEN_CHANNEL_INVALID_TICKET](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfac0300e6b2ff89cc67ae962aa2bd031bd) = 121, [ERR_OPEN_CHANNEL_TRY_NEXT_VOS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa06cf41976ae4fc1bc960210762703a44) = 122, [ERR_CLIENT_IS_BANNED_BY_SERVER](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaf27f83cacbf091827ba2804a0b20d9f6) = 123, [ERR_AUDIO_CODEC_NOT_SUPPORT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa5cac3070472de8ea86ac6cf7891be0f9) = 200, [ERR_AUDIO_INVALID_PCM_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfadb49532e25ee95dbdc209325497f45aa) = 201, [ERR_AUDIO_INVALID_CODEC_PARAM](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa240ebc604dd0c0c95acbfa83092561f2) = 202, [ERR_VIDEO_SEND_OVER_BANDWIDTH_LIMIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa57f59666f227d6474beca009c4818a5c) = 300, [ERR_VIDEO_SEND_PACKETIZE_FAILED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfac4ffd4b18a0ffa9ad022ece4dfa17611) = 301, [ERR_RDT_USER_NOT_EXIST](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa33860e6a1c104ec31d5a9acd1cdf6b59) = 600, [ERR_RDT_USER_NOT_READY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa5670dc5ba8b5f4f6ed372576b8bd342c) = 601, [ERR_RDT_DATA_BLOCKED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa1eb07a0d4f19239c2626e2b956a8bde1) = 602, [ERR_RDT_CMD_EXCEED_LIMIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaec9b32272bc37e2ba2352908d7037b39) = 603, [ERR_RDT_DATA_EXCEED_LIMIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e) = 604, [ERR_TOO_MANY_DATA_STREAMS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa99f79ae8d0c0fba7a21c5899061370d9) = 621, [ERR_DATA_STREAM_SIZE_TOO_LARGE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa3c2c69fa6fde1c211261dedac621b271) = 622, [ERR_NOT_EXIST_STREAM_ID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfacb11c2ed338a02d1dca2aefea8ac2997) = 623, [ERR_DATA_STREAM_BITRATE_LIMIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa0465f9f918cc4a8b4d56a75a75ca471f) = 624, [ERR_DATA_STREAM_SEND_TOO_OFTEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfae556a1ce5b7efd4ac96ca53042125d46) = 625, [ERR_DATA_STREAM_TIME_OUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaa9de59fef0c1280f43e4d8417de42dec) = 626, [ERR_RTM_NOT_LOGINED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa6242b31e925eb8ef6ffc08bbedd16bb5) = 1001, [ERR_RTM_HAD_LOGINED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa517151a0b1753008e21d492546fc232e) = 1002, [ERR_RTM_SEND_TO_SELF](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa21e1a73cf5848a9d53600208c41608d8) = 1003, [ERR_RTM_EXCEED_MSG_SIZE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa04343a91456b801cd60af93c5aaa9fec) = 1004, [ERR_RTM_EXCEED_MSG_CNT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad191c4486b672a47bdaba4456ae9da47) = 1005, [ERR_RTM_EXCEED_SND_BUFFER](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfa25edc1b9a90535def16efc824e609f40) = 1006 \\\} |
+| enum | [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19b) \\\{ [ERR_LICENSE_INVALID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19ba8c336f3e57b8949dce62def59054fa47) = 1, [ERR_LICENSE_EXPIRE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19ba632b512643b13d41661a7d98277a3298) = 2, [ERR_LICENSE_MINUTES_EXCEED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19baa3840d2fc429f35fec29fe6b01727e1f) = 3, [ERR_LICENSE_LIMITED_PERIOD](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19bad04aee3336c0ff12013c9f4272813fda) = 4, [ERR_LICENSE_DIFF_DEVICES](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19ba2dcf555d0e49276861482e527bbd5954) = 5, [ERR_LICENSE_INTERNAL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19ba9b632de747f865d7e618efa59fca039f) = 99 \\\} |
+| enum | [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5) \\\{ [USER_OFFLINE_QUIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5a8f60542089fd7be69f08f94d5990c6df) = 0, [USER_OFFLINE_DROPPED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5a05239488395bc85de4bf28c6e9a08f78) = 1, [USER_OFFLINE_BECOME_AUDIENCE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5aa96bd52b63153c3b4502cec78309013b) = 2 \\\} |
+| enum | [video_data_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222) \\\{ [VIDEO_DATA_TYPE_YUV420](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222a24613b631dcf675ec3ba1224a8b5e91f) = 0, [VIDEO_DATA_TYPE_H264](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222a366eef7674071f5d8a4288f9e35757ba) = 2, [VIDEO_DATA_TYPE_H265](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222a7ea89e0b6742421358a4c61748f25a2f) = 3, [VIDEO_DATA_TYPE_GENERIC](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222ab9616cee056df34f7d2b0fc01f154445) = 6, [VIDEO_DATA_TYPE_GENERIC_JPEG](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222aa2ab50c43048ca3282bed2bd5da5847e) = 20 \\\} |
+| enum | [video_frame_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22) \\\{ [VIDEO_FRAME_AUTO_DETECT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22a8d1bbd09567fb30a955faa706bc8eca2) = 0, [VIDEO_FRAME_KEY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22a4e31a5296b3c6791e574db21a2b0edae) = 3, [VIDEO_FRAME_DELTA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22ae24012315af9ca7988080920f9cea6b7) = 4 \\\} |
+| enum | [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) \\\{ [VIDEO_STREAM_HIGH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278eda046872b3583d9286bf805f16775efc4c) = 0, [VIDEO_STREAM_LOW](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278eda30bd873e1099b86ebf6d852ee2218319) = 1 \\\} |
+| enum | [video_orientation_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7) \\\{ [VIDEO_ORIENTATION_0](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7a9f6c6ff5146e77d5dcdfe7c464d2d0e2) = 0, [VIDEO_ORIENTATION_90](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7aa9bce06fe89f0788e6d7f4ec7eaf973f) = 1, [VIDEO_ORIENTATION_180](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7a3dc54ff51606226550656fcede191ad8) = 2, [VIDEO_ORIENTATION_270](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7ad70cb082af9397176c10dd21ed7b6c4a) = 3 \\\} |
+| enum | [audio_codec_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88) \\\{ [AUDIO_CODEC_DISABLED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88aee23984f8e844a4812e5767d5c3ded2a) = 0, [AUDIO_CODEC_TYPE_OPUS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88a3781227210ca6ad44cb5130912aa86f1) = 1, [AUDIO_CODEC_TYPE_G722](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88a08df8754e9b5f4341d6ced220a42f6c0) = 2, [AUDIO_CODEC_TYPE_G711A](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88afd071094a3603f79860087c6461401b0) = 3, [AUDIO_CODEC_TYPE_G711U](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88ae51691c9b8c96bafa34acc9ad0b7a279) = 4 \\\} |
+| enum | [audio_data_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713) \\\{ [AUDIO_DATA_TYPE_OPUS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a3f8c5b8310e331b484d2e9bdd96a9e65) = 1, [AUDIO_DATA_TYPE_OPUSFB](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713aed0f1de5cbc741fca1cd883f0703b7dc) = 2, [AUDIO_DATA_TYPE_PCMA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a3fdf1611e11ec005f166055523513e47) = 3, [AUDIO_DATA_TYPE_PCMU](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713ac646e8fc0f4d787812d1924941686833) = 4, [AUDIO_DATA_TYPE_G722](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713aa4db24b0e5dade22bb8a5084ee4379b5) = 5, [AUDIO_DATA_TYPE_AACLC_8K](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713ab50e2697591f63de105892f5497dd2ce) = 6, [AUDIO_DATA_TYPE_AACLC_16K](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713af25a058a9829fa8b59ea8e12a20faa85) = 7, [AUDIO_DATA_TYPE_AACLC](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713ad6bc3c1be3b7fbb7430e19b8b32620ac) = 8, [AUDIO_DATA_TYPE_HEAAC](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a7a56f5e0f8f63f45cd43c193765e14f4) = 9, [AUDIO_DATA_TYPE_HEAAC2](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a9aa542bd8000a4276bf048c978e8d22b) = 10, [AUDIO_DATA_TYPE_AACLC_8K_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a0f98039497f7c19bd015f5bb4f8ec1e8) = 11, [AUDIO_DATA_TYPE_AACLC_16K_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a40cd387960edbb5cdee75e5d32a0f6b1) = 12, [AUDIO_DATA_TYPE_AACLC_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a91ff1a05fcc41cd8b4b12a660ac07912) = 13, [AUDIO_DATA_TYPE_HEAAC_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a889ef8c4ef7febf31183f9e3ba70b4cc) = 14, [AUDIO_DATA_TYPE_HEAAC2_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a936a1ebce3310044a52d44fa82e81fcc) = 15, [AUDIO_DATA_TYPE_AACLC1](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a51ece05e4b93e6eac71e185784129695) = 16, [AUDIO_DATA_TYPE_AACLC1_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a5da85bcc06692acb9f438e14a1ca4f85) = 17, [AUDIO_DATA_TYPE_HWAAC](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713acc7b6525f9c81c6c5a5d86be271c3177) = 18, [AUDIO_DATA_TYPE_OPUSSWB](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713aeaff2b9a92a2712dbe730bed4c90e787) = 20, [AUDIO_DATA_TYPE_OPUSFB_2CH](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a7074de58cd23212ffadc96486acc3a2a) = 21, [AUDIO_DATA_TYPE_PCM](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a7117fe39e61f769e8d8eea96393c7d55) = 100, [AUDIO_DATA_TYPE_GENERIC](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713a58890eac24863b9d33fcc38e9b754b93) = 253, [AUDIO_DATA_TYPE_UNKNOW](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713ab7ec3f7839c1fad8efebde39f5f753ee) = 254 \\\} |
+| enum | [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) \\\{ [RTC_LOG_DEFAULT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868a24e55625febbd7f5e86ebe04abab6d7b) = 0, [RTC_LOG_EMERG](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868a8d59102ccbd168181e12bf6ef4548b86), [RTC_LOG_ALERT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868a42d3462b640722db79ee1b9119a17302), [RTC_LOG_CRIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868afb611a30262f2f38c5ed802bea069e64), [RTC_LOG_ERROR](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868ad394cccfea48c61d07633bde0b39fdf1), [RTC_LOG_WARNING](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868a60426a1d96e3be124df17385a4e55ed9), [RTC_LOG_NOTICE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868ae3eead5cceec7ef6dfaaa1ac83a42257), [RTC_LOG_INFO](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868ae1c0db40d0eaf716d43ff3d55188317c), [RTC_LOG_DEBUG](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868a8de3838b01978383dc3ade2c812b9d2e) \\\} |
+| enum | [area_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1d) \\\{ [AREA_CODE_DEFAULT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1daf40ca70ae214b3fbcc4711d20264ac34) = 0x00000000, [AREA_CODE_CN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da5376eaaaa37364f52e686e9618704644) = 0x00000001, [AREA_CODE_NA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1dade5398f89e5e62623975d453ff05d4d0) = 0x00000002, [AREA_CODE_EU](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da3146dc8cd0884e2288e3c5a99e1edba8) = 0x00000004, [AREA_CODE_AS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da665ee85d6ebf73bfb174e2124e54c3f0) = 0x00000008, [AREA_CODE_JP](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da05af865b904b744b18eca08618e5e33a) = 0x00000010, [AREA_CODE_IN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da5d1b9cf2e4ab60f185d4aff858af65de) = 0x00000020, [AREA_CODE_GLOB](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1da15ec0ec19895f8539030d20fec839b92) = (0xFFFFFFFF) \\\} |
+| enum | [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) \\\{ [AES_128_XTS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44eaac8f4cee1cda87f784affee3ad8a9ae0) = 1, [AES_128_ECB](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44eac6c45ad2ab43103764084b7387370eef) = 2, [AES_256_XTS](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44eae91864a3739588eb1578a198fa0ac485) = 3, [SM4_128_ECB](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea60a926d612bf4746c27f3a9cc079741e) = 4, [AES_128_GCM](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea28831d24b0b2ea5946568f0295ff5ff1) = 5, [AES_256_GCM](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44eaac51f4b0336ae8023ed7917103d2a384) = 6, [AES_128_GCM2](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea23d6a46e00004410b9d00b41aba70e0d) = 7, [AES_256_GCM2](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea13555f5e3977644e0fb20ee80e9b841a) = 8, [CRYPTO_MODE_END](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea28f700099837307a467840b1a08df789) \\\} |
+| enum | [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) \\\{ [RDT_STREAM_CMD](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a7f3a2a89aa98975482c02131bd224b46), [RDT_STREAM_DATA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a04654c2c006244086c3b455375d10766), [RDT_STREAM_COUNT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955ab13f605f38d97c90e09fa7846a1d6e06) \\\} |
+| enum | [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84) \\\{ [RDT_STATE_CLOSED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84a757c5096332a339fdfe10488a955d6f5), [RDT_STATE_OPENED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c), [RDT_STATE_BLOCKED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84afd20c1dde52083e0ced5b7a3ef42672e), [RDT_STATE_PENDING](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84af89166c4372fa78670dffe957108a8d3), [RDT_STATE_BROKEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84a186710d2d5fc763d84fe8d2697761142) \\\} |
+| enum | [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) \\\{ [RTM_EVENT_TYPE_LOGIN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7ad113c30e603a965a059df68586de7bdc) = 0, [RTM_EVENT_TYPE_KICKOFF](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7a05f8e9a7117c74b6f7f7063ca03b03a6) = 1, [RTM_EVENT_TYPE_EXIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7a791cd45e40580ae8ad73be9e325a0340) = 2 \\\} |
+| enum | [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) \\\{ [RTM_MSG_STATE_INIT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6a27775e1bab1bd135224e14638cef8fcf) = 0, [RTM_MSG_STATE_RECEIVED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6aae52bb084b2ad43b9116f31faa58b772), [RTM_MSG_STATE_UNREACHABLE](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6ae94a5a13749f792cff289e067a0a7e14), [RTM_MSG_STATE_TIMEOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6a0b5a63f6422b819cbe63d337b555e243) \\\} |
+| enum | [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) \\\{ [ERR_RTM_OK](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395ae6d349a878142d7c39278c651009b3e7) = 0, [ERR_RTM_FAILED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395abe3684599c7991766805d00724b9a3bf) = 1, [ERR_RTM_LOGIN_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395aaf7445dc645867b299b521d33d8806af) = 2, [ERR_RTM_INVALID_RTM_UID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a028d05777130bf725b376f5398e55e1e) = 3, [ERR_RTM_LOGIN_INVALID_TOKEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a759c243b2f6579660e5283ea7fec49f4) = 5, [ERR_RTM_LOGIN_NOT_AUTHORIZED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395ae66c3720fed2b809991aad603b099678) = 7, [ERR_RTM_LOCAL_NETDOWN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395aff3cd211a9e47d717330db875292c2c0) = 8, [ERR_RTM_LOCAL_INTERRUPT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a42ee38fc588f057ffa1d6cce5f1a8590) = 9, [ERR_RTM_LOCAL_TIMEOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a81c8a98baffacb7cef2555975fa91c9d) = 10, [ERR_RTM_SERVER_TIMEOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a86dfec717916e6a4390117d20a4fe93e) = 11, [ERR_RTM_INVALID_APP_ID](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a8de11746d8aa79253dfc4d2339974a7c) = ERR_INVALID_APP_ID, [WARN_RTM_LOOKUP_CHANNEL_REJECTED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395ad8a80f6c8d330265bb1fbb23388e5fd7) = ERR_LOOKUP_CHANNEL_REJECTED, [ERR_RTM_TOKEN_EXPIRED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a2bad14752327e855007347e23aa26217) = ERR_TOKEN_EXPIRED, [ERR_RTM_INVALID_TOKEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a94a76b5f288a60b0182f21fd1994d3d6) = ERR_INVALID_TOKEN \\\} |
+
+| <a id="func-members"></a> 函数 |  |
+| --- | --- |
+| const char * | [agora_rtc_get_version](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad01077e5b926ab8a6a1743a74ff3cdd7) (void) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) const char * | [agora_rtc_err_2_str](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a4d71911dc6236c8317bed8e2e7be6a6f) (int err) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_license_gen_credential](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6fe757f18a9c19e2bbc254a71061f280) (char *credential, unsigned int *credential_len) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_license_verify](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a8c9a8560c8b826db43cce78ce723c63f) (const char *certificate, int certificate_len, const char *credential, int credential_len) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) const char * | [agora_rtc_license_strerror](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa1b710e51d7520b83da6d4e9ef9711c6) (int err) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) (const char *app_id, const [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t) *event_handler, [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) *option) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_fini](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a09875c7766bbb543425da877a3ef6e1d) (void) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_set_log_level](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a665de5b57dcb7b3c62d7a35b9a5992f7) ([rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) level) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_config_log](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a390557a8930a59dfffbfd1d4b52e9c94) (int size_per_file, int max_file_count) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_destroy_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ac58d42a331c45233d81085fc13defcaf) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_get_connection_info](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa3c03b5de5004ce61ba9f9e5a7637b25) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t) *conn_info) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_get_user_info_by_user_account](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a68efcfa431803942c8fdc733b00c30c1) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *user_account, [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_get_user_info_by_uid](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad6b1be785d6c2b4fa8fb0eac90290194) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_join_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *channel_name, uint32_t uid, const char *token, [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) *options) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_join_channel_with_user_account](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *channel_name, const char *user_account, const char *token, [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) *options) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_leave_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a939878648ce563ef4041da892d478f8b) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_renew_token](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a87c94a2d518278926807e24592b41336) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *token) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_mute_local_audio](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a28c1dae086be4014ad732a07db248b16) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, bool mute) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_mute_local_video](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a47f116e271b78c0659fcd68a96d34224) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, bool mute) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_mute_remote_audio](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a8ad8bfa0e0a46a0c5e7fae11449ab575) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, bool mute) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_mute_remote_video](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a894f5a102c66b20c408bb495ac424efa) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, bool mute) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_request_video_key_frame](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a74fbf2ac33a8cefce0f02de3eacc2577) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) stream_type) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_audio_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const void *data_ptr, size_t data_len, [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) *info_ptr) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_video_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const void *data_ptr, size_t data_len, [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) *info_ptr) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_set_bwe_param](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ae274291aadd1afb9974a4672ed6c2bb8) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t min_bps, uint32_t max_bps, uint32_t start_bps) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_set_params](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a3d0aac6ce04ce9f2420c459fa9990d41) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *params) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a83dd3f91afbae5d54548c4d8e546aafc) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, const void *payload, size_t length) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_rdt_msg](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a056de38235f67ad1ea91cfd695ffaf61) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) type, const void *msg, size_t length) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_get_rdt_status_info](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a80f16bf3cf9bcdf8a6cecc51f8e584aa) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t remote_uid, [rdt_status_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa8f682dca66b0793fbf74d1d467f5327) *info) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int *stream_id, bool reliable, bool ordered) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_stream_message](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aee89fa14447b4529d45275afe5b5a86f) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int stream_id, const char *data, size_t length) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_login_rtm](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a577ba22b315e7ec594221fb3f1e89ce7) (const char *rtm_uid, const char *rtm_token, const [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) *handler) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_logout_rtm](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab6ec6e5968325a3d24c4352f0b7dafec) (void) |
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int | [agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) (const char *rtm_uid, const void *msg, size_t msg_len, uint32_t msg_id) |
+
+<a id="doc-define-members"></a>
+
+<a id="header-doc-define-members"></a>
+
+## 宏定义说明
+
+<a id="ad2a412e8ee6a8a2002439dda41fcf809"></a>
+
+## ◆__agora_api__
+
+| #define __agora_api__ |
+| --- |
+
+<a id="a577bd541ae1fdc5a3d1ae28b185948e2"></a>
+
+## ◆AGORA_CERTIFICATE_MAX_LEN
+
+| #define AGORA_CERTIFICATE_MAX_LEN (1024) |
+| --- |
+
+<a id="a02e5aee7d86c93a30696a11c2da69fb4"></a>
+
+## ◆AGORA_CREDENTIAL_MAX_LEN
+
+| #define AGORA_CREDENTIAL_MAX_LEN (256) |
+| --- |
+
+<a id="a6969509dce36d0a1cb63a7d0e00804ae"></a>
+
+## ◆AGORA_LICENSE_VALUE_LEN
+
+| #define AGORA_LICENSE_VALUE_LEN (32) |
+| --- |
+
+<a id="a8ab8ce37c96cb9358e1c0a45d9a17e33"></a>
+
+## ◆AGORA_RTC_CHANNEL_NAME_MAX_LEN
+
+| #define AGORA_RTC_CHANNEL_NAME_MAX_LEN (64) |
+| --- |
+
+<a id="a6d84b5cdaf9bb0359ff264d775dada92"></a>
+
+## ◆AGORA_RTC_DATA_STREAM_MAX_LEN
+
+| #define AGORA_RTC_DATA_STREAM_MAX_LEN (1024) |
+| --- |
+
+<a id="a3720a5f468d3696ba1bbe0b6da18f1b5"></a>
+
+## ◆AGORA_RTC_PRODUCT_ID_MAX_LEN
+
+| #define AGORA_RTC_PRODUCT_ID_MAX_LEN (63) |
+| --- |
+
+<a id="a4a80dc25913d06d6d97733ad84cab41f"></a>
+
+## ◆AGORA_RTC_USER_ACCOUNT_MAX_LEN
+
+| #define AGORA_RTC_USER_ACCOUNT_MAX_LEN (256) |
+| --- |
+
+<a id="a07dce5cb1ed7d6476ab69f8bf06deef8"></a>
+
+## ◆AGORA_RTM_DATA_MAX_LEN
+
+| #define AGORA_RTM_DATA_MAX_LEN (31 * 1024) |
+| --- |
+
+<a id="a8c77142e1de005c4963d70f3478bff19"></a>
+
+## ◆AGORA_RTM_UID_MAX_LEN
+
+| #define AGORA_RTM_UID_MAX_LEN (64) |
+| --- |
+
+<a id="a30a294de6c0b971e85edfa7265788772"></a>
+
+## ◆CONNECTION_ID_ALL
+
+| #define CONNECTION_ID_ALL (([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c))0) |
+| --- |
+
+当前创建的全部 Connection。
+
+<a id="a859d556be254db709863d0cf23b08180"></a>
+
+## ◆CONNECTION_ID_INVALID
+
+| #define CONNECTION_ID_INVALID (([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c))-1) |
+| --- |
+
+无效的 Connection ID。
+
+<a id="doc-typedef-members"></a>
+
+<a id="header-doc-typedef-members"></a>
+
+## 类型定义说明
+
+<a id="ad7f88cfbc57654bf3b391c3be0e8444c"></a>
+
+## ◆connection_id_t
+
+| typedef uint32_t [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) |
+| --- |
+
+Connection ID。
+
+<a id="ab926f577ba6171a33930da45236aaa83"></a>
+
+## ◆rdt_state_e
+
+| typedef enum [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84) [rdt_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab926f577ba6171a33930da45236aaa83) |
+| --- |
+
+RDT 通道的连接状态。
+
+<a id="aa8f682dca66b0793fbf74d1d467f5327"></a>
+
+## ◆rdt_status_info_t
+
+| typedef struct [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info) [rdt_status_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa8f682dca66b0793fbf74d1d467f5327) |
+| --- |
+
+RDT 通道的信息。
+
+<a id="a18e9113feef6d094da117d9341b9c24a"></a>
+
+## ◆rdt_stream_type_e
+
+| typedef enum [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) |
+| --- |
+
+RDT 消息类型。
+
+<a id="a5a045013221683ad1abf079c2749c3de"></a>
+
+## ◆user_info_t
+
+| typedef struct [user_info_s](/zh-CN/api-reference/rtsa/c/structuser-info-s) [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) |
+| --- |
+
+### 自从
+
+v1.9.5
+
+用户信息。适用于使用 String 型用户 ID 的场景。
+
+<a id="a2c71f0de17ad14a7e165d7fdc19472e4"></a>
+
+## ◆video_frame_rate_e
+
+| typedef uint16_t [video_frame_rate_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a2c71f0de17ad14a7e165d7fdc19472e4) |
+| --- |
+
+（废弃）视频帧率。
+
+<a id="doc-enum-members"></a>
+
+<a id="header-doc-enum-members"></a>
+
+## 枚举类型说明
+
+<a id="aec639f854206054cb48acde88e998abf"></a>
+
+## ◆agora_err_code_e
+
+| enum [agora_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abf) |
+| --- |
+
+错误码。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+| <Slot name="api-center-table-2" /> | <Slot name="api-center-table-3" /> |
+| <Slot name="api-center-table-4" /> | <Slot name="api-center-table-5" /> |
+| <Slot name="api-center-table-6" /> | <Slot name="api-center-table-7" /> |
+| <Slot name="api-center-table-8" /> | <Slot name="api-center-table-9" /> |
+| <Slot name="api-center-table-10" /> | <Slot name="api-center-table-11" /> |
+| <Slot name="api-center-table-12" /> | <Slot name="api-center-table-13" /> |
+| <Slot name="api-center-table-14" /> | <Slot name="api-center-table-15" /> |
+| <Slot name="api-center-table-16" /> | <Slot name="api-center-table-17" /> |
+| <Slot name="api-center-table-18" /> | <Slot name="api-center-table-19" /> |
+| <Slot name="api-center-table-20" /> | <Slot name="api-center-table-21" /> |
+| <Slot name="api-center-table-22" /> | <Slot name="api-center-table-23" /> |
+| <Slot name="api-center-table-24" /> | <Slot name="api-center-table-25" /> |
+| <Slot name="api-center-table-26" /> | <Slot name="api-center-table-27" /> |
+| <Slot name="api-center-table-28" /> | <Slot name="api-center-table-29" /> |
+| <Slot name="api-center-table-30" /> | <Slot name="api-center-table-31" /> |
+| <Slot name="api-center-table-32" /> | <Slot name="api-center-table-33" /> |
+| <Slot name="api-center-table-34" /> | <Slot name="api-center-table-35" /> |
+| <Slot name="api-center-table-36" /> | <Slot name="api-center-table-37" /> |
+| <Slot name="api-center-table-38" /> | <Slot name="api-center-table-39" /> |
+| <Slot name="api-center-table-40" /> | <Slot name="api-center-table-41" /> |
+| <Slot name="api-center-table-42" /> | <Slot name="api-center-table-43" /> |
+| <Slot name="api-center-table-44" /> | <Slot name="api-center-table-45" /> |
+| <Slot name="api-center-table-46" /> | <Slot name="api-center-table-47" /> |
+| <Slot name="api-center-table-48" /> | <Slot name="api-center-table-49" /> |
+| <Slot name="api-center-table-50" /> | <Slot name="api-center-table-51" /> |
+| <Slot name="api-center-table-52" /> | <Slot name="api-center-table-53" /> |
+| <Slot name="api-center-table-54" /> | <Slot name="api-center-table-55" /> |
+| <Slot name="api-center-table-56" /> | <Slot name="api-center-table-57" /> |
+| <Slot name="api-center-table-58" /> | <Slot name="api-center-table-59" /> |
+| <Slot name="api-center-table-60" /> | <Slot name="api-center-table-61" /> |
+| <Slot name="api-center-table-62" /> | <Slot name="api-center-table-63" /> |
+| <Slot name="api-center-table-64" /> | <Slot name="api-center-table-65" /> |
+| <Slot name="api-center-table-66" /> | <Slot name="api-center-table-67" /> |
+| <Slot name="api-center-table-68" /> | <Slot name="api-center-table-69" /> |
+| <Slot name="api-center-table-70" /> | <Slot name="api-center-table-71" /> |
+| <Slot name="api-center-table-72" /> | <Slot name="api-center-table-73" /> |
+| <Slot name="api-center-table-74" /> | <Slot name="api-center-table-75" /> |
+| <Slot name="api-center-table-76" /> | <Slot name="api-center-table-77" /> |
+| <Slot name="api-center-table-78" /> | <Slot name="api-center-table-79" /> |
+| <Slot name="api-center-table-80" /> | <Slot name="api-center-table-81" /> |
+| <Slot name="api-center-table-82" /> | <Slot name="api-center-table-83" /> |
+| <Slot name="api-center-table-84" /> | <Slot name="api-center-table-85" /> |
+| <Slot name="api-center-table-86" /> | <Slot name="api-center-table-87" /> |
+| <Slot name="api-center-table-88" /> | <Slot name="api-center-table-89" /> |
+| <Slot name="api-center-table-90" /> | <Slot name="api-center-table-91" /> |
+| <Slot name="api-center-table-92" /> | <Slot name="api-center-table-93" /> |
+| <Slot name="api-center-table-94" /> | <Slot name="api-center-table-95" /> |
+| <Slot name="api-center-table-96" /> | <Slot name="api-center-table-97" /> |
+| <Slot name="api-center-table-98" /> | <Slot name="api-center-table-99" /> |
+| <Slot name="api-center-table-100" /> | <Slot name="api-center-table-101" /> |
+| <Slot name="api-center-table-102" /> | <Slot name="api-center-table-103" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="aec639f854206054cb48acde88e998abfabcb41b97c22a8baf624c10fd32b85110"></a>ERR_OKAY
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+0: 没有错误。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="aec639f854206054cb48acde88e998abfa55adea41deb55430ff7582871e1b58cb"></a>ERR_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+1: 通用错误。你可以根据日志文件排查问题。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+<a id="aec639f854206054cb48acde88e998abfac5bbc85b8893c0f0329cb0407509a0a1"></a>ERR_INVALID_PARAM
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+2: 方法中设置无效的参数，例如指定的频道命中含有非法字符。请重新设置参数
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+<a id="aec639f854206054cb48acde88e998abfac60ad9ef7b73386b49d5c93a2391c447"></a>ERR_INVALID_STATE
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+3: 当前状态下调用 API 无效，例如关闭本地采集后就无法发布音视频。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+<a id="aec639f854206054cb48acde88e998abfa994a3ba85904a4ea1ee0b3330aa15609"></a>ERR_NOT_SUPPORTED
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+4: 当前状态下不支持该操作。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+<a id="aec639f854206054cb48acde88e998abfa2f87aab99ad1db39b351e6000370df7b"></a>ERR_NOT_IN_CHANNEL
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+6: 当前连接状态是未成功加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+<a id="aec639f854206054cb48acde88e998abfae44179d4dc47349972e3ab7702aaf435"></a>ERR_NOT_INITIALIZED
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+7: 服务未完成初始化。请先调用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法。
+
+</Slot>
+
+<Slot for="api-center-table-14">
+
+<a id="aec639f854206054cb48acde88e998abfae657a7c7b27629afeae9381997bff18c"></a>ERR_NOT_EXIST_CONNECTION
+
+</Slot>
+
+<Slot for="api-center-table-15">
+
+8: 连接不存在。
+
+</Slot>
+
+<Slot for="api-center-table-16">
+
+<a id="aec639f854206054cb48acde88e998abfa2dcd571426340223f3ed818480204ca7"></a>ERR_TIMEDOUT
+
+</Slot>
+
+<Slot for="api-center-table-17">
+
+10: API 调用超时。有些方法调用需要 SDK 返回结果，如果处理时间过长（超过 10 秒），SDK 会返回该错误。
+
+</Slot>
+
+<Slot for="api-center-table-18">
+
+<a id="aec639f854206054cb48acde88e998abfa308199736159a4f167ad4f58db8a3830"></a>ERR_NO_MEMORY
+
+</Slot>
+
+<Slot for="api-center-table-19">
+
+11: 内存不足。
+
+</Slot>
+
+<Slot for="api-center-table-20">
+
+<a id="aec639f854206054cb48acde88e998abfaacacefd86c7bfed65ec51d9275ce15c5"></a>ERR_CALL_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-21">
+
+12: API 调用失败。
+
+</Slot>
+
+<Slot for="api-center-table-22">
+
+<a id="aec639f854206054cb48acde88e998abfaec8c71d0c16bfcc54d23dd02c5dbf6b9"></a>ERR_NET_DOWN
+
+</Slot>
+
+<Slot for="api-center-table-23">
+
+14: 当前网络不可用。你需要检查系统网络连接状态。
+
+</Slot>
+
+<Slot for="api-center-table-24">
+
+<a id="aec639f854206054cb48acde88e998abfa20c11704c3a4c6e57c047ecb67ba6648"></a>ERR_JOIN_CHANNEL_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-25">
+
+17: 加入频道请求被拒绝，可能是因为本地用户已在频道内。你需要调整代码逻辑，避免用户加入同一频道。
+
+</Slot>
+
+<Slot for="api-center-table-26">
+
+<a id="aec639f854206054cb48acde88e998abfaefb42a42d62890259d40c9d73945b964"></a>ERR_LEAVE_CHANNEL_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-27">
+
+18: 离开频道被拒。如果本地用户已经不在频道内，试图调用 API 离开频道时会返回该错误。
+
+</Slot>
+
+<Slot for="api-center-table-28">
+
+<a id="aec639f854206054cb48acde88e998abfa273015d0d91c9f93595eb15bbac08550"></a>ERR_LICENSE_VERIFICATION_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-29">
+
+23: License 未通过验证导致的 SDK 初始化失败。该错误码仅在老版本的 License 下会反馈。
+
+</Slot>
+
+<Slot for="api-center-table-30">
+
+<a id="aec639f854206054cb48acde88e998abfa04c61d0652a8afc0bb9f2d3707dc5277"></a>ERR_ENCRYPTION
+
+</Slot>
+
+<Slot for="api-center-table-31">
+
+30: 加密错误。
+
+</Slot>
+
+<Slot for="api-center-table-32">
+
+<a id="aec639f854206054cb48acde88e998abfa66ab18623c7421ccf79f748c2b066da8"></a>ERR_DECRYPTION
+
+</Slot>
+
+<Slot for="api-center-table-33">
+
+31: 解密错误。
+
+</Slot>
+
+<Slot for="api-center-table-34">
+
+<a id="aec639f854206054cb48acde88e998abfa1c52fe8e89c2871494d31c729151463d"></a>ERR_INVALID_APP_ID
+
+</Slot>
+
+<Slot for="api-center-table-35">
+
+101: 不是有效的 App ID。请更换有效的 App ID 重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-36">
+
+<a id="aec639f854206054cb48acde88e998abfac7b431735b63f0e628a0485f6e8178d3"></a>ERR_INVALID_CHANNEL_NAME
+
+</Slot>
+
+<Slot for="api-center-table-37">
+
+102: 不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-38">
+
+<a id="aec639f854206054cb48acde88e998abfad95c9e3f9fd45a6bae14031cdd188d61"></a>ERR_NO_SERVER_RESOURCES
+
+</Slot>
+
+<Slot for="api-center-table-39">
+
+103: 无法获取指定区域的服务器资源。
+
+</Slot>
+
+<Slot for="api-center-table-40">
+
+<a id="aec639f854206054cb48acde88e998abfaeaa2194a4cd76b1da02398ec04a96a68"></a>ERR_LOOKUP_CHANNEL_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-41">
+
+105: 声网服务器拒绝了查询频道的请求。你需要检查 RTC Token 是否有效。
+
+</Slot>
+
+<Slot for="api-center-table-42">
+
+<a id="aec639f854206054cb48acde88e998abfaa64b29f1436017ee0b8cb3baa743139a"></a>ERR_OPEN_CHANNEL_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-43">
+
+107: 声网服务器拒绝了创建频道的请求。你需要检查 RTC Token 是否有效。
+
+</Slot>
+
+<Slot for="api-center-table-44">
+
+<a id="aec639f854206054cb48acde88e998abfaa07e19d62b749a5f803a3c416a70fbc5"></a>ERR_TOKEN_EXPIRED
+
+</Slot>
+
+<Slot for="api-center-table-45">
+
+109: 当前使用的 RTC Token 已过期。你需要重新在服务端申请生成 RTC Token 并调用 [agora_rtc_join_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738) 使用新生成的 RTC Token 重新加入频道。
+
+Token 过期可能的原因有：
+
+- 授权时间戳过期：Token 一旦生成，用户需要在 5 分钟内使用该 Token 加入频道，否则 Token 会失效。
+- 通话有效时间戳过期：通话有效时间戳指用户不再能使用声网服务（如被强制离开当前通话）的时间戳。这种情况下，Token 没有过期，但是用户也会被踢出频道。
+
+</Slot>
+
+<Slot for="api-center-table-46">
+
+<a id="aec639f854206054cb48acde88e998abfa14ec9241bfc66e2f18c024ab5a9e073a"></a>ERR_INVALID_TOKEN
+
+</Slot>
+
+<Slot for="api-center-table-47">
+
+110: RTC Token 无效。可能的原因是：
+
+- 在控制台中启用了 Token 鉴权，但调用 API 时没有传入 Token。
+- 用户加入频道时使用的 uid 和生成 Token 时传入的 uid 不一致。
+
+</Slot>
+
+<Slot for="api-center-table-48">
+
+<a id="aec639f854206054cb48acde88e998abfadce0b07f244bd3ce132a78e6ada3ce7e"></a>ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY
+
+</Slot>
+
+<Slot for="api-center-table-49">
+
+115: 在控制台中启用了 Token 鉴权，但调用 join 加入频道时传入的是 App ID。
+
+</Slot>
+
+<Slot for="api-center-table-50">
+
+<a id="aec639f854206054cb48acde88e998abfa4dc0b750cc3baf482934846598ad8dd8"></a>ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED
+
+</Slot>
+
+<Slot for="api-center-table-51">
+
+119: 切换用户角色失败，请尝试重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-52">
+
+<a id="aec639f854206054cb48acde88e998abfa97ee2db4a99b5d5db4efc635cd6afa7e"></a>ERR_DECRYPTION_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-53">
+
+120：解密失败。可能的原因是用户尝试使用不同的密码加入频道。请检查你的设置或尝试重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-54">
+
+<a id="aec639f854206054cb48acde88e998abfac0300e6b2ff89cc67ae962aa2bd031bd"></a>ERR_OPEN_CHANNEL_INVALID_TICKET
+
+</Slot>
+
+<Slot for="api-center-table-55">
+
+121: 打开频道的信令错误。请尝试重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-56">
+
+<a id="aec639f854206054cb48acde88e998abfa06cf41976ae4fc1bc960210762703a44"></a>ERR_OPEN_CHANNEL_TRY_NEXT_VOS
+
+</Slot>
+
+<Slot for="api-center-table-57">
+
+122: 系统在尝试切换服务器。通常不需要额外处理，系统会自动尝试切换服务器以打开频道。
+
+</Slot>
+
+<Slot for="api-center-table-58">
+
+<a id="aec639f854206054cb48acde88e998abfaf27f83cacbf091827ba2804a0b20d9f6"></a>ERR_CLIENT_IS_BANNED_BY_SERVER
+
+</Slot>
+
+<Slot for="api-center-table-59">
+
+123: 该客户端被服务器禁用。你需要检查 License 是否正确。
+
+</Slot>
+
+<Slot for="api-center-table-60">
+
+<a id="aec639f854206054cb48acde88e998abfa5cac3070472de8ea86ac6cf7891be0f9"></a>ERR_AUDIO_CODEC_NOT_SUPPORT
+
+</Slot>
+
+<Slot for="api-center-table-61">
+
+200: SDK 不支持当前使用的音频编解码器。
+
+</Slot>
+
+<Slot for="api-center-table-62">
+
+<a id="aec639f854206054cb48acde88e998abfadb49532e25ee95dbdc209325497f45aa"></a>ERR_AUDIO_INVALID_PCM_LEN
+
+</Slot>
+
+<Slot for="api-center-table-63">
+
+201: PCM 音频数据长度无效。
+
+</Slot>
+
+<Slot for="api-center-table-64">
+
+<a id="aec639f854206054cb48acde88e998abfa240ebc604dd0c0c95acbfa83092561f2"></a>ERR_AUDIO_INVALID_CODEC_PARAM
+
+</Slot>
+
+<Slot for="api-center-table-65">
+
+202: 音频编解码器参数无效。
+
+</Slot>
+
+<Slot for="api-center-table-66">
+
+<a id="aec639f854206054cb48acde88e998abfa57f59666f227d6474beca009c4818a5c"></a>ERR_VIDEO_SEND_OVER_BANDWIDTH_LIMIT
+
+</Slot>
+
+<Slot for="api-center-table-67">
+
+300: 视频数据发送太快，且超出了宽带限制。当前发送速度下很可能发生丢包。
+
+</Slot>
+
+<Slot for="api-center-table-68">
+
+<a id="aec639f854206054cb48acde88e998abfac4ffd4b18a0ffa9ad022ece4dfa17611"></a>ERR_VIDEO_SEND_PACKETIZE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-69">
+
+301: 视频包打包失败。
+
+</Slot>
+
+<Slot for="api-center-table-70">
+
+<a id="aec639f854206054cb48acde88e998abfa33860e6a1c104ec31d5a9acd1cdf6b59"></a>ERR_RDT_USER_NOT_EXIST
+
+</Slot>
+
+<Slot for="api-center-table-71">
+
+600: 用户不存在。
+
+</Slot>
+
+<Slot for="api-center-table-72">
+
+<a id="aec639f854206054cb48acde88e998abfa5670dc5ba8b5f4f6ed372576b8bd342c"></a>ERR_RDT_USER_NOT_READY
+
+</Slot>
+
+<Slot for="api-center-table-73">
+
+601: 用户状态未准备好。
+
+</Slot>
+
+<Slot for="api-center-table-74">
+
+<a id="aec639f854206054cb48acde88e998abfa1eb07a0d4f19239c2626e2b956a8bde1"></a>ERR_RDT_DATA_BLOCKED
+
+</Slot>
+
+<Slot for="api-center-table-75">
+
+602: 数据被拦截。
+
+</Slot>
+
+<Slot for="api-center-table-76">
+
+<a id="aec639f854206054cb48acde88e998abfaec9b32272bc37e2ba2352908d7037b39"></a>ERR_RDT_CMD_EXCEED_LIMIT
+
+</Slot>
+
+<Slot for="api-center-table-77">
+
+603: 指令超出限制。
+
+</Slot>
+
+<Slot for="api-center-table-78">
+
+<a id="aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e"></a>ERR_RDT_DATA_EXCEED_LIMIT
+
+</Slot>
+
+<Slot for="api-center-table-79">
+
+604: 数据消息大小超出限制。
+
+</Slot>
+
+<Slot for="api-center-table-80">
+
+<a id="aec639f854206054cb48acde88e998abfa99f79ae8d0c0fba7a21c5899061370d9"></a>ERR_TOO_MANY_DATA_STREAMS
+
+</Slot>
+
+<Slot for="api-center-table-81">
+
+621: 创建了太多的数据流。
+
+</Slot>
+
+<Slot for="api-center-table-82">
+
+<a id="aec639f854206054cb48acde88e998abfa3c2c69fa6fde1c211261dedac621b271"></a>ERR_DATA_STREAM_SIZE_TOO_LARGE
+
+</Slot>
+
+<Slot for="api-center-table-83">
+
+622: 创建的数据流大小超过了 1 KB。
+
+</Slot>
+
+<Slot for="api-center-table-84">
+
+<a id="aec639f854206054cb48acde88e998abfacb11c2ed338a02d1dca2aefea8ac2997"></a>ERR_NOT_EXIST_STREAM_ID
+
+</Slot>
+
+<Slot for="api-center-table-85">
+
+623: 指定的数据流 ID 不存在。
+
+</Slot>
+
+<Slot for="api-center-table-86">
+
+<a id="aec639f854206054cb48acde88e998abfa0465f9f918cc4a8b4d56a75a75ca471f"></a>ERR_DATA_STREAM_BITRATE_LIMIT
+
+</Slot>
+
+<Slot for="api-center-table-87">
+
+624: 数据流的发送码率超过了 6 Kbps 的限制。
+
+</Slot>
+
+<Slot for="api-center-table-88">
+
+<a id="aec639f854206054cb48acde88e998abfae556a1ce5b7efd4ac96ca53042125d46"></a>ERR_DATA_STREAM_SEND_TOO_OFTEN
+
+</Slot>
+
+<Slot for="api-center-table-89">
+
+625: 数据流发送太频繁，超过了每秒 60 个数据包的限制。
+
+</Slot>
+
+<Slot for="api-center-table-90">
+
+<a id="aec639f854206054cb48acde88e998abfaa9de59fef0c1280f43e4d8417de42dec"></a>ERR_DATA_STREAM_TIME_OUT
+
+</Slot>
+
+<Slot for="api-center-table-91">
+
+626: 接收数据流的远端用户连接超时。
+
+</Slot>
+
+<Slot for="api-center-table-92">
+
+<a id="aec639f854206054cb48acde88e998abfa6242b31e925eb8ef6ffc08bbedd16bb5"></a>ERR_RTM_NOT_LOGINED
+
+</Slot>
+
+<Slot for="api-center-table-93">
+
+1001: 未登录 RTM 系统。
+
+</Slot>
+
+<Slot for="api-center-table-94">
+
+<a id="aec639f854206054cb48acde88e998abfa517151a0b1753008e21d492546fc232e"></a>ERR_RTM_HAD_LOGINED
+
+</Slot>
+
+<Slot for="api-center-table-95">
+
+1002: 已登录 RTM 系统。
+
+</Slot>
+
+<Slot for="api-center-table-96">
+
+<a id="aec639f854206054cb48acde88e998abfa21e1a73cf5848a9d53600208c41608d8"></a>ERR_RTM_SEND_TO_SELF
+
+</Slot>
+
+<Slot for="api-center-table-97">
+
+1003: 在 rtmUid 参数中误填了自己的用户 ID。
+
+</Slot>
+
+<Slot for="api-center-table-98">
+
+<a id="aec639f854206054cb48acde88e998abfa04343a91456b801cd60af93c5aaa9fec"></a>ERR_RTM_EXCEED_MSG_SIZE
+
+</Slot>
+
+<Slot for="api-center-table-99">
+
+1004: RTM 消息长度超出限制。消息长度至多为 31 KB。
+
+</Slot>
+
+<Slot for="api-center-table-100">
+
+<a id="aec639f854206054cb48acde88e998abfad191c4486b672a47bdaba4456ae9da47"></a>ERR_RTM_EXCEED_MSG_CNT
+
+</Slot>
+
+<Slot for="api-center-table-101">
+
+1005: RTM 消息发送频率超出限制。每秒至多发送 60 条消息。
+
+</Slot>
+
+<Slot for="api-center-table-102">
+
+<a id="aec639f854206054cb48acde88e998abfa25edc1b9a90535def16efc824e609f40"></a>ERR_RTM_EXCEED_SND_BUFFER
+
+</Slot>
+
+<Slot for="api-center-table-103">
+
+1006: 消息通道已满。等待一秒后重新发送。
+
+</Slot>
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1d"></a>
+
+## ◆area_code_e
+
+| enum [area_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1d) |
+| --- |
+
+访问区域。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-104" /> | <Slot name="api-center-table-105" /> |
+| <Slot name="api-center-table-106" /> | <Slot name="api-center-table-107" /> |
+| <Slot name="api-center-table-108" /> | <Slot name="api-center-table-109" /> |
+| <Slot name="api-center-table-110" /> | <Slot name="api-center-table-111" /> |
+| <Slot name="api-center-table-112" /> | <Slot name="api-center-table-113" /> |
+| <Slot name="api-center-table-114" /> | <Slot name="api-center-table-115" /> |
+| <Slot name="api-center-table-116" /> | <Slot name="api-center-table-117" /> |
+| <Slot name="api-center-table-118" /> | <Slot name="api-center-table-119" /> |
+
+<Slot for="api-center-table-104">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1daf40ca70ae214b3fbcc4711d20264ac34"></a>AREA_CODE_DEFAULT
+
+</Slot>
+
+<Slot for="api-center-table-105">
+
+同 AREA_CODE_GLOB 全球。
+
+</Slot>
+
+<Slot for="api-center-table-106">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da5376eaaaa37364f52e686e9618704644"></a>AREA_CODE_CN
+
+</Slot>
+
+<Slot for="api-center-table-107">
+
+中国大陆。
+
+</Slot>
+
+<Slot for="api-center-table-108">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1dade5398f89e5e62623975d453ff05d4d0"></a>AREA_CODE_NA
+
+</Slot>
+
+<Slot for="api-center-table-109">
+
+北美。
+
+</Slot>
+
+<Slot for="api-center-table-110">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da3146dc8cd0884e2288e3c5a99e1edba8"></a>AREA_CODE_EU
+
+</Slot>
+
+<Slot for="api-center-table-111">
+
+欧洲。
+
+</Slot>
+
+<Slot for="api-center-table-112">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da665ee85d6ebf73bfb174e2124e54c3f0"></a>AREA_CODE_AS
+
+</Slot>
+
+<Slot for="api-center-table-113">
+
+亚洲（除中国大陆）。
+
+</Slot>
+
+<Slot for="api-center-table-114">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da05af865b904b744b18eca08618e5e33a"></a>AREA_CODE_JP
+
+</Slot>
+
+<Slot for="api-center-table-115">
+
+日本。
+
+</Slot>
+
+<Slot for="api-center-table-116">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da5d1b9cf2e4ab60f185d4aff858af65de"></a>AREA_CODE_IN
+
+</Slot>
+
+<Slot for="api-center-table-117">
+
+印度。
+
+</Slot>
+
+<Slot for="api-center-table-118">
+
+<a id="a1a483a5b4b02019fa68b46a979ac1d1da15ec0ec19895f8539030d20fec839b92"></a>AREA_CODE_GLOB
+
+</Slot>
+
+<Slot for="api-center-table-119">
+
+全球 (默认)。
+
+</Slot>
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88"></a>
+
+## ◆audio_codec_type_e
+
+| enum [audio_codec_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88) |
+| --- |
+
+SDK 内置的音频编解码器。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-120" /> | <Slot name="api-center-table-121" /> |
+| <Slot name="api-center-table-122" /> | <Slot name="api-center-table-123" /> |
+| <Slot name="api-center-table-124" /> | <Slot name="api-center-table-125" /> |
+| <Slot name="api-center-table-126" /> | <Slot name="api-center-table-127" /> |
+| <Slot name="api-center-table-128" /> | <Slot name="api-center-table-129" /> |
+
+<Slot for="api-center-table-120">
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88aee23984f8e844a4812e5767d5c3ded2a"></a>AUDIO_CODEC_DISABLED
+
+</Slot>
+
+<Slot for="api-center-table-121">
+
+0: 关闭 SDK 内置音频编解码器。
+
+</Slot>
+
+<Slot for="api-center-table-122">
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88a3781227210ca6ad44cb5130912aa86f1"></a>AUDIO_CODEC_TYPE_OPUS
+
+</Slot>
+
+<Slot for="api-center-table-123">
+
+1: 使用 SDK 内置的 Opus 编解码器进行音频编、解码。在 Opus 编码下， SDK 对单个声道支持 16 KHz 或 48 KHz 采样率。
+
+</Slot>
+
+<Slot for="api-center-table-124">
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88a08df8754e9b5f4341d6ced220a42f6c0"></a>AUDIO_CODEC_TYPE_G722
+
+</Slot>
+
+<Slot for="api-center-table-125">
+
+2: 使用 SDK 内置的 G722 编解码器进行音频编、解码。在 G722 编码下， 目前 SDK 对单个声道支持 16 KHz 采样率。
+
+</Slot>
+
+<Slot for="api-center-table-126">
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88afd071094a3603f79860087c6461401b0"></a>AUDIO_CODEC_TYPE_G711A
+
+</Slot>
+
+<Slot for="api-center-table-127">
+
+3: 使用 SDK 内置的 G711A（PCMU）编解码器进行音频编、解码。在 G711 编码下， 目前 SDK 对单个声道支持 8 KHz 采样率。
+
+</Slot>
+
+<Slot for="api-center-table-128">
+
+<a id="a307c5bae03eb9a318e247a97e6fb5d88ae51691c9b8c96bafa34acc9ad0b7a279"></a>AUDIO_CODEC_TYPE_G711U
+
+</Slot>
+
+<Slot for="api-center-table-129">
+
+4: 使用 SDK 内置的 G711U（PCMU）编解码器进行音频编、解码。在 G711 编码下， 目前 SDK 对单个声道支持 8 KHz 采样率。
+
+</Slot>
+
+<a id="a5a0f97a26cd357a5afed482c46360713"></a>
+
+## ◆audio_data_type_e
+
+| enum [audio_data_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713) |
+| --- |
+
+音频编码格式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-130" /> | <Slot name="api-center-table-131" /> |
+| <Slot name="api-center-table-132" /> | <Slot name="api-center-table-133" /> |
+| <Slot name="api-center-table-134" /> | <Slot name="api-center-table-135" /> |
+| <Slot name="api-center-table-136" /> | <Slot name="api-center-table-137" /> |
+| <Slot name="api-center-table-138" /> | <Slot name="api-center-table-139" /> |
+| <Slot name="api-center-table-140" /> | <Slot name="api-center-table-141" /> |
+| <Slot name="api-center-table-142" /> | <Slot name="api-center-table-143" /> |
+| <Slot name="api-center-table-144" /> | <Slot name="api-center-table-145" /> |
+| <Slot name="api-center-table-146" /> | <Slot name="api-center-table-147" /> |
+| <Slot name="api-center-table-148" /> | <Slot name="api-center-table-149" /> |
+| <Slot name="api-center-table-150" /> | <Slot name="api-center-table-151" /> |
+| <Slot name="api-center-table-152" /> | <Slot name="api-center-table-153" /> |
+| <Slot name="api-center-table-154" /> | <Slot name="api-center-table-155" /> |
+| <Slot name="api-center-table-156" /> | <Slot name="api-center-table-157" /> |
+| <Slot name="api-center-table-158" /> | <Slot name="api-center-table-159" /> |
+| <Slot name="api-center-table-160" /> | <Slot name="api-center-table-161" /> |
+| <Slot name="api-center-table-162" /> | <Slot name="api-center-table-163" /> |
+| <Slot name="api-center-table-164" /> | <Slot name="api-center-table-165" /> |
+| <Slot name="api-center-table-166" /> | <Slot name="api-center-table-167" /> |
+| <Slot name="api-center-table-168" /> | <Slot name="api-center-table-169" /> |
+| <Slot name="api-center-table-170" /> | <Slot name="api-center-table-171" /> |
+| <Slot name="api-center-table-172" /> | <Slot name="api-center-table-173" /> |
+| <Slot name="api-center-table-174" /> | <Slot name="api-center-table-175" /> |
+
+<Slot for="api-center-table-130">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a3f8c5b8310e331b484d2e9bdd96a9e65"></a>AUDIO_DATA_TYPE_OPUS
+
+</Slot>
+
+<Slot for="api-center-table-131">
+
+1: Opus。
+
+</Slot>
+
+<Slot for="api-center-table-132">
+
+<a id="a5a0f97a26cd357a5afed482c46360713aed0f1de5cbc741fca1cd883f0703b7dc"></a>AUDIO_DATA_TYPE_OPUSFB
+
+</Slot>
+
+<Slot for="api-center-table-133">
+
+2: OPUSFB。
+
+</Slot>
+
+<Slot for="api-center-table-134">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a3fdf1611e11ec005f166055523513e47"></a>AUDIO_DATA_TYPE_PCMA
+
+</Slot>
+
+<Slot for="api-center-table-135">
+
+3: PCMA。
+
+</Slot>
+
+<Slot for="api-center-table-136">
+
+<a id="a5a0f97a26cd357a5afed482c46360713ac646e8fc0f4d787812d1924941686833"></a>AUDIO_DATA_TYPE_PCMU
+
+</Slot>
+
+<Slot for="api-center-table-137">
+
+4: PCMU。
+
+</Slot>
+
+<Slot for="api-center-table-138">
+
+<a id="a5a0f97a26cd357a5afed482c46360713aa4db24b0e5dade22bb8a5084ee4379b5"></a>AUDIO_DATA_TYPE_G722
+
+</Slot>
+
+<Slot for="api-center-table-139">
+
+5: G722。
+
+</Slot>
+
+<Slot for="api-center-table-140">
+
+<a id="a5a0f97a26cd357a5afed482c46360713ab50e2697591f63de105892f5497dd2ce"></a>AUDIO_DATA_TYPE_AACLC_8K
+
+</Slot>
+
+<Slot for="api-center-table-141">
+
+6: AAC-LC，采样率为 8000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-142">
+
+<a id="a5a0f97a26cd357a5afed482c46360713af25a058a9829fa8b59ea8e12a20faa85"></a>AUDIO_DATA_TYPE_AACLC_16K
+
+</Slot>
+
+<Slot for="api-center-table-143">
+
+7: AAC-LC，采样率为 16000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-144">
+
+<a id="a5a0f97a26cd357a5afed482c46360713ad6bc3c1be3b7fbb7430e19b8b32620ac"></a>AUDIO_DATA_TYPE_AACLC
+
+</Slot>
+
+<Slot for="api-center-table-145">
+
+8: AAC-LC，采样率为 48000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-146">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a7a56f5e0f8f63f45cd43c193765e14f4"></a>AUDIO_DATA_TYPE_HEAAC
+
+</Slot>
+
+<Slot for="api-center-table-147">
+
+9: HE-AAC。
+
+</Slot>
+
+<Slot for="api-center-table-148">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a9aa542bd8000a4276bf048c978e8d22b"></a>AUDIO_DATA_TYPE_HEAAC2
+
+</Slot>
+
+<Slot for="api-center-table-149">
+
+10: HEAAC2，采样率为 48000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-150">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a0f98039497f7c19bd015f5bb4f8ec1e8"></a>AUDIO_DATA_TYPE_AACLC_8K_2CH
+
+</Slot>
+
+<Slot for="api-center-table-151">
+
+11: AACLC3，采样率为 8000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-152">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a40cd387960edbb5cdee75e5d32a0f6b1"></a>AUDIO_DATA_TYPE_AACLC_16K_2CH
+
+</Slot>
+
+<Slot for="api-center-table-153">
+
+12: AACLC2，采样率为 16000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-154">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a91ff1a05fcc41cd8b4b12a660ac07912"></a>AUDIO_DATA_TYPE_AACLC_2CH
+
+</Slot>
+
+<Slot for="api-center-table-155">
+
+13: AACLC，采样率为 48000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-156">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a889ef8c4ef7febf31183f9e3ba70b4cc"></a>AUDIO_DATA_TYPE_HEAAC_2CH
+
+</Slot>
+
+<Slot for="api-center-table-157">
+
+14: HEAAC，采样率为 48000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-158">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a936a1ebce3310044a52d44fa82e81fcc"></a>AUDIO_DATA_TYPE_HEAAC2_2CH
+
+</Slot>
+
+<Slot for="api-center-table-159">
+
+15: HEAAC2，采样率为 48000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-160">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a51ece05e4b93e6eac71e185784129695"></a>AUDIO_DATA_TYPE_AACLC1
+
+</Slot>
+
+<Slot for="api-center-table-161">
+
+16: AACLC1，采样率为 44100 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-162">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a5da85bcc06692acb9f438e14a1ca4f85"></a>AUDIO_DATA_TYPE_AACLC1_2CH
+
+</Slot>
+
+<Slot for="api-center-table-163">
+
+17: AACLC1_2CH，采样率为 48000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-164">
+
+<a id="a5a0f97a26cd357a5afed482c46360713acc7b6525f9c81c6c5a5d86be271c3177"></a>AUDIO_DATA_TYPE_HWAAC
+
+</Slot>
+
+<Slot for="api-center-table-165">
+
+18: HWAAC，采样率为 32000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-166">
+
+<a id="a5a0f97a26cd357a5afed482c46360713aeaff2b9a92a2712dbe730bed4c90e787"></a>AUDIO_DATA_TYPE_OPUSSWB
+
+</Slot>
+
+<Slot for="api-center-table-167">
+
+20: OPUSSWB，采样率为 32000 Hz。
+
+</Slot>
+
+<Slot for="api-center-table-168">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a7074de58cd23212ffadc96486acc3a2a"></a>AUDIO_DATA_TYPE_OPUSFB_2CH
+
+</Slot>
+
+<Slot for="api-center-table-169">
+
+21: OPUSFB，采样率为 48000 Hz，双声道。
+
+</Slot>
+
+<Slot for="api-center-table-170">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a7117fe39e61f769e8d8eea96393c7d55"></a>AUDIO_DATA_TYPE_PCM
+
+</Slot>
+
+<Slot for="api-center-table-171">
+
+100: 用于传输的 PCM 数据。
+
+</Slot>
+
+<Slot for="api-center-table-172">
+
+<a id="a5a0f97a26cd357a5afed482c46360713a58890eac24863b9d33fcc38e9b754b93"></a>AUDIO_DATA_TYPE_GENERIC
+
+</Slot>
+
+<Slot for="api-center-table-173">
+
+253: Generic。
+
+</Slot>
+
+<Slot for="api-center-table-174">
+
+<a id="a5a0f97a26cd357a5afed482c46360713ab7ec3f7839c1fad8efebde39f5f753ee"></a>AUDIO_DATA_TYPE_UNKNOW
+
+</Slot>
+
+<Slot for="api-center-table-175">
+
+254: 音频数据类型未知。
+
+</Slot>
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44e"></a>
+
+## ◆crypto_mode_e
+
+| enum [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) |
+| --- |
+
+加密模式。
+
+建议使用 AES_128_GCM2 或 AES_256_GCM2 加密模式。这两种模式支持使用盐，安全性更高。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-176" /> | <Slot name="api-center-table-177" /> |
+| <Slot name="api-center-table-178" /> | <Slot name="api-center-table-179" /> |
+| <Slot name="api-center-table-180" /> | <Slot name="api-center-table-181" /> |
+| <Slot name="api-center-table-182" /> | <Slot name="api-center-table-183" /> |
+| <Slot name="api-center-table-184" /> | <Slot name="api-center-table-185" /> |
+| <Slot name="api-center-table-186" /> | <Slot name="api-center-table-187" /> |
+| <Slot name="api-center-table-188" /> | <Slot name="api-center-table-189" /> |
+| <Slot name="api-center-table-190" /> | <Slot name="api-center-table-191" /> |
+| <Slot name="api-center-table-192" /> | <Slot name="api-center-table-193" /> |
+
+<Slot for="api-center-table-176">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44eaac8f4cee1cda87f784affee3ad8a9ae0"></a>AES_128_XTS
+
+</Slot>
+
+<Slot for="api-center-table-177">
+
+1: 128 位 AES 加密，XTS 模式。
+
+</Slot>
+
+<Slot for="api-center-table-178">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44eac6c45ad2ab43103764084b7387370eef"></a>AES_128_ECB
+
+</Slot>
+
+<Slot for="api-center-table-179">
+
+2: 128 位 AES 加密，ECB 模式。
+
+</Slot>
+
+<Slot for="api-center-table-180">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44eae91864a3739588eb1578a198fa0ac485"></a>AES_256_XTS
+
+</Slot>
+
+<Slot for="api-center-table-181">
+
+3: 256 位 AES 加密，XTS 模式。
+
+</Slot>
+
+<Slot for="api-center-table-182">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44ea60a926d612bf4746c27f3a9cc079741e"></a>SM4_128_ECB
+
+</Slot>
+
+<Slot for="api-center-table-183">
+
+4: 128 位 SM4 加密，ECB 模式。
+
+</Slot>
+
+<Slot for="api-center-table-184">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44ea28831d24b0b2ea5946568f0295ff5ff1"></a>AES_128_GCM
+
+</Slot>
+
+<Slot for="api-center-table-185">
+
+5: 128 位 AES 加密，GCM 模式。
+
+</Slot>
+
+<Slot for="api-center-table-186">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44eaac51f4b0336ae8023ed7917103d2a384"></a>AES_256_GCM
+
+</Slot>
+
+<Slot for="api-center-table-187">
+
+6: 256 位 AES 加密，GCM 模式。
+
+</Slot>
+
+<Slot for="api-center-table-188">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44ea23d6a46e00004410b9d00b41aba70e0d"></a>AES_128_GCM2
+
+</Slot>
+
+<Slot for="api-center-table-189">
+
+7: 128 位 AES 加密，GCM 模式。该加密模式需要设置盐（salt）。
+
+</Slot>
+
+<Slot for="api-center-table-190">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44ea13555f5e3977644e0fb20ee80e9b841a"></a>AES_256_GCM2
+
+</Slot>
+
+<Slot for="api-center-table-191">
+
+8: 256 位 AES 加密，GCM 模式。该加密模式需要设置盐（salt）。
+
+</Slot>
+
+<Slot for="api-center-table-192">
+
+<a id="a1e4f35ba0de825f5576535acfbaeb44ea28f700099837307a467840b1a08df789"></a>CRYPTO_MODE_END
+
+</Slot>
+
+<Slot for="api-center-table-193">
+
+枚举值边界。
+
+</Slot>
+
+<a id="a618863d233cf869b03dd5f99fc04b19b"></a>
+
+## ◆license_err_reason_e
+
+| enum [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19b) |
+| --- |
+
+设备 License 验证失败的错误码。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-194" /> | <Slot name="api-center-table-195" /> |
+| <Slot name="api-center-table-196" /> | <Slot name="api-center-table-197" /> |
+| <Slot name="api-center-table-198" /> | <Slot name="api-center-table-199" /> |
+| <Slot name="api-center-table-200" /> | <Slot name="api-center-table-201" /> |
+| <Slot name="api-center-table-202" /> | <Slot name="api-center-table-203" /> |
+| <Slot name="api-center-table-204" /> | <Slot name="api-center-table-205" /> |
+
+<Slot for="api-center-table-194">
+
+<a id="a618863d233cf869b03dd5f99fc04b19ba8c336f3e57b8949dce62def59054fa47"></a>ERR_LICENSE_INVALID
+
+</Slot>
+
+<Slot for="api-center-table-195">
+
+1: 无效 License。你需要重新调用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 并在 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 的 license_value 参数中填入正确的 License。
+
+</Slot>
+
+<Slot for="api-center-table-196">
+
+<a id="a618863d233cf869b03dd5f99fc04b19ba632b512643b13d41661a7d98277a3298"></a>ERR_LICENSE_EXPIRE
+
+</Slot>
+
+<Slot for="api-center-table-197">
+
+2: License 过期。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 进行续费。
+
+</Slot>
+
+<Slot for="api-center-table-198">
+
+<a id="a618863d233cf869b03dd5f99fc04b19baa3840d2fc429f35fec29fe6b01727e1f"></a>ERR_LICENSE_MINUTES_EXCEED
+
+</Slot>
+
+<Slot for="api-center-table-199">
+
+3: License 包含的通话时长已用完。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 购买通话时长更长的 License。
+
+</Slot>
+
+<Slot for="api-center-table-200">
+
+<a id="a618863d233cf869b03dd5f99fc04b19bad04aee3336c0ff12013c9f4272813fda"></a>ERR_LICENSE_LIMITED_PERIOD
+
+</Slot>
+
+<Slot for="api-center-table-201">
+
+4: 当前时间段受 License 限制，不能进行通话。你需要换一个 License 允许的时间段进行通话，或联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 购买通话时间段更长的 License。
+
+</Slot>
+
+<Slot for="api-center-table-202">
+
+<a id="a618863d233cf869b03dd5f99fc04b19ba2dcf555d0e49276861482e527bbd5954"></a>ERR_LICENSE_DIFF_DEVICES
+
+</Slot>
+
+<Slot for="api-center-table-203">
+
+5: License 已在其他设备中使用。一个 License 只允许在一台设备中使用，你需要重新调用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 并在 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 的 license_value 参数中填入一个新的 License。
+
+</Slot>
+
+<Slot for="api-center-table-204">
+
+<a id="a618863d233cf869b03dd5f99fc04b19ba9b632de747f865d7e618efa59fca039f"></a>ERR_LICENSE_INTERNAL
+
+</Slot>
+
+<Slot for="api-center-table-205">
+
+99: 内部原因。
+
+</Slot>
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84"></a>
+
+## ◆rdt_state
+
+| enum [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84) |
+| --- |
+
+RDT 通道的连接状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-206" /> | <Slot name="api-center-table-207" /> |
+| <Slot name="api-center-table-208" /> | <Slot name="api-center-table-209" /> |
+| <Slot name="api-center-table-210" /> | <Slot name="api-center-table-211" /> |
+| <Slot name="api-center-table-212" /> | <Slot name="api-center-table-213" /> |
+| <Slot name="api-center-table-214" /> | <Slot name="api-center-table-215" /> |
+
+<Slot for="api-center-table-206">
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84a757c5096332a339fdfe10488a955d6f5"></a>RDT_STATE_CLOSED
+
+</Slot>
+
+<Slot for="api-center-table-207">
+
+初始状态，未连接 RDT 通道。该状态下用户不可以收发 RDT 消息。
+
+</Slot>
+
+<Slot for="api-center-table-208">
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c"></a>RDT_STATE_OPENED
+
+</Slot>
+
+<Slot for="api-center-table-209">
+
+已连接 RDT 通道。该状态下用户可以收发 RDT 消息。
+
+</Slot>
+
+<Slot for="api-center-table-210">
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84afd20c1dde52083e0ced5b7a3ef42672e"></a>RDT_STATE_BLOCKED
+
+</Slot>
+
+<Slot for="api-center-table-211">
+
+RDT 通道中的发送缓冲区已满。该状态下用户不可以发送数据消息 (RDT_STREAM_DATA)，但可以发送控制消息 (RDT_STREAM_CMD)。
+
+</Slot>
+
+<Slot for="api-center-table-212">
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84af89166c4372fa78670dffe957108a8d3"></a>RDT_STATE_PENDING
+
+</Slot>
+
+<Slot for="api-center-table-213">
+
+正在重新连接 RDT 通道。
+
+- 如果重新连接成功，则连接状态会变为 RDT_STATE_OPENED，SDK 会保留 RDT 通道中发送和接收缓冲区中的历史数据。
+- 如果重新连接失败，则连接状态会变为 RDT_STATE_CLOSED，SDK 会清除 RDT 通道中发送和接收缓冲区中的历史数据。
+
+</Slot>
+
+<Slot for="api-center-table-214">
+
+<a id="a29a5e8defc6abf737109eb0b5349ac84a186710d2d5fc763d84fe8d2697761142"></a>RDT_STATE_BROKEN
+
+</Slot>
+
+<Slot for="api-center-table-215">
+
+与 RDT 通道的连接已损坏，SDK 会尝试重新连接。SDK 不论能否成功连接，都会清空 RDT 通道中发送和接收缓冲区中的历史数据。
+
+</Slot>
+
+<a id="a39c4148522dd2ce2d729b8f264e7b955"></a>
+
+## ◆rdt_stream_type
+
+| enum [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) |
+| --- |
+
+RDT 消息类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-216" /> | <Slot name="api-center-table-217" /> |
+| <Slot name="api-center-table-218" /> | <Slot name="api-center-table-219" /> |
+| <Slot name="api-center-table-220" /> | <Slot name="api-center-table-221" /> |
+
+<Slot for="api-center-table-216">
+
+<a id="a39c4148522dd2ce2d729b8f264e7b955a7f3a2a89aa98975482c02131bd224b46"></a>RDT_STREAM_CMD
+
+</Slot>
+
+<Slot for="api-center-table-217">
+
+控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
+
+</Slot>
+
+<Slot for="api-center-table-218">
+
+<a id="a39c4148522dd2ce2d729b8f264e7b955a04654c2c006244086c3b455375d10766"></a>RDT_STREAM_DATA
+
+</Slot>
+
+<Slot for="api-center-table-219">
+
+数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。不限制发送的消息包数量，每个消息包的长度至多为 128 KB。
+
+</Slot>
+
+<Slot for="api-center-table-220">
+
+<a id="a39c4148522dd2ce2d729b8f264e7b955ab13f605f38d97c90e09fa7846a1d6e06"></a>RDT_STREAM_COUNT
+
+</Slot>
+
+<Slot for="api-center-table-221">
+
+枚举值边界。
+
+</Slot>
+
+<a id="abccb8cb27efdca58bafccf4092ccc868"></a>
+
+## ◆rtc_log_level_e
+
+| enum [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) |
+| --- |
+
+日志输出级别。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-222" /> | <Slot name="api-center-table-223" /> |
+| <Slot name="api-center-table-224" /> | <Slot name="api-center-table-225" /> |
+| <Slot name="api-center-table-226" /> | <Slot name="api-center-table-227" /> |
+| <Slot name="api-center-table-228" /> | <Slot name="api-center-table-229" /> |
+| <Slot name="api-center-table-230" /> | <Slot name="api-center-table-231" /> |
+| <Slot name="api-center-table-232" /> | <Slot name="api-center-table-233" /> |
+| <Slot name="api-center-table-234" /> | <Slot name="api-center-table-235" /> |
+| <Slot name="api-center-table-236" /> | <Slot name="api-center-table-237" /> |
+| <Slot name="api-center-table-238" /> | <Slot name="api-center-table-239" /> |
+
+<Slot for="api-center-table-222">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868a24e55625febbd7f5e86ebe04abab6d7b"></a>RTC_LOG_DEFAULT
+
+</Slot>
+
+<Slot for="api-center-table-223">
+
+0：（默认）输出 EMERG、ALERT、CRIT、ERROR、WARNING、NOTICE 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-224">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868a8d59102ccbd168181e12bf6ef4548b86"></a>RTC_LOG_EMERG
+
+</Slot>
+
+<Slot for="api-center-table-225">
+
+1：输出 EMERG 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-226">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868a42d3462b640722db79ee1b9119a17302"></a>RTC_LOG_ALERT
+
+</Slot>
+
+<Slot for="api-center-table-227">
+
+2：输出 EMERG、ALERT 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-228">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868afb611a30262f2f38c5ed802bea069e64"></a>RTC_LOG_CRIT
+
+</Slot>
+
+<Slot for="api-center-table-229">
+
+3：输出 EMERG、ALERT、CRIT 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-230">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868ad394cccfea48c61d07633bde0b39fdf1"></a>RTC_LOG_ERROR
+
+</Slot>
+
+<Slot for="api-center-table-231">
+
+4：输出 EMERG、ALERT、CRIT、ERROR 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-232">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868a60426a1d96e3be124df17385a4e55ed9"></a>RTC_LOG_WARNING
+
+</Slot>
+
+<Slot for="api-center-table-233">
+
+5：输出 EMERG、ALERT、CRIT、ERROR、WARNING 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-234">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868ae3eead5cceec7ef6dfaaa1ac83a42257"></a>RTC_LOG_NOTICE
+
+</Slot>
+
+<Slot for="api-center-table-235">
+
+6：（默认）输出 EMERG、ALERT、CRIT、ERROR、WARNING、NOTICE 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-236">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868ae1c0db40d0eaf716d43ff3d55188317c"></a>RTC_LOG_INFO
+
+</Slot>
+
+<Slot for="api-center-table-237">
+
+7：输出 EMERG、ALERT、CRIT、ERROR、WARNING、NOTICE、INFO 级别的日志。
+
+</Slot>
+
+<Slot for="api-center-table-238">
+
+<a id="abccb8cb27efdca58bafccf4092ccc868a8de3838b01978383dc3ade2c812b9d2e"></a>RTC_LOG_DEBUG
+
+</Slot>
+
+<Slot for="api-center-table-239">
+
+8：输出所有 API 日志信息。如果你想获取最完整的日志，可以将日志级别设为该等级。
+
+</Slot>
+
+<a id="a67e13664c08581f85cd18c0e36299395"></a>
+
+## ◆rtm_err_code_e
+
+| enum [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) |
+| --- |
+
+RTM 错误码。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-240" /> | <Slot name="api-center-table-241" /> |
+| <Slot name="api-center-table-242" /> | <Slot name="api-center-table-243" /> |
+| <Slot name="api-center-table-244" /> | <Slot name="api-center-table-245" /> |
+| <Slot name="api-center-table-246" /> | <Slot name="api-center-table-247" /> |
+| <Slot name="api-center-table-248" /> | <Slot name="api-center-table-249" /> |
+| <Slot name="api-center-table-250" /> | <Slot name="api-center-table-251" /> |
+| <Slot name="api-center-table-252" /> | <Slot name="api-center-table-253" /> |
+| <Slot name="api-center-table-254" /> | <Slot name="api-center-table-255" /> |
+| <Slot name="api-center-table-256" /> | <Slot name="api-center-table-257" /> |
+| <Slot name="api-center-table-258" /> | <Slot name="api-center-table-259" /> |
+| <Slot name="api-center-table-260" /> | <Slot name="api-center-table-261" /> |
+| <Slot name="api-center-table-262" /> | <Slot name="api-center-table-263" /> |
+| <Slot name="api-center-table-264" /> | <Slot name="api-center-table-265" /> |
+| <Slot name="api-center-table-266" /> | <Slot name="api-center-table-267" /> |
+
+<Slot for="api-center-table-240">
+
+<a id="a67e13664c08581f85cd18c0e36299395ae6d349a878142d7c39278c651009b3e7"></a>ERR_RTM_OK
+
+</Slot>
+
+<Slot for="api-center-table-241">
+
+0: 方法调用成功或登录成功。
+
+</Slot>
+
+<Slot for="api-center-table-242">
+
+<a id="a67e13664c08581f85cd18c0e36299395abe3684599c7991766805d00724b9a3bf"></a>ERR_RTM_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-243">
+
+1: 通用错误。你可以根据日志文件排查问题。
+
+</Slot>
+
+<Slot for="api-center-table-244">
+
+<a id="a67e13664c08581f85cd18c0e36299395aaf7445dc645867b299b521d33d8806af"></a>ERR_RTM_LOGIN_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-245">
+
+2: 声网服务器拒绝了登录 RTM 的请求。你需要检查 RTM Token、App ID、User ID 是否符合要求。
+
+</Slot>
+
+<Slot for="api-center-table-246">
+
+<a id="a67e13664c08581f85cd18c0e36299395a028d05777130bf725b376f5398e55e1e"></a>ERR_RTM_INVALID_RTM_UID
+
+</Slot>
+
+<Slot for="api-center-table-247">
+
+3: RTM 用户 ID 无效。你需要检查 User ID 是否符合要求。
+
+</Slot>
+
+<Slot for="api-center-table-248">
+
+<a id="a67e13664c08581f85cd18c0e36299395a759c243b2f6579660e5283ea7fec49f4"></a>ERR_RTM_LOGIN_INVALID_TOKEN
+
+</Slot>
+
+<Slot for="api-center-table-249">
+
+5: RTM Token 无效。你需要检查 Token 是否符合要求。
+
+</Slot>
+
+<Slot for="api-center-table-250">
+
+<a id="a67e13664c08581f85cd18c0e36299395ae66c3720fed2b809991aad603b099678"></a>ERR_RTM_LOGIN_NOT_AUTHORIZED
+
+</Slot>
+
+<Slot for="api-center-table-251">
+
+7: 未经授权的登录。你需要先进行登录，再进行其他操作。
+
+</Slot>
+
+<Slot for="api-center-table-252">
+
+<a id="a67e13664c08581f85cd18c0e36299395aff3cd211a9e47d717330db875292c2c0"></a>ERR_RTM_LOCAL_NETDOWN
+
+</Slot>
+
+<Slot for="api-center-table-253">
+
+8: 检测到网卡出现故障
+
+</Slot>
+
+<Slot for="api-center-table-254">
+
+<a id="a67e13664c08581f85cd18c0e36299395a42ee38fc588f057ffa1d6cce5f1a8590"></a>ERR_RTM_LOCAL_INTERRUPT
+
+</Slot>
+
+<Slot for="api-center-table-255">
+
+9: 本地用户网络中断。你需要检查网络是否正常。
+
+</Slot>
+
+<Slot for="api-center-table-256">
+
+<a id="a67e13664c08581f85cd18c0e36299395a81c8a98baffacb7cef2555975fa91c9d"></a>ERR_RTM_LOCAL_TIMEOUT
+
+</Slot>
+
+<Slot for="api-center-table-257">
+
+10: 本地用户没有收到服务端响应的心跳包。
+
+</Slot>
+
+<Slot for="api-center-table-258">
+
+<a id="a67e13664c08581f85cd18c0e36299395a86dfec717916e6a4390117d20a4fe93e"></a>ERR_RTM_SERVER_TIMEOUT
+
+</Slot>
+
+<Slot for="api-center-table-259">
+
+11: 服务器没有收到本地用户发动的心跳包。
+
+</Slot>
+
+<Slot for="api-center-table-260">
+
+<a id="a67e13664c08581f85cd18c0e36299395a8de11746d8aa79253dfc4d2339974a7c"></a>ERR_RTM_INVALID_APP_ID
+
+</Slot>
+
+<Slot for="api-center-table-261">
+
+101: RTM App ID 无效。你需要检查 App ID 是否符合要求。
+
+</Slot>
+
+<Slot for="api-center-table-262">
+
+<a id="a67e13664c08581f85cd18c0e36299395ad8a80f6c8d330265bb1fbb23388e5fd7"></a>WARN_RTM_LOOKUP_CHANNEL_REJECTED
+
+</Slot>
+
+<Slot for="api-center-table-263">
+
+105: 声网服务器拒绝了查询 RTM 频道的请求。你需要检查 RTM Token 是否符合要求。
+
+</Slot>
+
+<Slot for="api-center-table-264">
+
+<a id="a67e13664c08581f85cd18c0e36299395a2bad14752327e855007347e23aa26217"></a>ERR_RTM_TOKEN_EXPIRED
+
+</Slot>
+
+<Slot for="api-center-table-265">
+
+109: RTM Token 已过期。你需要重新生成 RTM Token。
+
+</Slot>
+
+<Slot for="api-center-table-266">
+
+<a id="a67e13664c08581f85cd18c0e36299395a94a76b5f288a60b0182f21fd1994d3d6"></a>ERR_RTM_INVALID_TOKEN
+
+</Slot>
+
+<Slot for="api-center-table-267">
+
+110: RTM Token 无效。你需要检查 Token 是否符合要求。
+
+</Slot>
+
+<a id="ab5b2cce4f434a399c2be533afaa837d7"></a>
+
+## ◆rtm_event_type_e
+
+| enum [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) |
+| --- |
+
+RTM RTM 事件类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-268" /> | <Slot name="api-center-table-269" /> |
+| <Slot name="api-center-table-270" /> | <Slot name="api-center-table-271" /> |
+| <Slot name="api-center-table-272" /> | <Slot name="api-center-table-273" /> |
+
+<Slot for="api-center-table-268">
+
+<a id="ab5b2cce4f434a399c2be533afaa837d7ad113c30e603a965a059df68586de7bdc"></a>RTM_EVENT_TYPE_LOGIN
+
+</Slot>
+
+<Slot for="api-center-table-269">
+
+0: 用户成功登录 RTM 服务。
+
+</Slot>
+
+<Slot for="api-center-table-270">
+
+<a id="ab5b2cce4f434a399c2be533afaa837d7a05f8e9a7117c74b6f7f7063ca03b03a6"></a>RTM_EVENT_TYPE_KICKOFF
+
+</Slot>
+
+<Slot for="api-center-table-271">
+
+1: 用户被踢出。可能的原因是 UID 重复。
+
+</Slot>
+
+<Slot for="api-center-table-272">
+
+<a id="ab5b2cce4f434a399c2be533afaa837d7a791cd45e40580ae8ad73be9e325a0340"></a>RTM_EVENT_TYPE_EXIT
+
+</Slot>
+
+<Slot for="api-center-table-273">
+
+2: 用户退出 RTM 服务。可能得原因是：
+
+- ERR_RTM_SERVER_TIMEOUT：服务器没有收到本地客户端发送的心跳包。
+- ERR_RTM_LOCAL_INTERRUPT：本地用户网络中断。
+- ERR_RTM_LOCAL_TIMEOUT：本地客户端没收到服务端响应的心跳包。
+- ERR_RTM_LOCAL_NETDOWN：检测到网卡出现故障。
+
+在该状态下，SDK 会自动尝试重连，如果重连成功，则可以恢复登录。
+
+</Slot>
+
+<a id="af57ca27ae3585628b148da1406cc9ce6"></a>
+
+## ◆rtm_msg_state_e
+
+| enum [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) |
+| --- |
+
+RTM 消息的发送状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-274" /> | <Slot name="api-center-table-275" /> |
+| <Slot name="api-center-table-276" /> | <Slot name="api-center-table-277" /> |
+| <Slot name="api-center-table-278" /> | <Slot name="api-center-table-279" /> |
+| <Slot name="api-center-table-280" /> | <Slot name="api-center-table-281" /> |
+
+<Slot for="api-center-table-274">
+
+<a id="af57ca27ae3585628b148da1406cc9ce6a27775e1bab1bd135224e14638cef8fcf"></a>RTM_MSG_STATE_INIT
+
+</Slot>
+
+<Slot for="api-center-table-275">
+
+0: 初始状态。
+
+</Slot>
+
+<Slot for="api-center-table-276">
+
+<a id="af57ca27ae3585628b148da1406cc9ce6aae52bb084b2ad43b9116f31faa58b772"></a>RTM_MSG_STATE_RECEIVED
+
+</Slot>
+
+<Slot for="api-center-table-277">
+
+1: 消息已接收。
+
+</Slot>
+
+<Slot for="api-center-table-278">
+
+<a id="af57ca27ae3585628b148da1406cc9ce6ae94a5a13749f792cff289e067a0a7e14"></a>RTM_MSG_STATE_UNREACHABLE
+
+</Slot>
+
+<Slot for="api-center-table-279">
+
+2: 消息到达了服务端，但是不确定是否到达了远端用户。
+
+</Slot>
+
+<Slot for="api-center-table-280">
+
+<a id="af57ca27ae3585628b148da1406cc9ce6a0b5a63f6422b819cbe63d337b555e243"></a>RTM_MSG_STATE_TIMEOUT
+
+</Slot>
+
+<Slot for="api-center-table-281">
+
+服务端 10 秒内没有响应，SDK 会删除这条未知状态的消息。
+
+</Slot>
+
+<a id="aaa6c469f77d32b9c4e6d4c1676308cd5"></a>
+
+## ◆user_offline_reason_e
+
+| enum [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5) |
+| --- |
+
+远端用户下线的原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-282" /> | <Slot name="api-center-table-283" /> |
+| <Slot name="api-center-table-284" /> | <Slot name="api-center-table-285" /> |
+| <Slot name="api-center-table-286" /> | <Slot name="api-center-table-287" /> |
+
+<Slot for="api-center-table-282">
+
+<a id="aaa6c469f77d32b9c4e6d4c1676308cd5a8f60542089fd7be69f08f94d5990c6df"></a>USER_OFFLINE_QUIT
+
+</Slot>
+
+<Slot for="api-center-table-283">
+
+0: 远端用户主动离开频道。
+
+</Slot>
+
+<Slot for="api-center-table-284">
+
+<a id="aaa6c469f77d32b9c4e6d4c1676308cd5a05239488395bc85de4bf28c6e9a08f78"></a>USER_OFFLINE_DROPPED
+
+</Slot>
+
+<Slot for="api-center-table-285">
+
+1: 因过长时间收不到远端用户的数据包，SDK 判定该远端用户超时掉线。注意：在网络连接不稳定时，该判定可能会有误。建议使用云信令 SDK 来做可靠的掉线检测。
+
+</Slot>
+
+<Slot for="api-center-table-286">
+
+<a id="aaa6c469f77d32b9c4e6d4c1676308cd5aa96bd52b63153c3b4502cec78309013b"></a>USER_OFFLINE_BECOME_AUDIENCE
+
+</Slot>
+
+<Slot for="api-center-table-287">
+
+2: 远端用户的角色从主播切换为观众。
+
+</Slot>
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222"></a>
+
+## ◆video_data_type_e
+
+| enum [video_data_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222) |
+| --- |
+
+视频编码格式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-288" /> | <Slot name="api-center-table-289" /> |
+| <Slot name="api-center-table-290" /> | <Slot name="api-center-table-291" /> |
+| <Slot name="api-center-table-292" /> | <Slot name="api-center-table-293" /> |
+| <Slot name="api-center-table-294" /> | <Slot name="api-center-table-295" /> |
+| <Slot name="api-center-table-296" /> | <Slot name="api-center-table-297" /> |
+
+<Slot for="api-center-table-288">
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222a24613b631dcf675ec3ba1224a8b5e91f"></a>VIDEO_DATA_TYPE_YUV420
+
+</Slot>
+
+<Slot for="api-center-table-289">
+
+0: YUV420 （暂不支持）。
+
+</Slot>
+
+<Slot for="api-center-table-290">
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222a366eef7674071f5d8a4288f9e35757ba"></a>VIDEO_DATA_TYPE_H264
+
+</Slot>
+
+<Slot for="api-center-table-291">
+
+2: H264。
+
+</Slot>
+
+<Slot for="api-center-table-292">
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222a7ea89e0b6742421358a4c61748f25a2f"></a>VIDEO_DATA_TYPE_H265
+
+</Slot>
+
+<Slot for="api-center-table-293">
+
+3: H265。
+
+</Slot>
+
+<Slot for="api-center-table-294">
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222ab9616cee056df34f7d2b0fc01f154445"></a>VIDEO_DATA_TYPE_GENERIC
+
+</Slot>
+
+<Slot for="api-center-table-295">
+
+6: Generic。
+
+</Slot>
+
+<Slot for="api-center-table-296">
+
+<a id="a1ccdeb97ac0c919ca5de750fad95c222aa2ab50c43048ca3282bed2bd5da5847e"></a>VIDEO_DATA_TYPE_GENERIC_JPEG
+
+</Slot>
+
+<Slot for="api-center-table-297">
+
+20: Generic JPEG。
+
+</Slot>
+
+<a id="a6072f9d97582869362eaa8c81b028c22"></a>
+
+## ◆video_frame_type_e
+
+| enum [video_frame_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22) |
+| --- |
+
+视频帧类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-298" /> | <Slot name="api-center-table-299" /> |
+| <Slot name="api-center-table-300" /> | <Slot name="api-center-table-301" /> |
+| <Slot name="api-center-table-302" /> | <Slot name="api-center-table-303" /> |
+
+<Slot for="api-center-table-298">
+
+<a id="a6072f9d97582869362eaa8c81b028c22a8d1bbd09567fb30a955faa706bc8eca2"></a>VIDEO_FRAME_AUTO_DETECT
+
+</Slot>
+
+<Slot for="api-center-table-299">
+
+0: 未知。SDK 会自行判断帧类型。
+
+</Slot>
+
+<Slot for="api-center-table-300">
+
+<a id="a6072f9d97582869362eaa8c81b028c22a4e31a5296b3c6791e574db21a2b0edae"></a>VIDEO_FRAME_KEY
+
+</Slot>
+
+<Slot for="api-center-table-301">
+
+3: 关键帧。
+
+</Slot>
+
+<Slot for="api-center-table-302">
+
+<a id="a6072f9d97582869362eaa8c81b028c22ae24012315af9ca7988080920f9cea6b7"></a>VIDEO_FRAME_DELTA
+
+</Slot>
+
+<Slot for="api-center-table-303">
+
+4: Delta 帧，例如 P-Frame。
+
+</Slot>
+
+<a id="ab962f73944a73baa69882e4256aebad7"></a>
+
+## ◆video_orientation_e
+
+| enum [video_orientation_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7) |
+| --- |
+
+已编码视频帧的旋转角度。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-304" /> | <Slot name="api-center-table-305" /> |
+| <Slot name="api-center-table-306" /> | <Slot name="api-center-table-307" /> |
+| <Slot name="api-center-table-308" /> | <Slot name="api-center-table-309" /> |
+| <Slot name="api-center-table-310" /> | <Slot name="api-center-table-311" /> |
+
+<Slot for="api-center-table-304">
+
+<a id="ab962f73944a73baa69882e4256aebad7a9f6c6ff5146e77d5dcdfe7c464d2d0e2"></a>VIDEO_ORIENTATION_0
+
+</Slot>
+
+<Slot for="api-center-table-305">
+
+0: （默认）顺时针旋转 0 度。
+
+</Slot>
+
+<Slot for="api-center-table-306">
+
+<a id="ab962f73944a73baa69882e4256aebad7aa9bce06fe89f0788e6d7f4ec7eaf973f"></a>VIDEO_ORIENTATION_90
+
+</Slot>
+
+<Slot for="api-center-table-307">
+
+1: 顺时针旋转 90 度。
+
+</Slot>
+
+<Slot for="api-center-table-308">
+
+<a id="ab962f73944a73baa69882e4256aebad7a3dc54ff51606226550656fcede191ad8"></a>VIDEO_ORIENTATION_180
+
+</Slot>
+
+<Slot for="api-center-table-309">
+
+2: 顺时针旋转 180 度。
+
+</Slot>
+
+<Slot for="api-center-table-310">
+
+<a id="ab962f73944a73baa69882e4256aebad7ad70cb082af9397176c10dd21ed7b6c4a"></a>VIDEO_ORIENTATION_270
+
+</Slot>
+
+<Slot for="api-center-table-311">
+
+3: 顺时针旋转 270 度。
+
+</Slot>
+
+<a id="a662fba13746193012793896faeb278ed"></a>
+
+## ◆video_stream_type_e
+
+| enum [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) |
+| --- |
+
+视频流类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-312" /> | <Slot name="api-center-table-313" /> |
+| <Slot name="api-center-table-314" /> | <Slot name="api-center-table-315" /> |
+
+<Slot for="api-center-table-312">
+
+<a id="a662fba13746193012793896faeb278eda046872b3583d9286bf805f16775efc4c"></a>VIDEO_STREAM_HIGH
+
+</Slot>
+
+<Slot for="api-center-table-313">
+
+0: 视频大流。分辨率和码率较高。
+
+</Slot>
+
+<Slot for="api-center-table-314">
+
+<a id="a662fba13746193012793896faeb278eda30bd873e1099b86ebf6d852ee2218319"></a>VIDEO_STREAM_LOW
+
+</Slot>
+
+<Slot for="api-center-table-315">
+
+1: 视频小流。分辨率和码率较低。
+
+</Slot>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 函数说明
+
+<a id="a390557a8930a59dfffbfd1d4b52e9c94"></a>
+
+## ◆agora_rtc_config_log()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_config_log ( int *size_per_file*, int *max_file_count*) | extern |
+| --- | --- |
+
+配置 SDK 的日志文件。
+
+### 参数
+
+| [in] | size_per_file | 每份日志文件的大小（字节）。取值范围为 [0,10 × 1024 × 1024]。默认值为 1 × 1024 × 1024，即 1 MB。如果你将此参数设为 0，则代表关闭日志功能。 |
+| --- | --- | --- |
+| [in] | max_file_count | 日志文件数。取值范围为 [0,100]。默认值为 10。如果你将此参数设为 0，则代表关闭日志功能。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="adef869ae47e2f1c194af611b57d06394"></a>
+
+## ◆agora_rtc_create_connection()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_create_connection ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) * *conn_id*) | extern |
+| --- | --- |
+
+创建 Connection。
+
+你需要在加入频道前调用该方法创建 Connection。如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要多次调用该方法创建多个 Connection，然后再使用对应的 Connection ID 加入频道。
+
+### 参数
+
+| [out] | conn_id | Connection ID。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa6b288b479c7048b4cceb85d995771ed"></a>
+
+## ◆agora_rtc_create_data_stream()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_create_data_stream ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, int * *stream_id*, bool *reliable*, bool *ordered*) | extern |
+| --- | --- |
+
+创建数据流。
+
+### 自从
+
+v1.9.5
+
+在 Connection 生命周期内，每个用户最多可以创建五条数据流。
+
+### 注解
+
+- 该方法需要在加入频道后调用。
+- SDK 不支持 reliable 设为 true，且 ordered 设为 false 的参数组合。
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [out] | stream_id | 数据流 ID 指针。 |
+| [in] | reliable | <Slot name="api-center-table-316" /> |
+| [in] | ordered | <Slot name="api-center-table-317" /> |
+
+<Slot for="api-center-table-316">
+
+是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
+
+- true: 是。SDK 提供有限度的可靠保证，在发送后的 5 秒内会有丢包检测和重传。
+- false: 否。SDK 不做丢包检测和重传。
+
+</Slot>
+
+<Slot for="api-center-table-317">
+
+是否保证接收方需要收到有序的数据流：
+
+- true: 接收方按照发送方发送的顺序收到数据流。
+- false: 接收方不按照发送方发送的顺序收到数据流。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac58d42a331c45233d81085fc13defcaf"></a>
+
+## ◆agora_rtc_destroy_connection()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_destroy_connection ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*) | extern |
+| --- | --- |
+
+销毁 Connection。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4d71911dc6236c8317bed8e2e7be6a6f"></a>
+
+## ◆agora_rtc_err_2_str()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) const char * agora_rtc_err_2_str ( int *err*) | extern |
+| --- | --- |
+
+将错误码转为静态字符串，以便查看错误描述。
+
+### 注解
+
+使用后不必释放。
+
+### 参数
+
+| [in] | err | 错误码。 |
+| --- | --- | --- |
+
+### 返回
+
+静态字符串。
+
+<a id="a09875c7766bbb543425da877a3ef6e1d"></a>
+
+## ◆agora_rtc_fini()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_fini ( void **) | extern |
+| --- | --- |
+
+释放所有由 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法分配给 RTSA 服务的资源。
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa3c03b5de5004ce61ba9f9e5a7637b25"></a>
+
+## ◆agora_rtc_get_connection_info()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_get_connection_info ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t) * *conn_info*) | extern |
+| --- | --- |
+
+获取 Connection 信息。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [out] | conn_info | Connection 信息。详见 [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a80f16bf3cf9bcdf8a6cecc51f8e584aa"></a>
+
+## ◆agora_rtc_get_rdt_status_info()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_get_rdt_status_info ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, [rdt_status_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa8f682dca66b0793fbf74d1d467f5327) * *info*) | extern |
+| --- | --- |
+
+获取 RDT 通道的信息。
+
+### 自从
+
+v1.9.2
+
+该方法可以获取当前 RDT 通道的连接状态和缓冲区长度，从而判断远端用户是否成功接收 RDT 消息、本地用户是否可以继续发送 RDT 消息。例如，发送缓冲区长度 (send_queue_size) 为 0 表示远端用户已接收完 RDT 消息。
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户的用户 ID。 |
+| [out] | info | RDT 通道的信息。详见 [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad6b1be785d6c2b4fa8fb0eac90290194"></a>
+
+## ◆agora_rtc_get_user_info_by_uid()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_get_user_info_by_uid ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *uid*, [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) * *user*) | extern |
+| --- | --- |
+
+通过用户 ID 获取用户信息。
+
+### 自从
+
+v1.9.5
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | uid | 用户 ID。 |
+| [out] | user | 用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a68efcfa431803942c8fdc733b00c30c1"></a>
+
+## ◆agora_rtc_get_user_info_by_user_account()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_get_user_info_by_user_account ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const char * *user_account*, [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) * *user*) | extern |
+| --- | --- |
+
+通过用户 User account 获取用户信息。
+
+### 自从
+
+v1.9.5
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | user_account | 用户 User account。 |
+| [out] | user | 用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad01077e5b926ab8a6a1743a74ff3cdd7"></a>
+
+## ◆agora_rtc_get_version()
+
+| const char * agora_rtc_get_version ( void **) | extern |
+| --- | --- |
+
+获取 SDK 版本。
+
+### 返回
+
+包含 SDK 版本信息的静态字符串。
+
+<a id="a6187076d897f0b56cb20942368c15aaa"></a>
+
+## ◆agora_rtc_init()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_init ( const char * *app_id*, const [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t) * *event_handler*, [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) * *option*) | extern |
+| --- | --- |
+
+初始化 RTSA 服务。
+
+### 注解
+
+- 每条进程只能初始化一次。
+- SDK 每次初始化时会在指定的目录下自动创建一个新文件夹（随机命名），用于存放此次运行的日志。 SDK 不负责回收上一次初始化时创建的文件夹。为了避免日志占用过多空间，建议每次初始化之前先清空日志文件夹。
+
+### 参数
+
+| [in] | app_id | 声网为 App 开发者签发的 APP ID。 |
+| --- | --- | --- |
+| [in] | event_handler | 用于处理 SDK 事件的一系列回调。详见 [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t)。 |
+| [in] | option | 服务配置选项，如果不需要设置则请置空。详见 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a6c29ff27f04623526a164cf6e5dcd738"></a>
+
+## ◆agora_rtc_join_channel()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_join_channel ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const char * *channel_name*, uint32_t *uid*, const char * *token*, [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) * *options*) | extern |
+| --- | --- |
+
+加入指定 Connection 所关联的 RTC 频道。
+
+该方法让本地用户加入指定频道。同一个频道内使用相同 App ID 的用户可以互相传输数据。
+
+### 注解
+
+- 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
+- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel 方法时填入对应的 Connection ID。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | channel_name | <Slot name="api-center-table-318" /> |
+| [in] | uid | 用户 ID。 |
+| [in] | token | <Slot name="api-center-table-319" /> |
+| [in] | options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
+
+<Slot for="api-center-table-318">
+
+频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Slot>
+
+<Slot for="api-center-table-319">
+
+用于鉴权的 RTC Token。
+
+- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。
+- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a64a24029bfaa5408e987122261385013"></a>
+
+## ◆agora_rtc_join_channel_with_user_account()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_join_channel_with_user_account ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const char * *channel_name*, const char * *user_account*, const char * *token*, [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) * *options*) | extern |
+| --- | --- |
+
+使用用户 User account 加入指定 Connection 所关联的 RTC 频道。
+
+### 自从
+
+v1.9.5
+
+该方法让本地用户加入指定频道。同一个频道内使用相同 App ID 的用户可以互相传输数据。
+
+### 注解
+
+- 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
+- 如需使用同一个用户 User account 加入不同频道，或者使用不同用户 User account 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel_with_user_account 方法时填入对应的 Connection ID。
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | channel_name | <Slot name="api-center-table-320" /> |
+| [in] | user_account | 用户 User account。 |
+| [in] | token | <Slot name="api-center-table-321" /> |
+| [in] | options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
+
+<Slot for="api-center-table-320">
+
+频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Slot>
+
+<Slot for="api-center-table-321">
+
+用于鉴权的 RTC Token。
+
+- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。
+- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a939878648ce563ef4041da892d478f8b"></a>
+
+## ◆agora_rtc_leave_channel()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_leave_channel ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*) | extern |
+| --- | --- |
+
+离开指定 Connection 所关联的 RTC 频道。
+
+停止在某频道传输数据后需要离开该频道。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a6fe757f18a9c19e2bbc254a71061f280"></a>
+
+## ◆agora_rtc_license_gen_credential()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_license_gen_credential ( char * *credential*, unsigned int * *credential_len*) | extern |
+| --- | --- |
+
+### **弃用**
+
+自 v1.9.0 废弃。
+
+生成设备唯一标识 Credential。
+
+### 注解
+
+该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
+
+### 参数
+
+| [out] | credential | 用于存放 Credential 的缓冲区。 |
+| --- | --- | --- |
+| [in,out] | credential_len | <Slot name="api-center-table-322" /> |
+
+<Slot for="api-center-table-322">
+
+缓冲区大小（字节）。
+
+- 输入值用于确认缓冲区的可用长度（字节），需大于 AGORA_CREDENTIAL_MAX_LEN。
+- 输出值为 Credential 的实际长度（字节）。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa1b710e51d7520b83da6d4e9ef9711c6"></a>
+
+## ◆agora_rtc_license_strerror()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) const char * agora_rtc_license_strerror ( int *err*) | extern |
+| --- | --- |
+
+获取 Licence 错误描述。
+
+### 参数
+
+| [in] | err | 错误码。 |
+| --- | --- | --- |
+
+### 返回
+
+表示错误描述的字符串。
+
+<a id="a8c9a8560c8b826db43cce78ce723c63f"></a>
+
+## ◆agora_rtc_license_verify()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_license_verify ( const char * *certificate*, int *certificate_len*, const char * *credential*, int *credential_len*) | extern |
+| --- | --- |
+
+### **弃用**
+
+自 v1.9.0 废弃。改用 [on_license_validation_failure](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa05b9b9e42a2018a913ac18bf0022919) 回调获取 License 校验失败的错误码。
+
+认证 SDK。
+
+启用了声网 License 机制后，安装了 SDK 的设备只有通过 Certificate 验证 才能加入声网频道、使用数据传输功能。
+
+### 注解
+
+- 该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
+- 该方法必须在 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
+
+### 参数
+
+| [in] | certificate | 许可证 Certificate。 |
+| --- | --- | --- |
+| [in] | certificate_len | 许可证长度。 |
+| [in] | credential | 凭证 Credential。 |
+| [in] | credential_len | 凭证长度。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a577ba22b315e7ec594221fb3f1e89ce7"></a>
+
+## ◆agora_rtc_login_rtm()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_login_rtm ( const char * *rtm_uid*, const char * *rtm_token*, const [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) * *handler*) | extern |
+| --- | --- |
+
+登录 RTM。
+
+### 参数
+
+| [in] | rtm_uid | RTM 用户 ID。该字符串不可超过 64 字节。不可设为空、NULL 或 "NULL"。以下为支持的字符集范围:26 个小写英文字母 a-z 26 个大写英文字母 A-Z 10 个数字 0-9 空格 "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \\\{", "\\\}", "\|", "~", "," |
+| --- | --- | --- |
+| [in] | rtm_token | 用于登录 RTM 系统的动态密钥。详见《校验用户权限》。如果你没有开启 Token 鉴权，此参数可设为 NULL。 |
+| [in] | handler | RTM 回调。详见 [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab6ec6e5968325a3d24c4352f0b7dafec"></a>
+
+## ◆agora_rtc_logout_rtm()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_logout_rtm ( void **) | extern |
+| --- | --- |
+
+登出 RTM。
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a28c1dae086be4014ad732a07db248b16"></a>
+
+## ◆agora_rtc_mute_local_audio()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_mute_local_audio ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, bool *mute*) | extern |
+| --- | --- |
+
+对指定 Connection 所关联的 RTC 频道暂停/恢复发送本地音频流。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | mute | <Slot name="api-center-table-323" /> |
+
+<Slot for="api-center-table-323">
+
+暂停/恢复发送本地音频流：
+
+- 0:（默认）发送本地音频流。
+- 其他值: 暂停发送本地音频流。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a47f116e271b78c0659fcd68a96d34224"></a>
+
+## ◆agora_rtc_mute_local_video()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_mute_local_video ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, bool *mute*) | extern |
+| --- | --- |
+
+指定 Connection 所关联的 RTC 频道暂停/恢复发送本地视频流。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | mute | <Slot name="api-center-table-324" /> |
+
+<Slot for="api-center-table-324">
+
+暂停/恢复发送本地视频流：
+
+- 0:（默认）发送本地视频流。
+- 其他值: 暂停发送本地视频流。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a8ad8bfa0e0a46a0c5e7fae11449ab575"></a>
+
+## ◆agora_rtc_mute_remote_audio()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_mute_remote_audio ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, bool *mute*) | extern |
+| --- | --- |
+
+暂停/恢复接收指定 Connection 所关联的 RTC 频道内的指定远端用户的音频流。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户 ID。设为 0 则停止接收频道内所有用户的音频流。 |
+| [in] | mute | <Slot name="api-center-table-325" /> |
+
+<Slot for="api-center-table-325">
+
+暂停/恢复接收远端音频流：
+
+- false:（默认）接收远端音频流。
+- true: 暂停接收远端音频流。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a894f5a102c66b20c408bb495ac424efa"></a>
+
+## ◆agora_rtc_mute_remote_video()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_mute_remote_video ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, bool *mute*) | extern |
+| --- | --- |
+
+暂停/恢复接收指定 Connection 所关联的 RTC 频道内的指定远端用户的视频流。
+
+可以先暂停接收所有频道的视频流，然后恢复接收指定频道的视频流。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户 ID。设为 0 则停止接收频道内所有用户的视频流。 |
+| [in] | mute | <Slot name="api-center-table-326" /> |
+
+<Slot for="api-center-table-326">
+
+暂停/恢复接收远端视频流：
+
+- 0: （默认）接收远端视频流。
+- 其他值: 暂停接收远端视频流。
+
+</Slot>
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a87c94a2d518278926807e24592b41336"></a>
+
+## ◆agora_rtc_renew_token()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_renew_token ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const char * *token*) | extern |
+| --- | --- |
+
+更新指定 Connection 所关联的 RTC 频道的 RTC Token。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | token | 声网 RTC Token。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a74fbf2ac33a8cefce0f02de3eacc2577"></a>
+
+## ◆agora_rtc_request_video_key_frame()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_request_video_key_frame ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) *stream_type*) | extern |
+| --- | --- |
+
+请求指定 Connection 所关联的 RTC 频道内的指定远端用户为指定远端视频流生成关键帧。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户 ID。如果为频道内的所有用户，则设为 0。 |
+| [in] | stream_type | 视频流类型。详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0a00045d34a87e7a3798c6c906f9e197"></a>
+
+## ◆agora_rtc_send_audio_data()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_audio_data ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const void * *data_ptr*, size_t *data_len*, [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) * *info_ptr*) | extern |
+| --- | --- |
+
+向指定 Connection 所关联的 RTC 频道发送音频帧。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | data_ptr | 音频包数据。 |
+| [in] | data_len | 音频包数据大小（字节）。 |
+| [in] | info_ptr | 音频帧配置，详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a83dd3f91afbae5d54548c4d8e546aafc"></a>
+
+## ◆agora_rtc_send_media_ctrl_msg()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_media_ctrl_msg ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, const void * *payload*, size_t *length*) | extern |
+| --- | --- |
+
+向所有频道或指定频道发送消息。
+
+### 自从
+
+1.9.5
+
+成功调用该方法后，远端会触发 [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a) 回调，远端用户可以在该回调中获取接收到的消息。
+
+### 注解
+
+调用该方法时，你需要明确指定发送的频道；否则 SDK 会将消息发送到所有你加入的频道。
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户 ID；如果 remote_uid 设为 0，表示所有远端用户。 |
+| [in] | payload | 消息的 Payload。 |
+| [in] | length | 消息的 Payload 长度。最大不能超过 1 KB。 |
+
+### 返回
+
+- 0: 方法调用成功
+- &lt; 0: 方法调用失败
+
+<a id="a056de38235f67ad1ea91cfd695ffaf61"></a>
+
+## ◆agora_rtc_send_rdt_msg()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_rdt_msg ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *remote_uid*, [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) *type*, const void * *msg*, size_t *length*) | extern |
+| --- | --- |
+
+发送 RDT（Reliable Data Transmission，可靠数据传输）消息。
+
+### 自从
+
+v1.9.2
+
+在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
+
+1. 在 RDT 通道中建立连接：在加入频道时，将 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中的 enable_rdt 参数设置为 true，主动与频道内其他用户建立连接。
+2. 获取 RDT 通道的连接状态：监听 [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afa921fa31ea49ef1c97a17949119e386) 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
+3. 调用 agora_rtc_send_rdt_msg 方法发送 RDT 消息：你可以根据需要发送控制消息 (RDT_STREAM_CMD) 或数据消息 (RDT_STREAM_DATA)，二者区别如下：
+
+- 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
+- 数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。每个消息包的长度至多为 128 KB。
+
+成功发送 RDT 消息后，远端用户会收到 [on_rdt_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a80dfcd1cd72a006a7b2daae4d7f80eea) 回调。你可以调用 agora_rtc_get_rdt_status_info 方法获取远端用户是否接收完消息等信息。
+
+### 注解
+
+每条连接限制传输 4 Mbps。如果超出，会返回如下错误码：
+
+- [ERR_RDT_CMD_EXCEED_LIMIT(603)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfaec9b32272bc37e2ba2352908d7037b39)，控制消息的数量超过限制。
+- [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
+
+### 参数
+
+| [in] | conn_id | Connection ID。 |
+| --- | --- | --- |
+| [in] | remote_uid | 远端用户的用户 ID。 |
+| [in] | type | RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955)。 |
+| [in] | msg | RDT 消息负载。 |
+| [in] | length | RDT 消息长度。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+  - RTC_ERR_RDT_USER_NOT_EXIST(600): 频道内不存在该远端用户。
+  - RTC_ERR_RDT_USER_NOT_READY(601): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
+  - RTC_ERR_RDT_DATA_BLOCKED(602): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
+  - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。 . - [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
+
+<a id="a1eaa46ebfb4613c624eef98ae7275319"></a>
+
+## ◆agora_rtc_send_rtm_data()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_rtm_data ( const char * *rtm_uid*, const void * *msg*, size_t *msg_len*, uint32_t *msg_id*) | extern |
+| --- | --- |
+
+通过 RTM 服务发送消息。
+
+RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
+
+### 注解
+
+成功登录 RTM 服务并收到 [`on_rtm_event`](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a25c73cac37a00ac748fa41869838f623) 回调时才可以发送消息。发送频率不能超过每秒 60 条。
+
+### 参数
+
+| [in] | rtm_uid | RTM 用户 ID。 |
+| --- | --- | --- |
+| [in] | msg | 消息内容。仅支持 UTF-8 编码。 |
+| [in] | msg_len | 消息长度，单位是字节，取值至多为 31 KB。 |
+| [in] | msg_id | 消息 ID。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+  - RTM_ERR_NOT_LOGINED (-1001): 未登录 RTM 系统
+  - RTM_ERR_SEND_TO_SELF (-1002): 在 rtm_uid 参数中误填了自己的用户 ID。
+  - RTM_ERR_EXCEED_MSG_SIZE (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
+  - RTM_ERR_EXCEED_MSG_CNT (-1004): 发送频率超出限制。每秒至多发送 60 条消息。
+  - RTM_ERR_EXCEED_TCP_SKB (-1005): 消息通道已满。等待一秒后重新发送。
+
+<a id="aee89fa14447b4529d45275afe5b5a86f"></a>
+
+## ◆agora_rtc_send_stream_message()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_stream_message ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, int *stream_id*, const char * *data*, size_t *length*) | extern |
+| --- | --- |
+
+向频道内的所有用户发送数据流。
+
+### 自从
+
+v1.9.5
+
+调用 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 后，你可以调用该方法向频道内所有用户发送数据流消息。
+
+### 注解
+
+- 该方法需要在加入频道后、且调用了 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 创建数据通道后调用。
+- SDK 对该方法的实现进行了如下限制：
+
+  - 单个频道里，每秒最多发送 60 个数据包，每个数据包的大小不能超过 1 KB。
+  - 频道内每个客户端最多可以同时拥有 5 个数据通道，每个数据通道每秒最多发送 6 KB 的数据流。所有数据通道共用的总发包码率限制为 30 Kbps。
+
+成功调用该方法后，远端会触发 [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+### 参数
+
+| [in] | stream_id | 发送的数据流 ID，在 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 方法的输出参数中返回。 |
+| --- | --- | --- |
+| [in] | data | 待发送的数据的指针。 |
+| [in] | length | 发送数据的大小。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a05973c4f32a5eb480e52b4f566601bf5"></a>
+
+## ◆agora_rtc_send_video_data()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_video_data ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const void * *data_ptr*, size_t *data_len*, [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) * *info_ptr*) | extern |
+| --- | --- |
+
+向指定 Connection 所关联的 RTC 频道发送视频帧。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | data_ptr | 视频包数据。 |
+| [in] | data_len | 视频包数据大小（字节）。 |
+| [in] | info_ptr | 视频帧配置，详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t)。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae274291aadd1afb9974a4672ed6c2bb8"></a>
+
+## ◆agora_rtc_set_bwe_param()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_set_bwe_param ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, uint32_t *min_bps*, uint32_t *max_bps*, uint32_t *start_bps*) | extern |
+| --- | --- |
+
+设置 bandwidth estimation (BWE) 参数。
+
+### 参数
+
+| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
+| --- | --- | --- |
+| [in] | min_bps | 最小码率，单位为 bps。 |
+| [in] | max_bps | 最大码率，单位为 bps。 |
+| [in] | start_bps | 起始码率，单位为 bps。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a665de5b57dcb7b3c62d7a35b9a5992f7"></a>
+
+## ◆agora_rtc_set_log_level()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_set_log_level ( [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) *level*) | extern |
+| --- | --- |
+
+设置 SDK 的日志输出等级。
+
+设置一个级别后，你可以看到该级别及之前所有级别的日志信息。
+
+### 参数
+
+| [in] | level | 日志输出等级。详见 [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868)。 |
+| --- | --- | --- |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3d0aac6ce04ce9f2420c459fa9990d41"></a>
+
+## ◆agora_rtc_set_params()
+
+| [__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_set_params ( [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) *conn_id*, const char * *params*) | extern |
+| --- | --- |
+
+通过 JSON 配置 SDK 提供技术预览或特别定制功能。
+
+JSON 选项默认不公开。声网工程师正在努力寻求以标准化方式公开 JSON 选项。
+
+### 参数
+
+| [in] | connid | Connection ID。如果设为 [CONNECTION_ID_ALL(0)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 则表示所有 Connection。 |
+| --- | --- | --- |
+| [in] | params | JSON 字符串形式的参数。 |
+
+### 返回
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -1,0 +1,171 @@
+---
+title: agora::base::AgoraServiceConfiguration结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1base_1_1_agora_service_configuration
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1base_1_1_agora_service_configuration.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#ae10bb889a0447b757857ba23d4978542) () |
+|  |  |
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+| bool | [enableAudioProcessor](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a5cd6f6b187f157fa7209f435c78b24e4) |
+|  |  |
+| bool | [enableAudioDevice](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a54fb8535f90fc4241eff32b87be602ea) |
+|  |  |
+| bool | [enableVideo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#aabf2a47b88644e2d6713c0f00198bba2) |
+|  |  |
+| const char * | [appId](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a5bfcde4f7882a2039d7ca3745f8c446c) |
+|  |  |
+| unsigned int | [areaCode](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a45da48ccfe5300c8f9af4dc92cf27189) |
+|  |  |
+| [agora::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#abc5eb7ac0efb18032c8383e528c490a2) | [channelProfile](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a1784fc06f211e467b6caf785a0be4a39) |
+|  |  |
+| [rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) | [audioScenario](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#aa68c326243ba3dfe54f37ccc8bf85802) |
+|  |  |
+| [commons::LogConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1commons-1-1-log-config) | [logConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a36b41f555664e59304255c6dfacbdc0b) |
+|  |  |
+| bool | [useStringUid](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a54744e3516aab7a8a86e2966cbf8b1c6) |
+|  |  |
+| bool | [domainLimit](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a394fb9219d98e334a9659f24d7e416b6) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+[IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 类的全局配置。
+
+在调用 [initialize](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a6f1fb6e792c564dee46903cbb3bc35fc) 方法时设置。
+
+## 构造及析构函数说明
+
+<a id="ae10bb889a0447b757857ba23d4978542"></a>
+
+## ◆AgoraServiceConfiguration()
+
+| agora::base::AgoraServiceConfiguration::AgoraServiceConfiguration () | inline |
+| --- | --- |
+
+## 类成员变量说明
+
+<a id="a5cd6f6b187f157fa7209f435c78b24e4"></a>
+
+## ◆enableAudioProcessor
+
+| bool agora::base::AgoraServiceConfiguration::enableAudioProcessor |
+| --- |
+
+是否开启音频处理模块（Audio Processing Module, APM）。
+
+- `true`: (默认) 开启音频处理模块。
+- `false`: 关闭音频处理模块。你将无法创建音频轨道。
+
+<a id="a54fb8535f90fc4241eff32b87be602ea"></a>
+
+## ◆enableAudioDevice
+
+| bool agora::base::AgoraServiceConfiguration::enableAudioDevice |
+| --- |
+
+是否开启音频设备模块（Audio Device Module, ADM）。 ADM 用来管理音频设备，例如录制和播放音频。
+
+- `true`: (默认) 开启音频设备模块。你可以录制和播放音频。
+- `false`: 关闭音频设备模块。你无法录制和播放音频。
+
+### 注解
+
+如果你将 `enableAudioDevice` 设为 `false` 且将 `enableAudioProcessor` 设为 `true`，你将无法使用音频设备，但你可以推送 PCM 音频数据。
+
+<a id="aabf2a47b88644e2d6713c0f00198bba2"></a>
+
+## ◆enableVideo
+
+| bool agora::base::AgoraServiceConfiguration::enableVideo |
+| --- |
+
+是否开启视频。
+
+- `true`: 开启视频。
+- `false`: (默认) 关闭视频。
+
+<a id="a5bfcde4f7882a2039d7ca3745f8c446c"></a>
+
+## ◆appId
+
+| const char* agora::base::AgoraServiceConfiguration::appId |
+| --- |
+
+你的声网项目的 App ID。该参数中不支持填写 Token。
+
+<a id="a45da48ccfe5300c8f9af4dc92cf27189"></a>
+
+## ◆areaCode
+
+| unsigned int agora::base::AgoraServiceConfiguration::areaCode |
+| --- |
+
+服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。 支持的区域详见 [AREA_CODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5e)。区域码支持位操作。
+
+指定访问区域后，SDK 会连接指定区域内的声网服务器。
+
+<a id="a1784fc06f211e467b6caf785a0be4a39"></a>
+
+## ◆channelProfile
+
+| [agora::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#abc5eb7ac0efb18032c8383e528c490a2) agora::base::AgoraServiceConfiguration::channelProfile |
+| --- |
+
+频道使用场景。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#abc5eb7ac0efb18032c8383e528c490a2)。
+
+<a id="aa68c326243ba3dfe54f37ccc8bf85802"></a>
+
+## ◆audioScenario
+
+| [rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) agora::base::AgoraServiceConfiguration::audioScenario |
+| --- |
+
+音频应用场景。详见 [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533)。
+
+<a id="a36b41f555664e59304255c6dfacbdc0b"></a>
+
+## ◆logConfig
+
+| [commons::LogConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1commons-1-1-log-config) agora::base::AgoraServiceConfiguration::logConfig |
+| --- |
+
+设置 SDK 输出的日志文件。详见 [LogConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1commons-1-1-log-config)。
+
+<a id="a54744e3516aab7a8a86e2966cbf8b1c6"></a>
+
+## ◆useStringUid
+
+| bool agora::base::AgoraServiceConfiguration::useStringUid |
+| --- |
+
+是否允许 String UID。
+
+<a id="a394fb9219d98e334a9659f24d7e416b6"></a>
+
+## ◆domainLimit
+
+| bool agora::base::AgoraServiceConfiguration::domainLimit |
+| --- |
+
+是否开启域名限制：
+
+- `true`: 开启。SDK 只能访问指定域名的网络。
+- `false`: （默认）不开启。SDK 可以访问任意域名的网络。
+
+### 注解
+
+- 该参数仅对使用定向物联网卡的 IOT 场景有效。为保证使用定向物联网卡的设备与其他设备互通， 你需要将该参数设置为 `true`。
+- 开启域名限制前，你需要[联系销售]([https://www.shengwang.cn/contact-sales/](https://www.shengwang.cn/contact-sales/)\}进行设置。

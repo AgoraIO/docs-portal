@@ -1,0 +1,163 @@
+---
+title: WhiteReadonlyMemberState Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteReadonlyMemberState
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteReadonlyMemberState.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteMemberState.h |
+
+<a id="overview"></a>
+
+## Overview
+
+互动白板实时房间的工具状态（只读）。初始工具为 `pencil`，无默认值。
+
+<a id="tasks"></a>
+
+<a id="//api/name/currentApplianceName"></a>
+
+### `currentApplianceName`
+
+互动白板实时房间内当前使用的工具名称。初始工具为 `pencil`，无默认值。
+
+`@property (nonatomic, copy, readonly) WhiteApplianceNameKey currentApplianceName`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/strokeColor"></a>
+
+### `strokeColor`
+
+线条颜色，为 RGB 格式，例如，(0, 0, 255) 表示蓝色。
+
+`@property (nonatomic, copy, readonly) NSArray&lt;NSNumber*&gt; *strokeColor`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/strokeWidth"></a>
+
+### `strokeWidth`
+
+线条粗细。
+
+`@property (nonatomic, strong, readonly, nullable) NSNumber *strokeWidth`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/textSize"></a>
+
+### `textSize`
+
+字体大小。
+
+`@property (nonatomic, strong, readonly, nullable) NSNumber *textSize`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/textColor"></a>
+
+### `textColor`
+
+文本颜色，为 RGB 格式，例如，(0, 0, 255) 表示蓝色。
+
+`@property (nonatomic, copy, readwrite, nullable) NSArray&lt;NSNumber*&gt; *textColor`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/pencilEraserSize"></a>
+
+### `pencilEraserSize`
+
+局部橡皮擦大小。取值范围为 [1,3]，值越大代表尺寸越大。
+
+`@property (nonatomic, strong, readwrite, nullable) NSNumber *pencilEraserSize`
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/shapeType"></a>
+
+### `shapeType`
+
+当教具为 `Shape` 时，所选定的 shape 图形。
+
+`@property (nonatomic, strong, readonly, nullable) WhiteApplianceShapeTypeKey shapeType`
+
+#### Availability
+
+2.12.24
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/strokeOpacity"></a>
+
+### `strokeOpacity`
+
+线框透明度。
+
+`@property (nonatomic, strong, readonly, nullable) NSNumber *strokeOpacity`
+
+#### Availability
+
+2.16.112
+取值范围为 [0.0, 1.0]，0 表示完全透明，1 表示完全不透明。
+仅在 ``WhiteSdkConfiguration`.enableAppliancePlugin` 启用时有效。
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/fillColor"></a>
+
+### `fillColor`
+
+填充样式。
+
+`@property (nonatomic, copy, readonly, nullable) NSArray&lt;NSNumber*&gt; *fillColor`
+
+#### Availability
+
+2.16.112
+仅在 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration).enableAppliancePlugin 启用时有效
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/fillOpacity"></a>
+
+### `fillOpacity`
+
+填充透明度。
+
+`@property (nonatomic, strong, readonly, nullable) NSNumber *fillOpacity`
+
+#### Availability
+
+2.16.112
+取值范围为 [0.0, 1.0]，0 表示完全透明，1 表示完全不透明。
+仅在 ``WhiteSdkConfiguration`.enableAppliancePlugin` 启用时有效。
+
+#### Declared In
+
+`WhiteMemberState.h`

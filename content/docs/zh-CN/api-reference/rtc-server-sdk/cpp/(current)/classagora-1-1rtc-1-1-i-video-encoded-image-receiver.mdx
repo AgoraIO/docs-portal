@@ -1,0 +1,58 @@
+---
+title: agora::rtc::IVideoEncodedImageReceiver类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_encoded_image_receiver
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_encoded_image_receiver.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual bool | [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) (const uint8_t *imageBuffer, size_t length, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) &videoEncodedFrameInfo)=0 |
+|  |  |
+| virtual | [~IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#af2cd1d47da63e409160c27e57082456f) () |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+[IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 类。
+
+## 构造及析构函数说明
+
+<a id="af2cd1d47da63e409160c27e57082456f"></a>
+
+## ◆~IVideoEncodedImageReceiver()
+
+| virtual agora::rtc::IVideoEncodedImageReceiver::~IVideoEncodedImageReceiver () | inlinevirtual |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="ad4e316784b48ac30cd3208a34e840254"></a>
+
+## ◆OnEncodedVideoImageReceived()
+
+| virtual bool agora::rtc::IVideoEncodedImageReceiver::OnEncodedVideoImageReceived ( const uint8_t * *imageBuffer*, size_t *length*, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) & *videoEncodedFrameInfo*) | pure virtual |
+| --- | --- |
+
+SDK 每次收到已编码视频帧时触发。
+
+### 参数
+
+| imageBuffer | 视频帧缓冲区。 |
+| --- | --- |
+| length | 视频帧数据长度。 |
+| videoEncodedFrameInfo | 已编码视频帧的信息。 |
+
+### 返回
+
+是否接受已编码视频帧。
+
+- true: 接受已编码视频帧。
+- false: 不接受已编码视频帧。

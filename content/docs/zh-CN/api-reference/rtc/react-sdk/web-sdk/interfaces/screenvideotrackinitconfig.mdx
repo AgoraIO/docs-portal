@@ -1,0 +1,180 @@
+---
+title: Interface ScreenVideoTrackInitConfig
+description: 创建屏幕共享视频轨道时的配置对象，用于 AgoraRTC.createScreenVideoTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/screenvideotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/screenvideotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+创建屏幕共享视频轨道时的配置对象，用于 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack)。
+
+### Hierarchy
+
+- ScreenVideoTrackInitConfig
+
+## Index
+
+### Properties
+
+- [displaySurface](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#displaysurface)
+- [electronScreenSourceId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#electronscreensourceid)
+- [encoderConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#encoderconfig)
+- [extensionId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#extensionid)
+- [optimizationMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#optimizationmode)
+- [screenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#screensourcetype)
+- [selfBrowserSurface](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#selfbrowsersurface)
+- [surfaceSwitching](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#surfaceswitching)
+- [systemAudio](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#systemaudio)
+
+## Properties
+
+<a id="displaysurface"></a>
+
+### Optional displaySurface
+
+displaySurface: "browser"|"window"|"monitor"
+
+### 自从
+
+*4.17.1*
+
+默认选中的共享内容类型，支持设为标签页、应用窗口（如下图）、或屏幕。详见 [displaySurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#displaySurface)。
+
+![API 文档图片](https://wd.imgix.net/image/vvhSqZboQoZZN9wBvoXq72wzGAf1/AaQIUrKKCvoNuaBjvGOM.png?auto=format&w=1600)
+
+> 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+
+<a id="electronscreensourceid"></a>
+
+### Optional electronScreenSourceId
+
+electronScreenSourceId: string
+
+使用 Electron 屏幕共享时，传入 `sourceId`。
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+encoderConfig: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration)|[ScreenEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screenencoderconfigurationpreset)
+
+控制屏幕共享视频的编码配置。
+
+你可以通过以下方式设置该属性：
+
+- 通过 [ScreenEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screenencoderconfigurationpreset) 传入 SDK 内置的编码配置。
+- 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) 对象来自定义视频编码配置。
+- 不传或留空，使用 SDK 的默认值 `"1080p_2"`（分辨率 1920 × 1080、帧率 30 fps、码率     3000 Kbps）。
+
+<a id="extensionid"></a>
+
+### Optional extensionId
+
+extensionId: string
+
+使用 Chrome 浏览器插件进行屏幕共享时，传入插件的 ID。
+
+<a id="optimizationmode"></a>
+
+### Optional optimizationMode
+
+optimizationMode: "motion"|"detail"
+
+### 自从
+
+*4.2.0*
+
+设置视频传输优化模式。
+
+你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
+
+> 注意事项：该方法只支持 Chrome 浏览器。
+
+### param
+
+视频传输优化模式：
+
+- `"detail"`: 清晰优先。
+
+  - SDK 会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
+- `"motion"`: 自 4.21.0 开始，SDK 默认开启流畅优先模式。
+
+  - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，SDK 不会降低帧率，但是可能会降低发送分辨率。
+
+<a id="screensourcetype"></a>
+
+### Optional screenSourceType
+
+screenSourceType: [ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)
+
+### deprecated
+
+自 v4.17.1 起废弃，请改用 [displaySurface](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig#displaysurface)。
+
+屏幕共享源的类型。
+
+<a id="selfbrowsersurface"></a>
+
+### Optional selfBrowserSurface
+
+selfBrowserSurface: "include"|"exclude"
+
+### 自从
+
+*4.17.1*
+
+是否允许用户共享当前标签页：
+
+- `"include"`：（默认）允许用户共享当前标签页。
+- `"exclude"`：禁止用户共享当前标签页。
+
+详见 [selfBrowserSurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#selfBrowserSurface)。
+
+> 注意事项：
+>
+> - Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。
+> - 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+
+<a id="surfaceswitching"></a>
+
+### Optional surfaceSwitching
+
+surfaceSwitching: "include"|"exclude"
+
+### 自从
+
+*4.17.1*
+
+是否允许用户动态切换共享的标签页：
+
+- `"include"`：（默认）允许用户动态切换共享的标签页。
+- `"exclude"`：禁止用户动态切换共享的标签页。
+
+详见 [surfaceSwitching](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#surfaceSwitching)。
+
+> 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+
+<a id="systemaudio"></a>
+
+### Optional systemAudio
+
+systemAudio: "include"|"exclude"
+
+### 自从
+
+*4.17.1*
+
+是否允许采集系统音频：
+
+- `"include"`：（默认）允许采集系统音频。
+- `"exclude"`：禁止采集系统音频。
+
+详见 [systemAudio](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#systemAudio)。
+
+> 注意事项：该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。

@@ -1,0 +1,55 @@
+---
+title: com.herewhite.sdk.WhiteSdkConfiguration.RenderEngineType 枚举类型参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/enumcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration_1_1_render_engine_type
+  sourcePath: >-
+    html-docs/whiteboard/Android/enumcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration_1_1_render_engine_type.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+|  | [svg](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type#aa8c4ec87bdf0f6df2d2e5529f31bd228) |
+|  |  |
+|  | [canvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type#a5e2883902050b312b25ea5485be0d762) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+白板上绘画的渲染模式。
+
+### 自从
+
+2.8.0
+
+## 类成员变量说明
+
+<a id="aa8c4ec87bdf0f6df2d2e5529f31bd228"></a>
+
+## ◆svg
+
+| com.herewhite.sdk.WhiteSdkConfiguration.RenderEngineType.svg |
+| --- |
+
+SVG 渲染模式。 2.8.0 及之前版本的互动白板 SDK 默认使用的渲染模式，该模式兼容性较好，但性能较差。
+
+<a id="a5e2883902050b312b25ea5485be0d762"></a>
+
+## ◆canvas
+
+| com.herewhite.sdk.WhiteSdkConfiguration.RenderEngineType.canvas |
+| --- |
+
+Canvas 渲染模式。
+
+2.8.0 版本起新增 `canvas` 渲染模式，该模式性能较好，但兼容性较差。 2.9.0 及之后版本的互动白板 SDK 默认使用 `canvas` 渲染模式。
+
+### 注解
+
+由于部分 Android 6.1 至 Android 8.1 设备无法支持 `canvas` 渲染模式，SDK 会自动将默认的渲染模式切换为 `svg` 渲染模式。

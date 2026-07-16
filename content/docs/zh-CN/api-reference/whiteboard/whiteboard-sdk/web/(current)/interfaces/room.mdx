@@ -1,0 +1,2045 @@
+---
+title: Interface Room<CALLBACKS>
+description: Room 接口继承了 Displayer 接口，并且增加了用于操作互动白板实时房间的属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/room
+  sourcePath: html-docs/whiteboard/Web/interfaces/room.html
+  generator: typedoc
+  warnings: []
+---
+
+`Room` 接口继承了 `Displayer` 接口，并且增加了用于操作互动白板实时房间的属性。
+
+### Type parameters
+
+- CALLBACKS:[DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)
+
+### Hierarchy
+
+- [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+
+  - Room
+
+## Index
+
+### Properties
+
+- [calibrationTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#calibrationtimestamp)
+- [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#callbacks)
+- [canRedoSteps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#canredosteps)
+- [canUndoSteps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#canundosteps)
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#devicetype)
+- [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disablecameratransform)
+- [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disabledeviceinputs)
+- [disableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableeraseimage)
+- [disableOthersSelectingBox](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableothersselectingbox)
+- [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization)
+- [enableWriteNow](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#enablewritenow)
+- [handToolActive](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#handtoolactive)
+- [handToolKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#handtoolkey)
+- [isWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#iswritable)
+- [observerId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#observerid)
+- [phase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#phase)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#region)
+- [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#roomtoken)
+- [screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screentype)
+- [session](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#session)
+- [slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#slice)
+- [state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#state)
+- [timeDelay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#timedelay)
+- [uid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#uid)
+- [useNativeClipboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#usenativeclipboard)
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#uuid)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#version)
+
+### Methods
+
+- [addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#addmagixeventlistener)
+- [bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#bindhtmlelement)
+- [cleanCurrentScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#cleancurrentscene)
+- [clearUndoHistory](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#clearundohistory)
+- [completeImageUpload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#completeimageupload)
+- [convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#converttopointinworld)
+- [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy)
+- [createInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#createinvisibleplugin)
+- [createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#createscenescallback)
+- [delete](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#delete)
+- [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disconnect)
+- [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#dispatchmagixevent)
+- [duplicate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#duplicate)
+- [entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#entirescenes)
+- [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene)
+- [fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#fillscenesnapshot)
+- [generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#generatescreenshot)
+- [getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getinvisibleplugin)
+- [getPluginAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getpluginattributes)
+- [getPluginRectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getpluginrectangle)
+- [getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getscene)
+- [importScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#importscene)
+- [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertimage)
+- [insertPlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertplugin)
+- [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#inserttext)
+- [lockImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#lockimage)
+- [lockImages](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#lockimages)
+- [memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#memberstate)
+- [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movecamera)
+- [moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movecameratocontain)
+- [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)
+- [moveSelectedComponentsToBottom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#moveselectedcomponentstobottom)
+- [moveSelectedComponentsToTop](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#moveselectedcomponentstotop)
+- [paste](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#paste)
+- [pptNextStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#pptnextstep)
+- [pptPreviousStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#pptpreviousstep)
+- [putScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#putscenes)
+- [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#redo)
+- [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#refreshviewsize)
+- [removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removemagixeventlistener)
+- [removePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removeplugin)
+- [removeScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removescenes)
+- [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scaleppttofit)
+- [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scenepathtype)
+- [scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scenepreview)
+- [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screenshottocanvas)
+- [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screenshottocanvasasync)
+- [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setcamerabound)
+- [setGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setglobalstate)
+- [setMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setmemberstate)
+- [setSceneIndex](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setsceneindex)
+- [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setscenepath)
+- [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setviewmode)
+- [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setwritable)
+- [stopBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#stopblocktimestamp)
+- [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncblocktimestamp)
+- [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo)
+- [updatePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updateplugin)
+- [updateSelectedText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updateselectedtext)
+- [updateText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updatetext)
+- [waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#waitmagixevent)
+
+## Properties
+
+<a id="calibrationtimestamp"></a>
+
+### calibrationTimestamp
+
+calibrationTimestamp: number
+
+- Defined in [index-zh.d.ts:2047](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2047)
+
+与服务器时钟校准后的当前时间戳，单位为毫秒。
+
+### since
+
+2.13.8
+
+<a id="callbacks"></a>
+
+### callbacks
+
+callbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;CALLBACKS&gt;
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#callbacks)
+
+- Defined in [index-zh.d.ts:1540](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1540)
+
+回调函数。你可以通过如下方式设置回调函数：
+
+### example
+
+```ts
+// 监听到 onSliceChanged 回调
+function sliceChangeCallback(slice) {
+
+}
+
+// 注册回调函数
+displayer.callbacks.on("onSliceChanged", sliceChangeCallback);
+
+// 注销回调函数
+displayer.callbacks.off("onSliceChanged", sliceChangeCallback);
+
+// 仅仅回调一次
+displayer.callbacks.once("onSliceChanged", function(slice) {
+
+});
+```
+
+<a id="canredosteps"></a>
+
+### canRedoSteps
+
+canRedoSteps: number
+
+- Defined in [index-zh.d.ts:2069](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2069)
+
+可重做次数。即此时此刻，还可以调用多少次 [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#redo) 方法。
+
+<a id="canundosteps"></a>
+
+### canUndoSteps
+
+canUndoSteps: number
+
+- Defined in [index-zh.d.ts:2064](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2064)
+
+可撤销次数。即此时此刻，还可以调用多少次 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) 方法。
+
+<a id="devicetype"></a>
+
+### deviceType
+
+deviceType: [DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype)
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#devicetype)
+
+- Defined in [index-zh.d.ts:1578](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1578)
+
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
+
+<a id="disablecameratransform"></a>
+
+### disableCameraTransform
+
+disableCameraTransform: boolean
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disablecameratransform)
+
+- Defined in [index-zh.d.ts:1635](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1635)
+
+是否禁止用户通过触屏手势或鼠标滚轮调整视角（即移动或缩放视角）：
+
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
+
+**Note**
+
+该属性不影响 `setCameraBound`、`moveCamera`、`moveCameraToContain` 方法的使用。
+
+<a id="disabledeviceinputs"></a>
+
+### disableDeviceInputs
+
+disableDeviceInputs: boolean
+
+- Defined in [index-zh.d.ts:2078](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2078)
+
+是否禁止用户通过鼠标、键盘、触摸屏幕操作白板工具。
+
+- `true`： 禁止用户操作白板工具。
+- `false`：允许用户操作白板工具。
+
+该方法与 `isWritable` 的区别详见[《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
+
+<a id="disableeraseimage"></a>
+
+### disableEraseImage
+
+disableEraseImage: boolean
+
+- Defined in [index-zh.d.ts:2087](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2087)
+
+是否关闭橡皮擦擦除图片功能。
+
+- `true`： 关闭橡皮擦擦除图片功能。
+- `false`：启用橡皮擦擦除图片功能。
+
+### since
+
+2.3.12
+
+<a id="disableothersselectingbox"></a>
+
+### disableOthersSelectingBox
+
+disableOthersSelectingBox: boolean
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[disableOthersSelectingBox](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disableothersselectingbox)
+
+- Defined in [index-zh.d.ts:1624](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1624)
+
+是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
+
+### since
+
+2.12.0
+
+- `true`：隐藏高亮框。
+- `false`：（默认）不隐藏高亮框。
+
+**Note**
+
+该属性不影响自己的高亮框显示。
+
+<a id="disableserialization"></a>
+
+### disableSerialization
+
+disableSerialization: boolean
+
+- Defined in [index-zh.d.ts:2107](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2107)
+
+是否禁止本地序列化。
+
+- `true`： 禁止本地序列化。
+- `false`：允许本地序列化。
+
+设置 `disableSerialization(true)` 后，以下方法将不生效：
+
+- `redo`
+- `undo`
+- `duplicate`
+- `copy`
+- `paste`
+
+### warning
+
+如果要设置 `disableSerialization(false)`，必须确保同一房间内所有用户使用的 SDK 满足以下版本要求，否则会导致 app 客户端崩溃：
+
+- Web SDK 2.9.3 或之后版本
+- Android SDK 2.9.3 或之后版本
+- iOS SDK 2.9.3 或之后版本
+
+<a id="enablewritenow"></a>
+
+### enableWriteNow
+
+enableWriteNow: boolean
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[enableWriteNow](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#enablewritenow)
+
+- Defined in [index-zh.d.ts:1598](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1598)
+
+用户当前是否有写的权限:
+
+### since
+
+2.10.0
+
+- `true`：有写的权限。
+- `false`：没有写的权限。
+
+<a id="handtoolactive"></a>
+
+### handToolActive
+
+handToolActive: boolean
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[handToolActive](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolactive)
+
+- Defined in [index-zh.d.ts:1610](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1610)
+
+报告抓手工具是否启用:
+
+- `true`：启用抓手工具。
+- `false`：不启用抓手工具。
+
+<a id="handtoolkey"></a>
+
+### handToolKey
+
+handToolKey: string|undefined
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[handToolKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolkey)
+
+- Defined in [index-zh.d.ts:1603](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1603)
+
+抓手工具的快捷键。用户可以使用抓手工具拖动页面。如果设为 `undefined`，表示不启用快捷键功能。
+
+<a id="iswritable"></a>
+
+### isWritable
+
+isWritable: boolean
+
+- Defined in [index-zh.d.ts:2059](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2059)
+
+用户在当前房间是否为互动模式：
+
+- `true`： 互动模式，即对白板具有读写权限。
+- `false`：订阅模式，即对白板具有只读权限。
+
+<a id="observerid"></a>
+
+### observerId
+
+observerId: number
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[observerId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#observerid)
+
+- Defined in [index-zh.d.ts:1549](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1549)
+
+用户 ID。
+
+- 在实时房间中，指本地用户的用户 ID。
+- 在回放房间中:
+
+  - 当用户的 `ObserverMode` 为 `Directory` 时，`observerId` 为被跟随的用户的用户 ID。
+  - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
+
+<a id="phase"></a>
+
+### phase
+
+phase: [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase)
+
+- Defined in [index-zh.d.ts:2041](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2041)
+
+房间的连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase)。
+
+<a id="region"></a>
+
+### region
+
+region: string
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#region)
+
+- Defined in [index-zh.d.ts:1562](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1562)
+
+数据中心。支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+<a id="roomtoken"></a>
+
+### roomToken
+
+roomToken: string
+
+- Defined in [index-zh.d.ts:2036](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2036)
+
+房间的 Room Token，用于加入房间时的用户鉴权。
+
+<a id="screentype"></a>
+
+### screenType
+
+screenType: [ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype)
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screentype)
+
+- Defined in [index-zh.d.ts:1583](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1583)
+
+用户的屏幕类型，用于调整手势识别参数。
+
+<a id="session"></a>
+
+### session
+
+session: string
+
+- Defined in [index-zh.d.ts:2031](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2031)
+
+房间当前 session 的 UUID。如果开启了自动日志上报功能，日志中会上报该参数。如果上报时尚未与服务器建立连接，则为 `undefined`。
+
+<a id="slice"></a>
+
+### slice
+
+slice: string
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#slice)
+
+- Defined in [index-zh.d.ts:1567](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1567)
+
+当前所处分片的 UUID。
+
+<a id="state"></a>
+
+### state
+
+state: [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomstate)
+
+Overrides [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#state)
+
+- Defined in [index-zh.d.ts:2052](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2052)
+
+房间的业务状态，详见[管理房间业务状态](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-status)。
+
+<a id="timedelay"></a>
+
+### timeDelay
+
+timeDelay: number
+
+- Defined in [index-zh.d.ts:2116](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2116)
+
+设置本地显示远端白板内容的延时，单位为毫秒，默认值为 0。取值大于等于 0。
+
+设置该参数后，当本地用户接收到远端白板内容后，SDK 会根据你设置的 `timeDelay` 的值延迟显示白板内容。
+
+在音视频传输延时较大的场景中，如使用 CDN 推送音视频流时，你可以使用该参数延迟显示接收到的远端白板内容，以确保白板内容与音视频同步。
+
+<a id="uid"></a>
+
+### uid
+
+uid: string
+
+- Defined in [index-zh.d.ts:2026](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2026)
+
+房间内用户的唯一标识符，字符串格式。
+
+<a id="usenativeclipboard"></a>
+
+### useNativeClipboard
+
+useNativeClipboard: boolean
+
+- Defined in [index-zh.d.ts:2126](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2126)
+
+是否使用原生剪贴板：
+
+- `true`：使用原生剪贴板。白板快捷键，即 \{@link Hotkeys HotKeys\} 里的复制和粘贴将失效，改为使用原生的 `copy` 和 `paste` 事件。
+- `false`：（默认）不使用原生剪贴板。
+
+### note
+
+此功能需要浏览器支持以及用户授予剪贴板权限，否则将自动回退到虚拟剪贴板实现。
+
+<a id="uuid"></a>
+
+### uuid
+
+uuid: string
+
+- Defined in [index-zh.d.ts:2021](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2021)
+
+房间的 UUID，即房间的唯一标识符。
+
+<a id="version"></a>
+
+### version
+
+version: string
+
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#version)
+
+- Defined in [index-zh.d.ts:1573](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1573)
+
+当前 SDK 的版本。
+
+### since
+
+2.13.14
+
+## Methods
+
+<a id="addmagixeventlistener"></a>
+
+### addMagixEventListener
+
+- addMagixEventListener(event:string, listener:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?:[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)):void
+- addMagixEventListener(event:string, listener:[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval:number):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
+   Defined in [index-zh.d.ts:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
+
+  注册自定义事件监听。
+
+  成功注册后，你可以接收到对应的自定义事件通知。
+
+  **Note**
+
+  对于同名的自定义事件，SDK 仅支持触发一个回调。
+
+  Parameters
+
+  - event: string
+
+    想要监听的自定义事件名称。
+  - listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+
+    自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+  - Optional options: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
+
+    自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)。
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
+   Defined in [index-zh.d.ts:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
+
+  注册高频自定义事件监听。
+
+  成功注册后，你可以接收到对应的自定义事件通知。
+
+  **Note**
+
+  对于同名的自定义事件，SDK 仅支持触发一个回调。
+
+  ### example
+
+  ```ts
+  function listener(events) {
+      // events 是一个数组
+      for (const event of events) {
+          // 回调事件 event
+      }
+  }
+  displayer.addMagixEventListener("my-event", listener, 100);
+  ```
+
+  Parameters
+
+  - event: string
+
+    想要监听的自定义事件名称。
+  - listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)
+
+    自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+  - fireInterval: number
+
+    SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+
+<a id="bindhtmlelement"></a>
+
+### bindHtmlElement
+
+- bindHtmlElement(element:HTMLDivElement|null):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#bindhtmlelement)
+   Defined in [index-zh.d.ts:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
+
+  将白板绑定到 HTML 元素上。
+
+  Parameters
+
+  - element: HTMLDivElement|null
+
+    用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。
+
+<a id="cleancurrentscene"></a>
+
+### cleanCurrentScene
+
+- cleanCurrentScene(retainPpt?:boolean):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2298](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2298)
+
+  清理当前场景的所有内容。
+
+  Parameters
+
+  - Optional retainPpt: boolean
+
+    是否保留 PPT 页面：
+
+    - `true`：（默认）保留 PPT 页面。
+    - `false`：连 PPT 页面一起清空。
+
+<a id="clearundohistory"></a>
+
+### clearUndoHistory
+
+- clearUndoHistory(includeRedo?:boolean):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2516](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2516)
+
+  清空可撤回的操作历史记录, 令可撤回次数 `canUndoSteps` 立刻等于 0。
+
+  ### since
+
+  2.16.48
+
+  Parameters
+
+  - Optional includeRedo: boolean
+
+    是否同时清空重做的记录：
+
+    - `true`：（默认）同时清空重做记录。
+    - `false`：不同时清空重做记录。
+
+<a id="completeimageupload"></a>
+
+### completeImageUpload
+
+- completeImageUpload(uuid:string, src:string):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2401](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2401)
+
+  在指定的图片占位符展示图片。
+
+  该方法可以将指定的网络图片插入并展示到指定的图片占位符。
+
+  **Note**
+
+  调用该方法前，请确保你已经调用 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertimage) 方法在白板上插入了图片占位符。
+
+  Parameters
+
+  - uuid: string
+
+    指定图片的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertimage) 方法的 [ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#imageinformation) 中传入的图片 UUID。
+  - src: string
+
+    图片的 URL 地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。
+
+<a id="converttopointinworld"></a>
+
+### convertToPointInWorld
+
+- convertToPointInWorld(point:\{x:number;y:number\}):\{x:number;y:number\}
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#converttopointinworld)
+ Defined in [index-zh.d.ts:1721](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1721)
+
+  转换白板上点的坐标。
+
+  该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
+   中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
+   中的坐标。
+
+  Parameters
+
+  - point: \{x:number;y:number\}
+
+    点在屏幕坐标系中的坐标。
+
+    - x:number
+
+      点在屏幕坐标系上的 X 轴坐标。
+    - y:number
+
+      点在屏幕坐标系上的 Y 轴坐标。
+
+  Returns \{x:number;y:number\}
+
+  点在世界坐标系中的坐标。
+
+  - x:number
+
+    点在世界坐标系上的 X 轴坐标。
+  - y:number
+
+    点在世界坐标系上的 Y 轴坐标。
+
+<a id="copy"></a>
+
+### copy
+
+- copy():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2472](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2472)
+
+  复制选中内容。
+
+  **Note**
+
+  - 该方法会将选中的内容存储到内存中，不会粘贴到白板中。
+  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+
+  ### since
+
+  2.9.0
+
+<a id="createinvisibleplugin"></a>
+
+### createInvisiblePlugin
+
+- createInvisiblePlugin&lt;K, A, P&gt;(pluginClass:[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)&lt;K,A,P&gt;, attributes:A):Promise&lt;[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;&gt;
+
+- Defined in [index-zh.d.ts:2410](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2410)
+
+  创建不可见插件对象。
+
+  Type parameters
+
+  - K:string
+  - A:Object
+  - P:[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;
+
+  Parameters
+
+  - pluginClass: [InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)&lt;K,A,P&gt;
+
+    不可见插件的类。
+  - attributes: A
+
+    不可见插件的属性。
+
+  Returns Promise&lt;[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;&gt;
+
+  创建的不可见插件对象。
+
+<a id="createscenescallback"></a>
+
+### createScenesCallback
+
+- createScenesCallback(path:string, callbacks?:Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;):[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#createscenescallback)
+ Defined in [index-zh.d.ts:1668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1668)
+
+  创建场景目录的监听器对象。
+
+  成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) 中实现的回调。
+   当不再需要使用已创建的监听器时，需要调用 [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose) 来释放该监听器对象。
+
+  ### note
+
+  - 该方法需要在加入白板房间后调用。
+  - 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
+
+  Parameters
+
+  - path: string
+
+    场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。
+  - Optional callbacks: Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;
+
+    需要监听的回调。详见 `ScenesCallbacks`。
+
+  Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+
+  - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) 对象。
+  - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
+
+<a id="delete"></a>
+
+### delete
+
+- delete():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2521](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2521)
+
+  删除选中的内容。
+
+<a id="disconnect"></a>
+
+### disconnect
+
+- disconnect():Promise&lt;void&gt;
+
+- Defined in [index-zh.d.ts:2603](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2603)
+
+  断开与互动白板实时房间对象的连接。
+
+  该方法会让用户离开房间，并且把与当前房间对象相关的所有资源释放掉。如果要再次加入房间，需要重新调用 [joinRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#joinroom)。
+
+  Returns Promise&lt;void&gt;
+
+  - 如果方法调用成功，则返回房间的全局状态。
+  - 如果方法调用失败，则返回错误信息。
+
+<a id="dispatchmagixevent"></a>
+
+### dispatchMagixEvent
+
+- dispatchMagixEvent(event:string, payload:any):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2273](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2273)
+
+  发送自定义事件。
+
+  **Note**
+
+  所有注册监听该事件的用户都会收到通知。
+
+  Parameters
+
+  - event: string
+
+    自定义事件的名称。
+  - payload: any
+
+    自定义事件的内容。
+
+<a id="duplicate"></a>
+
+### duplicate
+
+- duplicate():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2461](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2461)
+
+  复制选中的内容并粘贴到白板上（用户当前视角的中心）。
+
+  **Note**
+
+  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+  - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
+
+  ### since
+
+  2.9.0
+
+<a id="entirescenes"></a>
+
+### entireScenes
+
+- entireScenes():[SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)
+ Defined in [index-zh.d.ts:1884](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1884)
+
+  获取当前房间内所有场景的信息。
+
+  Returns [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+
+  当前房间内所有场景的信息。
+
+<a id="exportscene"></a>
+
+### exportScene
+
+- exportScene(scenePath:string):Promise&lt;Blob&gt;
+
+- Defined in [index-zh.d.ts:2345](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2345)
+
+  导出场景。
+
+  ### since
+
+  v2.14.5
+
+  该方法导出指定场景中的所有内容，包括场景中展示的图片或网页。
+
+  成功调用该方法后，SDK 会导出指定场景的内容并保存为 Blob 对象。
+
+  Parameters
+
+  - scenePath: string
+
+    需要导出的场景路径。
+
+  Returns Promise&lt;Blob&gt;
+
+  导出场景内容的 Blob 对象。
+
+<a id="fillscenesnapshot"></a>
+
+### fillSceneSnapshot
+
+- fillSceneSnapshot(scenePath:string, div:HTMLElement, width:number, height:number):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#fillscenesnapshot)
+   Defined in [index-zh.d.ts:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
+
+  生成特定场景的屏幕快照。
+
+  Parameters
+
+  - scenePath: string
+
+    特定场景的路径。
+  - div: HTMLElement
+
+    用于显示屏幕快照的 div。
+  - width: number
+
+    屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。
+  - height: number
+
+    屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。
+
+<a id="generatescreenshot"></a>
+
+### generateScreenshot
+
+- generateScreenshot(scenePath?:string, width?:number, height?:number):Promise&lt;string&gt;
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#generatescreenshot)
+ Defined in [index-zh.d.ts:1765](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1765)
+
+  生成特定场景的截图。
+
+  ### deprecated
+
+  该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screenshottocanvasasync) 方法。
+
+  Parameters
+
+  - Optional scenePath: string
+
+    特定场景的路径。
+  - Optional width: number
+
+    截图的宽度。
+  - Optional height: number
+
+    截图的高度
+
+  Returns Promise&lt;string&gt;
+
+  截图的 URL 地址。
+
+  **Note**
+
+  如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
+
+<a id="getinvisibleplugin"></a>
+
+### getInvisiblePlugin
+
+- getInvisiblePlugin&lt;A&gt;(kind:string):[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getinvisibleplugin)
+ Defined in [index-zh.d.ts:1709](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1709)
+
+  获取指定的不可见插件。
+
+  Type parameters
+
+  - A:Object
+
+  Parameters
+
+  - kind: string
+
+    不可见插件的类型。
+
+  Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
+
+  指定的不可见插件。
+
+<a id="getpluginattributes"></a>
+
+### getPluginAttributes
+
+- getPluginAttributes(identifier:[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)):any|undefined
+
+- Returns any|undefined
+
+  Defined in [index-zh.d.ts:2442](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2442)
+
+  获取组件插件对象的属性。
+
+  Parameters
+
+  - identifier: [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+    组件插件对象在房间内的唯一标识符。
+
+<a id="getpluginrectangle"></a>
+
+### getPluginRectangle
+
+- getPluginRectangle(identifier:string):[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)|undefined
+
+- Defined in [index-zh.d.ts:2450](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2450)
+
+  获取组件插件对象在白板上的位置信息。
+
+  Parameters
+
+  - identifier: string
+
+    组件插件对象在房间内的唯一标识符。
+
+  Returns [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)|undefined
+
+  组件插件对象的矩形。
+
+<a id="getscene"></a>
+
+### getScene
+
+- getScene(path:string):[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getscene)
+ Defined in [index-zh.d.ts:1892](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1892)
+
+  获取指定场景的信息。
+
+  Parameters
+
+  - path: string
+
+    场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+
+  Returns [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+
+  场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)。
+
+<a id="importscene"></a>
+
+### importScene
+
+- importScene(dir:string, payload:Blob):Promise&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;
+
+- Defined in [index-zh.d.ts:2364](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2364)
+
+  导入场景。
+
+  ### since
+
+  v2.14.5
+
+  你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene) 导出的场景内容导入指定的场景目录中。
+
+  Parameters
+
+  - dir: string
+
+    场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype) 不为 `conflict`；否则，场景将无法导入。
+     你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scenepathtype) 查询路径类型。
+  - payload: Blob
+
+    场景内容的 Blob 对象。
+
+  Returns Promise&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;
+
+  方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir`+ `name`。
+   如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)。
+
+<a id="insertimage"></a>
+
+### insertImage
+
+- insertImage(imageInfo:[ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#imageinformation)):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2375](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2375)
+
+  插入图片占位符。
+
+  SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片占位符。
+
+  调用该方法后，还需要调用 [completeImageUpload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#completeimageupload) 传入图片的 URL 地址，以在该占位符插入并展示图片。
+
+  Parameters
+
+  - imageInfo: [ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#imageinformation)
+
+    图片信息，详见 [ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#imageinformation)。
+
+<a id="insertplugin"></a>
+
+### insertPlugin
+
+- insertPlugin(kind:string, description?:[PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)):[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+- Defined in [index-zh.d.ts:2420](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2420)
+
+  在白板中插入组件插件对象。
+
+  Parameters
+
+  - kind: string
+
+    组件插件的类型，是组件的唯一标识符。
+  - Optional description: [PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)
+
+    组件插件的描述。
+
+  Returns [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+  组件插件对象在房间内的唯一标识符。
+
+<a id="inserttext"></a>
+
+### insertText
+
+- insertText(x:number, y:number, textContent?:string):[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+- Defined in [index-zh.d.ts:2559](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2559)
+
+  在指定位置插入文字。
+
+  Parameters
+
+  - x: number
+
+    第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。
+  - y: number
+
+    第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。
+  - Optional textContent: string
+
+    初始的文字内容，不传则为空。
+
+  Returns [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+  文字的标识符，字符串格式。
+
+<a id="lockimage"></a>
+
+### lockImage
+
+- lockImage(uuid:string, locked:boolean):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2387](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2387)
+
+  锁定图片。
+
+  图片被锁定后，用户无法移动或缩放图片。
+
+  Parameters
+
+  - uuid: string
+
+    指定图片的 UUID。
+  - locked: boolean
+
+    是否锁定图片：
+
+    - `true`: 锁定。
+    - `false`: 不锁定。
+
+<a id="lockimages"></a>
+
+### lockImages
+
+- lockImages(locked:boolean):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2534](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2534)
+
+  锁定选中图片。
+
+  ### since
+
+  v2.14.5
+
+  该方法可以修改当前选中图片的锁定状态。当图片被锁定时，用户无法移动、放缩或删除该图片。
+
+  Parameters
+
+  - locked: boolean
+
+    是否锁定图片:
+
+    - true：锁定图片。
+    - false：不锁定图片。
+
+<a id="memberstate"></a>
+
+### memberState
+
+- memberState(memberId:number):[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#memberstate)
+ Defined in [index-zh.d.ts:1676](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1676)
+
+  获取房间内指定用户的白板工具状态。
+
+  Parameters
+
+  - memberId: number
+
+    指定用户的 ID。
+
+  Returns [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+  指定用户的白板工具状态。
+
+<a id="movecamera"></a>
+
+### moveCamera
+
+- moveCamera(camera:Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecamera)
+   Defined in [index-zh.d.ts:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
+
+  调整视角。
+
+  Parameters
+
+  - camera: Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;
+
+    视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
+
+<a id="movecameratocontain"></a>
+
+### moveCameraToContain
+
+- moveCameraToContain(rectangle:[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecameratocontain)
+   Defined in [index-zh.d.ts:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
+
+  调整视角，以保证完整显示视觉矩形。
+
+  Parameters
+
+  - rectangle: [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;
+
+    视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)。
+
+<a id="movescene"></a>
+
+### moveScene
+
+- moveScene(originalPath:string, targetPath:string):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2330](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2330)
+
+  移动场景。
+
+  成功移动场景后，场景路径也会改变。
+
+  Parameters
+
+  - originalPath: string
+
+    需要移动的场景的原路径。必须为场景路径，不能是场景目录的路径。
+  - targetPath: string
+
+    目标场景目录的路径或目标场景的路径：
+
+    - 当 `targetPath`设置为目标场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。
+    - 当 `targetPath`设置为目标场景路径时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。
+
+<a id="moveselectedcomponentstobottom"></a>
+
+### moveSelectedComponentsToBottom
+
+- moveSelectedComponentsToBottom():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2548](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2548)
+
+  移动选中的组件到底层。
+
+  ### since
+
+  v2.14.5
+
+<a id="moveselectedcomponentstotop"></a>
+
+### moveSelectedComponentsToTop
+
+- moveSelectedComponentsToTop():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2541](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2541)
+
+  移动选中的组件到顶层。
+
+  ### since
+
+  v2.14.5
+
+<a id="paste"></a>
+
+### paste
+
+- paste():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2484](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2484)
+
+  粘贴复制的内容。
+
+  **Note**
+
+  - 该方法会将 [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
+  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+  - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
+
+  ### since
+
+  2.9.0
+
+<a id="pptnextstep"></a>
+
+### pptNextStep
+
+- pptNextStep():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2585](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2585)
+
+  播放动态 PPT 下一页。
+
+  当前 PPT 页面的动画已全部执行完成时，SDK 会将场景切换至下一页 PPT。
+
+<a id="pptpreviousstep"></a>
+
+### pptPreviousStep
+
+- pptPreviousStep():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2592](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2592)
+
+  返回动态 PPT 上一页。
+
+  当前 PPT 页面的动画全部回退完成时，SDK 会将场景切回至上一页 PPT。
+
+<a id="putscenes"></a>
+
+### putScenes
+
+- putScenes(path:string, scenes:ReadonlyArray&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;, index?:number):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2289](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2289)
+
+  在指定场景目录下插入多个场景。
+
+  **Note**
+
+  调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setscenepath)。
+
+  Parameters
+
+  - path: string
+
+    指定场景目录的地址，必须以 `/` 开头，不能为场景路径。
+  - scenes: ReadonlyArray&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;
+
+    由多个场景构成的数组。单个场景的字段详见 [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)。
+  - Optional index: number
+
+    待插入的多个场景中，第一个场景在该场景目录的索引号。场景的索引号从 0 开始。
+
+    - 如果传入的索引号小于或等于该场景目录下现有场景的索引号，新插入的场景会排在传入索引号对应场景的前面。
+    - 如果传入的索引号大于该场景目录下现有场景的索引号，新插入的场景会排在现有场景的最后。
+    - 如果不传入索引号（该参数为选填），新插入的场景会排在现有场景的最后。
+
+<a id="redo"></a>
+
+### redo
+
+- redo():number
+
+- Defined in [index-zh.d.ts:2505](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2505)
+
+  重做，即回退撤销操作。
+
+  **Note**
+
+  该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+
+  Returns number
+
+  剩余的可重做次数。
+
+<a id="refreshviewsize"></a>
+
+### refreshViewSize
+
+- refreshViewSize():void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#refreshviewsize)
+   Defined in [index-zh.d.ts:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
+
+  刷新白板的界面。
+
+  当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
+   该方法仅在 `autoResize` 为 `false` 时生效。
+
+<a id="removemagixeventlistener"></a>
+
+### removeMagixEventListener
+
+- removeMagixEventListener(event:string, listener?:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)
+   Defined in [index-zh.d.ts:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
+
+  移除自定义事件监听。
+
+  Parameters
+
+  - event: string
+
+    想要移除监听的自定义事件名称。
+  - Optional listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+
+    要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。
+
+<a id="removeplugin"></a>
+
+### removePlugin
+
+- removePlugin(identifier:[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)):boolean
+
+- Returns boolean
+
+  Defined in [index-zh.d.ts:2427](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2427)
+
+  删除组件插件对象。
+
+  Parameters
+
+  - identifier: [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+    组件插件对象在房间内的唯一标识符。
+
+<a id="removescenes"></a>
+
+### removeScenes
+
+- removeScenes(path:string):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2318](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2318)
+
+  删除场景或者场景目录。
+
+  **Note**
+
+  - 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。
+  - 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景
+  - 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。
+  - 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
+
+    1. 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至
+    											`dirB` 中的第一个场景（index 为 0）。
+    2. 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景；
+    											如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
+    3. 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。
+    4. 以上都不满足，则继续向上递归执行该逻辑。
+
+  Parameters
+
+  - path: string
+
+    场景路径或场景目录路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。
+
+<a id="scaleppttofit"></a>
+
+### scalePptToFit
+
+- scalePptToFit(animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
+   Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
+
+  根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
+
+  ### since
+
+  2.3.18
+
+  Parameters
+
+  - Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+
+    视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+
+<a id="scenepathtype"></a>
+
+### scenePathType
+
+- scenePathType(path:string):[ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)
+ Defined in [index-zh.d.ts:1877](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1877)
+
+  查询场景路径类型。
+
+  Parameters
+
+  - path: string
+
+    场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+
+  Returns [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+
+  场景路径的类型。
+
+<a id="scenepreview"></a>
+
+### scenePreview
+
+- scenePreview(scenePath:string, div:HTMLElement, width:number|undefined, height:number|undefined):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepreview)
+   Defined in [index-zh.d.ts:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
+
+  生成特定场景的预览图。
+
+  Parameters
+
+  - scenePath: string
+
+    特定场景的路径。
+  - div: HTMLElement
+
+    用于显示预览内容的 div。
+  - width: number|undefined
+
+    预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。
+  - height: number|undefined
+
+    预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。
+
+<a id="screenshottocanvas"></a>
+
+### screenshotToCanvas
+
+- screenshotToCanvas(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)
+   Defined in [index-zh.d.ts:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
+
+  生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
+
+  Parameters
+
+  - context: CanvasRenderingContext2D
+
+    CanvasRenderingContext2D 对象。
+  - scenePath: string
+
+    场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
+  - width: number
+
+    屏幕快照的宽度。
+  - height: number
+
+    屏幕快照的高度。
+  - camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+
+    视角的描述。
+  - Optional ratio: number
+
+    设备像素比。该参数为可选参数，如果不填，则默认值为 1。
+
+<a id="screenshottocanvasasync"></a>
+
+### screenshotToCanvasAsync
+
+- screenshotToCanvasAsync(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number, timeout?:number):Promise&lt;void&gt;
+
+- Returns Promise&lt;void&gt;
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)
+   Defined in [index-zh.d.ts:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
+
+  等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
+
+  ### note
+
+  - 该功能处于实验阶段。
+  - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
+  - 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screenshottocanvas)。
+
+  Parameters
+
+  - context: CanvasRenderingContext2D
+
+    CanvasRenderingContext2D 对象。
+  - scenePath: string
+
+    场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
+  - width: number
+
+    屏幕快照的宽度。
+  - height: number
+
+    屏幕快照的高度。
+  - camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+
+    视角的描述。详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
+  - Optional ratio: number
+
+    设备像素比。该参数为可选参数，如果不填，则默认值为 1。
+  - Optional timeout: number
+
+    图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
+
+<a id="setcamerabound"></a>
+
+### setCameraBound
+
+- setCameraBound(cameraBound:[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)):void
+
+- Returns void
+
+  Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#setcamerabound)
+   Defined in [index-zh.d.ts:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
+
+  设置用户的视角边界。
+
+  Parameters
+
+  - cameraBound: [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+
+    视角边界。
+
+<a id="setglobalstate"></a>
+
+### setGlobalState
+
+- setGlobalState(modifyState:Partial&lt;[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)&gt;):[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)
+
+- Defined in [index-zh.d.ts:2164](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2164)
+
+  修改互动白板实时房间的公共全局状态（`globalState` 属性）。
+
+  实时房间的 `globalState` 属性为公共全局变量，房间内所有用户看到的都是相同的 `globalState`，所有互动模式用户都可以读写。修改 `globalState` 属性会立即生效并同步给所有用户。
+
+  你可以通过如下方法修改该属性：
+
+  ### example
+
+  ```ts
+  room.setGlobalState({
+      foobar: "hello world",
+  });
+  ```
+
+  如果要删除该字段，可以将它设为 `undefined`：
+
+  ### example
+
+  ```ts
+  room.setGlobalState({
+      foobar: undefined,
+  });
+  ```
+
+  Parameters
+
+  - modifyState: Partial&lt;[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)&gt;
+
+    房间公共全局状态。
+
+  Returns [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)
+
+  修改后的房间公共全局状态。
+
+<a id="setmemberstate"></a>
+
+### setMemberState
+
+- setMemberState(modifyState:Partial&lt;[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)&gt;):[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+- Defined in [index-zh.d.ts:2192](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2192)
+
+  修改房间内的白板工具状态。
+
+  调用该方法会立刻更新房间的 [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)。
+
+  你可以通过如下方法修改该字段：
+
+  ### example
+
+  ```ts
+  room.setMemberState({
+      foobar: "hello world",
+  });
+  ```
+
+  如果要删除该字段，可以将它设为 `undefined`：
+
+  ### example
+
+  ```ts
+  room.setMemberState({
+      foobar: undefined,
+  });
+  ```
+
+  Parameters
+
+  - modifyState: Partial&lt;[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)&gt;
+
+    需要修改的白板工具状态，详见 [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)。
+
+  Returns [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+  修改后的白板工具状态，
+
+<a id="setsceneindex"></a>
+
+### setSceneIndex
+
+- setSceneIndex(index:number):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2242](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2242)
+
+  切换至当前场景目录下的指定场景。
+
+  方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+  **Note**
+
+  指定的场景必须在当前场景目录中，否则方法调用会失败。
+
+  Parameters
+
+  - index: number
+
+    目标场景在当前场景目录下的索引号。
+
+<a id="setscenepath"></a>
+
+### setScenePath
+
+- setScenePath(scenePath:string):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2229](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2229)
+
+  切换至指定的场景。
+
+  该方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+  **Note**
+
+  该方法为同步调用。
+
+  场景切换失败可能有以下原因：
+
+  - 路径不合法，请确保场景路径以 "/"，由场景目录和场景名构成。
+  - 场景路径对应的场景不存在。
+  - 传入的路径是场景目录的路径，而不是场景路径。
+
+  Parameters
+
+  - scenePath: string
+
+    想要切换到的场景路径。请确保场景路径以 "/" 开头并且由场景目录和场景名构成，如 `/math/classA`。
+
+<a id="setviewmode"></a>
+
+### setViewMode
+
+- setViewMode(viewMode:[ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2211](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2211)
+
+  切换视角模式。
+
+  互动白板实时房间支持对用户设置以下视角模式：
+
+  - `Broadcaster`: 主播模式。
+  - `Follower`：跟随模式。
+  - `Freedom`：（默认）自由模式。
+
+  **Note**
+
+  该方法的设置会影响房间内所有用户的视角模式：
+
+  - 当房间内不存在主播模式的用户时，所有用户的视角都默认为自由模式。
+  - 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+  - 当跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。
+
+  Parameters
+
+  - viewMode: [ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)
+
+    视角模式，详见 [ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)。
+
+<a id="setwritable"></a>
+
+### setWritable
+
+- setWritable(isWritable:boolean):Promise&lt;void&gt;
+
+- Returns Promise&lt;void&gt;
+
+  Defined in [index-zh.d.ts:2135](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2135)
+
+  设置用户在房间中是否为互动模式。
+
+  Parameters
+
+  - isWritable: boolean
+
+    用户在房间中是否为互动模式：
+
+    - `true`：互动模式，即具有读写权限。
+    - `false`：订阅模式，即具有只读权限。
+
+<a id="stopblocktimestamp"></a>
+
+### stopBlockTimestamp
+
+- stopBlockTimestamp():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2261](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2261)
+
+  取消 [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncblocktimestamp) 方法设置的本地显示远端白板内容的时间。
+
+  ### since
+
+  2.13.8
+
+<a id="syncblocktimestamp"></a>
+
+### syncBlockTimestamp
+
+- syncBlockTimestamp(timestamp:number):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2255](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2255)
+
+  设置本地显示远端白板内容的 Unix 时间戳（ms）。
+
+  ### since
+
+  2.12.11
+
+  调用该方法后，SDK 会根据你设置的 `timestamp` 的值显示接收到的远端白板内容。
+
+  在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
+
+  Parameters
+
+  - timestamp: number
+
+    远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。
+
+<a id="undo"></a>
+
+### undo
+
+- undo():number
+
+- Defined in [index-zh.d.ts:2494](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2494)
+
+  撤销上一步操作。
+
+  **Note**
+
+  该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+
+  Returns number
+
+  剩余的可撤销次数。
+
+<a id="updateplugin"></a>
+
+### updatePlugin
+
+- updatePlugin(identifier:[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier), description:[PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)):boolean
+
+- Returns boolean
+
+  Defined in [index-zh.d.ts:2435](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2435)
+
+  修改组件插件对象的描述。
+
+  Parameters
+
+  - identifier: [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+    组件插件对象在房间内的唯一标识符。
+  - description: [PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)
+
+    组件插件对象的新描述。
+
+<a id="updateselectedtext"></a>
+
+### updateSelectedText
+
+- updateSelectedText(format:[TextFormat](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#textformat)):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2578](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2578)
+
+  修改当前被选中文字的字体样式。
+
+  选中文字后，你可以调用该方法修改字体大小、颜色、是否加粗、是否斜体等样式。
+
+  Parameters
+
+  - format: [TextFormat](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#textformat)
+
+    修改后的字体样式。详见 [TextFormat](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#textformat)。
+
+<a id="updatetext"></a>
+
+### updateText
+
+- updateText(identifier:[Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier), textContent:string):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:2569](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2569)
+
+  修改指定文字的内容。
+
+  调用 [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#inserttext) 方法后，你可以调用该方法并传入 `insertText` 方法返回的 `Identifier`，修改指定文字的内容。
+
+  Parameters
+
+  - identifier: [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+    文字的标识符，为 [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#inserttext) 的返回值。
+  - textContent: string
+
+    修改后的文字内容。
+
+<a id="waitmagixevent"></a>
+
+### waitMagixEvent
+
+- waitMagixEvent(filter:[EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)):Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+
+- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#waitmagixevent)
+ Defined in [index-zh.d.ts:1860](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1860)
+
+  等待特定的自定义事件发生。
+
+  Parameters
+
+  - filter: [EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)
+
+    事件过滤器。
+
+  Returns Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+
+  当特定自定义事件发生时，返回该事件。

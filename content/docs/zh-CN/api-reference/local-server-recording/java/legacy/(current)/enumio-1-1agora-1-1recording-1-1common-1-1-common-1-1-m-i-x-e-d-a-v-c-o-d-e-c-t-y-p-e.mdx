@@ -1,0 +1,120 @@
+---
+title: io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE 枚举类型参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_m_i_x_e_d___a_v___c_o_d_e_c___t_y_p_e
+  sourcePath: >-
+    html-docs/recording/Java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_m_i_x_e_d___a_v___c_o_d_e_c___t_y_p_e.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+|  | [MIXED_AV_DEFAULT](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a4b4a2e7c3a09025403f34610762e5300) =(0) |
+|  |  |
+|  | [MIXED_AV_CODEC_V1](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a3903f53f2dd1042c35b3c0b72269bc5d) =(1) |
+|  |  |
+|  | [MIXED_AV_CODEC_V2](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a9ac38ecdf186b64f26aca567035b769f) =(2) |
+|  |  |
+|  | [AV_CODEC_INDIVIDUAL_TS_ONLY](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a9e0039613f832dfec2a587bad83acd05) = 4 |
+|  |  |
+|  | [AV_CODEC_INDIVIDUAL_TS_AND_MP4](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a537a076a8b35f603952e7fdc89c0316d) = 5 |
+|  |  |
+|  | [AV_CODEC_MIXED_TS_ONLY](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a3f9bf6d1d472bea0bc74568ae02d4587) = 6 |
+|  |  |
+|  | [AV_CODEC_MIXED_TS_AND_MP4](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e#a117ead5bbc32ce38c77077569863e6a9) = 7 |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+实时混合语音和视频。
+
+详见[录制文件的播放器支持](/zh-CN/api-reference/faq/integration/recording_player)。
+
+## 类成员变量说明
+
+<a id="a4b4a2e7c3a09025403f34610762e5300"></a>
+
+## ◆MIXED_AV_DEFAULT
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT =(0) |
+| --- |
+
+0: （默认）不混合音频和视频。
+
+<a id="a3903f53f2dd1042c35b3c0b72269bc5d"></a>
+
+## ◆MIXED_AV_CODEC_V1
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V1 =(1) |
+| --- |
+
+1: 音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
+
+<a id="a9ac38ecdf186b64f26aca567035b769f"></a>
+
+## ◆MIXED_AV_CODEC_V2
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V2 =(2) |
+| --- |
+
+2: 音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
+
+<a id="a9e0039613f832dfec2a587bad83acd05"></a>
+
+## ◆AV_CODEC_INDIVIDUAL_TS_ONLY
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.AV_CODEC_INDIVIDUAL_TS_ONLY = 4 |
+| --- |
+
+4: 单流录制模式下，生成 TS 格式的视频文件，和 AAC 格式的音频文件。
+
+### 注解
+
+录制 TS 格式的视频文件，当出现崩溃时，已录制的文件仍然可以播放。
+
+<a id="a537a076a8b35f603952e7fdc89c0316d"></a>
+
+## ◆AV_CODEC_INDIVIDUAL_TS_AND_MP4
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.AV_CODEC_INDIVIDUAL_TS_AND_MP4 = 5 |
+| --- |
+
+5: 单流录制模式下，同时生成 TS 和 MP4 格式的视频文件，AAC 格式的音频文件。
+
+### 注解
+
+- 如果出现崩溃，已经录制的 MP4 文件从 TS 文件恢复。
+- 录制结束后，SDK 将删除 TS 文件。
+
+<a id="a3f9bf6d1d472bea0bc74568ae02d4587"></a>
+
+## ◆AV_CODEC_MIXED_TS_ONLY
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.AV_CODEC_MIXED_TS_ONLY = 6 |
+| --- |
+
+6: 合流录制模式下音频和视频混合成一个文件，仅生成 TS 格式文件。
+
+### 注解
+
+录制 TS 格式的视频文件，当出现崩溃时，已录制的文件仍然可以播放。
+
+<a id="a117ead5bbc32ce38c77077569863e6a9"></a>
+
+## ◆AV_CODEC_MIXED_TS_AND_MP4
+
+| io.agora.recording.common.Common.MIXED_AV_CODEC_TYPE.AV_CODEC_MIXED_TS_AND_MP4 = 7 |
+| --- |
+
+7: 合流录制模式下音频和视频混合成一个文件，同时生成 MP4 和 TS 格式文件。
+
+### 注解
+
+- 如果出现崩溃，已经录制的 MP4 文件从 TS 文件恢复。
+- 录制结束后，SDK 将删除 TS 文件。

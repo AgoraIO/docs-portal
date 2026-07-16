@@ -1,0 +1,74 @@
+---
+title: Agora Recording C++ API Reference 文档
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/overview
+  sourcePath: html-docs/recording/cpp/index.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="md_mainpage"></a>
+
+- [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 接口类包含应用程序调用的主要方法。
+- [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) 接口类用于向应用程序发送回调通知。
+
+<a id="IRecordingEgnine"></a>
+
+# IRecordingEgnine 接口类
+
+该类包含应用程序调用的主要方法。
+
+| 方法 | 描述 |
+| --- | --- |
+| [createAgoraRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a683b055963f285fa0ca63aaab7af27d6) | 创建 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 实例。 |
+| [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) | 录制端加入频道并开始录制。 |
+| [joinChannelWithUserAccount](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a1567ba5fbd049cbbbcdf99613cfbc661) | 录制端使用 User Account 加入频道。 |
+| [getUserInfoByUserAccount](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#aed829b02ef59dc95be2dddf7cb6eb5a2) | 通过 User Account 获取远端用户信息。 |
+| [getUserInfoByUid](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a367b4cd8e3e458e60932ed6f1deebc44) | 通过 UID 获取远端用户信息。 |
+| [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a4ac28b9e2342729c1b54400a5abb1d90) | 设置视频合流布局。 |
+| [updateWatermarkConfigs](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#ac9431f0003db4f1d123dab8b4cc39202) | 添加、更新或删除水印设置。 |
+| [stoppedOnError](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a7ac0adb4d78e1e6b6c7b4d95c219a111) | 手动停止 [onError](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) 回调。 |
+| [updateSubscribeVideoUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a0871cc2800f68bbaa928a62604e75f08) | 只录制指定 UID 的视频。 |
+| [updateSubscribeAudioUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a831e2528cad4cd77c1a64d960bf466a4) | 只录制指定 UID 的音频。 |
+| [leaveChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#adafb45815ad0f02dc1c8b3cadb7cd2e3) | 录制端退出频道。 |
+| [release](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#af4d33159ed8ed249991470e6833d0fd5) | 销毁 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 实例。 |
+| [getProperties](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#abf1bcd2dd5a38262ca26e50b3b182f4b) | 获取录制属性。 |
+| [startService](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a2d4e78e4164993e64fb0286b9108d478) | 手动模式下开始录制。 |
+| [stopService](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a302a83737a67b2693ede181484af862a) | 手动模式下暂停录制。 |
+| [setUserBackground](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a01e1523e52b601498558dcd5f3fefa24) | 设置指定 UID 用户的背景图片。 |
+| [setLogLevel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#acbe7dc8e550f843e5ff275e9d3a8a524) | 设置生成 log 的等级。 |
+
+<a id="IRecordingEngineEventHandler"></a>
+
+# IRecordingEngineEventHandler 接口类
+
+该类用于向应用程序发送回调通知。
+
+| 回调 | 描述 |
+| --- | --- |
+| [onError](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) | 发生错误回调。 |
+| [onWarning](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#abc0569a84c34c367bdf738954b0b8e28) | 发生警告回调。 |
+| [onConnectionLost](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0cf0383f0b6f841682a3ec3a588a9b18) | 网络连接丢失回调。 |
+| [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac6a57d0f9721253294f7d1204084e00c) | 网络连接中断回调。 |
+| [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a08d04dd3d5f82ca0ab9cdadff20367b0) | 网络连接状态已改变回调。 |
+| [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac08c2b0774684e1b5ce667d68c3a946d) | 录制端加入频道回调。 |
+| [onLocalUserRegistered](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#aef3b0afc5469c74686775d13fe1b58be) | 本地用户成功注册 User Account 回调。 |
+| [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) | 用户信息已更新回调。 |
+| [onRejoinChannelSuccess](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a210d1e225415eba95c8fa606ae0996ea) | 重新加入频道回调。 |
+| [onLeaveChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a16e7584fc2bc1c9bb82a3b7471a8a2d1) | 录制端离开频道回调。 |
+| [onUserJoined](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a2ca947993a8c8d9ae23fc0545ae1a05d) | 远端用户加入当前频道回调。 |
+| [onUserOffline](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a1e5fab78574027b2fc86e2da30f3c49d) | 远端用户离开当前频道回调。 |
+| [audioFrameReceived](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0e14a008e6a8829d8e30ff71b1238f82) | 收到原始音频数据回调。 |
+| [videoFrameReceived](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac1121a1af126872bbbe2cb2767c311d4) | 收到视频数据回调。 |
+| [onAudioVolumeIndication](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac07a64cb066c596c2d826c955dc1a543) | 提示频道内谁正在说话及说话者音量回调。 |
+| [onActiveSpeaker](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a06e7c77ee7a3da76882922c11a1421c8) | 监测到活跃用户回调。 |
+| [onFirstRemoteAudioFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a1d854682fb794b376661d0db50077acb) | 已接收远端音频首帧回调。 |
+| [onFirstRemoteVideoDecoded](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a8d49dac69b2587a9f401fcde9199f24b) | 已完成远端视频首帧解码回调。 |
+| [onReceivingStreamStatusChanged](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a9b483f7394103d8138c4953d594e8796) | 流状态变化回调。 |
+| [onRemoteAudioStreamStateChanged](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6ba41d8f2ba7ccb06695ed6ef6037159) | 远端用户音频流状态改变回调。 |
+| [onRemoteVideoStreamStateChanged](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a98fe264a24974fb7b6ae46d2ddce3661) | 远端用户视频流状态改变回调。 |
+| [onRemoteVideoStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a427c17ccc456444159c977aeec04a895) | 远端视频流统计信息回调。 |
+| [onRemoteAudioStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a151091f21f514baf78b005031b382f8b) | 远端音频流统计信息回调。 |
+| [onRecordingStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a870ab8a3d043f6c3910aa89121e83f33) | 录制统计信息回调。 |

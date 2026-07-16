@@ -1,0 +1,4071 @@
+---
+title: agora::rtc 命名空间参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/namespaceagora_1_1rtc
+  sourcePath: html-docs/rtc-server-sdk/cpp/namespaceagora_1_1rtc.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_simulcast_stream_config.html as local
+        text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_audio_sink_wants.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_track.html as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_audio_volume_information.html as local
+        text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_sink_base.html as local text.
+---
+
+| <a id="nested-classes"></a> 类 |  |
+| --- | --- |
+| struct | [VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-dimensions) |
+|  |  |
+| struct | [EncodedAudioFrameAdvancedSettings](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-advanced-settings) |
+|  |  |
+| struct | [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) |
+|  |  |
+| struct | [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) |
+|  |  |
+| struct | [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) |
+|  |  |
+| struct | [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) |
+|  |  |
+| struct | SimulcastStreamConfig |
+|  |  |
+| struct | [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) |
+|  |  |
+| struct | [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info) |
+|  |  |
+| class | [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) |
+|  |  |
+| struct | [LocalAudioStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-audio-stats) |
+|  |  |
+| struct | [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) |
+|  |  |
+| struct | [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-one-way-result) |
+|  |  |
+| struct | [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-result) |
+|  |  |
+| struct | [UplinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-uplink-network-info) |
+|  |  |
+| struct | [DownlinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-downlink-network-info) |
+|  |  |
+| struct | [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) |
+|  |  |
+| struct | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) |
+|  |  |
+| struct | [AudioEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-encoder-configuration) |
+|  |  |
+| struct | AudioSinkWants |
+|  |  |
+| class | IAudioTrack |
+|  |  |
+| class | [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) |
+|  |  |
+| struct | [RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-audio-track-stats) |
+|  |  |
+| class | [IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) |
+|  |  |
+| class | [IConfigCenter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-config-center) |
+|  |  |
+| class | [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user) |
+|  |  |
+| struct | AudioVolumeInformation |
+|  |  |
+| class | [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) |
+|  |  |
+| class | [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) |
+|  |  |
+| class | [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) |
+|  |  |
+| class | [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) |
+|  |  |
+| class | [IAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender) |
+|  |  |
+| class | IAudioSinkBase |
+|  |  |
+| class | [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender) |
+|  |  |
+| class | [IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender) |
+|  |  |
+| class | [IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory) |
+|  |  |
+| struct | [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) |
+|  |  |
+| struct | [RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) |
+|  |  |
+| class | [IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) |
+|  |  |
+| class | [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) |
+|  |  |
+| class | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) |
+|  |  |
+| struct | [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration) |
+|  |  |
+| struct | [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration) |
+|  |  |
+| struct | [RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration) |
+|  |  |
+| struct | [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) |
+|  |  |
+| class | [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) |
+|  |  |
+| class | [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) |
+|  |  |
+| class | [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) |
+|  |  |
+| class | [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user) |
+|  |  |
+| struct | [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) |
+|  |  |
+| class | [IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source) |
+|  |  |
+| struct | [StreamLayerConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-stream-layer-config-internal) |
+|  |  |
+| struct | [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) |
+|  |  |
+| class | [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) |
+|  |  |
+| struct | [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) |
+|  |  |
+| class | [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) |
+|  |  |
+| struct | [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) |
+|  |  |
+| class | [IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) |
+|  |  |
+
+| <a id="typedef-members"></a> 类型定义 |  |
+| --- | --- |
+| typedef unsigned int | [uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) |
+|  |  |
+| typedef unsigned int | [track_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a728a2a0d7515f2c3376614be00173f7d) |
+|  |  |
+| typedef unsigned int | [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) |
+|  |  |
+
+| <a id="enum-members"></a> 枚举 |  |
+| --- | --- |
+| enum | [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) \\\{ [USER_OFFLINE_QUIT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fefa39836e44dee02db52ccebf4f8d963422) = 0, [USER_OFFLINE_DROPPED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fefab534ea4a1a5d4fcd4932d50f4e0e96d1) = 1, [USER_OFFLINE_BECOME_AUDIENCE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fefa2f31868fc17153cb1d798dad13905d32) = 2 \\\} |
+|  |  |
+| enum | [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) \\\{ [QUALITY_UNKNOWN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891aa5c479e59fe69f38a52040a3f4d19380) = 0, [QUALITY_EXCELLENT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891aed27e4baacc04a6ae99e063e01db3694) = 1, [QUALITY_GOOD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891a75cf9305a451fcb53279a2e628d78c16) = 2, [QUALITY_POOR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891a4bcf1cac434df6a62b56210f065dc6cb) = 3, [QUALITY_BAD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891a2783cf640eaf1505575b2812da79f396) = 4, [QUALITY_VBAD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891ab362c6bae120ac210b506120a95cf940) = 5, [QUALITY_DOWN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891aed391bbc2c9e747b36bdf76997bb8221) = 6 \\\} |
+|  |  |
+| enum | [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bc) \\\{ [VIDEO_ORIENTATION_0](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bca3383b6c7e915840bc3608662ea4fae4d) = 0, [VIDEO_ORIENTATION_90](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bca6608e1f19f9838ff0f570adf248a5343) = 90, [VIDEO_ORIENTATION_180](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bca6e0af5872680eb93aae8bbf93d2d3382) = 180, [VIDEO_ORIENTATION_270](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bca0d0688309a8c979440800c7e2951f856) = 270 \\\} |
+|  |  |
+| enum | [FRAME_RATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1) \\\{ [FRAME_RATE_FPS_1](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1a977f1cfdcf5b800f993482da6a173cd5) = 1, [FRAME_RATE_FPS_7](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1ad04434616f09899ce747d9411099a3a1) = 7, [FRAME_RATE_FPS_10](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1aa12cac1b6fd0fae6e0d17e300bc16623) = 10, [FRAME_RATE_FPS_15](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1a58bcbb5182037fb47ff30c42eee66710) = 15, [FRAME_RATE_FPS_24](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1a076f14806cad9efc861f4cc1275578e4) = 24, [FRAME_RATE_FPS_30](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1ac9ceedbdf97cbaa1c30a17773e7998db) = 30, [FRAME_RATE_FPS_60](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1ae3b15e53bd5d9107a7aa13e6ed29b825) = 60 \\\} |
+|  |  |
+| enum | [FRAME_WIDTH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2f07c4ed608d97da9e6bfbdb7723d9dd) \\\{ [FRAME_WIDTH_640](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2f07c4ed608d97da9e6bfbdb7723d9ddad29e62742c2779d2171051f8be3e9de9) = 640 \\\} |
+|  |  |
+| enum | [FRAME_HEIGHT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a29e02d842f9dbb4284039e6ee31a99f0) \\\{ [FRAME_HEIGHT_360](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a29e02d842f9dbb4284039e6ee31a99f0aa037e64f88bf0ca7c3d4d20956973c81) = 360 \\\} |
+|  |  |
+| enum | [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281) \\\{ [VIDEO_FRAME_TYPE_BLANK_FRAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281a7bf11c6cbcd205e9cc75546528207a93) = 0, [VIDEO_FRAME_TYPE_KEY_FRAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281a6092e565d83e3e0e6b441ca11e21a65e) = 3, [VIDEO_FRAME_TYPE_DELTA_FRAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281ac20e0af03b67b72c32a9cf44a2854f00) = 4, [VIDEO_FRAME_TYPE_B_FRAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281a18eefebf17017d9a7e7b846fe7320f40) = 5, [VIDEO_FRAME_TYPE_DROPPABLE_FRAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281a49a7f6c4e570941736c95eb997a91098) = 6, [VIDEO_FRAME_TYPE_UNKNOW](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281a5e6a216c6f2dc7491eb0a8b9f1f2487e) \\\} |
+|  |  |
+| enum | [ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) \\\{ [ORIENTATION_MODE_ADAPTIVE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7a6c9c916656d47771664b0696fbaa39bc) = 0, [ORIENTATION_MODE_FIXED_LANDSCAPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7ac8e505f519b124299c5977b21df29c21) = 1, [ORIENTATION_MODE_FIXED_PORTRAIT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7a26abe8e035ec0867b3603ffccc9248f8) = 2 \\\} |
+|  |  |
+| enum | [DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6) \\\{ [MAINTAIN_QUALITY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6ac80182fd2f0983d09e5e6841c6020729) = 0, [MAINTAIN_FRAMERATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6a0334a246d5ad15fc9c8a9b4bc3c5fdd7) = 1, [MAINTAIN_BALANCED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6abac0022e3068e6435d9bc50db18983ac) = 2, [MAINTAIN_RESOLUTION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6adc9377a20e6d6e8c686a5fe44e13a5c2) = 3 \\\} |
+|  |  |
+| enum | [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215) \\\{ [VIDEO_CODEC_NONE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215ab9372940cb7e4d55d9ddd5dd602e9bcd) = 0, [VIDEO_CODEC_VP8](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215af329da3c92373846ea20233787353237) = 1, [VIDEO_CODEC_H264](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a6fcc2382c1d5bbc07d14db66fd9d6574) = 2, [VIDEO_CODEC_H265](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a382e3099cc94622b11fbbe0d71a73cd2) = 3, [VIDEO_CODEC_VP9](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a52b54b2dd05570f3333935d7afab9a7f) = 5, [VIDEO_CODEC_GENERIC](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a742d2b12d33fb9f54afc97a5d14211cd) = 6, [VIDEO_CODEC_GENERIC_H264](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a2effe3d56056678fa3d5c29bf79be2bf) = 7, [VIDEO_CODEC_AV1](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a5825fdb6f7017fbc95cef506b811193f) = 12, [VIDEO_CODEC_GENERIC_JPEG](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215a3c72dac48d1512ad4094fe1429d54c58) = 20 \\\} |
+|  |  |
+| enum | [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053) \\\{ [AUDIO_CODEC_OPUS](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a618295ffbcd36987358d5630568fe0fb) = 1, [AUDIO_CODEC_PCMA](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053ad8c446b4ba583f021ba164c0be9a15e3) = 3, [AUDIO_CODEC_PCMU](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a47aee8a3336612189e116839c9398aa3) = 4, [AUDIO_CODEC_G722](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a0e153f963224879f02255a8e557bfeb5) = 5, [AUDIO_CODEC_AACLC](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a9826001d5230eb1383e1af589ea4b972) = 8, [AUDIO_CODEC_HEAAC](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a39d84162c35f3ab0be6fac022591bd2a) = 9, [AUDIO_CODEC_HEAAC2](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053a61b2cdb6ef05d8def8e35d61f443db33) = 11 \\\} |
+|  |  |
+| enum | [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55) \\\{ [VIDEO_STREAM_HIGH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55a115955aeb07c864335c1bf23ec59953e) = 0, [VIDEO_STREAM_LOW](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55a5e75ad3a4498bf5c2daafad6610a3e5a) = 1 \\\} |
+|  |  |
+| enum | [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13) \\\{ [VIDEO_MIRROR_MODE_AUTO](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13a9e37327c3d25497dc587a63a28671f0f) = 0, [VIDEO_MIRROR_MODE_ENABLED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13ada3518bf73757e866ebcac5e80e27e3f) = 1, [VIDEO_MIRROR_MODE_DISABLED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13ae30d613a911b110e8628e9b0d28e9ac9) = 2 \\\} |
+|  |  |
+| enum | [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) \\\{ [AUTO_SIMULCAST_STREAM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4a6dd054127d354c2abd52a7636b2b9d94) = -1, [DISABLE_SIMULCAST_STREAM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4a22ac2a70a5a84d804f505a7db38ee093) = 0, [ENABLE_SIMULCAST_STREAM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4a00d6c1355528b457298c7fa6bc4cb755) = 1 \\\} |
+|  |  |
+| enum | [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751) \\\{ [VIDEO_SOURCE_CAMERA_PRIMARY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a088a280c4204b82a8b459a81116a6d1c), [VIDEO_SOURCE_CAMERA](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a34ed3e8d6f90d64b327f890c690b62fd) = VIDEO_SOURCE_CAMERA_PRIMARY, [VIDEO_SOURCE_CAMERA_SECONDARY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a6cf51b1f6014ae5235e5cb06c0c94fe0), [VIDEO_SOURCE_SCREEN_PRIMARY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a3800c4e85a719f00a15a989cbccc4aa4), [VIDEO_SOURCE_SCREEN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751acc0a885b0b273e2708e50f86b94142c9) = VIDEO_SOURCE_SCREEN_PRIMARY, [VIDEO_SOURCE_SCREEN_SECONDARY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751aa54842e7340f66b113f7a429fca36aeb), [VIDEO_SOURCE_CUSTOM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a215a20f135a19390876851a29762c96b), [VIDEO_SOURCE_MEDIA_PLAYER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751abedaad87768634e870614424f3b74785), [VIDEO_SOURCE_RTC_IMAGE_PNG](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751af03455532348db7151b91e2faf67871a), [VIDEO_SOURCE_RTC_IMAGE_JPEG](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a17491d6725bfdb4735f18c5d86bd9fca), [VIDEO_SOURCE_RTC_IMAGE_GIF](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a224314b533e8347d86e35bb10a4c2726), [VIDEO_SOURCE_REMOTE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751a57b4d782e7da427d3c17546ee92f20c4), [VIDEO_SOURCE_TRANSCODED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751aef414c00ce57b3278695b090ac4df9f9), [VIDEO_SOURCE_UNKNOWN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751ab2cafe4ce84ddeefb1c10ac8abaeff36) = 100 \\\} |
+|  |  |
+| enum | [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) \\\{ [CLIENT_ROLE_BROADCASTER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080a8a1a7a863a7f1f1f23d300d59d719912) = 1, [CLIENT_ROLE_AUDIENCE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080a21c4eacfac7477cf9b061cebd7093d97) = 2 \\\} |
+|  |  |
+| enum | [QUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071) \\\{ [ADAPT_NONE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071a36d8846dfe311cc3aa7a4c21d1b09cf5) = 0, [ADAPT_UP_BANDWIDTH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071a3ea2884cacdfa1e8cebcf4f2a1b1de85) = 1, [ADAPT_DOWN_BANDWIDTH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071a92869c78f5489738ea1413035c59c8b7) = 2 \\\} |
+|  |  |
+| enum | [EXPERIENCE_QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8d5b01851e8fcbee10e5bd85fb9bf15a) \\\{ [EXPERIENCE_QUALITY_GOOD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8d5b01851e8fcbee10e5bd85fb9bf15aa2d970353462d66fab90095055a1f3062) = 0, [EXPERIENCE_QUALITY_BAD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8d5b01851e8fcbee10e5bd85fb9bf15aa7570318e483039dfc47033eaf9e036c9) = 1 \\\} |
+|  |  |
+| enum | [EXPERIENCE_POOR_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54) \\\{ [EXPERIENCE_REASON_NONE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54a3a127af891654876ad34a2404d17a7fb) = 0, [REMOTE_NETWORK_QUALITY_POOR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54afbefb5b8fc8ba61e934e3e4ffad472c0) = 1, [LOCAL_NETWORK_QUALITY_POOR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54a2ce9dd01a723e103bd851dfb892a2892) = 2, [WIRELESS_SIGNAL_POOR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54a634c8ded29dfafa8b41da9187daf5d9a) = 4, [WIFI_BLUETOOTH_COEXIST](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54ab624ea30a5ec9a0ade1afcf03c886177) = 8 \\\} |
+|  |  |
+| enum | [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55) \\\{ [AUDIO_PROFILE_DEFAULT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55acd8fd9d26d8c8955376f9ff51274ca2b) = 0, [AUDIO_PROFILE_SPEECH_STANDARD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55affc1f92238b3aef72ed2b80401ed0551) = 1, [AUDIO_PROFILE_MUSIC_STANDARD](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55ae679e3ccbbae7bf1380d9cd81413db6c) = 2, [AUDIO_PROFILE_MUSIC_STANDARD_STEREO](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55a18087e125c075c85266716fc9bcf4c48) = 3, [AUDIO_PROFILE_MUSIC_HIGH_QUALITY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55a3cdc504b3107c07fc3f6da3aaa92e9d0) = 4, [AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55aff92287ea621655559626dfae7478451) = 5, [AUDIO_PROFILE_IOT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55a2b957d65e55598c4f3a2a9ff0395d17d) = 6, [AUDIO_PROFILE_NUM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55abac03ea04a5bce04a83f608af8847c9b) = 7 \\\} |
+|  |  |
+| enum | [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) \\\{ [AUDIO_SCENARIO_DEFAULT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533afd3662c362a5497828550290ab003735) = 0, [AUDIO_SCENARIO_GAME_STREAMING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533a42f87ca1c43185f9084cd0fa9808b9a9) = 3, [AUDIO_SCENARIO_CHATROOM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533aec10020d50ff659b77ac160482228e42) = 5, [AUDIO_SCENARIO_CHORUS](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533a8680bbc2f9d3247e4d65c202877eb5ee) = 7, [AUDIO_SCENARIO_MEETING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533a717eec01a97bcf9e8ec82266c5a2f3d5) = 8, [AUDIO_SCENARIO_NUM](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533a35d5c54e239a1f80d38fb1c4577f3da6) = 9 \\\} |
+|  |  |
+| enum | [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332) \\\{ [LOCAL_AUDIO_STREAM_STATE_STOPPED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332ac3c41c909dcd344ace461c48788481ab) = 0, [LOCAL_AUDIO_STREAM_STATE_RECORDING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332aa9157bed267eba92cfb6c2a3acb5a7e0) = 1, [LOCAL_AUDIO_STREAM_STATE_ENCODING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332aec6af6a49b19d437d738a8f0721ae2c1) = 2, [LOCAL_AUDIO_STREAM_STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332a1f3ad0127796639401a7bb4193c96b67) = 3 \\\} |
+|  |  |
+| enum | [LOCAL_AUDIO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045e) \\\{ [LOCAL_AUDIO_STREAM_ERROR_OK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045eae885394c6686de5e5f02d3f9ff41f404) = 0, [LOCAL_AUDIO_STREAM_ERROR_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045ea0a2a7f0a95512612ace909f32f0e6fa1) = 1, [LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045eade3c7c2610610a823e17e3143b64671b) = 2, [LOCAL_AUDIO_STREAM_ERROR_DEVICE_BUSY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045ea18d5153634f36b31fa22cbd4af1ab9ee) = 3, [LOCAL_AUDIO_STREAM_ERROR_RECORD_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045ead9325bf3dc67dcdceb37b2d5f4664905) = 4, [LOCAL_AUDIO_STREAM_ERROR_ENCODE_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045ea47e3c85eaebf952b4815cef4b20ff297) = 5 \\\} |
+|  |  |
+| enum | [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) \\\{ [LOCAL_VIDEO_STREAM_STATE_STOPPED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200ba9bb52f743f03c961df2237cd72046a4f) = 0, [LOCAL_VIDEO_STREAM_STATE_CAPTURING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200bafe5af8aeff46879f3144ac03e6aa0757) = 1, [LOCAL_VIDEO_STREAM_STATE_ENCODING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200ba2e843243500ed35448afb877e1c06032) = 2, [LOCAL_VIDEO_STREAM_STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200ba456af207107500445138c5f35b3d938d) = 3 \\\} |
+|  |  |
+| enum | [LOCAL_VIDEO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842) \\\{ [LOCAL_VIDEO_STREAM_ERROR_OK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842a2695a861e13d12ac54bb20d3d630311e) = 0, [LOCAL_VIDEO_STREAM_ERROR_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842ab7dd59c52b4cb11b12c2db7597d63f66) = 1, [LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842a0f8ebaaffc51e8a9a1fbeac39715ad62) = 2, [LOCAL_VIDEO_STREAM_ERROR_DEVICE_BUSY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842ab2095d8de4bb63147b1e121c466e2eac) = 3, [LOCAL_VIDEO_STREAM_ERROR_CAPTURE_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842a5e8d8b389aacc1732840973586baa286) = 4, [LOCAL_VIDEO_STREAM_ERROR_ENCODE_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842ad331f36475ad1f8617ad9e65fbf7ebfd) = 5 \\\} |
+|  |  |
+| enum | [REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516) \\\{ [REMOTE_AUDIO_STATE_STOPPED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516a7463dc6d26033cfacd12ffc39a7454d9) = 0, [REMOTE_AUDIO_STATE_STARTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516a4d808806be3f8a87886d26617b90f87a) = 1, [REMOTE_AUDIO_STATE_DECODING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516ae46f2eb53b7fc3b7f7cfb7d7fab4f75c) = 2, [REMOTE_AUDIO_STATE_FROZEN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516ad2df06bc8d804962bc422c39f7729083) = 3, [REMOTE_AUDIO_STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516a3d97dbd00fbac952acf11d2763a9d7e5) = 4 \\\} |
+|  |  |
+| enum | [REMOTE_AUDIO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fc) \\\{ [REMOTE_AUDIO_REASON_INTERNAL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fcacaa43c150ce1c677f2a51f6f2433096a) = 0, [REMOTE_AUDIO_REASON_NETWORK_CONGESTION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fca7f138c39f7319a6ba719ceb6f5eacba7) = 1, [REMOTE_AUDIO_REASON_NETWORK_RECOVERY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fcac2720abcfdb7bf6a6a8166abf515395b) = 2, [REMOTE_AUDIO_REASON_LOCAL_MUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fca561a396c1f6d7adbbefe86c428683ad6) = 3, [REMOTE_AUDIO_REASON_LOCAL_UNMUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fcac5ebd4f77fcf94b838e9d2da89b013e6) = 4, [REMOTE_AUDIO_REASON_REMOTE_MUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fca54c8d889ed645500113fc18f876c5494) = 5, [REMOTE_AUDIO_REASON_REMOTE_UNMUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fca0e898d0e3022385e6c9d185d73972c2f) = 6, [REMOTE_AUDIO_REASON_REMOTE_OFFLINE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fca6f4851ce8d939dd587f0888b1d2a5fe9) = 7 \\\} |
+|  |  |
+| enum | [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) \\\{ [REMOTE_VIDEO_STATE_STOPPED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8afe59a97a2d92b043864ba01dfdf4d917) = 0, [REMOTE_VIDEO_STATE_STARTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8ad5d9ad6fe0d96c7ea7c65bf59c8c0e63) = 1, [REMOTE_VIDEO_STATE_DECODING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8a659462d41f13f53f3073eb1150a7435d) = 2, [REMOTE_VIDEO_STATE_FROZEN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8ac9e6585199f84abcab1074adadf40634) = 3, [REMOTE_VIDEO_STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8a1ea1ebf82ddb1782b4259fbc2a5ea7c3) = 4 \\\} |
+|  |  |
+| enum | [REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bff) \\\{ [REMOTE_VIDEO_STATE_REASON_INTERNAL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffaea26e05fcb8887e852058a1873680f8c) = 0, [REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa24ac73ce5bd6a277616710988066ff6a) = 1, [REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa8b1dbaba9e3aa75e8a76e93f21c5bbd4) = 2, [REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffae30b7689ceb3dcd01b3b8b3ad1a704f3) = 3, [REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa62125754b06f30479a5721e222eef201) = 4, [REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa513577953b31bbacde159cfd99198503) = 5, [REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa3cd0f8dfa3229bebe1b7f5037a8ac703) = 6, [REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa9bc22d0a122082c4662e2c155611f2a9) = 7, [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffa84ac2f44167080fca3ba872796ff66af) = 8, [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bffac2f84fb8b7ba73eb74f6bd9bf44f5baf) = 9 \\\} |
+|  |  |
+| enum | [REMOTE_VIDEO_DOWNSCALE_LEVEL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baa) \\\{ [REMOTE_VIDEO_DOWNSCALE_LEVEL_NONE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baaa91573f6a364c510eae4652f1740b6ef5), [REMOTE_VIDEO_DOWNSCALE_LEVEL_1](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baaa0820f5c9d6855cadabd17a04ae7367b5), [REMOTE_VIDEO_DOWNSCALE_LEVEL_2](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baaaba8b193b56704d549f394765f01702db), [REMOTE_VIDEO_DOWNSCALE_LEVEL_3](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baaa380c2eabb7a34532f424c66267c76c48), [REMOTE_VIDEO_DOWNSCALE_LEVEL_4](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baaa54e9b9d729a5ef908f0f4e04dfb71673) \\\} |
+|  |  |
+| enum | [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7) \\\{ [CONNECTION_STATE_DISCONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7a335642f7cca4e7761ddbd0a722f6dd29) = 1, [CONNECTION_STATE_CONNECTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7a8d286796a07a1b7d25d871d859ff5727) = 2, [CONNECTION_STATE_CONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7ae42663fc1191d37b6648916134bc42ea) = 3, [CONNECTION_STATE_RECONNECTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7a7e870baf55d8bc02fc294ad0b3971d2d) = 4, [CONNECTION_STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7aaf1e40b56dd8162ae63b9d6fc0d88241) = 5 \\\} |
+|  |  |
+| enum | [LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65) \\\{ [LASTMILE_PROBE_RESULT_COMPLETE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65a2ad1e8c070b48edb9bf416da2b4b8436) = 1, [LASTMILE_PROBE_RESULT_INCOMPLETE_NO_BWE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65a7c744e3a9a98a609d96fab9c66c90a5c) = 2, [LASTMILE_PROBE_RESULT_UNAVAILABLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65ae9ac0c1d564b1be9e5733ce22d3154af) = 3 \\\} |
+|  |  |
+| enum | [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) \\\{ [CONNECTION_CHANGED_CONNECTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a909210151e80a40412b33b7c65f657d5) = 0, [CONNECTION_CHANGED_JOIN_SUCCESS](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a7db96919ed2935f5b2002183b1ed21eb) = 1, [CONNECTION_CHANGED_INTERRUPTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a861e516bece11ba81cf53be6c2c631b0) = 2, [CONNECTION_CHANGED_BANNED_BY_SERVER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a322a93479407c09f82189e13f6aa79a3) = 3, [CONNECTION_CHANGED_JOIN_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144ab450ea0fd2e115e3ff60cc5afca4a3a5) = 4, [CONNECTION_CHANGED_LEAVE_CHANNEL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a87b7858350d388b2ad6a2c46fd803cbe) = 5, [CONNECTION_CHANGED_INVALID_APP_ID](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144ae6f2f9c1a302c6df1c05d6fdd2cc3d8e) = 6, [CONNECTION_CHANGED_INVALID_CHANNEL_NAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a7222d75a9cbd116cd16761953e65df3b) = 7, [CONNECTION_CHANGED_INVALID_TOKEN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a26ab3e648572bcf8bdd43d036aba3ec8) = 8, [CONNECTION_CHANGED_TOKEN_EXPIRED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144ac8493348234ccea33ac7e61ad268fe60) = 9, [CONNECTION_CHANGED_REJECTED_BY_SERVER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144ae0a9bf5f38d1828a96682e6678ff8c16) = 10, [CONNECTION_CHANGED_SETTING_PROXY_SERVER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a95d29853df095ef245640e6b3d5e744a) = 11, [CONNECTION_CHANGED_RENEW_TOKEN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144abf908a9040ed3c9dc19ea3bd0036498b) = 12, [CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a9eb64c9200bbf61d9a4cb9e5371ebe0a) = 13, [CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144acf412770f5052abd4f8d11ce52e1e3c3) = 14, [CONNECTION_CHANGED_REJOIN_SUCCESS](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a48a6b0b0a23447a63143f94d0623b32c) = 15, [CONNECTION_CHANGED_LOST](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a9df6b7fcbba2d97e407c90a20988b76b) = 16, [CONNECTION_CHANGED_ECHO_TEST](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144a4c2e2aa3bea1920093387fbaba9ed995) = 17, [CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144afdd77619ace4a8b364d5d0365ce755fa) = 18 \\\} |
+|  |  |
+| enum | [NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) \\\{ [NETWORK_TYPE_UNKNOWN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505aaffd83f62604659b799989fc9755d773) = -1, [NETWORK_TYPE_DISCONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505a088190434b4a1271f4e5849cd41fc9fe) = 0, [NETWORK_TYPE_LAN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505abc2d98d2aa184f7766cc1d480b0302b3) = 1, [NETWORK_TYPE_WIFI](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505abf47c9dede3e20c97f8d4c8e2050c4df) = 2, [NETWORK_TYPE_MOBILE_2G](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505ac93cdd7ba1c6004cd959a407bb9aaf0b) = 3, [NETWORK_TYPE_MOBILE_3G](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505a3f70717344b70437028cb9519ec07900) = 4, [NETWORK_TYPE_MOBILE_4G](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505a748a1c812bf1a7026aeca60322e0c126) = 5 \\\} |
+|  |  |
+| enum | [AREA_CODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5e) \\\{ [AREA_CODE_CN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5eaf8e2d0900a4543fab82c7dc0b0074c35) = 0x00000001, [AREA_CODE_NA](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5ea69812bc2f9cccfac8cc34654ef159d11) = 0x00000002, [AREA_CODE_EU](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5eaa47e5e2c0fe01fdec041bfe24fc12f0d) = 0x00000004, [AREA_CODE_AS](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5ea8168957c370c6582c6c4fb75122e76b4) = 0x00000008, [AREA_CODE_JP](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5ead20308fc6f76ad911a42fb42fb678721) = 0x00000010, [AREA_CODE_IN](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5eadd5d950a7dd5cc79b631ca836bdadf74) = 0x00000020, [AREA_CODE_GLOB](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5ead4bbb5e676a198ab727fb7e432111a2f) = (0xFFFFFFFF) \\\} |
+|  |  |
+| enum | [ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0) \\\{ [SM4_128_ECB](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0aa789ba9768f5f542f163c6460da7f365) = 4 \\\} |
+|  |  |
+| enum | [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521) \\\{ [ENCRYPTION_ERROR_INTERNAL_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521a441bf6a89ab42ecef6ae28949ea0435d) = 0, [ENCRYPTION_ERROR_DECRYPTION_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521a337a35a9e01622a0d2a17b6e3f3e185b) = 1, [ENCRYPTION_ERROR_ENCRYPTION_FAILURE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521a24eaecae54c5ec0fc7cc505f5339afae) = 2 \\\} |
+|  |  |
+| enum | [MAX_USER_ACCOUNT_LENGTH_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a895ba93435851fd5ddbccd92e6d5356f) \\\{ [MAX_USER_ACCOUNT_LENGTH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a895ba93435851fd5ddbccd92e6d5356fa8a980d28f1c8c8e67300b430d18853f8) = 256 \\\} |
+|  |  |
+| enum | [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) \\\{ [SUB_STATE_IDLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3ca1e7316c35ab5c6854892582cc7967773) = 0, [SUB_STATE_NO_SUBSCRIBED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3ca6678ddfda9aece5abc6feb438d1d528d) = 1, [SUB_STATE_SUBSCRIBING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3cace29d3c4aeb9206e71426d672ea7d963) = 2, [SUB_STATE_SUBSCRIBED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3cae4f929d7bd7112a7db7a8053581daecc) = 3 \\\} |
+|  |  |
+| enum | [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) \\\{ [PUB_STATE_IDLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537a14e3e6abd2239fe4ba1098fdfb4693c0) = 0, [PUB_STATE_NO_PUBLISHED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537a989dfdb24e7c2a5533dcdca3549629b2) = 1, [PUB_STATE_PUBLISHING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537a926fbe7ef2663c708ac04cb0315a5745) = 2, [PUB_STATE_PUBLISHED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537a156bc733b29c56ffacae478f5f06d868) = 3 \\\} |
+|  |  |
+| enum | [TCcMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a54de466c4f3f991c714bb5719d706b63) \\\{ [CC_ENABLED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a54de466c4f3f991c714bb5719d706b63aef79c253b99faa4f9a41cfa73a84a74f), [CC_DISABLED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a54de466c4f3f991c714bb5719d706b63ad4a94566cadf162aa667e0923a7697de) \\\} |
+|  |  |
+| enum | [BYTES_PER_SAMPLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a74143af8b2847d195090020877e7369d) \\\{ [TWO_BYTES_PER_SAMPLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a74143af8b2847d195090020877e7369da2ac2866da3a1e71f529fa2aa06eab97d) = 2 \\\} |
+|  |  |
+| enum | [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) \\\{ [RAW_AUDIO_FRAME_OP_MODE_READ_ONLY](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52) = 0, [RAW_AUDIO_FRAME_OP_MODE_READ_WRITE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bba981a8e6434a19c97343ffec38bf2e31a) = 2 \\\} |
+|  |  |
+| enum | [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) \\\{ [RTMP_CONNECTION_ERR_OK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710dea9487ca7eea78822013083f643585e994) = 0, [RTMP_CONNECTION_ERR_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710deabdce99809b2f603d2c389b86a6ffd81d) = 1, [RTMP_CONNECTION_ERR_INVALID_URL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710dea8071775e91d6654350fc0e5fe7636d70) = 2, [RTMP_CONNECTION_ERR_BAD_NAME](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710dea3208d528c68c666efbcc599166c5467e) = 3 \\\} |
+|  |  |
+| enum | [RTMP_CONNECTION_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681) \\\{ [STATE_DISCONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681a1e98a9b3e2100a99833d45d3f95c7728) = 1, [STATE_CONNECTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681a88f854c4436729950e18c291c8c19b6d) = 2, [STATE_CONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681af8ba2691700e27ae350207c48b4ec1df) = 3, [STATE_RECONNECTING](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681aa0b16717707e51c789610f80d3c6f059) = 4, [STATE_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681a2d592cdb8de205cec41e5eb702f4431c) = 5, [STATE_RECONNECTED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681a3941ce0aa3e7b73b3686a94d5804e4b5) = 6 \\\} |
+|  |  |
+| enum | [PublishAudioError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47) \\\{ [PUBLISH_AUDIO_ERR_OK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47a8f591dd20b09edddde423f6516049f83) = 0, [PUBLISH_AUDIO_ERR_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47aaae115bb328bc08ac627da5da9b64ae5) = 1 \\\} |
+|  |  |
+| enum | [PublishVideoError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63e) \\\{ [PUBLISH_VIDEO_ERR_OK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63ead4f8e8d4c95b080ebe57315470de4918) = 0, [PUBLISH_VIDEO_ERR_FAILED](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63eab7ce18174ee9b15caa9d0c60fc93b726) = 1 \\\} |
+|  |  |
+| enum | [ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) \\\{ [kPng](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173), [kJpeg](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75ab5257456edaf82872832b2c76194b8b3), [kGif](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a99b1da8bf6dc1d32ff098843d3049576) \\\} |
+|  |  |
+| enum | [StreamLayerIndexInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26d) \\\{ [STREAM_LAYER_1](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26daee8d44f729c22d7c6773ee56927dd0f8) = 1, [STREAM_LAYER_2](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da4aeab168f90bd1d68e2c24cb4350ab39) = 2, [STREAM_LAYER_3](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da8d773251752a80df0eb8aa3dad93b457) = 3, [STREAM_LAYER_4](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26daedafa3ffd189ca1d2c272a6c65cd2d52) = 4, [STREAM_LAYER_5](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26daf24d21dd50966a23f757a1e5902bb4c9) = 5, [STREAM_LAYER_6](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da0d0c04aba908347fa0161272524bc8c0) = 6, [STREAM_LOW](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da9530b8403f1b34e408ef1a91d43657a7) = 7, [STREAM_LAYER_COUNT_MAX](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da06c1204fcdf9fc528f81f6663da31343) = 8 \\\} |
+|  |  |
+| enum | [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) \\\{ [LOCAL_VIDEO_TRACK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9a8d3e687b87c6008d6b856e8781580c3a), [REMOTE_VIDEO_TRACK](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9a3d199461a405a1ec0a3f5908eb518438) \\\} |
+|  |  |
+
+| <a id="var-members"></a> 变量 |  |
+| --- | --- |
+| const int | [STANDARD_BITRATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa3b9a29c1e9893671d0ca8fe05c7b302) = 0 |
+|  |  |
+| const int | [COMPATIBLE_BITRATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a4e18b18d956926c9c9c647d6ce5f1542) = -1 |
+|  |  |
+| static const unsigned int | [DEFAULT_CONNECTION_ID](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af0e8e50f05a368140f51ab0b899f0833) = 0 |
+|  |  |
+| static const unsigned int | [DUMMY_CONNECTION_ID](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#abaad7ca107078a076b2543a6c13fcec7) = (std::numeric_limits&lt;unsigned int&gt;::max)() |
+|  |  |
+
+## 类型定义说明
+
+<a id="ab650539cb2bdcf8382d0aa32c6d70aa7"></a>
+
+## ◆uid_t
+
+| typedef unsigned int [agora::rtc::uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) |
+| --- |
+
+<a id="a728a2a0d7515f2c3376614be00173f7d"></a>
+
+## ◆track_id_t
+
+| typedef unsigned int [agora::rtc::track_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a728a2a0d7515f2c3376614be00173f7d) |
+| --- |
+
+<a id="ab669d53cb37e3274112d7fba3eaa27d9"></a>
+
+## ◆conn_id_t
+
+| typedef unsigned int [agora::rtc::conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) |
+| --- |
+
+## 枚举类型说明
+
+<a id="a56ebc30a718928cb6998ba1424900fef"></a>
+
+## ◆USER_OFFLINE_REASON_TYPE
+
+| enum [agora::rtc::USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) |
+| --- |
+
+用户离线原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+| <Slot name="api-center-table-2" /> | <Slot name="api-center-table-3" /> |
+| <Slot name="api-center-table-4" /> | <Slot name="api-center-table-5" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="a56ebc30a718928cb6998ba1424900fefa39836e44dee02db52ccebf4f8d963422"></a>USER_OFFLINE_QUIT
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+0: 用户主动离开。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="a56ebc30a718928cb6998ba1424900fefab534ea4a1a5d4fcd4932d50f4e0e96d1"></a>USER_OFFLINE_DROPPED
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+1:因过长时间收不到对方数据包，超时掉线。由于 SDK 使用的是不可靠通道，也有可能对方主动离开频道，但是本地没收到对方离开消息而误判为超时掉线。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+<a id="a56ebc30a718928cb6998ba1424900fefa2f31868fc17153cb1d798dad13905d32"></a>USER_OFFLINE_BECOME_AUDIENCE
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+2: 用户身份从主播切换为观众。
+
+</Slot>
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891"></a>
+
+## ◆QUALITY_TYPE
+
+| enum [agora::rtc::QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) |
+| --- |
+
+网络质量类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-6" /> | <Slot name="api-center-table-7" /> |
+| <Slot name="api-center-table-8" /> | <Slot name="api-center-table-9" /> |
+| <Slot name="api-center-table-10" /> | <Slot name="api-center-table-11" /> |
+| <Slot name="api-center-table-12" /> | <Slot name="api-center-table-13" /> |
+| <Slot name="api-center-table-14" /> | <Slot name="api-center-table-15" /> |
+| <Slot name="api-center-table-16" /> | <Slot name="api-center-table-17" /> |
+| <Slot name="api-center-table-18" /> | <Slot name="api-center-table-19" /> |
+
+<Slot for="api-center-table-6">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891aa5c479e59fe69f38a52040a3f4d19380"></a>QUALITY_UNKNOWN
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+0: 质量未知。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891aed27e4baacc04a6ae99e063e01db3694"></a>QUALITY_EXCELLENT
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+1: 质量极好。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891a75cf9305a451fcb53279a2e628d78c16"></a>QUALITY_GOOD
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+2: 用户主观感觉和极好差不多，但码率可能略低于极好。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891a4bcf1cac434df6a62b56210f065dc6cb"></a>QUALITY_POOR
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+3: 用户主观感受有瑕疵但不影响沟通。
+
+</Slot>
+
+<Slot for="api-center-table-14">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891a2783cf640eaf1505575b2812da79f396"></a>QUALITY_BAD
+
+</Slot>
+
+<Slot for="api-center-table-15">
+
+4: 勉强能沟通但不顺畅。
+
+</Slot>
+
+<Slot for="api-center-table-16">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891ab362c6bae120ac210b506120a95cf940"></a>QUALITY_VBAD
+
+</Slot>
+
+<Slot for="api-center-table-17">
+
+5: 网络质量非常差，基本不能沟通。
+
+</Slot>
+
+<Slot for="api-center-table-18">
+
+<a id="aeaf419fcafaa4d58da8b6d8718e31891aed391bbc2c9e747b36bdf76997bb8221"></a>QUALITY_DOWN
+
+</Slot>
+
+<Slot for="api-center-table-19">
+
+6: 网络连接断开，完全无法沟通。
+
+</Slot>
+
+<a id="aedbc3d09c641940779abc983aa3ee3bc"></a>
+
+## ◆VIDEO_ORIENTATION
+
+| enum [agora::rtc::VIDEO_ORIENTATION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bc) |
+| --- |
+
+视频旋转信息。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-20" /> | <Slot name="api-center-table-21" /> |
+| <Slot name="api-center-table-22" /> | <Slot name="api-center-table-23" /> |
+| <Slot name="api-center-table-24" /> | <Slot name="api-center-table-25" /> |
+| <Slot name="api-center-table-26" /> | <Slot name="api-center-table-27" /> |
+
+<Slot for="api-center-table-20">
+
+<a id="aedbc3d09c641940779abc983aa3ee3bca3383b6c7e915840bc3608662ea4fae4d"></a>VIDEO_ORIENTATION_0
+
+</Slot>
+
+<Slot for="api-center-table-21">
+
+0: 顺时针旋转 0 度。
+
+</Slot>
+
+<Slot for="api-center-table-22">
+
+<a id="aedbc3d09c641940779abc983aa3ee3bca6608e1f19f9838ff0f570adf248a5343"></a>VIDEO_ORIENTATION_90
+
+</Slot>
+
+<Slot for="api-center-table-23">
+
+90: 顺时针旋转 90 度。
+
+</Slot>
+
+<Slot for="api-center-table-24">
+
+<a id="aedbc3d09c641940779abc983aa3ee3bca6e0af5872680eb93aae8bbf93d2d3382"></a>VIDEO_ORIENTATION_180
+
+</Slot>
+
+<Slot for="api-center-table-25">
+
+180: 顺时针旋转 180 度。
+
+</Slot>
+
+<Slot for="api-center-table-26">
+
+<a id="aedbc3d09c641940779abc983aa3ee3bca0d0688309a8c979440800c7e2951f856"></a>VIDEO_ORIENTATION_270
+
+</Slot>
+
+<Slot for="api-center-table-27">
+
+270: 顺时针旋转 270 度。
+
+</Slot>
+
+<a id="a382d0a93e80539155ebd729e362684f1"></a>
+
+## ◆FRAME_RATE
+
+| enum [agora::rtc::FRAME_RATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a382d0a93e80539155ebd729e362684f1) |
+| --- |
+
+视频帧率。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-28" /> | <Slot name="api-center-table-29" /> |
+| <Slot name="api-center-table-30" /> | <Slot name="api-center-table-31" /> |
+| <Slot name="api-center-table-32" /> | <Slot name="api-center-table-33" /> |
+| <Slot name="api-center-table-34" /> | <Slot name="api-center-table-35" /> |
+| <Slot name="api-center-table-36" /> | <Slot name="api-center-table-37" /> |
+| <Slot name="api-center-table-38" /> | <Slot name="api-center-table-39" /> |
+| <Slot name="api-center-table-40" /> | <Slot name="api-center-table-41" /> |
+
+<Slot for="api-center-table-28">
+
+<a id="a382d0a93e80539155ebd729e362684f1a977f1cfdcf5b800f993482da6a173cd5"></a>FRAME_RATE_FPS_1
+
+</Slot>
+
+<Slot for="api-center-table-29">
+
+1: 1 fps
+
+</Slot>
+
+<Slot for="api-center-table-30">
+
+<a id="a382d0a93e80539155ebd729e362684f1ad04434616f09899ce747d9411099a3a1"></a>FRAME_RATE_FPS_7
+
+</Slot>
+
+<Slot for="api-center-table-31">
+
+7: 7 fps
+
+</Slot>
+
+<Slot for="api-center-table-32">
+
+<a id="a382d0a93e80539155ebd729e362684f1aa12cac1b6fd0fae6e0d17e300bc16623"></a>FRAME_RATE_FPS_10
+
+</Slot>
+
+<Slot for="api-center-table-33">
+
+10: 10 fps
+
+</Slot>
+
+<Slot for="api-center-table-34">
+
+<a id="a382d0a93e80539155ebd729e362684f1a58bcbb5182037fb47ff30c42eee66710"></a>FRAME_RATE_FPS_15
+
+</Slot>
+
+<Slot for="api-center-table-35">
+
+15: 15 fps
+
+</Slot>
+
+<Slot for="api-center-table-36">
+
+<a id="a382d0a93e80539155ebd729e362684f1a076f14806cad9efc861f4cc1275578e4"></a>FRAME_RATE_FPS_24
+
+</Slot>
+
+<Slot for="api-center-table-37">
+
+24: 24 fps
+
+</Slot>
+
+<Slot for="api-center-table-38">
+
+<a id="a382d0a93e80539155ebd729e362684f1ac9ceedbdf97cbaa1c30a17773e7998db"></a>FRAME_RATE_FPS_30
+
+</Slot>
+
+<Slot for="api-center-table-39">
+
+30: 30 fps
+
+</Slot>
+
+<Slot for="api-center-table-40">
+
+<a id="a382d0a93e80539155ebd729e362684f1ae3b15e53bd5d9107a7aa13e6ed29b825"></a>FRAME_RATE_FPS_60
+
+</Slot>
+
+<Slot for="api-center-table-41">
+
+60: 60 fps。仅适用于 Windows 和 macOS 平台。
+
+</Slot>
+
+<a id="a2f07c4ed608d97da9e6bfbdb7723d9dd"></a>
+
+## ◆FRAME_WIDTH
+
+| enum [agora::rtc::FRAME_WIDTH](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2f07c4ed608d97da9e6bfbdb7723d9dd) |
+| --- |
+
+视频帧宽度。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-42" /> | <Slot name="api-center-table-43" /> |
+
+<Slot for="api-center-table-42">
+
+<a id="a2f07c4ed608d97da9e6bfbdb7723d9ddad29e62742c2779d2171051f8be3e9de9"></a>FRAME_WIDTH_640
+
+</Slot>
+
+<Slot for="api-center-table-43">
+
+640：640 像素
+
+</Slot>
+
+<a id="a29e02d842f9dbb4284039e6ee31a99f0"></a>
+
+## ◆FRAME_HEIGHT
+
+| enum [agora::rtc::FRAME_HEIGHT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a29e02d842f9dbb4284039e6ee31a99f0) |
+| --- |
+
+视频帧高度。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-44" /> | <Slot name="api-center-table-45" /> |
+
+<Slot for="api-center-table-44">
+
+<a id="a29e02d842f9dbb4284039e6ee31a99f0aa037e64f88bf0ca7c3d4d20956973c81"></a>FRAME_HEIGHT_360
+
+</Slot>
+
+<Slot for="api-center-table-45">
+
+360：360 像素
+
+</Slot>
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281"></a>
+
+## ◆VIDEO_FRAME_TYPE
+
+| enum [agora::rtc::VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281) |
+| --- |
+
+视频帧类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-46" /> | <Slot name="api-center-table-47" /> |
+| <Slot name="api-center-table-48" /> | <Slot name="api-center-table-49" /> |
+| <Slot name="api-center-table-50" /> | <Slot name="api-center-table-51" /> |
+| <Slot name="api-center-table-52" /> | <Slot name="api-center-table-53" /> |
+| <Slot name="api-center-table-54" /> | <Slot name="api-center-table-55" /> |
+| <Slot name="api-center-table-56" /> | <Slot name="api-center-table-57" /> |
+
+<Slot for="api-center-table-46">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281a7bf11c6cbcd205e9cc75546528207a93"></a>VIDEO_FRAME_TYPE_BLANK_FRAME
+
+</Slot>
+
+<Slot for="api-center-table-47">
+
+0：空白帧
+
+</Slot>
+
+<Slot for="api-center-table-48">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281a6092e565d83e3e0e6b441ca11e21a65e"></a>VIDEO_FRAME_TYPE_KEY_FRAME
+
+</Slot>
+
+<Slot for="api-center-table-49">
+
+3：关键帧。对于 H.264 编码格式，SDK 把带有 sps 和 pps 信息的 I 帧归类为关键帧。
+
+</Slot>
+
+<Slot for="api-center-table-50">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281ac20e0af03b67b72c32a9cf44a2854f00"></a>VIDEO_FRAME_TYPE_DELTA_FRAME
+
+</Slot>
+
+<Slot for="api-center-table-51">
+
+4：Delta 帧。对于 H.264 编码格式，SDK 把 P 帧和不带 sps 和 pps 信息的 I 帧都归类为 Delta 帧。
+
+</Slot>
+
+<Slot for="api-center-table-52">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281a18eefebf17017d9a7e7b846fe7320f40"></a>VIDEO_FRAME_TYPE_B_FRAME
+
+</Slot>
+
+<Slot for="api-center-table-53">
+
+5：B 帧
+
+</Slot>
+
+<Slot for="api-center-table-54">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281a49a7f6c4e570941736c95eb997a91098"></a>VIDEO_FRAME_TYPE_DROPPABLE_FRAME
+
+</Slot>
+
+<Slot for="api-center-table-55">
+
+6：丢弃帧
+
+</Slot>
+
+<Slot for="api-center-table-56">
+
+<a id="aecdd48fd8c80e68e723e4bea97cb4281a5e6a216c6f2dc7491eb0a8b9f1f2487e"></a>VIDEO_FRAME_TYPE_UNKNOW
+
+</Slot>
+
+<Slot for="api-center-table-57">
+
+7：未知
+
+</Slot>
+
+<a id="af3d825e24a1e5dcfb74279c69b81d0c7"></a>
+
+## ◆ORIENTATION_MODE
+
+| enum [agora::rtc::ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) |
+| --- |
+
+视频编码的方向模式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-58" /> | <Slot name="api-center-table-59" /> |
+| <Slot name="api-center-table-60" /> | <Slot name="api-center-table-61" /> |
+| <Slot name="api-center-table-62" /> | <Slot name="api-center-table-63" /> |
+
+<Slot for="api-center-table-58">
+
+<a id="af3d825e24a1e5dcfb74279c69b81d0c7a6c9c916656d47771664b0696fbaa39bc"></a>ORIENTATION_MODE_ADAPTIVE
+
+</Slot>
+
+<Slot for="api-center-table-59">
+
+0: （默认）该模式下 SDK 输出的视频方向与采集到的视频方向一致。接收端会根据收到的视频旋转信息对视频进行旋转。该模式适用于接收端可以调整视频方向的场景。 如果采集的视频是横屏模式，则输出的视频也是横屏模式。 如果采集的视频是竖屏模式，则输出的视频也是竖屏模式。
+
+</Slot>
+
+<Slot for="api-center-table-60">
+
+<a id="af3d825e24a1e5dcfb74279c69b81d0c7ac8e505f519b124299c5977b21df29c21"></a>ORIENTATION_MODE_FIXED_LANDSCAPE
+
+</Slot>
+
+<Slot for="api-center-table-61">
+
+1: 该模式下 SDK 固定输出风景（横屏）模式的视频。如果采集到的视频是竖屏模式，则视频编码器会对其进行裁剪。该模式适用于接收端无法调整视频方向的场景，如直推 CDN。
+
+</Slot>
+
+<Slot for="api-center-table-62">
+
+<a id="af3d825e24a1e5dcfb74279c69b81d0c7a26abe8e035ec0867b3603ffccc9248f8"></a>ORIENTATION_MODE_FIXED_PORTRAIT
+
+</Slot>
+
+<Slot for="api-center-table-63">
+
+2: 该模式下 SDK 固定输出人像（竖屏）模式的视频，如果采集到的视频是横屏模式，则视频编码器会对其进行裁剪。该模式适用于接收端无法调整视频方向的场景，如直推 CDN。
+
+</Slot>
+
+<a id="ae02c6d4b2848c21a502e4c1643d85ef6"></a>
+
+## ◆DEGRADATION_PREFERENCE
+
+| enum [agora::rtc::DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6) |
+| --- |
+
+带宽受限时的视频编码降级偏好。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-64" /> | <Slot name="api-center-table-65" /> |
+| <Slot name="api-center-table-66" /> | <Slot name="api-center-table-67" /> |
+| <Slot name="api-center-table-68" /> | <Slot name="api-center-table-69" /> |
+| <Slot name="api-center-table-70" /> | <Slot name="api-center-table-71" /> |
+
+<Slot for="api-center-table-64">
+
+<a id="ae02c6d4b2848c21a502e4c1643d85ef6ac80182fd2f0983d09e5e6841c6020729"></a>MAINTAIN_QUALITY
+
+</Slot>
+
+<Slot for="api-center-table-65">
+
+0: （默认）带宽受限时，视频编码时优先降低视频帧率，维持视频质量不变。该降级偏好适用于画质优先的场景。
+
+</Slot>
+
+<Slot for="api-center-table-66">
+
+<a id="ae02c6d4b2848c21a502e4c1643d85ef6a0334a246d5ad15fc9c8a9b4bc3c5fdd7"></a>MAINTAIN_FRAMERATE
+
+</Slot>
+
+<Slot for="api-center-table-67">
+
+1: 带宽受限时，视频编码时优先降低视频质量，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
+
+</Slot>
+
+<Slot for="api-center-table-68">
+
+<a id="ae02c6d4b2848c21a502e4c1643d85ef6abac0022e3068e6435d9bc50db18983ac"></a>MAINTAIN_BALANCED
+
+</Slot>
+
+<Slot for="api-center-table-69">
+
+2: 带宽受限时，视频编码时同时降低视频帧率和视频质量。MAINTAIN_BALANCED 的降幅比 MAINTAIN_QUALITY 和 MAINTAIN_FRAMERATE 降幅更低， 适用于流畅性和画质均有限的场景。
+
+</Slot>
+
+<Slot for="api-center-table-70">
+
+<a id="ae02c6d4b2848c21a502e4c1643d85ef6adc9377a20e6d6e8c686a5fe44e13a5c2"></a>MAINTAIN_RESOLUTION
+
+</Slot>
+
+<Slot for="api-center-table-71">
+
+3: 带宽受限时，视频编码时优先降低视频帧率。
+
+</Slot>
+
+<a id="a79ccac2a3f394deae680761453d15215"></a>
+
+## ◆VIDEO_CODEC_TYPE
+
+| enum [agora::rtc::VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215) |
+| --- |
+
+视频编码类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-72" /> | <Slot name="api-center-table-73" /> |
+| <Slot name="api-center-table-74" /> | <Slot name="api-center-table-75" /> |
+| <Slot name="api-center-table-76" /> | <Slot name="api-center-table-77" /> |
+| <Slot name="api-center-table-78" /> | <Slot name="api-center-table-79" /> |
+| <Slot name="api-center-table-80" /> | <Slot name="api-center-table-81" /> |
+| <Slot name="api-center-table-82" /> | <Slot name="api-center-table-83" /> |
+| <Slot name="api-center-table-84" /> | <Slot name="api-center-table-85" /> |
+| <Slot name="api-center-table-86" /> | <Slot name="api-center-table-87" /> |
+| <Slot name="api-center-table-88" /> | <Slot name="api-center-table-89" /> |
+
+<Slot for="api-center-table-72">
+
+<a id="a79ccac2a3f394deae680761453d15215ab9372940cb7e4d55d9ddd5dd602e9bcd"></a>VIDEO_CODEC_NONE
+
+</Slot>
+
+<Slot for="api-center-table-73">
+
+0: 无
+
+</Slot>
+
+<Slot for="api-center-table-74">
+
+<a id="a79ccac2a3f394deae680761453d15215af329da3c92373846ea20233787353237"></a>VIDEO_CODEC_VP8
+
+</Slot>
+
+<Slot for="api-center-table-75">
+
+1: VP8
+
+</Slot>
+
+<Slot for="api-center-table-76">
+
+<a id="a79ccac2a3f394deae680761453d15215a6fcc2382c1d5bbc07d14db66fd9d6574"></a>VIDEO_CODEC_H264
+
+</Slot>
+
+<Slot for="api-center-table-77">
+
+2: H.264
+
+</Slot>
+
+<Slot for="api-center-table-78">
+
+<a id="a79ccac2a3f394deae680761453d15215a382e3099cc94622b11fbbe0d71a73cd2"></a>VIDEO_CODEC_H265
+
+</Slot>
+
+<Slot for="api-center-table-79">
+
+3: H.265
+
+</Slot>
+
+<Slot for="api-center-table-80">
+
+<a id="a79ccac2a3f394deae680761453d15215a52b54b2dd05570f3333935d7afab9a7f"></a>VIDEO_CODEC_VP9
+
+</Slot>
+
+<Slot for="api-center-table-81">
+
+5: VP9
+
+</Slot>
+
+<Slot for="api-center-table-82">
+
+<a id="a79ccac2a3f394deae680761453d15215a742d2b12d33fb9f54afc97a5d14211cd"></a>VIDEO_CODEC_GENERIC
+
+</Slot>
+
+<Slot for="api-center-table-83">
+
+6: Generic
+
+</Slot>
+
+<Slot for="api-center-table-84">
+
+<a id="a79ccac2a3f394deae680761453d15215a2effe3d56056678fa3d5c29bf79be2bf"></a>VIDEO_CODEC_GENERIC_H264
+
+</Slot>
+
+<Slot for="api-center-table-85">
+
+7: Generic H264
+
+</Slot>
+
+<Slot for="api-center-table-86">
+
+<a id="a79ccac2a3f394deae680761453d15215a5825fdb6f7017fbc95cef506b811193f"></a>VIDEO_CODEC_AV1
+
+</Slot>
+
+<Slot for="api-center-table-87">
+
+12: AV1
+
+</Slot>
+
+<Slot for="api-center-table-88">
+
+<a id="a79ccac2a3f394deae680761453d15215a3c72dac48d1512ad4094fe1429d54c58"></a>VIDEO_CODEC_GENERIC_JPEG
+
+</Slot>
+
+<Slot for="api-center-table-89">
+
+20: JPEG
+
+</Slot>
+
+<a id="ac211c1a503d38d504c92b5f006240053"></a>
+
+## ◆AUDIO_CODEC_TYPE
+
+| enum [agora::rtc::AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053) |
+| --- |
+
+音频编码类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-90" /> | <Slot name="api-center-table-91" /> |
+| <Slot name="api-center-table-92" /> | <Slot name="api-center-table-93" /> |
+| <Slot name="api-center-table-94" /> | <Slot name="api-center-table-95" /> |
+| <Slot name="api-center-table-96" /> | <Slot name="api-center-table-97" /> |
+| <Slot name="api-center-table-98" /> | <Slot name="api-center-table-99" /> |
+| <Slot name="api-center-table-100" /> | <Slot name="api-center-table-101" /> |
+| <Slot name="api-center-table-102" /> | <Slot name="api-center-table-103" /> |
+
+<Slot for="api-center-table-90">
+
+<a id="ac211c1a503d38d504c92b5f006240053a618295ffbcd36987358d5630568fe0fb"></a>AUDIO_CODEC_OPUS
+
+</Slot>
+
+<Slot for="api-center-table-91">
+
+1: OPUS
+
+</Slot>
+
+<Slot for="api-center-table-92">
+
+<a id="ac211c1a503d38d504c92b5f006240053ad8c446b4ba583f021ba164c0be9a15e3"></a>AUDIO_CODEC_PCMA
+
+</Slot>
+
+<Slot for="api-center-table-93">
+
+3: PCMA
+
+</Slot>
+
+<Slot for="api-center-table-94">
+
+<a id="ac211c1a503d38d504c92b5f006240053a47aee8a3336612189e116839c9398aa3"></a>AUDIO_CODEC_PCMU
+
+</Slot>
+
+<Slot for="api-center-table-95">
+
+4: PCMU
+
+</Slot>
+
+<Slot for="api-center-table-96">
+
+<a id="ac211c1a503d38d504c92b5f006240053a0e153f963224879f02255a8e557bfeb5"></a>AUDIO_CODEC_G722
+
+</Slot>
+
+<Slot for="api-center-table-97">
+
+5: G722
+
+</Slot>
+
+<Slot for="api-center-table-98">
+
+<a id="ac211c1a503d38d504c92b5f006240053a9826001d5230eb1383e1af589ea4b972"></a>AUDIO_CODEC_AACLC
+
+</Slot>
+
+<Slot for="api-center-table-99">
+
+8: AAC LC
+
+</Slot>
+
+<Slot for="api-center-table-100">
+
+<a id="ac211c1a503d38d504c92b5f006240053a39d84162c35f3ab0be6fac022591bd2a"></a>AUDIO_CODEC_HEAAC
+
+</Slot>
+
+<Slot for="api-center-table-101">
+
+9: HE AAC
+
+</Slot>
+
+<Slot for="api-center-table-102">
+
+<a id="ac211c1a503d38d504c92b5f006240053a61b2cdb6ef05d8def8e35d61f443db33"></a>AUDIO_CODEC_HEAAC2
+
+</Slot>
+
+<Slot for="api-center-table-103">
+
+11: HEAAC2
+
+</Slot>
+
+<a id="a5f78a8dc3552e4ec308270198dd49b55"></a>
+
+## ◆VIDEO_STREAM_TYPE
+
+| enum [agora::rtc::VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55) |
+| --- |
+
+视频流类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-104" /> | <Slot name="api-center-table-105" /> |
+| <Slot name="api-center-table-106" /> | <Slot name="api-center-table-107" /> |
+
+<Slot for="api-center-table-104">
+
+<a id="a5f78a8dc3552e4ec308270198dd49b55a115955aeb07c864335c1bf23ec59953e"></a>VIDEO_STREAM_HIGH
+
+</Slot>
+
+<Slot for="api-center-table-105">
+
+0: 大流。分辨率和码率较高。
+
+</Slot>
+
+<Slot for="api-center-table-106">
+
+<a id="a5f78a8dc3552e4ec308270198dd49b55a5e75ad3a4498bf5c2daafad6610a3e5a"></a>VIDEO_STREAM_LOW
+
+</Slot>
+
+<Slot for="api-center-table-107">
+
+1: 小流。分辨率和码率较低。
+
+</Slot>
+
+<a id="a8f684b7ea22afd313ea9fbff6d6aea13"></a>
+
+## ◆VIDEO_MIRROR_MODE_TYPE
+
+| enum [agora::rtc::VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13) |
+| --- |
+
+镜像模式类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-108" /> | <Slot name="api-center-table-109" /> |
+| <Slot name="api-center-table-110" /> | <Slot name="api-center-table-111" /> |
+| <Slot name="api-center-table-112" /> | <Slot name="api-center-table-113" /> |
+
+<Slot for="api-center-table-108">
+
+<a id="a8f684b7ea22afd313ea9fbff6d6aea13a9e37327c3d25497dc587a63a28671f0f"></a>VIDEO_MIRROR_MODE_AUTO
+
+</Slot>
+
+<Slot for="api-center-table-109">
+
+0：（默认）由 SDK 决定镜像模式。
+
+</Slot>
+
+<Slot for="api-center-table-110">
+
+<a id="a8f684b7ea22afd313ea9fbff6d6aea13ada3518bf73757e866ebcac5e80e27e3f"></a>VIDEO_MIRROR_MODE_ENABLED
+
+</Slot>
+
+<Slot for="api-center-table-111">
+
+1: 启用镜像模式。
+
+</Slot>
+
+<Slot for="api-center-table-112">
+
+<a id="a8f684b7ea22afd313ea9fbff6d6aea13ae30d613a911b110e8628e9b0d28e9ac9"></a>VIDEO_MIRROR_MODE_DISABLED
+
+</Slot>
+
+<Slot for="api-center-table-113">
+
+2: 关闭镜像模式。
+
+</Slot>
+
+<a id="a0ec618f678ca12272679cbb93e01f3f4"></a>
+
+## ◆SIMULCAST_STREAM_MODE
+
+| enum [agora::rtc::SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) |
+| --- |
+
+发送视频流的模式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-114" /> | <Slot name="api-center-table-115" /> |
+| <Slot name="api-center-table-116" /> | <Slot name="api-center-table-117" /> |
+| <Slot name="api-center-table-118" /> | <Slot name="api-center-table-119" /> |
+
+<Slot for="api-center-table-114">
+
+<a id="a0ec618f678ca12272679cbb93e01f3f4a6dd054127d354c2abd52a7636b2b9d94"></a>AUTO_SIMULCAST_STREAM
+
+</Slot>
+
+<Slot for="api-center-table-115">
+
+-1：默认不发送小流，直至收到接收端发起的订阅小流申请时，自动切换为发送小流模式。
+
+</Slot>
+
+<Slot for="api-center-table-116">
+
+<a id="a0ec618f678ca12272679cbb93e01f3f4a22ac2a70a5a84d804f505a7db38ee093"></a>DISABLE_SIMULCAST_STREAM
+
+</Slot>
+
+<Slot for="api-center-table-117">
+
+0：始终不发送小流。
+
+</Slot>
+
+<Slot for="api-center-table-118">
+
+<a id="a0ec618f678ca12272679cbb93e01f3f4a00d6c1355528b457298c7fa6bc4cb755"></a>ENABLE_SIMULCAST_STREAM
+
+</Slot>
+
+<Slot for="api-center-table-119">
+
+1：始终发送小流。
+
+</Slot>
+
+<a id="ac6699b3c40e047af097d877115dde751"></a>
+
+## ◆VIDEO_SOURCE_TYPE
+
+| enum [agora::rtc::VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751) |
+| --- |
+
+视频源的类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-120" /> | <Slot name="api-center-table-121" /> |
+| <Slot name="api-center-table-122" /> | <Slot name="api-center-table-123" /> |
+| <Slot name="api-center-table-124" /> | <Slot name="api-center-table-125" /> |
+| <Slot name="api-center-table-126" /> | <Slot name="api-center-table-127" /> |
+| <Slot name="api-center-table-128" /> | <Slot name="api-center-table-129" /> |
+| <Slot name="api-center-table-130" /> | <Slot name="api-center-table-131" /> |
+| <Slot name="api-center-table-132" /> | <Slot name="api-center-table-133" /> |
+| <Slot name="api-center-table-134" /> | <Slot name="api-center-table-135" /> |
+| <Slot name="api-center-table-136" /> | <Slot name="api-center-table-137" /> |
+| <Slot name="api-center-table-138" /> | <Slot name="api-center-table-139" /> |
+| <Slot name="api-center-table-140" /> | <Slot name="api-center-table-141" /> |
+| <Slot name="api-center-table-142" /> | <Slot name="api-center-table-143" /> |
+| <Slot name="api-center-table-144" /> | <Slot name="api-center-table-145" /> |
+| <Slot name="api-center-table-146" /> | <Slot name="api-center-table-147" /> |
+
+<Slot for="api-center-table-120">
+
+<a id="ac6699b3c40e047af097d877115dde751a088a280c4204b82a8b459a81116a6d1c"></a>VIDEO_SOURCE_CAMERA_PRIMARY
+
+</Slot>
+
+<Slot for="api-center-table-121">
+
+0：（默认）第一个摄像头。
+
+</Slot>
+
+<Slot for="api-center-table-122">
+
+<a id="ac6699b3c40e047af097d877115dde751a34ed3e8d6f90d64b327f890c690b62fd"></a>VIDEO_SOURCE_CAMERA
+
+</Slot>
+
+<Slot for="api-center-table-123">
+
+0：摄像头。
+
+</Slot>
+
+<Slot for="api-center-table-124">
+
+<a id="ac6699b3c40e047af097d877115dde751a6cf51b1f6014ae5235e5cb06c0c94fe0"></a>VIDEO_SOURCE_CAMERA_SECONDARY
+
+</Slot>
+
+<Slot for="api-center-table-125">
+
+1：第二个摄像头。
+
+</Slot>
+
+<Slot for="api-center-table-126">
+
+<a id="ac6699b3c40e047af097d877115dde751a3800c4e85a719f00a15a989cbccc4aa4"></a>VIDEO_SOURCE_SCREEN_PRIMARY
+
+</Slot>
+
+<Slot for="api-center-table-127">
+
+2：第一个屏幕。
+
+</Slot>
+
+<Slot for="api-center-table-128">
+
+<a id="ac6699b3c40e047af097d877115dde751acc0a885b0b273e2708e50f86b94142c9"></a>VIDEO_SOURCE_SCREEN
+
+</Slot>
+
+<Slot for="api-center-table-129">
+
+2：屏幕。
+
+</Slot>
+
+<Slot for="api-center-table-130">
+
+<a id="ac6699b3c40e047af097d877115dde751aa54842e7340f66b113f7a429fca36aeb"></a>VIDEO_SOURCE_SCREEN_SECONDARY
+
+</Slot>
+
+<Slot for="api-center-table-131">
+
+3：第二个屏幕。
+
+</Slot>
+
+<Slot for="api-center-table-132">
+
+<a id="ac6699b3c40e047af097d877115dde751a215a20f135a19390876851a29762c96b"></a>VIDEO_SOURCE_CUSTOM
+
+</Slot>
+
+<Slot for="api-center-table-133">
+
+4：自定义的视频源。
+
+</Slot>
+
+<Slot for="api-center-table-134">
+
+<a id="ac6699b3c40e047af097d877115dde751abedaad87768634e870614424f3b74785"></a>VIDEO_SOURCE_MEDIA_PLAYER
+
+</Slot>
+
+<Slot for="api-center-table-135">
+
+5：媒体播放器共享的视频源。
+
+</Slot>
+
+<Slot for="api-center-table-136">
+
+<a id="ac6699b3c40e047af097d877115dde751af03455532348db7151b91e2faf67871a"></a>VIDEO_SOURCE_RTC_IMAGE_PNG
+
+</Slot>
+
+<Slot for="api-center-table-137">
+
+6：视频源为 PNG 图片。
+
+</Slot>
+
+<Slot for="api-center-table-138">
+
+<a id="ac6699b3c40e047af097d877115dde751a17491d6725bfdb4735f18c5d86bd9fca"></a>VIDEO_SOURCE_RTC_IMAGE_JPEG
+
+</Slot>
+
+<Slot for="api-center-table-139">
+
+7：视频源为 JPEG 图片。
+
+</Slot>
+
+<Slot for="api-center-table-140">
+
+<a id="ac6699b3c40e047af097d877115dde751a224314b533e8347d86e35bb10a4c2726"></a>VIDEO_SOURCE_RTC_IMAGE_GIF
+
+</Slot>
+
+<Slot for="api-center-table-141">
+
+8：视频源为 GIF 图片。
+
+</Slot>
+
+<Slot for="api-center-table-142">
+
+<a id="ac6699b3c40e047af097d877115dde751a57b4d782e7da427d3c17546ee92f20c4"></a>VIDEO_SOURCE_REMOTE
+
+</Slot>
+
+<Slot for="api-center-table-143">
+
+9：视频源为网络获取的远端视频。
+
+</Slot>
+
+<Slot for="api-center-table-144">
+
+<a id="ac6699b3c40e047af097d877115dde751aef414c00ce57b3278695b090ac4df9f9"></a>VIDEO_SOURCE_TRANSCODED
+
+</Slot>
+
+<Slot for="api-center-table-145">
+
+10：转码后的视频源。
+
+</Slot>
+
+<Slot for="api-center-table-146">
+
+<a id="ac6699b3c40e047af097d877115dde751ab2cafe4ce84ddeefb1c10ac8abaeff36"></a>VIDEO_SOURCE_UNKNOWN
+
+</Slot>
+
+<Slot for="api-center-table-147">
+
+11：未知的视频源。
+
+</Slot>
+
+<a id="a42f167813e36b5c11a8a1c659b877080"></a>
+
+## ◆CLIENT_ROLE_TYPE
+
+| enum [agora::rtc::CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) |
+| --- |
+
+用户角色类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-148" /> | <Slot name="api-center-table-149" /> |
+| <Slot name="api-center-table-150" /> | <Slot name="api-center-table-151" /> |
+
+<Slot for="api-center-table-148">
+
+<a id="a42f167813e36b5c11a8a1c659b877080a8a1a7a863a7f1f1f23d300d59d719912"></a>CLIENT_ROLE_BROADCASTER
+
+</Slot>
+
+<Slot for="api-center-table-149">
+
+1: 主播。主播可以同时发送和接收媒体流。
+
+</Slot>
+
+<Slot for="api-center-table-150">
+
+<a id="a42f167813e36b5c11a8a1c659b877080a21c4eacfac7477cf9b061cebd7093d97"></a>CLIENT_ROLE_AUDIENCE
+
+</Slot>
+
+<Slot for="api-center-table-151">
+
+2: 观众。观众只能接收媒体流。
+
+</Slot>
+
+<a id="ab8ebad21ea6a6b579c03f05c4533a071"></a>
+
+## ◆QUALITY_ADAPT_INDICATION
+
+| enum [agora::rtc::QUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071) |
+| --- |
+
+视频质量变化提示。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-152" /> | <Slot name="api-center-table-153" /> |
+| <Slot name="api-center-table-154" /> | <Slot name="api-center-table-155" /> |
+| <Slot name="api-center-table-156" /> | <Slot name="api-center-table-157" /> |
+
+<Slot for="api-center-table-152">
+
+<a id="ab8ebad21ea6a6b579c03f05c4533a071a36d8846dfe311cc3aa7a4c21d1b09cf5"></a>ADAPT_NONE
+
+</Slot>
+
+<Slot for="api-center-table-153">
+
+0：本地视频质量不变。
+
+</Slot>
+
+<Slot for="api-center-table-154">
+
+<a id="ab8ebad21ea6a6b579c03f05c4533a071a3ea2884cacdfa1e8cebcf4f2a1b1de85"></a>ADAPT_UP_BANDWIDTH
+
+</Slot>
+
+<Slot for="api-center-table-155">
+
+1：由于网络带宽增加导致质量提升。
+
+</Slot>
+
+<Slot for="api-center-table-156">
+
+<a id="ab8ebad21ea6a6b579c03f05c4533a071a92869c78f5489738ea1413035c59c8b7"></a>ADAPT_DOWN_BANDWIDTH
+
+</Slot>
+
+<Slot for="api-center-table-157">
+
+2：由于网络带宽降低导致质量下降。
+
+</Slot>
+
+<a id="a8d5b01851e8fcbee10e5bd85fb9bf15a"></a>
+
+## ◆EXPERIENCE_QUALITY_TYPE
+
+| enum [agora::rtc::EXPERIENCE_QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8d5b01851e8fcbee10e5bd85fb9bf15a) |
+| --- |
+
+接收远端音频时，本地用户的主观体验质量。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-158" /> | <Slot name="api-center-table-159" /> |
+| <Slot name="api-center-table-160" /> | <Slot name="api-center-table-161" /> |
+
+<Slot for="api-center-table-158">
+
+<a id="a8d5b01851e8fcbee10e5bd85fb9bf15aa2d970353462d66fab90095055a1f3062"></a>EXPERIENCE_QUALITY_GOOD
+
+</Slot>
+
+<Slot for="api-center-table-159">
+
+0: 主观体验质量较好。
+
+</Slot>
+
+<Slot for="api-center-table-160">
+
+<a id="a8d5b01851e8fcbee10e5bd85fb9bf15aa7570318e483039dfc47033eaf9e036c9"></a>EXPERIENCE_QUALITY_BAD
+
+</Slot>
+
+<Slot for="api-center-table-161">
+
+1: 主观体验质量较差。
+
+</Slot>
+
+<a id="a830f382d595a185632d0fece36d67d54"></a>
+
+## ◆EXPERIENCE_POOR_REASON
+
+| enum [agora::rtc::EXPERIENCE_POOR_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a830f382d595a185632d0fece36d67d54) |
+| --- |
+
+接收远端音频时，本地用户主观体验质量较差的原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-162" /> | <Slot name="api-center-table-163" /> |
+| <Slot name="api-center-table-164" /> | <Slot name="api-center-table-165" /> |
+| <Slot name="api-center-table-166" /> | <Slot name="api-center-table-167" /> |
+| <Slot name="api-center-table-168" /> | <Slot name="api-center-table-169" /> |
+| <Slot name="api-center-table-170" /> | <Slot name="api-center-table-171" /> |
+
+<Slot for="api-center-table-162">
+
+<a id="a830f382d595a185632d0fece36d67d54a3a127af891654876ad34a2404d17a7fb"></a>EXPERIENCE_REASON_NONE
+
+</Slot>
+
+<Slot for="api-center-table-163">
+
+0: 无原因，说明主观体验质量较好。
+
+</Slot>
+
+<Slot for="api-center-table-164">
+
+<a id="a830f382d595a185632d0fece36d67d54afbefb5b8fc8ba61e934e3e4ffad472c0"></a>REMOTE_NETWORK_QUALITY_POOR
+
+</Slot>
+
+<Slot for="api-center-table-165">
+
+1: 远端用户的网络较差。
+
+</Slot>
+
+<Slot for="api-center-table-166">
+
+<a id="a830f382d595a185632d0fece36d67d54a2ce9dd01a723e103bd851dfb892a2892"></a>LOCAL_NETWORK_QUALITY_POOR
+
+</Slot>
+
+<Slot for="api-center-table-167">
+
+2: 本地用户的网络较差。
+
+</Slot>
+
+<Slot for="api-center-table-168">
+
+<a id="a830f382d595a185632d0fece36d67d54a634c8ded29dfafa8b41da9187daf5d9a"></a>WIRELESS_SIGNAL_POOR
+
+</Slot>
+
+<Slot for="api-center-table-169">
+
+4: 本地用户的 Wi-Fi 或者移动数据网络信号弱。
+
+</Slot>
+
+<Slot for="api-center-table-170">
+
+<a id="a830f382d595a185632d0fece36d67d54ab624ea30a5ec9a0ade1afcf03c886177"></a>WIFI_BLUETOOTH_COEXIST
+
+</Slot>
+
+<Slot for="api-center-table-171">
+
+8: 本地用户同时开启 Wi-Fi 和蓝牙，二者信号互相干扰，导致音频传输质量下降。
+
+</Slot>
+
+<a id="a75448342947f6e98becc2b27d2edca55"></a>
+
+## ◆AUDIO_PROFILE_TYPE
+
+| enum [agora::rtc::AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a75448342947f6e98becc2b27d2edca55) |
+| --- |
+
+音频属性。设置采样率，码率，编码模式和声道数。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-172" /> | <Slot name="api-center-table-173" /> |
+| <Slot name="api-center-table-174" /> | <Slot name="api-center-table-175" /> |
+| <Slot name="api-center-table-176" /> | <Slot name="api-center-table-177" /> |
+| <Slot name="api-center-table-178" /> | <Slot name="api-center-table-179" /> |
+| <Slot name="api-center-table-180" /> | <Slot name="api-center-table-181" /> |
+| <Slot name="api-center-table-182" /> | <Slot name="api-center-table-183" /> |
+| <Slot name="api-center-table-184" /> | <Slot name="api-center-table-185" /> |
+| <Slot name="api-center-table-186" /> | <Slot name="api-center-table-187" /> |
+
+<Slot for="api-center-table-172">
+
+<a id="a75448342947f6e98becc2b27d2edca55acd8fd9d26d8c8955376f9ff51274ca2b"></a>AUDIO_PROFILE_DEFAULT
+
+</Slot>
+
+<Slot for="api-center-table-173">
+
+0: 默认音频场景。
+
+- 通信场景下：16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
+- 直播场景下：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-174">
+
+<a id="a75448342947f6e98becc2b27d2edca55affc1f92238b3aef72ed2b80401ed0551"></a>AUDIO_PROFILE_SPEECH_STANDARD
+
+</Slot>
+
+<Slot for="api-center-table-175">
+
+1: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-176">
+
+<a id="a75448342947f6e98becc2b27d2edca55ae679e3ccbbae7bf1380d9cd81413db6c"></a>AUDIO_PROFILE_MUSIC_STANDARD
+
+</Slot>
+
+<Slot for="api-center-table-177">
+
+2: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-178">
+
+<a id="a75448342947f6e98becc2b27d2edca55a18087e125c075c85266716fc9bcf4c48"></a>AUDIO_PROFILE_MUSIC_STANDARD_STEREO
+
+</Slot>
+
+<Slot for="api-center-table-179">
+
+3: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-180">
+
+<a id="a75448342947f6e98becc2b27d2edca55a3cdc504b3107c07fc3f6da3aaa92e9d0"></a>AUDIO_PROFILE_MUSIC_HIGH_QUALITY
+
+</Slot>
+
+<Slot for="api-center-table-181">
+
+4: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-182">
+
+<a id="a75448342947f6e98becc2b27d2edca55aff92287ea621655559626dfae7478451"></a>AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO
+
+</Slot>
+
+<Slot for="api-center-table-183">
+
+5: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+
+</Slot>
+
+<Slot for="api-center-table-184">
+
+<a id="a75448342947f6e98becc2b27d2edca55a2b957d65e55598c4f3a2a9ff0395d17d"></a>AUDIO_PROFILE_IOT
+
+</Slot>
+
+<Slot for="api-center-table-185">
+
+6: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AES。
+
+</Slot>
+
+<Slot for="api-center-table-186">
+
+<a id="a75448342947f6e98becc2b27d2edca55abac03ea04a5bce04a83f608af8847c9b"></a>AUDIO_PROFILE_NUM
+
+</Slot>
+
+<Slot for="api-center-table-187">
+
+枚举值边界。
+
+</Slot>
+
+<a id="a2c5708461a9e1568bbda636d95055533"></a>
+
+## ◆AUDIO_SCENARIO_TYPE
+
+| enum [agora::rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) |
+| --- |
+
+音频应用场景。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-188" /> | <Slot name="api-center-table-189" /> |
+| <Slot name="api-center-table-190" /> | <Slot name="api-center-table-191" /> |
+| <Slot name="api-center-table-192" /> | <Slot name="api-center-table-193" /> |
+| <Slot name="api-center-table-194" /> | <Slot name="api-center-table-195" /> |
+| <Slot name="api-center-table-196" /> | <Slot name="api-center-table-197" /> |
+| <Slot name="api-center-table-198" /> | <Slot name="api-center-table-199" /> |
+
+<Slot for="api-center-table-188">
+
+<a id="a2c5708461a9e1568bbda636d95055533afd3662c362a5497828550290ab003735"></a>AUDIO_SCENARIO_DEFAULT
+
+</Slot>
+
+<Slot for="api-center-table-189">
+
+0: （默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。
+
+</Slot>
+
+<Slot for="api-center-table-190">
+
+<a id="a2c5708461a9e1568bbda636d95055533a42f87ca1c43185f9084cd0fa9808b9a9"></a>AUDIO_SCENARIO_GAME_STREAMING
+
+</Slot>
+
+<Slot for="api-center-table-191">
+
+3: 高音质场景，适用于音乐为主的场景。
+
+</Slot>
+
+<Slot for="api-center-table-192">
+
+<a id="a2c5708461a9e1568bbda636d95055533aec10020d50ff659b77ac160482228e42"></a>AUDIO_SCENARIO_CHATROOM
+
+</Slot>
+
+<Slot for="api-center-table-193">
+
+5: 聊天室场景，适用于用户需要频繁上下麦的场景。该场景下，观众会收到申请麦克风权限的弹窗提示。
+
+</Slot>
+
+<Slot for="api-center-table-194">
+
+<a id="a2c5708461a9e1568bbda636d95055533a8680bbc2f9d3247e4d65c202877eb5ee"></a>AUDIO_SCENARIO_CHORUS
+
+</Slot>
+
+<Slot for="api-center-table-195">
+
+7: 合唱场景，适用于网络条件良好，要求极低延时的实时合唱场景。
+
+</Slot>
+
+<Slot for="api-center-table-196">
+
+<a id="a2c5708461a9e1568bbda636d95055533a717eec01a97bcf9e8ec82266c5a2f3d5"></a>AUDIO_SCENARIO_MEETING
+
+</Slot>
+
+<Slot for="api-center-table-197">
+
+8: 会议场景，适用于人声为主的多人会议。
+
+</Slot>
+
+<Slot for="api-center-table-198">
+
+<a id="a2c5708461a9e1568bbda636d95055533a35d5c54e239a1f80d38fb1c4577f3da6"></a>AUDIO_SCENARIO_NUM
+
+</Slot>
+
+<Slot for="api-center-table-199">
+
+枚举值边界。
+
+</Slot>
+
+<a id="a19311f858629420654fcc0da9d043332"></a>
+
+## ◆LOCAL_AUDIO_STREAM_STATE
+
+| enum [agora::rtc::LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332) |
+| --- |
+
+本地音频状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-200" /> | <Slot name="api-center-table-201" /> |
+| <Slot name="api-center-table-202" /> | <Slot name="api-center-table-203" /> |
+| <Slot name="api-center-table-204" /> | <Slot name="api-center-table-205" /> |
+| <Slot name="api-center-table-206" /> | <Slot name="api-center-table-207" /> |
+
+<Slot for="api-center-table-200">
+
+<a id="a19311f858629420654fcc0da9d043332ac3c41c909dcd344ace461c48788481ab"></a>LOCAL_AUDIO_STREAM_STATE_STOPPED
+
+</Slot>
+
+<Slot for="api-center-table-201">
+
+0: 本地音频位于初始状态。
+
+</Slot>
+
+<Slot for="api-center-table-202">
+
+<a id="a19311f858629420654fcc0da9d043332aa9157bed267eba92cfb6c2a3acb5a7e0"></a>LOCAL_AUDIO_STREAM_STATE_RECORDING
+
+</Slot>
+
+<Slot for="api-center-table-203">
+
+1: 音频录制设备成功启动。
+
+</Slot>
+
+<Slot for="api-center-table-204">
+
+<a id="a19311f858629420654fcc0da9d043332aec6af6a49b19d437d738a8f0721ae2c1"></a>LOCAL_AUDIO_STREAM_STATE_ENCODING
+
+</Slot>
+
+<Slot for="api-center-table-205">
+
+2: 第一个音频帧成功完成编码。
+
+</Slot>
+
+<Slot for="api-center-table-206">
+
+<a id="a19311f858629420654fcc0da9d043332a1f3ad0127796639401a7bb4193c96b67"></a>LOCAL_AUDIO_STREAM_STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-207">
+
+3: 本地音频启动失败。
+
+</Slot>
+
+<a id="a3929991eea3a522dcbf6ac078810045e"></a>
+
+## ◆LOCAL_AUDIO_STREAM_ERROR
+
+| enum [agora::rtc::LOCAL_AUDIO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045e) |
+| --- |
+
+本地音频失败的原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-208" /> | <Slot name="api-center-table-209" /> |
+| <Slot name="api-center-table-210" /> | <Slot name="api-center-table-211" /> |
+| <Slot name="api-center-table-212" /> | <Slot name="api-center-table-213" /> |
+| <Slot name="api-center-table-214" /> | <Slot name="api-center-table-215" /> |
+| <Slot name="api-center-table-216" /> | <Slot name="api-center-table-217" /> |
+| <Slot name="api-center-table-218" /> | <Slot name="api-center-table-219" /> |
+
+<Slot for="api-center-table-208">
+
+<a id="a3929991eea3a522dcbf6ac078810045eae885394c6686de5e5f02d3f9ff41f404"></a>LOCAL_AUDIO_STREAM_ERROR_OK
+
+</Slot>
+
+<Slot for="api-center-table-209">
+
+0: 本地音频状态正常。
+
+</Slot>
+
+<Slot for="api-center-table-210">
+
+<a id="a3929991eea3a522dcbf6ac078810045ea0a2a7f0a95512612ace909f32f0e6fa1"></a>LOCAL_AUDIO_STREAM_ERROR_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-211">
+
+1: 原因未知。
+
+</Slot>
+
+<Slot for="api-center-table-212">
+
+<a id="a3929991eea3a522dcbf6ac078810045eade3c7c2610610a823e17e3143b64671b"></a>LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION
+
+</Slot>
+
+<Slot for="api-center-table-213">
+
+2: 没有权限使用本地音频设备。
+
+</Slot>
+
+<Slot for="api-center-table-214">
+
+<a id="a3929991eea3a522dcbf6ac078810045ea18d5153634f36b31fa22cbd4af1ab9ee"></a>LOCAL_AUDIO_STREAM_ERROR_DEVICE_BUSY
+
+</Slot>
+
+<Slot for="api-center-table-215">
+
+3: 麦克风被占用。
+
+</Slot>
+
+<Slot for="api-center-table-216">
+
+<a id="a3929991eea3a522dcbf6ac078810045ead9325bf3dc67dcdceb37b2d5f4664905"></a>LOCAL_AUDIO_STREAM_ERROR_RECORD_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-217">
+
+4: 本地音频录制失败。检查录制设备是否正常工作。
+
+</Slot>
+
+<Slot for="api-center-table-218">
+
+<a id="a3929991eea3a522dcbf6ac078810045ea47e3c85eaebf952b4815cef4b20ff297"></a>LOCAL_AUDIO_STREAM_ERROR_ENCODE_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-219">
+
+5: 本地音频编码失败。
+
+</Slot>
+
+<a id="a7c8ce313cb6ccb0d186953bd06e6200b"></a>
+
+## ◆LOCAL_VIDEO_STREAM_STATE
+
+| enum [agora::rtc::LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) |
+| --- |
+
+本地视频状态类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-220" /> | <Slot name="api-center-table-221" /> |
+| <Slot name="api-center-table-222" /> | <Slot name="api-center-table-223" /> |
+| <Slot name="api-center-table-224" /> | <Slot name="api-center-table-225" /> |
+| <Slot name="api-center-table-226" /> | <Slot name="api-center-table-227" /> |
+
+<Slot for="api-center-table-220">
+
+<a id="a7c8ce313cb6ccb0d186953bd06e6200ba9bb52f743f03c961df2237cd72046a4f"></a>LOCAL_VIDEO_STREAM_STATE_STOPPED
+
+</Slot>
+
+<Slot for="api-center-table-221">
+
+0: 初始状态。
+
+</Slot>
+
+<Slot for="api-center-table-222">
+
+<a id="a7c8ce313cb6ccb0d186953bd06e6200bafe5af8aeff46879f3144ac03e6aa0757"></a>LOCAL_VIDEO_STREAM_STATE_CAPTURING
+
+</Slot>
+
+<Slot for="api-center-table-223">
+
+1: 视频采集已开始。
+
+</Slot>
+
+<Slot for="api-center-table-224">
+
+<a id="a7c8ce313cb6ccb0d186953bd06e6200ba2e843243500ed35448afb877e1c06032"></a>LOCAL_VIDEO_STREAM_STATE_ENCODING
+
+</Slot>
+
+<Slot for="api-center-table-225">
+
+2: 第一个视频帧已编码。
+
+</Slot>
+
+<Slot for="api-center-table-226">
+
+<a id="a7c8ce313cb6ccb0d186953bd06e6200ba456af207107500445138c5f35b3d938d"></a>LOCAL_VIDEO_STREAM_STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-227">
+
+3: 本地视频发送失败。
+
+</Slot>
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842"></a>
+
+## ◆LOCAL_VIDEO_STREAM_ERROR
+
+| enum [agora::rtc::LOCAL_VIDEO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842) |
+| --- |
+
+本地视频出错原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-228" /> | <Slot name="api-center-table-229" /> |
+| <Slot name="api-center-table-230" /> | <Slot name="api-center-table-231" /> |
+| <Slot name="api-center-table-232" /> | <Slot name="api-center-table-233" /> |
+| <Slot name="api-center-table-234" /> | <Slot name="api-center-table-235" /> |
+| <Slot name="api-center-table-236" /> | <Slot name="api-center-table-237" /> |
+| <Slot name="api-center-table-238" /> | <Slot name="api-center-table-239" /> |
+
+<Slot for="api-center-table-228">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842a2695a861e13d12ac54bb20d3d630311e"></a>LOCAL_VIDEO_STREAM_ERROR_OK
+
+</Slot>
+
+<Slot for="api-center-table-229">
+
+0: 本地视频状态正常。
+
+</Slot>
+
+<Slot for="api-center-table-230">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842ab7dd59c52b4cb11b12c2db7597d63f66"></a>LOCAL_VIDEO_STREAM_ERROR_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-231">
+
+1: 出错原因不明确。
+
+</Slot>
+
+<Slot for="api-center-table-232">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842a0f8ebaaffc51e8a9a1fbeac39715ad62"></a>LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION
+
+</Slot>
+
+<Slot for="api-center-table-233">
+
+2: 没有权限启动本地视频采集设备。
+
+</Slot>
+
+<Slot for="api-center-table-234">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842ab2095d8de4bb63147b1e121c466e2eac"></a>LOCAL_VIDEO_STREAM_ERROR_DEVICE_BUSY
+
+</Slot>
+
+<Slot for="api-center-table-235">
+
+3: 本地视频采集设备正在使用中。
+
+</Slot>
+
+<Slot for="api-center-table-236">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842a5e8d8b389aacc1732840973586baa286"></a>LOCAL_VIDEO_STREAM_ERROR_CAPTURE_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-237">
+
+4: 本地视频采集失败，建议检查采集设备是否正常工作。
+
+</Slot>
+
+<Slot for="api-center-table-238">
+
+<a id="aca8292c30c50a78f6fbd1ef1b264d842ad331f36475ad1f8617ad9e65fbf7ebfd"></a>LOCAL_VIDEO_STREAM_ERROR_ENCODE_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-239">
+
+5: 本地视频编码失败。
+
+</Slot>
+
+<a id="aa83ef274510d1063e840d6104fd12516"></a>
+
+## ◆REMOTE_AUDIO_STATE
+
+| enum [agora::rtc::REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516) |
+| --- |
+
+远端音频流状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-240" /> | <Slot name="api-center-table-241" /> |
+| <Slot name="api-center-table-242" /> | <Slot name="api-center-table-243" /> |
+| <Slot name="api-center-table-244" /> | <Slot name="api-center-table-245" /> |
+| <Slot name="api-center-table-246" /> | <Slot name="api-center-table-247" /> |
+| <Slot name="api-center-table-248" /> | <Slot name="api-center-table-249" /> |
+
+<Slot for="api-center-table-240">
+
+<a id="aa83ef274510d1063e840d6104fd12516a7463dc6d26033cfacd12ffc39a7454d9"></a>REMOTE_AUDIO_STATE_STOPPED
+
+</Slot>
+
+<Slot for="api-center-table-241">
+
+0：远端音频默认初始状态。在 `REMOTE_AUDIO_STATE_REASON_LOCAL_MUTED`、 `REMOTE_AUDIO_STATE_REASON_REMOTE_MUTED` 或 `REMOTE_AUDIO_STATE_REASON_REMOTE_OFFLINE` 的情况下，会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-242">
+
+<a id="aa83ef274510d1063e840d6104fd12516a4d808806be3f8a87886d26617b90f87a"></a>REMOTE_AUDIO_STATE_STARTING
+
+</Slot>
+
+<Slot for="api-center-table-243">
+
+1: 本地用户已接收远端音频首包。
+
+</Slot>
+
+<Slot for="api-center-table-244">
+
+<a id="aa83ef274510d1063e840d6104fd12516ae46f2eb53b7fc3b7f7cfb7d7fab4f75c"></a>REMOTE_AUDIO_STATE_DECODING
+
+</Slot>
+
+<Slot for="api-center-table-245">
+
+2: 远端音频流正在解码，正常播放。在 `REMOTE_AUDIO_STATE_REASON_NETWORK_RECOVERY`、 `REMOTE_AUDIO_STATE_REASON_LOCAL_UNMUTED` 或 `REMOTE_AUDIO_STATE_REASON_REMOTE_UNMUTED` 的情况下， 会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-246">
+
+<a id="aa83ef274510d1063e840d6104fd12516ad2df06bc8d804962bc422c39f7729083"></a>REMOTE_AUDIO_STATE_FROZEN
+
+</Slot>
+
+<Slot for="api-center-table-247">
+
+3: 远端音频流卡顿。在 `REMOTE_AUDIO_STATE_REASON_NETWORK_CONGESTION` 的情况下，会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-248">
+
+<a id="aa83ef274510d1063e840d6104fd12516a3d97dbd00fbac952acf11d2763a9d7e5"></a>REMOTE_AUDIO_STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-249">
+
+4: 远端音频流播放失败。在 `REMOTE_AUDIO_STATE_REASON_INTERNAL` 的情况下，会报告该状态。
+
+</Slot>
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fc"></a>
+
+## ◆REMOTE_AUDIO_STATE_REASON
+
+| enum [agora::rtc::REMOTE_AUDIO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fc) |
+| --- |
+
+远端音频流状态切换原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-250" /> | <Slot name="api-center-table-251" /> |
+| <Slot name="api-center-table-252" /> | <Slot name="api-center-table-253" /> |
+| <Slot name="api-center-table-254" /> | <Slot name="api-center-table-255" /> |
+| <Slot name="api-center-table-256" /> | <Slot name="api-center-table-257" /> |
+| <Slot name="api-center-table-258" /> | <Slot name="api-center-table-259" /> |
+| <Slot name="api-center-table-260" /> | <Slot name="api-center-table-261" /> |
+| <Slot name="api-center-table-262" /> | <Slot name="api-center-table-263" /> |
+| <Slot name="api-center-table-264" /> | <Slot name="api-center-table-265" /> |
+
+<Slot for="api-center-table-250">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fcacaa43c150ce1c677f2a51f6f2433096a"></a>REMOTE_AUDIO_REASON_INTERNAL
+
+</Slot>
+
+<Slot for="api-center-table-251">
+
+0: 音频状态发生改变时，会报告该原因。
+
+</Slot>
+
+<Slot for="api-center-table-252">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fca7f138c39f7319a6ba719ceb6f5eacba7"></a>REMOTE_AUDIO_REASON_NETWORK_CONGESTION
+
+</Slot>
+
+<Slot for="api-center-table-253">
+
+1: 网络阻塞。
+
+</Slot>
+
+<Slot for="api-center-table-254">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fcac2720abcfdb7bf6a6a8166abf515395b"></a>REMOTE_AUDIO_REASON_NETWORK_RECOVERY
+
+</Slot>
+
+<Slot for="api-center-table-255">
+
+2: 网络恢复正常。
+
+</Slot>
+
+<Slot for="api-center-table-256">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fca561a396c1f6d7adbbefe86c428683ad6"></a>REMOTE_AUDIO_REASON_LOCAL_MUTED
+
+</Slot>
+
+<Slot for="api-center-table-257">
+
+3: 本地用户停止接收远端音频流或本地用户禁用音频模块。
+
+</Slot>
+
+<Slot for="api-center-table-258">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fcac5ebd4f77fcf94b838e9d2da89b013e6"></a>REMOTE_AUDIO_REASON_LOCAL_UNMUTED
+
+</Slot>
+
+<Slot for="api-center-table-259">
+
+4: 本地用户恢复接收远端音频流或本地用户启动音频模块。
+
+</Slot>
+
+<Slot for="api-center-table-260">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fca54c8d889ed645500113fc18f876c5494"></a>REMOTE_AUDIO_REASON_REMOTE_MUTED
+
+</Slot>
+
+<Slot for="api-center-table-261">
+
+5: 远端用户停止发送音频流或远端用户禁用音频模块。
+
+</Slot>
+
+<Slot for="api-center-table-262">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fca0e898d0e3022385e6c9d185d73972c2f"></a>REMOTE_AUDIO_REASON_REMOTE_UNMUTED
+
+</Slot>
+
+<Slot for="api-center-table-263">
+
+6: 远端用户恢复发送音频流或远端用户启用音频模块。
+
+</Slot>
+
+<Slot for="api-center-table-264">
+
+<a id="a532f4584f6ed5962012e1f08bef6f0fca6f4851ce8d939dd587f0888b1d2a5fe9"></a>REMOTE_AUDIO_REASON_REMOTE_OFFLINE
+
+</Slot>
+
+<Slot for="api-center-table-265">
+
+7: 远端用户离开频道。
+
+</Slot>
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8"></a>
+
+## ◆REMOTE_VIDEO_STATE
+
+| enum [agora::rtc::REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) |
+| --- |
+
+远端视频流状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-266" /> | <Slot name="api-center-table-267" /> |
+| <Slot name="api-center-table-268" /> | <Slot name="api-center-table-269" /> |
+| <Slot name="api-center-table-270" /> | <Slot name="api-center-table-271" /> |
+| <Slot name="api-center-table-272" /> | <Slot name="api-center-table-273" /> |
+| <Slot name="api-center-table-274" /> | <Slot name="api-center-table-275" /> |
+
+<Slot for="api-center-table-266">
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8afe59a97a2d92b043864ba01dfdf4d917"></a>REMOTE_VIDEO_STATE_STOPPED
+
+</Slot>
+
+<Slot for="api-center-table-267">
+
+0: 远端视频默认初始状态。在 `REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED`、`REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED` 或 `REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE` 的情况下，会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-268">
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8ad5d9ad6fe0d96c7ea7c65bf59c8c0e63"></a>REMOTE_VIDEO_STATE_STARTING
+
+</Slot>
+
+<Slot for="api-center-table-269">
+
+1: 本地用户已接收远端视频首包。
+
+</Slot>
+
+<Slot for="api-center-table-270">
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8a659462d41f13f53f3073eb1150a7435d"></a>REMOTE_VIDEO_STATE_DECODING
+
+</Slot>
+
+<Slot for="api-center-table-271">
+
+2: 远端视频流正在解码，正常播放。 在 `REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY`、`REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED`、`REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED` 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY` 的情况下， 会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-272">
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8ac9e6585199f84abcab1074adadf40634"></a>REMOTE_VIDEO_STATE_FROZEN
+
+</Slot>
+
+<Slot for="api-center-table-273">
+
+3: 远端视频流卡顿。在 `REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION` 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK` 的情况下，会报告该状态。
+
+</Slot>
+
+<Slot for="api-center-table-274">
+
+<a id="a8098bde3bb614a7716d0f39105b8f1d8a1ea1ebf82ddb1782b4259fbc2a5ea7c3"></a>REMOTE_VIDEO_STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-275">
+
+4: 远端视频流播放失败。在 `REMOTE_VIDEO_STATE_REASON_INTERNAL` 的情况下，会报告该状态。
+
+</Slot>
+
+<a id="ae31fce5548860cb0a62e4c232fb18bff"></a>
+
+## ◆REMOTE_VIDEO_STATE_REASON
+
+| enum [agora::rtc::REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bff) |
+| --- |
+
+远端视频流状态切换原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-276" /> | <Slot name="api-center-table-277" /> |
+| <Slot name="api-center-table-278" /> | <Slot name="api-center-table-279" /> |
+| <Slot name="api-center-table-280" /> | <Slot name="api-center-table-281" /> |
+| <Slot name="api-center-table-282" /> | <Slot name="api-center-table-283" /> |
+| <Slot name="api-center-table-284" /> | <Slot name="api-center-table-285" /> |
+| <Slot name="api-center-table-286" /> | <Slot name="api-center-table-287" /> |
+| <Slot name="api-center-table-288" /> | <Slot name="api-center-table-289" /> |
+| <Slot name="api-center-table-290" /> | <Slot name="api-center-table-291" /> |
+| <Slot name="api-center-table-292" /> | <Slot name="api-center-table-293" /> |
+| <Slot name="api-center-table-294" /> | <Slot name="api-center-table-295" /> |
+
+<Slot for="api-center-table-276">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffaea26e05fcb8887e852058a1873680f8c"></a>REMOTE_VIDEO_STATE_REASON_INTERNAL
+
+</Slot>
+
+<Slot for="api-center-table-277">
+
+0: 视频状态发生改变时，会报告该原因。
+
+</Slot>
+
+<Slot for="api-center-table-278">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa24ac73ce5bd6a277616710988066ff6a"></a>REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION
+
+</Slot>
+
+<Slot for="api-center-table-279">
+
+1: 网络阻塞。
+
+</Slot>
+
+<Slot for="api-center-table-280">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa8b1dbaba9e3aa75e8a76e93f21c5bbd4"></a>REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY
+
+</Slot>
+
+<Slot for="api-center-table-281">
+
+2: 网络恢复正常。
+
+</Slot>
+
+<Slot for="api-center-table-282">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffae30b7689ceb3dcd01b3b8b3ad1a704f3"></a>REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED
+
+</Slot>
+
+<Slot for="api-center-table-283">
+
+3: 本地用户停止接收远端视频流或本地用户禁用视频模块。
+
+</Slot>
+
+<Slot for="api-center-table-284">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa62125754b06f30479a5721e222eef201"></a>REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED
+
+</Slot>
+
+<Slot for="api-center-table-285">
+
+4: 本地用户恢复接收远端视频流或本地用户启动视频模块。
+
+</Slot>
+
+<Slot for="api-center-table-286">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa513577953b31bbacde159cfd99198503"></a>REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED
+
+</Slot>
+
+<Slot for="api-center-table-287">
+
+5: 远端用户停止发送视频流或远端用户禁用视频模块。
+
+</Slot>
+
+<Slot for="api-center-table-288">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa3cd0f8dfa3229bebe1b7f5037a8ac703"></a>REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED
+
+</Slot>
+
+<Slot for="api-center-table-289">
+
+6: 远端用户恢复发送视频流或远端用户启用视频模块。
+
+</Slot>
+
+<Slot for="api-center-table-290">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa9bc22d0a122082c4662e2c155611f2a9"></a>REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE
+
+</Slot>
+
+<Slot for="api-center-table-291">
+
+7: 远端用户离开频道。
+
+</Slot>
+
+<Slot for="api-center-table-292">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffa84ac2f44167080fca3ba872796ff66af"></a>REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK
+
+</Slot>
+
+<Slot for="api-center-table-293">
+
+8: 弱网情况下，远端音视频流回退为音频流。
+
+</Slot>
+
+<Slot for="api-center-table-294">
+
+<a id="ae31fce5548860cb0a62e4c232fb18bffac2f84fb8b7ba73eb74f6bd9bf44f5baf"></a>REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY
+
+</Slot>
+
+<Slot for="api-center-table-295">
+
+9: 网络情况改善时，远端音频流恢复为音视频流。
+
+</Slot>
+
+<a id="a986ba95b84f37af9ae5790dd90765baa"></a>
+
+## ◆REMOTE_VIDEO_DOWNSCALE_LEVEL
+
+| enum [agora::rtc::REMOTE_VIDEO_DOWNSCALE_LEVEL](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baa) |
+| --- |
+
+远端视频缩小级别。级别越高，缩小程度越高。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-296" /> | <Slot name="api-center-table-297" /> |
+| <Slot name="api-center-table-298" /> | <Slot name="api-center-table-299" /> |
+| <Slot name="api-center-table-300" /> | <Slot name="api-center-table-301" /> |
+| <Slot name="api-center-table-302" /> | <Slot name="api-center-table-303" /> |
+| <Slot name="api-center-table-304" /> | <Slot name="api-center-table-305" /> |
+
+<Slot for="api-center-table-296">
+
+<a id="a986ba95b84f37af9ae5790dd90765baaa91573f6a364c510eae4652f1740b6ef5"></a>REMOTE_VIDEO_DOWNSCALE_LEVEL_NONE
+
+</Slot>
+
+<Slot for="api-center-table-297">
+
+0：不缩小。
+
+</Slot>
+
+<Slot for="api-center-table-298">
+
+<a id="a986ba95b84f37af9ae5790dd90765baaa0820f5c9d6855cadabd17a04ae7367b5"></a>REMOTE_VIDEO_DOWNSCALE_LEVEL_1
+
+</Slot>
+
+<Slot for="api-center-table-299">
+
+1：级别 1。
+
+</Slot>
+
+<Slot for="api-center-table-300">
+
+<a id="a986ba95b84f37af9ae5790dd90765baaaba8b193b56704d549f394765f01702db"></a>REMOTE_VIDEO_DOWNSCALE_LEVEL_2
+
+</Slot>
+
+<Slot for="api-center-table-301">
+
+2：级别 2。
+
+</Slot>
+
+<Slot for="api-center-table-302">
+
+<a id="a986ba95b84f37af9ae5790dd90765baaa380c2eabb7a34532f424c66267c76c48"></a>REMOTE_VIDEO_DOWNSCALE_LEVEL_3
+
+</Slot>
+
+<Slot for="api-center-table-303">
+
+3：级别 3。
+
+</Slot>
+
+<Slot for="api-center-table-304">
+
+<a id="a986ba95b84f37af9ae5790dd90765baaa54e9b9d729a5ef908f0f4e04dfb71673"></a>REMOTE_VIDEO_DOWNSCALE_LEVEL_4
+
+</Slot>
+
+<Slot for="api-center-table-305">
+
+4：级别 4。
+
+</Slot>
+
+<a id="a430364c3f2cbf4419b898077cf6977f7"></a>
+
+## ◆CONNECTION_STATE_TYPE
+
+| enum [agora::rtc::CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a430364c3f2cbf4419b898077cf6977f7) |
+| --- |
+
+网络连接状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-306" /> | <Slot name="api-center-table-307" /> |
+| <Slot name="api-center-table-308" /> | <Slot name="api-center-table-309" /> |
+| <Slot name="api-center-table-310" /> | <Slot name="api-center-table-311" /> |
+| <Slot name="api-center-table-312" /> | <Slot name="api-center-table-313" /> |
+| <Slot name="api-center-table-314" /> | <Slot name="api-center-table-315" /> |
+
+<Slot for="api-center-table-306">
+
+<a id="a430364c3f2cbf4419b898077cf6977f7a335642f7cca4e7761ddbd0a722f6dd29"></a>CONNECTION_STATE_DISCONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-307">
+
+1: 网络连接断开。
+
+</Slot>
+
+<Slot for="api-center-table-308">
+
+<a id="a430364c3f2cbf4419b898077cf6977f7a8d286796a07a1b7d25d871d859ff5727"></a>CONNECTION_STATE_CONNECTING
+
+</Slot>
+
+<Slot for="api-center-table-309">
+
+2: 建立网络连接中。
+
+</Slot>
+
+<Slot for="api-center-table-310">
+
+<a id="a430364c3f2cbf4419b898077cf6977f7ae42663fc1191d37b6648916134bc42ea"></a>CONNECTION_STATE_CONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-311">
+
+3: 网络已连接。
+
+</Slot>
+
+<Slot for="api-center-table-312">
+
+<a id="a430364c3f2cbf4419b898077cf6977f7a7e870baf55d8bc02fc294ad0b3971d2d"></a>CONNECTION_STATE_RECONNECTING
+
+</Slot>
+
+<Slot for="api-center-table-313">
+
+4: 重新建立网络连接中。
+
+</Slot>
+
+<Slot for="api-center-table-314">
+
+<a id="a430364c3f2cbf4419b898077cf6977f7aaf1e40b56dd8162ae63b9d6fc0d88241"></a>CONNECTION_STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-315">
+
+5: 网络连接失败。
+
+</Slot>
+
+<a id="aa6c9106e765c0ebb15be1b3e4e384f65"></a>
+
+## ◆LASTMILE_PROBE_RESULT_STATE
+
+| enum [agora::rtc::LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65) |
+| --- |
+
+Last mile 质量探测结果的状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-316" /> | <Slot name="api-center-table-317" /> |
+| <Slot name="api-center-table-318" /> | <Slot name="api-center-table-319" /> |
+| <Slot name="api-center-table-320" /> | <Slot name="api-center-table-321" /> |
+
+<Slot for="api-center-table-316">
+
+<a id="aa6c9106e765c0ebb15be1b3e4e384f65a2ad1e8c070b48edb9bf416da2b4b8436"></a>LASTMILE_PROBE_RESULT_COMPLETE
+
+</Slot>
+
+<Slot for="api-center-table-317">
+
+1: 表示本次 last mile 质量探测的结果是完整的。
+
+</Slot>
+
+<Slot for="api-center-table-318">
+
+<a id="aa6c9106e765c0ebb15be1b3e4e384f65a7c744e3a9a98a609d96fab9c66c90a5c"></a>LASTMILE_PROBE_RESULT_INCOMPLETE_NO_BWE
+
+</Slot>
+
+<Slot for="api-center-table-319">
+
+2: 表示本次 last mile 质量探测未进行带宽预测，因此结果不完整。一个可能的原因是测试资源暂时受限。
+
+</Slot>
+
+<Slot for="api-center-table-320">
+
+<a id="aa6c9106e765c0ebb15be1b3e4e384f65ae9ac0c1d564b1be9e5733ce22d3154af"></a>LASTMILE_PROBE_RESULT_UNAVAILABLE
+
+</Slot>
+
+<Slot for="api-center-table-321">
+
+3: 未进行 last mile 质量探测。一个可能的原因是网络连接中断。
+
+</Slot>
+
+<a id="a329573b5363b2065b4069e5bf6013144"></a>
+
+## ◆CONNECTION_CHANGED_REASON_TYPE
+
+| enum [agora::rtc::CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) |
+| --- |
+
+连接状态变化原因。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-322" /> | <Slot name="api-center-table-323" /> |
+| <Slot name="api-center-table-324" /> | <Slot name="api-center-table-325" /> |
+| <Slot name="api-center-table-326" /> | <Slot name="api-center-table-327" /> |
+| <Slot name="api-center-table-328" /> | <Slot name="api-center-table-329" /> |
+| <Slot name="api-center-table-330" /> | <Slot name="api-center-table-331" /> |
+| <Slot name="api-center-table-332" /> | <Slot name="api-center-table-333" /> |
+| <Slot name="api-center-table-334" /> | <Slot name="api-center-table-335" /> |
+| <Slot name="api-center-table-336" /> | <Slot name="api-center-table-337" /> |
+| <Slot name="api-center-table-338" /> | <Slot name="api-center-table-339" /> |
+| <Slot name="api-center-table-340" /> | <Slot name="api-center-table-341" /> |
+| <Slot name="api-center-table-342" /> | <Slot name="api-center-table-343" /> |
+| <Slot name="api-center-table-344" /> | <Slot name="api-center-table-345" /> |
+| <Slot name="api-center-table-346" /> | <Slot name="api-center-table-347" /> |
+| <Slot name="api-center-table-348" /> | <Slot name="api-center-table-349" /> |
+| <Slot name="api-center-table-350" /> | <Slot name="api-center-table-351" /> |
+| <Slot name="api-center-table-352" /> | <Slot name="api-center-table-353" /> |
+| <Slot name="api-center-table-354" /> | <Slot name="api-center-table-355" /> |
+| <Slot name="api-center-table-356" /> | <Slot name="api-center-table-357" /> |
+| <Slot name="api-center-table-358" /> | <Slot name="api-center-table-359" /> |
+
+<Slot for="api-center-table-322">
+
+<a id="a329573b5363b2065b4069e5bf6013144a909210151e80a40412b33b7c65f657d5"></a>CONNECTION_CHANGED_CONNECTING
+
+</Slot>
+
+<Slot for="api-center-table-323">
+
+0: 建立网络连接中。
+
+</Slot>
+
+<Slot for="api-center-table-324">
+
+<a id="a329573b5363b2065b4069e5bf6013144a7db96919ed2935f5b2002183b1ed21eb"></a>CONNECTION_CHANGED_JOIN_SUCCESS
+
+</Slot>
+
+<Slot for="api-center-table-325">
+
+1: 成功加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-326">
+
+<a id="a329573b5363b2065b4069e5bf6013144a861e516bece11ba81cf53be6c2c631b0"></a>CONNECTION_CHANGED_INTERRUPTED
+
+</Slot>
+
+<Slot for="api-center-table-327">
+
+2: 网络连接中断。
+
+</Slot>
+
+<Slot for="api-center-table-328">
+
+<a id="a329573b5363b2065b4069e5bf6013144a322a93479407c09f82189e13f6aa79a3"></a>CONNECTION_CHANGED_BANNED_BY_SERVER
+
+</Slot>
+
+<Slot for="api-center-table-329">
+
+3: 网络连接被服务器禁止。
+
+</Slot>
+
+<Slot for="api-center-table-330">
+
+<a id="a329573b5363b2065b4069e5bf6013144ab450ea0fd2e115e3ff60cc5afca4a3a5"></a>CONNECTION_CHANGED_JOIN_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-331">
+
+4: 加入频道失败。
+
+</Slot>
+
+<Slot for="api-center-table-332">
+
+<a id="a329573b5363b2065b4069e5bf6013144a87b7858350d388b2ad6a2c46fd803cbe"></a>CONNECTION_CHANGED_LEAVE_CHANNEL
+
+</Slot>
+
+<Slot for="api-center-table-333">
+
+5: 离开频道。
+
+</Slot>
+
+<Slot for="api-center-table-334">
+
+<a id="a329573b5363b2065b4069e5bf6013144ae6f2f9c1a302c6df1c05d6fdd2cc3d8e"></a>CONNECTION_CHANGED_INVALID_APP_ID
+
+</Slot>
+
+<Slot for="api-center-table-335">
+
+6: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-336">
+
+<a id="a329573b5363b2065b4069e5bf6013144a7222d75a9cbd116cd16761953e65df3b"></a>CONNECTION_CHANGED_INVALID_CHANNEL_NAME
+
+</Slot>
+
+<Slot for="api-center-table-337">
+
+7: 不是有效的频道名。请更换有效的频道名重新加入频道。
+
+</Slot>
+
+<Slot for="api-center-table-338">
+
+<a id="a329573b5363b2065b4069e5bf6013144a26ab3e648572bcf8bdd43d036aba3ec8"></a>CONNECTION_CHANGED_INVALID_TOKEN
+
+</Slot>
+
+<Slot for="api-center-table-339">
+
+8: 生成的 Token 无效。一般有以下原因：
+
+- 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+- 在调用 `connect` 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+
+</Slot>
+
+<Slot for="api-center-table-340">
+
+<a id="a329573b5363b2065b4069e5bf6013144ac8493348234ccea33ac7e61ad268fe60"></a>CONNECTION_CHANGED_TOKEN_EXPIRED
+
+</Slot>
+
+<Slot for="api-center-table-341">
+
+9: 生成的 Token 无效。
+
+</Slot>
+
+<Slot for="api-center-table-342">
+
+<a id="a329573b5363b2065b4069e5bf6013144ae0a9bf5f38d1828a96682e6678ff8c16"></a>CONNECTION_CHANGED_REJECTED_BY_SERVER
+
+</Slot>
+
+<Slot for="api-center-table-343">
+
+10: 此用户被服务器禁止。
+
+</Slot>
+
+<Slot for="api-center-table-344">
+
+<a id="a329573b5363b2065b4069e5bf6013144a95d29853df095ef245640e6b3d5e744a"></a>CONNECTION_CHANGED_SETTING_PROXY_SERVER
+
+</Slot>
+
+<Slot for="api-center-table-345">
+
+11: 由于设置了代理服务器，SDK 尝试重连。
+
+</Slot>
+
+<Slot for="api-center-table-346">
+
+<a id="a329573b5363b2065b4069e5bf6013144abf908a9040ed3c9dc19ea3bd0036498b"></a>CONNECTION_CHANGED_RENEW_TOKEN
+
+</Slot>
+
+<Slot for="api-center-table-347">
+
+12: 更新 Token 引起网络连接状态改变。
+
+</Slot>
+
+<Slot for="api-center-table-348">
+
+<a id="a329573b5363b2065b4069e5bf6013144a9eb64c9200bbf61d9a4cb9e5371ebe0a"></a>CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED
+
+</Slot>
+
+<Slot for="api-center-table-349">
+
+13: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+
+</Slot>
+
+<Slot for="api-center-table-350">
+
+<a id="a329573b5363b2065b4069e5bf6013144acf412770f5052abd4f8d11ce52e1e3c3"></a>CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT
+
+</Slot>
+
+<Slot for="api-center-table-351">
+
+14: SDK 和服务器连接保活超时，进入自动重连状态。
+
+</Slot>
+
+<Slot for="api-center-table-352">
+
+<a id="a329573b5363b2065b4069e5bf6013144a48a6b0b0a23447a63143f94d0623b32c"></a>CONNECTION_CHANGED_REJOIN_SUCCESS
+
+</Slot>
+
+<Slot for="api-center-table-353">
+
+15: 重新加入频道成功。
+
+</Slot>
+
+<Slot for="api-center-table-354">
+
+<a id="a329573b5363b2065b4069e5bf6013144a9df6b7fcbba2d97e407c90a20988b76b"></a>CONNECTION_CHANGED_LOST
+
+</Slot>
+
+<Slot for="api-center-table-355">
+
+16: SDK 和服务器失去连接。
+
+</Slot>
+
+<Slot for="api-center-table-356">
+
+<a id="a329573b5363b2065b4069e5bf6013144a4c2e2aa3bea1920093387fbaba9ed995"></a>CONNECTION_CHANGED_ECHO_TEST
+
+</Slot>
+
+<Slot for="api-center-table-357">
+
+17: 连接状态变化由回声测试引起。
+
+</Slot>
+
+<Slot for="api-center-table-358">
+
+<a id="a329573b5363b2065b4069e5bf6013144afdd77619ace4a8b364d5d0365ce755fa"></a>CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER
+
+</Slot>
+
+<Slot for="api-center-table-359">
+
+18: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="ab5e06b511f978f1a997008401da46505"></a>
+
+## ◆NETWORK_TYPE
+
+| enum [agora::rtc::NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) |
+| --- |
+
+网络连接类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-360" /> | <Slot name="api-center-table-361" /> |
+| <Slot name="api-center-table-362" /> | <Slot name="api-center-table-363" /> |
+| <Slot name="api-center-table-364" /> | <Slot name="api-center-table-365" /> |
+| <Slot name="api-center-table-366" /> | <Slot name="api-center-table-367" /> |
+| <Slot name="api-center-table-368" /> | <Slot name="api-center-table-369" /> |
+| <Slot name="api-center-table-370" /> | <Slot name="api-center-table-371" /> |
+| <Slot name="api-center-table-372" /> | <Slot name="api-center-table-373" /> |
+
+<Slot for="api-center-table-360">
+
+<a id="ab5e06b511f978f1a997008401da46505aaffd83f62604659b799989fc9755d773"></a>NETWORK_TYPE_UNKNOWN
+
+</Slot>
+
+<Slot for="api-center-table-361">
+
+-1: 网络连接类型未知。
+
+</Slot>
+
+<Slot for="api-center-table-362">
+
+<a id="ab5e06b511f978f1a997008401da46505a088190434b4a1271f4e5849cd41fc9fe"></a>NETWORK_TYPE_DISCONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-363">
+
+0: 网络连接已断开。
+
+</Slot>
+
+<Slot for="api-center-table-364">
+
+<a id="ab5e06b511f978f1a997008401da46505abc2d98d2aa184f7766cc1d480b0302b3"></a>NETWORK_TYPE_LAN
+
+</Slot>
+
+<Slot for="api-center-table-365">
+
+1: 网络类型为 LAN。
+
+</Slot>
+
+<Slot for="api-center-table-366">
+
+<a id="ab5e06b511f978f1a997008401da46505abf47c9dede3e20c97f8d4c8e2050c4df"></a>NETWORK_TYPE_WIFI
+
+</Slot>
+
+<Slot for="api-center-table-367">
+
+2: 网络类型为 Wi-Fi(包含热点）。
+
+</Slot>
+
+<Slot for="api-center-table-368">
+
+<a id="ab5e06b511f978f1a997008401da46505ac93cdd7ba1c6004cd959a407bb9aaf0b"></a>NETWORK_TYPE_MOBILE_2G
+
+</Slot>
+
+<Slot for="api-center-table-369">
+
+3: 网络类型为 2G 移动网络。
+
+</Slot>
+
+<Slot for="api-center-table-370">
+
+<a id="ab5e06b511f978f1a997008401da46505a3f70717344b70437028cb9519ec07900"></a>NETWORK_TYPE_MOBILE_3G
+
+</Slot>
+
+<Slot for="api-center-table-371">
+
+4: 网络类型为 3G 移动网络。
+
+</Slot>
+
+<Slot for="api-center-table-372">
+
+<a id="ab5e06b511f978f1a997008401da46505a748a1c812bf1a7026aeca60322e0c126"></a>NETWORK_TYPE_MOBILE_4G
+
+</Slot>
+
+<Slot for="api-center-table-373">
+
+5: 网络类型为 4G 移动网络。
+
+</Slot>
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5e"></a>
+
+## ◆AREA_CODE
+
+| enum [agora::rtc::AREA_CODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a85a66bc360e0d01a3f675c6a0fe95f5e) |
+| --- |
+
+访问区域。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-374" /> | <Slot name="api-center-table-375" /> |
+| <Slot name="api-center-table-376" /> | <Slot name="api-center-table-377" /> |
+| <Slot name="api-center-table-378" /> | <Slot name="api-center-table-379" /> |
+| <Slot name="api-center-table-380" /> | <Slot name="api-center-table-381" /> |
+| <Slot name="api-center-table-382" /> | <Slot name="api-center-table-383" /> |
+| <Slot name="api-center-table-384" /> | <Slot name="api-center-table-385" /> |
+| <Slot name="api-center-table-386" /> | <Slot name="api-center-table-387" /> |
+
+<Slot for="api-center-table-374">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5eaf8e2d0900a4543fab82c7dc0b0074c35"></a>AREA_CODE_CN
+
+</Slot>
+
+<Slot for="api-center-table-375">
+
+0x00000001：中国大陆。
+
+</Slot>
+
+<Slot for="api-center-table-376">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5ea69812bc2f9cccfac8cc34654ef159d11"></a>AREA_CODE_NA
+
+</Slot>
+
+<Slot for="api-center-table-377">
+
+0x00000002：北美区域。
+
+</Slot>
+
+<Slot for="api-center-table-378">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5eaa47e5e2c0fe01fdec041bfe24fc12f0d"></a>AREA_CODE_EU
+
+</Slot>
+
+<Slot for="api-center-table-379">
+
+0x00000004：欧洲区域。
+
+</Slot>
+
+<Slot for="api-center-table-380">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5ea8168957c370c6582c6c4fb75122e76b4"></a>AREA_CODE_AS
+
+</Slot>
+
+<Slot for="api-center-table-381">
+
+0x00000008：除中国大陆以外的亚洲区域。
+
+</Slot>
+
+<Slot for="api-center-table-382">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5ead20308fc6f76ad911a42fb42fb678721"></a>AREA_CODE_JP
+
+</Slot>
+
+<Slot for="api-center-table-383">
+
+0x00000010：日本。
+
+</Slot>
+
+<Slot for="api-center-table-384">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5eadd5d950a7dd5cc79b631ca836bdadf74"></a>AREA_CODE_IN
+
+</Slot>
+
+<Slot for="api-center-table-385">
+
+0x00000020：印度。
+
+</Slot>
+
+<Slot for="api-center-table-386">
+
+<a id="a85a66bc360e0d01a3f675c6a0fe95f5ead4bbb5e676a198ab727fb7e432111a2f"></a>AREA_CODE_GLOB
+
+</Slot>
+
+<Slot for="api-center-table-387">
+
+0xFFFFFFFF：（默认）全球。
+
+</Slot>
+
+<a id="a906cebebbabf534c86ca71de0d1a4cf0"></a>
+
+## ◆ENCRYPTION_MODE
+
+| enum [agora::rtc::ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0) |
+| --- |
+
+内置加密模式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-388" /> | <Slot name="api-center-table-389" /> |
+
+<Slot for="api-center-table-388">
+
+<a id="a906cebebbabf534c86ca71de0d1a4cf0aa789ba9768f5f542f163c6460da7f365"></a>SM4_128_ECB
+
+</Slot>
+
+<Slot for="api-center-table-389">
+
+4: 128-bit SM4 加密，ECB 模式。
+
+</Slot>
+
+<a id="a32a0270f2e3dab57953457ac1871b521"></a>
+
+## ◆ENCRYPTION_ERROR_TYPE
+
+| enum [agora::rtc::ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521) |
+| --- |
+
+内置加密的错误类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-390" /> | <Slot name="api-center-table-391" /> |
+| <Slot name="api-center-table-392" /> | <Slot name="api-center-table-393" /> |
+| <Slot name="api-center-table-394" /> | <Slot name="api-center-table-395" /> |
+
+<Slot for="api-center-table-390">
+
+<a id="a32a0270f2e3dab57953457ac1871b521a441bf6a89ab42ecef6ae28949ea0435d"></a>ENCRYPTION_ERROR_INTERNAL_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-391">
+
+0：内部原因。
+
+</Slot>
+
+<Slot for="api-center-table-392">
+
+<a id="a32a0270f2e3dab57953457ac1871b521a337a35a9e01622a0d2a17b6e3f3e185b"></a>ENCRYPTION_ERROR_DECRYPTION_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-393">
+
+1：解密错误。请确保接收端和发送端使用的加密模式或密钥一致。
+
+</Slot>
+
+<Slot for="api-center-table-394">
+
+<a id="a32a0270f2e3dab57953457ac1871b521a24eaecae54c5ec0fc7cc505f5339afae"></a>ENCRYPTION_ERROR_ENCRYPTION_FAILURE
+
+</Slot>
+
+<Slot for="api-center-table-395">
+
+2：加密错误。
+
+</Slot>
+
+<a id="a895ba93435851fd5ddbccd92e6d5356f"></a>
+
+## ◆MAX_USER_ACCOUNT_LENGTH_TYPE
+
+| enum [agora::rtc::MAX_USER_ACCOUNT_LENGTH_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a895ba93435851fd5ddbccd92e6d5356f) |
+| --- |
+
+user account 的最大长度。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-396" /> | <Slot name="api-center-table-397" /> |
+
+<Slot for="api-center-table-396">
+
+<a id="a895ba93435851fd5ddbccd92e6d5356fa8a980d28f1c8c8e67300b430d18853f8"></a>MAX_USER_ACCOUNT_LENGTH
+
+</Slot>
+
+<Slot for="api-center-table-397">
+
+256：user account 的最大长度（字节）。
+
+</Slot>
+
+<a id="ac405a073458682fd6464c82d49fece3c"></a>
+
+## ◆STREAM_SUBSCRIBE_STATE
+
+| enum [agora::rtc::STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) |
+| --- |
+
+流订阅状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-398" /> | <Slot name="api-center-table-399" /> |
+| <Slot name="api-center-table-400" /> | <Slot name="api-center-table-401" /> |
+| <Slot name="api-center-table-402" /> | <Slot name="api-center-table-403" /> |
+| <Slot name="api-center-table-404" /> | <Slot name="api-center-table-405" /> |
+
+<Slot for="api-center-table-398">
+
+<a id="ac405a073458682fd6464c82d49fece3ca1e7316c35ab5c6854892582cc7967773"></a>SUB_STATE_IDLE
+
+</Slot>
+
+<Slot for="api-center-table-399">
+
+0：加入频道后的初始订阅状态。
+
+</Slot>
+
+<Slot for="api-center-table-400">
+
+<a id="ac405a073458682fd6464c82d49fece3ca6678ddfda9aece5abc6feb438d1d528d"></a>SUB_STATE_NO_SUBSCRIBED
+
+</Slot>
+
+<Slot for="api-center-table-401">
+
+1：订阅失败。
+
+</Slot>
+
+<Slot for="api-center-table-402">
+
+<a id="ac405a073458682fd6464c82d49fece3cace29d3c4aeb9206e71426d672ea7d963"></a>SUB_STATE_SUBSCRIBING
+
+</Slot>
+
+<Slot for="api-center-table-403">
+
+2：正在订阅。
+
+</Slot>
+
+<Slot for="api-center-table-404">
+
+<a id="ac405a073458682fd6464c82d49fece3cae4f929d7bd7112a7db7a8053581daecc"></a>SUB_STATE_SUBSCRIBED
+
+</Slot>
+
+<Slot for="api-center-table-405">
+
+3：收到了远端流，订阅成功。
+
+</Slot>
+
+<a id="a58eeb8b495ca1c91d38785f064132537"></a>
+
+## ◆STREAM_PUBLISH_STATE
+
+| enum [agora::rtc::STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) |
+| --- |
+
+流发布状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-406" /> | <Slot name="api-center-table-407" /> |
+| <Slot name="api-center-table-408" /> | <Slot name="api-center-table-409" /> |
+| <Slot name="api-center-table-410" /> | <Slot name="api-center-table-411" /> |
+| <Slot name="api-center-table-412" /> | <Slot name="api-center-table-413" /> |
+
+<Slot for="api-center-table-406">
+
+<a id="a58eeb8b495ca1c91d38785f064132537a14e3e6abd2239fe4ba1098fdfb4693c0"></a>PUB_STATE_IDLE
+
+</Slot>
+
+<Slot for="api-center-table-407">
+
+0: 加入频道后的初始发布状态。
+
+</Slot>
+
+<Slot for="api-center-table-408">
+
+<a id="a58eeb8b495ca1c91d38785f064132537a989dfdb24e7c2a5533dcdca3549629b2"></a>PUB_STATE_NO_PUBLISHED
+
+</Slot>
+
+<Slot for="api-center-table-409">
+
+1: 发布失败。
+
+</Slot>
+
+<Slot for="api-center-table-410">
+
+<a id="a58eeb8b495ca1c91d38785f064132537a926fbe7ef2663c708ac04cb0315a5745"></a>PUB_STATE_PUBLISHING
+
+</Slot>
+
+<Slot for="api-center-table-411">
+
+2: 正在发布。
+
+</Slot>
+
+<Slot for="api-center-table-412">
+
+<a id="a58eeb8b495ca1c91d38785f064132537a156bc733b29c56ffacae478f5f06d868"></a>PUB_STATE_PUBLISHED
+
+</Slot>
+
+<Slot for="api-center-table-413">
+
+3: 发布成功。
+
+</Slot>
+
+<a id="a54de466c4f3f991c714bb5719d706b63"></a>
+
+## ◆TCcMode
+
+| enum [agora::rtc::TCcMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a54de466c4f3f991c714bb5719d706b63) |
+| --- |
+
+阻塞控制模块选项。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-414" /> | <Slot name="api-center-table-415" /> |
+| <Slot name="api-center-table-416" /> | <Slot name="api-center-table-417" /> |
+
+<Slot for="api-center-table-414">
+
+<a id="a54de466c4f3f991c714bb5719d706b63aef79c253b99faa4f9a41cfa73a84a74f"></a>CC_ENABLED
+
+</Slot>
+
+<Slot for="api-center-table-415">
+
+0：开启阻塞控制模块。
+
+</Slot>
+
+<Slot for="api-center-table-416">
+
+<a id="a54de466c4f3f991c714bb5719d706b63ad4a94566cadf162aa667e0923a7697de"></a>CC_DISABLED
+
+</Slot>
+
+<Slot for="api-center-table-417">
+
+1：关闭阻塞控制模块。
+
+</Slot>
+
+<a id="a74143af8b2847d195090020877e7369d"></a>
+
+## ◆BYTES_PER_SAMPLE
+
+| enum [agora::rtc::BYTES_PER_SAMPLE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a74143af8b2847d195090020877e7369d) |
+| --- |
+
+每个样本的字节数。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-418" /> | <Slot name="api-center-table-419" /> |
+
+<Slot for="api-center-table-418">
+
+<a id="a74143af8b2847d195090020877e7369da2ac2866da3a1e71f529fa2aa06eab97d"></a>TWO_BYTES_PER_SAMPLE
+
+</Slot>
+
+<Slot for="api-center-table-419">
+
+2：每个样本两个字节。
+
+</Slot>
+
+<a id="ae5df06fc9c5b15135e22047c01e565bb"></a>
+
+## ◆RAW_AUDIO_FRAME_OP_MODE_TYPE
+
+| enum [agora::rtc::RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) |
+| --- |
+
+`onRecordAudioFrame` 或 `onPlaybackAudioFrame` 回调中返回的音频数据的使用模式。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-420" /> | <Slot name="api-center-table-421" /> |
+| <Slot name="api-center-table-422" /> | <Slot name="api-center-table-423" /> |
+
+<Slot for="api-center-table-420">
+
+<a id="ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52"></a>RAW_AUDIO_FRAME_OP_MODE_READ_ONLY
+
+</Slot>
+
+<Slot for="api-center-table-421">
+
+0: 只读模式，用户仅从 AudioFrame 获取原始数据，不作任何修改。
+
+</Slot>
+
+<Slot for="api-center-table-422">
+
+<a id="ae5df06fc9c5b15135e22047c01e565bba981a8e6434a19c97343ffec38bf2e31a"></a>RAW_AUDIO_FRAME_OP_MODE_READ_WRITE
+
+</Slot>
+
+<Slot for="api-center-table-423">
+
+2: 读写模式, 用户从 AudioFrame 获取并修改数据，并返回给 SDK 进行编码传输。
+
+</Slot>
+
+<a id="aff7596486950cd8ca8a3010d8c8710de"></a>
+
+## ◆RTMP_CONNECTION_ERROR
+
+| enum [agora::rtc::RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) |
+| --- |
+
+推流错误信息。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-424" /> | <Slot name="api-center-table-425" /> |
+| <Slot name="api-center-table-426" /> | <Slot name="api-center-table-427" /> |
+| <Slot name="api-center-table-428" /> | <Slot name="api-center-table-429" /> |
+| <Slot name="api-center-table-430" /> | <Slot name="api-center-table-431" /> |
+
+<Slot for="api-center-table-424">
+
+<a id="aff7596486950cd8ca8a3010d8c8710dea9487ca7eea78822013083f643585e994"></a>RTMP_CONNECTION_ERR_OK
+
+</Slot>
+
+<Slot for="api-center-table-425">
+
+0: 推流成功。
+
+</Slot>
+
+<Slot for="api-center-table-426">
+
+<a id="aff7596486950cd8ca8a3010d8c8710deabdce99809b2f603d2c389b86a6ffd81d"></a>RTMP_CONNECTION_ERR_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-427">
+
+1: 一般性错误。
+
+</Slot>
+
+<Slot for="api-center-table-428">
+
+<a id="aff7596486950cd8ca8a3010d8c8710dea8071775e91d6654350fc0e5fe7636d70"></a>RTMP_CONNECTION_ERR_INVALID_URL
+
+</Slot>
+
+<Slot for="api-center-table-429">
+
+2: 推流 URL 无效。请检查输入的 URL 是否正确。
+
+</Slot>
+
+<Slot for="api-center-table-430">
+
+<a id="aff7596486950cd8ca8a3010d8c8710dea3208d528c68c666efbcc599166c5467e"></a>RTMP_CONNECTION_ERR_BAD_NAME
+
+</Slot>
+
+<Slot for="api-center-table-431">
+
+3: 该推流 URL 已用于推流。如果你想开始新的推流，请使用新的推流 URL。
+
+</Slot>
+
+<a id="a843a00f1c45fdfe18856a8f835018681"></a>
+
+## ◆RTMP_CONNECTION_STATE
+
+| enum [agora::rtc::RTMP_CONNECTION_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a843a00f1c45fdfe18856a8f835018681) |
+| --- |
+
+SDK 与 CDN 的连接状态。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-432" /> | <Slot name="api-center-table-433" /> |
+| <Slot name="api-center-table-434" /> | <Slot name="api-center-table-435" /> |
+| <Slot name="api-center-table-436" /> | <Slot name="api-center-table-437" /> |
+| <Slot name="api-center-table-438" /> | <Slot name="api-center-table-439" /> |
+| <Slot name="api-center-table-440" /> | <Slot name="api-center-table-441" /> |
+| <Slot name="api-center-table-442" /> | <Slot name="api-center-table-443" /> |
+
+<Slot for="api-center-table-432">
+
+<a id="a843a00f1c45fdfe18856a8f835018681a1e98a9b3e2100a99833d45d3f95c7728"></a>STATE_DISCONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-433">
+
+1: SDK 与 CDN 断开连接。
+
+以下操作会让 SDK 进入该状态：
+
+- 调用 [createRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#adae5bb15639f9559a1399082590955e5)，即 SDK 与 CDN 的初始连接状态。
+- 调用 [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#ac3fcd6d1efd903f1bb75797fb709584e)。
+
+</Slot>
+
+<Slot for="api-center-table-434">
+
+<a id="a843a00f1c45fdfe18856a8f835018681a88f854c4436729950e18c291c8c19b6d"></a>STATE_CONNECTING
+
+</Slot>
+
+<Slot for="api-center-table-435">
+
+2: SDK 正在连接 CDN。
+
+调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 连接 CDN 的过程中，SDK 会进入该状态。
+
+</Slot>
+
+<Slot for="api-center-table-436">
+
+<a id="a843a00f1c45fdfe18856a8f835018681af8ba2691700e27ae350207c48b4ec1df"></a>STATE_CONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-437">
+
+3: SDK 已连接 CDN。
+
+调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 成功连接 CDN 时，SDK 会进入该状态， 你可以开始向 CDN 推流。
+
+</Slot>
+
+<Slot for="api-center-table-438">
+
+<a id="a843a00f1c45fdfe18856a8f835018681aa0b16717707e51c789610f80d3c6f059"></a>STATE_RECONNECTING
+
+</Slot>
+
+<Slot for="api-center-table-439">
+
+4: SDK 正在重新连接 CDN。
+
+在弱网环境或用户切换网络类型等情况下，如果 SDK 与 CDN 断开连接，SDK 会尝试重新连接 CDN 并进入该状态。
+
+</Slot>
+
+<Slot for="api-center-table-440">
+
+<a id="a843a00f1c45fdfe18856a8f835018681a2d592cdb8de205cec41e5eb702f4431c"></a>STATE_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-441">
+
+5: SDK 连接 CDN 失败。
+
+以下情况会让 SDK 进入该状态：
+
+- 调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 连接 CDN 失败时。
+- 在弱网环境或用户切换网络类型等情况下，SDK 重新连接 CDN 失败时。
+
+该状态下，如需连接 CDN，你需要先调用 [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#ac3fcd6d1efd903f1bb75797fb709584e) 断开连接， 再调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4)。
+
+</Slot>
+
+<Slot for="api-center-table-442">
+
+<a id="a843a00f1c45fdfe18856a8f835018681a3941ce0aa3e7b73b3686a94d5804e4b5"></a>STATE_RECONNECTED
+
+</Slot>
+
+<Slot for="api-center-table-443">
+
+6: SDK 已重新连接 CDN。
+
+在弱网环境或用户切换网络类型等情况下，如果 SDK 与 CDN 断开连接，则 SDK 重新连接 CDN 成功时会进入该状态。 你可以继续向 CDN 推流。
+
+</Slot>
+
+<a id="ae1713f658284be303aaa022bcf018d47"></a>
+
+## ◆PublishAudioError
+
+| enum [agora::rtc::PublishAudioError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47) |
+| --- |
+
+推送音频帧失败的错误码。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-444" /> | <Slot name="api-center-table-445" /> |
+| <Slot name="api-center-table-446" /> | <Slot name="api-center-table-447" /> |
+
+<Slot for="api-center-table-444">
+
+<a id="ae1713f658284be303aaa022bcf018d47a8f591dd20b09edddde423f6516049f83"></a>PUBLISH_AUDIO_ERR_OK
+
+</Slot>
+
+<Slot for="api-center-table-445">
+
+0: 推送成功。
+
+</Slot>
+
+<Slot for="api-center-table-446">
+
+<a id="ae1713f658284be303aaa022bcf018d47aaae115bb328bc08ac627da5da9b64ae5"></a>PUBLISH_AUDIO_ERR_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-447">
+
+1: 一般性错误。
+
+</Slot>
+
+<a id="a68e2825c220df8afbe45a98f59ccd63e"></a>
+
+## ◆PublishVideoError
+
+| enum [agora::rtc::PublishVideoError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63e) |
+| --- |
+
+推送视频帧失败的错误码。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-448" /> | <Slot name="api-center-table-449" /> |
+| <Slot name="api-center-table-450" /> | <Slot name="api-center-table-451" /> |
+
+<Slot for="api-center-table-448">
+
+<a id="a68e2825c220df8afbe45a98f59ccd63ead4f8e8d4c95b080ebe57315470de4918"></a>PUBLISH_VIDEO_ERR_OK
+
+</Slot>
+
+<Slot for="api-center-table-449">
+
+0: 推送成功。
+
+</Slot>
+
+<Slot for="api-center-table-450">
+
+<a id="a68e2825c220df8afbe45a98f59ccd63eab7ce18174ee9b15caa9d0c60fc93b726"></a>PUBLISH_VIDEO_ERR_FAILED
+
+</Slot>
+
+<Slot for="api-center-table-451">
+
+1: 一般性错误。
+
+</Slot>
+
+<a id="a2bb24f13233850a63fb152366902bd75"></a>
+
+## ◆ImageType
+
+| enum [agora::rtc::ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) |
+| --- |
+
+图像类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-452" /> | <Slot name="api-center-table-453" /> |
+| <Slot name="api-center-table-454" /> | <Slot name="api-center-table-455" /> |
+| <Slot name="api-center-table-456" /> | <Slot name="api-center-table-457" /> |
+
+<Slot for="api-center-table-452">
+
+<a id="a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173"></a>kPng
+
+</Slot>
+
+<Slot for="api-center-table-453">
+
+PNG。
+
+</Slot>
+
+<Slot for="api-center-table-454">
+
+<a id="a2bb24f13233850a63fb152366902bd75ab5257456edaf82872832b2c76194b8b3"></a>kJpeg
+
+</Slot>
+
+<Slot for="api-center-table-455">
+
+JPEG。
+
+</Slot>
+
+<Slot for="api-center-table-456">
+
+<a id="a2bb24f13233850a63fb152366902bd75a99b1da8bf6dc1d32ff098843d3049576"></a>kGif
+
+</Slot>
+
+<Slot for="api-center-table-457">
+
+Gif。
+
+</Slot>
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26d"></a>
+
+## ◆StreamLayerIndexInternal
+
+| enum [agora::rtc::StreamLayerIndexInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26d) |
+| --- |
+
+定义 YUV 视频流的索引，用于标识不同的流。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-458" /> | <Slot name="api-center-table-459" /> |
+| <Slot name="api-center-table-460" /> | <Slot name="api-center-table-461" /> |
+| <Slot name="api-center-table-462" /> | <Slot name="api-center-table-463" /> |
+| <Slot name="api-center-table-464" /> | <Slot name="api-center-table-465" /> |
+| <Slot name="api-center-table-466" /> | <Slot name="api-center-table-467" /> |
+| <Slot name="api-center-table-468" /> | <Slot name="api-center-table-469" /> |
+| <Slot name="api-center-table-470" /> | <Slot name="api-center-table-471" /> |
+| <Slot name="api-center-table-472" /> | <Slot name="api-center-table-473" /> |
+
+<Slot for="api-center-table-458">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26daee8d44f729c22d7c6773ee56927dd0f8"></a>STREAM_LAYER_1
+
+</Slot>
+
+<Slot for="api-center-table-459">
+
+`1`: 第 1 路流。
+
+</Slot>
+
+<Slot for="api-center-table-460">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26da4aeab168f90bd1d68e2c24cb4350ab39"></a>STREAM_LAYER_2
+
+</Slot>
+
+<Slot for="api-center-table-461">
+
+`2`: 第 2 路流。
+
+</Slot>
+
+<Slot for="api-center-table-462">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26da8d773251752a80df0eb8aa3dad93b457"></a>STREAM_LAYER_3
+
+</Slot>
+
+<Slot for="api-center-table-463">
+
+`3`: 第 3 路流。
+
+</Slot>
+
+<Slot for="api-center-table-464">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26daedafa3ffd189ca1d2c272a6c65cd2d52"></a>STREAM_LAYER_4
+
+</Slot>
+
+<Slot for="api-center-table-465">
+
+`4`: 第 4 路流。
+
+</Slot>
+
+<Slot for="api-center-table-466">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26daf24d21dd50966a23f757a1e5902bb4c9"></a>STREAM_LAYER_5
+
+</Slot>
+
+<Slot for="api-center-table-467">
+
+`5`: 第 5 路流。
+
+</Slot>
+
+<Slot for="api-center-table-468">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26da0d0c04aba908347fa0161272524bc8c0"></a>STREAM_LAYER_6
+
+</Slot>
+
+<Slot for="api-center-table-469">
+
+`6`: 第 6 路流。
+
+</Slot>
+
+<Slot for="api-center-table-470">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26da9530b8403f1b34e408ef1a91d43657a7"></a>STREAM_LOW
+
+</Slot>
+
+<Slot for="api-center-table-471">
+
+`7`: 视频小流。
+
+</Slot>
+
+<Slot for="api-center-table-472">
+
+<a id="ac7c53aef1d848fde23b24e9c9e14a26da06c1204fcdf9fc528f81f6663da31343"></a>STREAM_LAYER_COUNT_MAX
+
+</Slot>
+
+<Slot for="api-center-table-473">
+
+`8`: 枚举值边界。
+
+</Slot>
+
+<a id="a1a5e96c615b82373b20c842f8b20ccf9"></a>
+
+## ◆VideoTrackType
+
+| enum [agora::rtc::VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) |
+| --- |
+
+视频轨道类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-474" /> | <Slot name="api-center-table-475" /> |
+| <Slot name="api-center-table-476" /> | <Slot name="api-center-table-477" /> |
+
+<Slot for="api-center-table-474">
+
+<a id="a1a5e96c615b82373b20c842f8b20ccf9a8d3e687b87c6008d6b856e8781580c3a"></a>LOCAL_VIDEO_TRACK
+
+</Slot>
+
+<Slot for="api-center-table-475">
+
+本地视频轨道。
+
+</Slot>
+
+<Slot for="api-center-table-476">
+
+<a id="a1a5e96c615b82373b20c842f8b20ccf9a3d199461a405a1ec0a3f5908eb518438"></a>REMOTE_VIDEO_TRACK
+
+</Slot>
+
+<Slot for="api-center-table-477">
+
+远端视频轨道。
+
+</Slot>
+
+## 变量说明
+
+<a id="aa3b9a29c1e9893671d0ca8fe05c7b302"></a>
+
+## ◆STANDARD_BITRATE
+
+| const int agora::rtc::STANDARD_BITRATE = 0 |
+| --- |
+
+(推荐) 标准码率模式。该模式下，视频的码率是基准码率的两倍。
+
+<a id="a4e18b18d956926c9c9c647d6ce5f1542"></a>
+
+## ◆COMPATIBLE_BITRATE
+
+| const int agora::rtc::COMPATIBLE_BITRATE = -1 |
+| --- |
+
+适配码率模式。该模式下，视频码率与基准码率一致。直播时如果选择该模式，视频帧率可能会低于设置的值。
+
+<a id="af0e8e50f05a368140f51ab0b899f0833"></a>
+
+## ◆DEFAULT_CONNECTION_ID
+
+| const unsigned int agora::rtc::DEFAULT_CONNECTION_ID = 0 | static |
+| --- | --- |
+
+<a id="abaad7ca107078a076b2543a6c13fcec7"></a>
+
+## ◆DUMMY_CONNECTION_ID
+
+| const unsigned int agora::rtc::DUMMY_CONNECTION_ID = (std::numeric_limits&lt;unsigned int&gt;::max)() | static |
+| --- | --- |

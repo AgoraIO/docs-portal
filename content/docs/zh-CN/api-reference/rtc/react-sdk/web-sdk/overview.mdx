@@ -1,0 +1,181 @@
+---
+title: Agora Web SDK API Reference v4.22.0
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/overview
+  sourcePath: html-docs/rtc/React/index.html
+  generator: typedoc
+  warnings: []
+---
+
+:::info
+本文档仅适用于声网 Web SDK 4.x。这是基于 Web SDK 3.x 的全量重构版本，不向下兼容。查看 [Web SDK 4.x 介绍及迁移指南](https://docs.agora.io/cn/video-call-4.x/migration_guide_web_ng?platform=Web)。**查看 3.x 或之前版本的 [API 文档](https://docs.agora.io/cn/video-legacy/API%20Reference/web/index.html)。**
+:::
+
+声网 Web SDK 是通过 HTML 网页加载的 JavaScript 和 Typescript 库。你可以使用声网 Web SDK 在网页浏览器中调用 API 建立连接，控制音视频通话和直播服务。
+
+> 请务必使用 HTTPS 协议或者 localhost，否则 SDK 无法正常工作。
+
+<a id="全局模块"></a>
+
+## 全局模块
+
+[AgoraRTC](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc) 是声网 Web SDK 中所有可调用方法的入口，主要包含以下方法。
+
+<a id="核心方法"></a>
+
+### 核心方法
+
+| 方法 | 描述 |
+| --- | --- |
+| [createClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) | 创建本地客户端 |
+
+<a id="本地音视频采集"></a>
+
+### 本地音视频采集
+
+| 方法 | 描述 |
+| --- | --- |
+| [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createmicrophoneaudiotrack) | 通过麦克风创建一个音频轨道对象 |
+| [createCameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcameravideotrack) | 通过摄像头创建一个视频轨道对象 |
+| [createMicrophoneAndCameraTracks](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createmicrophoneandcameratracks) | 同时创建麦克风音频轨道和摄像头视频轨道 |
+| [createScreenVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack) | 通过屏幕共享创建一个视频轨道对象 |
+| [createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createbuffersourceaudiotrack) | 通过音频文件创建一个音频轨道对象 |
+| [createCustomAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcustomaudiotrack) | 创建一个自定义的音频轨道对象 |
+| [createCustomVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcustomvideotrack) | 创建一个自定义的视频轨道对象 |
+
+<a id="媒体设备查询"></a>
+
+### 媒体设备查询
+
+| 方法 | 描述 |
+| --- | --- |
+| [getDevices](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getdevices) | 获取媒体设备列表 |
+| [getCameras](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getcameras) | 获取摄像头列表 |
+| [getMicrophones](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getmicrophones) | 获取麦克风列表 |
+| [getPlaybackDevices](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getplaybackdevices) | 获取音频播放设备列表 |
+| [getElectronScreenSources](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getelectronscreensources) | 获取 Electron 屏幕共享源列表 |
+
+<a id="日志管理"></a>
+
+### 日志管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [enableLogUpload](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#enablelogupload) | 打开日志上传功能 |
+| [disableLogUpload](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#disablelogupload) | 关闭日志上传功能 |
+| [setLogLevel](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#setloglevel) | 设置日志等级 |
+
+<a id="全局事件回调"></a>
+
+### 全局事件回调
+
+| 回调 | 描述 |
+| --- | --- |
+| [onCameraChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#oncamerachanged) | 视频采集设备状态变化回调 |
+| [onMicrophoneChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onmicrophonechanged) | 音频采集设备状态变化回调 |
+| [onAudioAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onaudioautoplayfailed) | 音频轨道自动播放失败回调 |
+
+<a id="其他"></a>
+
+### 其他
+
+| 方法 | 描述 |
+| --- | --- |
+| [checkSystemRequirements](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#checksystemrequirements) | 检测浏览器兼容性 |
+| [getSupportedCodec](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getsupportedcodec) | 获取支持的编码格式 |
+| [createChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createchannelmediarelayconfiguration) | 创建跨频道媒体流转发的配置对象 |
+
+<a id="client"></a>
+
+<a id="agorartcclient-类"></a>
+
+## AgoraRTCClient 类
+
+调用 [createClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建一个本地客户端对象 [AgoraRTCClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient)，代表一个通话中的本地用户。`AgoraRTCClient` 类提供音视频通话的核心功能，主要包含以下方法。
+
+| 方法 | 描述 |
+| --- | --- |
+| [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) | 加入频道 |
+| [leave](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#leave) | 离开频道 |
+| [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) | 发布本地音视频轨道 |
+| [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) | 取消发布本地音视频轨道 |
+| [subscribe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#subscribe) | 订阅远端用户的音视频轨道 |
+| [unsubscribe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unsubscribe) | 取消订阅远端用户的音视频轨道 |
+
+<a id="local-track"></a>
+
+<a id="localtrack-类"></a>
+
+## LocalTrack 类
+
+`LocalTrack` 是声网 Web SDK 中定义本地音视频轨道的抽象类，可用于本地播放和发布。
+
+SDK 通过不同的方式创建不同的 `LocalTrack`，返回不同的 `LocalTrack` 派生类对象。以下列举了所有的 `LocalTrack` 派生类以及所对应的创建方式。
+
+<a id="本地音频轨道"></a>
+
+### 本地音频轨道
+
+根据创建方式的不同，本地音频轨道可分为以下三种。其中 `LocalAudioTrack` 派生自 `LocalTrack`，`MicrophoneAudioTrack` 和 `BufferSourceAudioTrack` 派生自 `LocalAudioTrack`。
+
+| 本地音频轨道 | 描述 |
+| --- | --- |
+| [LocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack) | 最基础的本地音频轨道对象，包含了基础的本地音频控制，如播放、设置音量控制。 通过调用 [AgoraRTC.createCustomAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcustomaudiotrack) 创建。 |
+| [MicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack) | 本地麦克风音频轨道对象，比 [LocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack) 多一些控制麦克风的方法。 通过调用 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createmicrophoneaudiotrack) 创建。 |
+| [BufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack) | 通过读取音频数据源创建的本地音频轨道，比基础的 [LocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack) 多一些控制音频数据源的方法。 通过调用 [AgoraRTC.createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createbuffersourceaudiotrack) 创建。 |
+
+<a id="本地视频轨道"></a>
+
+### 本地视频轨道
+
+根据创建方式的不同，本地视频可分为以下两种。其中 `LocalVideoTrack` 派生自 `LocalTrack`，`CameraVideoTrack` 派生自 `LocalVideoTrack`。
+
+| 本地视频轨道 | 描述 |
+| --- | --- |
+| [LocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack) | 最基础的本地视频轨道对象，包含了基础的本地视频控制，如播放、美颜。 通过调用 [AgoraRTC.createCustomVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcustomvideotrack) 或 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack) 创建。 |
+| [CameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack) | 本地摄像头视频轨道对象，比 [LocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack) 多一些控制摄像头和编码参数的方法。 通过调用 [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcameravideotrack) 创建。 |
+
+<a id="remote-track"></a>
+
+<a id="remotetrack-类"></a>
+
+## RemoteTrack 类
+
+`RemoteTrack` 是声网 Web SDK 中用于定义远端音视频轨道的抽象类。
+
+在实际操作中，你需要先调用 [AgoraRTCClient.subscribe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#subscribe) 订阅远端用户，然后从远端用户对象 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) 中获取派生自 `RemoteTrack` 的 [RemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack) 对象和 [RemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack) 对象。
+
+<a id="引入方式"></a>
+
+## 引入方式
+
+如果你通过 `&lt;script&gt;` 的方式引入声网 Web SDK，可以通过访问 [AgoraRTC.createClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 来获取导出的模块。
+
+如果你通过 `npm` 或者模块化的方式引入声网 Web SDK，可以通过以下方式访问 `AgoraRTC`:
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng";
+console.log(AgoraRTC.createClient);
+```
+
+<a id="类型模块（适用于-typescript）"></a>
+
+## 类型模块（适用于 Typescript）
+
+对于 Typescript 开发者，我们提供了 `.d.ts` 文件导出详细的类型定义。通过 npm 集成 SDK 后，你可以在 `node_modules/agora-rtc-sdk-ng` 路径下找到该文件。API 文档的 [Global](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals) 页面列出了所有 SDK 导出的模块和类型。
+
+```ts
+import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+
+const client: IAgoraRTCClient = AgoraRTC.createClient();
+```
+
+<a id="error-code"></a>
+
+<a id="错误码"></a>
+
+## 错误码
+
+SDK 会返回错误码，你可以通过[错误码](/zh-CN/realtime-media/rtc/reference/error-code)来查看详情。

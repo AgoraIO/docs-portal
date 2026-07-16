@@ -1,0 +1,77 @@
+---
+title: Interface ClientConfig
+description: 用于控制客户端行为的接口。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/clientconfig
+  sourcePath: html-docs/rtc/Web/interfaces/clientconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+用于控制客户端行为的接口。
+
+在调用 [createClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createclient) 创建客户端对象时，你需要配置该接口。
+
+> [mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode) 和 [codec](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#codec) 属性必须设置。
+
+### Hierarchy
+
+- ClientConfig
+
+## Index
+
+### Properties
+
+- [clientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#clientroleoptions)
+- [codec](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#codec)
+- [mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode)
+- [role](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#role)
+
+## Properties
+
+<a id="clientroleoptions"></a>
+
+### Optional clientRoleOptions
+
+clientRoleOptions: [ClientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientroleoptions)
+
+用户角色的具体设置，包含用户级别。
+
+用户级别确定用户在其角色权限范围内可以操作和享受到的服务级别。例如对于观众，选择接收低延时还是超低延时的视频流。不同的级别会影响计费。
+
+<a id="codec"></a>
+
+### codec
+
+codec: [SDK_CODEC](/zh-CN/api-reference/rtc/web/globals#sdk_codec)
+
+浏览器使用的编码格式。
+
+<a id="mode"></a>
+
+### mode
+
+mode: [SDK_MODE](/zh-CN/api-reference/rtc/web/globals#sdk_mode)
+
+频道场景。
+
+Agora Web SDK 需知道 app 的使用场景（例如通信场景或直播场景），从而使用不同的优化手段。
+
+声网频道支持以下场景:
+
+- `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法设置用户角色为主播或观众。主播可以发布和订阅音视频轨道，而观众只能订阅音视频轨道，无法发布。
+- `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
+
+<a id="role"></a>
+
+### Optional role
+
+role: [ClientRole](/zh-CN/api-reference/rtc/web/globals#clientrole)
+
+直播场景中（[mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode) 为 `"live"` 时）的用户角色。
+
+用户角色确定用户在 SDK 层的权限，包含是否可以发布和订阅音视频轨道、是否可以推流到 CDN。用户角色有 `"host"`（主播）和 `"audience"`（观众）。主播既可发布轨道，也可订阅轨道；观众不能进行 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 操作。直播场景中的用户角色默认为观众。如需发布音视频，必须将角色角色为主播。
+
+在创建客户端之后，你可以随时调用 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 来改变用户角色。

@@ -1,0 +1,136 @@
+---
+title: Interface CustomVideoTrackInitConfig
+description: 创建自定义视频轨道时的配置参数，用于 AgoraRTC.createCustomVideoTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/customvideotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/customvideotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+创建自定义视频轨道时的配置参数，用于 [AgoraRTC.createCustomVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcustomvideotrack)。
+
+### Hierarchy
+
+- CustomVideoTrackInitConfig
+
+## Index
+
+### Properties
+
+- [bitrateMax](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#bitratemax)
+- [bitrateMin](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#bitratemin)
+- [frameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#framerate)
+- [height](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#height)
+- [mediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#mediastreamtrack)
+- [optimizationMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#optimizationmode)
+- [width](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig#width)
+
+## Properties
+
+<a id="bitratemax"></a>
+
+### Optional bitrateMax
+
+bitrateMax: number
+
+指定发送这个视频轨道时的最大码率，单位为 Kbps。
+
+<a id="bitratemin"></a>
+
+### Optional bitrateMin
+
+bitrateMin: number
+
+指定发送这个视频轨道时的最小码率，单位为 Kbps。
+
+<a id="framerate"></a>
+
+### Optional frameRate
+
+frameRate: number|[ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)
+
+### 自从
+
+*4.17.1*
+
+视频帧率，单位为 fps。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 30, min: 5 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)。
+
+<a id="height"></a>
+
+### Optional height
+
+height: number|[ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)
+
+### 自从
+
+*4.17.1*
+
+视频的分辨率高。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 1280, min: 720 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)。
+
+<a id="mediastreamtrack"></a>
+
+### mediaStreamTrack
+
+mediaStreamTrack: MediaStreamTrack
+
+这里填写您自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象
+
+<a id="optimizationmode"></a>
+
+### Optional optimizationMode
+
+optimizationMode: "motion"|"detail"
+
+### 自从
+
+*4.2.0*
+
+设置视频传输优化模式。
+
+你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
+
+> 注意事项：该方法只支持 Chrome 浏览器。
+
+### param
+
+视频传输优化模式：
+
+- `"balanced"`: 使用默认的传输优化模式：
+
+  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
+  - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。
+- `"detail"`: 清晰优先。
+
+  - SDK 会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
+- `"motion"`: 自 4.21.0开始，SDK 默认开启流畅优先模式
+
+  - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，SDK 不会降低帧率，但是可能会降低发送分辨率。
+
+<a id="width"></a>
+
+### Optional width
+
+width: number|[ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)
+
+### 自从
+
+*4.17.1*
+
+视频的分辨率宽。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 1280, min: 720 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/constrainlong)。

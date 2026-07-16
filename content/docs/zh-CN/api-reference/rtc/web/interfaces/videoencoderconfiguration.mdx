@@ -1,0 +1,87 @@
+---
+title: Interface VideoEncoderConfiguration
+description: 定义视频编码参数的配置对象。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/videoencoderconfiguration
+  sourcePath: html-docs/rtc/Web/interfaces/videoencoderconfiguration.html
+  generator: typedoc
+  warnings: []
+---
+
+定义视频编码参数的配置对象。
+
+你可以在 [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 或者 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack) 方法中传入自定义的视频编码配置。
+
+SDK 提供了一些预设视频编码配置，详见 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)。
+
+> 受操作系统、浏览器影响，实际的码率可能会和设置的取值范围不同。我们建议将码率设置在 100 Kbps 到 5000 Kbps 之间。
+
+### Hierarchy
+
+- VideoEncoderConfiguration
+
+## Index
+
+### Properties
+
+- [bitrateMax](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration#bitratemax)
+- [bitrateMin](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration#bitratemin)
+- [frameRate](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration#framerate)
+- [height](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration#height)
+- [width](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration#width)
+
+## Properties
+
+<a id="bitratemax"></a>
+
+### Optional bitrateMax
+
+bitrateMax: number
+
+传输过程中的最大码率，单位为 Kbps。
+
+<a id="bitratemin"></a>
+
+### Optional bitrateMin
+
+bitrateMin: number
+
+传输过程中的最小码率，单位为 Kbps。
+
+<a id="framerate"></a>
+
+### Optional frameRate
+
+frameRate: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+视频帧率，单位为 fps。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 30, min: 5 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)。
+
+<a id="height"></a>
+
+### Optional height
+
+height: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+视频的分辨率高。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 1280, min: 720 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)。
+
+<a id="width"></a>
+
+### Optional width
+
+width: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+视频的分辨率宽。
+
+支持传入 `number`，或一个约束对象，如 `\{ max: 1280, min: 720 \}`。
+
+关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)。

@@ -1,0 +1,59 @@
+---
+title: Interface VideoPlayerConfig
+description: 视频轨道的播放配置。用于 LocalVideoTrack.play。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/videoplayerconfig
+  sourcePath: html-docs/rtc/React/interfaces/videoplayerconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+视频轨道的播放配置。用于 [LocalVideoTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#play)。
+
+### Hierarchy
+
+- VideoPlayerConfig
+
+## Index
+
+### Properties
+
+- [fit](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig#fit)
+- [mirror](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig#mirror)
+
+## Properties
+
+<a id="fit"></a>
+
+### Optional fit
+
+fit: "cover"|"contain"|"fill"
+
+设置视频播放时的显示模式：
+
+- `"cover"`: 优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，则视频流会按照显示视窗的比例进行周边裁剪或图像拉伸后填满视窗。可以参考 CSS 属性中 `object-fit` 的 `cover` 选项。
+- `"contain"`: 优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频尺寸与显示视窗尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满视窗，缩放后的视频四周会有一圈黑边。可以参考 CSS 属性中 `object-fit` 的 `contain` 选项。
+- `"fill"`: 保证视窗被填满的同时保证视频内容全部显示，但是不保证视频尺寸比例不变。视频的宽高会被拉伸至和视窗尺寸一致。可以参考 CSS 属性中 `object-fit` 的 `fill` 选项。
+
+> 注意事项：
+>
+> - 播放由摄像头采集的本地视频轨道，默认使用 cover 模式；播放用于屏幕共享的视频轨道，默认使用 contain 模式。
+> - 对于远端视频轨道，因为不知道轨道的类型，默认使用 cover 模式。
+
+<a id="mirror"></a>
+
+### Optional mirror
+
+mirror: boolean
+
+设置是否开启镜像模式：
+
+- `true`: 开启镜像模式。
+- `false`: 关闭镜像模式。
+
+> 注意事项：
+>
+> - 对于本地视频轨道，镜像模式默认开启。
+> - 对于远端视频轨道，镜像模式默认关闭。

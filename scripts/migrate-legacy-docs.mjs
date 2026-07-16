@@ -260,6 +260,15 @@ export async function migrateLegacyPages({
   return results;
 }
 
+/**
+ * @param {object} options
+ * @param {ComponentMap} [options.componentMap]
+ * @param {Map<string, any>} options.pathMap
+ * @param {string} [options.platform]
+ * @param {string} options.sourcePath
+ * @param {string} options.sourceRoot
+ * @param {string} [options.targetPath]
+ */
 export async function migrateLegacyPage({
   componentMap = EMPTY_COMPONENT_MAP,
   pathMap,
@@ -501,11 +510,13 @@ export function transformLegacyMdx(body, state) {
     value = transformDetails(value);
     value = transformHtmlLists(value);
     value = transformInlineHtml(value);
+    value = normalizeInlineHtmlAttributes(value, state);
     value = transformHiddenIndexSpans(value, state);
     value = transformAngleBracketLiterals(value, state);
     value = transformGenericTypeLiterals(value, state);
     value = escapeMdxQuotedTextLiterals(value, state);
     value = escapeMdxTextOperators(value, state);
+    value = escapeMdxTextBraces(value, state);
     value = rewriteMarkdownLinks(value, state);
     value = normalizeWhitespace(value);
   }
@@ -698,20 +709,21 @@ async function expandLegacyFile({
 
   visited.add(realPath);
   const parsed = parseFrontmatter(raw);
+  const activeBody = stripMdxComments(parsed.body);
   recordMigrationSignals({
-    body: parsed.body,
+    body: activeBody,
     frontmatter: parsed.frontmatter,
     sourcePath: toPosix(path.relative(state.sourceRoot, realPath)),
     state,
   });
-  const imports = parseImports(parsed.body);
-  for (const [name, links] of parseExportedLinkLists(parsed.body)) {
+  const imports = parseImports(activeBody);
+  for (const [name, links] of parseExportedLinkLists(activeBody)) {
     state.linkLists.set(name, links);
   }
-  for (const [name, header] of parseExportedTableHeaders(parsed.body)) {
+  for (const [name, header] of parseExportedTableHeaders(activeBody)) {
     state.tableHeaders.set(name, header);
   }
-  let body = stripImportExport(parsed.body);
+  let body = stripImportExport(activeBody);
 
   for (const imported of imports) {
     if (isRuntimeOnlyImport(imported.specifier)) {
@@ -796,10 +808,11 @@ function serializeFrontmatter(frontmatter) {
 }
 
 function parseImports(content) {
+  const scanValue = stripCodeFences(stripMdxComments(content));
   const imports = [];
   const importPattern =
     /^import\s+(.+?)\s+from\s+['"](.+?)['"];?\s*$/gm;
-  let match = importPattern.exec(content);
+  let match = importPattern.exec(scanValue);
 
   while (match) {
     const importClause = match[1].trim();
@@ -808,7 +821,7 @@ function parseImports(content) {
     const alias = namespaceMatch?.[1] ?? defaultMatch?.[1] ?? null;
 
     if (!alias) {
-      match = importPattern.exec(content);
+      match = importPattern.exec(scanValue);
       continue;
     }
 
@@ -817,7 +830,7 @@ function parseImports(content) {
       namespace: Boolean(namespaceMatch),
       specifier: match[2],
     });
-    match = importPattern.exec(content);
+    match = importPattern.exec(scanValue);
   }
 
   return imports;
@@ -948,7 +961,7 @@ function parseExportedTableHeaders(content) {
 }
 
 export function stripImportExport(content) {
-  const lines = content.replace(/\r\n?/g, '\n').split('\n');
+  const lines = stripMdxComments(content).replace(/\r\n?/g, '\n').split('\n');
   let inCodeFence = false;
   let skippingExportBlock = false;
   let exportBlockDepth = 0;
@@ -1291,9 +1304,9 @@ function transformLegacyLinks(value, state) {
   );
 
   output = output.replace(
-    /<a\b([^>]*)>([\s\S]*?)<\/a\s*>/g,
+    /<a\b(?![^>]*\/\s*>)([^>]*)>([\s\S]*?)<\/a\s*>/g,
     (match, attrs, label) => {
-      const href = readAttribute(attrs, 'href');
+      const href = readLegacyHrefAttribute(attrs, 'href');
 
       return href
         ? `[${collapseInline(label)}](${normalizeHref(href, state)})`
@@ -1302,6 +1315,16 @@ function transformLegacyLinks(value, state) {
   );
 
   return output;
+}
+
+function readLegacyHrefAttribute(attrs, name) {
+  const quoted = readAttribute(attrs, name);
+  if (quoted) return quoted;
+  const expression = readExpressionAttribute(attrs, name)?.trim();
+  const template = expression?.match(/^`([^`]*)`$/);
+  if (template) return template[1];
+  const stringLiteral = expression?.match(/^(['"])([\s\S]*)\1$/);
+  return stringLiteral?.[2] ?? null;
 }
 
 function normalizeHref(href, state) {
@@ -1344,6 +1367,10 @@ function mapLegacyDocHref(href, state) {
 
 function transformAnchors(value) {
   let output = value.replace(
+    /<a\s+(?:name|id)=['"]([^'"]+)['"]\s*\/?>\s*(?!<\/a>)/g,
+    (_, id) => `<a id="${id}"></a>\n`,
+  );
+  output = output.replace(
     /^(#{1,6})\s*<a\s+(?:name|id)=['"]([^'"]+)['"]\s*\/?><\/a>?\s*(.+)$/gm,
     (_, hashes, id, title) => renderAnchoredHeading(hashes, title, id),
   );
@@ -1823,60 +1850,110 @@ function hasBooleanAttribute(attrs, name) {
 }
 
 function transformTabs(value) {
-  return value.replace(
-    /^([ \t]*)<Tabs\b([^>]*)>([\s\S]*?)^[ \t]*<\/Tabs>[ \t]*$/gm,
-    (match, _indent, attrs, body) => {
-      const items = [
-        ...body.matchAll(
-          /<TabItem\s+value=['"]([^'"]+)['"]\s+label=['"]([^'"]+)['"]([^>]*)>([\s\S]*?)<\/TabItem>/g,
-        ),
-      ];
+  let output = value;
+  const restoredTags = [];
 
-      if (items.length === 0) {
-        return match;
+  while (true) {
+    const pair = findInnermostLegacyTabs(output);
+    if (!pair) break;
+    const converted = convertLegacyTabsBlock({
+      attrs: pair.attrs,
+      body: output.slice(pair.openEnd, pair.closeStart),
+      restoredTags,
+    });
+    if (!converted) break;
+    output = `${output.slice(0, pair.openStart)}${converted}${output.slice(pair.closeEnd)}`;
+  }
+
+  for (const [token, tag] of restoredTags) {
+    output = output.replace(token, tag);
+  }
+  return output;
+}
+
+function findInnermostLegacyTabs(value) {
+  const pattern = /<\/?Tabs\b[^>]*>/g;
+  const stack = [];
+  const pairs = [];
+  let match = pattern.exec(value);
+
+  while (match) {
+    if (match[0].startsWith('</')) {
+      const open = stack.pop();
+      if (open) {
+        pairs.push({
+          ...open,
+          closeStart: match.index,
+          closeEnd: pattern.lastIndex,
+        });
       }
+    } else {
+      const lineStart = value.lastIndexOf('\n', match.index - 1) + 1;
+      const openStart = value.slice(lineStart, match.index).trim()
+        ? match.index
+        : lineStart;
+      stack.push({
+        attrs: match[0].slice('<Tabs'.length, -1),
+        openStart,
+        openEnd: pattern.lastIndex,
+      });
+    }
+    match = pattern.exec(value);
+  }
 
-      const groupId = readAttribute(attrs, 'groupId');
-      const codeTabs = renderCodeFenceTabs(items, groupId);
-      if (codeTabs) {
-        return codeTabs;
-      }
+  return pairs.find((pair) => {
+    const body = value.slice(pair.openEnd, pair.closeStart);
+    return !/<Tabs\b/.test(body) && /<TabItem\b/.test(body);
+  });
+}
 
-      const defaultValue =
-        readAttribute(attrs, 'defaultValue') ??
-        items.find((item) => item[3].includes('default'))?.[1] ??
-        items[0][1];
-      const rootAttrs = [
-        `defaultValue="${defaultValue}"`,
-        groupId ? `groupId="${groupId}"` : '',
-        groupId ? 'persist' : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-      const triggers = items
-        .map(
-          (item) =>
-            `  <TabsTrigger value="${item[1]}">${item[2]}</TabsTrigger>`,
-        )
-        .join('\n');
-      const contents = items
-        .map((item) => {
-          const content = trimCommonIndent(item[4]).trim();
-          return `<TabsContent value="${item[1]}">\n\n${content}\n\n</TabsContent>`;
-        })
-        .join('\n\n');
+function convertLegacyTabsBlock({ attrs, body, restoredTags }) {
+  const items = [
+    ...body.matchAll(
+      /<TabItem\s+value=['"]([^'"]+)['"]\s+label=['"]([^'"]+)['"]([^>]*)>([\s\S]*?)<\/TabItem>/g,
+    ),
+  ];
+  if (items.length === 0) return null;
 
-      return [
-        `<Tabs ${rootAttrs}>`,
-        '<TabsList>',
-        triggers,
-        '</TabsList>',
-        '',
-        contents,
-        '</Tabs>',
-      ].join('\n');
-    },
-  );
+  const groupId = readAttribute(attrs, 'groupId');
+  const codeTabs = renderCodeFenceTabs(items, groupId);
+  if (codeTabs) return codeTabs;
+  const defaultValue =
+    readAttribute(attrs, 'defaultValue') ??
+    items.find((item) => item[3].includes('default'))?.[1] ??
+    items[0][1];
+  const rootAttrs = [
+    `defaultValue="${defaultValue}"`,
+    groupId ? `groupId="${groupId}"` : '',
+    groupId ? 'persist' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const openToken = `API_CENTER_MIGRATED_TABS_OPEN_${restoredTags.length}`;
+  restoredTags.push([openToken, `<Tabs ${rootAttrs}>`]);
+  const closeToken = `API_CENTER_MIGRATED_TABS_CLOSE_${restoredTags.length}`;
+  restoredTags.push([closeToken, '</Tabs>']);
+  const triggers = items
+    .map(
+      (item) => `  <TabsTrigger value="${item[1]}">${item[2]}</TabsTrigger>`,
+    )
+    .join('\n');
+  const contents = items
+    .map((item) => {
+      const content = trimCommonIndent(item[4]).trim();
+      return `<TabsContent value="${item[1]}">\n\n${content}\n\n</TabsContent>`;
+    })
+    .join('\n\n');
+
+  return [
+    openToken,
+    '<TabsList>',
+    triggers,
+    '</TabsList>',
+    '',
+    contents,
+    closeToken,
+  ].join('\n');
 }
 
 function transformRemainingTabItems(value, state) {
@@ -2310,7 +2387,7 @@ function parseSingleCodeTabContent(value) {
 
 function transformDetails(value) {
   return value
-    .replace(/<Detail\b([^>]*)>([\s\S]*?)<\/Detail>/g, (_, attrs, body) => {
+    .replace(/^[ \t]*<Detail\b([^>]*)>([\s\S]*?)<\/Detail>/gm, (_, attrs, body) => {
       const title = readAttribute(attrs, 'title') ?? 'Details';
       const content = trimCommonIndent(body).trim();
       return [
@@ -2813,7 +2890,7 @@ function splitMarkdownTableRow(line) {
 
 function isComplexTableCell(value = '') {
   return (
-    /<\s*(?:ul|ol|p|pre|img|Image|Admonition|Detail|Tabs|Table|table)\b/i.test(value) ||
+    /<\s*(?:ul|ol|li|p|pre|img|Image|Admonition|Detail|Tabs|Table|table)\b/i.test(value) ||
     /<br\s*\/?>/i.test(value) ||
     /(^|\n)\s*:::+/.test(value) ||
     /```/.test(value) ||
@@ -2826,7 +2903,7 @@ function normalizeInlineTableCell(value) {
 }
 
 function normalizeSlotDefinitionContent(value) {
-  return ensureBlankLineBeforeList(transformInlineHtml(replaceHtmlLists(value)))
+  return ensureBlankLineBeforeList(transformInlineHtml(transformHtmlLists(value)))
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
@@ -2884,11 +2961,34 @@ function renderMarkdownTableRow(row, indent = '') {
 }
 
 function transformHtmlLists(value) {
-  return replaceHtmlLists(value)
+  return replaceStandaloneHtmlListItems(replaceHtmlLists(value))
     .replace(/^[ \t]*<li>([\s\S]*?)<\/li>[ \t]*$/gim, (_, item) => {
       return `- ${collapseInline(transformInlineHtml(item))}`;
     })
     .replace(/^[ \t]*<\/?(?:ul|ol)>[ \t]*$/gim, '');
+}
+
+function replaceStandaloneHtmlListItems(value) {
+  let output = value;
+  let previous = null;
+
+  while (previous !== output) {
+    previous = output;
+    output = output.replace(
+      /<li\b[^>]*>([\s\S]*?)<\/li>/gi,
+      (_match, item) => {
+        const normalized = transformInlineHtml(item).trim();
+        if (!normalized) return '';
+        const [first, ...rest] = normalized.split('\n');
+        const continuation = rest
+          .map((line) => (line.trim() ? `  ${line.trimStart()}` : ''))
+          .join('\n');
+        return `\n- ${first.trim()}${continuation ? `\n${continuation}` : ''}\n`;
+      },
+    );
+  }
+
+  return output;
 }
 
 function replaceHtmlLists(value, depth = 0) {
@@ -3029,9 +3129,23 @@ function transformInlineHtml(value) {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/&nbsp;/g, ' ')
     .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+    .replace(/&amp;/g, '&');
+}
+
+function normalizeInlineHtmlAttributes(value, state) {
+  return replaceOutsideCode(value, (text) =>
+    text.replace(/<(code|span)\b([^>]*)>/gi, (match, tagName, attrs) => {
+      let normalized = attrs.replace(/\bclass=/g, 'className=');
+      normalized = normalized.replace(
+        /\b([A-Za-z_$][\w:.$-]*)=([A-Za-z_$][\w:.$-]*)(?=\s|$)/g,
+        (_attribute, name, attributeValue) =>
+          `${name}=${JSON.stringify(attributeValue)}`,
+      );
+      if (normalized === attrs) return match;
+      state.issues.push('normalized-inline-html-attributes');
+      return `<${tagName}${normalized}>`;
+    }),
+  );
 }
 
 function transformHtmlComponent(value, state) {
@@ -3152,6 +3266,15 @@ function escapeMdxTextOperators(value, state) {
     text.replace(/(?<=\S)(<<|>>)(?=\S)/g, (operator) => {
       state.issues.push(`escaped-mdx-text-operator:${operator}`);
       return operator === '<<' ? '&lt;&lt;' : '&gt;&gt;';
+    }),
+  );
+}
+
+function escapeMdxTextBraces(value, state) {
+  return replaceOutsideCode(value, (text) =>
+    text.replace(/\{(\s*)\}/g, (_match, spacing) => {
+      state.issues.push('escaped-mdx-text-brace-pair');
+      return `&#123;${spacing}&#125;`;
     }),
   );
 }
@@ -3817,7 +3940,7 @@ function summarizeSignalMap(map) {
   );
 }
 
-async function loadPathMap(pathMapPath) {
+export async function loadPathMap(pathMapPath) {
   const table = await readControlTable(pathMapPath);
   const pathMap = new Map();
 
@@ -4123,11 +4246,42 @@ function signalUsageSection(title, usage, headers) {
 function normalizeWhitespace(value) {
   return normalizeListBlockSpacing(
     normalizeCodeFenceSpacing(
-      value.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n'),
+      normalizeMarkdownTableIndentation(
+        value.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n'),
+      ),
     ),
   )
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function normalizeMarkdownTableIndentation(value) {
+  const lines = value.split('\n');
+  let inCodeFence = false;
+  let index = 0;
+
+  while (index < lines.length) {
+    if (/^[ \t]*```/.test(lines[index])) {
+      inCodeFence = !inCodeFence;
+      index += 1;
+      continue;
+    }
+    if (inCodeFence || !isMarkdownTableRow(lines[index])) {
+      index += 1;
+      continue;
+    }
+    const start = index;
+    while (index < lines.length && isMarkdownTableRow(lines[index])) {
+      index += 1;
+    }
+    const indent = Math.min(
+      ...lines.slice(start, index).map((line) => line.match(/^[ \t]*/)?.[0].length ?? 0),
+    );
+    for (let cursor = start; cursor < index; cursor += 1) {
+      lines[cursor] = `${' '.repeat(indent)}${lines[cursor].trimStart()}`;
+    }
+  }
+  return lines.join('\n');
 }
 
 function normalizeListBlockSpacing(value) {

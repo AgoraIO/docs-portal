@@ -1,0 +1,230 @@
+---
+title: 部署后端服务
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/run-github-project-backend
+  sourcePath: docs/online-ktv/auikaraoke/get-started/run-github-project-backend.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 4 legacy MDX syntax signal(s).
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 2 legacy fragment link(s) to stable local anchors.
+---
+
+本文介绍如何使用 AUIKaraoke 的后端服务。源代码可参考 [AUIKit/backend](https://github.com/AgoraIO-Community/AUIKit/tree/main/backend)。
+
+## 项目简介
+
+`AUIKit/backend` 项目基于 Spring Boot 框架开发，依赖以下组件：
+
+- Redis：用于缓存记录，例如缓存 AUIKaraoke 的后端上生成的用于环信 IM 服务的 Token
+- MongoDB：用于维护房间列表
+
+如果你想深入了解项目源代码，可以参考[项目文件介绍](#项目文件介绍)。
+
+## 服务部署
+
+本节介绍如何部署后端服务。
+
+### 1. 快速体验
+
+参考下列步骤快速体验示例项目中已经搭建好的后端服务。
+
+<a id="pre"></a>
+#### 前提条件
+
+请确保已经安装如下环境或工具：
+
+- Docker 环境
+- 最新版 [Docker Compose](https://docs.docker.com/compose/) 工具
+
+你可以直接下载安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/) 工具，它已默认安装 Docker Compose。
+
+#### 运行步骤
+
+以下是运行服务的步骤：
+
+1. 在项目根目录创建 `.env` 文件，并填入以下字段：
+
+    ```
+    WHITELIST_TOKEN_APP_ID=<your_app_id>
+    WHITELIST_TOKEN_APP_CERT=<your_app_cert>
+    WHITELIST_CHAT_ROOM_APP_ID=<your_app_id>
+    WHITELIST_CHAT_ROOM_ORG_NAME=<your_easemob_org_name>
+    WHITELIST_CHAT_ROOM_APP_NAME=<your_easemob_app_name>
+    WHITELIST_CHAT_ROOM_CLIENT_ID=<your_easemob_client_id>
+    WHITELIST_CHAT_ROOM_CLIENT_SECRET=<your_easemob_client_secret>
+    ```
+
+    你可以在[开通声网服务](/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service)后，获取这些字段的值，详情如下：
+
+| 字段名 | 字段描述 | 获取方式 |
+| --- | --- | --- |
+| <Slot name="run-github-project-backend-html-0-1-0" /> | 声网项目的 App ID，用于登录 RTC 和 RTM 系统 | [获取 App ID](/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service#获取-app-id) |
+| `WHITELIST_TOKEN_APP_CERT` | 声网项目的 App 证书，用于登录 RTC 和 RTM 系统 | [获取 App 证书](/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service#获取-app-证书) |
+| `WHITELIST_CHAT_ROOM_ORG_NAME` | 环信 IM 服务的 Org Name，用于创建 IM 聊天室 | [获取 IM 信息](https://docs-im-beta.easemob.com/document/server-side/enable_and_configure_IM.html#获取环信即时通讯-im-的信息) |
+| `WHITELIST_CHAT_ROOM_APP_NAME` | 环信 IM 服务的 App Name，用于创建 IM 聊天室 | [获取 IM 信息](https://docs-im-beta.easemob.com/document/server-side/enable_and_configure_IM.html#获取环信即时通讯-im-的信息) |
+| `WHITELIST_CHAT_ROOM_CLIENT_ID` | 环信 IM 服务的 Client ID，用于创建 IM 聊天室 | 登录[环信管理后台](https://console.easemob.com/user/login)，到**应用列表** > **查看**获取 |
+| `WHITELIST_CHAT_ROOM_CLIENT_SECRET` | 环信 IM 服务的 Client Secret，用于创建 IM 聊天室 | 登录[环信管理后台](https://console.easemob.com/user/login)，到**应用列表** > **查看**获取 |
+
+<Slot for="run-github-project-backend-html-0-1-0">
+
+- `WHITELIST_TOKEN_APP_ID`
+        - `WHITELIST_CHAT_ROOM_APP_ID`
+
+</Slot>
+
+2. 在项目根目录下执行以下命令启动服务：
+
+    ```shell
+    docker compose up -d --build
+    ```
+
+    该命令会拉取所需的镜像并启动 Redis 和 MongoDB 服务，并对本后端服务进行编译。如果遇到镜像拉取失败的问题，你可以通过配置国内镜像源解决。
+
+3. 服务启动后，继续输入如下命令进行测试：
+
+    ```shell
+    curl http://localhost:8080/health/check
+    ```
+
+4. 如果你需要使用移动端 App 调试本地服务，你需要将移动端 App 上对应的后端服务域名换成下列域名：
+
+    ```text
+    http://<your_ip>:8080
+    ```
+
+   `your_ip` 为本地运行服务的机器 IP 地址。
+
+5. 如果你需要停止服务，执行如下命令：
+
+    ```shell
+    docker compose down
+    ```
+
+### 2. 本地开发
+
+本节介绍如何通过 Visual Studio Code（以下简称 VS Code）工具在本地开发 K 歌后端服务。如果你使用其他工具，你也可以参考本节步骤进行相应操作。
+
+#### 前提条件
+
+除了满足快速体验的[前提条件](#pre)外，还需确保已经安装如下环境或工具：
+
+- Java 11 或以上
+- VS Code 编辑器
+- VS Code 插件：Extension Pack for Java
+
+#### 开发步骤
+
+参考下列步骤本地开发后端服务：
+
+1. 在 VS Code 中打开项目目录，并进入容器开发模式。
+
+    在 Docker 容器中开发时可以使用示例项目中的 [`Dockerfile`](https://github.com/AgoraIO-Community/AUIKit/blob/main/backend/Dockerfile)，相关配置项已经在该文件中设置。
+
+2. 修改 [`application.yml`](https://github.com/AgoraIO-Community/AUIKit/blob/main/backend/src/main/resources/application.yml) 配置文件中的以下内容：
+
+    - `spring.data.mongodb.uri`：将应用连接到数据库。
+    - `spring.redis.host`：配置 Redis 缓存。
+    - `spring.redis.password`：配置 Redis 缓存。
+    - `whitelist.token.appId`
+    - `whitelist.token.appCert`
+    - `whitelist.chatRoom.appId`
+    - `whitelist.chatRoom.orgName`
+    - `whitelist.chatRoom.appName`
+    - `whitelist.chatRoom.clientId`
+    - `whitelist.chatRoom.clientSecret`
+
+    `spring.*` 之外的内容含义详见[字段描述](#运行步骤)。
+
+3. 构建并运行 Spring Boot 应用。
+
+### 3. 上线部署
+
+完成[本地开发](#2-本地开发)后，你还需要进行以下操作才能将服务部署上线：
+
+1. 根据[本地开发中的步骤 2](#开发步骤) 检查 `application.yml` 中字段内容填写无误。
+
+2. 调整 Redis 和 MongoDB 配置。
+
+3. 将服务部署在网关。网关可提供鉴权和限流等能力。本示例项目中展示的服务暂时未包含网关能力。
+
+4. 设置指标收集。通过 `https://<your_hostname>:9090/metrics/prometheus` 收集指标进行服务监控。
+
+5. 将服务部署在云平台，例如[阿里云容器服务（ACK）](https://www.alibabacloud.com/zh/product/kubernetes)。
+
+## 项目文件介绍
+
+本节介绍 `AUIKit/backend` 下目录结构和各文件用途。
+
+```
+.
+├── Dockerfile                                                          // 项目构建镜像
+├── HELP.md
+├── README.md
+├── README_zh.md
+├── docker-compose.yaml                                                 // 本地一键部署
+├── init-mongo.js                                                       // MongoDB 初始化
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── io
+│   │   │       └── agora
+│   │   │           └── uikit
+│   │   │               ├── Application.java                            // 启动文件
+│   │   │               ├── bean                                        // 对象类
+│   │   │               │   ├── domain                                  // 实体类
+│   │   │               │   ├── dto                                     // 传输类
+│   │   │               │   ├── entity                                  // DB 实体类
+│   │   │               │   ├── enums                                   // 枚举
+│   │   │               │   ├── exception                               // 异常处理
+│   │   │               │   │   └── BusinessException.java
+│   │   │               │   ├── req                                     // 请求类
+│   │   │               │   └── valid                                   // 校验
+│   │   │               │       ├── EnumValid.java
+│   │   │               │       └── EnumValidator.java
+│   │   │               ├── config                                      // 配置
+│   │   │               │   ├── GlobalExceptionHandler.java             // 全局异常捕获
+│   │   │               │   ├── RedisConfig.java                        // Redis 配置
+│   │   │               │   ├── ChatRoomAPIClient.java                  // 环信 IM 配置
+│   │   │               │   ├── WhitelistConfig.java                    // 白名单配置
+│   │   │               │   └── WebMvcConfig.java                       // MVC 配置
+│   │   │               ├── controller                                  // 控制器
+│   │   │               │   ├── HealthController.java                   // 健康检查
+│   │   │               │   ├── ChatRoomV2Controller.java               // 语言聊房
+│   │   │               │   ├── RoomV2Controller.java                   // 房间管理
+│   │   │               │   └── TokenV2Controller.java                  // Token 管理
+│   │   │               ├── interceptor                                 // 拦截器
+│   │   │               │   ├── PrometheusMetricInterceptor.java        // 指标拦截器
+│   │   │               │   └── TraceIdInterceptor.java                 // 链路追踪
+│   │   │               ├── metric                                      // 指标上报
+│   │   │               │   └── PrometheusMetric.java
+│   │   │               │── repository                                  // DB 访问层
+│   │   │               │   └── RoomListV2Repository.java
+│   │   │               ├── service                                     // 服务层
+│   │   │               │   ├── IRoomV2Service.java                     // 房间服务
+│   │   │               │   ├── IChatRoomV2Service.java                 // 语聊房服务
+│   │   │               │   ├── IEMAPIService.java                      // 语聊房接口 feign 定义
+│   │   │               │   ├── IChatRoomAPIService.java                // 语聊房接口
+│   │   │               │   ├── ITokenV2Service.java                    // Token 服务
+│   │   │               │   └── impl
+│   │   │               │       ├── RoomV2ServiceImpl.java
+│   │   │               │       ├── ChatRoomV2ServiceImpl.java
+│   │   │               │       ├── ChatRoomAPIServiceImpl.java
+│   │   │               │       ├── RtcChannelServiceImpl.java
+│   │   │               │       ├── UserServiceImpl.java
+│   │   │               │       └── TokenV2ServiceImpl.java
+│   │   │               └── utils                                       // 工具类
+│   │   │                   ├── RedisUtil.java                          // Redis 操作
+│   │   │                   └── TokenUtil.java                          // Token 操作
+│   │   └── resources
+│   │       ├── application.yml                                         // 配置文件
+│   │       └── logback-spring.xml                                      // 日志配置
+```

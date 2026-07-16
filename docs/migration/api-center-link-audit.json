@@ -1,0 +1,67 @@
+{
+  "counts": {
+    "errors": 0,
+    "invalidLinks": 0,
+    "links": 17897,
+    "missingFragments": 0,
+    "missingLocalPaths": 0,
+    "ownedMdxPages": 706,
+    "warnings": 44
+  },
+  "issues": [],
+  "outputTypes": {
+    "asset": 93,
+    "generated-html": 509,
+    "manual-mdx": 195,
+    "navigation": 2,
+    "navigation-meta": 81
+  },
+  "ownershipPaths": [
+    "docs/migration/api-center-generated-files.json",
+    "docs/migration/api-center-manual-generated-files.json",
+    "docs/migration/api-center-navigation-generated-files.json"
+  ],
+  "schemaVersion": 1,
+  "warningSummary": {
+    "empty-source-body": {
+      "count": 1,
+      "explanation": "The legacy generator exposes a named page whose source body is intentionally empty.",
+      "severity": "info"
+    },
+    "manual-fragment-alias": {
+      "count": 7,
+      "explanation": "Stable aliases were added for legacy fragments that identify migrated headings.",
+      "severity": "info"
+    },
+    "manual-fragment-normalized": {
+      "count": 69,
+      "explanation": "A legacy fragment was rewritten to the unique stable anchor exposed by its local target.",
+      "severity": "info"
+    },
+    "manual-mdx-normalized": {
+      "count": 146,
+      "explanation": "Legacy MDX syntax was normalized to the repository Markdown/MDX authoring standard.",
+      "severity": "info"
+    },
+    "manual-platform-merge": {
+      "count": 10,
+      "explanation": "Multiple platform-specific legacy MDX sources were merged with PlatformStructured blocks.",
+      "severity": "info"
+    },
+    "source-only-link-removed": {
+      "count": 763,
+      "explanation": "A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.",
+      "severity": "info"
+    },
+    "unresolved-fragment": {
+      "count": 14,
+      "explanation": "A legacy fragment could not be mapped to a stable target fragment.",
+      "severity": "warning"
+    },
+    "unresolved-link": {
+      "count": 30,
+      "explanation": "A legacy internal link has no resolved local target route.",
+      "severity": "warning"
+    }
+  }
+}

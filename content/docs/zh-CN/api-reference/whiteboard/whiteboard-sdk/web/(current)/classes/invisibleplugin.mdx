@@ -1,0 +1,212 @@
+---
+title: Class InvisiblePlugin<A>
+description: 不可见插件的描述。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/classes/invisibleplugin
+  sourcePath: html-docs/whiteboard/Web/classes/invisibleplugin.html
+  generator: typedoc
+  warnings: []
+---
+
+不可见插件的描述。
+
+### since
+
+2.10.0
+
+Agora 支持的自定义插件包括组件插件和不可见插件。二者的主要区别有：
+
+- 不可见插件全局唯一，只能建立一个对象。
+- 不可见插件不会显示在白板界面上，但它的 attributes 状态会在全房间自动同步。
+
+### Type parameters
+
+- A:Object
+
+### Hierarchy
+
+- InvisiblePlugin
+
+## Index
+
+### Constructors
+
+- [constructor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#constructor)
+
+### Properties
+
+- [attributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#attributes)
+- [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#callbacks)
+- [displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#displayer)
+
+### Methods
+
+- [destroy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#destroy)
+- [getAttributesValue](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#getattributesvalue)
+- [onAttributesUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#onattributesupdate)
+- [onDestroy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#ondestroy)
+- [setAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#setattributes)
+- [updateAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin#updateattributes)
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+- new InvisiblePlugin(context:[InvisiblePluginContext](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisibleplugincontext)):[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)
+
+- Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)
+
+  Defined in [index-zh.d.ts:643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L643)
+
+  不可见插件的构造函数。
+
+  Parameters
+
+  - context: [InvisiblePluginContext](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisibleplugincontext)
+
+    不可见插件的上下文。
+
+## Properties
+
+<a id="attributes"></a>
+
+### attributes
+
+attributes: A
+
+- Defined in [index-zh.d.ts:643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L643)
+
+不可见插件的属性。
+
+<a id="callbacks"></a>
+
+### callbacks
+
+callbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;[InvisibleCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblecallbacks)&lt;A&gt;&gt;
+
+- Defined in [index-zh.d.ts:638](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L638)
+
+不可见插件的事件回调。
+
+<a id="displayer"></a>
+
+### displayer
+
+displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+
+- Defined in [index-zh.d.ts:633](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L633)
+
+不可见插件的 `Displayer` 对象。
+
+## Methods
+
+<a id="destroy"></a>
+
+### destroy
+
+- destroy():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:688](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L688)
+
+  删除不可见插件。
+
+<a id="getattributesvalue"></a>
+
+### getAttributesValue
+
+- getAttributesValue(key:string[]|string):any
+
+- Returns any
+
+  Defined in [index-zh.d.ts:668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L668)
+
+  获取不可见插件属性的值。
+
+  ### since
+
+  2.13.7
+
+  Parameters
+
+  - key: string[]|string
+
+    属性对应的 key。
+
+<a id="onattributesupdate"></a>
+
+### onAttributesUpdate
+
+- onAttributesUpdate(attributes:A):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:655](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L655)
+
+  不可见插件属性更新的回调。
+
+  Parameters
+
+  - attributes: A
+
+    更新的 attributes。
+
+<a id="ondestroy"></a>
+
+### onDestroy
+
+- onDestroy():void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:660](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L660)
+
+  不可见插件删除的回调。
+
+<a id="setattributes"></a>
+
+### setAttributes
+
+- setAttributes(modifyAttributes:Partial&lt;A&gt;):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:674](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L674)
+
+  设置不可见插件的属性。
+
+  Parameters
+
+  - modifyAttributes: Partial&lt;A&gt;
+
+    不可见插件的属性。
+
+<a id="updateattributes"></a>
+
+### updateAttributes
+
+- updateAttributes(keys:string|string[], value:any):void
+
+- Returns void
+
+  Defined in [index-zh.d.ts:683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L683)
+
+  更新不可见插件的属性。
+
+  ### since
+
+  2.13.7
+
+  Parameters
+
+  - keys: string|string[]
+
+    单个或多个属性对应的 key。
+  - value: any
+
+    属性的值。

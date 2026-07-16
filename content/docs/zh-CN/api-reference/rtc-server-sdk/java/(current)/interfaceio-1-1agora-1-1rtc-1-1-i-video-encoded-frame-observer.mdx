@@ -1,0 +1,69 @@
+---
+title: io.agora.rtc.IVideoEncodedFrameObserver接口 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_video_encoded_frame_observer
+  sourcePath: >-
+    html-docs/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_video_encoded_frame_observer.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_i_video_encoded_frame_observer_8java.html as local text.
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| int | [onEncodedVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-video-encoded-frame-observer#a3d928b1f361edf1bb91387898ff5ef2a) ([AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) observer, int userId, ByteBuffer buffer, [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info) info) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+IVideoEncodedFrameObserver 接口类。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a3d928b1f361edf1bb91387898ff5ef2a"></a>
+
+## ◆onEncodedVideoFrame()
+
+| int io.agora.rtc.IVideoEncodedFrameObserver.onEncodedVideoFrame | ( | [AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) | *observer*, |
+| --- | --- | --- | --- |
+|  |  | int | *userId*, |
+|  |  | ByteBuffer | *buffer*, |
+|  |  | [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info) | *info*) |
+
+接收到远端用户编码后的视频数据回调。
+
+### 注解
+
+为保证数据传输效率，视频数据缓存使用 DirectByteBuffer 类型。请确保同步提取回调中的 Byte 数组的值，然后将其发送到非同步线程进行处理。
+
+### 参数
+
+| observer | [AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。 |
+| --- | --- |
+| userId | 远端用户 ID。 |
+| buffer | 编码后的视频数据缓存。 |
+| info | 编码后的视频数据信息：[EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。 |
+
+### 返回
+
+返回 0 或 1。返回值当前没有实际意义。
+
+---
+
+该接口的文档由以下文件生成:
+
+- IVideoEncodedFrameObserver.java

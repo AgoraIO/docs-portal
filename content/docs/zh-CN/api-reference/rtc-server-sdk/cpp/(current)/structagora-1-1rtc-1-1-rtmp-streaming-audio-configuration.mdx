@@ -1,0 +1,83 @@
+---
+title: agora::rtc::RtmpStreamingAudioConfiguration结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_rtmp_streaming_audio_configuration
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_rtmp_streaming_audio_configuration.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration#a760612cf4538703e4c4916e43fb1e63c) () |
+|  |  |
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+| int | [sampleRateHz](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration#ad5968cca8820de2458689910e52eff4b) |
+|  |  |
+| int | [bytesPerSample](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration#a8b4e9cb0a4e60796ccd9d5dfea3431bf) |
+|  |  |
+| int | [numberOfChannels](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration#a031a94dccb8fbd9672a4872139ab0bcd) |
+|  |  |
+| int | [bitrate](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration#abb80694f63236fa49ff8f55a717bc2bf) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+CDN 推流的音频编码属性。
+
+## 构造及析构函数说明
+
+<a id="a760612cf4538703e4c4916e43fb1e63c"></a>
+
+## ◆RtmpStreamingAudioConfiguration()
+
+| agora::rtc::RtmpStreamingAudioConfiguration::RtmpStreamingAudioConfiguration () | inline |
+| --- | --- |
+
+## 类成员变量说明
+
+<a id="ad5968cca8820de2458689910e52eff4b"></a>
+
+## ◆sampleRateHz
+
+| int agora::rtc::RtmpStreamingAudioConfiguration::sampleRateHz |
+| --- |
+
+采样率，单位为 Hz。默认值为 44100。
+
+<a id="a8b4e9cb0a4e60796ccd9d5dfea3431bf"></a>
+
+## ◆bytesPerSample
+
+| int agora::rtc::RtmpStreamingAudioConfiguration::bytesPerSample |
+| --- |
+
+每个采样点的字节数。默认是 16 bit，即两个字节。
+
+<a id="a031a94dccb8fbd9672a4872139ab0bcd"></a>
+
+## ◆numberOfChannels
+
+| int agora::rtc::RtmpStreamingAudioConfiguration::numberOfChannels |
+| --- |
+
+声道数量(如果是立体声，数据是交叉的)。
+
+- `1`: （默认）单声道
+- `2`: 双声道
+
+<a id="abb80694f63236fa49ff8f55a717bc2bf"></a>
+
+## ◆bitrate
+
+| int agora::rtc::RtmpStreamingAudioConfiguration::bitrate |
+| --- |
+
+待推送音频流的码率，单位为 Kbps。默认值为 48。

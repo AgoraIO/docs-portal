@@ -1,0 +1,47 @@
+---
+title: Enumeration RemoteStreamFallbackType
+description: 媒体流的回退策略选项，用于 setStreamFallbackOption。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/enums/remotestreamfallbacktype
+  sourcePath: html-docs/rtc/React/enums/remotestreamfallbacktype.html
+  generator: typedoc
+  warnings: []
+---
+
+媒体流的回退策略选项，用于 [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption)。
+
+## Index
+
+### Enumeration members
+
+- [AUDIO_ONLY](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamfallbacktype#audio_only)
+- [DISABLE](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamfallbacktype#disable)
+- [LOW_STREAM](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamfallbacktype#low_stream)
+
+## Enumeration members
+
+<a id="audio_only"></a>
+
+### AUDIO_ONLY
+
+AUDIO_ONLY: = 2
+
+2: 网络较弱时，先尝试订阅视频小流。如果网络环境无法显示视频，则再回退到订阅纯音频流。
+
+<a id="disable"></a>
+
+### DISABLE
+
+DISABLE: = 0
+
+0: 关闭回退策略，弱网时不对音视频流作回退处理。
+
+<a id="low_stream"></a>
+
+### LOW_STREAM
+
+LOW_STREAM: = 1
+
+1: 在网络条件较差的情况下，自动订阅视频小流。

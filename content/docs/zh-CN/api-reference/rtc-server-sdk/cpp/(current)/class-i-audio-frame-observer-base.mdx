@@ -1,0 +1,160 @@
+---
+title: IAudioFrameObserverBase类 参考abstract
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/class_i_audio_frame_observer_base
+  sourcePath: html-docs/rtc-server-sdk/cpp/class_i_audio_frame_observer_base.html
+  generator: doxygen
+  warnings: []
+---
+
+被 [IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer) 继承.
+
+| <a id="nested-classes"></a> 类 |  |
+| --- | --- |
+| struct | [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) |
+|  |  |
+
+| <a id="pub-types"></a> Public 类型 |  |
+| --- | --- |
+| enum | [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7f) \\\{ [FRAME_TYPE_PCM16](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7fa801a7bb9b2438287a7279df047ea4cc6) = 0 \\\} |
+|  |  |
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+| virtual | [~IAudioFrameObserverBase](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a12e352fbb9219c789e4d5067b3fbf0b5) () |
+|  |  |
+| virtual bool | [onRecordAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a607f7a30a058bf7fe2b7ec2492fe9610) (const char *channelId, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) &audioFrame)=0 |
+|  |  |
+| virtual bool | [onPlaybackAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a9956d1aa3b4e18089ef02ee3d782d667) (const char *channelId, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) &audioFrame)=0 |
+|  |  |
+| virtual bool | [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd) (const char *channelId, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) &audioFrame)=0 |
+|  |  |
+| virtual bool | [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a045b317352faf9d64a97b0274a5529ec) (const char *channelId, base::user_id_t userId, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) &audioFrame) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+语音 observer。
+
+## 成员枚举类型说明
+
+<a id="a81b4df45c544e8a7e8df3116d9bd8f7f"></a>
+
+## ◆AUDIO_FRAME_TYPE
+
+| enum [IAudioFrameObserverBase::AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7f) |
+| --- |
+
+音频帧类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="a81b4df45c544e8a7e8df3116d9bd8f7fa801a7bb9b2438287a7279df047ea4cc6"></a>FRAME_TYPE_PCM16
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+0: PCM 16
+
+</Slot>
+
+## 构造及析构函数说明
+
+<a id="a12e352fbb9219c789e4d5067b3fbf0b5"></a>
+
+## ◆~IAudioFrameObserverBase()
+
+| virtual IAudioFrameObserverBase::~IAudioFrameObserverBase () | inlinevirtual |
+| --- | --- |
+
+## 成员函数说明
+
+<a id="a607f7a30a058bf7fe2b7ec2492fe9610"></a>
+
+## ◆onRecordAudioFrame()
+
+| virtual bool IAudioFrameObserverBase::onRecordAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
+| --- | --- |
+
+获得录制的声音。
+
+### 参数
+
+| channelId | 频道名。 |
+| --- | --- |
+| audioFrame | 音频原始数据。 |
+
+### 返回
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a9956d1aa3b4e18089ef02ee3d782d667"></a>
+
+## ◆onPlaybackAudioFrame()
+
+| virtual bool IAudioFrameObserverBase::onPlaybackAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
+| --- | --- |
+
+获得播放的声音。
+
+### 参数
+
+| channelId | 频道名。 |
+| --- | --- |
+| audioFrame | 音频原始数据。 |
+
+### 返回
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a6b3f76a4245bf27b6a7c5cbc44f1c1dd"></a>
+
+## ◆onMixedAudioFrame()
+
+| virtual bool IAudioFrameObserverBase::onMixedAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
+| --- | --- |
+
+获取采集和播放声音混音后的数据。
+
+### 参数
+
+| channelId | 频道名。 |
+| --- | --- |
+| audioFrame | 音频原始数据。 |
+
+### 返回
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a045b317352faf9d64a97b0274a5529ec"></a>
+
+## ◆onPlaybackAudioFrameBeforeMixing()
+
+| virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing ( const char * *channelId*, base::user_id_t *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | inlinevirtual |
+| --- | --- |
+
+获得播放声音混音前的数据。
+
+### 参数
+
+| channelId | 空指针。 |
+| --- | --- |
+| userId | 远端用户的用户名。 |
+| audioFrame | 音频原始数据。 |
+
+### 返回
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。

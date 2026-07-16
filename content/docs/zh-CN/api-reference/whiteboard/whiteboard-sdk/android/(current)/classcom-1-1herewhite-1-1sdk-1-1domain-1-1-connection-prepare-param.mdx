@@ -1,0 +1,112 @@
+---
+title: com.herewhite.sdk.domain.ConnectionPrepareParam类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_connection_prepare_param
+  sourcePath: >-
+    html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_connection_prepare_param.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /doc/whiteboard/ios/whiteboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5
+        as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /doc/whiteboard/ios/whiteboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5
+        as local text.
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [ConnectionPrepareParam](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param#a16d112ac06b5ad7e66fd98a47cebf6db) (String appId, [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) region) |
+|  |  |
+|  | [ConnectionPrepareParam](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param#a36e35af7cb029a506b3fc87d9807a08e) (String appId, [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) region, Long expire) |
+|  |  |
+| String | [getAppId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param#a84cad03748a4c62378da1ff4c34cc1c5) () |
+|  |  |
+| [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) | [getRegion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param#a2e2d042dd9f114429cbc328723bbf518) () |
+|  |  |
+| Long | [getExpire](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param#a9d3436c5130cb3b50776645103b90b11) () |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+白板预连接参数。
+
+## 构造及析构函数说明
+
+<a id="a16d112ac06b5ad7e66fd98a47cebf6db"></a>
+
+## ◆ConnectionPrepareParam() [1/2]
+
+| com.herewhite.sdk.domain.ConnectionPrepareParam.ConnectionPrepareParam | ( | String | *appId*, |
+| --- | --- | --- | --- |
+|  |  | [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) | *region* |
+|  | ) |  |  |
+
+创建一个 [`ConnectionPrepareParam`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param) 实例。
+
+### 参数
+
+| appId | 白板项目的唯一标识，可在控制台获取，详见获取白板项目的 App Identifier。 |
+| --- | --- |
+| region | 用户的 App 所在的区域，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。 |
+
+默认在 12 小时内不再次检查连接。
+
+<a id="a36e35af7cb029a506b3fc87d9807a08e"></a>
+
+## ◆ConnectionPrepareParam() [2/2]
+
+| com.herewhite.sdk.domain.ConnectionPrepareParam.ConnectionPrepareParam | ( | String | *appId*, |
+| --- | --- | --- | --- |
+|  |  | [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) | *region*, |
+|  |  | Long | *expire* |
+|  | ) |  |  |
+
+创建一个 [`ConnectionPrepareParam`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-connection-prepare-param) 实例。
+
+### 参数
+
+| appId | 白板项目的唯一标识，可在控制台获取，详见获取白板项目的 App Identifier。 |
+| --- | --- |
+| region | 用户的 App 所在的区域，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。 |
+| expire | 过期时间, 在该时间内不再次检查连接。默认为 12 小时。 |
+
+## 成员函数说明
+
+<a id="a84cad03748a4c62378da1ff4c34cc1c5"></a>
+
+## ◆getAppId()
+
+| String com.herewhite.sdk.domain.ConnectionPrepareParam.getAppId | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取白板项目的唯一标识。
+
+<a id="a2e2d042dd9f114429cbc328723bbf518"></a>
+
+## ◆getRegion()
+
+| [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.domain.ConnectionPrepareParam.getRegion | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取用户的 App 所在的区域。
+
+<a id="a9d3436c5130cb3b50776645103b90b11"></a>
+
+## ◆getExpire()
+
+| Long com.herewhite.sdk.domain.ConnectionPrepareParam.getExpire | ( |  | ) |  |
+| --- | --- | --- | --- | --- |
+
+获取过期时间。

@@ -1,0 +1,114 @@
+---
+title: io.agora.recording.common.Common.VIDEO_FORMAT_TYPE 枚举类型参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_v_i_d_e_o___f_o_r_m_a_t___t_y_p_e
+  sourcePath: >-
+    html-docs/recording/Java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_v_i_d_e_o___f_o_r_m_a_t___t_y_p_e.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/recording/java/deprecated.html#_deprecated000001 as local text.
+---
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+|  | [VIDEO_FORMAT_DEFAULT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#aa644a407c98654a0c50179a42a7ead9e) =(0) |
+|  |  |
+|  | [VIDEO_FORMAT_H264_FRAME_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#a8bc87d81a20691532eebc24a3fde1029) =(1) |
+|  |  |
+|  | [VIDEO_FORMAT_ENCODED_FRAME_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#a2e28919d20ac2a0c412b92dddc1a0916) =(1) |
+|  |  |
+|  | [VIDEO_FORMAT_YUV_FRAME_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#a7c8a6d0c35b1585f29c9928d886eec02) =(2) |
+|  |  |
+|  | [VIDEO_FORMAT_JPG_FRAME_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#a0bd37f483826838d5e6cc61e7b535436) =(3) |
+|  |  |
+|  | [VIDEO_FORMAT_JPG_FILE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#a0428a9459a016bd1801fd7f7d6a1afc1) =(4) |
+|  |  |
+|  | [VIDEO_FORMAT_JPG_VIDEO_FILE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e#afd82ee18fa3ebf8f1ce303e3455b483d) =(5) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+视频解码格式。
+
+## 类成员变量说明
+
+<a id="aa644a407c98654a0c50179a42a7ead9e"></a>
+
+## ◆VIDEO_FORMAT_DEFAULT_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE =(0) |
+| --- |
+
+0：默认视频格式。基于你的 codec 设置，默认视频格式可能为 MP4 或 WebM。
+
+<a id="a8bc87d81a20691532eebc24a3fde1029"></a>
+
+## ◆VIDEO_FORMAT_H264_FRAME_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE =(1) |
+| --- |
+
+1：原始视频数据 H.264 帧格式。
+
+### **弃用:**
+
+从 v2.9.0 起废弃，请改用 VIDEO_FORMAT_ENCODED_FRAME_TYPE(1)。
+
+<a id="a2e28919d20ac2a0c412b92dddc1a0916"></a>
+
+## ◆VIDEO_FORMAT_ENCODED_FRAME_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE =(1) |
+| --- |
+
+1：原始视频数据 H.264 或 H.265 帧格式。如设置该格式，你可通过 [videoFrameReceived](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ae2e1e70d70f12bddf1ff01e255c0d800) 回调接收原始视频数据。
+
+原始视频数据 H.264 或 H.265 帧格式。
+
+<a id="a7c8a6d0c35b1585f29c9928d886eec02"></a>
+
+## ◆VIDEO_FORMAT_YUV_FRAME_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_YUV_FRAME_TYPE =(2) |
+| --- |
+
+2：原始视频数据 YUV 帧格式。如设置该格式，你可通过 [videoFrameReceived](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ae2e1e70d70f12bddf1ff01e255c0d800) 回调接收原始视频数据。
+
+<a id="a0bd37f483826838d5e6cc61e7b535436"></a>
+
+## ◆VIDEO_FORMAT_JPG_FRAME_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_JPG_FRAME_TYPE =(3) |
+| --- |
+
+3：原始视频数据 JPG 帧格式。如设置该格式，你可通过 [videoFrameReceived](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ae2e1e70d70f12bddf1ff01e255c0d800) 回调接收原始视频数据。
+
+<a id="a0428a9459a016bd1801fd7f7d6a1afc1"></a>
+
+## ◆VIDEO_FORMAT_JPG_FILE_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_JPG_FILE_TYPE =(4) |
+| --- |
+
+4：JPG 文件格式。
+
+<a id="afd82ee18fa3ebf8f1ce303e3455b483d"></a>
+
+## ◆VIDEO_FORMAT_JPG_VIDEO_FILE_TYPE
+
+| io.agora.recording.common.Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_JPG_VIDEO_FILE_TYPE =(5) |
+| --- |
+
+5：JPG 文件格式 + MP4 或 WebM 视频文件格式。
+
+- 单流模式 ([isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 false) 下，录制得到 MP4 或 WebM 视频文件，并截图获得 JPG 文件。
+- 合流模式 ([isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 true) 下，对合流录制，得到 MP4 或 WebM 视频文件，并对各单流截图，获得 JPG 文件。

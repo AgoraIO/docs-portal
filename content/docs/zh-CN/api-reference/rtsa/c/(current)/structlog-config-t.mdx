@@ -1,0 +1,117 @@
+---
+title: log_config_t结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/structlog__config__t
+  sourcePath: html-docs/rtsa/c/structlog__config__t.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+---
+
+`#include &lt;agora_rtc_api.h&gt;`
+
+| <a id="pub-attribs"></a> 成员变量 |  |
+| --- | --- |
+| bool | [log_disable](/zh-CN/api-reference/rtsa/c/structlog-config-t#a90e5fad308a43a1891b06524896c0ca3) |
+| bool | [log_disable_desensitize](/zh-CN/api-reference/rtsa/c/structlog-config-t#a3567b27329eee1f0ca0ca0cd1a98bdb5) |
+| [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) | [log_level](/zh-CN/api-reference/rtsa/c/structlog-config-t#acfa5188e7f1d79214641266ce6a165c5) |
+| const char * | [log_path](/zh-CN/api-reference/rtsa/c/structlog-config-t#a79726ff7dc5114bd61541bbc86e398c3) |
+| const char * | [log_tag](/zh-CN/api-reference/rtsa/c/structlog-config-t#ad97236d65624abd2946650acabe2b050) |
+| int(* | [log_printf](/zh-CN/api-reference/rtsa/c/structlog-config-t#a69502c3f4163356cb37015aa580867af))(const char *fmt,...) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+SDK 日志文件配置。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 结构体成员变量说明
+
+<a id="a90e5fad308a43a1891b06524896c0ca3"></a>
+
+## ◆log_disable
+
+| bool log_disable |
+| --- |
+
+是否关闭日志。
+
+- true：关闭日志。
+- false：开启日志。
+
+<a id="a3567b27329eee1f0ca0ca0cd1a98bdb5"></a>
+
+## ◆log_disable_desensitize
+
+| bool log_disable_desensitize |
+| --- |
+
+是否关闭日志 IP 脱敏功能。
+
+- true：关闭日志 IP 脱敏功能。
+- false：开启日志 IP 脱敏功能。
+
+<a id="acfa5188e7f1d79214641266ce6a165c5"></a>
+
+## ◆log_level
+
+| [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) log_level |
+| --- |
+
+日志级别。详见 [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868)。
+
+<a id="a79726ff7dc5114bd61541bbc86e398c3"></a>
+
+## ◆log_path
+
+| const char* log_path |
+| --- |
+
+用于存放声网 SDK 日志的目录。如果 log_path 设为 NULL，则日志位于当前应用程序的 pwd 目录。
+
+<a id="a69502c3f4163356cb37015aa580867af"></a>
+
+## ◆log_printf
+
+| int(* log_printf) (const char *fmt,...) |
+| --- |
+
+（选填）日志打印函数。该参数用于你需要自行管理 SDK 日志等场景。
+
+你需要自行实现日志打印函数并将其传递给 SDK，SDK 会将日志信息回调到该函数接口。例如， 为方便管理日志，你可以设置将 SDK 的日志消息打印在你的应用日志里，并通过 log_tag 进行区分。
+
+### 注解
+
+该参数不影响 SDK 生成日志文件。不论你是否设置该参数，SDK 都会在你设置的 log_path 中生成日志文件。
+
+<a id="ad97236d65624abd2946650acabe2b050"></a>
+
+## ◆log_tag
+
+| const char* log_tag |
+| --- |
+
+（选填）日志标志。该标志会出现在每行日志的开头。
+
+---
+
+该结构体的文档由以下文件生成:
+
+- agora_rtc_api.h

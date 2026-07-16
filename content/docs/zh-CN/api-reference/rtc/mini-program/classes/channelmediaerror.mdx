@@ -1,0 +1,72 @@
+---
+title: Class ChannelMediaError
+description: 跨频道媒体流转发的错误信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/mini-program/classes/channelmediaerror.html
+  sourcePath: html-docs/rtc/mini-program/classes/channelmediaerror.html
+  generator: typedoc
+  warnings: []
+---
+
+跨频道媒体流转发的错误信息。
+
+调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay)、[updateChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#updatechannelmediarelay) 或 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#stopchannelmediarelay) 出错时，会在方法的回调中通过该类提供具体的错误信息。
+
+该类中 `code` 表示错误码，`message` 表示错误名，对应关系如下表所示：
+
+| `code` | `message` | 错误描述 |
+| --- | --- | --- |
+| 0 | RELAY_OK | 一切正常。 |
+| 1 | SERVER_ERROR_RESPONSE | 服务器回应出错。 |
+| 2 | SERVER_NO_RESPONSE | 服务器无回应。 |
+| 3 | NO_RESOURCE_AVAILABLE | SDK 无法获取服务，可能是因为服务器资源有限导致。 |
+| 4 | FAILED_JOIN_SRC | 发起跨频道转发媒体流请求失败。 |
+| 5 | FAILED_JOIN_DEST | 接受跨频道转发媒体流请求失败。 |
+| 6 | FAILED_PACKET_RECEIVED_FROM_SRC | 服务器接收跨频道转发媒体流失败。 |
+| 7 | FAILED_PACKET_SENT_TO_DEST | 服务器发送跨频道转发媒体流失败。 |
+| 8 | SERVER_CONNECTION_LOST | SDK 因网络质量不佳与服务器断开，并且重连失败时抛出这个错。此时 SDK 会重置跨频道媒体流转发的相关状态，可以尝试调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay) 重新进行跨频道媒体流转发。 |
+| 9 | INTERNAL_ERROR | 服务器内部出错。 |
+| 10 | SRC_TOKEN_EXPIRED | 源频道的 Token 已过期。 |
+| 11 | DEST_TOKEN_EXPIRED | 目标频道的 Token 已过期。 |
+| 12 | RELAY_ALREADY_START | 已经开始跨频道媒体流转发。该错误一般是因为重复调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay)，或者在调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#stopchannelmediarelay) 未成功时就调用了 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay)。 |
+| 13 | RELAY_NOT_START | 尚未开始跨频道媒体流转发。该错误一般是因为调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay) 还未成功时就调用了 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#updatechannelmediarelay)。 |
+
+### Hierarchy
+
+- ChannelMediaError
+
+## Index
+
+### Properties
+
+- [code](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror#code)
+- [data](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror#data)
+- [message](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror#message)
+
+## Properties
+
+<a id="code"></a>
+
+### code
+
+code: number
+
+错误码，详见页面上方的表格。
+
+<a id="data"></a>
+
+### Optional data
+
+data: any
+
+附加信息
+
+<a id="message"></a>
+
+### message
+
+message: string
+
+错误名，详见页面上方的表格。

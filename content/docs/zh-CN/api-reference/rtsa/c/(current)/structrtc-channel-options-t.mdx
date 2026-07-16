@@ -1,0 +1,173 @@
+---
+title: rtc_channel_options_t结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/structrtc__channel__options__t
+  sourcePath: html-docs/rtsa/c/structrtc__channel__options__t.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+---
+
+`#include &lt;agora_rtc_api.h&gt;`
+
+| <a id="pub-attribs"></a> 成员变量 |  |
+| --- | --- |
+| bool | [auto_subscribe_audio](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a3be744a260a3b32d8c5d6609c687251c) |
+| bool | [auto_subscribe_video](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a1fb8613606a7f2660db5f4bc256f84d5) |
+| bool | [enable_audio_jitter_buffer](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a8f34d0553bdc017b0c89eeab3d1702e0) |
+| bool | [enable_audio_mixer](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a86f37d1c3b251e110e18a6e2a55bd7c1) |
+| bool | [enable_audio_decode](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a5b22a5c4c25c60162c0db1d3c6bfd255) |
+| bool | [enable_audio_downlink_aec](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#aa34aaf710f816b54826eb2ef00ce1cff) |
+| bool | [enable_audio_downlink_aec_pcm_dump](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a9f0467e026bd689f473dafdeacd76301) |
+| [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t) | [audio_codec_opt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a7a2a5b0d860e4bd1069b496f189b90a3) |
+| [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t) | [crypto_opt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#abf884b88afc6821cf8826ebeebe68cc5) |
+| bool | [enable_rdt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#aae90344dd5002b2076e22c06da7c17ff) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+频道设置选项。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 结构体成员变量说明
+
+<a id="a7a2a5b0d860e4bd1069b496f189b90a3"></a>
+
+## ◆audio_codec_opt
+
+| [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t) audio_codec_opt |
+| --- |
+
+当发送 [agora_rtc_send_audio_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197) 的 PCM 音频数据时，本地音频编解码设置。详见 [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t)。
+
+<a id="a3be744a260a3b32d8c5d6609c687251c"></a>
+
+## ◆auto_subscribe_audio
+
+| bool auto_subscribe_audio |
+| --- |
+
+是否订阅音频。
+
+- true: 订阅。
+- false: 不订阅。
+
+<a id="a1fb8613606a7f2660db5f4bc256f84d5"></a>
+
+## ◆auto_subscribe_video
+
+| bool auto_subscribe_video |
+| --- |
+
+是否订阅音频。
+
+- true: 订阅。
+- false: 不订阅。
+
+<a id="abf884b88afc6821cf8826ebeebe68cc5"></a>
+
+## ◆crypto_opt
+
+| [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t) crypto_opt |
+| --- |
+
+媒体流加密选项。详见 [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t)。
+
+<a id="a5b22a5c4c25c60162c0db1d3c6bfd255"></a>
+
+## ◆enable_audio_decode
+
+| bool enable_audio_decode |
+| --- |
+
+是否对接收到的音频进行解码。
+
+- true: 解码。
+- false: 不接吗。
+
+<a id="aa34aaf710f816b54826eb2ef00ce1cff"></a>
+
+## ◆enable_audio_downlink_aec
+
+| bool enable_audio_downlink_aec |
+| --- |
+
+是否开启下行回声消除。
+
+- true: 开启。
+- false: 不开启。
+
+<a id="a9f0467e026bd689f473dafdeacd76301"></a>
+
+## ◆enable_audio_downlink_aec_pcm_dump
+
+| bool enable_audio_downlink_aec_pcm_dump |
+| --- |
+
+开启下行回声消除时是否从音频处理器中转储数据。
+
+- true: 导出。
+- false: 不导出。
+
+<a id="a8f34d0553bdc017b0c89eeab3d1702e0"></a>
+
+## ◆enable_audio_jitter_buffer
+
+| bool enable_audio_jitter_buffer |
+| --- |
+
+是否开启音频抖动缓冲。
+
+- true: 开启。
+- false: 不开启。
+
+<a id="a86f37d1c3b251e110e18a6e2a55bd7c1"></a>
+
+## ◆enable_audio_mixer
+
+| bool enable_audio_mixer |
+| --- |
+
+是否开启混音。
+
+- true: 开启。
+- false: 不开启。
+
+### 注解
+
+开启混音后，SDK 也会自动开启 enable_audio_jitter_buffer。
+
+<a id="aae90344dd5002b2076e22c06da7c17ff"></a>
+
+## ◆enable_rdt
+
+| bool enable_rdt |
+| --- |
+
+是否启用 RDT 传输通道。
+
+- 0: 不启用。
+- 其他值: 启用。
+
+---
+
+该结构体的文档由以下文件生成:
+
+- agora_rtc_api.h

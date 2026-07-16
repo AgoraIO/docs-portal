@@ -1,0 +1,530 @@
+import * as cheerio from 'cheerio';
+import {
+  createWarning,
+  escapeMdxText,
+  renderCallout,
+  renderCodeFence,
+  renderSimpleTable,
+  renderStableAnchor,
+  rewriteLegacyHref,
+} from './migration-framework.mjs';
+
+function cleanText(value) {
+  return String(value ?? '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\s*\n\s*/g, ' ')
+    .trim();
+}
+
+function normalizeBlocks(value) {
+  return String(value ?? '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function stripHeadingLinks(value) {
+  return String(value).replace(/\[([^\]\n]+)\]\((?:<[^>\n]+>|[^)\n]+)\)/g, '$1');
+}
+
+function anchorFor(element) {
+  const id = element.attr('id') ?? element.attr('name');
+  return id ? renderStableAnchor(id) : '';
+}
+
+function elementName(node) {
+  return node?.type === 'tag' ? node.name.toLowerCase() : '';
+}
+
+function classNames(element) {
+  return new Set(String(element.attr('class') ?? '').split(/\s+/).filter(Boolean));
+}
+
+function calloutType(element) {
+  const classes = classNames(element);
+  const hasCalloutClass = (...kinds) =>
+    [...classes].some((name) => {
+      const normalized = name.toLowerCase();
+      return kinds.some(
+        (kind) =>
+          normalized === kind ||
+          normalized === `alert-${kind}` ||
+          normalized === `admonition-${kind}` ||
+          normalized === `callout-${kind}` ||
+          normalized === `${kind}-callout`,
+      );
+    });
+  if (hasCalloutClass('danger', 'error')) return 'error';
+  if (hasCalloutClass('caution', 'warn', 'warning')) return 'warning';
+  if (hasCalloutClass('tip', 'success')) return 'tip';
+  if (hasCalloutClass('info', 'important')) return 'info';
+  if (hasCalloutClass('note', 'admonition', 'alert')) {
+    return 'note';
+  }
+  return null;
+}
+
+function languageFromCode(element) {
+  const classes = String(element.attr('class') ?? '').split(/\s+/);
+  const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
+  return marker?.replace(/^(?:lang|language)-/, '') || 'text';
+}
+
+function selectArticle($) {
+  const selectors = [
+    'main > article',
+    'main article',
+    'main[role="main"]',
+    'article',
+    '.col-content',
+    '.tsd-page-toolbar + .container',
+    '.tsd-panel-group',
+    '#content',
+    '.contents',
+    '.content-right',
+    'body',
+  ];
+  for (const selector of selectors) {
+    const match = $(selector).first();
+    if (match.length > 0 && cleanText(match.text()).length > 0) return match;
+  }
+  return $('body').first();
+}
+
+function collectFragments(article) {
+  const fragments = [];
+  article.find('[id], a[name]').each((_, node) => {
+    const element = article.constructor(node);
+    const value = element.attr('id') ?? element.attr('name');
+    if (value && !fragments.includes(value)) fragments.push(value);
+  });
+  return fragments;
+}
+
+function createState(options) {
+  return {
+    ...options,
+    warnings: [],
+    assets: [],
+    tableSlotCounter: 0,
+  };
+}
+
+async function renderInlineNodes($, nodes, state) {
+  const values = [];
+  for (const node of nodes) values.push(await renderInlineNode($, node, state));
+  return values
+    .join('')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\s+([，。！？：；、,.!?;:)\]}>])/g, '$1')
+    .trim();
+}
+
+async function renderInlineNode($, node, state) {
+  if (node.type === 'text') return escapeMdxText(node.data ?? '');
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  const content = await renderInlineNodes($, element.contents().toArray(), state);
+  if (name === 'br') return '  \n';
+  if (name === 'code' || name === 'kbd') {
+    const linkedCode = content.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
+    if (linkedCode) {
+      return `[\`${linkedCode[1].replace(/`/g, '\\`')}\`](${linkedCode[2]})`;
+    }
+    return `\`${content.replace(/`/g, '\\`')}\``;
+  }
+  if (name === 'strong' || name === 'b') return `**${content}**`;
+  if (name === 'em' || name === 'i') return `*${content}*`;
+  if (name === 'del' || name === 's') return `~~${content}~~`;
+  if (name === 'a') {
+    const rawHref = element.attr('href');
+    if (!rawHref) {
+      const stableAnchor = anchorFor(element);
+      return `${stableAnchor}${content}`;
+    }
+    const rewritten = rewriteLegacyHref(rawHref, state);
+    if (rewritten.warning) state.warnings.push(rewritten.warning);
+    if (!rewritten.href) return content;
+    return content ? `[${content}](${rewritten.href})` : rewritten.href;
+  }
+  if (name === 'img') {
+    const rendered = await renderImage($, element, state);
+    return rendered;
+  }
+  if (['script', 'style', 'svg'].includes(name)) return '';
+  return content;
+}
+
+async function renderImage($, element, state) {
+  const source = element.attr('src');
+  if (!source) return '';
+  const alt = cleanText(element.attr('alt') || element.attr('title') || 'API 文档图片');
+  if (!state.onAsset) {
+    state.warnings.push(
+      createWarning('asset-missing', `No asset handler is configured for ${source}.`),
+    );
+    return `![${escapeMdxText(alt)}](${source})`;
+  }
+  try {
+    const target = await state.onAsset({
+      source,
+      alt,
+      sourceUrl: state.sourceUrl,
+      sourcePath: state.sourcePath,
+    });
+    state.assets.push({ source, target });
+    return `![${escapeMdxText(alt)}](${target})`;
+  } catch (error) {
+    state.warnings.push(
+      createWarning('asset-missing', `${source}: ${error.message}`),
+    );
+    return `![${escapeMdxText(alt)}](${source})`;
+  }
+}
+
+function indentBlock(value, count) {
+  const indent = ' '.repeat(count);
+  return String(value)
+    .split('\n')
+    .map((line) => (line ? `${indent}${line}` : ''))
+    .join('\n');
+}
+
+async function renderList($, element, state, ordered) {
+  const items = [];
+  const children = element.children('li').toArray();
+  for (const [index, node] of children.entries()) {
+    const item = $(node);
+    const marker = ordered ? `${index + 1}.` : '-';
+    const continuation = marker.length + 1;
+    const blocks = [];
+    let inline = '';
+    for (const child of item.contents().toArray()) {
+      const name = elementName(child);
+      if (name === 'ul' || name === 'ol') {
+        if (inline.trim()) {
+          blocks.push(inline.trim());
+          inline = '';
+        }
+        blocks.push(await renderList($, $(child), state, name === 'ol'));
+      } else if (['div', 'p', 'pre', 'table', 'blockquote'].includes(name)) {
+        if (inline.trim()) {
+          blocks.push(inline.trim());
+          inline = '';
+        }
+        blocks.push(await renderBlockNode($, child, state));
+      } else {
+        inline += await renderInlineNode($, child, state);
+      }
+    }
+    if (inline.trim()) blocks.unshift(inline.trim());
+    const [first = '', ...rest] = blocks.filter(Boolean);
+    let rendered = `${marker} ${first}`;
+    if (rest.length > 0) {
+      rendered += `\n\n${rest.map((block) => indentBlock(block, continuation)).join('\n\n')}`;
+    }
+    items.push(rendered.trimEnd());
+  }
+  return items.join('\n');
+}
+
+async function renderTable($, table, state) {
+  const rows = table.find('> thead > tr, > tbody > tr, > tr').toArray();
+  if (rows.length === 0) return '';
+  const values = [];
+  const definitions = [];
+  let width = 0;
+  for (const [rowIndex, row] of rows.entries()) {
+    const cells = $(row).children('th, td').toArray();
+    const renderedCells = [];
+    for (const cell of cells) {
+      const element = $(cell);
+      const span = Math.max(1, Number.parseInt(element.attr('colspan') ?? '1', 10) || 1);
+      const rich =
+        rowIndex > 0 &&
+        element.find(
+          'table, ul, ol, pre, blockquote, img, div, section, p, dl, figure, [id], a[name]',
+        ).length > 0;
+      if (!rich) {
+        renderedCells.push(
+          cleanText(
+            await renderInlineNodes($, element.contents().toArray(), state),
+          ),
+        );
+        renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+        continue;
+      }
+      const body = await renderChildren($, element, state);
+      if (!body) {
+        renderedCells.push('');
+        continue;
+      }
+      const slotName = `api-center-table-${state.tableSlotCounter++}`;
+      renderedCells.push(`<Slot name="${slotName}" />`);
+      renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+      definitions.push(
+        `<Slot for="${slotName}">\n\n${body}\n\n</Slot>`,
+      );
+    }
+    width = Math.max(width, renderedCells.length);
+    values.push(renderedCells);
+  }
+  const normalized = values.map((row) => [
+    ...row,
+    ...Array.from({ length: width - row.length }, () => ''),
+  ]);
+  const headerRow = normalized.shift();
+  return [renderSimpleTable(headerRow, normalized), ...definitions]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+async function renderDefinitionList($, list, state) {
+  const blocks = [];
+  let term = null;
+  for (const child of list.children('dt, dd').toArray()) {
+    if (elementName(child) === 'dt') {
+      term = cleanText(await renderInlineNodes($, $(child).contents().toArray(), state));
+    } else {
+      const body = await renderChildren($, $(child), state);
+      if (term) blocks.push(`### ${term}\n\n${body}`);
+      else if (body) blocks.push(body);
+      term = null;
+    }
+  }
+  return blocks.join('\n\n');
+}
+
+async function renderChildren($, element, state) {
+  const blocks = [];
+  let inline = '';
+  for (const child of element.contents().toArray()) {
+    const name = elementName(child);
+    const isHeadingAnchor =
+      name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
+    const isBlock = [
+      'article',
+      'aside',
+      'blockquote',
+      'details',
+      'div',
+      'dl',
+      'figure',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'hr',
+      'iframe',
+      'object',
+      'ol',
+      'p',
+      'pre',
+      'section',
+      'table',
+      'ul',
+      'video',
+    ].includes(name) || isHeadingAnchor;
+    if (isBlock) {
+      if (inline.trim()) {
+        blocks.push(inline.trim());
+        inline = '';
+      }
+      const block = await renderBlockNode($, child, state);
+      if (block) blocks.push(block);
+    } else {
+      inline += await renderInlineNode($, child, state);
+    }
+  }
+  if (inline.trim()) blocks.push(inline.trim());
+  return normalizeBlocks(blocks.filter(Boolean).join('\n\n'));
+}
+
+async function renderBlockNode($, node, state) {
+  if (node.type === 'text') return escapeMdxText(cleanText(node.data));
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  const anchor = anchorFor(element);
+  if (['script', 'style', 'nav', 'footer'].includes(name)) return '';
+  if (['iframe', 'object', 'video'].includes(name)) {
+    state.warnings.push(
+      createWarning(
+        'unsupported-html-structure',
+        `Unsupported embedded <${name}> content was omitted.`,
+      ),
+    );
+    return anchor;
+  }
+  const detectedCallout = calloutType(element);
+  if (detectedCallout && ['aside', 'div', 'section'].includes(name)) {
+    const titleNode = element.find(
+      '> .admonition-heading, > .title, > strong:first-child',
+    ).first();
+    const title = cleanText(titleNode.text());
+    if (titleNode.length > 0) titleNode.remove();
+    const body = await renderChildren($, element, state);
+    return [anchor, renderCallout({ type: detectedCallout, title, body })]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (/^h[1-6]$/.test(name)) {
+    const level = Number(name.slice(1));
+    const nestedAnchors = element
+      .find('a[id], a[name]')
+      .toArray()
+      .map((node) => anchorFor($(node)))
+      .filter(Boolean);
+    const title = cleanText(
+      stripHeadingLinks(
+        (await renderInlineNodes($, element.contents().toArray(), state)).replace(
+          /<a id=(?:"[^"]*"|'[^']*')><\/a>/g,
+          '',
+        ),
+      ),
+    );
+    return [anchor, ...nestedAnchors, `${'#'.repeat(level)} ${title}`]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'p') {
+    const body = await renderInlineNodes($, element.contents().toArray(), state);
+    return [anchor, body].filter(Boolean).join('\n\n');
+  }
+  if (name === 'pre') {
+    const code = element.find('code').first();
+    const source = (code.length > 0 ? code : element).text();
+    return [anchor, renderCodeFence(source, languageFromCode(code))]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'ul' || name === 'ol') {
+    return [anchor, await renderList($, element, state, name === 'ol')]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'table') {
+    return [anchor, await renderTable($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'dl') {
+    return [anchor, await renderDefinitionList($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'blockquote') {
+    const content = await renderChildren($, element, state);
+    const quote = content
+      .split('\n')
+      .map((line) => `> ${line}`.trimEnd())
+      .join('\n');
+    return [anchor, quote].filter(Boolean).join('\n\n');
+  }
+  if (name === 'hr') return '---';
+  if (name === 'figure') {
+    const image = element.find('img').first();
+    const caption = cleanText(element.find('figcaption').first().text());
+    const rendered = image.length > 0 ? await renderImage($, image, state) : '';
+    return [anchor, rendered, caption ? `_${escapeMdxText(caption)}_` : '']
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'details') {
+    const summary = cleanText(element.children('summary').first().text());
+    element.children('summary').first().remove();
+    const content = await renderChildren($, element, state);
+    return [anchor, summary ? `### ${escapeMdxText(summary)}` : '', content]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  return [anchor, await renderChildren($, element, state)]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+/**
+ * @param {object} options
+ * @param {string} options.html
+ * @param {string} options.sourceUrl
+ * @param {string} options.sourcePath
+ * @param {Map<string, string>} [options.routeMap]
+ * @param {Map<string, string>} [options.fragmentMap]
+ * @param {(args: { source: string, sourceUrl: string }) => Promise<string> | string} [options.onAsset]
+ * @param {string} [options.rootSelector]
+ * @param {string} [options.titleSelector]
+ */
+export async function convertHtmlToMdx({
+  html,
+  sourceUrl,
+  sourcePath,
+  routeMap = new Map(),
+  fragmentMap = new Map(),
+  onAsset,
+  rootSelector,
+  titleSelector,
+}) {
+  const $ = cheerio.load(html);
+  const preferredTitle = titleSelector
+    ? cleanText($(titleSelector).first().text())
+    : '';
+  $('script, style, nav, footer, header').remove();
+  const article = rootSelector ? $(rootSelector).first() : selectArticle($);
+  if (article.length === 0) {
+    return {
+      title: '',
+      description: '',
+      body: '',
+      fragments: [],
+      assets: [],
+      warnings: [
+        createWarning(
+          'unsupported-html-structure',
+          `No article body found in ${sourcePath}.`,
+        ),
+      ],
+    };
+  }
+  const state = createState({
+    sourceUrl,
+    sourcePath,
+    routeMap,
+    fragmentMap,
+    onAsset,
+  });
+  const titleNode = titleSelector
+    ? $(titleSelector).first()
+    : article.find('h1').first();
+  const title = cleanText(
+    preferredTitle || titleNode.text() || $('title').first().text(),
+  );
+  const description = cleanText(
+    article.find('.shortdesc, .lead, .tsd-comment-shortform').first().text(),
+  );
+  const fragments = [];
+  article.find('[id], a[name]').each((_, node) => {
+    const element = $(node);
+    const value = element.attr('id') ?? element.attr('name');
+    if (value && !fragments.includes(value)) fragments.push(value);
+  });
+  const titleElement = titleNode.get(0);
+  const titleIsInsideArticle =
+    titleElement &&
+    (article.get(0) === titleElement ||
+      article.find('*').toArray().includes(titleElement));
+  if (titleIsInsideArticle) titleNode.remove();
+  const body = await renderChildren($, article, state);
+  return {
+    title,
+    description,
+    body,
+    fragments,
+    assets: state.assets,
+    warnings: state.warnings,
+    sourceTextLength: cleanText(article.text()).length,
+  };
+}

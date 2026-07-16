@@ -1,0 +1,96 @@
+---
+title: crypto_option_t结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/structcrypto__option__t
+  sourcePath: html-docs/rtsa/c/structcrypto__option__t.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+---
+
+`#include &lt;agora_rtc_api.h&gt;`
+
+| <a id="pub-attribs"></a> 成员变量 |  |
+| --- | --- |
+| bool | [enable](/zh-CN/api-reference/rtsa/c/structcrypto-option-t#ac842b6c1dcb3b1f11b611620199dc55c) |
+| [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) | [mode](/zh-CN/api-reference/rtsa/c/structcrypto-option-t#a00cce6c5fdc2ccbc7d0f4f85ac0a8dfd) |
+| char | [key](/zh-CN/api-reference/rtsa/c/structcrypto-option-t#af1906ec6f1420d244c5bbaded69b2b4d) [128+1] |
+| uint8_t | [salt](/zh-CN/api-reference/rtsa/c/structcrypto-option-t#a63d0c90524e04abe336c19c99d1b1f35) [32] |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+媒体流加密选项。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 结构体成员变量说明
+
+<a id="ac842b6c1dcb3b1f11b611620199dc55c"></a>
+
+## ◆enable
+
+| bool enable |
+| --- |
+
+是否开启媒体流加密：
+
+- true: 开启加密。
+- false: 关闭加密。
+
+<a id="af1906ec6f1420d244c5bbaded69b2b4d"></a>
+
+## ◆key
+
+| char key[128+1] |
+| --- |
+
+媒体流加密密钥，字符串类型，长度至多为 128 字节。建议使用 32 字节的密钥。
+
+### 注解
+
+如果未指定该参数或将该参数设置为 NULL，则无法启用媒体流加密，且 SDK 会返回错误码 -2。
+
+<a id="a00cce6c5fdc2ccbc7d0f4f85ac0a8dfd"></a>
+
+## ◆mode
+
+| [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) mode |
+| --- |
+
+媒体流加密模式。详见 [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e)。建议使用 AES_128_GCM2 或 AES_256_GCM2 加密模式。这两种模式支持使用盐，安全性更高。
+
+<a id="a63d0c90524e04abe336c19c99d1b1f35"></a>
+
+## ◆salt
+
+| uint8_t salt[32] |
+| --- |
+
+盐，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。详见《媒体流加密》。
+
+### 注解
+
+只有在 AES_128_GCM2 或 AES_256_GCM2 加密模式下，该参数才生效。此时，需确保填入该参数的值不全为 0。
+
+---
+
+该结构体的文档由以下文件生成:
+
+- agora_rtc_api.h

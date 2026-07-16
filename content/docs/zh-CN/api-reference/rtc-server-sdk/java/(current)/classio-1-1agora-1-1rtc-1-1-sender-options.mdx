@@ -1,0 +1,169 @@
+---
+title: io.agora.rtc.SenderOptions类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_sender_options.html
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_sender_options.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_sender_options_8java.html as local text.
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [SenderOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a3f48bacee4a89e43b88d6540de39df3d) () |
+|  | [SenderOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a8fc28e7c7b2feb264b7d41b678c00a1d) (int [ccMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a7d5c387b043f3943a0f0c7ee6ccc4888), int [codecType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab012d1afda348817dad7ba34f8411941), int [targetBitrate](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab2d74e1736f1401480a00fb0d88e8fc6)) |
+| int | [getCcMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a9215de1e3f23f1a1005a10c77b19de66) () |
+| void | [setCcMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#aa407bc0c87ac91b2de17bf56a6cb6d13) (int [ccMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a7d5c387b043f3943a0f0c7ee6ccc4888)) |
+| int | [getCodecType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a1920feae0a762be39bcc865dd0812a81) () |
+| void | [setCodecType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a1184bc6d856219ed8df0df5c82b4b0e7) (int [codecType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab012d1afda348817dad7ba34f8411941)) |
+| int | [getTargetBitrate](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#aaddade6d5542a43eb8c62bb7349866f2) () |
+| void | [setTargetBitrate](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#aa93eb959f472dc2662b0c583500f0875) (int [targetBitrate](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab2d74e1736f1401480a00fb0d88e8fc6)) |
+
+| <a id="pri-attribs"></a> Private 属性 |  |
+| --- | --- |
+| int | [ccMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#a7d5c387b043f3943a0f0c7ee6ccc4888) |
+| int | [codecType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab012d1afda348817dad7ba34f8411941) |
+| int | [targetBitrate](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options#ab2d74e1736f1401480a00fb0d88e8fc6) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+包含发送编码视频数据的视频源的本地视频轨道对象配置。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a3f48bacee4a89e43b88d6540de39df3d"></a>
+
+## ◆SenderOptions() [1/2]
+
+| io.agora.rtc.SenderOptions.SenderOptions | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+<a id="a8fc28e7c7b2feb264b7d41b678c00a1d"></a>
+
+## ◆SenderOptions() [2/2]
+
+| io.agora.rtc.SenderOptions.SenderOptions | ( | int | *ccMode*, |
+| --- | --- | --- | --- |
+|  |  | int | *codecType*, |
+|  |  | int | *targetBitrate*) |
+
+构造函数。
+
+### 参数
+
+| ccMode | 是否开启拥塞控制模式。0: 开启。 1: 不开启。 |
+| --- | --- |
+| codecType | <Slot name="api-center-table-0" /> |
+| targetBitrate | Target bitrate (Kbps) for video encoding. |
+
+<Slot for="api-center-table-0">
+
+视频编码类型。
+
+- 0: 无
+- 1: VP8
+- 2: H.264
+- 3: H.265
+- 5: VP9
+- 6: Generic
+- 7: Generic H264
+- 12: AV1
+- 20: JPEG
+
+</Slot>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a9215de1e3f23f1a1005a10c77b19de66"></a>
+
+## ◆getCcMode()
+
+| int io.agora.rtc.SenderOptions.getCcMode | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+<a id="a1920feae0a762be39bcc865dd0812a81"></a>
+
+## ◆getCodecType()
+
+| int io.agora.rtc.SenderOptions.getCodecType | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+<a id="aaddade6d5542a43eb8c62bb7349866f2"></a>
+
+## ◆getTargetBitrate()
+
+| int io.agora.rtc.SenderOptions.getTargetBitrate | ( | ** | ) |  |
+| --- | --- | --- | --- | --- |
+
+<a id="aa407bc0c87ac91b2de17bf56a6cb6d13"></a>
+
+## ◆setCcMode()
+
+| void io.agora.rtc.SenderOptions.setCcMode | ( | int | *ccMode* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+<a id="a1184bc6d856219ed8df0df5c82b4b0e7"></a>
+
+## ◆setCodecType()
+
+| void io.agora.rtc.SenderOptions.setCodecType | ( | int | *codecType* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+<a id="aa93eb959f472dc2662b0c583500f0875"></a>
+
+## ◆setTargetBitrate()
+
+| void io.agora.rtc.SenderOptions.setTargetBitrate | ( | int | *targetBitrate* | ) |  |
+| --- | --- | --- | --- | --- | --- |
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="a7d5c387b043f3943a0f0c7ee6ccc4888"></a>
+
+## ◆ccMode
+
+| int io.agora.rtc.SenderOptions.ccMode | private |
+| --- | --- |
+
+<a id="ab012d1afda348817dad7ba34f8411941"></a>
+
+## ◆codecType
+
+| int io.agora.rtc.SenderOptions.codecType | private |
+| --- | --- |
+
+<a id="ab2d74e1736f1401480a00fb0d88e8fc6"></a>
+
+## ◆targetBitrate
+
+| int io.agora.rtc.SenderOptions.targetBitrate | private |
+| --- | --- |
+
+---
+
+该类的文档由以下文件生成:
+
+- SenderOptions.java

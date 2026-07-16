@@ -1,0 +1,260 @@
+---
+title: io.agora.rtc.ExternalVideoFrame类 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_external_video_frame
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_external_video_frame.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_external_video_frame_8java.html as local text.
+---
+
+| <a id="pri-attribs"></a> Private 属性 |  |
+| --- | --- |
+| int | [type](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#aa5dc230c70206ed36ba83cd185468bd4) |
+| int | [format](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a17857bec6e43168705e79456e25969fe) |
+| java.nio.ByteBuffer | [buffer](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a0b8ae146c317dcaa82f448fb5935b3db) |
+| int | [stride](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a14137bfc21fc3adec50fa7370074d40b) |
+| int | [height](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a78a8e8949fa240b9acc55da338a6434c) |
+| int | [cropLeft](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a11b3c79b24862bd2d16aa705b373f3c3) |
+| int | [cropTop](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a52067e787c919651fe9f76b1afaedca8) |
+| int | [cropRight](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a736060c8323204cd99178726f99e790b) |
+| int | [cropBottom](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a2b5b68f5c29bd47891aae3ee0ed0d12a) |
+| int | [rotation](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#af3cad386d62ce75b5e9ccd7ee2dbc6f6) |
+| long | [timestamp](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a2cb1a0c4f82cac0eaf856b4bc2160b1c) |
+| Object | [eglContext](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a36abf7f84c1312f6cac689de48f10241) |
+| int | [eglType](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#af6674307185d13381c90c891ccff71fa) |
+| int | [textureId](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#ac663f81dbbbb30ec911d854f9d06e7d1) |
+| float | [matrix](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a8039e7332584638cdd2a750c5e4ecd99) |
+| ByteBuffer | [metadataBuffer](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#ad64a57776875433de00d7ce9c5611398) |
+| int | [fillAlphaBuffer](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#aabc9c36a8cc6f0b08a324c1268dab32e) |
+| ByteBuffer | [alphaBuffer](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a199300ffd171c612177a39a18d929d3b) |
+| int | [alphaMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a30c1aba5e86d9c23c2b94149dac8425f) |
+| ColorSpace | [colorSpace](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame#a51be57928b2a2f56a64463bf6c38909e) |
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+## 详细描述
+
+ExternalVideoFrame 类。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="a199300ffd171c612177a39a18d929d3b"></a>
+
+## ◆alphaBuffer
+
+| ByteBuffer io.agora.rtc.ExternalVideoFrame.alphaBuffer | private |
+| --- | --- |
+
+采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
+
+<a id="a30c1aba5e86d9c23c2b94149dac8425f"></a>
+
+## ◆alphaMode
+
+| int io.agora.rtc.ExternalVideoFrame.alphaMode | private |
+| --- | --- |
+
+当视频祯中包含 Alpha 通道数据时，设置 alphaBuffer 和视频祯的相对位置：
+
+- 0: （默认）仅视频祯，即 alphaBuffer 不和视频祯拼接。
+- 1: alphaBuffer 位于视频帧的上方。
+- 2: alphaBuffer 位于视频帧的下方。
+- 3: alphaBuffer 位于视频帧的左侧。
+- 4: alphaBuffer 位于视频帧的右侧。
+
+<a id="a0b8ae146c317dcaa82f448fb5935b3db"></a>
+
+## ◆buffer
+
+| java.nio.ByteBuffer io.agora.rtc.ExternalVideoFrame.buffer | private |
+| --- | --- |
+
+视频 buffer。
+
+<a id="a51be57928b2a2f56a64463bf6c38909e"></a>
+
+## ◆colorSpace
+
+| ColorSpace io.agora.rtc.ExternalVideoFrame.colorSpace | private |
+| --- | --- |
+
+视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [ColorSpaceType](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+<a id="a2b5b68f5c29bd47891aae3ee0ed0d12a"></a>
+
+## ◆cropBottom
+
+| int io.agora.rtc.ExternalVideoFrame.cropBottom | private |
+| --- | --- |
+
+[原始数据相关字段] 指定底边裁剪掉的像素数量。默认为 0。
+
+<a id="a11b3c79b24862bd2d16aa705b373f3c3"></a>
+
+## ◆cropLeft
+
+| int io.agora.rtc.ExternalVideoFrame.cropLeft | private |
+| --- | --- |
+
+[原始数据相关字段] 指定左边裁剪掉的像素数量。默认为 0。
+
+<a id="a736060c8323204cd99178726f99e790b"></a>
+
+## ◆cropRight
+
+| int io.agora.rtc.ExternalVideoFrame.cropRight | private |
+| --- | --- |
+
+[原始数据相关字段] 指定右边裁剪掉的像素数量。默认为 0。
+
+<a id="a52067e787c919651fe9f76b1afaedca8"></a>
+
+## ◆cropTop
+
+| int io.agora.rtc.ExternalVideoFrame.cropTop | private |
+| --- | --- |
+
+[原始数据相关字段] 指定顶边裁剪掉的像素数量。默认为 0。
+
+<a id="a36abf7f84c1312f6cac689de48f10241"></a>
+
+## ◆eglContext
+
+| Object io.agora.rtc.ExternalVideoFrame.eglContext | private |
+| --- | --- |
+
+该参数仅适用于 Texture 格式的视频数据。
+
+- 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*)时，需要将 eglContext 设置给这个字段。
+- 当使用 Android 定义的 OpenGL 接口 (android.opengl.*)时，需要将 eglContext 设置给这个字段。
+
+<a id="af6674307185d13381c90c891ccff71fa"></a>
+
+## ◆eglType
+
+| int io.agora.rtc.ExternalVideoFrame.eglType | private |
+| --- | --- |
+
+EGL 类型。该参数仅适用于 Texture 格式的视频数据。
+
+<a id="aabc9c36a8cc6f0b08a324c1268dab32e"></a>
+
+## ◆fillAlphaBuffer
+
+| int io.agora.rtc.ExternalVideoFrame.fillAlphaBuffer | private |
+| --- | --- |
+
+该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置提取视频祯中的 Alpha 通道数据并自动填入到 alphaBuffer 中。
+
+- true: 提取并填充 Alpha 通道数据。
+- false: （默认）不提取填充 Alpha 通道数据。
+
+对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
+
+- 通过将该参数设置为 true 自动填写。
+- 通过 alphaBuffer 参数设置。
+
+<a id="a17857bec6e43168705e79456e25969fe"></a>
+
+## ◆format
+
+| int io.agora.rtc.ExternalVideoFrame.format | private |
+| --- | --- |
+
+像素格式。
+
+<a id="a78a8e8949fa240b9acc55da338a6434c"></a>
+
+## ◆height
+
+| int io.agora.rtc.ExternalVideoFrame.height | private |
+| --- | --- |
+
+传入视频帧的高度。
+
+<a id="a8039e7332584638cdd2a750c5e4ecd99"></a>
+
+## ◆matrix
+
+| float io.agora.rtc.ExternalVideoFrame.matrix | private |
+| --- | --- |
+
+该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。
+
+<a id="ad64a57776875433de00d7ce9c5611398"></a>
+
+## ◆metadataBuffer
+
+| ByteBuffer io.agora.rtc.ExternalVideoFrame.metadataBuffer | private |
+| --- | --- |
+
+该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 nil。
+
+<a id="af3cad386d62ce75b5e9ccd7ee2dbc6f6"></a>
+
+## ◆rotation
+
+| int io.agora.rtc.ExternalVideoFrame.rotation | private |
+| --- | --- |
+
+[原始数据相关字段] 指定是否对传入的视频组做顺时针旋转操作，可选值为 0，90，180，270。默认为 0。
+
+<a id="a14137bfc21fc3adec50fa7370074d40b"></a>
+
+## ◆stride
+
+| int io.agora.rtc.ExternalVideoFrame.stride | private |
+| --- | --- |
+
+传入视频帧的行间距（像素）。对于 Texture，该值指的是 Texture 的宽度。
+
+<a id="ac663f81dbbbb30ec911d854f9d06e7d1"></a>
+
+## ◆textureId
+
+| int io.agora.rtc.ExternalVideoFrame.textureId | private |
+| --- | --- |
+
+该帧的 Texture ID。该参数仅适用于 Texture 格式的视频数据。
+
+<a id="a2cb1a0c4f82cac0eaf856b4bc2160b1c"></a>
+
+## ◆timestamp
+
+| long io.agora.rtc.ExternalVideoFrame.timestamp | private |
+| --- | --- |
+
+传入的视频帧的时间戳（毫秒）。不正确的时间戳会导致丢帧或者音视频不同步。
+
+<a id="aa5dc230c70206ed36ba83cd185468bd4"></a>
+
+## ◆type
+
+| int io.agora.rtc.ExternalVideoFrame.type | private |
+| --- | --- |
+
+视频帧的数据类型。
+
+- 1：视频帧类型为原始数据。
+- 2：与 1 相同。
+- 3：视频帧类型为 Texture。
+
+---
+
+该类的文档由以下文件生成:
+
+- ExternalVideoFrame.java

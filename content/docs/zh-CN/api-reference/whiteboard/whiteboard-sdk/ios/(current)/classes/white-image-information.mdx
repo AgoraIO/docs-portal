@@ -1,0 +1,170 @@
+---
+title: WhiteImageInformation Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteImageInformation
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteImageInformation.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteImageInformation.h |
+
+<a id="overview"></a>
+
+## Overview
+
+白板图片信息。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithFrame:"></a>
+
+### `– initWithFrame:`
+
+设置图片框架并初始化 `WhiteImageInformation` 对象。
+
+`- (instancetype)initWithFrame:(CGRect)*frame*`
+
+#### Parameters
+
+| `frame` | 图片框架。包括宽高以及左上角坐标（白板坐标系内）。 |
+| --- | --- |
+
+#### Return Value
+
+初始化的 `WhiteImageInformation` 对象。
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/initWithSize:"></a>
+
+### `– initWithSize:`
+
+设置图片尺寸并初始化 `WhiteImageInformation` 对象。
+
+`- (instancetype)initWithSize:(CGSize)*size*`
+
+#### Parameters
+
+| `size` | 图片尺寸。 |
+| --- | --- |
+
+#### Return Value
+
+初始化的 `WhiteImageInformation` 对象。
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/initWithUuid:frame:"></a>
+
+### `– initWithUuid:frame:`
+
+设置图片的 UUID 和框架并初始化 `WhiteImageInformation` 对象。
+
+`- (instancetype)initWithUuid:(NSString *)*uuid* frame:(CGRect)*frame*`
+
+#### Parameters
+
+| `uuid` | 图片的 UUID，即图片在互动白板实时房间中的唯一标识符。 |
+| --- | --- |
+| `frame` | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+图片框架。包括宽高以及左上角坐标（白板坐标系内）。
+
+</Slot>
+
+#### Return Value
+
+初始化的 `WhiteImageInformation` 对象。
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/uuid"></a>
+
+### `uuid`
+
+图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
+
+`@property (nonatomic, copy) NSString *uuid`
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/centerX"></a>
+
+### `centerX`
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的横向坐标。
+
+`@property (nonatomic, assign) CGFloat centerX`
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/centerY"></a>
+
+### `centerY`
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的纵向坐标。
+
+`@property (nonatomic, assign) CGFloat centerY`
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/width"></a>
+
+### `width`
+
+图片的宽度，单位为像素。
+
+`@property (nonatomic, assign) CGFloat width`
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/height"></a>
+
+### `height`
+
+图片的高度，单位为像素。
+
+`@property (nonatomic, assign) CGFloat height`
+
+#### Declared In
+
+`WhiteImageInformation.h`
+
+<a id="//api/name/locked"></a>
+
+### `locked`
+
+是否锁定图片。
+图片被锁定后，用户无法移动或缩放图片。
+
+`@property (nonatomic, assign) BOOL locked`
+
+#### Discussion
+
+- `YES`：锁定。
+- `NO`：不锁定。
+
+#### Declared In
+
+`WhiteImageInformation.h`

@@ -1,0 +1,111 @@
+---
+title: agora::rtc::EncodedAudioFrameInfo结构体 参考
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_encoded_audio_frame_info
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_encoded_audio_frame_info.html
+  generator: doxygen
+  warnings: []
+---
+
+| <a id="pub-methods"></a> Public 成员函数 |  |
+| --- | --- |
+|  | [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#a889893e497af1b5954752f42ec856941) () |
+|  |  |
+|  | [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#a4f8eab058b10981cd7974c0b86a6b00d) (const [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) &rhs) |
+|  |  |
+
+| <a id="pub-attribs"></a> Public 属性 |  |
+| --- | --- |
+| [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053) | [codec](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#aa16372afe1cb9007b35a2feed846c5ed) |
+|  |  |
+| int | [sampleRateHz](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#a14c82a506143d5820df0a721cbab3e40) |
+|  |  |
+| int | [samplesPerChannel](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#a958cc5b36dd262c30e934d5f51b6e0c8) |
+|  |  |
+| int | [numberOfChannels](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#aa60140fa8c89fcd6566845d2e4f2d293) |
+|  |  |
+| [EncodedAudioFrameAdvancedSettings](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-advanced-settings) | [advancedSettings](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#a59708c94c9e8cd10b35c88046b1dddb9) |
+|  |  |
+| int64_t | [captureTimeMs](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info#ad34b388600f3e23ed5aeb83f602bd5a9) |
+|  |  |
+
+<a id="details"></a>
+
+## 详细描述
+
+[EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) 结构体。
+
+## 构造及析构函数说明
+
+<a id="a889893e497af1b5954752f42ec856941"></a>
+
+## ◆EncodedAudioFrameInfo() [1/2]
+
+| agora::rtc::EncodedAudioFrameInfo::EncodedAudioFrameInfo () | inline |
+| --- | --- |
+
+<a id="a4f8eab058b10981cd7974c0b86a6b00d"></a>
+
+## ◆EncodedAudioFrameInfo() [2/2]
+
+| agora::rtc::EncodedAudioFrameInfo::EncodedAudioFrameInfo ( const [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) & *rhs*) | inline |
+| --- | --- |
+
+## 类成员变量说明
+
+<a id="aa16372afe1cb9007b35a2feed846c5ed"></a>
+
+## ◆codec
+
+| [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053) agora::rtc::EncodedAudioFrameInfo::codec |
+| --- |
+
+音频编码类型： [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac211c1a503d38d504c92b5f006240053)。
+
+<a id="a14c82a506143d5820df0a721cbab3e40"></a>
+
+## ◆sampleRateHz
+
+| int agora::rtc::EncodedAudioFrameInfo::sampleRateHz |
+| --- |
+
+音频帧采样率（Hz）。
+
+<a id="a958cc5b36dd262c30e934d5f51b6e0c8"></a>
+
+## ◆samplesPerChannel
+
+| int agora::rtc::EncodedAudioFrameInfo::samplesPerChannel |
+| --- |
+
+每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。
+
+<a id="aa60140fa8c89fcd6566845d2e4f2d293"></a>
+
+## ◆numberOfChannels
+
+| int agora::rtc::EncodedAudioFrameInfo::numberOfChannels |
+| --- |
+
+音频帧的声道数。
+
+<a id="a59708c94c9e8cd10b35c88046b1dddb9"></a>
+
+## ◆advancedSettings
+
+| [EncodedAudioFrameAdvancedSettings](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-advanced-settings) agora::rtc::EncodedAudioFrameInfo::advancedSettings |
+| --- |
+
+音频帧高级设置。
+
+<a id="ad34b388600f3e23ed5aeb83f602bd5a9"></a>
+
+## ◆captureTimeMs
+
+| int64_t agora::rtc::EncodedAudioFrameInfo::captureTimeMs |
+| --- |
+
+音频帧的 Unix 时间戳（毫秒）。

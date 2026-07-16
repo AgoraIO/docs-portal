@@ -1326,9 +1326,7 @@ paths:
       #   - 智能体管理
       summary: 获取智能体列表
       operationId: get-agent-list
-      description: |
-        检索符合指定条件的智能体列表。
-        > 该接口仅支持查询最近 7 天内创建的智能体列表。
+      description: "检索符合指定条件的智能体列表。 该接口仅支持查询最近 7 天内创建的智能体列表。"
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/appid'
@@ -1469,7 +1467,7 @@ paths:
                     channel: test_channel
                     start_ts: 1744877089
       operationId: agent-speak
-      description: "让指定智能体播报自定义消息。\r\n\r\n与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。"
+      description: "让指定智能体播报自定义消息。 与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。"
       requestBody:
         content:
           application/json:
@@ -1549,10 +1547,7 @@ paths:
       # tags:
       #   - 智能体管理
       operationId: agent-think
-      description: |
-        向指定智能体发送一段自定义文本指令。
-
-        该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。
+      description: "向指定智能体发送一段自定义文本指令。 该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。"
       requestBody:
         content:
           application/json:
@@ -1635,7 +1630,7 @@ paths:
       #   - 智能体管理
       summary: 获取智能体短期记忆
       operationId: get-history
-      description: "获取用户和智能体对话的短期记忆。\r\n你可以在智能体运行期间 (`RUNNING`) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括：\r\n- 智能体创建和停止的时间戳\r\n- 用户和智能体对话消息"
+      description: "获取用户和智能体对话的短期记忆。 你可以在智能体运行期间 (RUNNING) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括： 智能体创建和停止的时间戳 用户和智能体对话消息"
       responses:
         '200':
           description: "- 若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。\r\n- 若返回的状态码不为 `200` 则表示请求失败。响应包体中包含错误的类别和描述，你可以参考[响应状态码](/zh-CN/ai/api/response-code)了解可能的原因。"
@@ -1802,11 +1797,7 @@ paths:
   '/v2/projects/{appid}/agents/{agentId}/turns':
     get:
       summary: 查询对话轮次信息
-      description: |
-        在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。
-        
-        > 自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。
-        > 仅支持查询 7 天内的会话。
+      description: "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。 自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。 仅支持查询 7 天内的会话。"
       operationId: get-turns
       parameters:
         - $ref: '#/components/parameters/Authorization'

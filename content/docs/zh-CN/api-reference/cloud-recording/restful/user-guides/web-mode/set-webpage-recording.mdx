@@ -1,0 +1,380 @@
+---
+title: 实现页面录制
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/web-mode/set-webpage-recording
+  sourcePath: docs/cloud-recording/user-guides/web-mode/set-webpage-recording.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 3 legacy MDX syntax signal(s).
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 2 legacy fragment link(s) to stable local anchors.
+---
+
+本文介绍使用云端录制 RESTful API 进行页面录制以及将页面录制并推流到 CDN 的重点步骤。你可以参考[云端录制快速开始](/zh-CN/api-reference/cloud-recording/restful/get-started/quick-start)了解云端录制的基础流程。
+
+:::info[信息]
+- 页面录制的计费方式和云端录制不同，详见[页面录制计费说明](/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/webpage-billing)。
+- 页面录制支持的网页字体语种包括英语、繁体中文、简体中文、阿拉伯语和印地语。如果需要支持其他语种，请[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+## 适用场景
+
+页面录制可用于完整还原在线课堂、视频会议等场景的用户体验。举例来说，当一个 Web 应用集成了声网 RTC SDK 和互动白板 SDK，页面录制可以录制页面内的全部元素，而不仅限于音视频流：
+
+![页面录制应用](/img/api-center-generated/9bd94824233e-webpage-rec-integ.svg)
+
+## 功能描述
+
+[页面录制](/zh-CN/api-reference/cloud-recording/restful/overview/concepts#页面录制)模式指将指定网页的页面内容和音频混合录制为一个音视频文件。该文件包含页面内容音视频的 HLS（HTTP Live Streaming）流媒体点播文件和可选的 MP4 格式文件。
+
+![页面录制示意图](https://web-cdn.agora.io/doc-cms/uploads/1729497668791-页面录制示意图.png)
+
+你还可以在页面录制的过程中，将页面的内容和音频转化为一路音视频流，并推送到 CDN：
+
+![页面录制并推流到 CDN 示意图](https://web-cdn.agora.io/doc-cms/uploads/1729497413143-页面录制并推流到CDN.png)
+
+## 前提条件
+
+页面录制需满足以下前提条件：
+
+- 如果你需要同时使用页面录制和云端录制的其他功能，例如单流录制或截图，建议页面录制使用单独的 App ID，与其他业务的请求进行区分，以便声网对页面录制进行独立的资源管理。
+- 你需要提供一个能通过 URL 访问的 Web 应用，作为待录制的内容源。（频道中的主播和观众可以使用该 Web 应用，也可以使用其他平台的应用。）
+- 你的 Web 应用需要兼容 Chrome 浏览器。
+- 由于云端录制仅录制浏览器窗口可见部分，该 Web 页面需要全部可见。如果浏览器有滚动条，录制的始终是网页未滚动状态下的首屏。
+- 如需还原主播端看到的全部内容，你需要将主播端的操作同步到应用中。
+
+## 实现页面录制
+
+### 1. 申请录制服务器资源
+
+在开始录制前，必须调用 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法请求用于云端录制的服务器资源。
+
+你需要在 `acquire` 中设置如下字段：
+
+- `scene` 字段设置为 `1`，即分配页面录制资源
+- `resourceExpiredHour` 为 RESTful API 的调用时效，取值范围 [1,720]，默认值为 72
+
+请求示例如下：
+
+- 请求 URL：
+
+    ```text
+    https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire
+    ```
+
+- 请求 Body 内容：
+
+    ```json
+    {
+      "cname": "httpClient463224",
+      "uid": "527841",
+      "clientRequest": {
+        "resourceExpiredHour": 24,
+        "scene": 1
+      }
+    }
+    ```
+
+### 2. 开始录制
+
+<Tabs defaultValue="Webpage recording only" groupId="是否推流到 CDN" persist>
+<TabsList>
+  <TabsTrigger value="Webpage recording only">仅实现页面录制</TabsTrigger>
+  <TabsTrigger value="push to CDN">实现页面录制并推流到 CDN</TabsTrigger>
+</TabsList>
+
+<TabsContent value="Webpage recording only">
+
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 时，将 `mode` 参数设置为 `web`，表示使用页面录制服务。
+
+需要设置页面录制 `clientRequest` 中的如下参数：
+
+| 字段 | 配置内容 |
+| --- | --- |
+| `storageConfig` | 设置第三方云存储的信息 |
+| `extensionServiceConfig` | 扩展服务设置。如果要进行页面录制，你需要将 `extensionServiceConfig.extensionServices` 下的 `serviceName` 设置为 `"web_recorder_service"`|
+
+请求示例如下：
+
+- 请求 URL：
+
+    ```text
+    https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/mode/web/start
+    ```
+
+- 请求 Body 内容：
+
+    ```json
+    {
+      "cname": "httpClient463224",
+      "uid": "527841",
+      "clientRequest": {
+        "token": "<your_token>",
+        //highlight-start
+        "extensionServiceConfig": {
+          "errorHandlePolicy": "error_abort",
+          "extensionServices": [
+            {
+              "serviceName": "web_recorder_service",
+              "errorHandlePolicy": "error_abort",
+              "serviceParam": {
+                "url": "https://xxxxx",
+                "audioProfile": 0,
+                "videoWidth": 1280,
+                "videoHeight": 720,
+                "maxRecordingHour": 3
+              }
+            }
+          ]
+        },
+        //highlight-end
+        "recordingFileConfig": {
+          "avFileType": [
+            "hls",
+            "mp4"
+          ]
+        },
+        //highlight-start
+        "storageConfig": {
+          "vendor": 2,
+          "region": 3,
+          "bucket": "xxxxx",
+          "accessKey": "xxxxx",
+          "secretKey": "xxxxx",
+          "fileNamePrefix": [
+            "directory1",
+            "directory2"
+          ]
+        }
+        //highlight-end
+      }
+    }
+    ```
+
+</TabsContent>
+
+<TabsContent value="push to CDN">
+
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，将 `mode` 参数设置为 `web`，表示启用页面录制模式。
+
+实现页面录制并推流到 CDN 需要设置 `clientRequest` 中的如下参数：
+
+| 字段                     | 配置内容     |
+| :----------------------- | :----------- |
+| `storageConfig`         | 第三方云存储 |
+| `extensionServiceConfig` | 扩展服务设置。如果要进行页面录制并推流到 CDN，你需要分别将 `serviceName` 设置为 `"web_recorder_service"`（页面录制）和 `"rtmp_publish_service"`（推流到 CDN），并设置页面录制和推流到 CDN 相关字段。具体参见 [`extensionServiceConfig`](/zh-CN/api-reference/api-ref/cloud-recording/start) 文档。 |
+
+请求示例如下：
+
+- 请求 URL：
+
+    ```text
+    https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/mode/web/start
+    ```
+
+- 请求 Body 内容：
+
+    ```json
+    {
+      "cname": "httpClient463224",
+      "uid": "527841",
+      "clientRequest": {
+        "token": "<your_token>",
+        //highlight-start
+        "extensionServiceConfig": {
+          "extensionServices": [
+            {
+              "serviceName": "web_recorder_service",
+              "errorHandlePolicy": "error_abort",
+              "serviceParam": {
+                "url": "https://xxxxx",
+                "audioProfile": 0,
+                "videoWidth": 1280,
+                "videoHeight": 720,
+                "maxRecordingHour": 3,
+                "maxVideoDuration": 200
+              }
+            },
+            {
+              "serviceName": "rtmp_publish_service",
+              "errorHandlePolicy": "error_ignore",
+              "serviceParam": {
+                "outputs": [
+                  {
+                    "rtmpUrl": "rtmp://xxx"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        //highlight-end
+        "recordingFileConfig": {
+          "avFileType": [
+            "hls",
+            "mp4"
+          ]
+        },
+        //highlight-start
+        "storageConfig": {
+          "vendor": 2,
+          "region": 3,
+          "bucket": "xxxxx",
+          "accessKey": "xxxxx",
+          "secretKey": "xxxxx",
+          "fileNamePrefix": [
+            "directory1",
+            "directory2"
+          ]
+        }
+        //highlight-end
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+### 3. 停止录制
+
+录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。如果需要推流到 CDN，请在录制及推流完成后调用 `stop` 方法离开频道，停止录制和推流。
+
+:::error[警告]
+页面录制停止前会持续计费，请根据实际业务情况设置合理的 `maxRecordingHour`，或主动停止页面录制。
+:::
+
+请求示例如下：
+
+- 请求 URL：
+
+    ```text
+    https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/web/stop
+    ```
+
+- 请求 Body 内容：
+
+    ```json
+    {
+      "cname": "httpClient463224",
+      "uid": "527841",
+      "clientRequest": {}
+    }
+    ```
+
+响应示例如下：
+
+```json
+{
+  "resourceId": "JyvKxxxxvTZG",
+  "sid": "38f8xxxx7e1a",
+  "serverResponse": {
+    "extensionServiceState": [
+      {
+        "payload": {
+          "fileList": [
+            {
+              "filename": "xxxx",
+              "sliceStartTime": xxxxxxxxxxxxx
+            },
+            {
+              "filename": "xxxx",
+              "sliceStartTime": xxxxxxxxxxxxx
+            }
+          ],
+          "state": "exit"
+        },
+        "serviceName": "web_recorder_service"
+      },
+      {
+        "payload": {
+          "uploadingStatus": "uploaded"
+        },
+        "serviceName": "upload_service"
+      }
+    ]
+  }
+}
+```
+
+## 录制生成文件
+
+录制后共生成一个 M3U8 文件和多个 TS 文件。根据 `avFileType` 字段的设置，还有可能生成一个或多个 MP4 文件。录制文件的切片和命名原则详见[录制文件介绍](/zh-CN/api-reference/cloud-recording/restful/user-guides/manage-file/introduce-recorded-files)。
+
+页面录制生成的文件如下图所示：
+
+![页面录制生成文件](https://web-cdn.agora.io/doc-cms/uploads/1725865524509-页面录制文件.png)
+
+## 开发注意事项
+
+### 针对 Web 应用的限制
+
+- 请确保你的 Web 应用的目的合法合规。
+- 待录制的 Web 应用页面需要满足以下资源限制，避免录制失败：
+  - 待录制 Web 应用页面的内存占用不大于 2 GB，CPU 占用不超过 2 个核心。
+  - 待录制页面中任一视频源的分辨率都不得超过 1920 × 1080。
+  - 页面录制生成的视频分辨率最高为 1920 × 1080。
+  - 待录制页面不得使用 WebGL 功能。
+  - 待录制页面的下行带宽不得超过 10 Mbps，上行带宽不得超过 2 Mbps。
+- 页面录制支持启用了 `autoplay` 属性的 `video` 元素在无用户交互状态下自动播放。但如果待录制页面中的 `video` 元素未启用 `autoplay` 属性，其内容不会自动播放，页面录制也无法录制该视频。
+- 待录制页面不得跳转至不同域名的 URL，同时尽量避免其他任何形式的跳转。如待录制页面需登录操作，需先自行处理登录操作，再进行录制。
+- 你可以使用[检测页面加载超时](/zh-CN/api-reference/cloud-recording/restful/best-practices/webpage#检测页面加载超时)功能，来避免页面加载超时导致的录制内容与预期不一致的问题。
+
+### RESTful API 请求
+
+- 从发起请求到开始页面录制，有 5 秒左右的时延。建议提前发起录制请求，以保证录制内容完整。
+- 页面录制不支持 `updateLayout` 方法。
+- 如果你在 `start` 方法中填入的 URL 无法正常打开，录制服务会在 `start` 成功后自动退出。你可以参考[云端录制集成最佳实践](/zh-CN/api-reference/cloud-recording/restful/best-practices/rest-availability)，使用退避策略多次调用 `query`，来确认录制服务正常启动。
+- 如果页面录制服务或录制上传服务异常，则导致推流到 CDN 失败；如果推流到 CDN 异常，页面录制不受影响。
+
+### 和互动白板连用
+
+如果录制的页面里使用了互动白板的动态课件，需要将白板 `@netless/slide` 的渲染设置 `ISlideRenderOptions` 按如下示例调整：
+
+```javascript
+{
+  resolution: 0.8,
+  minFPS: 1,
+  maxFPS: 5,
+  autoFPS: false,
+  autoResolution: false,
+  maxResolutionLevel: 1,
+}
+```
+
+详细设置方法可以参考 [`ISlideRenderOptions`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt#isliderenderoptions)。
+
+### 其他
+
+- 录制过程中，录制服务会在当前 MP4 文件时长超过约 `maxVideoDuration` 的值或大小超过约 2 GB 左右时创建一个新的 MP4 文件。
+- 如果你在 `start` 方法中填入待录制页面的 URL 会自动触发 Web 客户端发布音视频流，录制服务也会成为一个发流端，因此，你的应用中可能会出现一个绿色背景色的用户画面。
+	 为规避该问题，你可以在待录制页面的 URL 中增加查询字段 `is_recorder=1`，例如：`"https://url?is_recorder=1"`，并在该页面内添加以下逻辑：
+
+	 - 如果 `is_recorder` 为 1，则 Web 客户端不发布音视频流。
+	 - 如果 `is_recorder` 不为 1，则 Web 客户端发布音视频流。
+- 进行页面录制时，录制服务相当于一个使用 Web 应用的客户端，因此，如果你的 Web 应用包含用户列表，建议你在用户列表中隐藏该用户。
+
+## 参考信息
+
+### API 参考
+
+你可以参考以下方法了解字段详情：
+
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
+- [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop)
+
+### 常见问题
+
+- [应用崩溃后对云端录制有什么影响？](/zh-CN/api-reference/faq/integration/abnormal_exit)
+- [如何选择云存储 bucket 区域及处理跨区上传问题？](/zh-CN/api-reference/faq/integration/bucket_region)
+- [为什么无法通过浏览器调用云端录制 RESTful API？](/zh-CN/api-reference/faq/product/call_api_in_browser)
+- [为什么第三方云储存中没有录制文件？](/zh-CN/api-reference/faq/integration/fail_to_upload)
+- [如何获取 M3U8 文件地址？](/zh-CN/api-reference/faq/integration/acquire_file_directory)
+- [云端录制如何处理服务器断网、进程被杀问题？](/zh-CN/api-reference/faq/integration/high_availability)
+- [如何设置页面录制移动端网页模式的输出视频分辨率？](/zh-CN/api-reference/faq/integration/mobile_video_profile)
+- [为什么成功开启云端录制后调用 query 方法返回 404？](/zh-CN/api-reference/faq/integration/return_404)
