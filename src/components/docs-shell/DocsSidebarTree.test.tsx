@@ -441,6 +441,47 @@ describe('DocsSidebarTree', () => {
     );
   });
 
+  it.each([
+    ['rtc', '计费与限制'],
+    ['rtm', '计费说明'],
+    ['local-server-recording', '计费说明'],
+    ['media-push', '计费说明'],
+    ['media-pull', '计费说明'],
+    ['rtmp-gateway', '计费说明'],
+  ])('keeps the %s billing root section collapsible', async (product, title) => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: `/zh-CN/realtime-media/${product}/reference/billing`,
+            title: '计费说明',
+            type: 'page',
+            url: `/zh-CN/realtime-media/${product}/reference/billing`,
+          },
+        ],
+        collapsible: true,
+        id: `separator-${title}`,
+        title,
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, `/zh-CN/realtime-media/${product}`);
+
+    const toggle = await screen.findByRole('button', {
+      name: title,
+    });
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: '计费说明' })).toBeNull();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: '计费说明' }),
+    ).toBeInTheDocument();
+  });
+
   it('renders linked collapsed sections as navigation entries', async () => {
     const tree: DocsSidebarNode[] = [
       {

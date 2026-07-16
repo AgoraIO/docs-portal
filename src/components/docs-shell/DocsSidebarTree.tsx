@@ -677,12 +677,48 @@ function normalizeRootSections(
   // Linked sections (those with a url) manage their own collapsible state, so
   // don't force them always-open here — only plain root sections are flattened.
   return nodes.map((node) =>
-    node.type === 'section' && !node.url
+    node.type === 'section' &&
+    !node.url &&
+    !shouldKeepRootSectionCollapsible(node)
       ? {
           ...node,
           collapsible: false,
         }
       : node,
+  );
+}
+
+function shouldKeepRootSectionCollapsible(
+  node: DocsSidebarNode | RenderableSidebarSectionNode,
+) {
+  if (
+    node.type !== 'section' ||
+    (node.title !== '计费与限制' && node.title !== '计费说明')
+  ) {
+    return false;
+  }
+
+  return node.children.some((child) =>
+    isNodeUnderOneOfProducts(child, [
+      'rtc',
+      'rtm',
+      'local-server-recording',
+      'media-push',
+      'media-pull',
+      'rtmp-gateway',
+    ]),
+  );
+}
+
+function isNodeUnderOneOfProducts(node: DocsSidebarNode, products: string[]) {
+  if (node.type === 'page') {
+    return products.some((product) =>
+      node.url.includes(`/realtime-media/${product}/`),
+    );
+  }
+
+  return node.children.some((child) =>
+    isNodeUnderOneOfProducts(child, products),
   );
 }
 
