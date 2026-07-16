@@ -2,9 +2,7 @@
 title: "流频道"
 description: "了解如何在实时消息 RTM 中流频道，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Stream 频道是 RTM 提供的一种基于 Room 模型的频道类型。
-
- Message 频道不同的是，使用 Stream 频道的相关方法前你需要先创建 `channel.istreamchannel` 对象实例。加入 Stream 频道后，你就可以监听频道中的事件通知了，但如需收发消息，你还需要通过 Topic 特性来实现，详见 [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。RTM 允许你的 App 中同时存在成千上万个 Stream 频道，但由于端侧性能和带宽的限制，单个客户端同时只能加入有限数量的频道，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+**Stream** 频道是 RTM 提供的一种基于 Room 模型的频道类型。与 Message 频道不同的是，使用 Stream 频道的相关方法前你需要先创建 `channel.istreamchannel` 对象实例。加入 Stream 频道后，你就可以监听频道中的事件通知了，但如需收发消息，你还需要通过 Topic 特性来实现，详见 [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。RTM 允许你的 App 中同时存在成千上万个 Stream 频道，但由于端侧性能和带宽的限制，单个客户端同时只能加入有限数量的频道，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
 
 :::info[信息]
 如需接收并处理接收到的消息和事件通知，除了要加入该频道外，你还需要完成[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)程序的配置。

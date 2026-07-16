@@ -2,9 +2,7 @@
 title: "解析转写数据"
 description: "了解如何在实时转录中解析转写数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Protobuf（全称 Protocol Buffers）是由 Google 开发的一种高效的、跨语言的序列化数据格式，支持多种编程语言，包括 C++、Java、Python、Go 等，可在不同系统间进行数据交换。
-
-有高效、灵活和易于使用的特点。
+Protobuf（全称 [Protocol Buffers](https://protobuf.dev)）是由 Google 开发的一种高效的、跨语言的序列化数据格式，支持多种编程语言，包括 C++、Java、Python、Go 等，可在不同系统间进行数据交换。具有高效、灵活和易于使用的特点。
 
 声网实时转录翻译使用 Protobuf 并通过一个 [SttMessage.proto](#sttmessageproto-文件说明) 文件定义实时转录翻译的消息格式，然后将转写后的文本数据序列化为高效的传输格式（例如二进制或 json），并通过数据流进行传输。本文介绍接收端如何在收到数据流后，通过 Protobuf Compiler（protoc）生成目标语言的代码并对收到的数据进行反序列化。你可以从反序列化后的数据结构中提取具体的文本字段。
 

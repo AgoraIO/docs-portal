@@ -20027,8 +20027,6 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-09T02:38:51.000Z',
   'content/docs/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/encryption.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/index.go.md':
-    '2026-07-09T02:43:17.000Z',
   'content/docs/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/meta.json':
     '2026-07-09T02:43:17.000Z',
   'content/docs/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/mix-video.mdx':
