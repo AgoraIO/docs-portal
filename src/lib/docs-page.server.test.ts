@@ -3334,10 +3334,7 @@ Web body
 
   it('redirects the Chinese Whiteboard RESTful product root to its API overview', async () => {
     await expect(
-      loadDocsPagePayload('zh-CN', 'api-reference', [
-        'api-ref',
-        'whiteboard',
-      ]),
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref', 'whiteboard']),
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/api-reference/api-ref/whiteboard/restful',
     });

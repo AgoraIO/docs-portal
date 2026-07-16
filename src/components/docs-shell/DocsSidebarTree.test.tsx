@@ -458,6 +458,47 @@ describe('DocsSidebarTree', () => {
     );
   });
 
+  it.each([
+    ['rtc', '计费与限制'],
+    ['rtm', '计费说明'],
+    ['local-server-recording', '计费说明'],
+    ['media-push', '计费说明'],
+    ['media-pull', '计费说明'],
+    ['rtmp-gateway', '计费说明'],
+  ])('keeps the %s billing root section collapsible', async (product, title) => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: `/zh-CN/realtime-media/${product}/reference/billing`,
+            title: '计费说明',
+            type: 'page',
+            url: `/zh-CN/realtime-media/${product}/reference/billing`,
+          },
+        ],
+        collapsible: true,
+        id: `separator-${title}`,
+        title,
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, `/zh-CN/realtime-media/${product}`);
+
+    const toggle = await screen.findByRole('button', {
+      name: title,
+    });
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: '计费说明' })).toBeNull();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: '计费说明' }),
+    ).toBeInTheDocument();
+  });
+
   it('renders linked collapsed sections as navigation entries', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -488,6 +529,52 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.queryByRole('button', { name: /Voice & Video/i }),
     ).not.toBeInTheDocument();
+  });
+
+  it('renders linked page indicators inside expanded sections', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/zh-CN/api-reference/api-ref/conversational-ai',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/conversational-ai',
+          },
+          {
+            id: '/zh-CN/ai/reference/pricing',
+            title: '计费说明',
+            type: 'page',
+            url: '/zh-CN/ai/reference/pricing',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-zh-CN:ai/reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    const { container } = renderSidebarTree(
+      tree,
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+
+    const link = await screen.findByRole('link', { name: 'RESTful API' });
+
+    expect(link).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+    expect(link.querySelector('.lucide-chevron-down')).toHaveClass(
+      '-rotate-90',
+    );
+    expect(
+      container
+        .querySelector('a[href="/zh-CN/ai/reference/pricing"]')
+        ?.querySelector('.lucide-chevron-down'),
+    ).toBeNull();
   });
 
   it('renders reference product sections as always-expanded headings', async () => {
