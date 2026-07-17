@@ -19,11 +19,11 @@ Included in this release:
 
 - **Manual turn control**
 
-  You can now explicitly control when a user's speech starts and ends by sending manual Start of Speech (SoS) and End of Speech (EoS) requests over Signaling (RTM), instead of relying on automatic detection. This supports scenarios with strict turn-boundary requirements, such as AI interviews, interactive quizzes, or push-to-talk. Set [`start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech-mode) and [`end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode) to `manual` when starting the agent. For details, see [Manually control start and end of speech](/en/ai/build/harden-and-optimize/manual-turn-control).
+  You can now explicitly control when a user's speech starts and ends by sending manual Start of Speech (SoS) and End of Speech (EoS) requests over Signaling (RTM), instead of relying on automatic detection. This supports scenarios with strict turn-boundary requirements, such as AI interviews, interactive quizzes, or push-to-talk. Set [`start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech-mode) and [`end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode) to `manual` when starting the agent. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
 
 - **Agent state notifications over RTM Message**
 
-  You can now track agent state changes in real time using Signaling (RTM) Message events. The agent pushes `state.listening`, `state.thinking`, and `state.speaking` events as individual RTM messages, making it easier to record state change timestamps, process events sequentially, or consume state events alongside other RTM Message events. For details, see [Get agent state](/en/ai/build/harden-and-optimize/get-agent-state).
+  You can now track agent state changes in real time using Signaling (RTM) Message events. The agent pushes `state.listening`, `state.thinking`, and `state.speaking` events as individual RTM messages, making it easier to record state change timestamps, process events sequentially, or consume state events alongside other RTM Message events. For details, see [Get agent state](/en/ai/best-practices/get-agent-state).
 
 - **Pre-recorded greeting audio**
 
@@ -504,11 +504,11 @@ This release includes the following enhancements:
 
 - **Latency optimization best practices**
 
-  Adds a guide to [Optimize conversation latency](../build/harden-and-optimize/optimize-latency).
+  Adds a guide to [Optimize conversation latency](../best-practices/optimize-latency).
 
 - **Cloud Recording best practices**
 
-  Adds a guide to [Record conversations with Cloud Recording](../build/harden-and-optimize/record-agent-conversation).
+  Adds a guide to [Record conversations with Cloud Recording](../best-practices/record-agent-conversation).
 
 #### API changes
 
@@ -534,7 +534,7 @@ Included in this release:
 
 - **Geofencing**
 
-  Use `geofence` configuration when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../build/harden-and-optimize/regional-restrictions) for details.
+  Use `geofence` configuration when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../best-practices/regional-restrictions) for details.
 
 - **Agent greeting mode**
 
@@ -850,7 +850,7 @@ Released on July 15, 2025.
     Stop the agent from speaking or thinking mid-conversation.
   - [**Client-side events**](../build/handle-runtime-events/event-notifications)
     Track changes in conversation state, performance metrics, and error events.
-  - [**Optimize audio settings**](../build/harden-and-optimize/audio-setup)
+  - [**Optimize audio settings**](../best-practices/audio-setup)
     Quickly apply best-practice audio configurations to improve agent responsiveness and clarity.
 
 #### API changes
