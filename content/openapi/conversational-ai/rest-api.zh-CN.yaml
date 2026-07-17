@@ -1970,12 +1970,12 @@ components:
       in: header
       description: |
        发送 HTTP 请求时，你需要从以下鉴权方式中任选其一：
-        1. **（推荐）使用 RTC Token**：将用于声网对话式 AI 引擎项目使用的 RTC Token 填入 `Authorization` 字段。你可以选择以下方式获取 Token：<ul><li>测试环境下，你可以从[声网控制台](https://console.shengwang.cn/)为你的项目生成临时 Token（有效期为 24 小时）。
-            - 生产环境下，你可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)部署 Token 服务器以生成 Token。
-            - 传参示例：`Authorization: agora token="007abcxxxxxxx123"`
-        2. **使用 Basic Auth**：参考[实现 HTTP 安全认证](/zh-CN/ai/user-guides/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
-
-            传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
+        1. **（推荐）使用 RTC Token**：将用于声网对话式 AI 引擎项目使用的 RTC Token 填入 `Authorization` 字段。你可以选择以下方式获取 Token：
+            - 测试环境下，你可以从[声网控制台](https://console.shengwang.cn/)为你的项目生成临时 Token（有效期为 24 小时）。
+            - 生产环境下，你可以参考[使用 Token 鉴权](/zh-CN/ai/build/http-basic-auth#使用-rtc-token-鉴权-推荐)部署 Token 服务器以生成 Token。
+              - 传参示例：`Authorization: agora token="007abcxxxxxxx123"`
+        2. **使用 Basic Auth**：参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
+              - 传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
       required: true
       schema:
         type: string
