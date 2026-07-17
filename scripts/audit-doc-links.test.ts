@@ -356,6 +356,7 @@ describe('auditDocsLinks', () => {
         '        See [valid topic](/zh-CN/ai/build/valid).',
         '        See [missing topic](/zh-CN/ai/build/missing).',
         '        See [legacy host](https://doc.shengwang.cn/doc/convoai/restful/landing-page).',
+        '        See [protocol-relative legacy host](//doc.shengwang.cn/doc/convoai/restful/protocol-relative).',
         '        See [Join endpoint](join).',
       ].join('\n'),
     );
@@ -390,6 +391,12 @@ describe('auditDocsLinks', () => {
         sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
         target: 'https://doc.shengwang.cn/doc/convoai/restful/landing-page',
       }),
+      expect.objectContaining({
+        href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+        reason: 'legacy-shengwang-doc-host',
+        sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        target: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+      }),
     ]);
     expect(stats.invalidInternalLinks).toEqual(
       expect.arrayContaining([
@@ -401,6 +408,19 @@ describe('auditDocsLinks', () => {
         expect.objectContaining({
           href: 'https://doc.shengwang.cn/doc/convoai/restful/landing-page',
           reason: 'legacy-shengwang-doc-host',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+        expect.objectContaining({
+          href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+          reason: 'legacy-shengwang-doc-host',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+      ]),
+    );
+    expect(stats.externalLinkCandidates).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
           sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
         }),
       ]),

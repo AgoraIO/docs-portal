@@ -574,6 +574,26 @@ function classifyLink(
     return;
   }
 
+  if (
+    isZhCnOpenApiSourcePath(sourcePath) &&
+    isLegacyShengwangDocHostHref(href)
+  ) {
+    const entry = {
+      href,
+      reason: 'legacy-shengwang-doc-host',
+      source: link.source,
+      sourcePath,
+      target: href,
+    };
+
+    stats.legacyShengwangDocHostLinks.push(entry);
+    addInvalidLink(stats, {
+      ...entry,
+      type: 'internal',
+    });
+    return;
+  }
+
   if (href.startsWith('//')) {
     addExternalLinkCandidate(sourcePath, link, stats);
     return;
@@ -592,26 +612,6 @@ function classifyLink(
       ...entry,
       reason: 'legacy-doc-root-path',
       target: href,
-      type: 'internal',
-    });
-    return;
-  }
-
-  if (
-    isZhCnOpenApiSourcePath(sourcePath) &&
-    isLegacyShengwangDocHostHref(href)
-  ) {
-    const entry = {
-      href,
-      reason: 'legacy-shengwang-doc-host',
-      source: link.source,
-      sourcePath,
-      target: href,
-    };
-
-    stats.legacyShengwangDocHostLinks.push(entry);
-    addInvalidLink(stats, {
-      ...entry,
       type: 'internal',
     });
     return;
@@ -2039,12 +2039,14 @@ function normalizeExternalTarget(href) {
 }
 
 function isLegacyShengwangDocHostHref(href) {
-  if (!/^https?:\/\//i.test(href)) {
+  const normalizedHref = href.startsWith('//') ? `https:${href}` : href;
+
+  if (!/^https?:\/\//i.test(normalizedHref)) {
     return false;
   }
 
   try {
-    return new URL(href).host.toLowerCase() === 'doc.shengwang.cn';
+    return new URL(normalizedHref).host.toLowerCase() === 'doc.shengwang.cn';
   } catch {
     return false;
   }
