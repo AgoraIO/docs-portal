@@ -56,9 +56,9 @@ const HEADER_TAB_GAP_WIDTH = 24;
 const HEADER_MORE_GAP_WIDTH = 16;
 const HEADER_WIDTH_EPSILON = 0.5;
 const HEADER_TAB_BUTTON_CLASS =
-  'relative flex h-10 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
+  'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
 const HEADER_MORE_BUTTON_CLASS =
-  'relative flex h-10 shrink-0 items-center gap-1.5 px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
+  'relative flex h-12 shrink-0 items-center gap-1.5 px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
 
 type HeaderPlatformBuckets = {
   overflowPlatforms: PlatformKey[];
