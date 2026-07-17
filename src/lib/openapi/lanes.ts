@@ -15,6 +15,7 @@ export type OpenApiLane = {
   sourcePath: Record<AppLocale, string>;
   tab: string;
   operations: Record<string, OpenApiLaneOperation>;
+  sidebarBackLink?: Partial<Record<AppLocale, { href: string; label: string }>>;
 };
 
 type ZhCnOpenApiLaneInput = {
@@ -23,6 +24,7 @@ type ZhCnOpenApiLaneInput = {
   publicSourceUrl: string;
   routePrefix: string;
   sourcePath: string;
+  sidebarBackLink?: { href: string; label: string };
   operations: readonly (readonly [
     operationId: string,
     routeLeaf: string,
@@ -49,6 +51,9 @@ function zhCnOpenApiLane(input: ZhCnOpenApiLaneInput): OpenApiLane {
       'zh-CN': input.sourcePath,
     },
     tab: 'api-reference',
+    ...(input.sidebarBackLink
+      ? { sidebarBackLink: { 'zh-CN': input.sidebarBackLink } }
+      : {}),
     operations: Object.fromEntries(
       input.operations.map(([operationId, routeLeaf, enTitle, zhCnTitle]) => [
         operationId,
@@ -81,6 +86,12 @@ export const OPENAPI_LANES = [
       'zh-CN': 'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
     },
     tab: 'api-reference',
+    sidebarBackLink: {
+      'zh-CN': {
+        href: '/zh-CN/api-reference/overview',
+        label: '参考中心',
+      },
+    },
     operations: {
       'start-agent': {
         routeLeaf: 'join',
@@ -1490,6 +1501,10 @@ export const OPENAPI_LANES = [
     publicSourceUrl: '/openapi/whiteboard/restful-wb.zh-CN.yaml',
     routePrefix: 'api-reference/api-ref/whiteboard/restful',
     sourcePath: 'content/openapi/whiteboard/restful-wb.zh-CN.yaml',
+    sidebarBackLink: {
+      href: '/zh-CN/api-reference/overview',
+      label: '参考中心',
+    },
     operations: [
       [
         'post-v5-tokens-teams',

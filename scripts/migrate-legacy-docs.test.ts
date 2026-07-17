@@ -506,7 +506,7 @@ engine.joinChannel(token)
       state,
     );
 
-    expect(migrated).toContain('![](/img/watch.png)');
+    expect(migrated).toContain('![watch 图示](/img/watch.png)');
     expect(migrated).not.toContain('![guide]');
     expect(migrated).toContain('- [场景介绍](');
     expect(migrated).toContain('### 首次集成 RTM');
@@ -818,7 +818,7 @@ public class MyScoringView extends ScoringView {
     );
   });
 
-  it('keeps inline legacy Image components inside prose on one line', () => {
+  it('moves inline legacy Image components to an aligned list block', () => {
     const state = createState('docs/rtc/get-started/run-demo.android.mdx');
     const migrated = transformLegacyMdx(
       '3. 在 Android Studio 中，点击 <Image src="https://web-cdn.agora.io/docs-files/1689672727614" width="25" inline/> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
@@ -826,11 +826,14 @@ public class MyScoringView extends ScoringView {
     );
 
     expect(migrated).toContain(
-      '3. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+      '3. 在 Android Studio 中，点击\n\n   ![Sync Project with Gradle Files 图示](https://web-cdn.agora.io/docs-files/1689672727614)\n\n   (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
     );
-    expect(migrated).not.toContain('点击\n![]');
+    expect(migrated).not.toMatch(/^!\[/m);
     expect(state.issues).toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1689672727614:25',
+    );
+    expect(state.issues).toContain(
+      'normalized-inline-image-block:https://web-cdn.agora.io/docs-files/1689672727614',
     );
   });
 

@@ -131,16 +131,16 @@ _migration:
 
 - track-ended():void
 
-- Returns void
+- 音频或视频轨道被终止，终止的原因可能是：
 
-  音频或视频轨道被终止，终止的原因可能是：
+- 摄像头被拔出
+- 麦克风被拔出
+- 用户主动停止了屏幕共享
+- 用户主动关闭了底层的 `MediaStreamTrack`
+- 媒体设备故障
+- 正在使用中的媒体设备的权限被收回
 
-  - 摄像头被拔出
-  - 麦克风被拔出
-  - 用户主动停止了屏幕共享
-  - 用户主动关闭了底层的 `MediaStreamTrack`
-  - 媒体设备故障
-  - 正在使用中的媒体设备的权限被收回
+  Returns void
 
 <a id="event_transceiver_updated"></a>
 
@@ -148,9 +148,7 @@ _migration:
 
 - transceiver-updated(transceiver:RTCRtpTransceiver, type?:[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)):void
 
-- Returns void
-
-  当前轨道的 `RTCRtpTransceiver` 实例更新回调。
+- 当前轨道的 `RTCRtpTransceiver` 实例更新回调。
 
   Parameters
 
@@ -160,6 +158,8 @@ _migration:
   - Optional type: [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)
 
     当前轨道所属视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)。
+
+  Returns void
 
 ## Properties
 
@@ -213,11 +213,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - close():void
 
-- Returns void
+- 关闭本地轨道，并释放相关采集设备。
 
-  关闭本地轨道，并释放相关采集设备。
+一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-  一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
+  Returns void
 
 <a id="getlisteners"></a>
 
@@ -225,9 +225,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -236,6 +234,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -286,17 +286,17 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)|[LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
 
-- Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
- |
- [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
+- ### deprecated
 
-  ### deprecated
+自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
-  自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
+获取本地轨道相关信息。
 
-  获取本地轨道相关信息。
+> 注意事项：获取本地视频轨道数据时，iOS 上无法获取到 `encodeDelay` 字段。
 
-  > 注意事项：获取本地视频轨道数据时，iOS 上无法获取到 `encodeDelay` 字段。
+  Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
+   |
+   [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
 
 <a id="gettrackid"></a>
 
@@ -334,9 +334,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -349,6 +347,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -357,9 +357,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 - on(event:"track-ended", listener:typeof event_track_ended):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
 
-- Returns void
-
-  Overrides EventEmitter.on
+- Overrides EventEmitter.on
 
   Parameters
 
@@ -369,9 +367,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_updated
 
     详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   Parameters
 
@@ -381,9 +379,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_ended
 
     详见 [track-ended](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   添加事件监听器。
 
@@ -396,15 +394,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -419,15 +417,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     传入的回调函数。
 
+  Returns void
+
 <a id="play"></a>
 
 ### play
 
 - play(element?:string|HTMLElement):void
 
-- Returns void
-
-  Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+- Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
   在页面上播放媒体轨道。
 
@@ -440,15 +438,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `string`: 指定该 DOM 元素的 ID 值。
     - `HTMLElement`: 直接传入一个 DOM 元素对象。
 
+  Returns void
+
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -458,25 +456,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="setenabled"></a>
 
 ### setEnabled
 
 - setEnabled(enabled:boolean):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- ### 自从
 
-  ### 自从
+*4.0.0*
 
-  *4.0.0*
+启用/禁用该轨道。
 
-  启用/禁用该轨道。
+轨道禁用后，播放和发布都将被停止。
 
-  轨道禁用后，播放和发布都将被停止。
-
-  > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
-  > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+> - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
+> - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
 
   Parameters
 
@@ -487,24 +485,24 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `true`: 启用该轨道。
     - `false`: 禁用该轨道。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setmuted"></a>
 
 ### setMuted
 
 - setMuted(muted:boolean):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- 发送或暂停发送该轨道的媒体数据。
 
-  发送或暂停发送该轨道的媒体数据。
+### 自从
 
-  ### 自从
+*4.6.0*
 
-  *4.6.0*
+如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 
-  如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
-
-  > - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+> - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
 
   Parameters
 
@@ -515,14 +513,16 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `true`: 暂停发送该轨道的媒体数据。
     - `false`: 恢复发送该轨道的媒体数据。
 
+  Returns Promise&lt;void&gt;
+
 <a id="stop"></a>
 
 ### stop
 
 - stop():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
   停止播放。
+
+  Returns void

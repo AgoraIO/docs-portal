@@ -2,11 +2,16 @@
 title: 快速实现
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/online-ktv/ios/ktv-scenario/get-started/integrate-ktvapi
   sourcePath: docs/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios.mdx
   generator: legacy-mdx
   warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios.mdx:https://web-cdn.agora.io/docs-files/1704340396791:used-context:快速实现
+        图示
     - code: manual-mdx-normalized
       severity: info
       message: Normalized 2 legacy MDX syntax signal(s).
@@ -192,7 +197,7 @@ KTV API 初始化时默认用户角色为听众，如果需要开始独唱或加
 
 请参考下图来进行角色切换：
 
-![](https://web-cdn.agora.io/docs-files/1704340396791)
+![快速实现 图示](https://web-cdn.agora.io/docs-files/1704340396791)
 
 ```objc
 [self.ktvApi switchSingerRoleWithNewRole:role

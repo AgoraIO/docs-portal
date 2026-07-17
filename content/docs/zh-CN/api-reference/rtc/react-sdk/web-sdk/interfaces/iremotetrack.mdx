@@ -127,9 +127,9 @@ _migration:
 
 - first-frame-decoded():void
 
-- Returns void
+- 首帧音频或视频解码时触发。
 
-  首帧音频或视频解码时触发。
+  Returns void
 
 <a id="event_transceiver_updated_2"></a>
 
@@ -137,9 +137,7 @@ _migration:
 
 - transceiver-updated(transceiver:RTCRtpTransceiver):void
 
-- Returns void
-
-  当前轨道的 `RTCRtpTransceiver` 实例更新回调。
+- 当前轨道的 `RTCRtpTransceiver` 实例更新回调。
 
   Parameters
 
@@ -147,19 +145,21 @@ _migration:
 
     新的 `RTCRtpTransceiver` 实例。
 
+  Returns void
+
 <a id="event_video_state_changed"></a>
 
 ### video-state-changed
 
 - video-state-changed(videoState:[VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)):void
 
-- Returns void
-
-  视频状态发生变化时触发。
+- 视频状态发生变化时触发。
 
   Parameters
 
   - videoState: [VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)
+
+  Returns void
 
 ## Properties
 
@@ -197,9 +197,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -208,6 +206,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -302,9 +302,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -317,6 +315,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -325,9 +325,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 - on(event:"first-frame-decoded", listener:typeof event_first_frame_decoded):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated_2):void
 
-- Returns void
-
-  Overrides EventEmitter.on
+- Overrides EventEmitter.on
 
   Parameters
 
@@ -337,9 +335,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_updated
 
     详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   Parameters
 
@@ -349,9 +347,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_first_frame_decoded
 
     详见 [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   添加事件监听器。
 
@@ -364,15 +362,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -387,15 +385,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     传入的回调函数。
 
+  Returns void
+
 <a id="play"></a>
 
 ### play
 
 - play(element?:string|HTMLElement):void
 
-- Returns void
-
-  Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+- Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
   在页面上播放媒体轨道。
 
@@ -408,15 +406,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `string`: 指定该 DOM 元素的 ID 值。
     - `HTMLElement`: 直接传入一个 DOM 元素对象。
 
+  Returns void
+
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -426,14 +424,16 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="stop"></a>
 
 ### stop
 
 - stop():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
   停止播放。
+
+  Returns void

@@ -1,0 +1,200 @@
+---
+title: Namespace "agora-edu-core/src/stores/domain/common/room/type"
+description: 视频轮播设置
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/agora_edu_core_src_stores_domain_common_room_type_.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/modules/agora_edu_core_src_stores_domain_common_room_type_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Index
+
+### Enumerations
+
+- [ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+- [ExpandedScopeState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-xpanded-scope-state)
+- [FcrCustomMessageCommandType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-cr-custom-message-command-type)
+- [RecordStatus](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-ecord-status)
+
+### Type aliases
+
+- [CarouselSetting](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#CarouselSetting)
+- [ClassroomSchedule](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#ClassroomSchedule)
+- [ExpandedScope](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#ExpandedScope)
+- [FcrCustomMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#FcrCustomMessage)
+- [FcrCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#FcrCustomMessageObserver)
+- [HandUpProgress](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#HandUpProgress)
+- [HostingScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#HostingScene)
+- [RecordStreamingUrl](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#RecordStreamingUrl)
+- [TrackData](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#TrackData)
+
+## Type aliases
+
+<a id="CarouselSetting"></a>
+
+### CarouselSetting
+
+CarouselSetting: \{interval:number;range:number;state:number;type:number\}
+
+视频轮播设置
+
+#### Type declaration
+
+- interval:number
+
+  轮播列表更新周期，单位：秒
+- range:number
+
+  轮播范围，哪些用户可以参与轮播
+  1: 全部
+  2: 仅设备可用用户
+- state:number
+
+  轮播是否开启
+  1: 开启
+  0: 关闭
+- type:number
+
+  轮播类型
+  1: 顺序
+  2: 随机
+
+<a id="ClassroomSchedule"></a>
+
+### ClassroomSchedule
+
+ClassroomSchedule: \{closeDelay:number;duration?:number;startTime?:number;state?:[ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)\}
+
+教室日程信息
+
+#### Type declaration
+
+- closeDelay:number
+
+  拖堂时间，单位：秒
+- Optional duration?:number
+
+  教室持续时间，单位：秒
+- Optional startTime?:number
+
+  教室开始时间，单位：毫秒
+- Optional state?:[ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+
+  教室状态
+
+<a id="ExpandedScope"></a>
+
+### ExpandedScope
+
+ExpandedScope: \{state:[ExpandedScopeState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-xpanded-scope-state);userUuids:string[]\}
+
+视频墙状态
+
+#### Type declaration
+
+- state:[ExpandedScopeState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-xpanded-scope-state)
+
+  视频墙是否开启
+- userUuids:string[]
+
+  视频墙用户 UUID 列表
+
+<a id="FcrCustomMessage"></a>
+
+### FcrCustomMessage
+
+FcrCustomMessage: [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+
+<a id="FcrCustomMessageObserver"></a>
+
+### FcrCustomMessageObserver
+
+FcrCustomMessageObserver: [AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+
+<a id="HandUpProgress"></a>
+
+### HandUpProgress
+
+HandUpProgress: \{payload?:any;ts:number;userName:string;userUuid:string\}
+
+举手进程
+
+#### Type declaration
+
+- Optional payload?:any
+
+  扩展信息
+- ts:number
+
+  举手时间戳，单位：秒
+- userName:string
+
+  用户姓名
+- userUuid:string
+
+  用户 UUID
+
+<a id="HostingScene"></a>
+
+### HostingScene
+
+HostingScene: \{finishType:number;reserveVideoURL:string;videoURL:string\}
+
+已弃用
+
+#### Type declaration
+
+- finishType:number
+- reserveVideoURL:string
+- videoURL:string
+
+<a id="RecordStreamingUrl"></a>
+
+### RecordStreamingUrl
+
+RecordStreamingUrl: \{flv:string;hls:string;rtmp:string\}
+
+录制推流信息
+
+#### Type declaration
+
+- flv:string
+
+  FLV URL
+- hls:string
+
+  HLS URL
+- rtmp:string
+
+  RTMP URL
+
+<a id="TrackData"></a>
+
+### TrackData
+
+TrackData: \{extra?:any;position:\{xaxis:number;yaxis:number\};size?:\{height:number;width:number\}\}
+
+轨迹信息
+
+#### Type declaration
+
+- Optional extra?:any
+
+  扩展信息
+- position:\{xaxis:number;yaxis:number\}
+
+  对象坐标
+
+  - xaxis:number
+  - yaxis:number
+- Optional size?:\{height:number;width:number\}
+
+  对象尺寸
+
+  - height:number
+  - width:number

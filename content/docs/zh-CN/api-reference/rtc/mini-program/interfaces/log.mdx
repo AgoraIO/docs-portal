@@ -56,9 +56,7 @@ AgoraMiniappSDK.LOG.onLog = (text) => {
 
 - setLogLevel(level:number):void
 
-- Returns void
-
-  设置小程序 SDK 输出日志等级。
+- 设置小程序 SDK 输出日志等级。
 
   Parameters
 
@@ -73,21 +71,21 @@ AgoraMiniappSDK.LOG.onLog = (text) => {
     - `3`：ERROR，输出 ERROR 级别的日志信息。
     - `4`：NONE，即不输出日志信息。
 
+  Returns void
+
 <a id="uploadlogs"></a>
 
 ### uploadLogs
 
 - uploadLogs(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- 上传 SDK 日志至服务器。
 
-  上传 SDK 日志至服务器。
+### since
 
-  ### since
+v2.6.0
 
-  v2.6.0
-
-  当遇到问题时，为方便问题排查，你需要将出现问题时间段的日志提供给声网支持人员。如果你使用 v2.6.0 及之后版本的 SDK，可以调用该方法上传日志，无需自己保存日志文件。
+当遇到问题时，为方便问题排查，你需要将出现问题时间段的日志提供给声网支持人员。如果你使用 v2.6.0 及之后版本的 SDK，可以调用该方法上传日志，无需自己保存日志文件。
 
   Parameters
 
@@ -104,11 +102,13 @@ AgoraMiniappSDK.LOG.onLog = (text) => {
 
     - - (err:object):void
 
-      - Returns void
-
-        Parameters
+      - Parameters
 
         - err: object
 
           - code:number
           - reason:string
+
+        Returns void
+
+  Returns Promise&lt;void&gt;

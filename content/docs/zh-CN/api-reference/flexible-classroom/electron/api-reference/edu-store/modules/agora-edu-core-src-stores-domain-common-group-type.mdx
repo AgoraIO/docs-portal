@@ -1,0 +1,71 @@
+---
+title: Namespace "agora-edu-core/src/stores/domain/common/group/type"
+description: 分组配置
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/agora_edu_core_src_stores_domain_common_group_type_.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/modules/agora_edu_core_src_stores_domain_common_group_type_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Index
+
+### Enumerations
+
+- [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+- [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+- [GroupState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+- [OperationType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-peration-type)
+
+### Interfaces
+
+- [GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)
+- [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)
+
+### Type aliases
+
+- [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)
+- [GroupDetails](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetails)
+- [OperationQueue](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#OperationQueue)
+
+## Type aliases
+
+<a id="GroupDetail"></a>
+
+### GroupDetail
+
+GroupDetail: \{groupName:string;sort?:number;users:[GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)[]\}
+
+分组配置
+
+#### Type declaration
+
+- groupName:string
+
+  分组名
+- Optional sort?:number
+
+  分组排序字段
+- users:[GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)[]
+
+  分组用户
+
+<a id="GroupDetails"></a>
+
+### GroupDetails
+
+GroupDetails: Record&lt;string,[GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&gt;
+
+分组详情
+
+<a id="OperationQueue"></a>
+
+### OperationQueue
+
+OperationQueue: \{fromGroupUuid?:string;toGroupUuid?:string;type:[OperationType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-peration-type)\}[]
+
+操作队列

@@ -158,16 +158,83 @@ async function renderInlineNode($, node, state) {
   return content;
 }
 
-async function renderImage(_$, element, state) {
+function compactImageContext(value) {
+  const normalized = cleanText(value)
+    .replace(/[：:。,.，;；]+$/g, '')
+    .replace(/^[-*•]\s*/, '');
+  if (!normalized || normalized.length > 120) return '';
+  return normalized;
+}
+
+function contextualImageAlt($, element, state, fallbackAlt = '') {
+  const sourceAlt = cleanText(element.attr('alt') || element.attr('title'));
+  if (sourceAlt && !/^[-–—]$/.test(sourceAlt)) {
+    return { alt: sourceAlt, synthesized: false };
+  }
+
+  const source = element.attr('src') ?? '';
+  const fileName = source.split(/[?#]/, 1)[0].split('/').at(-1)?.toLowerCase();
+  if (fileName === 'closed.png') {
+    return { alt: '展开继承成员', synthesized: true };
+  }
+  if (fileName === 'open.png') {
+    return { alt: '收起继承成员', synthesized: true };
+  }
+
+  const row = element.closest('tr');
+  const cell = element.closest('th, td');
+  const rowContext = row.length
+    ? row
+        .children('th, td')
+        .toArray()
+        .filter((node) => node !== cell.get(0))
+        .map((node) => compactImageContext($(node).text()))
+        .find(Boolean)
+    : '';
+  const priorContext = element
+    .parentsUntil('body')
+    .addBack()
+    .toArray()
+    .map((node) =>
+      compactImageContext(
+        $(node)
+          .prevAll('p, h1, h2, h3, h4, h5, h6, figcaption, .caption')
+          .first()
+          .text(),
+      ),
+    )
+    .find(Boolean);
+  const context = [fallbackAlt, rowContext, priorContext]
+    .map(compactImageContext)
+    .find(Boolean);
+  if (context) {
+    return {
+      alt: /^\d+(?:-\d+)?$/.test(context) ? `${context} 人布局示意` : context,
+      synthesized: true,
+    };
+  }
+
+  return {
+    alt: state.pageTitle ? `${state.pageTitle} 图示` : '源页面图示',
+    synthesized: true,
+  };
+}
+
+async function renderImage($, element, state, fallbackAlt = '') {
   const source = element.attr('src');
   if (!source) return '';
-  const alt = cleanText(element.attr('alt') || element.attr('title'));
-  if (!alt) {
+  const { alt, synthesized } = contextualImageAlt(
+    $,
+    element,
+    state,
+    fallbackAlt,
+  );
+  if (synthesized) {
     state.warnings.push(
       createWarning(
         'missing-source-text',
-        `The source image ${source} has no alt or title text; the migrated image keeps an empty alt instead of synthesized copy.`,
-        { source },
+        `The source image ${source} has no meaningful alt or title text; the converter used contextual alt text "${alt}".`,
+        { alt, source },
       ),
     );
   }
@@ -222,7 +289,18 @@ async function renderList($, element, state, ordered) {
           inline = '';
         }
         blocks.push(await renderList($, $(child), state, name === 'ol'));
-      } else if (['div', 'p', 'pre', 'table', 'blockquote'].includes(name)) {
+      } else if (
+        [
+          'blockquote',
+          'div',
+          'dl',
+          'figure',
+          'img',
+          'p',
+          'pre',
+          'table',
+        ].includes(name)
+      ) {
         if (inline.trim()) {
           blocks.push(inline.trim());
           inline = '';
@@ -232,7 +310,7 @@ async function renderList($, element, state, ordered) {
         inline += await renderInlineNode($, child, state);
       }
     }
-    if (inline.trim()) blocks.unshift(inline.trim());
+    if (inline.trim()) blocks.push(inline.trim());
     const [first = '', ...rest] = blocks.filter(Boolean);
     let rendered = `${marker} ${first}`;
     if (rest.length > 0) {
@@ -337,6 +415,7 @@ async function renderChildren($, element, state) {
         'h6',
         'hr',
         'iframe',
+        'img',
         'object',
         'ol',
         'p',
@@ -408,6 +487,11 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'p') {
+    if (element.find('img').length > 0) {
+      return [anchor, await renderChildren($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
     const body = await renderInlineNodes(
       $,
       element.contents().toArray(),
@@ -455,10 +539,16 @@ async function renderBlockNode($, node, state) {
     return [anchor, quote].filter(Boolean).join('\n\n');
   }
   if (name === 'hr') return '---';
+  if (name === 'img') {
+    return [anchor, await renderImage($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
   if (name === 'figure') {
     const image = element.find('img').first();
     const caption = cleanText(element.find('figcaption').first().text());
-    const rendered = image.length > 0 ? await renderImage($, image, state) : '';
+    const rendered =
+      image.length > 0 ? await renderImage($, image, state, caption) : '';
     return [anchor, rendered, caption ? `_${escapeMdxText(caption)}_` : '']
       .filter(Boolean)
       .join('\n\n');
@@ -531,6 +621,7 @@ export async function convertHtmlToMdx({
   const title = cleanText(
     preferredTitle || titleNode.text() || $('title').first().text(),
   );
+  state.pageTitle = title;
   const description = cleanText(
     article.find('.shortdesc, .lead, .tsd-comment-shortform').first().text(),
   );

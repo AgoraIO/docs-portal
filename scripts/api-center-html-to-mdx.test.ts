@@ -103,7 +103,7 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
-  it('keeps a source image without alt text empty and reports the missing source text', async () => {
+  it('uses contextual alt text when the source image has none and reports the source gap', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>Page</h1><img src="diagram.png"></article>',
       sourceUrl: 'https://doc.shengwang.cn/api-ref/example/page',
@@ -111,11 +111,41 @@ describe('API Center shared HTML to MDX converter', () => {
       onAsset: async () => '/img/api-center-generated/diagram.png',
     });
 
-    expect(result.body).toContain('![](/img/api-center-generated/diagram.png)');
-    expect(result.body).not.toContain('API 文档图片');
-    expect(result.warnings).toContainEqual(
-      expect.objectContaining({ code: 'missing-source-text' }),
+    expect(result.body).toContain(
+      '![Page 图示](/img/api-center-generated/diagram.png)',
     );
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({
+        alt: 'Page 图示',
+        code: 'missing-source-text',
+      }),
+    );
+  });
+
+  it('renders images as nested blocks in lists and Slot blocks in tables', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Layout guide</h1>
+        <ol><li>Open settings <img src="settings.png"> and continue.</li></ol>
+        <table><tr><th>Users</th><th>Layout</th></tr>
+          <tr><td>2-5</td><td><img src="layout.png"></td></tr>
+        </table>
+      </article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/example/layout',
+      sourcePath: 'layout.html',
+      onAsset: async ({ source }) => `/img/api-center-generated/${source}`,
+    });
+
+    expect(result.body).toContain(
+      '1. Open settings\n\n   ![Layout guide 图示](/img/api-center-generated/settings.png)\n\n   and continue.',
+    );
+    expect(result.body).toContain(
+      '| 2-5 | <Slot name="api-center-table-0" /> |',
+    );
+    expect(result.body).toContain('<Slot for="api-center-table-0">');
+    expect(result.body).toContain(
+      '![2-5 人布局示意](/img/api-center-generated/layout.png)',
+    );
+    expect(result.body).not.toMatch(/\|[^\n]*!\[/);
   });
 
   it('reuses the approved Slot component for block-rich table cells', async () => {

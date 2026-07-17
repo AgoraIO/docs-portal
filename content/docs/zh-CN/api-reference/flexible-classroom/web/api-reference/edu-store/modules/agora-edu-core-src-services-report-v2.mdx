@@ -1,0 +1,114 @@
+---
+title: Namespace "agora-edu-core/src/services/report-v2"
+description: 当前通话的cid
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules/agora_edu_core_src_services_report_v2_.html
+  sourcePath: html-docs/flexible-classroom/Web/modules/agora_edu_core_src_services_report_v2_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Index
+
+### Classes
+
+- [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-report-v2-eport-service-v2)
+
+### Type aliases
+
+- [ReportParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-services-report-v2#ReportParams)
+- [ReportUserParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-services-report-v2#ReportUserParams)
+
+## Type aliases
+
+<a id="ReportParams"></a>
+
+### ReportParams
+
+ReportParams: \{cid?:number;id:number;payload:string;qos:number;requestId?:string;sign:string;src:string;ts:number;vid?:number\}
+
+#### Type declaration
+
+- Optional cid?:number
+
+  当前通话的cid
+- id:number
+
+  协议ID
+- payload:string
+
+  上报内容, base64(pb二进制内容)
+- qos:number
+
+  消息级别
+  1: 默认, 101: 测试
+- Optional requestId?:string
+
+  上报唯一id
+- sign:string
+
+  签名规则: md5(payload=base64(XX)&src=XX&ts=XX)
+  保留字段, XX为字段值 32位小写
+- src:string
+
+  来源/请求方
+- ts:number
+
+  时间戳, 10位, 秒
+- Optional vid?:number
+
+  厂商ID
+
+<a id="ReportUserParams"></a>
+
+### ReportUserParams
+
+ReportUserParams: \{errorCode?:number;lts?:number;role:string;roomCreateTs:number;roomId:string;rtmSid:string;scenario:string;streamSid:string;streamSuid:string;streamUid:number;uid:string;userName:string;ver:string;vid:number\}
+
+#### Type declaration
+
+- Optional errorCode?:number
+
+  异常码，若有
+- Optional lts?:number
+
+  时间戳，必须存在
+- role:string
+
+  apaas角色
+- roomCreateTs:number
+
+  房间创建的时间戳
+- roomId:string
+
+  apaas房间id，与rtc/rtm channelName相同
+- rtmSid:string
+
+  rtm sid
+- scenario:string
+
+  apaas场景，如education/meeting/entertainment
+- streamSid:string
+
+  rtc sid
+- streamSuid:string
+
+  rtc流id
+- streamUid:number
+
+  rtc流id
+- uid:string
+
+  apaas用户id，同RTM uid
+- userName:string
+
+  用户名，用于显示
+- ver:string
+
+  apaas版本号
+- vid:number
+
+  vid

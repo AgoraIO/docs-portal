@@ -633,12 +633,14 @@ export function renderGeneratedMdx({
   migration,
   extraFrontmatter,
 }) {
-  return `${renderMigrationFrontmatter({
+  const frontmatter = renderMigrationFrontmatter({
     title,
     description,
     migration,
     extra: extraFrontmatter,
-  })}\n${String(body ?? '').trim()}\n`;
+  });
+  const renderedBody = String(body ?? '').trim();
+  return renderedBody ? `${frontmatter}\n${renderedBody}\n` : frontmatter;
 }
 
 export function renderMetaJson({
@@ -951,7 +953,15 @@ export class ApiCenterMigrationRun {
     return record;
   }
 
-  planMdx({ page, title, description, body, warnings = [], extraFrontmatter }) {
+  planMdx({
+    page,
+    title,
+    description,
+    body,
+    warnings = [],
+    extraFrontmatter,
+    adoptExisting = false,
+  }) {
     const resolution = page.sourceResolution;
     if (!resolution?.targetPath?.endsWith('.mdx')) {
       throw new Error(`MDX page has no .mdx target: ${page.requestedUrl}`);
@@ -979,6 +989,7 @@ export class ApiCenterMigrationRun {
       sourceUrl: page.requestedUrl,
       type: resolution.type,
       warnings: allWarnings,
+      adoptExisting,
     });
   }
 

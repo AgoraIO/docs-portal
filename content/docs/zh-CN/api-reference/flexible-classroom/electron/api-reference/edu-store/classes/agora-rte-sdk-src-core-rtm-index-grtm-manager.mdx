@@ -1,0 +1,189 @@
+---
+title: Class AGRtmManager
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_rte_sdk_src_core_rtm_index_GRtmManager.html
+  sourcePath: html-docs/flexible-classroom/Electron/classes/agora_rte_sdk_src_core_rtm_index_GRtmManager.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- EventEmitter
+
+  - AGRtmManager
+
+## Index
+
+### Constructors
+
+- [constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#constructor)
+
+### Accessors
+
+- [client](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#client)
+- [connectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#connectionState)
+- [logFilter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#logFilter)
+- [sessionId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#sessionId)
+
+### Methods
+
+- [createObserverChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#createObserverChannel)
+- [destroyRtm](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#destroyRtm)
+- [join](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#join)
+- [leave](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#leave)
+- [login](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#login)
+- [reset](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#reset)
+- [sendChannelMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#sendChannelMessage)
+- [sendPeerMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager#sendPeerMessage)
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+- new AGRtmManager():[AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+- Overrides EventEmitter.constructorReturns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+## Accessors
+
+<a id="client"></a>
+
+### client
+
+- get client():RtmClient
+
+- Returns RtmClient
+
+<a id="connectionState"></a>
+
+### connectionState
+
+- get connectionState():[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+- Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+<a id="logFilter"></a>
+
+### logFilter
+
+- get logFilter():\{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
+
+- Returns \{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
+
+  - debug:boolean
+  - error:boolean
+  - info:boolean
+  - track:boolean
+  - warn:boolean
+
+<a id="sessionId"></a>
+
+### sessionId
+
+- get sessionId():string
+
+- Returns string
+
+## Methods
+
+<a id="createObserverChannel"></a>
+
+### createObserverChannel
+
+- createObserverChannel(channelName:string):[RtmChannel,EventEmitter]
+
+- Parameters
+
+  - channelName: string
+
+  Returns [RtmChannel,EventEmitter]
+
+<a id="destroyRtm"></a>
+
+### destroyRtm
+
+- destroyRtm():void
+
+- Returns void
+
+<a id="join"></a>
+
+### join
+
+- join(channel:RtmChannel, bus:EventEmitter, channelName:string):Promise&lt;void&gt;
+
+- Parameters
+
+  - channel: RtmChannel
+  - bus: EventEmitter
+  - channelName: string
+
+  Returns Promise&lt;void&gt;
+
+<a id="leave"></a>
+
+### leave
+
+- leave(channelName:string):Promise&lt;void&gt;
+
+- Parameters
+
+  - channelName: string
+
+  Returns Promise&lt;void&gt;
+
+<a id="login"></a>
+
+### login
+
+- login(token:string, uid:string, configs:[AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)):Promise&lt;void&gt;
+
+- Parameters
+
+  - token: string
+  - uid: string
+  - configs: [AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)
+
+  Returns Promise&lt;void&gt;
+
+<a id="reset"></a>
+
+### reset
+
+- reset():void
+
+- Returns void
+
+<a id="sendChannelMessage"></a>
+
+### sendChannelMessage
+
+- sendChannelMessage(channelName:string, message:any, options:any):Promise&lt;void&gt;
+
+- Parameters
+
+  - channelName: string
+  - message: any
+  - options: any
+
+  Returns Promise&lt;void&gt;
+
+<a id="sendPeerMessage"></a>
+
+### sendPeerMessage
+
+- sendPeerMessage(peerId:string, message:any, options:any):Promise&lt;boolean&gt;
+
+- Parameters
+
+  - peerId: string
+  - message: any
+  - options: any
+
+  Returns Promise&lt;boolean&gt;

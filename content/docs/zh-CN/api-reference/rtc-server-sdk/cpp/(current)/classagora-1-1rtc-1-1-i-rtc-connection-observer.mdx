@@ -387,7 +387,12 @@ API 方法已执行回调。
 - `RELAY_STATE_IDLE(0)`: SDK 正在初始化。
 - `RELAY_STATE_CONNECTING(1)`: SDK 尝试跨频道。
 - `RELAY_STATE_RUNNING(2)`: 源频道主播成功加入目标频道。
-- `RELAY_STATE_FAILURE(3)`: 发生异常，详见 code 中提示的错误信息。 参数code跨频道媒体流转发出错的错误码：
+- `RELAY_STATE_FAILURE(3)`: 发生异常，详见 code 中提示的错误信息。
+
+  ### 参数
+
+  | code | 跨频道媒体流转发出错的错误码： |
+  | --- | --- |
 - `RELAY_OK(0)`: 一切正常。
 - `RELAY_ERROR_SERVER_ERROR_RESPONSE(1)`: 服务器回应出错。
 - `RELAY_ERROR_SERVER_NO_RESPONSE(2)`: 服务器无回应。你可以调用 `disconnect` 方法离开频道。

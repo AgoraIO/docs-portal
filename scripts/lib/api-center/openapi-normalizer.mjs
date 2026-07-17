@@ -44,13 +44,20 @@ async function readJson(filePath, fallback) {
 }
 
 function needsNormalization(value) {
-  return String(value ?? '').includes('\n') || /[`>\[]/.test(String(value ?? ''));
+  return (
+    String(value ?? '').includes('\n') || /[`>[]/.test(String(value ?? ''))
+  );
 }
 
 export function normalizeOpenApiShortDescription(value) {
   return String(value ?? '')
     .split(/\r?\n/)
-    .map((line) => line.trim().replace(/^>\s*/, '').replace(/^[-*]\s+/, ''))
+    .map((line) =>
+      line
+        .trim()
+        .replace(/^>\s*/, '')
+        .replace(/^[-*]\s+/, ''),
+    )
     .filter(Boolean)
     .join(' ')
     .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
@@ -60,22 +67,135 @@ export function normalizeOpenApiShortDescription(value) {
     .trim();
 }
 
+function trimBlankLines(lines) {
+  const result = [...lines];
+  while (result[0]?.trim() === '') result.shift();
+  while (result.at(-1)?.trim() === '') result.pop();
+  return result;
+}
+
+function firstSentence(value) {
+  const match = String(value).match(/^([\s\S]*?[。！？.!?])(?:\s|$)/);
+  return match?.[1] ?? String(value);
+}
+
+export function splitOpenApiDescription(value) {
+  const source = String(value ?? '').replace(/\r\n?/g, '\n');
+  const contentLines = [];
+  const calloutLines = [];
+  for (const line of source.split('\n')) {
+    const callout = line.match(/^\s*>\s?(.*)$/);
+    if (callout) calloutLines.push(callout[1]);
+    else contentLines.push(line);
+  }
+  const content = trimBlankLines(contentLines);
+  const firstContentIndex = content.findIndex((line) => line.trim());
+  if (firstContentIndex < 0) {
+    const callout = trimBlankLines(calloutLines).join('\n');
+    return {
+      description: normalizeOpenApiShortDescription(callout),
+      sections: [],
+      callouts: [],
+    };
+  }
+  const line = content[firstContentIndex].trim();
+  const summary = firstSentence(line);
+  const remainder = trimBlankLines([
+    line.slice(summary.length).trim(),
+    ...content.slice(firstContentIndex + 1),
+  ]).join('\n');
+  const callout = trimBlankLines(calloutLines).join('\n');
+  return {
+    description: normalizeOpenApiShortDescription(summary),
+    sections: remainder
+      ? [{ position: 'after-description', markdown: remainder }]
+      : [],
+    callouts: callout
+      ? [{ position: 'after-description', markdown: callout }]
+      : [],
+  };
+}
+
 function operations(document) {
   const result = [];
   for (const pathItem of Object.values(document.paths ?? {})) {
     for (const [method, operation] of Object.entries(pathItem ?? {})) {
-      if (!HTTP_METHODS.has(method.toLowerCase()) || !operation?.operationId) continue;
+      if (!HTTP_METHODS.has(method.toLowerCase()) || !operation?.operationId)
+        continue;
       result.push(operation);
     }
   }
   return result;
 }
 
+function documentationBlocks(blocks) {
+  return (blocks ?? []).map((block) => ({
+    position: block.position,
+    markdown: block.markdown,
+  }));
+}
+
+function operationHasStructuredDocumentation(operation) {
+  return (
+    (operation?.['x-docs-sections']?.length ?? 0) > 0 ||
+    (operation?.['x-docs-callouts']?.length ?? 0) > 0
+  );
+}
+
+function operationMatchesDocumentation(operation, documentation) {
+  return (
+    operation?.description === documentation.description &&
+    JSON.stringify(documentationBlocks(operation?.['x-docs-sections'])) ===
+      JSON.stringify(documentationBlocks(documentation.sections)) &&
+    JSON.stringify(documentationBlocks(operation?.['x-docs-callouts'])) ===
+      JSON.stringify(documentationBlocks(documentation.callouts))
+  );
+}
+
 function indentOf(line) {
   return line.match(/^\s*/)?.[0].length ?? 0;
 }
 
-function replaceOperationDescription(raw, operationId, description) {
+function operationFieldRange(lines, blockStart, blockEnd, indent, key) {
+  const start = lines.findIndex(
+    (line, index) =>
+      index >= blockStart &&
+      index < blockEnd &&
+      indentOf(line) === indent &&
+      new RegExp(`^\\s*${key}\\s*:`).test(line),
+  );
+  if (start < 0) return null;
+  let end = start + 1;
+  while (end < blockEnd) {
+    if (lines[end].trim() && indentOf(lines[end]) <= indent) break;
+    end += 1;
+  }
+  return { start, end };
+}
+
+function renderOperationDocumentation(indent, documentation) {
+  const normalizeBlocks = (blocks) =>
+    blocks.map((block) => ({
+      position: block.position,
+      markdown: block.markdown,
+    }));
+  const fields = {
+    description: documentation.description,
+    ...(documentation.sections.length > 0
+      ? { 'x-docs-sections': normalizeBlocks(documentation.sections) }
+      : {}),
+    ...(documentation.callouts.length > 0
+      ? { 'x-docs-callouts': normalizeBlocks(documentation.callouts) }
+      : {}),
+  };
+  return yaml
+    .dump(fields, { lineWidth: -1, noRefs: true })
+    .trimEnd()
+    .split('\n')
+    .map((line) => `${' '.repeat(indent)}${line}`);
+}
+
+function replaceOperationDocumentation(raw, operationId, documentation) {
   const lines = raw.replace(/\r\n?/g, '\n').split('\n');
   const operationPattern = new RegExp(
     `^(\\s*)operationId:\\s*["']?${operationId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']?\\s*$`,
@@ -97,36 +217,95 @@ function replaceOperationDescription(raw, operationId, description) {
     }
     blockStart -= 1;
   }
-  if (blockStart < 0) throw new Error(`Cannot find method block for ${operationId}.`);
+  if (blockStart < 0)
+    throw new Error(`Cannot find method block for ${operationId}.`);
   let blockEnd = operationIndex + 1;
   while (blockEnd < lines.length) {
-    if (lines[blockEnd].trim() && indentOf(lines[blockEnd]) <= methodIndent) break;
+    if (lines[blockEnd].trim() && indentOf(lines[blockEnd]) <= methodIndent)
+      break;
     blockEnd += 1;
   }
-  const descriptionIndex = lines.findIndex(
-    (line, index) =>
-      index >= blockStart &&
-      index < blockEnd &&
-      indentOf(line) === operationIndent &&
-      /^\s*description\s*:/.test(line),
-  );
-  if (descriptionIndex < 0) {
+  const ranges = [
+    operationFieldRange(
+      lines,
+      blockStart,
+      blockEnd,
+      operationIndent,
+      'description',
+    ),
+    operationFieldRange(
+      lines,
+      blockStart,
+      blockEnd,
+      operationIndent,
+      'x-docs-sections',
+    ),
+    operationFieldRange(
+      lines,
+      blockStart,
+      blockEnd,
+      operationIndent,
+      'x-docs-callouts',
+    ),
+  ].filter(Boolean);
+  if (!ranges.some((range) => /^\s*description\s*:/.test(lines[range.start]))) {
     throw new Error(`Cannot find operation description for ${operationId}.`);
   }
-  let descriptionEnd = descriptionIndex + 1;
-  if (/^\s*description\s*:\s*[|>][-+]?\s*$/.test(lines[descriptionIndex])) {
-    while (descriptionEnd < blockEnd) {
-      const line = lines[descriptionEnd];
-      if (line.trim() && indentOf(line) <= operationIndent) break;
-      descriptionEnd += 1;
+  const insertionIndex = Math.min(...ranges.map((range) => range.start));
+  const replacement = renderOperationDocumentation(
+    operationIndent,
+    documentation,
+  );
+  return [
+    ...lines.slice(0, insertionIndex),
+    ...replacement,
+    ...lines
+      .slice(insertionIndex, blockEnd)
+      .filter(
+        (_line, relativeIndex) =>
+          !ranges.some(
+            (range) =>
+              insertionIndex + relativeIndex >= range.start &&
+              insertionIndex + relativeIndex < range.end,
+          ),
+      ),
+    ...lines.slice(blockEnd),
+  ].join('\n');
+}
+
+async function authoritativeDescriptionMap(manifest, oldRoot) {
+  const result = new Map();
+  if (!oldRoot) return result;
+  const documents = new Map();
+  for (const page of manifest.pageEvidence ?? []) {
+    const resolution = page.sourceResolution;
+    if (
+      page.aliasOf ||
+      resolution?.type !== 'openapi' ||
+      !resolution.sourcePath ||
+      !resolution.legacyOperationId ||
+      !resolution.targetOperationId
+    ) {
+      continue;
+    }
+    let document = documents.get(resolution.sourcePath);
+    if (!document) {
+      document = yaml.load(
+        await fs.readFile(path.resolve(oldRoot, resolution.sourcePath), 'utf8'),
+      );
+      documents.set(resolution.sourcePath, document);
+    }
+    const sourceOperation = operations(document).find(
+      (operation) => operation.operationId === resolution.legacyOperationId,
+    );
+    if (sourceOperation?.description) {
+      result.set(
+        `${resolution.targetPath}:${resolution.targetOperationId}`,
+        String(sourceOperation.description),
+      );
     }
   }
-  lines.splice(
-    descriptionIndex,
-    descriptionEnd - descriptionIndex,
-    `${' '.repeat(operationIndent)}description: ${JSON.stringify(description)}`,
-  );
-  return lines.join('\n');
+  return result;
 }
 
 function reportMarkdown(report) {
@@ -165,12 +344,10 @@ function reportMarkdown(report) {
 export async function runOpenApiNormalizer({
   repoRoot = process.cwd(),
   manifestPath = 'docs/migration/api-center-html-manifest.json',
-  ownershipPath =
-    'docs/migration/api-center-openapi-normalized-descriptions.json',
-  reportJsonPath =
-    'docs/migration/api-center-openapi-normalization-report.json',
-  reportMarkdownPath =
-    'docs/migration/api-center-openapi-normalization-report.md',
+  ownershipPath = 'docs/migration/api-center-openapi-normalized-descriptions.json',
+  reportJsonPath = 'docs/migration/api-center-openapi-normalization-report.json',
+  reportMarkdownPath = 'docs/migration/api-center-openapi-normalization-report.md',
+  oldRoot = process.env.API_CENTER_OLD_ROOT,
   mode = 'write',
 } = {}) {
   const root = path.resolve(repoRoot);
@@ -188,6 +365,10 @@ export async function runOpenApiNormalizer({
     ]),
   );
   const targetPaths = uniqueTargetPaths(manifest);
+  const authoritativeDescriptions = await authoritativeDescriptionMap(
+    manifest,
+    oldRoot,
+  );
   const nextRecords = [];
   const outputs = [];
 
@@ -199,21 +380,41 @@ export async function runOpenApiNormalizer({
     for (const operation of operations(document)) {
       const key = `${targetPath}:${operation.operationId}`;
       const prior = previousByKey.get(key);
+      if (
+        prior &&
+        operationHasStructuredDocumentation(operation) &&
+        !operationMatchesDocumentation(
+          operation,
+          splitOpenApiDescription(prior.originalDescription),
+        )
+      ) {
+        continue;
+      }
       if (!prior && !needsNormalization(operation.description)) continue;
-      const normalizedDescription =
-        prior?.normalizedDescription ??
-        normalizeOpenApiShortDescription(operation.description);
-      nextRaw = replaceOperationDescription(
+      const originalDescription =
+        prior?.originalDescription ??
+        authoritativeDescriptions.get(key) ??
+        String(operation.description);
+      const split = splitOpenApiDescription(originalDescription);
+      const documentation = {
+        description: split.description,
+        sections: prior?.docsSections ?? split.sections,
+        callouts: prior?.docsCallouts ?? split.callouts,
+      };
+      nextRaw = replaceOperationDocumentation(
         nextRaw,
         operation.operationId,
-        normalizedDescription,
+        documentation,
       );
       nextRecords.push({
         targetPath,
         operationId: operation.operationId,
-        normalizedDescription,
+        normalizedDescription: documentation.description,
+        originalDescription,
+        docsSections: documentation.sections,
+        docsCallouts: documentation.callouts,
         originalDescriptionHash:
-          prior?.originalDescriptionHash ?? sha256(String(operation.description)),
+          prior?.originalDescriptionHash ?? sha256(originalDescription),
       });
     }
     outputs.push({ absolute, targetPath, contents: nextRaw });
@@ -250,12 +451,15 @@ export async function runOpenApiNormalizer({
     for (const output of outputs) {
       const actual = await fs.readFile(output.absolute, 'utf8');
       if (actual !== output.contents) {
-        throw new Error(`OpenAPI description normalization is stale: ${output.targetPath}`);
+        throw new Error(
+          `OpenAPI description normalization is stale: ${output.targetPath}`,
+        );
       }
     }
     for (const [targetPath, contents] of generated) {
       const actual = await fs.readFile(path.resolve(root, targetPath), 'utf8');
-      if (actual !== contents) throw new Error(`Generated file is stale: ${targetPath}`);
+      if (actual !== contents)
+        throw new Error(`Generated file is stale: ${targetPath}`);
     }
   } else if (mode === 'write') {
     for (const output of outputs) {
@@ -276,7 +480,9 @@ function uniqueTargetPaths(manifest) {
   return [
     ...new Set(
       (manifest.pageEvidence ?? [])
-        .filter((page) => !page.aliasOf && page.sourceResolution?.type === 'openapi')
+        .filter(
+          (page) => !page.aliasOf && page.sourceResolution?.type === 'openapi',
+        )
         .map((page) => page.sourceResolution.targetPath)
         .filter(Boolean),
     ),

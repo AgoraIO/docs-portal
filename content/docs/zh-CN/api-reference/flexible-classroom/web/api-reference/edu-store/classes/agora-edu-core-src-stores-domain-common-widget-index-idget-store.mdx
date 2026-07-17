@@ -1,0 +1,218 @@
+---
+title: Class WidgetStore
+description: WidgetStore 提供活跃插件的数据和状态的访问；提供 WidgetController 实例的直接访问；提供插件相关 API，用于激活、停用和更新插件的状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_widget_index_idgetStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_edu_core_src_stores_domain_common_widget_index_idgetStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`WidgetStore` 提供活跃插件的数据和状态的访问；提供 WidgetController 实例的直接访问；提供插件相关 API，用于激活、停用和更新插件的状态。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - WidgetStore
+
+## Index
+
+### Accessors
+
+- [widgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#widgetController)
+
+### Methods
+
+- [addWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#addWidgetStateListener)
+- [deleteWidget](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#deleteWidget)
+- [onDestroy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#onDestroy)
+- [onInstall](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#onInstall)
+- [removeWidgetExtra](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#removeWidgetExtra)
+- [removeWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#removeWidgetStateListener)
+- [removeWidgetUserProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#removeWidgetUserProperties)
+- [setActive](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#setActive)
+- [setInactive](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#setInactive)
+- [updateWidgetProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#updateWidgetProperties)
+- [updateWidgetUserProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-index-idget-store#updateWidgetUserProperties)
+
+## Accessors
+
+<a id="widgetController"></a>
+
+### widgetController
+
+- get widgetController():undefined|[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+
+- Returns undefined|[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+
+## Methods
+
+<a id="addWidgetStateListener"></a>
+
+### addWidgetStateListener
+
+- addWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
+
+- ### deprecated
+
+since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
+添加一个组件状态监听器
+
+  Parameters
+
+  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+  Returns void
+
+<a id="deleteWidget"></a>
+
+### deleteWidget
+
+- deleteWidget(widgetId:string):undefined|Promise&lt;\{data:any\}&gt;
+
+- 删除当前房间中的此组件实例
+
+  Parameters
+
+  - widgetId: string
+
+    widget ID
+
+  Returns undefined|Promise&lt;\{data:any\}&gt;
+
+<a id="onDestroy"></a>
+
+### onDestroy
+
+- onDestroy():void
+
+- Overrides EduStoreBase.onDestroyReturns void
+
+<a id="onInstall"></a>
+
+### onInstall
+
+- onInstall():void
+
+- Overrides EduStoreBase.onInstallReturns void
+
+<a id="removeWidgetExtra"></a>
+
+### removeWidgetExtra
+
+- removeWidgetExtra(widgetId:string, keys?:string[]):undefined|Promise&lt;\{data:any\}&gt;
+
+- 删除组件扩展属性
+
+  Parameters
+
+  - widgetId: string
+  - Optional keys: string[]
+
+  Returns undefined|Promise&lt;\{data:any\}&gt;
+
+<a id="removeWidgetStateListener"></a>
+
+### removeWidgetStateListener
+
+- removeWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
+
+- ### deprecated
+
+since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
+移除一个组件状态监听器
+
+  Parameters
+
+  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+  Returns void
+
+<a id="removeWidgetUserProperties"></a>
+
+### removeWidgetUserProperties
+
+- removeWidgetUserProperties(widgetId:string, keys?:string[]):undefined|Promise&lt;\{data:any\}&gt;
+
+- 删除组件用户属性
+
+  Parameters
+
+  - widgetId: string
+  - Optional keys: string[]
+
+  Returns undefined|Promise&lt;\{data:any\}&gt;
+
+<a id="setActive"></a>
+
+### setActive
+
+- setActive(widgetId:string, widgetProps?:any, ownerUserUuid?:string):void
+
+- 设置组件为可用状态
+
+  Parameters
+
+  - widgetId: string
+
+    widget ID
+  - Optional widgetProps: any
+
+    widget 属性
+  - Optional ownerUserUuid: string
+
+  Returns void
+
+<a id="setInactive"></a>
+
+### setInactive
+
+- setInactive(widgetId:string, widgetProps?:any):void
+
+- 设置组件为不可用状态
+
+  Parameters
+
+  - widgetId: string
+
+    widget ID
+  - Optional widgetProps: any
+
+    widget 属性
+
+  Returns void
+
+<a id="updateWidgetProperties"></a>
+
+### updateWidgetProperties
+
+- updateWidgetProperties(widgetId:string, widgetProps?:any):undefined|Promise&lt;\{data:any\}&gt;
+
+- 更新组件全局属性，属性更新将同步至该组件在所有客户端上的实例
+
+  Parameters
+
+  - widgetId: string
+  - Optional widgetProps: any
+
+  Returns undefined|Promise&lt;\{data:any\}&gt;
+
+<a id="updateWidgetUserProperties"></a>
+
+### updateWidgetUserProperties
+
+- updateWidgetUserProperties(widgetId:string, widgetProps?:any):undefined|void
+
+- 更新组件用户属性，属性更新将同步至当前用户私有属性中
+
+  Parameters
+
+  - widgetId: string
+  - Optional widgetProps: any
+
+  Returns undefined|void

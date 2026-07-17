@@ -1,0 +1,274 @@
+---
+title: Class ConnectionStore
+description: ConnectionStore 类用于管理连接状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_connection_onnectionStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_edu_core_src_stores_domain_common_connection_onnectionStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`ConnectionStore` 类用于管理连接状态。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - ConnectionStore
+
+## Index
+
+### Properties
+
+- [classroomState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#classroomState)
+- [engine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#engine)
+- [rtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#rtcState)
+
+### Accessors
+
+- [scene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#scene)
+- [sceneId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#sceneId)
+
+### Methods
+
+- [addCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#addCloudProxyObserver)
+- [checkIn](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#checkIn)
+- [getEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#getEngine)
+- [getRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#getRtcState)
+- [initialize](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#initialize)
+- [joinClassroom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinClassroom)
+- [joinRTC](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinRTC)
+- [joinSubRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinSubRoom)
+- [leaveClassroom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveClassroom)
+- [leaveRTC](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveRTC)
+- [leaveSubRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveSubRoom)
+- [removeCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#removeCloudProxyObserver)
+
+## Properties
+
+<a id="classroomState"></a>
+
+### classroomState
+
+classroomState: [ClassroomState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-lassroom-state)
+
+房间连接状态
+
+<a id="engine"></a>
+
+### Optional engine
+
+engine?: [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+
+RTE 引擎
+
+<a id="rtcState"></a>
+
+### rtcState
+
+rtcState: [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+RTC 连接状态
+
+## Accessors
+
+<a id="scene"></a>
+
+### scene
+
+- get scene():undefined|[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+- 当前场景对象
+
+  Returns undefined|[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+<a id="sceneId"></a>
+
+### sceneId
+
+- get sceneId():string
+
+- 当前场景 ID
+
+  Returns string
+
+## Methods
+
+<a id="addCloudProxyObserver"></a>
+
+### addCloudProxyObserver
+
+- addCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
+
+- 添加一个云代理观察者，joinClassroom 成功调用后才能调用此方法
+
+  Parameters
+
+  - observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+
+  Returns void
+
+<a id="checkIn"></a>
+
+### checkIn
+
+- checkIn(sessionInfo:[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info), sceneType:[SceneType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-cene-type), mode:"check-in"|"entry"):Promise&lt;void&gt;
+
+- 进入房间预检，进入房间前请先调用此方法
+
+  Parameters
+
+  - sessionInfo: [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
+
+    当前房间数据
+  - sceneType: [SceneType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-cene-type)
+
+    scene 类型
+  - mode: "check-in"|"entry"
+
+  Returns Promise&lt;void&gt;
+
+<a id="getEngine"></a>
+
+### getEngine
+
+- getEngine():[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+
+- 获取当前 RteEngine，调用此方法获取实例前需要先调用 connectionStore.initialize， 否则将抛出异常
+
+  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+
+  RTE engine
+
+<a id="getRtcState"></a>
+
+### getRtcState
+
+- getRtcState(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+- 获取房间 RTC 状态
+
+  Parameters
+
+  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+  Returns [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+<a id="initialize"></a>
+
+### initialize
+
+- initialize():void
+
+- 初始化 RTE engine
+
+  Returns void
+
+<a id="joinClassroom"></a>
+
+### joinClassroom
+
+- joinClassroom(options?:\{mode:"check-in"|"entry"\}):Promise&lt;undefined&gt;
+
+- 加入房间
+
+  Parameters
+
+  - Optional options: \{mode:"check-in"|"entry"\}
+
+    - mode:"check-in"|"entry"
+
+  Returns Promise&lt;undefined&gt;
+
+<a id="joinRTC"></a>
+
+### joinRTC
+
+- joinRTC(options?:[AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)):Promise&lt;void&gt;
+
+- 加入 RTC 频道
+
+  Parameters
+
+  - Optional options: [AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)
+
+    RTC 配置
+
+  Returns Promise&lt;void&gt;
+
+<a id="joinSubRoom"></a>
+
+### joinSubRoom
+
+- joinSubRoom(roomUuid:string):Promise&lt;void&gt;
+
+- 加入子房间
+
+  Parameters
+
+  - roomUuid: string
+
+    子房间 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="leaveClassroom"></a>
+
+### leaveClassroom
+
+- leaveClassroom(reason:[LeaveReason](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-eave-reason), promise?:Promise&lt;void&gt;):Promise&lt;void&gt;
+
+- 离开房间
+
+  Parameters
+
+  - reason: [LeaveReason](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-eave-reason)
+
+    原因
+  - Optional promise: Promise&lt;void&gt;
+
+  Returns Promise&lt;void&gt;
+
+<a id="leaveRTC"></a>
+
+### leaveRTC
+
+- leaveRTC(connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
+
+- 离开 RTC 频道
+
+  Parameters
+
+  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+    大小 scene
+
+  Returns Promise&lt;void&gt;
+
+<a id="leaveSubRoom"></a>
+
+### leaveSubRoom
+
+- leaveSubRoom():Promise&lt;void&gt;
+
+- 离开子房间
+
+  Returns Promise&lt;void&gt;
+
+<a id="removeCloudProxyObserver"></a>
+
+### removeCloudProxyObserver
+
+- removeCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
+
+- 移除一个云代理观察者，joinClassroom 成功调用后才能调用此方法
+
+  Parameters
+
+  - observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+
+  Returns void

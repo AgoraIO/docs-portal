@@ -65,9 +65,11 @@ export function resolveExistingApiCenterTarget(value) {
     '/basics/security/information':
       'content/docs/zh-CN/introduction/security/information.mdx',
     '/basics/security/video-sdk':
-      'content/docs/zh-CN/introduction/security/video-sdk.mdx',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/video-sdk.mdx',
     '/basics/security/voice-sdk':
-      'content/docs/zh-CN/introduction/security/voice-sdk.mdx',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/voice-sdk.mdx',
+    '/doc/console/general/user-guides/manage_authentication':
+      'content/docs/zh-CN/introduction/user-guides/manage-authentication.mdx',
     '/zh-CN/realtime-media/recording/local-server-recording/reference/billing':
       'content/docs/zh-CN/realtime-media/local-server-recording/reference/billing.mdx',
     '/zh-CN/realtime-media/rtc/build/security-and-auth/firewall':

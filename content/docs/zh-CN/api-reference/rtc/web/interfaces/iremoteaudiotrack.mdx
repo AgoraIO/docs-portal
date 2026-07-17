@@ -167,9 +167,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -178,6 +176,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -292,9 +292,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -307,6 +305,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -315,10 +315,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 - on(event:"first-frame-decoded", listener:typeof event_first_frame_decoded):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated_2):void
 
-- Returns void
-
-  Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
-   Overrides EventEmitter.on
+- Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
+ Overrides EventEmitter.on
 
   Parameters
 
@@ -328,10 +326,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - listener: typeof event_track_updated
 
     详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。
-- Returns void
 
-  Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
-   Overrides EventEmitter.on
+  Returns void
+- Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
+ Overrides EventEmitter.on
 
   Parameters
 
@@ -341,10 +339,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - listener: typeof event_first_frame_decoded
 
     详见 [first-frame-decoded](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_first_frame_decoded)。
-- Returns void
 
-  Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
-   Overrides EventEmitter.on
+  Returns void
+- Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#on)
+ Overrides EventEmitter.on
 
   添加事件监听器。
 
@@ -357,15 +355,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -379,6 +377,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - listener: Function
 
     传入的回调函数。
+
+  Returns void
 
 <a id="pipe"></a>
 
@@ -408,13 +408,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - play():void
 
-- Returns void
-
-  Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
+- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
 
   播放远端音频轨道。
 
   > 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+
+  Returns void
 
 <a id="removealllisteners"></a>
 
@@ -422,9 +422,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -434,17 +432,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="setamplifiedvolume"></a>
 
 ### setAmplifiedVolume
 
 - setAmplifiedVolume(volume:number):void
 
-- Returns void
-
-  Parameters
+- Parameters
 
   - volume: number
+
+  Returns void
 
 <a id="setaudioframecallback"></a>
 
@@ -452,27 +452,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - setAudioFrameCallback(audioFrameCallback:null|function, frameSize?:number):void
 
-- Returns void
+- 设置原始音频数据（PCM）回调。
 
-  设置原始音频数据（PCM）回调。
+设置成功后，SDK 会不断地将远端音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
 
-  设置成功后，SDK 会不断地将远端音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
+> 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
 
-  > 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+```javascript
+track.setAudioFrameCallback((buffer) => {
+  for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+    // Float32Array with PCM data
+    const currentChannelData = buffer.getChannelData(channel);
+    console.log("PCM data in channel", channel, currentChannelData);
+  }
+}, 2048);
 
-  ```javascript
-  track.setAudioFrameCallback((buffer) => {
-    for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
-      // Float32Array with PCM data
-      const currentChannelData = buffer.getChannelData(channel);
-      console.log("PCM data in channel", channel, currentChannelData);
-    }
-  }, 2048);
-
-  // ....
-  // Stop getting the raw audio data
-  track.setAudioFrameCallback(null);
-  ```
+// ....
+// Stop getting the raw audio data
+track.setAudioFrameCallback(null);
+```
 
   Parameters
 
@@ -483,21 +481,21 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     每次回调的 `AudioBuffer` 中每个声道包含的采样数据个数，只能设为下列值：256, 512, 1024, 2048, 4096, 8192, 16384。默认为 4096。
 
+  Returns void
+
 <a id="setplaybackdevice"></a>
 
 ### setPlaybackDevice
 
 - setPlaybackDevice(deviceId:string):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- ### 自从
 
-  ### 自从
+*4.1.0*
 
-  *4.1.0*
+设置音频播放设备，比如扬声器。
 
-  设置音频播放设备，比如扬声器。
-
-  > 该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
+> 该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
 
   Parameters
 
@@ -505,15 +503,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setvolume"></a>
 
 ### setVolume
 
 - setVolume(volume:number):void
 
-- Returns void
-
-  设置远端音频轨道的播放音量
+- 设置远端音频轨道的播放音量
 
   Parameters
 
@@ -521,17 +519,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
     音量值，范围 [0, 100]，0 代表静音，100 代表原始音量。
 
+  Returns void
+
 <a id="stop"></a>
 
 ### stop
 
 - stop():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
 
   停止播放。
+
+  Returns void
 
 <a id="unpipe"></a>
 
@@ -539,10 +539,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - unpipe():void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.13.0*
 
-  *4.13.0*
+取消远端音频轨道上注入的 `Processor`。
 
-  取消远端音频轨道上注入的 `Processor`。
+  Returns void

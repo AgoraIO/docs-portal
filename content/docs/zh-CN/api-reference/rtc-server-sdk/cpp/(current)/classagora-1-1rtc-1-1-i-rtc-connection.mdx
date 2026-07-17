@@ -2,7 +2,7 @@
 title: agora::rtc::IRtcConnection类 参考abstract
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection
   sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection.html
   generator: doxygen
@@ -12,6 +12,11 @@ _migration:
       message: >-
         Rendered unresolved generated-source link
         /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image closed.png has no meaningful alt or title text; the converter used
+        contextual alt text "展开继承成员".
     - code: source-only-link-removed
       severity: info
       message: >-
@@ -35,6 +40,11 @@ _migration:
         Rendered unresolved generated-source link
         /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
         as local text.
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image closed.png has no meaningful alt or title text; the converter used
+        contextual alt text "展开继承成员".
     - code: source-only-link-removed
       severity: info
       message: >-
@@ -109,7 +119,9 @@ _migration:
 
 <Slot for="api-center-table-0">
 
-![-](/img/api-center-generated/c98c02adc573-closed.png) Public 成员函数 继承自 agora::RefCountInterface
+![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
+
+Public 成员函数 继承自 agora::RefCountInterface
 
 </Slot>
 
@@ -123,7 +135,9 @@ _migration:
 
 <Slot for="api-center-table-1">
 
-![-](/img/api-center-generated/c98c02adc573-closed.png) Protected 成员函数 继承自 agora::RefCountInterface
+![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
+
+Protected 成员函数 继承自 agora::RefCountInterface
 
 </Slot>
 
@@ -235,7 +249,9 @@ SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNEC
 启用该方法后，SDK 会依次返回如下 2 个回调：
 
 - [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
-- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。 注解
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+  ### 注解
 - 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 

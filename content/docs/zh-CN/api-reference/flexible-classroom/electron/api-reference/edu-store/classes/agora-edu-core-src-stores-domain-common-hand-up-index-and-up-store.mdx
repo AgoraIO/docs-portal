@@ -1,0 +1,184 @@
+---
+title: Class HandUpStore
+description: HandUpStore 类提供举手上台功能相关能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_hand_up_index_andUpStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_hand_up_index_andUpStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`HandUpStore` 类提供举手上台功能相关能力。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - HandUpStore
+
+## Index
+
+### Methods
+
+- [allowHandsUp](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#allowHandsUp)
+- [cancelHandUp](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#cancelHandUp)
+- [confirmInvited](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#confirmInvited)
+- [invitePodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#invitePodium)
+- [offPodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#offPodium)
+- [offPodiumAll](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#offPodiumAll)
+- [onPodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#onPodium)
+- [rejectHandUp](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#rejectHandUp)
+- [waveArm](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-hand-up-index-and-up-store#waveArm)
+
+## Methods
+
+<a id="allowHandsUp"></a>
+
+### allowHandsUp
+
+- allowHandsUp(state:0|1, autoStage:boolean):void
+
+- 配置允许学生举手
+
+  Parameters
+
+  - state: 0|1
+
+    是否允许举手，0 不允许，1 允许
+  - autoStage: boolean
+
+    是否开启自动上台
+
+  Returns void
+
+<a id="cancelHandUp"></a>
+
+### cancelHandUp
+
+- cancelHandUp():Promise&lt;void&gt;
+
+- 学生取消举手
+
+  Returns Promise&lt;void&gt;
+
+<a id="confirmInvited"></a>
+
+### confirmInvited
+
+- confirmInvited():Promise&lt;void&gt;
+
+- 确认接受上台邀请
+
+  Returns Promise&lt;void&gt;
+
+<a id="invitePodium"></a>
+
+### invitePodium
+
+- invitePodium(userUuid:string, duration:number, payload?:unknown):Promise&lt;void&gt;
+
+- 邀请学生上台互动
+
+  Parameters
+
+  - userUuid: string
+
+    学生ID
+  - duration: number
+
+    超时时长
+  - Optional payload: unknown
+
+    扩展信息
+
+  Returns Promise&lt;void&gt;
+
+<a id="offPodium"></a>
+
+### offPodium
+
+- offPodium(userUuid:string):Promise&lt;void&gt;
+
+- 让指定学生下讲台
+
+  Parameters
+
+  - userUuid: string
+
+    用户 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="offPodiumAll"></a>
+
+### offPodiumAll
+
+- offPodiumAll():Promise&lt;void&gt;
+
+- 让全部学生下讲台
+
+  Returns Promise&lt;void&gt;
+
+<a id="onPodium"></a>
+
+### onPodium
+
+- onPodium(userUuid:string, source?:[PodiumSrouce](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)):Promise&lt;void&gt;
+
+- 同意学生上讲台
+
+  Parameters
+
+  - userUuid: string
+
+    用户 ID
+  - Optional source: [PodiumSrouce](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)
+
+    邀请来源：
+
+    - 老师从花名册邀请学生上讲台
+    - 学生举手老师同意上讲台
+
+  Returns Promise&lt;void&gt;
+
+<a id="rejectHandUp"></a>
+
+### rejectHandUp
+
+- rejectHandUp(userUuid:string):Promise&lt;void&gt;
+
+- 拒绝举手上台请求
+
+  Parameters
+
+  - userUuid: string
+
+    用户 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="waveArm"></a>
+
+### waveArm
+
+- waveArm(teacherUuid:string, duration:number, payload?:unknown):Promise&lt;void&gt;
+
+- 学生挥手
+
+  Parameters
+
+  - teacherUuid: string
+
+    老师 ID
+  - duration: number
+
+    超时时长
+  - Optional payload: unknown
+
+    扩展信息
+
+  Returns Promise&lt;void&gt;

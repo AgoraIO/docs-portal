@@ -26,13 +26,17 @@ function findNode(
 }
 
 async function loadApiReferenceSidebar(slugs: string[]) {
+  return (await loadApiReferencePayload(slugs)).sidebar as SidebarNode[];
+}
+
+async function loadApiReferencePayload(slugs: string[]) {
   const payload = await loadDocsPagePayload('zh-CN', 'api-reference', slugs);
   if (!payload || 'redirectUrl' in payload) {
     throw new Error(
       `expected docs payload for /zh-CN/api-reference/${slugs.join('/')}`,
     );
   }
-  return payload.sidebar as SidebarNode[];
+  return payload;
 }
 
 describe('API Center scoped sidebars', () => {
@@ -97,6 +101,68 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toContain('创建对话式智能体');
   });
 
+  it('keeps the Conversational AI RESTful lane API-only and under Reference Center', async () => {
+    const payload = await loadApiReferencePayload([
+      'api-ref',
+      'conversational-ai',
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        'RESTful 鉴权',
+        '创建对话式智能体',
+        '停止对话式智能体',
+      ]),
+    );
+    expect(titles).not.toEqual(
+      expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
+    );
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/overview',
+      backLabel: '参考中心',
+      title: 'RESTful API',
+    });
+  });
+
+  it('keeps the Whiteboard RESTful lane API-only and under Reference Center', async () => {
+    const payload = await loadApiReferencePayload([
+      'api-ref',
+      'whiteboard',
+      'restful',
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(
+      expect.arrayContaining(['生成 SDK Token', '生成 Room Token', '创建房间']),
+    );
+    expect(titles).not.toEqual(
+      expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
+    );
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/overview',
+      backLabel: '参考中心',
+      title: 'RESTful API',
+    });
+  });
+
+  it.each([
+    'android',
+    'ios',
+    'web',
+  ])('keeps the single-page Fastboard %s API in the Reference root sidebar', async (platform) => {
+    const payload = await loadApiReferencePayload([
+      'whiteboard',
+      'fastboard',
+      platform,
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toContain('实时互动 RTC');
+    expect(titles).not.toContain('Fastboard SDK');
+    expect(payload.sidebarHeader).toBeUndefined();
+  });
+
   it('uses the Cloud Recording Go REST Client sidebar, not RESTful navigation', async () => {
     const sidebar = await loadApiReferenceSidebar([
       'cloud-recording',
@@ -109,6 +175,44 @@ describe('API Center scoped sidebars', () => {
       expect.arrayContaining(['API 概览', 'Client 类', '结构体', '枚举类']),
     );
     expect(titles).not.toContain('获取云端录制资源');
+  });
+
+  it.each([
+    [['cloud-recording', 'go-api', 'overview.go'], '云端录制'],
+    [['cloud-recording', 'java-api', 'overview.java'], '云端录制'],
+    [['local-server-recording', 'java', 'api-overview'], '本地服务端录制'],
+    [['local-server-recording', 'cpp', 'api-overview'], '本地服务端录制'],
+  ])('uses the product name for the %s scope title', async (route, title) => {
+    const payload = await loadApiReferencePayload(route);
+
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/overview',
+      backLabel: '参考中心',
+      title,
+    });
+  });
+
+  it.each([
+    ['cpp', 'overview'],
+    ['java', 'overview'],
+    ['python-api', 'overview.python'],
+    ['go-api', 'overview.go'],
+  ])('labels the RTC Server SDK %s error-code entry as common', async (...route) => {
+    const titles = collectTitles(
+      await loadApiReferenceSidebar(['rtc-server-sdk', ...route]),
+    );
+
+    expect(titles).toContain('通用错误码');
+    expect(titles).not.toContain('错误码');
+  });
+
+  it('identifies the shared RTC Server SDK error-code page', async () => {
+    const payload = await loadApiReferencePayload([
+      'rtc-server-sdk',
+      'error-code',
+    ]);
+
+    expect(payload.title).toBe('RTC 服务端 SDK 通用错误码');
   });
 
   it.each([

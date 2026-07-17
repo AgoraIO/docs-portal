@@ -1,0 +1,148 @@
+---
+title: Class BatchRecord<E>
+description: 此类主要处理将多个数据包中的同一批变更合并到一起，合并完成后执行callback
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_utils_batch_atchRecord.html
+  sourcePath: html-docs/flexible-classroom/Web/classes/agora_edu_core_src_utils_batch_atchRecord.html
+  generator: typedoc
+  warnings: []
+---
+
+此类主要处理将多个数据包中的同一批变更合并到一起，合并完成后执行callback
+
+### Type parameters
+
+- E
+
+### Hierarchy
+
+- BatchRecord
+
+## Index
+
+### Constructors
+
+- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#constructor)
+
+### Methods
+
+- [addChunk](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#addChunk)
+- [execute](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#execute)
+- [setCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setCallback)
+- [setCurrent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setCurrent)
+- [setTotal](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setTotal)
+- [getBatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#getBatchRecord)
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+- new BatchRecord&lt;E&gt;(_batchId:number, _total?:number, _current?:number, _cb?:(dataChunk:E[])=&gt;void):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+- Type parameters
+
+  - E
+
+  Parameters
+
+  - _batchId: number
+  - Optional _total: number
+  - Optional _current: number
+  - Optional _cb: (dataChunk:E[])=&gt;void
+
+    - - (dataChunk:E[]):void
+
+      - Parameters
+
+        - dataChunk: E[]
+
+        Returns void
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+## Methods
+
+<a id="addChunk"></a>
+
+### addChunk
+
+- addChunk(data:E):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+- Parameters
+
+  - data: E
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+<a id="execute"></a>
+
+### execute
+
+- execute():void
+
+- Returns void
+
+<a id="setCallback"></a>
+
+### setCallback
+
+- setCallback(cb:(dataChunk:E[])=&gt;void):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+- Parameters
+
+  - cb: (dataChunk:E[])=&gt;void
+
+    - - (dataChunk:E[]):void
+
+      - Parameters
+
+        - dataChunk: E[]
+
+        Returns void
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+<a id="setCurrent"></a>
+
+### setCurrent
+
+- setCurrent(current:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+- Parameters
+
+  - current: number
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+<a id="setTotal"></a>
+
+### setTotal
+
+- setTotal(total:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+- Parameters
+
+  - total: number
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+
+<a id="getBatchRecord"></a>
+
+### Static getBatchRecord
+
+- getBatchRecord&lt;T&gt;(batchId:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;T&gt;
+
+- Type parameters
+
+  - T
+
+  Parameters
+
+  - batchId: number
+
+  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;T&gt;

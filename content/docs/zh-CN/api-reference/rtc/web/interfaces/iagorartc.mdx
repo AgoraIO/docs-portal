@@ -202,13 +202,11 @@ Agora Web SDK 的入口。
 
 - audio-context-state-changed(currState:AudioContextState|"interrupted", prevState:AudioContextState|"interrupted"|undefined):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.20.0*
 
-  *4.20.0*
-
-  音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
+音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
 
   Parameters
 
@@ -226,25 +224,27 @@ Agora Web SDK 的入口。
     - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
     - `undefined`：无先前状态。
 
+  Returns void
+
 <a id="event_autoplay_failed"></a>
 
 ### autoplay-failed
 
 - autoplay-failed():void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.18.0*
 
-  *4.18.0*
+如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
 
-  如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
+```javascript
+AgoraRTC.on("autoplay-failed", (info) => {
+  console.log("Autoplay failed!", info.state, info.device);
+});
+```
 
-  ```javascript
-  AgoraRTC.on("autoplay-failed", (info) => {
-    console.log("Autoplay failed!", info.state, info.device);
-  });
-  ```
+  Returns void
 
 <a id="event_camera_changed"></a>
 
@@ -252,25 +252,25 @@ Agora Web SDK 的入口。
 
 - camera-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.18.0*
 
-  *4.18.0*
+如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#oncamerachanged)。
 
-  如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#oncamerachanged)。
-
-  ```javascript
-  AgoraRTC.on("camera-changed", (info) => {
-    console.log("Camera changed!", info.state, info.device);
-  });
-  ```
+```javascript
+AgoraRTC.on("camera-changed", (info) => {
+  console.log("Camera changed!", info.state, info.device);
+});
+```
 
   Parameters
 
   - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
 
     设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
+
+  Returns void
 
 <a id="event_microphone_changed"></a>
 
@@ -278,25 +278,25 @@ Agora Web SDK 的入口。
 
 - microphone-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.18.0*
 
-  *4.18.0*
+如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onmicrophonechanged)。
 
-  如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onmicrophonechanged)。
-
-  ```javascript
-  AgoraRTC.on("microphone-changed", (info) => {
-    console.log("Microphone changed!", info.state, info.device);
-  });
-  ```
+```javascript
+AgoraRTC.on("microphone-changed", (info) => {
+  console.log("Microphone changed!", info.state, info.device);
+});
+```
 
   Parameters
 
   - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
 
     设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
+
+  Returns void
 
 <a id="event_playback_device_changed"></a>
 
@@ -304,19 +304,17 @@ Agora Web SDK 的入口。
 
 - playback-device-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.18.0*
 
-  *4.18.0*
+如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onplaybackdevicechanged)。
 
-  如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onplaybackdevicechanged)。
-
-  ```javascript
-  AgoraRTC.on("playback-device-changed", (info) => {
-    console.log("Playback device changed!", info.state, info.device);
-  });
-  ```
+```javascript
+AgoraRTC.on("playback-device-changed", (info) => {
+  console.log("Playback device changed!", info.state, info.device);
+});
+```
 
   Parameters
 
@@ -324,25 +322,27 @@ Agora Web SDK 的入口。
 
     设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
 
+  Returns void
+
 <a id="event_security_policy_violation"></a>
 
 ### security-policy-violation
 
 - security-policy-violation():void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.18.0*
 
-  *4.18.0*
+如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onsecuritypolicyviolation)。
 
-  如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onsecuritypolicyviolation)。
+```javascript
+AgoraRTC.on("security-policy-violation", (info) => {
+  console.log("Security policy violation!", info.state, info.device);
+});
+```
 
-  ```javascript
-  AgoraRTC.on("security-policy-violation", (info) => {
-    console.log("Security policy violation!", info.state, info.device);
-  });
-  ```
+  Returns void
 
 ## Global Callback Properties
 
@@ -465,11 +465,11 @@ AgoraRTC.onCameraChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
+
+    Returns void
 
 <a id="onmicrophonechanged"></a>
 
@@ -497,11 +497,11 @@ AgoraRTC.onMicrophoneChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
+
+    Returns void
 
 <a id="onplaybackdevicechanged"></a>
 
@@ -531,11 +531,11 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
+
+    Returns void
 
 <a id="onsecuritypolicyviolation"></a>
 
@@ -556,11 +556,11 @@ onSecurityPolicyViolation: function
 
 - - (event:SecurityPolicyViolationEvent):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - event: SecurityPolicyViolationEvent
+
+    Returns void
 
 ## Other Properties
 
@@ -580,15 +580,15 @@ Agora Web SDK 的版本信息。
 
 - createClient(config:[ClientConfig](/zh-CN/api-reference/rtc/web/interfaces/clientconfig)):[IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
 
-- Returns [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
-
-  创建一个客户端对象用于通话/直播管理，通常来说这是使用 Agora Web SDK 的第一步。
+- 创建一个客户端对象用于通话/直播管理，通常来说这是使用 Agora Web SDK 的第一步。
 
   Parameters
 
   - config: [ClientConfig](/zh-CN/api-reference/rtc/web/interfaces/clientconfig)
 
     客户端的配置，包括通话场景、编码格式等，默认使用 `vp8` 编码，`rtc` 通话场景。详见 [ClientConfig](/zh-CN/api-reference/rtc/web/interfaces/clientconfig)。
+
+  Returns [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
 
 ## Local Track Methods
 
@@ -622,9 +622,7 @@ Agora Web SDK 的版本信息。
 
 - createCameraVideoTrack(config?:[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/cameravideotrackinitconfig)):Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)&gt;
 
-- Returns Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)&gt;
-
-  通过摄像头采集的视频创建一个视频轨道。
+- 通过摄像头采集的视频创建一个视频轨道。
 
   Parameters
 
@@ -632,17 +630,17 @@ Agora Web SDK 的版本信息。
 
     采集视频的配置，包括采集设备、编码配置等。详见 [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/cameravideotrackinitconfig)。
 
+  Returns Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)&gt;
+
 <a id="createcustomaudiotrack"></a>
 
 ### createCustomAudioTrack
 
 - createCustomAudioTrack(config:[CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customaudiotrackinitconfig)):[ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)
 
-- Returns [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)
+- 创建一个自定义的音频轨道。
 
-  创建一个自定义的音频轨道。
-
-  你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的音频轨道。
+你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的音频轨道。
 
   Parameters
 
@@ -650,17 +648,17 @@ Agora Web SDK 的版本信息。
 
     自定义音频的配置，详见 [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customaudiotrackinitconfig)。
 
+  Returns [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)
+
 <a id="createcustomvideotrack"></a>
 
 ### createCustomVideoTrack
 
 - createCustomVideoTrack(config:[CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig)):[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
 
-- Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
+- 创建一个自定义的视频轨道。
 
-  创建一个自定义的视频轨道。
-
-  你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的视频轨道。
+你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的视频轨道。
 
   Parameters
 
@@ -670,22 +668,22 @@ Agora Web SDK 的版本信息。
 
     > 自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig) 除了支持设置码率，还支持设置分辨率和帧率。
 
+  Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
+
 <a id="createmicrophoneandcameratracks"></a>
 
 ### createMicrophoneAndCameraTracks
 
 - createMicrophoneAndCameraTracks(audioConfig?:[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig), videoConfig?:[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/cameravideotrackinitconfig)):Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)]&gt;
 
-- Returns Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)]&gt;
+- 同时创建麦克风音频轨道和摄像头视频轨道。
 
-  同时创建麦克风音频轨道和摄像头视频轨道。
+通过麦克风采集的音频创建一个音频轨道，同时通过摄像头采集的视频创建一个视频轨道。
 
-  通过麦克风采集的音频创建一个音频轨道，同时通过摄像头采集的视频创建一个视频轨道。
-
-  > 调用该方法和分别调用 [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 以及 [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 的区别是：
-  >
-  > - 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。
-  > - 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
+> 调用该方法和分别调用 [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 以及 [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 的区别是：
+>
+> - 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。
+> - 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
 
   Parameters
 
@@ -696,21 +694,23 @@ Agora Web SDK 的版本信息。
 
     采集视频的配置，包括采集设备、编码配置等。
 
+  Returns Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)]&gt;
+
 <a id="createmicrophoneaudiotrack"></a>
 
 ### createMicrophoneAudioTrack
 
 - createMicrophoneAudioTrack(config?:[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig)):Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack)&gt;
 
-- Returns Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack)&gt;
-
-  通过麦克风采集的音频创建一个音频轨道。
+- 通过麦克风采集的音频创建一个音频轨道。
 
   Parameters
 
   - Optional config: [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig)
 
     麦克风采集音频的配置，包括采集设备、音频编码配置等，详见 [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig)。
+
+  Returns Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack)&gt;
 
 <a id="createscreenvideotrack"></a>
 
@@ -829,11 +829,11 @@ Agora Web SDK 的版本信息。
 
 - disableLogUpload():void
 
-- Returns void
+- 关闭日志上传。
 
-  关闭日志上传。
+日志上传默认是关闭状态，如果你调用了开启日志上传（[enableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#enablelogupload))，可以通过本方法停止上传日志。
 
-  日志上传默认是关闭状态，如果你调用了开启日志上传（[enableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#enablelogupload))，可以通过本方法停止上传日志。
+  Returns void
 
 <a id="enablelogupload"></a>
 
@@ -841,13 +841,13 @@ Agora Web SDK 的版本信息。
 
 - enableLogUpload():void
 
-- Returns void
+- 开启日志上传。开启后 SDK 的日志会上传到声网的服务器。
 
-  开启日志上传。开启后 SDK 的日志会上传到声网的服务器。
+日志上传功能默认为关闭状态，如果你需要开启此功能，请确保在所有方法之前调用本方法。
 
-  日志上传功能默认为关闭状态，如果你需要开启此功能，请确保在所有方法之前调用本方法。
+> 如果没有成功加入频道，则服务器上无法查看日志信息。
 
-  > 如果没有成功加入频道，则服务器上无法查看日志信息。
+  Returns void
 
 <a id="setloglevel"></a>
 
@@ -855,11 +855,9 @@ Agora Web SDK 的版本信息。
 
 - setLogLevel(level:number):void
 
-- Returns void
+- 设置 SDK 的日志输出级别。
 
-  设置 SDK 的日志输出级别。
-
-  选择一个级别，你就可以看到在该级别及该级别以上所有级别的日志信息。
+选择一个级别，你就可以看到在该级别及该级别以上所有级别的日志信息。
 
   Parameters
 
@@ -875,6 +873,8 @@ Agora Web SDK 的版本信息。
 
     例如，如果你输入代码 `AgoraRTC.setLogLevel(1);`，就可以看到 INFO，WARNING 和 ERROR 级别的日志信息。
 
+  Returns void
+
 ## Media Devices Methods
 
 <a id="getcameras"></a>
@@ -883,13 +883,11 @@ Agora Web SDK 的版本信息。
 
 - getCameras(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- Returns Promise&lt;MediaDeviceInfo[]&gt;
+- 该方法枚举可用的视频输入设备，比如摄像头。
 
-  该方法枚举可用的视频输入设备，比如摄像头。
+调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的视频输入设备。
 
-  调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的视频输入设备。
-
-  > 调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+> 调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
   Parameters
 
@@ -899,6 +897,8 @@ Agora Web SDK 的版本信息。
 
     - `true`: 跳过权限检查。
     - `false`:（默认）不跳过权限检查。
+
+  Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getdevices"></a>
 
@@ -906,23 +906,21 @@ Agora Web SDK 的版本信息。
 
 - getDevices(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- Returns Promise&lt;MediaDeviceInfo[]&gt;
+- 该方法枚举可用的媒体输入和输出设备，比如麦克风、摄像头、耳机等。
+ 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的媒体设备。
 
-  该方法枚举可用的媒体输入和输出设备，比如麦克风、摄像头、耳机等。
-   调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的媒体设备。
+> 注意事项：
+>
+> - 调用本方法会暂时打开摄像头和麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+> - 即使是对于同一设备，SDK 返回的 [MediaDeviceInfo.deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId) 也可能会发生变化，例如用户清除 Cookie 后，`deviceId` 就会被重置。因此，声网不建议基于 `deviceId` 开发业务逻辑。
 
-  > 注意事项：
-  >
-  > - 调用本方法会暂时打开摄像头和麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
-  > - 即使是对于同一设备，SDK 返回的 [MediaDeviceInfo.deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId) 也可能会发生变化，例如用户清除 Cookie 后，`deviceId` 就会被重置。因此，声网不建议基于 `deviceId` 开发业务逻辑。
-
-  ```javascript
-  getDevices().then(devices => {
-    console.log("first device id", devices[0].deviceId);
-  }).catch(e => {
-    console.log("get devices error!", e);
-  });
-  ```
+```javascript
+getDevices().then(devices => {
+  console.log("first device id", devices[0].deviceId);
+}).catch(e => {
+  console.log("get devices error!", e);
+});
+```
 
   Parameters
 
@@ -932,6 +930,8 @@ Agora Web SDK 的版本信息。
 
     - `true`: 跳过权限检查。
     - `false`:（默认）不跳过权限检查。
+
+  Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getelectronscreensources"></a>
 
@@ -939,37 +939,35 @@ Agora Web SDK 的版本信息。
 
 - getElectronScreenSources(type?:[ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screensourcetype)):Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource)[]&gt;
 
-- Returns Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource)[]&gt;
+- 在 Electron 环境下获取屏幕共享源。
 
-  在 Electron 环境下获取屏幕共享源。
+调用成功后 SDK 会返回一组 [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource) 对象。
 
-  调用成功后 SDK 会返回一组 [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource) 对象。
+> 如果你的 Electron 运行环境开启了 contextIsolation 配置，调用此方法会报错。你需要自己使用 contextBridge.exposeInMainWorld 来获取视频源 id。
 
-  > 如果你的 Electron 运行环境开启了 contextIsolation 配置，调用此方法会报错。你需要自己使用 contextBridge.exposeInMainWorld 来获取视频源 id。
+```text
+// preload.js
 
-  ```text
-  // preload.js
+const {
+  contextBridge, desktopCapturer
+} = require("electron");
 
-  const {
-    contextBridge, desktopCapturer
-  } = require("electron");
-
-  contextBridge.exposeInMainWorld(
-    "electronDesktopCapturer", {
-      getSources: async (...args) => {
-        const sources = await desktopCapturer.getSources(...args);
-        return sources;
-      }
+contextBridge.exposeInMainWorld(
+  "electronDesktopCapturer", {
+    getSources: async (...args) => {
+      const sources = await desktopCapturer.getSources(...args);
+      return sources;
     }
-  );
+  }
+);
 
-  // renderer.js
-  (async () => {
-    sources = await window.electronDesktopCapturer.getSources(["window", "screen"]);
-    const source = sources[0];   // just for example ,you shuould make an UI for user to select the exact source.
-    const screenVideoTrack = await AgoraRTC.createScreenVideoTrack({ electronScreenSourceId: source.id });
-  })()
-  ```
+// renderer.js
+(async () => {
+  sources = await window.electronDesktopCapturer.getSources(["window", "screen"]);
+  const source = sources[0];   // just for example ,you shuould make an UI for user to select the exact source.
+  const screenVideoTrack = await AgoraRTC.createScreenVideoTrack({ electronScreenSourceId: source.id });
+})()
+```
 
   Parameters
 
@@ -977,19 +975,19 @@ Agora Web SDK 的版本信息。
 
     需要获取的共享源类型（窗口/应用/屏幕），详见 [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screensourcetype)。如果为空则获取所有可以获取的共享源。
 
+  Returns Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource)[]&gt;
+
 <a id="getmicrophones"></a>
 
 ### getMicrophones
 
 - getMicrophones(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- Returns Promise&lt;MediaDeviceInfo[]&gt;
+- 该方法枚举可用的音频输入设备，比如麦克风。
 
-  该方法枚举可用的音频输入设备，比如麦克风。
+调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频输入设备。
 
-  调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频输入设备。
-
-  > 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+> 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
   Parameters
 
@@ -999,6 +997,8 @@ Agora Web SDK 的版本信息。
 
     - `true`: 跳过权限检查。
     - `false`:（默认）不跳过权限检查。
+
+  Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getplaybackdevices"></a>
 
@@ -1006,18 +1006,16 @@ Agora Web SDK 的版本信息。
 
 - getPlaybackDevices(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- Returns Promise&lt;MediaDeviceInfo[]&gt;
+- ### 自从
 
-  ### 自从
+*4.1.0*
 
-  *4.1.0*
+该方法枚举可用的音频播放设备，比如扬声器。
 
-  该方法枚举可用的音频播放设备，比如扬声器。
+调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频播放设备。
 
-  调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频播放设备。
-
-  > - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
-  > - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
+> - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
+> - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 
   Parameters
 
@@ -1027,6 +1025,8 @@ Agora Web SDK 的版本信息。
 
     - `true`: 跳过权限检查。
     - `false`:（默认）不跳过权限检查。
+
+  Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 ## Other Methods
 
@@ -1138,9 +1138,9 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 
 - createChannelMediaRelayConfiguration():[IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)
 
-- Returns [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)
+- 创建跨频道媒体流转发的配置对象。
 
-  创建跨频道媒体流转发的配置对象。
+  Returns [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)
 
 <a id="getlisteners"></a>
 
@@ -1148,9 +1148,7 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -1159,6 +1157,8 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getsupportedcodec"></a>
 
@@ -1196,9 +1196,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -1211,6 +1209,8 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -1222,9 +1222,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 - on(event:"security-policy-violation", listener:typeof event_security_policy_violation):void
 - on(event:"audio-context-state-changed", listener:typeof event_audio_context_state_changed):void
 
-- Returns void
-
-  Overrides EventEmitter.on
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1238,9 +1236,9 @@ AgoraRTC.getSupportedCodec().then(result => {
   - listener: typeof event_camera_changed
 
     详见 [event_camera_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_camera_changed)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1254,9 +1252,9 @@ AgoraRTC.getSupportedCodec().then(result => {
   - listener: typeof event_microphone_changed
 
     详见 [event_microphone_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_microphone_changed)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1270,9 +1268,9 @@ AgoraRTC.getSupportedCodec().then(result => {
   - listener: typeof event_playback_device_changed
 
     详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_playback_device_changed)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1286,9 +1284,9 @@ AgoraRTC.getSupportedCodec().then(result => {
   - listener: typeof event_autoplay_failed
 
     详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_autoplay_failed)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1302,9 +1300,9 @@ AgoraRTC.getSupportedCodec().then(result => {
   - listener: typeof event_security_policy_violation
 
     详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_security_policy_violation)。
-- Returns void
 
-  Overrides EventEmitter.on
+  Returns void
+- Overrides EventEmitter.on
 
   ### 自从
 
@@ -1319,15 +1317,15 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_audio_context_state_changed)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -1342,24 +1340,24 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     传入的回调函数。
 
+  Returns void
+
 <a id="preload"></a>
 
 ### preload
 
 - preload(appid:string, channel:string, token:string|null, uid?:[UID](/zh-CN/api-reference/rtc/web/globals#uid)|null):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- 使用`appid`、`channel`、`token`、`uid` 预加载频道。
 
-  使用`appid`、`channel`、`token`、`uid` 预加载频道。
+调用该方法可以减少观众频繁切换频道时加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的视频体验。
 
-  调用该方法可以减少观众频繁切换频道时加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的视频体验。
+如果当前频道已经成功预加载，观众加入、离开频道后如需再次加入该频道，只要预加载时传入的 Token 仍在有效期内，则无需重新预加载。
 
-  如果当前频道已经成功预加载，观众加入、离开频道后如需再次加入该频道，只要预加载时传入的 Token 仍在有效期内，则无需重新预加载。
-
-  > - 预加载的有效时间只有两分钟。
-  > - 为了保护页面性能，此方法采取一次性尽力而为的策略，无法保证一定成功。但预加载失败不会影响观众正常加入频道，也不会增加加入频道的耗时。
-  > - 系统最多缓存 10 条最新的不同预加载数据。
-  > - 目前此方法不支持通过 proxy 代理进行转发。
+> - 预加载的有效时间只有两分钟。
+> - 为了保护页面性能，此方法采取一次性尽力而为的策略，无法保证一定成功。但预加载失败不会影响观众正常加入频道，也不会增加加入频道的耗时。
+> - 系统最多缓存 10 条最新的不同预加载数据。
+> - 目前此方法不支持通过 proxy 代理进行转发。
 
   Parameters
 
@@ -1397,31 +1395,31 @@ AgoraRTC.getSupportedCodec().then(result => {
     > - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/api-reference/faq/integration/string_uid)。
     > - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
 
+  Returns Promise&lt;void&gt;
+
 <a id="processexternalmediaaec"></a>
 
 ### processExternalMediaAEC
 
 - processExternalMediaAEC(element:HTMLMediaElement):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.5.0*
 
-  *4.5.0*
+对本地播放的音频启用回声消除。
 
-  对本地播放的音频启用回声消除。
+在多个用户同时播放一个媒体文件的场景中，例如一起看电影，如果用户 A 在 Chrome 浏览器上通过 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 使用扬声器播放媒体文件，扬声器播放的声音会和人声一起被 SDK 采集，因此其他用户会听到自己本地播放的媒体音频以及用户 A 发送的媒体音频，从而产生回声。针对这种情况，你可以调用 `processExternalMediaAEC` 方法传入 `HTMLMediaElement`，对本地播放的媒体进行回声消除，提升音频体验。
 
-  在多个用户同时播放一个媒体文件的场景中，例如一起看电影，如果用户 A 在 Chrome 浏览器上通过 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 使用扬声器播放媒体文件，扬声器播放的声音会和人声一起被 SDK 采集，因此其他用户会听到自己本地播放的媒体音频以及用户 A 发送的媒体音频，从而产生回声。针对这种情况，你可以调用 `processExternalMediaAEC` 方法传入 `HTMLMediaElement`，对本地播放的媒体进行回声消除，提升音频体验。
+```javascript
+<audio crossOrigin="anonymous" src="http://www.test.com/test.mp3" id="audioDom"></audio>
+<script>
+  const element = document.getElementById("audioDom");
+  AgoraRTC.processExternalMediaAEC(element);
+</script>
+```
 
-  ```javascript
-  <audio crossOrigin="anonymous" src="http://www.test.com/test.mp3" id="audioDom"></audio>
-  <script>
-    const element = document.getElementById("audioDom");
-    AgoraRTC.processExternalMediaAEC(element);
-  </script>
-  ```
-
-  > 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
+> 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
 
   Parameters
 
@@ -1429,19 +1427,19 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
 
+  Returns void
+
 <a id="registerextensions"></a>
 
 ### registerExtensions
 
 - registerExtensions(extensions:IExtension&lt;any&gt;[]):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.10.0*
 
-  *4.10.0*
-
-  注册插件。
+注册插件。
 
   Parameters
 
@@ -1449,15 +1447,15 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     插件实例。
 
+  Returns void
+
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -1467,22 +1465,24 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="resumeaudiocontext"></a>
 
 ### resumeAudioContext
 
 - resumeAudioContext():void
 
-- Returns void
+- 恢复音视频播放。
 
-  恢复音视频播放。
+在某些版本的 iOS 设备上，App 通话被微信通话或系统电话打断后有概率无法自动恢复。你可以调用该方法恢复 App 通话。
 
-  在某些版本的 iOS 设备上，App 通话被微信通话或系统电话打断后有概率无法自动恢复。你可以调用该方法恢复 App 通话。
+声网推荐你通过 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 监听 `"audio-context-state-changed"` 事件，并在回调函数 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_audio_context_state_changed) 中进行以下处理：
 
-  声网推荐你通过 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 监听 `"audio-context-state-changed"` 事件，并在回调函数 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_audio_context_state_changed) 中进行以下处理：
+- 当状态变为 `"interrupted"` 时，弹窗提示用户 App 通话被打断，需要点击按钮恢复通话。用户点击按钮后，调用 `resumeAudioContext`。
+- 当状态变为 `"running"` 时，关闭弹窗。
 
-  - 当状态变为 `"interrupted"` 时，弹窗提示用户 App 通话被打断，需要点击按钮恢复通话。用户点击按钮后，调用 `resumeAudioContext`。
-  - 当状态变为 `"running"` 时，关闭弹窗。
+  Returns void
 
 <a id="setarea"></a>
 
@@ -1490,24 +1490,22 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - setArea(area:[AREAS](/zh-CN/api-reference/rtc/web/enums/areas)[]|object):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.2.0*
 
-  *4.2.0*
+设置访问区域。
 
-  设置访问区域。
+该功能为高级设置，适用于有访问安全限制的场景。
 
-  该功能为高级设置，适用于有访问安全限制的场景。
+默认情况下，SDK 会就近选择声网服务器进行连接。设置访问区域之后，SDK 只会连接到指定区域内的声网服务器。
 
-  默认情况下，SDK 会就近选择声网服务器进行连接。设置访问区域之后，SDK 只会连接到指定区域内的声网服务器。
-
-  ```javascript
-  // 指定仅访问北美的服务器。
-  AgoraRTC.setArea({
-    areaCode:"NORTH_AMERICA"
-  })
-  ```
+```javascript
+// 指定仅访问北美的服务器。
+AgoraRTC.setArea({
+  areaCode:"NORTH_AMERICA"
+})
+```
 
   Parameters
 
@@ -1515,19 +1513,19 @@ AgoraRTC.getSupportedCodec().then(result => {
 
     服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
 
+  Returns void
+
 <a id="startlastmileprobetest"></a>
 
 ### startLastmileProbeTest
 
 - startLastmileProbeTest(appid:string, channel:string, token:string|null, uid?:[UID](/zh-CN/api-reference/rtc/web/globals#uid)|null):Promise&lt;[LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)&gt;
 
-- Returns Promise&lt;[LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)&gt;
+- 在通话前对客户端与边缘节点之间的网络质量进行检测。
 
-  在通话前对客户端与边缘节点之间的网络质量进行检测。
+### 自从
 
-  ### 自从
-
-  *4.24.1*
+*4.24.1*
 
   Parameters
 
@@ -1564,3 +1562,5 @@ AgoraRTC.getSupportedCodec().then(result => {
     > - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
     > - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/api-reference/faq/integration/string_uid)。
     > - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+
+  Returns Promise&lt;[LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)&gt;

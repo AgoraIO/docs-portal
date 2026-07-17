@@ -97,25 +97,25 @@ onCursorMemberChanged: (cursorMember:[CursorMember](/zh-CN/api-reference/whitebo
 
 - - (cursorMember:[CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)):void
 
-  - Returns void
+  - `cursorMember` 改变后的回调。
 
-    `cursorMember` 改变后的回调。
+  你可以用如下代码监听该回调：
 
-    你可以用如下代码监听该回调：
+  ### example
 
-    ### example
-
-    ```ts
-    cursor.onCursorMemberChanged = function(cursorMember) {
-         // cursorMember 改变了
-    }
-    ```
+  ```ts
+  cursor.onCursorMemberChanged = function(cursorMember) {
+       // cursorMember 改变了
+  }
+  ```
 
     Parameters
 
     - cursorMember: [CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)
 
       更新后的 `cursorMember`。
+
+    Returns void
 
 <a id="width"></a>
 
@@ -155,9 +155,7 @@ y: number
 
 - setCursorDescription(description:Partial&lt;[CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription)&gt;):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:445](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L445)
+- Defined in [index-zh.d.ts:445](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L445)
 
   修改光标的描述。
 
@@ -167,15 +165,15 @@ y: number
 
     光标的描述。
 
+  Returns void
+
 <a id="setreactnode"></a>
 
 ### setReactNode
 
 - setReactNode(reactNode:any):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:438](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L438)
+- Defined in [index-zh.d.ts:438](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L438)
 
   通过注入 JSX 结构来改变光标的外观。
 
@@ -192,3 +190,5 @@ y: number
   - reactNode: any
 
     描述光标外观的 JSX。
+
+  Returns void

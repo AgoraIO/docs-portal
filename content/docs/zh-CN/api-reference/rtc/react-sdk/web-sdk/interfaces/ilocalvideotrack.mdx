@@ -121,13 +121,11 @@ event_beauty_effect_overload:
 
 - sei-received(sei:Uint8Array):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.20.1*
 
-  *4.20.1*
-
-  从 H.264 视频流中解析出 SEI 数据时触发，此事件会返回 SEI 数据。
+从 H.264 视频流中解析出 SEI 数据时触发，此事件会返回 SEI 数据。
 
   Parameters
 
@@ -135,27 +133,29 @@ event_beauty_effect_overload:
 
     Uint8Array 类型的 SEI 数据
 
+  Returns void
+
 <a id="event_video_element_visible_status"></a>
 
 ### video-element-visible-status
 
 - video-element-visible-status(data?:[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.8.0*
 
-  *4.8.0*
+提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
 
-  提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
-
-  调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
+调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 
   Parameters
 
   - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)
 
     `&lt;video&gt;` 标签的可见状态信息。
+
+  Returns void
 
 ## Properties
 
@@ -252,13 +252,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - close():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#close)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#close)
 
   关闭本地轨道，并释放相关采集设备。
 
   一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
+
+  Returns void
 
 <a id="getcurrentframedata"></a>
 
@@ -284,9 +284,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -295,6 +293,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -345,15 +345,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
 
-- Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
-
-  Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#getstats)
+- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#getstats)
 
   获取本地视频轨道的相关信息。
 
   ### deprecated
 
   自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
+
+  Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
 
 <a id="gettrackid"></a>
 
@@ -417,9 +417,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -432,6 +430,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -441,9 +441,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 - on(event:"video-element-visible-status", listener:typeof event_video_element_visible_status):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
 
-- Returns void
-
-  Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
+- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
   Parameters
 
@@ -453,9 +451,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_updated
 
     详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
-- Returns void
 
-  Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
+  Returns void
+- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
   Parameters
 
@@ -465,9 +463,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_ended
 
     详见 [track-ended](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended)。
-- Returns void
 
-  Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
+  Returns void
+- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
   Parameters
 
@@ -477,9 +475,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_video_element_visible_status
 
     详见 [video-element-visible-status](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#event_video_element_visible_status)。
-- Returns void
 
-  Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
+  Returns void
+- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
   添加事件监听器。
 
@@ -492,15 +490,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -514,6 +512,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: Function
 
     传入的回调函数。
+
+  Returns void
 
 <a id="pipe"></a>
 
@@ -543,9 +543,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - play(element:string|HTMLElement, config?:[VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)):void
 
-- Returns void
-
-  Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
   在页面上播放远端视频轨道。
 
@@ -561,15 +559,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。
 
+  Returns void
+
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -579,50 +577,50 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="replacetrack"></a>
 
 ### replaceTrack
 
 - replaceTrack(track:MediaStreamTrack, stopOldTrack:boolean):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- ### 自从
 
-  ### 自从
+*4.17.0*
 
-  *4.17.0*
+替换本地视频轨道。
 
-  替换本地视频轨道。
+该方法在本地视频流发布前或发布后都可以调用：
 
-  该方法在本地视频流发布前或发布后都可以调用：
+- 在发流前调用，新的视频轨道会在本地播放。
+- 在发流后调用，远端会接收到新的视频轨道。
 
-  - 在发流前调用，新的视频轨道会在本地播放。
-  - 在发流后调用，远端会接收到新的视频轨道。
+新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
 
-  新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
+> 注意事项：
+>
+> - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
+> - 部分移动设备上该方法可能不生效。
+> - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
+>
+>   - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
+>   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
+> - 订阅端无法知悉视频轨道被替换。
+> - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setdevice) 方法。
 
-  > 注意事项：
-  >
-  > - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
-  > - 部分移动设备上该方法可能不生效。
-  > - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
-  >
-  >   - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
-  >   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
-  > - 订阅端无法知悉视频轨道被替换。
-  > - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setdevice) 方法。
+**示例代码**
 
-  **示例代码**
-
-  ```javascript
-  // 原有的本地视频轨道
-  const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-  // 获取新的视频轨道（方式一）
-  const newTrack = localVideoTrack.getMediaStreamTrack();
-  // 获取新的视频轨道（方式二）
-  const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(mediaStream => mediaStream.getVideoTracks()[0]);
-  // 替换本地视频轨道，并且停止原有的视频轨道
-  await localVideoTrack.replaceTrack(newTrack, true);
-  ```
+```javascript
+// 原有的本地视频轨道
+const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+// 获取新的视频轨道（方式一）
+const newTrack = localVideoTrack.getMediaStreamTrack();
+// 获取新的视频轨道（方式二）
+const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(mediaStream => mediaStream.getVideoTracks()[0]);
+// 替换本地视频轨道，并且停止原有的视频轨道
+await localVideoTrack.replaceTrack(newTrack, true);
+```
 
   Parameters
 
@@ -636,15 +634,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - 停止原有的视频轨道。
     - 保留原有的视频轨道。
 
+  Returns Promise&lt;void&gt;
+
 <a id="sendseidata"></a>
 
 ### sendSeiData
 
 - sendSeiData(sei:Uint8Array):void
 
-- Returns void
-
-  在 H.264 视频流中添加 SEI 数据。
+- 在 H.264 视频流中添加 SEI 数据。
 
   Parameters
 
@@ -652,15 +650,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     SEI 数据。
 
+  Returns void
+
 <a id="setenabled"></a>
 
 ### setEnabled
 
 - setEnabled(enabled:boolean):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled)
 
   ### 自从
 
@@ -683,15 +681,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `true`: 启用该轨道。
     - `false`: 禁用该轨道。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setencoderconfiguration"></a>
 
 ### setEncoderConfiguration
 
 - setEncoderConfiguration(config:[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset)):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
-
-  设置视频的编码参数，包括分辨率、帧率、码率。
+- 设置视频的编码参数，包括分辨率、帧率、码率。
 
   Parameters
 
@@ -699,15 +697,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     你可以传入 SDK 预设的视频编码配置 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset)，也可以传入自定义的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) 对象。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setmuted"></a>
 
 ### setMuted
 
 - setMuted(muted:boolean):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setmuted)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setmuted)
 
   发送或暂停发送该轨道的媒体数据。
 
@@ -729,23 +727,23 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
     - `true`: 暂停发送该轨道的媒体数据。
     - `false`: 恢复发送该轨道的媒体数据。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setoptimizationmode"></a>
 
 ### setOptimizationMode
 
 - setOptimizationMode(mode:"balanced"|"motion"|"detail"):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+- ### 自从
 
-  ### 自从
+*4.2.0*
 
-  *4.2.0*
+设置视频传输优化模式。
 
-  设置视频传输优化模式。
+你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-  你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
-
-  > 注意事项：该方法只支持 Chrome 浏览器。
+> 注意事项：该方法只支持 Chrome 浏览器。
 
   Parameters
 
@@ -766,17 +764,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
       - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
       - 大部分情况下，SDK 不会降低帧率，但是可能会降低发送分辨率。
 
+  Returns Promise&lt;void&gt;
+
 <a id="stop"></a>
 
 ### stop
 
 - stop():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
   停止播放。
+
+  Returns void
 
 <a id="unpipe"></a>
 
@@ -784,10 +784,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - unpipe():void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.10.0*
 
-  *4.10.0*
+取消本地视频轨道上注入的 `Processor`。
 
-  取消本地视频轨道上注入的 `Processor`。
+  Returns void

@@ -1,0 +1,171 @@
+---
+title: Class UserStore
+description: UserStore 类用于管理用户。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_user_index_serStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_user_index_serStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`UserStore` 类用于管理用户。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - UserStore
+
+## Index
+
+### Accessors
+
+- [assistantList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#assistantList)
+- [localUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#localUser)
+- [rewards](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#rewards)
+- [studentList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#studentList)
+- [teacherList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#teacherList)
+- [userCount](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#userCount)
+- [users](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#users)
+
+### Methods
+
+- [fetchUserList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#fetchUserList)
+- [kickOutOnceOrBan](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#kickOutOnceOrBan)
+- [updateUserProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-index-ser-store#updateUserProperties)
+
+## Accessors
+
+<a id="assistantList"></a>
+
+### assistantList
+
+- get assistantList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+- 助教列表
+
+  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+<a id="localUser"></a>
+
+### localUser
+
+- get localUser():undefined|[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
+
+- 本地用户
+
+  Returns undefined|[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
+
+<a id="rewards"></a>
+
+### rewards
+
+- get rewards():Map&lt;string,number&gt;
+
+- 奖励信息字典
+key: 用户UUID
+value: 用户获得的奖励数
+
+  Returns Map&lt;string,number&gt;
+
+<a id="studentList"></a>
+
+### studentList
+
+- get studentList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+- 学生列表
+
+  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+<a id="teacherList"></a>
+
+### teacherList
+
+- get teacherList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+- 老师列表
+
+  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+<a id="userCount"></a>
+
+### userCount
+
+- get userCount():number
+
+- 房间内用户数
+
+  Returns number
+
+<a id="users"></a>
+
+### users
+
+- get users():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+- 房间内所有用户
+
+  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+
+## Methods
+
+<a id="fetchUserList"></a>
+
+### fetchUserList
+
+- fetchUserList(params:[FetchUserParam](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-user-type-etch-user-param)):Promise&lt;\{count:any;list:any;nextId:any;total:any\}&gt;
+
+- 获取用户列表
+
+  Parameters
+
+  - params: [FetchUserParam](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-user-type-etch-user-param)
+
+    查询条件
+
+  Returns Promise&lt;\{count:any;list:any;nextId:any;total:any\}&gt;
+
+  用户列表
+
+<a id="kickOutOnceOrBan"></a>
+
+### kickOutOnceOrBan
+
+- kickOutOnceOrBan(userUuid:string, isBan:boolean):Promise&lt;undefined&gt;
+
+- 将用户踢出房间
+
+  Parameters
+
+  - userUuid: string
+
+    用户 ID
+  - isBan: boolean
+
+    是否永久封禁该用户
+
+  Returns Promise&lt;undefined&gt;
+
+<a id="updateUserProperties"></a>
+
+### updateUserProperties
+
+- updateUserProperties(users:\{cause?:any;properties:any;userUuid:string\}[], fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+
+- 更新用户自定属性
+
+  Parameters
+
+  - users: \{cause?:any;properties:any;userUuid:string\}[]
+
+    要更新的用户属性信息
+  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+    要更新的用户所在的房间对象，不传默认为当前房间
+
+  Returns Promise&lt;void&gt;

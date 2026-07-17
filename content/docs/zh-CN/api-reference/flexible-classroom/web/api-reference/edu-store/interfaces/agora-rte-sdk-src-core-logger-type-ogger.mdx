@@ -1,0 +1,198 @@
+---
+title: Interface Logger
+description: The console.debug() function is an alias for {@link log}.
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/interfaces/agora_rte_sdk_src_core_logger_type_ogger.html
+  sourcePath: html-docs/flexible-classroom/Web/interfaces/agora_rte_sdk_src_core_logger_type_ogger.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- Logger
+
+### Implemented by
+
+- [LoggerImpl](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-logger-logger-impl-ogger-impl)
+
+## Index
+
+### Properties
+
+- [debug](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#debug)
+- [error](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error)
+- [info](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#info)
+- [warn](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#warn)
+
+### Methods
+
+- [setLogLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#setLogLevel)
+
+## Properties
+
+<a id="debug"></a>
+
+### debug
+
+debug: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalParams:any[]):void\}
+
+#### Type declaration
+
+- - (...data:any[]):void
+- (...data:any[]):void
+- (message?:any, ...optionalParams:any[]):void
+
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - The `console.debug()` function is an alias for \{@link log\}.
+
+  ### since
+
+  v8.0.0
+
+    Parameters
+
+    - Optional message: any
+    - Rest...optionalParams: any[]
+
+    Returns void
+
+<a id="error"></a>
+
+### error
+
+error: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalParams:any[]):void\}
+
+#### Type declaration
+
+- - (...data:any[]):void
+- (...data:any[]):void
+- (message?:any, ...optionalParams:any[]):void
+
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - Prints to `stderr` with newline. Multiple arguments can be passed, with the
+  first used as the primary message and all additional used as substitution
+  values similar to [`printf(3)`](http://man7.org/linux/man-pages/man3/printf.3.html) (the arguments are all passed to `util.format()`).
+
+  ```javascript
+  const code = 5;console.error('error #%d', code);// Prints: error #5, to stderrconsole.error('error', code);// Prints: error 5, to stderr
+  ```
+
+  If formatting elements (e.g. `%d`) are not found in the first string then `util.inspect()` is called on each argument and the resulting string
+  values are concatenated. See `util.format()` for more information.
+
+  ### since
+
+  v0.1.100
+
+    Parameters
+
+    - Optional message: any
+    - Rest...optionalParams: any[]
+
+    Returns void
+
+<a id="info"></a>
+
+### info
+
+info: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalParams:any[]):void\}
+
+#### Type declaration
+
+- - (...data:any[]):void
+- (...data:any[]):void
+- (message?:any, ...optionalParams:any[]):void
+
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - The `console.info()` function is an alias for \{@link log\}.
+
+  ### since
+
+  v0.1.100
+
+    Parameters
+
+    - Optional message: any
+    - Rest...optionalParams: any[]
+
+    Returns void
+
+<a id="warn"></a>
+
+### warn
+
+warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalParams:any[]):void\}
+
+#### Type declaration
+
+- - (...data:any[]):void
+- (...data:any[]):void
+- (message?:any, ...optionalParams:any[]):void
+
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - Parameters
+
+    - Rest...data: any[]
+
+    Returns void
+  - The `console.warn()` function is an alias for [error](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error).
+
+  ### since
+
+  v0.1.100
+
+    Parameters
+
+    - Optional message: any
+    - Rest...optionalParams: any[]
+
+    Returns void
+
+## Methods
+
+<a id="setLogLevel"></a>
+
+### setLogLevel
+
+- setLogLevel(logLevel:[LogLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)):void
+
+- Parameters
+
+  - logLevel: [LogLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+
+  Returns void

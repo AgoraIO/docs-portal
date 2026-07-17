@@ -5,7 +5,7 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import yaml from 'js-yaml';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
-import { normalizeOpenApiShortDescription } from './openapi-normalizer.mjs';
+import { splitOpenApiDescription } from './openapi-normalizer.mjs';
 
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference/';
 const OWNERSHIP_PATHS = [
@@ -540,6 +540,18 @@ export async function auditApiCenterProvenance({
   let openapiNormalizedLegacyMatches = 0;
   let openapiNormalizedBaseMatches = 0;
   const baseOpenApiDocuments = new Map();
+  const documentationBlocks = (blocks) =>
+    (blocks ?? []).map((block) => ({
+      markdown: block.markdown,
+      position: block.position,
+    }));
+  const blocksMatch = (left, right) =>
+    JSON.stringify(documentationBlocks(left)) ===
+    JSON.stringify(documentationBlocks(right));
+  const documentationMatches = (record, documentation) =>
+    record.normalizedDescription === documentation.description &&
+    blocksMatch(record.docsSections, documentation.sections) &&
+    blocksMatch(record.docsCallouts, documentation.callouts);
   for (const record of openApiNormalization.operations ?? []) {
     const resolution = openApiEvidence.get(
       `${record.targetPath}:${record.operationId}`,
@@ -563,10 +575,12 @@ export async function auditApiCenterProvenance({
     const targetOperation = (
       await readOpenApiOperations(path.resolve(root, record.targetPath))
     ).get(record.operationId);
-    const expected = normalizeOpenApiShortDescription(
-      legacyOperation?.description,
-    );
-    if (record.normalizedDescription !== targetOperation?.description) {
+    const expected = splitOpenApiDescription(legacyOperation?.description);
+    if (
+      record.normalizedDescription !== targetOperation?.description ||
+      !blocksMatch(record.docsSections, targetOperation?.['x-docs-sections']) ||
+      !blocksMatch(record.docsCallouts, targetOperation?.['x-docs-callouts'])
+    ) {
       errors.push({
         ...issue(
           'normalized-openapi-target-drift',
@@ -577,7 +591,7 @@ export async function auditApiCenterProvenance({
       });
       continue;
     }
-    if (expected && record.normalizedDescription === expected) {
+    if (expected.description && documentationMatches(record, expected)) {
       openapiNormalizedLegacyMatches += 1;
       continue;
     }
@@ -595,8 +609,10 @@ export async function auditApiCenterProvenance({
       baseOperation &&
       sha256(String(baseOperation.description)) ===
         record.originalDescriptionHash &&
-      normalizeOpenApiShortDescription(baseOperation.description) ===
-        record.normalizedDescription
+      documentationMatches(
+        record,
+        splitOpenApiDescription(baseOperation.description),
+      )
     ) {
       openapiNormalizedBaseMatches += 1;
       continue;
@@ -922,7 +938,7 @@ export async function auditApiCenterProvenance({
       checkoutHead: legacyHead,
       commitMatched:
         legacyHead == null || legacyHead === manifest.source.commit,
-      root: legacyRoot,
+      root: '.',
     },
     liveEvidence: {
       apiCenterUrl: manifest.live.finalUrl,

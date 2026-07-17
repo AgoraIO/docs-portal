@@ -1,0 +1,330 @@
+---
+title: Class GroupStore
+description: GroupStore 类提供分组讨论功能相关的能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_group_index_roupStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_group_index_roupStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`GroupStore` 类提供分组讨论功能相关的能力。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - GroupStore
+
+## Index
+
+### Properties
+
+- [groupDetails](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#groupDetails)
+- [state](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#state)
+
+### Accessors
+
+- [currentSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#currentSubRoom)
+- [groupUuidByUserUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#groupUuidByUserUuid)
+- [userByUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#userByUuid)
+
+### Methods
+
+- [acceptGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#acceptGroupInvite)
+- [addGroups](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#addGroups)
+- [broadcastMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#broadcastMessage)
+- [joinSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#joinSubRoom)
+- [leaveSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#leaveSubRoom)
+- [moveIntoSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#moveIntoSubRoom)
+- [moveUsersToGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#moveUsersToGroup)
+- [rejectGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#rejectGroupInvite)
+- [removeGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#removeGroupUsers)
+- [removeGroups](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#removeGroups)
+- [startGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#startGroup)
+- [stopGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#stopGroup)
+- [updateGroupInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#updateGroupInfo)
+- [updateGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-group-index-roup-store#updateGroupUsers)
+
+## Properties
+
+<a id="groupDetails"></a>
+
+### groupDetails
+
+groupDetails: Map&lt;string,[GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&gt;
+
+分组详情
+
+<a id="state"></a>
+
+### state
+
+state: [GroupState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+
+分组状态
+
+## Accessors
+
+<a id="currentSubRoom"></a>
+
+### currentSubRoom
+
+- get currentSubRoom():undefined|string
+
+- 当前所在小组
+
+  Returns undefined|string
+
+<a id="groupUuidByUserUuid"></a>
+
+### groupUuidByUserUuid
+
+- get groupUuidByUserUuid():Map&lt;string,string&gt;
+
+- 用户所在组 ID 映射关系
+
+  Returns Map&lt;string,string&gt;
+
+<a id="userByUuid"></a>
+
+### userByUuid
+
+- get userByUuid():Map&lt;string,[GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
+
+- 返回 userUuid 组成的 map 数据
+
+  Returns Map&lt;string,[GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
+
+## Methods
+
+<a id="acceptGroupInvite"></a>
+
+### acceptGroupInvite
+
+- acceptGroupInvite(groupUuid:string):Promise&lt;void&gt;
+
+- 接受加入小组的邀请
+
+  Parameters
+
+  - groupUuid: string
+
+    组 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="addGroups"></a>
+
+### addGroups
+
+- addGroups(groupDetails:([GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&\{groupUuid?:string\})[], inProgress?:boolean):Promise&lt;void&gt;
+
+- 新建小组
+
+  Parameters
+
+  - groupDetails: ([GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&\{groupUuid?:string\})[]
+  - Optional inProgress: boolean
+
+  Returns Promise&lt;void&gt;
+
+<a id="broadcastMessage"></a>
+
+### broadcastMessage
+
+- broadcastMessage(messageText:string):void
+
+- 发送全体消息
+
+  Parameters
+
+  - messageText: string
+
+    消息
+
+  Returns void
+
+<a id="joinSubRoom"></a>
+
+### joinSubRoom
+
+- joinSubRoom(groupUuid:string):void
+
+- 进入子房间
+
+  Parameters
+
+  - groupUuid: string
+
+    组 ID
+
+  Returns void
+
+<a id="leaveSubRoom"></a>
+
+### leaveSubRoom
+
+- leaveSubRoom():void
+
+- 离开小组
+
+  Returns void
+
+<a id="moveIntoSubRoom"></a>
+
+### moveIntoSubRoom
+
+- moveIntoSubRoom(fromGroupUuid:string, toGroupUuid:string):void
+
+- 用户主动从某房间移动至另一房间
+
+  Parameters
+
+  - fromGroupUuid: string
+
+    原组 ID
+  - toGroupUuid: string
+
+    目标组 ID
+
+  Returns void
+
+<a id="moveUsersToGroup"></a>
+
+### moveUsersToGroup
+
+- moveUsersToGroup(fromGroupUuid:string, toGroupUuid:string, users:string[]):Promise&lt;void&gt;
+
+- 将用户从某小组移入另一小组
+
+  Parameters
+
+  - fromGroupUuid: string
+
+    原组 ID
+  - toGroupUuid: string
+
+    目标组 ID
+  - users: string[]
+
+    用户 ID 列表
+
+  Returns Promise&lt;void&gt;
+
+<a id="rejectGroupInvite"></a>
+
+### rejectGroupInvite
+
+- rejectGroupInvite(groupUuid:string):Promise&lt;void&gt;
+
+- 拒绝加入小组的邀请
+
+  Parameters
+
+  - groupUuid: string
+
+    组 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="removeGroupUsers"></a>
+
+### removeGroupUsers
+
+- removeGroupUsers(fromGroupUuid:string, users:string[]):Promise&lt;void&gt;
+
+- 将用户从小组中移除
+
+  Parameters
+
+  - fromGroupUuid: string
+
+    组 ID
+  - users: string[]
+
+    用户 ID 列表
+
+  Returns Promise&lt;void&gt;
+
+<a id="removeGroups"></a>
+
+### removeGroups
+
+- removeGroups(groups:string[]):Promise&lt;void&gt;
+
+- 移除小组
+
+  Parameters
+
+  - groups: string[]
+
+    小组 ID 列表
+
+  Returns Promise&lt;void&gt;
+
+<a id="startGroup"></a>
+
+### startGroup
+
+- startGroup(groupDetails:[GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[], syncBoardScenes?:boolean):Promise&lt;void&gt;
+
+- 开启分组讨论
+
+  Parameters
+
+  - groupDetails: [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+    分组配置数组
+  - Optional syncBoardScenes: boolean
+
+  Returns Promise&lt;void&gt;
+
+<a id="stopGroup"></a>
+
+### stopGroup
+
+- stopGroup():Promise&lt;void&gt;
+
+- 结束分组讨论
+
+  Returns Promise&lt;void&gt;
+
+<a id="updateGroupInfo"></a>
+
+### updateGroupInfo
+
+- updateGroupInfo(groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]):Promise&lt;void&gt;
+
+- 更新分组配置
+
+  Parameters
+
+  - groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+    分组配置数组
+
+  Returns Promise&lt;void&gt;
+
+<a id="updateGroupUsers"></a>
+
+### updateGroupUsers
+
+- updateGroupUsers(patches:[PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[], sendInvitation?:boolean):Promise&lt;void&gt;
+
+- 更新小组成员列表
+
+  Parameters
+
+  - patches: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+    更新配置
+  - Optional sendInvitation: boolean
+
+    是否发送邀请
+
+  Returns Promise&lt;void&gt;

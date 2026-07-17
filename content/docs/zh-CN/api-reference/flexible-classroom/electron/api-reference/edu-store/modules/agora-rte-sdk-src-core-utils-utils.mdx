@@ -1,0 +1,237 @@
+---
+title: Namespace "agora-rte-sdk/src/core/utils/utils"
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/agora_rte_sdk_src_core_utils_utils_.html
+  sourcePath: html-docs/flexible-classroom/Electron/modules/agora_rte_sdk_src_core_utils_utils_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Index
+
+### Classes
+
+- [Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+### Type aliases
+
+- [AbortCallback](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AbortCallback)
+- [AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction)
+- [AttemptFailCallback](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AttemptFailCallback)
+- [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)
+- [RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)
+
+### Functions
+
+- [arr2Map](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#arr2Map)
+- [arr2map](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#arr2map)
+- [isElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#isElectron)
+- [jsonstring](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#jsonstring)
+- [printarr](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#printarr)
+- [retryAttempt](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#retryAttempt)
+- [sleep](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#sleep)
+
+## Type aliases
+
+<a id="AbortCallback"></a>
+
+### AbortCallback
+
+AbortCallback: (e:Error)=&gt;Promise&lt;void&gt;|void
+
+#### Type declaration
+
+- - (e:Error):Promise&lt;void&gt;|void
+
+  - Parameters
+
+    - e: Error
+
+    Returns Promise&lt;void&gt;|void
+
+<a id="AnyFunction"></a>
+
+### AnyFunction
+
+AnyFunction: (...args:any[])=&gt;unknown
+
+#### Type declaration
+
+- - (...args:any[]):unknown
+
+  - Parameters
+
+    - Rest...args: any[]
+
+    Returns unknown
+
+<a id="AttemptFailCallback"></a>
+
+### AttemptFailCallback
+
+AttemptFailCallback: (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\})=&gt;Promise&lt;boolean&gt;|boolean
+
+#### Type declaration
+
+- - (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\}):Promise&lt;boolean&gt;|boolean
+
+  - Parameters
+
+    - args: [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\}
+
+    Returns Promise&lt;boolean&gt;|boolean
+
+<a id="RetryAttemptArgs"></a>
+
+### RetryAttemptArgs
+
+RetryAttemptArgs: \{currentRetry:number;error:Error;exponential:number;factor:number;interval:number;jitter:number;maxBackoff:number;retriesMax:number\}
+
+#### Type declaration
+
+- currentRetry:number
+- error:Error
+- exponential:number
+- factor:number
+- interval:number
+- jitter:number
+- maxBackoff:number
+- retriesMax:number
+
+<a id="RetryOptions"></a>
+
+### RetryOptions
+
+RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boolean;jitter?:number;maxBackoff?:number;retriesMax?:number\}
+
+#### Type declaration
+
+- Optional exponential?:boolean
+- Optional factor?:number
+- Optional interval?:number
+- Optional isCb?:boolean
+- Optional jitter?:number
+- Optional maxBackoff?:number
+- Optional retriesMax?:number
+
+## Functions
+
+<a id="arr2Map"></a>
+
+### Const arr2Map
+
+- arr2Map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Map&lt;string,T&gt;
+
+- Type parameters
+
+  - T
+
+  Parameters
+
+  - arr: T[]
+  - fnKey: (ele:T)=&gt;string
+
+    - - (ele:T):string
+
+      - Parameters
+
+        - ele: T
+
+        Returns string
+
+  Returns Map&lt;string,T&gt;
+
+<a id="arr2map"></a>
+
+### Const arr2map
+
+- arr2map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Record&lt;string,T&gt;
+
+- Type parameters
+
+  - T
+
+  Parameters
+
+  - arr: T[]
+  - fnKey: (ele:T)=&gt;string
+
+    - - (ele:T):string
+
+      - Parameters
+
+        - ele: T
+
+        Returns string
+
+  Returns Record&lt;string,T&gt;
+
+<a id="isElectron"></a>
+
+### Const isElectron
+
+- isElectron():boolean
+
+- Returns boolean
+
+<a id="jsonstring"></a>
+
+### Const jsonstring
+
+- jsonstring(json:unknown):string
+
+- Parameters
+
+  - json: unknown
+
+  Returns string
+
+<a id="printarr"></a>
+
+### Const printarr
+
+- printarr(arr:unknown[], keyFn?:(i:unknown)=&gt;string):string
+
+- Parameters
+
+  - arr: unknown[]
+  - Optional keyFn: (i:unknown)=&gt;string
+
+    - - (i:unknown):string
+
+      - Parameters
+
+        - i: unknown
+
+        Returns string
+
+  Returns string
+
+<a id="retryAttempt"></a>
+
+### Const retryAttempt
+
+- retryAttempt(fn:["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args:unknown[], opts?:[RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)):[Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+- Parameters
+
+  - fn: ["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction)
+  - args: unknown[]
+  - Optional opts: [RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)
+
+  Returns [Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+<a id="sleep"></a>
+
+### Const sleep
+
+- sleep(ms:number):Promise&lt;unknown&gt;
+
+- Parameters
+
+  - ms: number
+
+  Returns Promise&lt;unknown&gt;

@@ -261,11 +261,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 - `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。
 
   示例：`\{"Audio_Sample_Rate":16000\}`，表示录制音频的采样率是 16000Hz。
-- 注解
-
-  `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。
+- `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。
 
   示例：`\{"Pcm_Sample_Rate":16000\}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
+
+  ### 注解
 - `Chunk_Time_Span` 参数仅适用于直播场景下的单流录制模式。
 - 要使用 `Chunk_Time_Span` 参数，必须将 `enableIntraRequest` 设为 `true`，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
 - 录制 SDK 只有遇到视频关键帧才会真正切片，因而实际的切片时间间隔与设置的参数会有少许偏差。

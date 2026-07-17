@@ -1,0 +1,195 @@
+---
+title: Class AgoraRteSynchronizer
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_core_processor_sequence_msg_synchronizer_goraRteSynchronizer.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_core_processor_sequence_msg_synchronizer_goraRteSynchronizer.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- AgoraRteSynchronizer
+
+## Index
+
+### Constructors
+
+- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#constructor)
+
+### Properties
+
+- [logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#logger)
+- [runNextTask](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#runNextTask)
+
+### Accessors
+
+- [handle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#handle)
+- [sequenceTypeLabel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#sequenceTypeLabel)
+
+### Methods
+
+- [addTasks](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#addTasks)
+- [dequeueTask](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#dequeueTask)
+- [findSequenceGap](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#findSequenceGap)
+- [notifyTaskQueueUpdate](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#notifyTaskQueueUpdate)
+- [prependTasks](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#prependTasks)
+- [processTask](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#processTask)
+- [sortTasks](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#sortTasks)
+- [syncSequenceUntilSuccess](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#syncSequenceUntilSuccess)
+- [syncSnapshot](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer#syncSnapshot)
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+- new AgoraRteSynchronizer(__namedParameters:\{messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle);scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene);sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)\}):[AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer)
+
+- Parameters
+
+  - __namedParameters: \{messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle);scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene);sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)\}
+
+    - messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+    - scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+    - sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)
+
+  Returns [AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer)
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+<a id="runNextTask"></a>
+
+### runNextTask
+
+runNextTask: ()=&gt;void
+
+#### Type declaration
+
+- - ():void
+
+  - Returns void
+
+## Accessors
+
+<a id="handle"></a>
+
+### handle
+
+- get handle():[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+- Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+<a id="sequenceTypeLabel"></a>
+
+### sequenceTypeLabel
+
+- get sequenceTypeLabel():"ChannelSequence"|"PeerSequence"
+
+- Returns "ChannelSequence"|"PeerSequence"
+
+## Methods
+
+<a id="addTasks"></a>
+
+### addTasks
+
+- addTasks(tasks:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]):void
+
+- Parameters
+
+  - tasks: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+
+  Returns void
+
+<a id="dequeueTask"></a>
+
+### dequeueTask
+
+- dequeueTask():undefined|null|[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+- Returns undefined|null|[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+<a id="findSequenceGap"></a>
+
+### findSequenceGap
+
+- findSequenceGap():null|\{count:number;queueHeadSeq:number;seq:number\}
+
+- Returns null|\{count:number;queueHeadSeq:number;seq:number\}
+
+<a id="notifyTaskQueueUpdate"></a>
+
+### notifyTaskQueueUpdate
+
+- notifyTaskQueueUpdate():void
+
+- Returns void
+
+<a id="prependTasks"></a>
+
+### prependTasks
+
+- prependTasks(tasks:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]):void
+
+- Parameters
+
+  - tasks: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+
+  Returns void
+
+<a id="processTask"></a>
+
+### processTask
+
+- processTask(task:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)):Promise&lt;void&gt;
+
+- Parameters
+
+  - task: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+  Returns Promise&lt;void&gt;
+
+<a id="sortTasks"></a>
+
+### sortTasks
+
+- sortTasks():void
+
+- Returns void
+
+<a id="syncSequenceUntilSuccess"></a>
+
+### syncSequenceUntilSuccess
+
+- syncSequenceUntilSuccess(lastSeq:number, count:number):Promise&lt;void&gt;
+
+- Parameters
+
+  - lastSeq: number
+  - count: number
+
+  Returns Promise&lt;void&gt;
+
+<a id="syncSnapshot"></a>
+
+### syncSnapshot
+
+- syncSnapshot(snapshot:[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)):void
+
+- Parameters
+
+  - snapshot: [AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+
+  Returns void

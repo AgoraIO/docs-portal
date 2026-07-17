@@ -13,12 +13,12 @@
 - Reachable logical pages: 4802
 - Broken live body links: 27
 - Missing live fragments: 277
-- Source-classified pages: 4775/4802
+- Source-classified pages: 5573/5600
 - Excluded broken live links: 27
 - Unresolved / ambiguous sources: 0 / 0
-- Existing target pages: 4775
-- Source types: manual-mdx 685, generated-html 3960, broken-live-link 27, openapi 130
-- Generators: legacy-mdx 685, doxygen 297, oxygen 3451, typedoc 162, appledoc 50, openapi 130
+- Existing target pages: 5573
+- Source types: manual-mdx 685, generated-html 4758, broken-live-link 27, openapi 130
+- Generators: legacy-mdx 685, doxygen 297, oxygen 3451, typedoc 960, appledoc 50, openapi 130
 
 ## Entry inventory
 

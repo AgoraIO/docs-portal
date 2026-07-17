@@ -311,6 +311,40 @@ describe('API Center manual MDX runner', () => {
     expect(output).toContain('code: manual-platform-merge');
   });
 
+  it('labels the shared RTC Server SDK error-code source as common across platforms', async () => {
+    const { oldRoot, repoRoot } = await createFixture();
+    const sourcePath = 'docs-api-reference/rtc-server-sdk/error-code.mdx';
+    const targetPath =
+      'content/docs/zh-CN/api-reference/rtc-server-sdk/error-code.mdx';
+    await writeLegacyPage(
+      oldRoot,
+      sourcePath,
+      `---\ntitle: 错误码\n---\n\n本文中出现的 API 名称以 C++ 为准，其他平台的 API 名称可能会有所不同。\n`,
+    );
+    await writeManifest(
+      repoRoot,
+      ['cpp', 'java', 'python', 'go'].map((platform) =>
+        manualPage({
+          platform,
+          requestedUrl: `https://doc.shengwang.cn/api-ref/rtc-server-sdk/${platform}/error-code`,
+          sourcePath,
+          targetPath,
+        }),
+      ),
+    );
+
+    await runManualMdxMigration({ repoRoot, oldRoot });
+    const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
+
+    expect(output).toContain('title: RTC 服务端 SDK 通用错误码');
+    expect(output).toContain('API 名称以 C++ 为准');
+    expect(output).toContain('platforms:');
+    expect(output).toContain('  - cpp');
+    expect(output).toContain('  - java');
+    expect(output).toContain('  - python');
+    expect(output).toContain('  - go');
+  });
+
   it('preserves an existing unowned migration target', async () => {
     const { oldRoot, repoRoot } = await createFixture();
     const targetPath =

@@ -99,21 +99,21 @@ _migration:
 
 - video-element-visible-status(data?:[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)):void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.8.0*
 
-  *4.8.0*
+提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
 
-  提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
-
-  调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
+调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 
   Parameters
 
   - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)
 
     `&lt;video&gt;` 标签的可见状态信息。
+
+  Returns void
 
 ## Properties
 
@@ -181,9 +181,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getListeners(event:string):Function[]
 
-- Returns Function[]
-
-  Inherited from EventEmitter.getListeners
+- Inherited from EventEmitter.getListeners
 
   指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -192,6 +190,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - event: string
 
     事件名称。
+
+  Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -310,9 +310,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - off(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.off
+- Inherited from EventEmitter.off
 
   取消一个指定事件的监听。
 
@@ -325,6 +323,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     监听事件时传入的回调函数。
 
+  Returns void
+
 <a id="on"></a>
 
 ### on
@@ -336,9 +336,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated_2):void
 - on(event:"sei-received", listener:typeof event_sei_received):void
 
-- Returns void
-
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   Parameters
 
@@ -348,9 +346,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_track_updated
 
     详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
-- Returns void
 
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+  Returns void
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   Parameters
 
@@ -360,9 +358,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_video_state_changed
 
     详见 [video-state-changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_video_state_changed)。
-- Returns void
 
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+  Returns void
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   Parameters
 
@@ -372,9 +370,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_first_frame_decoded
 
     详见 [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。
-- Returns void
 
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+  Returns void
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   Parameters
 
@@ -384,9 +382,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_video_element_visible_status_2
 
     详见 [video-element-visible-status](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#event_video_element_visible_status_2)。
-- Returns void
 
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+  Returns void
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   添加事件监听器。
 
@@ -398,9 +396,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: typeof event_transceiver_updated_2
 
     详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)。
-- Returns void
 
-  Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
+  Returns void
+- Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
   添加事件监听器。
 
@@ -413,15 +411,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     详见 [ILocalTrack.sei-received](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#event_sei_received)。
 
+  Returns void
+
 <a id="once"></a>
 
 ### once
 
 - once(event:string, listener:Function):void
 
-- Returns void
-
-  Inherited from EventEmitter.once
+- Inherited from EventEmitter.once
 
   监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -435,6 +433,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
   - listener: Function
 
     传入的回调函数。
+
+  Returns void
 
 <a id="pipe"></a>
 
@@ -464,9 +464,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - play(element:string|HTMLElement, config?:[VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)):void
 
-- Returns void
-
-  Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
   在页面上播放本地视频轨道。
 
@@ -482,15 +480,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。
 
+  Returns void
+
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
 - removeAllListeners(event?:string):void
 
-- Returns void
-
-  Inherited from EventEmitter.removeAllListeners
+- Inherited from EventEmitter.removeAllListeners
 
   指定一个事件，取消其所有的监听。
 
@@ -500,17 +498,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
     指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
+  Returns void
+
 <a id="stop"></a>
 
 ### stop
 
 - stop():void
 
-- Returns void
-
-  Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
   停止播放。
+
+  Returns void
 
 <a id="unpipe"></a>
 
@@ -518,10 +518,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - unpipe():void
 
-- Returns void
+- ### 自从
 
-  ### 自从
+*4.13.0*
 
-  *4.13.0*
+取消远端视频轨道上注入的 `Processor`。
 
-  取消远端视频轨道上注入的 `Processor`。
+  Returns void

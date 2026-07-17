@@ -31,6 +31,12 @@ const PLATFORM_ALIASES = new Map([
   ['unreal-cpp', 'unreal'],
   ['unreal-blueprint', 'blueprint'],
 ]);
+const SHARED_DOCUMENT_TITLES = new Map([
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/error-code.mdx',
+    'RTC 服务端 SDK 通用错误码',
+  ],
+]);
 
 function normalizePlatform(value) {
   return PLATFORM_ALIASES.get(value) ?? value;
@@ -437,7 +443,7 @@ export async function runManualMdxMigration({
     body = localized.body;
     warnings.push(...localized.warnings);
     const first = conversions[0];
-    const title = first.data.title;
+    const title = SHARED_DOCUMENT_TITLES.get(targetPath) ?? first.data.title;
     if (!title) {
       throw new Error(
         `Missing source-derived title for ${sourcePaths.join(', ')}; request source copy instead of synthesizing a target filename title.`,

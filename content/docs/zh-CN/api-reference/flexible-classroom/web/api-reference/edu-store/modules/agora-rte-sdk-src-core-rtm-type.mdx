@@ -1,0 +1,85 @@
+---
+title: Namespace "agora-rte-sdk/src/core/rtm/type"
+description: 自定义RTM消息观察者
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules/agora_rte_sdk_src_core_rtm_type_.html
+  sourcePath: html-docs/flexible-classroom/Web/modules/agora_rte_sdk_src_core_rtm_type_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Index
+
+### Enumerations
+
+- [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+### Interfaces
+
+- [AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)
+
+### Type aliases
+
+- [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+- [AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+- [AgoraRteCustomMessagePayload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessagePayload)
+
+## Type aliases
+
+<a id="AgoraRteCustomMessage"></a>
+
+### AgoraRteCustomMessage
+
+AgoraRteCustomMessage: \{fromUser:[AgoraRteUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-processor-type#AgoraRteUser);payload:[AgoraRteCustomMessagePayload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessagePayload)\}
+
+#### Type declaration
+
+- fromUser:[AgoraRteUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-processor-type#AgoraRteUser)
+- payload:[AgoraRteCustomMessagePayload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessagePayload)
+
+<a id="AgoraRteCustomMessageObserver"></a>
+
+### AgoraRteCustomMessageObserver
+
+AgoraRteCustomMessageObserver: \{onReceiveChannelMessage:any;onReceivePeerMessage:any\}
+
+自定义RTM消息观察者
+
+#### Type declaration
+
+- onReceiveChannelMessage:function
+
+  - onReceiveChannelMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
+
+  - 收到频道消息
+
+    Parameters
+
+    - message: [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+
+    Returns void
+- onReceivePeerMessage:function
+
+  - onReceivePeerMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
+
+  - 收到点对点消息
+
+    Parameters
+
+    - message: [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+
+    Returns void
+
+<a id="AgoraRteCustomMessagePayload"></a>
+
+### AgoraRteCustomMessagePayload
+
+AgoraRteCustomMessagePayload: \{cmd:string;data:any\}
+
+#### Type declaration
+
+- cmd:string
+- data:any

@@ -272,9 +272,7 @@ version: string
 - addMagixEventListener(event:string, listener:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?:[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)):void
 - addMagixEventListener(event:string, listener:[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval:number):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
+- Defined in [index-zh.d.ts:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
 
   注册自定义事件监听。
 
@@ -295,9 +293,9 @@ version: string
   - Optional options: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
 
     自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)。
-- Returns void
 
-  Defined in [index-zh.d.ts:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
+  Returns void
+- Defined in [index-zh.d.ts:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
 
   注册高频自定义事件监听。
 
@@ -331,15 +329,15 @@ version: string
 
     SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
 
+  Returns void
+
 <a id="bindhtmlelement"></a>
 
 ### bindHtmlElement
 
 - bindHtmlElement(element:HTMLDivElement|null):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
+- Defined in [index-zh.d.ts:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
 
   将白板绑定到 HTML 元素上。
 
@@ -348,6 +346,8 @@ version: string
   - element: HTMLDivElement|null
 
     用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。
+
+  Returns void
 
 <a id="converttopointinworld"></a>
 
@@ -439,9 +439,7 @@ version: string
 
 - fillSceneSnapshot(scenePath:string, div:HTMLElement, width:number, height:number):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
+- Defined in [index-zh.d.ts:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
 
   生成特定场景的屏幕快照。
 
@@ -459,6 +457,8 @@ version: string
   - height: number
 
     屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。
+
+  Returns void
 
 <a id="generatescreenshot"></a>
 
@@ -564,9 +564,7 @@ version: string
 
 - moveCamera(camera:Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
+- Defined in [index-zh.d.ts:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
 
   调整视角。
 
@@ -576,15 +574,15 @@ version: string
 
     视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
 
+  Returns void
+
 <a id="movecameratocontain"></a>
 
 ### moveCameraToContain
 
 - moveCameraToContain(rectangle:[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
+- Defined in [index-zh.d.ts:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
 
   调整视角，以保证完整显示视觉矩形。
 
@@ -594,20 +592,22 @@ version: string
 
     视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)。
 
+  Returns void
+
 <a id="refreshviewsize"></a>
 
 ### refreshViewSize
 
 - refreshViewSize():void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
+- Defined in [index-zh.d.ts:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
 
   刷新白板的界面。
 
   当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
    该方法仅在 `autoResize` 为 `false` 时生效。
+
+  Returns void
 
 <a id="removemagixeventlistener"></a>
 
@@ -615,9 +615,7 @@ version: string
 
 - removeMagixEventListener(event:string, listener?:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
+- Defined in [index-zh.d.ts:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
 
   移除自定义事件监听。
 
@@ -630,15 +628,15 @@ version: string
 
     要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。
 
+  Returns void
+
 <a id="scaleppttofit"></a>
 
 ### scalePptToFit
 
 - scalePptToFit(animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
+- Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
 
   根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
 
@@ -651,6 +649,8 @@ version: string
   - Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
 
     视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+
+  Returns void
 
 <a id="scenepathtype"></a>
 
@@ -678,9 +678,7 @@ version: string
 
 - scenePreview(scenePath:string, div:HTMLElement, width:number|undefined, height:number|undefined):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
+- Defined in [index-zh.d.ts:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
 
   生成特定场景的预览图。
 
@@ -699,15 +697,15 @@ version: string
 
     预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。
 
+  Returns void
+
 <a id="screenshottocanvas"></a>
 
 ### screenshotToCanvas
 
 - screenshotToCanvas(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
+- Defined in [index-zh.d.ts:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
 
   生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
 
@@ -732,15 +730,15 @@ version: string
 
     设备像素比。该参数为可选参数，如果不填，则默认值为 1。
 
+  Returns void
+
 <a id="screenshottocanvasasync"></a>
 
 ### screenshotToCanvasAsync
 
 - screenshotToCanvasAsync(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number, timeout?:number):Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
-
-  Defined in [index-zh.d.ts:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
+- Defined in [index-zh.d.ts:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
 
   等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
 
@@ -774,15 +772,15 @@ version: string
 
     图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
 
+  Returns Promise&lt;void&gt;
+
 <a id="setcamerabound"></a>
 
 ### setCameraBound
 
 - setCameraBound(cameraBound:[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
+- Defined in [index-zh.d.ts:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
 
   设置用户的视角边界。
 
@@ -791,6 +789,8 @@ version: string
   - cameraBound: [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
 
     视角边界。
+
+  Returns void
 
 <a id="waitmagixevent"></a>
 

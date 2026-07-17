@@ -40,23 +40,23 @@ configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 2345
 
 - addDestChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)):void
 
-- Returns void
+- 添加目标频道信息。
 
-  添加目标频道信息。
+如果你想将流转发到多个目标频道，可以多次调用该方法。该方法支持最多设置 4 个目标频道。
 
-  如果你想将流转发到多个目标频道，可以多次调用该方法。该方法支持最多设置 4 个目标频道。
-
-  ```javascript
-  const config = AgoraRTC.createChannelMediaRelayConfiguration();
-  config.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
-  config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
-  ```
+```javascript
+const config = AgoraRTC.createChannelMediaRelayConfiguration();
+config.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
+config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
+```
 
   Parameters
 
   - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)
 
     频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)。
+
+  Returns void
 
 <a id="removedestchannelinfo"></a>
 
@@ -64,9 +64,7 @@ configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 2345
 
 - removeDestChannelInfo(channelName:string):void
 
-- Returns void
-
-  删除通过 [addDestChannelInfo](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 添加的目标频道。
+- 删除通过 [addDestChannelInfo](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 添加的目标频道。
 
   Parameters
 
@@ -74,23 +72,25 @@ configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 2345
 
     待删除的目标频道名。
 
+  Returns void
+
 <a id="setsrcchannelinfo"></a>
 
 ### setSrcChannelInfo
 
 - setSrcChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)):void
 
-- Returns void
+- 设置源频道信息。
 
-  设置源频道信息。
-
-  ```javascript
-  const config = AgoraRTC.createChannelMediaRelayConfiguration();
-  config.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 123456 });
-  ```
+```javascript
+const config = AgoraRTC.createChannelMediaRelayConfiguration();
+config.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 123456 });
+```
 
   Parameters
 
   - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)
 
     频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)。
+
+  Returns void

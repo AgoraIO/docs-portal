@@ -2,14 +2,23 @@
 title: 跑通示例项目
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/kit-demo
   sourcePath: docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx
   generator: legacy-mdx
   warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:跑通示例项目
+        图示
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx:https://web-cdn.agora.io/docs-files/1687670569781:used-context:开始编译按钮
     - code: manual-mdx-normalized
       severity: info
-      message: Normalized 2 legacy MDX syntax signal(s).
+      message: Normalized 3 legacy MDX syntax signal(s).
 ---
 
 声网在 GitHub 上提供一个开源的 [AUIKaraoke 示例项目](https://github.com/AgoraIO-Community/AUIKitKaraoke/tree/main)。本文介绍如何快速跑通该示例项目，体验在线 K 歌场景。
@@ -59,10 +68,14 @@ IM_CLIENT_SECRET=<=你的环信 Client Secret=>
 
 2. 在 Android Studio 中，点击 **Sync Project with Gradle Files** 按钮，以让项目与 Gradle 文件同步。
 
-3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) 开始编译。
+3. 待同步成功后，点击
+
+   ![开始编译按钮](https://web-cdn.agora.io/docs-files/1687670569781)
+
+   开始编译。
 
 4. 编译成功后，你的 Android 设备上会出现 **AUIKaraoke** App。
 
 5. 打开 App，点击**创建房间**即可开始体验在线 K 歌。
 
-![](https://web-cdn.agora.io/docs-files/1696931506007)
+![跑通示例项目 图示](https://web-cdn.agora.io/docs-files/1696931506007)

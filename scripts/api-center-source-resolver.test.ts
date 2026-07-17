@@ -9,6 +9,7 @@ import {
   parseCsv,
   parseOxygenNavigationHtml,
   resolveLegacyPage,
+  resolveManifestSources,
 } from './lib/api-center/source-resolver.mjs';
 
 const temporaryDirectories: string[] = [];
@@ -79,6 +80,84 @@ async function resolve(
 }
 
 describe('API Center source resolver', () => {
+  it('adds the complete Edu Store TypeDoc trees with portable source paths', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-edu-store-source-'),
+    );
+    temporaryDirectories.push(root);
+    const oldRoot = path.join(root, 'legacy');
+    const newRoot = path.join(root, 'portal');
+    for (const folder of ['docs-api-reference', 'docs']) {
+      await fs.mkdir(path.join(oldRoot, folder), { recursive: true });
+      await fs.writeFile(
+        path.join(oldRoot, folder, '_products_.meta.js'),
+        'module.exports = [];\n',
+      );
+    }
+    for (const sourcePlatform of ['Web', 'Electron']) {
+      const sourceRoot = path.join(
+        oldRoot,
+        'html-docs/flexible-classroom',
+        sourcePlatform,
+      );
+      await fs.mkdir(path.join(sourceRoot, 'classes'), { recursive: true });
+      await fs.writeFile(
+        path.join(sourceRoot, 'index.html'),
+        '<main>Index</main>',
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'classes/cloud-drive.html'),
+        '<main>CloudDriveStore</main>',
+      );
+    }
+    const manifest: {
+      entries: unknown[];
+      pageEvidence: unknown[];
+      sourceResolutionSummary?: {
+        classifiedPageCount: number;
+        unresolvedPageCount: number;
+      };
+    } = { entries: [], pageEvidence: [] };
+
+    await resolveManifestSources(manifest, {
+      oldRoot,
+      newRoot,
+      pathMapRows: [],
+      lanes: [],
+    });
+
+    expect(manifest.pageEvidence).toHaveLength(4);
+    expect(manifest.sourceResolutionSummary).toMatchObject({
+      classifiedPageCount: 4,
+      unresolvedPageCount: 0,
+    });
+    expect(manifest.pageEvidence).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          requestedUrl:
+            'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/overview',
+          adoptExisting: true,
+          sourceResolution: expect.objectContaining({
+            sourcePath: 'html-docs/flexible-classroom/Web/index.html',
+            targetPath:
+              'content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store.mdx',
+          }),
+        }),
+        expect.objectContaining({
+          requestedUrl:
+            'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/cloud-drive.html',
+          sourceResolution: expect.objectContaining({
+            sourcePath:
+              'html-docs/flexible-classroom/Electron/classes/cloud-drive.html',
+            targetRoute:
+              '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/cloud-drive',
+          }),
+        }),
+      ]),
+    );
+    expect(JSON.stringify(manifest)).not.toContain(oldRoot);
+  });
+
   it.each([
     [
       '/api-ref/meeting/ios/client-api',
@@ -99,6 +178,21 @@ describe('API Center source resolver', () => {
       '/api-ref/rtm2/android/toc-message/enum',
       'content/docs/zh-CN/api-reference/rtm/android/enumv.mdx',
       '/zh-CN/api-reference/rtm/android/enumv',
+    ],
+    [
+      '/doc/console/general/user-guides/manage_authentication',
+      'content/docs/zh-CN/introduction/user-guides/manage-authentication.mdx',
+      '/zh-CN/introduction/user-guides/manage-authentication',
+    ],
+    [
+      '/basics/security/video-sdk',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/video-sdk.mdx',
+      '/zh-CN/introduction/security/sdk-compliance/video-sdk',
+    ],
+    [
+      '/basics/security/voice-sdk',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/voice-sdk.mdx',
+      '/zh-CN/introduction/security/sdk-compliance/voice-sdk',
     ],
   ])('resolves merged platform source %s to its rendered platform route', (legacyPath, targetPath, targetRoute) => {
     expect(resolveExistingApiCenterTarget(legacyPath)).toEqual({

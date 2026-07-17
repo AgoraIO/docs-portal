@@ -428,8 +428,6 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtc/reference/error-code',
   'api-ref/rtc/web/error-code':
     '/zh-CN/realtime-media/rtc/reference/error-code',
-  'rtc-server-sdk/error-code':
-    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
   'api-ref/rtc-server-sdk/go/error-code':
     '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
   'api-ref/rtc-server-sdk/python/error-code':
@@ -3035,6 +3033,25 @@ function resolveDocsSidebarHeader({
 }
 
 function getZhCnRestApiProductBackLink(activePath: string) {
+  const lane = getOpenApiLanes()
+    .filter(
+      (item) =>
+        item.sidebarBackLink?.['zh-CN'] &&
+        isSamePathOrDescendant(activePath, item.parentUrl['zh-CN']),
+    )
+    .sort(
+      (left, right) =>
+        right.parentUrl['zh-CN'].length - left.parentUrl['zh-CN'].length,
+    )
+    .at(0);
+  const laneBackLink = lane?.sidebarBackLink?.['zh-CN'];
+  if (lane && laneBackLink) {
+    return {
+      backHref: laneBackLink.href,
+      backLabel: laneBackLink.label,
+      prefix: lane.parentUrl['zh-CN'],
+    };
+  }
   return ZH_CN_REST_API_PRODUCT_BACK_LINKS.find((entry) =>
     isSamePathOrDescendant(activePath, entry.prefix),
   );

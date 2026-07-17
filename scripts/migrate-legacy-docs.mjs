@@ -508,6 +508,7 @@ export function transformLegacyMdx(body, state) {
     value = transformRemainingTabItems(value, state);
     value = transformPlatformHeadingTabs(value, state);
     value = transformAdjacentCodeFenceTabs(value, state);
+    value = normalizeMarkdownImageAlt(value, state);
     value = transformHtmlTables(value, state);
     value = transformMarkdownTableSlots(value, state);
     value = transformImages(value, state);
@@ -527,7 +528,7 @@ export function transformLegacyMdx(body, state) {
     value = normalizeWhitespace(value);
   }
 
-  return value.trim();
+  return normalizeMarkdownImageBlocks(value).trim();
 }
 
 export function transformAdmonitions(value) {
@@ -715,6 +716,9 @@ async function expandLegacyFile({
 
   visited.add(realPath);
   const parsed = parseFrontmatter(raw);
+  if (!state.pageTitle && parsed.frontmatter.title) {
+    state.pageTitle = stripWrappingQuotes(parsed.frontmatter.title);
+  }
   const activeBody = stripMdxComments(parsed.body);
   recordMigrationSignals({
     body: activeBody,
@@ -1856,7 +1860,7 @@ function renderCard(card) {
 function transformImages(value, state) {
   return value.replace(/<Image\b([^>]*?)(?:\/>|>\s*<\/Image>)/g, (_, attrs) => {
     const src = readAttribute(attrs, 'src') ?? '';
-    const alt = readAttribute(attrs, 'alt') ?? '';
+    const sourceAlt = readAttribute(attrs, 'alt') ?? '';
     const width = readAttribute(attrs, 'width');
     const inline = hasBooleanAttribute(attrs, 'inline');
 
@@ -1865,9 +1869,11 @@ function transformImages(value, state) {
     }
 
     if (inline) {
-      return `![${alt}](${src})`;
+      state.issues.push(`normalized-inline-image-block:${src}`);
+      return `![${sourceAlt}](${src})`;
     }
 
+    const alt = imageAltText(sourceAlt, src, state);
     return `\n![${alt}](${src})\n`;
   });
 }
@@ -1875,7 +1881,6 @@ function transformImages(value, state) {
 function transformRawHtmlImages(value, state) {
   return value.replace(/<img\b([^>]*)\/?>/gi, (match, attrs) => {
     const src = readAttribute(attrs, 'src');
-    const alt = readAttribute(attrs, 'alt') ?? '';
 
     if (!src) {
       state.issues.push('needs-raw-img-review');
@@ -1883,12 +1888,169 @@ function transformRawHtmlImages(value, state) {
     }
 
     state.issues.push('normalized-raw-img');
+    const sourceAlt = readAttribute(attrs, 'alt') ?? '';
     if (hasBooleanAttribute(attrs, 'inline')) {
-      return `![${alt}](${src})`;
+      state.issues.push(`normalized-inline-image-block:${src}`);
+      return `![${sourceAlt}](${src})`;
     }
 
+    const alt = imageAltText(sourceAlt, src, state);
     return `\n![${alt}](${src})\n`;
   });
+}
+
+function imageAltContext(value) {
+  return String(value ?? '')
+    .replace(/!\[[^\]\n]*]\([^)\n]+\)/g, '')
+    .replace(/\[([^\]\n]+)]\([^)\n]+\)/g, '$1')
+    .replace(/<[^>\n]+>/g, ' ')
+    .replace(/[`*_#>|]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s:：,，.;；-]+|[\s:：,，.;；-]+$/g, '')
+    .trim();
+}
+
+function imageAltText(sourceAlt, src, state, context = '') {
+  const alt = imageAltContext(sourceAlt);
+  if (alt) return alt;
+
+  const normalizedContext = imageAltContext(context);
+  const pageTitle = imageAltContext(state.pageTitle);
+  let fallback = '';
+  if (/^\d+(?:-\d+)?$/.test(normalizedContext)) {
+    fallback = `${normalizedContext} 人布局示意`;
+  } else if (normalizedContext && normalizedContext.length <= 48) {
+    fallback = /(?:图|图示|界面|按钮|图标|布局|示意)$/.test(normalizedContext)
+      ? normalizedContext
+      : `${normalizedContext} 图示`;
+  } else if (pageTitle) {
+    fallback = `${pageTitle} 图示`;
+  } else {
+    const stem = decodeURIComponent(
+      String(src ?? '')
+        .split(/[?#]/, 1)[0]
+        .split('/')
+        .at(-1) ?? '',
+    )
+      .replace(/\.[a-z0-9]+$/i, '')
+      .replace(/[-_]+/g, ' ')
+      .trim();
+    fallback = stem && !/^\d+$/.test(stem) ? `${stem} 图示` : '源页面图示';
+  }
+  state.issues.push(
+    `missing-source-text:image-alt:${state.currentSourcePath}:${src}:used-context:${fallback}`,
+  );
+  return fallback;
+}
+
+function normalizeMarkdownImageAlt(value, state) {
+  let inFence = false;
+  const lines = String(value).split('\n');
+  return lines
+    .map((line, lineIndex) => {
+      if (/^\s*(`{3,}|~{3,})/.test(line)) {
+        inFence = !inFence;
+        return line;
+      }
+      if (inFence) return line;
+      return line.replace(
+        /!\[([^\]\n]*)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g,
+        (match, sourceAlt, src, offset) => {
+          if (imageAltContext(sourceAlt)) return match;
+          let context = line;
+          if (line.trim().startsWith('|')) {
+            const cells = splitMarkdownTableRow(line);
+            const cellIndex = cells.findIndex((cell) => cell.includes(match));
+            context =
+              cells
+                .slice(0, cellIndex)
+                .reverse()
+                .find((cell) => imageAltContext(cell)) ??
+              cells.find(
+                (cell, index) => index !== cellIndex && imageAltContext(cell),
+              ) ??
+              '';
+          } else if (/<t[hd]\b/i.test(line)) {
+            context = imageAltContext(line);
+            for (
+              let index = lineIndex - 1;
+              !context && index >= 0 && !/<tr\b/i.test(lines[index]);
+              index -= 1
+            ) {
+              context = imageAltContext(lines[index]);
+            }
+          } else {
+            const trailing = imageAltContext(line.slice(offset + match.length));
+            const explicitLabel = line
+              .slice(offset + match.length)
+              .match(/^\s*\(\*\*([^*]+)\*\*\)/)?.[1];
+            if (explicitLabel) context = explicitLabel;
+            else if (/点击\s*$/.test(line.slice(0, offset)) && trailing) {
+              context = `${trailing.replace(/[。.].*$/, '')}按钮`;
+            }
+          }
+          const alt = imageAltText('', src, state, context);
+          return `![${alt}](${src})`;
+        },
+      );
+    })
+    .join('\n');
+}
+
+function normalizeMarkdownImageBlocks(value) {
+  const imagePattern = /!\[[^\]\n]*]\([^)\n]+\)/g;
+  const output = [];
+  let inFence = false;
+  for (const line of String(value).split('\n')) {
+    if (/^\s*(`{3,}|~{3,})/.test(line)) {
+      inFence = !inFence;
+      output.push(line);
+      continue;
+    }
+    if (inFence) {
+      output.push(line);
+      continue;
+    }
+    const images = [...line.matchAll(imagePattern)];
+    if (images.length === 0 || line.trim().startsWith('|')) {
+      output.push(line);
+      continue;
+    }
+    if (images.length === 1 && line.trim() === images[0][0]) {
+      output.push(line);
+      continue;
+    }
+
+    const list = line.match(/^(\s*)((?:[-*+] |\d+\. ))([\s\S]*)$/);
+    const baseIndent = list?.[1] ?? line.match(/^\s*/)?.[0] ?? '';
+    const marker = list?.[2] ?? '';
+    const content = list?.[3] ?? line.slice(baseIndent.length);
+    const continuation = `${baseIndent}${' '.repeat(marker.length)}`;
+    const parts = [];
+    let cursor = 0;
+    for (const image of content.matchAll(imagePattern)) {
+      const prose = content.slice(cursor, image.index).trim();
+      if (prose) parts.push({ type: 'prose', value: prose });
+      parts.push({ type: 'image', value: image[0] });
+      cursor = image.index + image[0].length;
+    }
+    const trailing = content.slice(cursor).trim();
+    if (trailing) parts.push({ type: 'prose', value: trailing });
+
+    const first = parts.shift();
+    if (marker && first?.type === 'prose') {
+      output.push(`${baseIndent}${marker}${first.value}`);
+    } else if (marker) {
+      output.push(`${baseIndent}${marker.trimEnd()}`);
+      if (first) parts.unshift(first);
+    } else if (first) {
+      output.push(`${baseIndent}${first.value}`);
+    }
+    for (const part of parts) {
+      output.push('', `${continuation}${part.value}`);
+    }
+  }
+  return output.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 
 function hasBooleanAttribute(attrs, name) {
@@ -2958,6 +3120,7 @@ function isComplexTableCell(value = '') {
     /<br\s*\/?>/i.test(value) ||
     /(^|\n)\s*:::+/.test(value) ||
     /```/.test(value) ||
+    /!\[[^\]\n]*]\([^)\n]+\)/.test(value) ||
     /(^|\n)\s*(?:[-*]|\d+\.)\s+/.test(value.trim())
   );
 }

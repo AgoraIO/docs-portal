@@ -2,14 +2,23 @@
 title: 快速实现
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/integrate
   sourcePath: docs/online-ktv/auikaraoke/get-started/integrate.android.mdx
   generator: legacy-mdx
   warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/online-ktv/auikaraoke/get-started/integrate.android.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:快速实现
+        图示
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/online-ktv/auikaraoke/get-started/integrate.android.mdx:https://web-cdn.agora.io/docs-files/1687670569781:used-context:开始编译按钮
     - code: manual-mdx-normalized
       severity: info
-      message: Normalized 2 legacy MDX syntax signal(s).
+      message: Normalized 3 legacy MDX syntax signal(s).
 ---
 
 AUIKaraoke 是一个基于 [AUIKit](https://github.com/AgoraIO-Community/AUIKit/blob/main/Android) 搭建的、针对 K 歌场景的开源 UI 组件，提供 K 歌房间相关功能。`asceneskit` 是 K 歌房的容器组件，你可以通过 `asceneskit` 自定义 K 歌房间的用户界面逻辑并实现房间管理等功能。
@@ -443,11 +452,15 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 2. 在 Android Studio 中，点击 **Sync Project with Gradle Files** 按钮，以让项目与 Gradle 文件同步。
 
-3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) 开始编译。
+3. 待同步成功后，点击
+
+   ![开始编译按钮](https://web-cdn.agora.io/docs-files/1687670569781)
+
+   开始编译。
 
 4. 编译成功后，你的 Android 设备上会出现 **AUIKaraoke** App。打开 App，点击**创建房间**创建一个新的房间来体验在线 K 歌。
 
-![](https://web-cdn.agora.io/docs-files/1696931506007)
+![快速实现 图示](https://web-cdn.agora.io/docs-files/1696931506007)
 
 ## 后续步骤
 

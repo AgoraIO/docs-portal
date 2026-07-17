@@ -9,8 +9,8 @@
 - External entries: 10
 - Overview actions: 91
 - Root navigation actions: 65
-- Entry meta files: 85
-- Entry meta links: 1294
+- Entry meta files: 90
+- Entry meta links: 1298
 - Visible legacy navigation leaves: 1326
 - Missing navigation targets: 0
 - Warnings: 0
@@ -19,7 +19,7 @@
 ## Migration types
 
 - `overview-entry`: 91
-- `navigation-meta`: 85
+- `navigation-meta`: 90
 
 ## Warning explanations
 

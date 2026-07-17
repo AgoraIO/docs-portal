@@ -58,6 +58,19 @@ const NON_VERSIONED_GENERATED_SCOPES = new Set([
   'api-ref/rtc/react',
 ]);
 
+const EDU_STORE_TYPEDOC_SOURCES = [
+  {
+    legacyPlatform: 'javascript',
+    sourceFolder: 'Web',
+    targetPlatform: 'web',
+  },
+  {
+    legacyPlatform: 'electron',
+    sourceFolder: 'Electron',
+    targetPlatform: 'electron',
+  },
+];
+
 function posix(value) {
   return value.split(path.sep).join('/');
 }
@@ -119,6 +132,73 @@ async function walkFiles(root, predicate, prefix = '') {
     }
   }
   return result;
+}
+
+async function supplementalEduStoreResolution(page, newRoot) {
+  const source = page.supplementalGeneratedSource;
+  const targetPath = source.targetPath;
+  const targetExists = await fileExists(path.resolve(newRoot, targetPath));
+  return {
+    status: 'resolved',
+    type: 'generated-html',
+    generator: 'typedoc',
+    sourcePath: source.sourcePath,
+    sourceRelativePath: source.sourceRelativePath,
+    targetPath,
+    targetRoute: source.targetRoute,
+    targetExists,
+    route: {
+      platform: source.legacyPlatform,
+      scopeKey: `api-ref/flexible-classroom/${source.legacyPlatform}`,
+    },
+    migrationAction: targetExists ? 'audit-existing-target' : 'generate-mdx',
+  };
+}
+
+async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
+  const retained = (manifest.pageEvidence ?? []).filter(
+    (page) => page.supplementalGeneratedSource?.kind !== 'edu-store-typedoc',
+  );
+  const supplemental = [];
+  for (const source of EDU_STORE_TYPEDOC_SOURCES) {
+    const sourceRoot = path.resolve(
+      oldRoot,
+      'html-docs/flexible-classroom',
+      source.sourceFolder,
+    );
+    const files = await walkFiles(sourceRoot, (name) =>
+      name.toLowerCase().endsWith('.html'),
+    );
+    for (const file of files) {
+      const isOverview = file.relative === 'index.html';
+      const sourceStem = file.relative.replace(/\.html$/i, '');
+      const targetStem = isOverview
+        ? 'edu-store'
+        : `edu-store/${sourceStem
+            .split('/')
+            .map(kebabSegment)
+            .filter(Boolean)
+            .join('/')}`;
+      const legacySuffix = isOverview ? 'overview' : file.relative;
+      const requestedUrl = `https://doc.shengwang.cn/api-ref/flexible-classroom/${source.legacyPlatform}/${legacySuffix}`;
+      const targetRoute = `/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${targetStem}`;
+      supplemental.push({
+        requestedUrl,
+        finalUrl: requestedUrl,
+        status: 'resolved',
+        adoptExisting: isOverview,
+        supplementalGeneratedSource: {
+          kind: 'edu-store-typedoc',
+          legacyPlatform: source.legacyPlatform,
+          sourcePath: posix(path.relative(oldRoot, file.absolute)),
+          sourceRelativePath: file.relative,
+          targetPath: `content/docs${targetRoute}.mdx`,
+          targetRoute,
+        },
+      });
+    }
+  }
+  manifest.pageEvidence = [...retained, ...supplemental];
 }
 
 function tocSlug(sourceName) {
@@ -503,7 +583,7 @@ async function operationIndex(yamlPath) {
   return { byId, bySignature };
 }
 
-function laneForLegacyYaml(route, legacyYaml, lanes) {
+function laneForLegacyYaml(route, lanes) {
   const candidates = lanes.filter(
     (lane) =>
       (!lane.locales || lane.locales.includes('zh-CN')) &&
@@ -571,7 +651,7 @@ async function resolveOpenApi(route, metadata, sourceIndex, lanes, newRoot) {
     };
   }
   const legacyYaml = yamlCandidates[0];
-  const lane = laneForLegacyYaml(route, legacyYaml, lanes);
+  const lane = laneForLegacyYaml(route, lanes);
   if (!lane) {
     return {
       status: 'unresolved',
@@ -620,7 +700,6 @@ async function resolveOpenApi(route, metadata, sourceIndex, lanes, newRoot) {
     type: 'openapi',
     generator: 'openapi',
     sourcePath: posix(path.relative(sourceIndex.oldRoot, legacyYaml.absolute)),
-    sourceAbsolutePath: legacyYaml.absolute,
     legacyOperationId: operationId,
     targetOperationId,
     targetPath: lane.sourcePath['zh-CN'],
@@ -652,7 +731,6 @@ function generatedHtmlCandidate(route, metadata, sourceIndex) {
         type: 'generated-html',
         generator: docType,
         sourcePath: posix(path.relative(sourceIndex.oldRoot, file.absolute)),
-        sourceAbsolutePath: file.absolute,
         sourceRelativePath: file.relative,
       }
     : null;
@@ -925,8 +1003,10 @@ export async function resolveLegacyPage({
   const targetExists = targetPath
     ? await fileExists(path.resolve(newRoot, targetPath))
     : false;
+  const { sourceAbsolutePath: _sourceAbsolutePath, ...portableResolution } =
+    resolution;
   return {
-    ...resolution,
+    ...portableResolution,
     ...target,
     route,
     targetExists,
@@ -983,19 +1063,23 @@ export async function resolveManifestSources(
   if (!Array.isArray(manifest.pageEvidence)) {
     throw new Error('Manifest has no pageEvidence; run the page graph first.');
   }
+  await addSupplementalEduStoreEvidence(manifest, oldRoot);
   const sourceIndex = await buildLegacySourceIndex(oldRoot);
   const pathMap = buildPathMapIndex(pathMapRows);
   const pages = [];
   for (const page of manifest.pageEvidence) {
+    const sourceResolution = page.supplementalGeneratedSource
+      ? await supplementalEduStoreResolution(page, newRoot)
+      : await resolveLegacyPage({
+          page,
+          sourceIndex,
+          pathMap,
+          lanes,
+          newRoot,
+        });
     pages.push({
       ...page,
-      sourceResolution: await resolveLegacyPage({
-        page,
-        sourceIndex,
-        pathMap,
-        lanes,
-        newRoot,
-      }),
+      sourceResolution,
     });
   }
   manifest.pageEvidence = pages;
@@ -1022,12 +1106,15 @@ export async function resolveManifestSources(
     if (
       route?.product === 'rtc' &&
       entryPage?.sourceResolution.generator === 'oxygen' &&
-      entryPage.sourceResolution.sourceAbsolutePath
+      entryPage.sourceResolution.sourcePath
     ) {
       const sourceNavigation = await resolveSourceNavigationTargets(
         parseOxygenNavigationHtml({
           html: await fs.readFile(
-            entryPage.sourceResolution.sourceAbsolutePath,
+            path.resolve(
+              sourceIndex.oldRoot,
+              entryPage.sourceResolution.sourcePath,
+            ),
             'utf8',
           ),
           legacyUrl: entry.legacyUrl,

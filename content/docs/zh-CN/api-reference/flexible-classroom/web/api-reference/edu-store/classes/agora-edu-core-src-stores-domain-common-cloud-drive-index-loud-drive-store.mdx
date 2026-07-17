@@ -1,0 +1,205 @@
+---
+title: Class CloudDriveStore
+description: CloudDriveStore 类提供云盘相关能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_cloud_drive_index_loudDriveStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_edu_core_src_stores_domain_common_cloud_drive_index_loudDriveStore.html
+  generator: typedoc
+  warnings: []
+---
+
+`CloudDriveStore` 类提供云盘相关能力。
+
+### Hierarchy
+
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
+
+  - CloudDriveStore
+
+## Index
+
+### Properties
+
+- [personalResources](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#personalResources)
+- [uploadProgress](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#uploadProgress)
+
+### Methods
+
+- [addPersonalResource](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#addPersonalResource)
+- [calcResourceUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#calcResourceUuid)
+- [cancelUpload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#cancelUpload)
+- [fetchPersonalResources](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#fetchPersonalResources)
+- [removePersonalResources](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#removePersonalResources)
+- [retryUpload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#retryUpload)
+- [updatePersonalResource](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#updatePersonalResource)
+- [uploadPersonalResource](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-index-loud-drive-store#uploadPersonalResource)
+
+## Properties
+
+<a id="personalResources"></a>
+
+### personalResources
+
+personalResources: Map&lt;string,[CloudDriveResource](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-struct-loud-drive-resource)&gt;
+
+云盘个人资源文件列表
+
+<a id="uploadProgress"></a>
+
+### uploadProgress
+
+uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-struct-loud-drive-uploading-progress)&gt;
+
+云盘资源上传进度
+
+## Methods
+
+<a id="addPersonalResource"></a>
+
+### addPersonalResource
+
+- addPersonalResource(resourceUuid:string, resourceInfo:[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)):Promise&lt;any&gt;
+
+- 将已上传的资源文件映射为云盘内的一个文件
+
+  Parameters
+
+  - resourceUuid: string
+
+    资源 UUID
+  - resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+    资源信息
+
+  Returns Promise&lt;any&gt;
+
+<a id="calcResourceUuid"></a>
+
+### calcResourceUuid
+
+- calcResourceUuid(resource:string|File):Promise&lt;string&gt;
+
+- 计算资源文件 UUID
+
+  Parameters
+
+  - resource: string|File
+
+  Returns Promise&lt;string&gt;
+
+  资源文件 UUID
+
+<a id="cancelUpload"></a>
+
+### cancelUpload
+
+- cancelUpload(resourceUuid:string):Promise&lt;void&gt;
+
+- 取消上传资源
+
+  Parameters
+
+  - resourceUuid: string
+
+    资源 ID
+
+  Returns Promise&lt;void&gt;
+
+<a id="fetchPersonalResources"></a>
+
+### fetchPersonalResources
+
+- fetchPersonalResources(options:[CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)):Promise&lt;\{list:never[];total:number\}&gt;
+
+- 获取个人云盘资源
+
+  Parameters
+
+  - options: [CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)
+
+    分页参数
+
+  Returns Promise&lt;\{list:never[];total:number\}&gt;
+
+  云盘资源分页信息
+
+<a id="removePersonalResources"></a>
+
+### removePersonalResources
+
+- removePersonalResources(resourceUuids:string[]):Promise&lt;undefined&gt;
+
+- 移除个人资源
+
+  Parameters
+
+  - resourceUuids: string[]
+
+    资源 ID
+
+  Returns Promise&lt;undefined&gt;
+
+<a id="retryUpload"></a>
+
+### retryUpload
+
+- retryUpload(resourceUuid:string):void
+
+- 重新上传资源
+
+  Parameters
+
+  - resourceUuid: string
+
+    资源 ID
+
+  Returns void
+
+<a id="updatePersonalResource"></a>
+
+### updatePersonalResource
+
+- updatePersonalResource(resourceUuid:string, resourceInfo:Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;):Promise&lt;any&gt;
+
+- 更新云盘文件信息
+
+  Parameters
+
+  - resourceUuid: string
+  - resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;
+
+  Returns Promise&lt;any&gt;
+
+<a id="uploadPersonalResource"></a>
+
+### uploadPersonalResource
+
+- uploadPersonalResource(file:File, progressUuid:string, ext:string, contentType:string, conversion?:Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;):Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+
+- 上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
+
+  Parameters
+
+  - file: File
+
+    资源文件对象
+  - progressUuid: string
+
+    上传 UUID
+  - ext: string
+
+    资源扩展名
+  - contentType: string
+
+    static: 静态， dynamic：动态
+  - Optional conversion: Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;
+
+    转换选项
+
+  Returns Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+
+  上传成功后的文件信息

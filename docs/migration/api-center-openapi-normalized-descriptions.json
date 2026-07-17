@@ -1,40 +1,74 @@
 {
   "operations": [
     {
-      "normalizedDescription": "让指定智能体播报自定义消息。 与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。",
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "让指定智能体播报自定义消息。",
       "operationId": "agent-speak",
+      "originalDescription": "让指定智能体播报自定义消息。\r\n\r\n与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。",
       "originalDescriptionHash": "93725bcfa42c26fe3abec867b9fac18d508a91262e5c9a3183ea24b60470ab69",
       "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
     },
     {
-      "normalizedDescription": "向指定智能体发送一段自定义文本指令。 该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。",
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "向指定智能体发送一段自定义文本指令。",
       "operationId": "agent-think",
+      "originalDescription": "向指定智能体发送一段自定义文本指令。\n\n该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。\n",
       "originalDescriptionHash": "74176af3b3a9f9522e5649423312a4ca9516efe5db9a95078785ffb848d3e6f7",
       "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
     },
     {
-      "normalizedDescription": "检索符合指定条件的智能体列表。 该接口仅支持查询最近 7 天内创建的智能体列表。",
+      "docsCallouts": [
+        {
+          "markdown": "该接口仅支持查询最近 7 天内创建的智能体列表。",
+          "position": "after-description"
+        }
+      ],
+      "docsSections": [],
+      "normalizedDescription": "检索符合指定条件的智能体列表。",
       "operationId": "get-agent-list",
+      "originalDescription": "检索符合指定条件的智能体列表。\n> 该接口仅支持查询最近 7 天内创建的智能体列表。\n",
       "originalDescriptionHash": "15974d491b761a729418f3a6b461315947bee0f9bcdec0d59aa0e2c197ab22dd",
       "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
     },
     {
-      "normalizedDescription": "获取用户和智能体对话的短期记忆。 你可以在智能体运行期间 (RUNNING) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括： 智能体创建和停止的时间戳 用户和智能体对话消息",
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "你可以在智能体运行期间 (`RUNNING`) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括：\n- 智能体创建和停止的时间戳\n- 用户和智能体对话消息",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "获取用户和智能体对话的短期记忆。",
       "operationId": "get-history",
+      "originalDescription": "获取用户和智能体对话的短期记忆。\r\n你可以在智能体运行期间 (`RUNNING`) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括：\r\n- 智能体创建和停止的时间戳\r\n- 用户和智能体对话消息",
       "originalDescriptionHash": "75a4a7992dbd827388b19282fde2679b586f7c7b0e150d0291832fca7de94013",
       "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
     },
     {
-      "normalizedDescription": "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。 自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。 仅支持查询 7 天内的会话。",
+      "docsCallouts": [
+        {
+          "markdown": "自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。\n仅支持查询 7 天内的会话。",
+          "position": "after-description"
+        }
+      ],
+      "docsSections": [],
+      "normalizedDescription": "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。",
       "operationId": "get-turns",
+      "originalDescription": "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。\n\n> 自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。\n> 仅支持查询 7 天内的会话。\n",
       "originalDescriptionHash": "6bf1f75c45ac8a7b88f997d2289e11f6f86d7571bde1cf15b5437f494e19041b",
       "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
-    },
-    {
-      "normalizedDescription": "启动实时转录翻译任务。",
-      "operationId": "join",
-      "originalDescriptionHash": "2a9d1b964f6e7cefa9c04cdf0937f8d7304ed72a47553336310be3aa4f3d6811",
-      "targetPath": "content/openapi/speech-to-text/v7.zh-CN.yaml"
     }
   ],
   "schemaVersion": 1,

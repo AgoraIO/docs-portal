@@ -93,6 +93,23 @@ describe('API Center shared migration framework', () => {
     expect(content).toContain('\n---\n\n正文。\n');
   });
 
+  it('does not add a blank line after frontmatter for an empty page', () => {
+    const content = renderGeneratedMdx({
+      title: 'Empty generated page',
+      body: '',
+      migration: {
+        type: 'generated-html',
+        sourceUrl: 'https://doc.shengwang.cn/api-ref/example/empty',
+        sourcePath: 'html-docs/example/empty.html',
+        generator: 'typedoc',
+        warnings: [],
+      },
+    });
+
+    expect(content).toMatch(/\n---\n$/);
+    expect(content).not.toMatch(/\n---\n\n$/);
+  });
+
   it('rewrites old-site links through a local route map and preserves externals', () => {
     const routeMap = new Map([
       [

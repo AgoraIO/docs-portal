@@ -2,14 +2,39 @@
 title: 设置合流布局
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite-layout
   sourcePath: docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx
   generator: legacy-mdx
   warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395183874-1r.svg:used-context:1
+        人布局示意
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395202904-2-5r.svg:used-context:2-5
+        人布局示意
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395221824-6-7r.svg:used-context:6-7
+        人布局示意
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395385699-8-9r.svg:used-context:8-9
+        人布局示意
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395437866-10-17r.svg:used-context:10-17
+        人布局示意
     - code: manual-mdx-normalized
       severity: info
-      message: Normalized 7 legacy MDX syntax signal(s).
+      message: Normalized 8 legacy MDX syntax signal(s).
     - code: manual-fragment-normalized
       severity: info
       message: Normalized 2 legacy fragment link(s) to stable local anchors.
@@ -111,11 +136,41 @@ _migration:
 
 | 人数（人） | 布局效果 | 说明 |
 | --- | --- | --- |
-| 1 | ![](https://web-cdn.agora.io/doc-cms/uploads/1715395183874-1r.svg) | 若未设置 `maxResolutionUid`，1 人的布局样式是铺满全屏。若设置了 `maxResolutionUid`，但该用户还未加入频道，其他用户加入频道时按照 1-5 人的布局展示在右侧。 |
-| 2-5 | ![](https://web-cdn.agora.io/doc-cms/uploads/1715395202904-2-5r.svg) | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-5。右侧小视窗宽度占总宽度的 1/5，高度占总高度的 1/4。 |
-| 6-7 | ![](https://web-cdn.agora.io/doc-cms/uploads/1715395221824-6-7r.svg) | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-7。右侧小视窗宽度占总宽度的 1/7，高度占总高度的 1/6。 |
-| 8-9 | ![](https://web-cdn.agora.io/doc-cms/uploads/1715395385699-8-9r.svg) | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-9。右侧小视窗宽度占总宽度的 1/9，高度占总高度的 1/8。 |
-| 10-17 | ![](https://web-cdn.agora.io/doc-cms/uploads/1715395437866-10-17r.svg) | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-17。右侧小视窗宽度占总宽度的 1/10，高度占总高度的 1/8。 |
+| 1 | <Slot name="set-composite-layout-html-0-1-1" /> | 若未设置 `maxResolutionUid`，1 人的布局样式是铺满全屏。若设置了 `maxResolutionUid`，但该用户还未加入频道，其他用户加入频道时按照 1-5 人的布局展示在右侧。 |
+| 2-5 | <Slot name="set-composite-layout-html-0-2-1" /> | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-5。右侧小视窗宽度占总宽度的 1/5，高度占总高度的 1/4。 |
+| 6-7 | <Slot name="set-composite-layout-html-0-3-1" /> | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-7。右侧小视窗宽度占总宽度的 1/7，高度占总高度的 1/6。 |
+| 8-9 | <Slot name="set-composite-layout-html-0-4-1" /> | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-9。右侧小视窗宽度占总宽度的 1/9，高度占总高度的 1/8。 |
+| 10-17 | <Slot name="set-composite-layout-html-0-5-1" /> | 你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-17。右侧小视窗宽度占总宽度的 1/10，高度占总高度的 1/8。 |
+
+<Slot for="set-composite-layout-html-0-1-1">
+
+![1 人布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395183874-1r.svg)
+
+</Slot>
+
+<Slot for="set-composite-layout-html-0-2-1">
+
+![2-5 人布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395202904-2-5r.svg)
+
+</Slot>
+
+<Slot for="set-composite-layout-html-0-3-1">
+
+![6-7 人布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395221824-6-7r.svg)
+
+</Slot>
+
+<Slot for="set-composite-layout-html-0-4-1">
+
+![8-9 人布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395385699-8-9r.svg)
+
+</Slot>
+
+<Slot for="set-composite-layout-html-0-5-1">
+
+![10-17 人布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395437866-10-17r.svg)
+
+</Slot>
 
 ## 自定义合流布局
 

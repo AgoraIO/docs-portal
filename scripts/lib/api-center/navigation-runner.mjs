@@ -15,6 +15,18 @@ const OUT_OF_SCOPE_SHARED_ROUTES = new Set([
   '/zh-CN/introduction/mcp-integrate',
   '/zh-CN/introduction/skills-integrate',
 ]);
+const REFERENCE_ROOT_SIDEBAR_ROUTES = new Set([
+  '/zh-CN/api-reference/whiteboard/fastboard',
+]);
+const API_CENTER_SCOPE_TITLES = new Map([
+  ['/zh-CN/api-reference/cloud-recording/go-api', '云端录制'],
+  ['/zh-CN/api-reference/cloud-recording/java-api', '云端录制'],
+  ['/zh-CN/api-reference/local-server-recording/cpp', '本地服务端录制'],
+  ['/zh-CN/api-reference/local-server-recording/java', '本地服务端录制'],
+]);
+const API_CENTER_SIDEBAR_LABELS = new Map([
+  ['/zh-CN/api-reference/rtc-server-sdk/error-code', '通用错误码'],
+]);
 
 const PRODUCT_ICONS = new Map([
   ['对话式 AI 引擎', 'ai'],
@@ -145,11 +157,12 @@ function renderNavigationLeaf(
   href,
   { plainLocalLeaves, rootRoute, sidebarLabels },
 ) {
+  const sidebarLabel = API_CENTER_SIDEBAR_LABELS.get(href) ?? label;
   if (plainLocalLeaves && href.startsWith(`${rootRoute}/`)) {
-    sidebarLabels[href] = label;
+    sidebarLabels[href] = sidebarLabel;
     return href.slice(rootRoute.length + 1);
   }
-  return routeMetaLink(label, href, rootRoute);
+  return routeMetaLink(sidebarLabel, href, rootRoute);
 }
 
 function renderNavigationItems(
@@ -434,6 +447,61 @@ function addWhiteboardScopeMetaPlans(metaByPath, entries) {
   }
 }
 
+function addRtcServerSdkScopeMetaPlans(metaByPath, entries) {
+  const platforms = [
+    {
+      id: 'cpp',
+      prefix: '/zh-CN/api-reference/rtc-server-sdk/cpp/',
+    },
+    {
+      id: 'java',
+      prefix: '/zh-CN/api-reference/rtc-server-sdk/java/',
+    },
+  ].filter(({ prefix }) =>
+    entries.some((entry) => entry.targetRoute?.startsWith(prefix)),
+  );
+  if (platforms.length === 0) return;
+
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/rtc-server-sdk/meta.json`,
+    rootRoute: '/zh-CN/api-reference/rtc-server-sdk',
+    title: 'RTC 服务端 SDK',
+    pages: platforms.map(({ id }) => id),
+    metaPatch: { sidebarHidden: true },
+    preserveExistingPages: true,
+  });
+  for (const { id } of platforms) {
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${API_REFERENCE_ROOT}/rtc-server-sdk/${id}/meta.json`,
+      rootRoute: `/zh-CN/api-reference/rtc-server-sdk/${id}`,
+      title: 'RTC 服务端 SDK',
+      pages: ['(current)'],
+      metaPatch: {
+        navScope: {
+          defaultVersion: 'current',
+          versions: [{ id: 'current', label: 'Current', path: '(current)' }],
+        },
+      },
+    });
+  }
+}
+
+function addOpenApiLaneRootMetaPlans(metaByPath, lanes) {
+  for (const lane of lanes) {
+    const rootRoute = lane.parentUrl?.['zh-CN'];
+    if (!rootRoute?.startsWith('/zh-CN/api-reference/api-ref/')) continue;
+
+    createMetaAccumulator(metaByPath, {
+      metaPath: `content/docs${rootRoute}/meta.json`,
+      rootRoute,
+      title: 'RESTful API',
+      pages: [],
+      metaPatch: { navScope: undefined },
+      preserveExistingPages: true,
+    });
+  }
+}
+
 function buildEntryMetaPlans(manifest, routeMap, lanes) {
   const byUrl = evidenceIndex(manifest);
   const laneById = new Map(lanes.map((lane) => [lane.id, lane]));
@@ -464,6 +532,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
         rootRoute,
         includeIndex: true,
         plainLocalLeaves: true,
+        focusedOpenApiSidebar: true,
       });
       const values = openApiEntries.get(laneId) ?? [];
       values.push(entry);
@@ -482,17 +551,26 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
           sidebarLabels,
         },
       );
+      const scopeTitle = API_CENTER_SCOPE_TITLES.get(root.rootRoute);
+      const useReferenceRootSidebar =
+        REFERENCE_ROOT_SIDEBAR_ROUTES.has(root.rootRoute) ||
+        root.focusedOpenApiSidebar;
       createMetaAccumulator(metaByPath, {
         ...root,
         title: `${entry.product} ${entry.label}`,
         pages,
-        metaPatch:
-          Object.keys(sidebarLabels).length > 0 ? { sidebarLabels } : {},
+        metaPatch: {
+          ...(Object.keys(sidebarLabels).length > 0 ? { sidebarLabels } : {}),
+          ...(scopeTitle ? { title: scopeTitle } : {}),
+          ...(useReferenceRootSidebar ? { navScope: undefined } : {}),
+        },
       });
     }
   }
 
   addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
+  addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
+  addOpenApiLaneRootMetaPlans(metaByPath, lanes);
 
   return { metaByPath, openApiEntries };
 }
@@ -526,23 +604,6 @@ function actionLabel(entry, productEntries) {
 function actionForEntry(entry, productEntries) {
   const href = entry.targetRoute ?? entry.legacyUrl;
   return { label: actionLabel(entry, productEntries), href };
-}
-
-function collapsedRootActions(entries) {
-  const actions = [];
-  const byHref = new Map();
-  for (const entry of entries) {
-    const action = actionForEntry(entry, entries);
-    const existing = byHref.get(action.href);
-    if (existing) {
-      existing.labels.push(action.label);
-      continue;
-    }
-    const collapsed = { href: action.href, labels: [action.label] };
-    byHref.set(action.href, collapsed);
-    actions.push(collapsed);
-  }
-  return actions;
 }
 
 function buildOverviewBody(entries, live) {

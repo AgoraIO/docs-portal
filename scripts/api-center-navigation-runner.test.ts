@@ -292,6 +292,21 @@ describe('API Center navigation runner', () => {
       }),
     );
     await fs.mkdir(
+      path.join(repoRoot, 'content/docs/zh-CN/api-reference/api-ref/signaling'),
+      { recursive: true },
+    );
+    await fs.writeFile(
+      path.join(
+        repoRoot,
+        'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
+      ),
+      JSON.stringify({
+        title: '实时消息 RTM',
+        navScope: {},
+        pages: ['publish', 'receive'],
+      }),
+    );
+    await fs.mkdir(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/whiteboard'),
       { recursive: true },
     );
@@ -314,6 +329,18 @@ describe('API Center navigation runner', () => {
           'zh-CN': 'content/openapi/speech.yaml',
         },
         operations: { join: { routeLeaf: 'join' } },
+      },
+      {
+        id: 'signaling-fixture',
+        parentUrl: {
+          en: '/en/api-reference/api-ref/signaling',
+          'zh-CN': '/zh-CN/api-reference/api-ref/signaling',
+        },
+        sourcePath: {
+          en: 'content/openapi/signaling.yaml',
+          'zh-CN': 'content/openapi/signaling.yaml',
+        },
+        operations: {},
       },
     ];
 
@@ -346,6 +373,15 @@ describe('API Center navigation runner', () => {
         path.join(
           repoRoot,
           'content/docs/zh-CN/api-reference/api-ref/speech-to-text/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+    const signalingMeta = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
         ),
         'utf8',
       ),
@@ -412,6 +448,10 @@ describe('API Center navigation runner', () => {
     expect(speechMeta.pages[0]).toBe('index');
     expect(speechMeta.pages).toContain('---服务端 API---');
     expect(speechMeta.pages).toContain('join');
+    expect(signalingMeta).toEqual({
+      title: '实时消息 RTM',
+      pages: ['publish', 'receive'],
+    });
     const speechLanding = await fs.readFile(
       path.join(
         repoRoot,
@@ -449,6 +489,6 @@ describe('API Center navigation runner', () => {
       ownershipPath:
         'docs/migration/api-center-navigation-generated-files.json',
     });
-    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 7 });
+    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
   });
 });

@@ -391,12 +391,12 @@ ContentMode: (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/w
 
 - - (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size), boundSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)):number
 
-  - Returns number
-
-    Parameters
+  - Parameters
 
     - screenSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
     - boundSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+
+    Returns number
 
 <a id="convertedfile"></a>
 
@@ -466,18 +466,16 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
   - - (url:string):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - url: string
+
+      Returns void
 - onCatchErrorWhenAppendFrame:(userId:number, error:Error)=&gt;void
 
   - - (userId:number, error:Error):void
 
-    - Returns void
-
-      同步用户行为发生错误的回调。
+    - 同步用户行为发生错误的回调。
 
       Parameters
 
@@ -487,30 +485,30 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
       - error: Error
 
         错误信息。
+
+      Returns void
 - onCatchErrorWhenRender:(error:Error)=&gt;void
 
   - - (error:Error):void
 
-    - Returns void
-
-      渲染发生错误回调。
+    - 渲染发生错误回调。
 
       Parameters
 
       - error: Error
 
         错误信息。
+
+      Returns void
 - onEnableWriteNowChanged:(enableWriteNow:boolean)=&gt;void
 
   - - (enableWriteNow:boolean):void
 
-    - Returns void
+    - 用户的可写权限发生改变的回调。
 
-      用户的可写权限发生改变的回调。
+    ### since
 
-      ### since
-
-      2.10.0
+    2.10.0
 
       Parameters
 
@@ -520,13 +518,13 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
         - `true`：有写的权限。
         - `false`：没有写的权限。
+
+      Returns void
 - onHandToolActive:(active:boolean)=&gt;void
 
   - - (active:boolean):void
 
-    - Returns void
-
-      抓手工具的启用状态发生改变的回调。
+    - 抓手工具的启用状态发生改变的回调。
 
       Parameters
 
@@ -536,13 +534,13 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
         - `true`：启用。
         - `false`：不启用。
+
+      Returns void
 - onPPTMediaPause:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))=&gt;void
 
   - - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)):void
 
-    - Returns void
-
-      暂停播放动态 PPT 中媒体文件的回调。
+    - 暂停播放动态 PPT 中媒体文件的回调。
 
       Parameters
 
@@ -552,13 +550,13 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
       - type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
 
         媒体文件的类型。
+
+      Returns void
 - onPPTMediaPlay:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))=&gt;void
 
   - - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)):void
 
-    - Returns void
-
-      播放动态 PPT 中媒体文件的回调。
+    - 播放动态 PPT 中媒体文件的回调。
 
       Parameters
 
@@ -568,13 +566,13 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
       - type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
 
         媒体文件的类型。
+
+      Returns void
 - onPPTMediaPlayError:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error:Error)=&gt;void
 
   - - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error:Error):void
 
-    - Returns void
-
-      动态 PPT 中的媒体文件播放出错回调。
+    - 动态 PPT 中的媒体文件播放出错回调。
 
       Parameters
 
@@ -587,32 +585,34 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
       - error: Error
 
         错误提示。
+
+      Returns void
 - onRenderDuration:(renderDuration:number)=&gt;void
 
   - - (renderDuration:number):void
 
-    - Returns void
-
-      渲染时长回调。
+    - 渲染时长回调。
 
       Parameters
 
       - renderDuration: number
 
         渲染时长。
+
+      Returns void
 - onSliceChanged:(slice:string)=&gt;void
 
   - - (slice:string):void
 
-    - Returns void
-
-      所处分片发生改变的回调。
+    - 所处分片发生改变的回调。
 
       Parameters
 
       - slice: string
 
         所处分片的 UUID。
+
+      Returns void
 
 <a id="displayerstate"></a>
 
@@ -685,11 +685,11 @@ EventFilter: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/g
 
 - - (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)):boolean
 
-  - Returns boolean
-
-    Parameters
+  - Parameters
 
     - event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+
+    Returns boolean
 
 <a id="eventlistener"></a>
 
@@ -705,11 +705,11 @@ EventListener: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web
 
 - - (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+
+    Returns void
 
 <a id="eventslistener"></a>
 
@@ -725,11 +725,11 @@ EventsListener: (events:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/w
 
 - - (events:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]):void
 
-  - Returns void
-
-    Parameters
+  - Parameters
 
     - events: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]
+
+    Returns void
 
 <a id="floatbaroptions"></a>
 
@@ -800,12 +800,12 @@ HotKeyChecker: (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-s
 
 - - (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent), kind:[KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)):boolean
 
-  - Returns boolean
-
-    Parameters
+  - Parameters
 
     - event: [HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent)
     - kind: [KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)
+
+    Returns boolean
 
 <a id="hotkeydescription"></a>
 
@@ -1067,22 +1067,22 @@ InvisibleCallbacks&lt;A&gt;: \{onAttributesUpdate:(attributes:A)=&gt;void;onDest
 
   - - (attributes:A):void
 
-    - Returns void
-
-      不可见插件属性更新的回调。
+    - 不可见插件属性更新的回调。
 
       Parameters
 
       - attributes: A
 
         更新的插件属性。
+
+      Returns void
 - onDestroy:()=&gt;void
 
   - - ():void
 
-    - Returns void
+    - 删除不可见插件的回调。
 
-      删除不可见插件的回调。
+      Returns void
 
 <a id="invisiblepluginclass"></a>
 
@@ -1109,28 +1109,28 @@ InvisiblePluginClass&lt;K, A, P&gt;: \{kind:K;onCreate?:(plugin:P)=&gt;void;onDe
 
   - - (plugin:P):void
 
-    - Returns void
-
-      创建插件对象的回调。
+    - 创建插件对象的回调。
 
       Parameters
 
       - plugin: P
 
         创建的插件对象。
+
+      Returns void
 - Optional onDestroy?:(plugin:P)=&gt;void
 
   - - (plugin:P):void
 
-    - Returns void
-
-      删除插件对象的回调。
+    - 删除插件对象的回调。
 
       Parameters
 
       - plugin: P
 
         删除的插件对象。
+
+      Returns void
 
 <a id="invisibleplugincontext"></a>
 
@@ -2110,15 +2110,15 @@ RTCClient: \{adjustAudioMixingPlayoutVolume?:(volume:number)=&gt;number;adjustAu
 
         - - (state:number, errorCode:number):void
 
-          - Returns void
-
-            开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-             `errorCode: number` 为错误码。
+          - 开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+           `errorCode: number` 为错误码。
 
             Parameters
 
             - state: number
             - errorCode: number
+
+            Returns void
 
       Returns number
 
@@ -2139,15 +2139,15 @@ RTCClient: \{adjustAudioMixingPlayoutVolume?:(volume:number)=&gt;number;adjustAu
 
         - - (state:number, errorCode:number):void
 
-          - Returns void
-
-            停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-             `errorCode: number` 为错误码。
+          - 停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+           `errorCode: number` 为错误码。
 
             Parameters
 
             - state: number
             - errorCode: number
+
+            Returns void
 
       Returns number
 
@@ -2598,12 +2598,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - name: string
+
+      Returns void
 - onAddSceneGroup:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void
 
   新增子场景目录回调。
@@ -2618,12 +2618,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - name: string
+
+      Returns void
 - onRemoveScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void
 
   删除场景回调。
@@ -2638,12 +2638,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - name: string
+
+      Returns void
 - onRemoveSceneGroup:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void
 
   删除子场景目录回调。
@@ -2658,12 +2658,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - name: string
+
+      Returns void
 - onScenesCountUpdate:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount:number)=&gt;void
 
   指定场景目录下场景数量发生变化回调。
@@ -2678,12 +2678,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount:number):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - scenesCount: number
+
+      Returns void
 - onScenesGroupCountUpdate:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount:number)=&gt;void
 
   指定场景目录下子场景目录数量发生变化回调。
@@ -2698,12 +2698,12 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
   - - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount:number):void
 
-    - Returns void
-
-      Parameters
+    - Parameters
 
       - scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
       - sceneGroupsCount: number
+
+      Returns void
 
 <a id="size"></a>
 
@@ -2912,28 +2912,28 @@ WhiteWebSdkConfiguration: \{appIdentifier:string;deviceType?:[DeviceType](/zh-CN
 
   - - (error:Error):void
 
-    - Returns void
+    - `WhiteWebSdk` 初始化失败的回调。
 
-      `WhiteWebSdk` 初始化失败的回调。
+    ### example
 
-      ### example
+    ```ts
+    const whiteWebSdk = new WhiteWebSdk({
+        appIdentifier: "$APP_IDENTIFIER",
+        onWhiteSetupFailed: function(error) {
+            console.error(error);
+        },
+    });
+    ```
 
-      ```ts
-      const whiteWebSdk = new WhiteWebSdk({
-          appIdentifier: "$APP_IDENTIFIER",
-          onWhiteSetupFailed: function(error) {
-              console.error(error);
-          },
-      });
-      ```
-
-      该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk(\{...\})` 时提示发生错误。
+    该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk(\{...\})` 时提示发生错误。
 
       Parameters
 
       - error: Error
 
         错误信息。
+
+      Returns void
 - Optional onlyCallbackRemoteStateModify?:boolean
 
   是否开启仅接收远端用户状态改变回调：
@@ -3283,9 +3283,7 @@ WhiteVersion: string
 
 - createPlugins&lt;C_MAP&gt;(plugins:Readonly&lt;\{\}&gt;):[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
 
-- Returns [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
-
-  Defined in [index-zh.d.ts:542](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L542)
+- Defined in [index-zh.d.ts:542](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L542)
 
   创建插件。
 
@@ -3299,15 +3297,15 @@ WhiteVersion: string
 
     创建的插件。
 
+  Returns [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+
 <a id="injectcustomstyle"></a>
 
 ### injectCustomStyle
 
 - injectCustomStyle(icons:[UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:3600](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3600)
+- Defined in [index-zh.d.ts:3600](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3600)
 
   添加自定义的图标。
 
@@ -3316,6 +3314,8 @@ WhiteVersion: string
   - icons: [UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)
 
     自定义的图标。
+
+  Returns void
 
 <a id="isplayer"></a>
 
@@ -3369,9 +3369,7 @@ WhiteVersion: string
 
 - setAsyncModuleLoadMode(mode:[AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)):void
 
-- Returns void
-
-  Defined in [index-zh.d.ts:835](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L835)
+- Defined in [index-zh.d.ts:835](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L835)
 
   设置异步模块的加载模式。
 
@@ -3380,3 +3378,5 @@ WhiteVersion: string
   - mode: [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)
 
     异步模块的加载模式，详见 [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)。
+
+  Returns void

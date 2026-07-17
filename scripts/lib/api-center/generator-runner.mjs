@@ -153,7 +153,7 @@ function assetHandler({ run, sourceAbsolutePath, oldRoot }) {
     run.planFile({
       targetPath,
       contents,
-      sourcePath: local,
+      sourcePath: path.relative(oldRoot, local).split(path.sep).join('/'),
       sourceUrl,
       type: 'asset',
     });
@@ -237,7 +237,11 @@ export async function runHtmlGenerators({
       else run.recordPageResult({ page, status: 'pending' });
       continue;
     }
-    if (resolution.targetExists && !run.ownsTarget(resolution.targetPath)) {
+    if (
+      resolution.targetExists &&
+      !run.ownsTarget(resolution.targetPath) &&
+      page.adoptExisting !== true
+    ) {
       run.preserveExisting({ page });
       continue;
     }
@@ -291,6 +295,7 @@ export async function runHtmlGenerators({
       description: converted.description || undefined,
       body: converted.body,
       warnings,
+      adoptExisting: page.adoptExisting === true,
     });
   }
   const report = await run.finish();
