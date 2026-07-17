@@ -1142,7 +1142,7 @@ function createDocsCard(contentPath?: string) {
 
 function Cards({ className, columns, ...props }: DocsCardsProps) {
   if (!columns) {
-    return <FumadocsCards className={className} {...props} />;
+    return <FumadocsCards className={className} data-docs-cards {...props} />;
   }
 
   return (
@@ -1154,6 +1154,7 @@ function Cards({ className, columns, ...props }: DocsCardsProps) {
         columns === 4 && 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4',
         className,
       )}
+      data-docs-cards
       {...props}
     />
   );

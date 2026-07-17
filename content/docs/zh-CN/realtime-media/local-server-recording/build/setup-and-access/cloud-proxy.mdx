@@ -38,12 +38,12 @@ description: "了解如何在本地服务端录制中应对防火墙限制，包
 
 4. 调用 `setBool` 并设置私有参数 `rtc.enable_proxy` 为 `true`。
 
-   ```cpp
+   ```cpp tab="C++" tabGroup="local-recording-cloud-proxy"
    auto agoraParameter = service->getAgoraParameter();
    agoraParameter->setBool("rtc.enable_proxy", true);
    ```
 
-   ```java
+   ```java tab="Java" tabGroup="local-recording-cloud-proxy"
    AgoraParameter parameter = agoraService.getAgoraParameter();
    parameter.setBool("rtc.enable_proxy", true);
    ```

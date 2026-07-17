@@ -26,6 +26,8 @@ description: "了解如何在 RTC 服务端 SDK 中区域访问限制，包括�
 
 ## 实现方法
 
+<PlatformStructured platform="cpp">
+
 服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
 
 你需要在调用 `initialize` 方法初始化 `IAgoraService` 实例时，通过设置 `AgoraServiceConfiguration` 中的 `areaCode` 参数来指定访问区域。
@@ -58,6 +60,10 @@ scfg.areaCode = agora::rtc::AREA_CODE_NA;
 // 初始化 IAgoraService 实例
 service->initialize(scfg);
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
 
 服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
 
@@ -94,6 +100,10 @@ config.setAreaCode(0x00000002);
 int ret = service.initialize(config);
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+
 服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
 
 你需要在调用 `initialize` 方法初始化 `AgoraService` 实例时，通过设置 `AgoraServiceConfig` 中的 `area_code` 参数来指定访问区域。
@@ -123,6 +133,10 @@ config.area_code = AreaCode.AREA_CODE_NA.value
 agora_service.initialize(config)
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
 服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
 
 你需要在调用 `initialize` 方法初始化 `agoraservice` 包时，通过设置 `AgoraServiceConfig` 中的 `AreaCode` 参数来指定访问区域。
@@ -149,3 +163,5 @@ svcCfg.AreaCode = agoraservice.AreaCodeNA
 // 初始化 `agoraservice` 包
 agoraservice.Initialize(svcCfg)
 ```
+
+</PlatformStructured>

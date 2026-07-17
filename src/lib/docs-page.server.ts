@@ -7,6 +7,7 @@ import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
+  type DocsSidebarHeader,
   getNavScopeSidebarNodes,
   getNavScopeVersionLinks,
   getScopedNavScopeSidebarNodes,
@@ -787,6 +788,10 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
+  const focusedOpenApiLaneHeader =
+    !navScope && supportedLocale
+      ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
+      : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
   const platformGroup = resolvePlatformGroupDefinition(page, localePages);
   const mdxBody = platformGroup
@@ -900,7 +905,7 @@ export async function loadDocsPagePayload(
           ),
     productScopes: getProductScopes(pageTree),
     sidebar,
-    sidebarHeader,
+    sidebarHeader: sidebarHeader ?? focusedOpenApiLaneHeader,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
@@ -1890,18 +1895,28 @@ async function getDocsSidebarNodes({
         tab,
       })
     : null;
+  const focusedOpenApiLaneSidebar =
+    !navScope && activePath && locale
+      ? await getFocusedOpenApiLaneSidebarNodes({
+          activePath,
+          locale,
+          source,
+          tab,
+        })
+      : null;
   const sidebar = navScope
     ? getScopedSidebarNodes({
         locale,
         navScope,
         source,
       })
-    : getNavScopeSidebarNodes({
+    : (focusedOpenApiLaneSidebar ??
+      getNavScopeSidebarNodes({
         getNodeMeta: (node) =>
           getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
         root: pageTree,
         tab,
-      });
+      }));
   const sourcePageUrls =
     locale === 'zh-CN' && tab === OPENAPI_TAB
       ? getLocaleSourcePageUrls(source, locale)
@@ -3001,6 +3016,41 @@ function getZhCnRestApiProductBackLink(activePath: string) {
   );
 }
 
+function resolveFocusedOpenApiLaneSidebarHeader(
+  activePath: string,
+  locale: AppLocale,
+  tab: string,
+): DocsSidebarHeader | undefined {
+  if (!isOpenApiTab(tab)) {
+    return undefined;
+  }
+
+  const lane = getOpenApiLanes()
+    .filter(
+      (item) =>
+        item.tab === tab &&
+        getOpenApiLaneLocales(item).includes(locale) &&
+        isSamePathOrDescendant(activePath, item.parentUrl[locale]),
+    )
+    .sort(
+      (left, right) =>
+        right.parentUrl[locale].length - left.parentUrl[locale].length,
+    )
+    .at(0);
+
+  if (!lane) {
+    return undefined;
+  }
+
+  const restApiProductBackLink = getZhCnRestApiProductBackLink(activePath);
+
+  return {
+    backHref: restApiProductBackLink?.backHref ?? `/${locale}/${OPENAPI_TAB}`,
+    backLabel: restApiProductBackLink?.backLabel ?? 'API Reference',
+    title: 'RESTful API',
+  };
+}
+
 function isSamePathOrDescendant(activePath: string, prefix: string) {
   return activePath === prefix || activePath.startsWith(`${prefix}/`);
 }
@@ -3161,6 +3211,83 @@ async function addOpenApiEndpointSidebarItems(
       appendEndpointPagesToOpenApiParent(node, locale, tab),
     ),
   );
+}
+
+async function getFocusedOpenApiLaneSidebarNodes({
+  activePath,
+  locale,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  source: typeof docsSource;
+  tab: string;
+}): Promise<DocsSidebarNode[] | null> {
+  if (!isOpenApiTab(tab)) {
+    return null;
+  }
+
+  const lane = getOpenApiLanes()
+    .filter(
+      (item) =>
+        item.tab === tab &&
+        getOpenApiLaneLocales(item).includes(locale) &&
+        isSamePathOrDescendant(activePath, item.parentUrl[locale]),
+    )
+    .sort(
+      (left, right) =>
+        right.parentUrl[locale].length - left.parentUrl[locale].length,
+    )
+    .at(0);
+
+  if (!lane) {
+    return null;
+  }
+
+  const parentUrl = lane.parentUrl[locale];
+  const operationUrls = new Set(
+    getOpenApiOperationIds(lane).map((operationId) =>
+      getOpenApiEndpointUrl(lane, locale, operationId),
+    ),
+  );
+  const sourcePages = source
+    .getPages(locale)
+    .filter(
+      (page) =>
+        isSamePathOrDescendant(page.url, parentUrl) &&
+        hasExistingDocsSourceFile(page, locale),
+    );
+  const sourcePageByUrl = new Map(sourcePages.map((page) => [page.url, page]));
+  const parentPage = sourcePageByUrl.get(parentUrl);
+  const parentNode: DocsSidebarPageNode = {
+    id: parentUrl,
+    title: parentPage?.data.title ?? '概览',
+    type: 'page',
+    url: parentUrl,
+  };
+  const manualNodes = sourcePages
+    .filter((page) => page.url !== parentUrl && !operationUrls.has(page.url))
+    .sort((left, right) => left.url.localeCompare(right.url))
+    .map(
+      (page): DocsSidebarPageNode => ({
+        id: page.url,
+        title: page.data.title ?? page.slugs.at(-1) ?? page.url,
+        type: 'page',
+        url: page.url,
+      }),
+    );
+  const operationNodes: DocsSidebarPageNode[] = await Promise.all(
+    getOpenApiOperationIds(lane).map(async (operationId) => ({
+      id: getOpenApiEndpointUrl(lane, locale, operationId),
+      method: (await getOpenApiOperation(lane, operationId, locale)).method,
+      title: lane.operations[operationId].title[locale],
+      type: 'page' as const,
+      url: getOpenApiEndpointUrl(lane, locale, operationId),
+    })),
+  );
+
+  return [parentNode, ...manualNodes, ...operationNodes];
 }
 
 async function appendEndpointPagesToOpenApiParent(
