@@ -25,17 +25,17 @@ info:
     > 请确保声网频道的场景为直播，而非通信，否则旁路推流会失败。
 
 
-    为方便你监听旁路推流的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/media-push/restful/webhook/enable-ncs)。开通该服务后，你可以通过
+    为方便你监听旁路推流的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs)。开通该服务后，你可以通过
     Webhook 接收如下事件：
 
 
-    - [创建推流成功](https://doc.shengwang.cn/api-ref/media-push/restful/converter-created)。
+    - [创建推流成功](/zh-CN/realtime-media/media-push/reference/ncs-events)。
 
-    - [推流配置更新](https://doc.shengwang.cn/api-ref/media-push/restful/converter-updated)。
+    - [推流配置更新](/zh-CN/realtime-media/media-push/reference/ncs-events)。
 
-    - [推流状态变化](https://doc.shengwang.cn/api-ref/media-push/restful/converter-state-changed)。
+    - [推流状态变化](/zh-CN/realtime-media/media-push/reference/ncs-events)。
 
-    - [停止推流成功](https://doc.shengwang.cn/api-ref/media-push/restful/converter-destroyed)。
+    - [停止推流成功](/zh-CN/realtime-media/media-push/reference/ncs-events)。
 
 
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。
@@ -180,7 +180,7 @@ paths:
 
 
                                             自定义 SEI 信息会被转换为[声网 SEI
-                                            规范](https://doc.shengwang.cn/faq/quality-issues/sei)的
+                                            规范](/zh-CN/api-reference/faq/quality/sei)的
                                             SEI 信息。
                                           properties:
                                             prefixForAgoraSei:
@@ -323,13 +323,13 @@ paths:
 
 
             -
-            [设置不转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-no-transcode)
+            [设置不转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode)
 
-            - [设置转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/update-transcode)
+            - [设置转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode)
 
-            - [设置混音音量](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-volume)
+            - [设置混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume)
 
-            - [设置 SEI 信息](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-sei)
+            - [设置 SEI 信息](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei)
   /{region}/v1/projects/{appId}/rtmp-converters/{converterId}:
     delete:
       summary: 销毁指定 Converter
@@ -513,13 +513,13 @@ paths:
 
 
             -
-            [更新不转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-no-transcode)
+            [更新不转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode)
 
-            - [更新转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/update-transcode)
+            - [更新转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode)
 
-            - [更新混音音量](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-volume)
+            - [更新混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume)
 
-            - [更新 SEI 信息](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-sei)
+            - [更新 SEI 信息](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei)
     get:
       summary: 获取指定 Converter 的推流状态
       description: 获取指定 Converter 的推流状态。
@@ -749,7 +749,7 @@ components:
       description: >-
         声网旁路推流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的
         `Authorization` 字段中。详见[实现 HTTP
-        基本认证](https://doc.shengwang.cn/doc/media-push/restful/user-guides/http-basic-auth)。
+        基本认证](/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth)。
       scheme: basic
   responses:
     failure-message:
@@ -1004,7 +1004,7 @@ components:
                                         type: object
                                         description: >-
                                           自定义 SEI 信息，会被转换为[声网 SEI
-                                          规范](https://doc.shengwang.cn/faq/quality-issues/sei)的 SEI
+                                          规范](/zh-CN/api-reference/faq/quality/sei)的 SEI
                                           信息。
                                         properties:
                                           prefixForAgoraSei:
@@ -1215,7 +1215,7 @@ components:
         - `0` 或空：自定义布局，即通过 `layout` 自定义布局。
 
         - `1`：垂直布局，即通过 `vertical`
-        指定一个用户在屏幕左侧显示大视窗画面，其他用户以小视窗画面在屏幕右侧垂直排列，详见[设置垂直布局](https://doc.shengwang.cn/doc/media-push/restful/user-guides/vertical-streaming)。垂直布局时，通过
+        指定一个用户在屏幕左侧显示大视窗画面，其他用户以小视窗画面在屏幕右侧垂直排列，详见[设置垂直布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming)。垂直布局时，通过
         `Update` 请求只能更新 `rtmpUrl`。
       default: 0
       x-stoplight:
@@ -1422,7 +1422,7 @@ components:
       title: v-bitrate
       description: >-
         输出视频的编码码率 (Kbps)。取值范围为
-        [1,10000]。推荐取值详见[常用视频属性](https://doc.shengwang.cn/doc/media-push/restful/api/video-profile)。
+        [1,10000]。推荐取值详见[常用视频属性](/zh-CN/realtime-media/media-push/reference/video-profile)。
       x-stoplight:
         id: 1rs4m2yxj2z5y
     v-framerate:
@@ -1430,7 +1430,7 @@ components:
       title: v-framerate
       description: >-
         输出视频的编码帧率 (fps)。取值范围为
-        [1,30]。推荐取值详见[常用视频属性](https://doc.shengwang.cn/doc/media-push/restful/api/video-profile)。
+        [1,30]。推荐取值详见[常用视频属性](/zh-CN/realtime-media/media-push/reference/video-profile)。
       default: 15
       x-stoplight:
         id: v7dmyhmh7jmrf
@@ -1494,7 +1494,7 @@ components:
         自定义 SEI 信息的 payload。长度必须在 4096 个字符以内。默认为空。
 
 
-        自定义 SEI 信息会被转换为[声网 SEI 规范](https://doc.shengwang.cn/faq/quality-issues/sei)的 SEI 信息。此处设置的
+        自定义 SEI 信息会被转换为[声网 SEI 规范](/zh-CN/api-reference/faq/quality/sei)的 SEI 信息。此处设置的
         payload 会被转换至声网 SEI 规范中定义的 `app_data` 中。
       x-stoplight:
         id: sx5i75dtrk7ci

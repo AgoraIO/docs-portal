@@ -19,14 +19,14 @@ info:
     > 请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
 
 
-    为方便你监听云端播放器的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/media-pull/restful/user-guide/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
+    为方便你监听云端播放器的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-pull/build/monitor-events/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
 
 
-    - [云端播放器创建成功](https://doc.shengwang.cn/api-ref/media-pull/restful/player-created)。
+    - [云端播放器创建成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
 
-    - [云端播放器运行状态改变](https://doc.shengwang.cn/api-ref/media-pull/restful/player-state-changed)。
+    - [云端播放器运行状态改变](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
 
-    - [云端播放器销毁成功](https://doc.shengwang.cn/api-ref/media-pull/restful/player-destroyed)。
+    - [云端播放器销毁成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
 
 
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。'
@@ -839,7 +839,7 @@ components:
     encryptKdfSalt:
       type: string
       title: encryptKdfSalt
-      description: '盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 随机生成 Base64 编码的盐，详见[媒体流加密](https://doc.shengwang.cn/doc/rtc/android/advanced-features/channel-encryption)。
+      description: '盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 随机生成 Base64 编码的盐，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)。
 
 
         **注意**：该字段仅在 `aes-128-gcm2` 或 `aes-256-gcm2` 加密模式下生效。'

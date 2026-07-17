@@ -63,7 +63,7 @@ paths:
                     # agent_rtm_uid:
                     #   type: string
                     #   description: |-
-                    #     > 该字段已废弃，请参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
+                    #     > 该字段已废弃，请参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
 
                     #     智能体在 RTM 频道内的用户 ID。仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
                     enable_string_uid:
@@ -73,7 +73,7 @@ paths:
                         是否启用 String UID：
                         - `true`：智能体和订阅用户 ID 均使用 String UID。
                         - `false`：（默认）智能体和订阅用户 ID 均使用 Int UID。
-                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](https://doc.shengwang.cn/faq/integration-issues/string-uid)。
+                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
                     idle_timeout:
                       type: integer
                       minimum: 0
@@ -107,7 +107,7 @@ paths:
                           description: |-
                             是否启用实时消息 RTM 服务。启用后智能体会自动登录 RTM 并订阅 `channel` 中指定的频道，可结合 RTM 提供的能力实现一些进阶功能，例如[传递自定义信息](/zh-CN/ai/user-guides/custom-data)。
 
-                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
+                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
                           default: false
                         enable_sal:
                           type: boolean
@@ -655,7 +655,7 @@ paths:
                           description: |-
                             智能体数据传输通道，可选以下值：
                             - `rtm`：使用 RTM 传输。该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
-                            - `datastream`：（默认）使用 RTC 的 [`DataStream`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) 传输。
+                            - `datastream`：（默认）使用 RTC 的 [`DataStream`](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 传输。
 
                             > 如果 `turn_detection.config.start_of_speech.mode` 或 `turn_detection.config.end_of_speech.mode` 为 `manual`，则必须同时开启 `advanced_features.enable_rtm = true`，并将该字段设为 `rtm`。
                         enable_metrics:
