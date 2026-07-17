@@ -25,7 +25,7 @@ description: "了解如何快速接入 PPT 转码服务，完成环境准备、�
 PPT 转码服务由声网服务端提供，需要由你的业务服务端根据 App 客户端的需求，调用 RESTful API 向声网服务端发起 PPT 转码请求。
 
 :::info[信息]
-声网推荐你在阅读本节的同时在新标签页打开 [PPT 转码服务端 API 参考](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)以获得最佳的快速开始体验：
+声网推荐你在阅读本节的同时在新标签页打开 [PPT 转码服务端 API 参考](/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion)以获得最佳的快速开始体验：
 
 - 详细的 API 参数说明、调用示例和调用注意事项
 - 使用 API 文档右侧的“Try it”功能快捷调用 RESTful API
@@ -34,7 +34,7 @@ PPT 转码服务由声网服务端提供，需要由你的业务服务端根据 
 
 ### 发起 PPT 转码
 
-发起文档转换任务需要传入 SDK Token、待转换文件的 URL 地址、转换任务类型等参数，详见[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)。以 JavaScript 为例：
+发起文档转换任务需要传入 SDK Token、待转换文件的 URL 地址、转换任务类型等参数，详见[发起 PPT 转码](/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion)。以 JavaScript 为例：
 
 ```javascript
 const url = "https://api.netless.link/v5/projector/tasks";
@@ -69,7 +69,7 @@ try {
 
 ### 生成 Task Token
 
-使用上一步中获得的转码任务 UUID 生成 Task Token，详见[生成 Task Token](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-tokens-tasks-uuid)。以 JavaScript 为例：
+使用上一步中获得的转码任务 UUID 生成 Task Token，详见[生成 Task Token](/zh-CN/api-reference/api-ref/ppt-conversion-service/generate-task-token)。以 JavaScript 为例：
 
 ```javascript
 // 替换 url 中的 uuid 为步骤 1 中获取的转码任务 UUID
@@ -100,7 +100,7 @@ try {
 
 ### 查询转码任务进度
 
-查询七天内创建的转码任务的进度需要传入[发起 PPT 转码](#发起-ppt-转码)中返回的任务 UUID，详见[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)。以 JavaScript 为例：
+查询七天内创建的转码任务的进度需要传入[发起 PPT 转码](#发起-ppt-转码)中返回的任务 UUID，详见[查询转码任务进度](/zh-CN/api-reference/api-ref/ppt-conversion-service/query-task)。以 JavaScript 为例：
 
 :::info[信息]
 声网建议你设计轮询机制定时调用查询转码任务进度 API，以实时获取转换任务的状态。
@@ -135,9 +135,9 @@ try {
 
 声网还提供了以下 PPT 转码服务端 API，你可以根据业务需要选择调用：
 
-- [查询待转码任务](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks)：列出未完成转换的所有任务。
-- [取消指定的转码任务](/doc/conversion-ppt/restful/restful-ppt/operations/delete-v5-projector-tasks-uuid)：取消指定任务 UUID 对应的转码任务。
-- [设置转码任务优先级](/doc/conversion-ppt/restful/restful-ppt/operations/put-v5-projector-tasks-uuid-priority)：将待进行的指定转码任务移动至任务队列最前或最后面。
+- [查询待转码任务](/zh-CN/api-reference/api-ref/ppt-conversion-service/list-pending-tasks)：列出未完成转换的所有任务。
+- [取消指定的转码任务](/zh-CN/api-reference/api-ref/ppt-conversion-service/cancel-task)：取消指定任务 UUID 对应的转码任务。
+- [设置转码任务优先级](/zh-CN/api-reference/api-ref/ppt-conversion-service/set-task-priority)：将待进行的指定转码任务移动至任务队列最前或最后面。
 
 ## 后续步骤
 
@@ -156,7 +156,7 @@ try {
 <Cards>
   <Card
     title="API 参考"
-    href="/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks"
+    href="/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion"
     description="查看 PPT 转码服务 RESTful API 参考文档。"
   />
 </Cards>

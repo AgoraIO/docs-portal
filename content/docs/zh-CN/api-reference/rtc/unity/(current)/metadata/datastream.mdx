@@ -21,7 +21,7 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 你可以调用该方法创建数据流并提高数据传输的可靠性和有序性。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengine_createdatastream1__timing"></a>
@@ -89,7 +89,7 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 相比 [CreateDataStream [1/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream1)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengine_createdatastream2__timing"></a>
@@ -213,7 +213,7 @@ public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config
 相比 [CreateDataStreamEx [1/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex1)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengineex_createdatastreamex2__timing"></a>
@@ -270,7 +270,7 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
 
 - 该方法需要在加入频道后、且调用 CreateDataStream [2/2] 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
@@ -324,7 +324,7 @@ public abstract int SendStreamMessageEx(int streamId, byte[] data, uint length, 
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
-- 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
+- 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
 - 该方法需要在 JoinChannelEx 后调用。
 - 请确保在调用该方法前，已调用 CreateDataStreamEx [2/2] 创建了数据通道。
 :::
@@ -376,7 +376,7 @@ public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, in
 该回调表示本地用户收到了远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
@@ -427,7 +427,7 @@ public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUi
 该回调表示本地用户未收到远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 :::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
+如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>

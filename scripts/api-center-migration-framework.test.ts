@@ -16,16 +16,18 @@ import {
 const temporaryDirectories: string[] = [];
 
 async function temporaryRepo() {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'api-center-framework-'));
+  const root = await fs.mkdtemp(
+    path.join(os.tmpdir(), 'api-center-framework-'),
+  );
   temporaryDirectories.push(root);
   return root;
 }
 
 afterEach(async () => {
   await Promise.all(
-    temporaryDirectories.splice(0).map((directory) =>
-      fs.rm(directory, { recursive: true, force: true }),
-    ),
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => fs.rm(directory, { recursive: true, force: true })),
   );
 });
 
@@ -45,14 +47,18 @@ describe('API Center shared migration framework', () => {
     expect(() =>
       assertApiCenterOutputPath('/repo', 'content/docs/zh-CN/index.mdx'),
     ).toThrow('outside allowlist');
-    expect(() =>
-      assertApiCenterOutputPath('/repo', '../outside.mdx'),
-    ).toThrow('outside repository');
+    expect(() => assertApiCenterOutputPath('/repo', '../outside.mdx')).toThrow(
+      'outside repository',
+    );
   });
 
   it('renders Markdown-native callouts, code fences, and simple tables', () => {
     expect(
-      renderCallout({ type: 'danger', title: '注意', body: '停止后不可恢复。' }),
+      renderCallout({
+        type: 'danger',
+        title: '注意',
+        body: '停止后不可恢复。',
+      }),
     ).toBe(':::error[注意]\n停止后不可恢复。\n:::');
     expect(renderCodeFence('const value = `x`;', 'typescript')).toContain(
       '```ts\n',
@@ -111,7 +117,8 @@ describe('API Center shared migration framework', () => {
     ).toBe('https://example.com/page');
     expect(
       rewriteLegacyHref('#//api/name/)', {
-        sourceUrl: 'https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/Foo',
+        sourceUrl:
+          'https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/Foo',
         routeMap: new Map([
           [
             '/api-ref/whiteboard/ios/Classes/Foo',
@@ -120,6 +127,54 @@ describe('API Center shared migration framework', () => {
         ]),
       }).href,
     ).toBe('/zh-CN/api-reference/whiteboard/ios/classes/foo#//api/name/%29');
+  });
+
+  it('repairs platformized and empty-platform legacy routes before lookup', () => {
+    const routeMap = new Map([
+      [
+        '/api-ref/rtc/android/API/rtc_api_overview',
+        '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+      ],
+      [
+        '/doc/rtc/billing/billing-strategy',
+        '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+      ],
+    ]);
+
+    expect(
+      rewriteLegacyHref('/api-ref/rtc//API/rtc_api_overview', {
+        sourceUrl:
+          'https://doc.shengwang.cn/doc/art-class/android/api/correction',
+        routeMap,
+      }).href,
+    ).toBe('/zh-CN/api-reference/rtc/android/rtc-api-overview');
+    expect(
+      rewriteLegacyHref(
+        'https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy',
+        {
+          sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/android/overview',
+          routeMap,
+        },
+      ).href,
+    ).toBe('/zh-CN/realtime-media/rtc/reference/billing-strategy');
+  });
+
+  it('does not preserve unresolved historical docs domains as external links', () => {
+    expect(
+      rewriteLegacyHref('https://docs.agora.io/cn/Recording/token_server', {
+        sourceUrl: 'https://doc.shengwang.cn/api-ref/recording/cpp/overview',
+        routeMap: new Map(),
+      }),
+    ).toMatchObject({ href: null, warning: { code: 'unresolved-link' } });
+    expect(
+      rewriteLegacyHref(
+        'https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms',
+        {
+          sourceUrl: 'https://doc.shengwang.cn/api-center',
+          routeMap: new Map(),
+        },
+      ).href,
+    ).toBe('https://ticket.shengwang.cn/');
   });
 
   it('prefers already-migrated canonical ConvoAI pages over stale path-map targets', () => {
@@ -159,9 +214,7 @@ describe('API Center shared migration framework', () => {
           routeMap,
         },
       ).href,
-    ).toBe(
-      '/zh-CN/realtime-media/rtc/build/setup-and-access/firewall',
-    );
+    ).toBe('/zh-CN/realtime-media/rtc/build/setup-and-access/firewall');
   });
 
   it('rewrites Shengwang and Agora legacy FAQ aliases to migrated local FAQ pages', () => {
@@ -195,9 +248,10 @@ describe('API Center shared migration framework', () => {
 
   it('preserves unowned targets and records the warning in both reports', async () => {
     const repoRoot = await temporaryRepo();
-    const target =
-      'content/docs/zh-CN/api-reference/rtc/android/existing.mdx';
-    await fs.mkdir(path.dirname(path.join(repoRoot, target)), { recursive: true });
+    const target = 'content/docs/zh-CN/api-reference/rtc/android/existing.mdx';
+    await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
+      recursive: true,
+    });
     await fs.writeFile(path.join(repoRoot, target), 'user content\n');
     const run = await ApiCenterMigrationRun.create({ repoRoot, manifest });
     run.planFile({
@@ -225,7 +279,9 @@ describe('API Center shared migration framework', () => {
   it('adopts an existing target only when the caller explicitly requests it', async () => {
     const repoRoot = await temporaryRepo();
     const target = 'content/docs/zh-CN/api-reference/meta.json';
-    await fs.mkdir(path.dirname(path.join(repoRoot, target)), { recursive: true });
+    await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
+      recursive: true,
+    });
     await fs.writeFile(path.join(repoRoot, target), '{"pages":["old"]}\n');
     const run = await ApiCenterMigrationRun.create({
       repoRoot,

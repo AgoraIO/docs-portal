@@ -286,7 +286,7 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
     - 视频帧率：15 fps
     - 码率：500 Kbps
 
-`ApplicationScenario1v1` (2) 适用于[视频 1v1 通话](https://doc.shengwang.cn/doc/one-to-one-live/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。 `ApplicationScenarioLiveshow` (3) 适用于[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+`ApplicationScenario1v1` (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。 `ApplicationScenarioLiveshow` (3) 适用于[秀场直播](/zh-CN/solutions/showroom)场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 

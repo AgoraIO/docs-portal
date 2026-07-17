@@ -12,6 +12,15 @@ _migration:
       severity: info
       message: >-
         Rendered unresolved generated-source link
+        /cn/Agora%20Platform/token?platform=All%20Platforms#3-%E7%94%9F%E6%88%90-token as local
+        text.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved generated-source link /cn/Agora%20Platform/token_server as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
         /doc/rtc/mini-program/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6-token
         as local text.
 ---
@@ -172,8 +181,8 @@ _migration:
 
     在 app 服务器端生成的用于鉴权的 Token：
 
-    - 安全要求不高：你可以使用控制台生成的临时 Token，详见[生成 Token](https://docs.agora.io/cn/Agora%20Platform/token?platform=All%20Platforms#3-%E7%94%9F%E6%88%90-token)。
-    - 安全要求高：将值设为你的服务端生成的正式 Token，详见[使用 Token 鉴权](https://docs.agora.io/cn/Agora%20Platform/token_server)。
+    - 安全要求不高：你可以使用控制台生成的临时 Token，详见生成 Token。
+    - 安全要求高：将值设为你的服务端生成的正式 Token，详见使用 Token 鉴权。
   - channel: string
 
     频道名，能标识直播频道的字符串。

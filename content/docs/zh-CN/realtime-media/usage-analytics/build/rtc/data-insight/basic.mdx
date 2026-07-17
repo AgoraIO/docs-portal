@@ -14,7 +14,7 @@ description: "了解如何在水晶球中数据洞察普通版，包括适用场
 
 按以下步骤使用数据洞察普通版：
 
-1. [订阅水晶球套餐包](/zh-CN/realtime-media/usage-analytics/reference/billing#如何订阅)，开通数据洞察功能。
+1. [订阅水晶球套餐包](/zh-CN/realtime-media/usage-analytics/reference/billing)，开通数据洞察功能。
 2. 登录[控制台](https://console.shengwang.cn/)，点击左侧菜单栏中的**水晶球**。
 3. 在水晶球页面的左侧菜单中选择你要查看的项目。点击**用量概览**查看用量数据，或者点击**质量概览**查看质量数据。
 4. 设置筛选条件：
@@ -153,18 +153,18 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 | 通话时长 | 使用声网 RTC SDK 进行视频通话和音频通话的时长。 |
 | 视频通话时长 | 使用声网 RTC SDK 进行视频通话的时长。 |
 | 音频通话时长 | 使用声网 RTC SDK 进行音频通话的时长。 |
-| 云录制最大并发任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务。仅开启云端录制时展示，详见[云端录制](https://docs.agora.io/cn/cloud-recording/product_cloud_recording)。 |
-| 输入在线媒体流最大并发任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务。仅开启输入在线媒体流时展示，详见[输入在线媒体流](https://docs.agora.io/cn/media-pull/inject_stream_restful_overview)。 |
+| 云录制最大并发任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务。仅开启云端录制时展示，详见云端录制。 |
+| 输入在线媒体流最大并发任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务。仅开启输入在线媒体流时展示，详见输入在线媒体流。 |
 | 旁路推流最大并发任务数 | <Slot name="basic-markdown-0-11-1" /> |
 
 <Slot for="basic-markdown-0-11-1">
 
-仅开启旁路推流时展示，详见[旁路推流](https://docs.agora.io/cn/media-push/streaming_product)。
+仅开启旁路推流时展示，详见旁路推流。
 提供三种推流模式的数据：
 
 - `SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `false`。
 - `SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `true`。
-- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。
+- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见旁路推流 RESTful API。
 
 </Slot>
 
@@ -213,6 +213,6 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 
 ### 相关链接
 
-- [数据洞察 RESTful API](/doc/analytics/general/restful-aa/operations/get-beta-insight-usage-by_time)
+- [数据洞察 RESTful API](/zh-CN/api-reference/api-ref/agora-analytics/insight-usage-time)
 - [案例：常见问题排查](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting)
 - [数据洞察 Plus](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus)

@@ -6,7 +6,25 @@ _migration:
   sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/classagora_1_1recording_1_1_i_recording_engine
   sourcePath: html-docs/recording/cpp/classagora_1_1recording_1_1_i_recording_engine.html
   generator: doxygen
-  warnings: []
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /cn/Recording/token?platform=All%20Platforms#app-id as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved generated-source link /cn/Recording/token_server as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
 ---
 
 | <a id="pub-methods"></a> Public 成员函数 |  |
@@ -79,7 +97,7 @@ _migration:
 
 ### 参数
 
-| appId | 希望录制的音视频通话中使用的 App ID，详见 [获取 App ID](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms#app-id)。 |
+| appId | 希望录制的音视频通话中使用的 App ID，详见 获取 App ID。 |
 | --- | --- |
 | eventHandler | 录制 SDK 所触发的事件通过 [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) 类回调通知应用程序。 |
 
@@ -98,12 +116,12 @@ _migration:
 
 ### 注解
 
-- 由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将服务到期时间 [privilegeExpiredTs](https://docs.agora.io/cn/Recording/token_server) 设置为 0，表示权限一旦生成，永不过期。
+- 由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将服务到期时间 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。
 - 同一个频道里不能出现两个相同的 UID，否则会产生未定义行为。
 
 ### 参数
 
-| channelKey | 用于鉴权的动态密钥。录制端的 `channelKey` 与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见[校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| channelKey | 用于鉴权的动态密钥。录制端的 `channelKey` 与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
 | --- | --- |
 | channelId | 希望录制的音视频通话的频道名称。 |
 | uid | <Slot name="api-center-table-0" /> |
@@ -140,7 +158,7 @@ _migration:
 
 ### 参数
 
-| token | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见[校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| token | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
 | --- | --- |
 | channelId | 待录制频道的频道名。 |
 | userAccount | <Slot name="api-center-table-1" /> |

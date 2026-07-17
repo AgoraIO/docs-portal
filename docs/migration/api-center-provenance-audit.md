@@ -31,7 +31,7 @@
 - Explicit existing-route projections: 54
 - OpenAPI-routed targets: 130
 - Preserved pre-existing targets outside API Reference: 345
-- Local links checked: 17897
+- Local links checked: 17894
 - Reachable OpenAPI operations checked: 130
 
 ### Target decisions

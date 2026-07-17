@@ -162,7 +162,7 @@ v4.2.2
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| sceneType | 场景类型： 1：直播场景：K 歌及背景音乐播放。 2：直播场景：背景音乐播放。 3：（默认）语聊场景：K 歌。 4：语聊场景：背景音乐播放。 5：VR 场景：K 歌及背景音乐播放。 注： 声网会根据你在 sceneType 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](https://doc.shengwang.cn/doc/online-ktv/android/overview/billing) 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 sceneType 的值。 | \{"sceneType":1\} |
+| sceneType | 场景类型： 1：直播场景：K 歌及背景音乐播放。 2：直播场景：背景音乐播放。 3：（默认）语聊场景：K 歌。 4：语聊场景：背景音乐播放。 5：VR 场景：K 歌及背景音乐播放。 注： 声网会根据你在 sceneType 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 计费说明 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 sceneType 的值。 | \{"sceneType":1\} |
 | highPart | 副歌片段的索引。你可以从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取副歌片段的索引然后传值。索引序号从 0 开始。 | \{"format": \{"highpart": 0\}\} |
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
@@ -261,7 +261,7 @@ public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number
 
 #### `musicChartId`
 
-音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来 [获取曲库所有歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8) 或 [获取增量歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)。
+音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来 [获取曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表) 或 [获取增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 
 #### `page`
 

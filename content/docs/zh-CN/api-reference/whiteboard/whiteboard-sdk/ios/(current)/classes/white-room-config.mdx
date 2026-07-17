@@ -6,7 +6,12 @@ _migration:
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteRoomConfig
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteRoomConfig.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /cn/global-accelerator/agora_ga_overview?platform=All%20Platforms as local text.
 ---
 
 | Inherits from | WhiteObject |
@@ -437,7 +442,7 @@ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference
 
 #### Discussion
 
-声网互动白板服务集成了 [声网全链路加速（FPA）服务](https://docs.agora.io/cn/global-accelerator/agora_ga_overview?platform=All%20Platforms)。
+声网互动白板服务集成了 声网全链路加速（FPA）服务。
 集成声网 Whiteboard SDK 后，你可以按照如下步骤设置，在互动白板应用中开启全链路加速功能，提升传输质量：
 1. 在项目的 `podfile` 文件中添加 `pod 'Whiteboard/fpa'`。
 2. 加入频道前，调用 `nativeWebSocket(YES)`，开启全链路加速功能。

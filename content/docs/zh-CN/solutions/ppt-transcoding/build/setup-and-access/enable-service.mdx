@@ -53,7 +53,7 @@ description: "了解如何在声网控制台开通 PPT 转码服务，并获取�
 
 - **AppIdentifier**：也称为 App ID，即项目的唯一标识。初始化白板 SDK 时需要传入 `AppIdentifier`。
 - **AK** 和 **SK**：访问密钥对，用于生成互动白板 Token。
-- **sdkToken**：声网控制台生成的 SDK Token（动态密钥），一般用于项目测试。在生产环境中，你需要使用[示例代码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)或调用[服务端 API](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-tokens-teams)，在自己的 App 服务端生成 SDK Token。
+- **sdkToken**：声网控制台生成的 SDK Token（动态密钥），一般用于项目测试。在生产环境中，你需要使用[示例代码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)或调用[服务端 API](/zh-CN/api-reference/api-ref/ppt-conversion-service/generate-sdk-token)，在自己的 App 服务端生成 SDK Token。
 
 按照以下步骤获取安全密钥：
 
@@ -76,7 +76,7 @@ description: "了解如何在声网控制台开通 PPT 转码服务，并获取�
 
 1. 在声网控制台左侧导航栏依次访问**全部产品**-**拓展能力**-**互动白板**。
 
-2. 在互动白板的**功能配置**-**配套服务**中，选择数据中心，点击**配置**。该数据中心必须与你调用[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks) API 时在 `region` 字段中填入的数据中心一致；否则，服务配置不生效。
+2. 在互动白板的**功能配置**-**配套服务**中，选择数据中心，点击**配置**。该数据中心必须与你调用[发起 PPT 转码](/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion) API 时在 `region` 字段中填入的数据中心一致；否则，服务配置不生效。
 
 ![](https://web-cdn.agora.io/docs-portal/img/whiteboard/enable-4.png)
 

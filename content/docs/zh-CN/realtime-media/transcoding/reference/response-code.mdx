@@ -42,7 +42,7 @@ description: "查询云端转码的响应状态码、错误码含义、常见原
 使用云端转码响应状态码进行问题排查时，你需要了解如下注意事项：
 
 - 如果请求失败，不要对响应 Body 里的 `message` 字段的内容做任何逻辑处理，建议主要对状态码做逻辑处理。
-- 如果以上表格中的排查方法并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并请[联系技术支持](https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms)。
+- 如果以上表格中的排查方法并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并请[联系技术支持](https://ticket.shengwang.cn/)。
 - 收到 `404` 的状态码后，如果 [`Create`](./cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-tasks) 请求已返回成功且没有主动调用 [`Delete`](./cloud-transcoder/operations/delete-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId) 方法，或者 transcoder 的空闲状态超过请求参数中的 `idleTimeout` 字段，建议采取退避算法（例如间隔 5 秒、10 秒、15 秒）调用 `Query` 方法进行确认。
 - 收到 `5XX` 的响应状态码后，一般是服务端在响应的过程中出现了问题，建议操作如下：
     - 使用退避策略进行查询请求：例如间隔 5 秒、10 秒、15 秒进行 `Query` 请求，查询服务状态。
@@ -83,5 +83,5 @@ description: "查询云端转码的响应状态码、错误码含义、常见原
 | `500 Internal Server Error` | 服务器内部错误。 | 尝试重试几次。 |
 
 :::info[信息]
-如果以上排查方法并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并请[联系技术支持](https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms)。
+如果以上排查方法并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并请[联系技术支持](https://ticket.shengwang.cn/)。
 :::

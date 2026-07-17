@@ -55,8 +55,8 @@ const slide = new Slide({
 
 设置转换资源需要传入两个参数：
 
-- `taskId`：一串 hash 字符串代表一次转换任务 ID，即调用[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)或[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `uuid`。
-- `prefixUrl`：一段 URL 地址，指向转码后的资源前缀路径，即调用[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `prefixUrl`。
+- `taskId`：一串 hash 字符串代表一次转换任务 ID，即调用[发起 PPT 转码](/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion)或[查询转码任务进度](/zh-CN/api-reference/api-ref/ppt-conversion-service/query-task)返回的 `uuid`。
+- `prefixUrl`：一段 URL 地址，指向转码后的资源前缀路径，即调用[查询转码任务进度](/zh-CN/api-reference/api-ref/ppt-conversion-service/query-task)返回的 `prefixUrl`。
 
 :::warning[注意]
 你需要保证访问 `prefixUrl` 路径里的资源不会跨域。
@@ -109,8 +109,8 @@ setResource(taskId: string, url: string): void;
 
 **参数**
 
-- `taskId`：String。转码任务 ID，即调用[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)或[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `uuid`。
-- `url`：String。转码后的资源前缀路径，即调用[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `prefixUrl`。
+- `taskId`：String。转码任务 ID，即调用[发起 PPT 转码](/zh-CN/api-reference/api-ref/ppt-conversion-service/start-conversion)或[查询转码任务进度](/zh-CN/api-reference/api-ref/ppt-conversion-service/query-task)返回的 `uuid`。
+- `url`：String。转码后的资源前缀路径，即调用[查询转码任务进度](/zh-CN/api-reference/api-ref/ppt-conversion-service/query-task)返回的 `prefixUrl`。
 
 :::warning[注意]
 需要保证访问 `prefixUrl` 路径里的资源不会跨域。
@@ -287,7 +287,7 @@ new (url: string): RtcAudio;
 <a id="ilogger"></a>
 #### ILogger
 
-`ILogger` 类用于定义逐条接收 PPT 运行日志的方法。需要在初始化 `slide` 对象时，在 [`ISlideConfig`](#isslideconfig) 中的 `logger` 属性中传入一个实现了该类下方法的对象。该类下的方法都是可选的，如果不实现该类下的方法，则日志记录器不会记录任何日志。示例如下：
+`ILogger` 类用于定义逐条接收 PPT 运行日志的方法。需要在初始化 `slide` 对象时，在 [`ISlideConfig`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt) 中的 `logger` 属性中传入一个实现了该类下方法的对象。该类下的方法都是可选的，如果不实现该类下的方法，则日志记录器不会记录任何日志。示例如下：
 
 ```typescript
 import { Slide } from "@netless/slide";

@@ -18,7 +18,7 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
     该方法只能生成 `admin` 角色的永久 SDK Token。请勿将该 Token 下发给客户端，否则会有泄露的风险。
     :::
 
-- 在 App 服务端调用互动白板服务端 RESTful API，详见[使用 RESTful API 生成 Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-teams)。
+- 在 App 服务端调用互动白板服务端 RESTful API，详见[使用 RESTful API 生成 Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)。
 
 生成 Token 时，你需要传入以下参数：
 
@@ -68,8 +68,8 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 生成 Room Token 时，还需要传入房间的 UUID，即房间的全局唯一标识符，使 Room Token 与特定房间绑定。你可以通过以下方式获取房间的 UUID：
 
-- 如果房间已经存在，你可以调用[获取房间列表](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-rooms)查询已创建的房间列表。请求成功后，响应 Body 中包含查询房间的 UUID。
-- 如果房间尚未创建，你可以调用[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。请求成功后，响应 Body 中包含新创建房间的 UUID。
+- 如果房间已经存在，你可以调用获取房间列表查询已创建的房间列表。请求成功后，响应 Body 中包含查询房间的 UUID。
+- 如果房间尚未创建，你可以调用[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。请求成功后，响应 Body 中包含新创建房间的 UUID。
 
 :::warning[注意]
 - 如果你调用互动白板 RESTful API 生成 Room Token，请求 Header 中的 SDK Token 必须和创建房间时使用的 SDK Token 相同。
@@ -80,7 +80,7 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 生成 Task Token 时，还需要传入文档转换任务的 UUID，即文档转换任务的全局唯一标识符，使 Task Token 与特定的文档转换任务绑定。
 
-要获取文档转换任务的 UUID， 你需要调用互动白板 RESTful API [发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)。请求成功后，响应 Body 会包含转换任务的 UUID。
+要获取文档转换任务的 UUID， 你需要调用互动白板 RESTful API [发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)。请求成功后，响应 Body 会包含转换任务的 UUID。
 
 ### 在 App 服务端生成 Token
 
@@ -1030,7 +1030,7 @@ Token 的数据格式错误。请检查 Token 数据格式是否有效：
 
 ### 生成 SDK Token
 
-生成 SDK Token 时，你需要传入项目的 AK 和 SK、Token 的有效时长和角色，详见[生成 SDK Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-teams)。以 cURL 为例：
+生成 SDK Token 时，你需要传入项目的 AK 和 SK、Token 的有效时长和角色，详见[生成 SDK Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)。以 cURL 为例：
 
 ```shell
 curl --request POST \
@@ -1055,7 +1055,7 @@ SDK Token 的权限级别很高，如果泄漏，会危害你的业务安全。�
 
 ### 生成 Room Token
 
-生成 Room Token 时，你需要传入房间 UUID、SDK Token、Token 的有效时长和角色，其中房间 UUID 需要调用[POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)获取，详见[生成 Room Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。以 cURL 为例：
+生成 Room Token 时，你需要传入房间 UUID、SDK Token、Token 的有效时长和角色，其中房间 UUID 需要调用[POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)获取，详见[生成 Room Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。以 cURL 为例：
 
 ```shell
 curl --request POST \
@@ -1072,7 +1072,7 @@ curl --request POST \
 
 ### 生成 Task Token
 
-生成 Task Token 时，你需要传入转换任务的 UUID、SDK Token、AK、Token 的有效时长和角色，其中转换任务的 UUID 需要调用[发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)获取，详见[生成 Task Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-tasks-uuid)。以 cURL 为例：
+生成 Task Token 时，你需要传入转换任务的 UUID、SDK Token、AK、Token 的有效时长和角色，其中转换任务的 UUID 需要调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)获取，详见[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token)。以 cURL 为例：
 
 ```shell
 curl --request POST \
@@ -1092,9 +1092,9 @@ curl --request POST \
 
 ### API 参考
 
-- [生成 SDK Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-teams)
-- [生成 Room Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)
-- [生成 Task Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-tasks-uuid)
+- [生成 SDK Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)
+- [生成 Room Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)
+- [生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token)
 
 ### Token 的类型和权限
 
@@ -1139,8 +1139,8 @@ curl --request POST \
 
 | 权限                         | admin（管理员） | writer（读写） | reader（只读） |
 | :--------------------------- | :-------------- | :------------- | :------------- |
-| 以[互动模式](#互动模式)加入特定房间       |  ✔               |  ✔             |✘               |
-| 以[订阅模式](#订阅模式)加入特定房间       | ✘                | ✘              |  ✔              |
+| 以[互动模式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)加入特定房间       |  ✔               |  ✔             |✘               |
+| 以[订阅模式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)加入特定房间       | ✘                | ✘              |  ✔              |
 | 获取特定房间信息             |  ✔             |  ✔              | ✘               |
 | 封禁特定房间                 |  ✔              | ✘               | ✘               |
 | 对指定场景进行截图           |  ✔           |  ✔              | ✘               |

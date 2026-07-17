@@ -168,7 +168,7 @@ description: "查看融合 CDN 直播的融合 CDN API 参数参考，了解关�
 
 ## 回源鉴权回调格式
 
-如果你在[设置回源鉴权配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-settings-streamauth-webhook)的请求中设置了 `url`，声网会向这个回调 URL 发送请求，请求中会使用以下参数：
+如果你在[设置回源鉴权配置](/zh-CN/api-reference/api-ref/fusion-cdn/origin-auth-config-update)的请求中设置了 `url`，声网会向这个回调 URL 发送请求，请求中会使用以下参数：
 
 | 参数      | 类型   | 必选 | 描述             |
 | :--------- | :----- | :--- | :--------------- |
@@ -187,7 +187,7 @@ description: "查看融合 CDN 直播的融合 CDN API 参数参考，了解关�
 
 ## 直播转推回调格式
 
-如果你在[设置转推到第三方平台配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-transfer)的请求中设置了 `callbackUrl`，当你向声网推流时，声网会向这个回调 URL 发送请求获取你的推流目标地址。声网发送的请求示例如下：
+如果你在[设置转推到第三方平台配置](/zh-CN/api-reference/api-ref/fusion-cdn/relay-config-update)的请求中设置了 `callbackUrl`，当你向声网推流时，声网会向这个回调 URL 发送请求获取你的推流目标地址。声网发送的请求示例如下：
 
 ```shell
 POST https://example.transfer.com/callback?entry_point={entry_point}&stream_name={stream_name} HTTP/1.1
@@ -214,7 +214,7 @@ POST https://example.transfer.com/callback?entry_point={entry_point}&stream_name
 
 ## 回源拉流回调格式
 
-如果你在[设置回源拉流配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-origin_site)的请求中设置了 `callbackUrl`，声网会在收到观众的播放请求时，向这个回调 URL 发送请求获取你的源站地址。声网发送的请求示例如下：
+如果你在[设置回源拉流配置](/zh-CN/api-reference/api-ref/fusion-cdn/origin-site-config-update)的请求中设置了 `callbackUrl`，声网会在收到观众的播放请求时，向这个回调 URL 发送请求获取你的源站地址。声网发送的请求示例如下：
 
 ```shell
 GET https://example.origin-site.com/entry_point={entry_point}&stream_name={stream_name} HTTP/1.1

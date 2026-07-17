@@ -10,7 +10,7 @@ description: "查看远程控制的设备端 API，了解关键概念、参数�
 
 | 功能    | API 文档                                          |
 | :------ | :----------------------------------------------------------- |
-| 实时音视频 | 点击 [RTC 服务端 C++ API 参考](/api-ref/rtc-server-sdk/cpp/overview)查看发送音视频流的相关 API 文档。此外，如需通过摄像头采集视频流，查看[摄像头采集 (YuvCapturer)](#yuvcapturer)。 |
+| 实时音视频 | 点击 [RTC 服务端 C++ API 参考](/zh-CN/api-reference/rtc-server-sdk/cpp/overview)查看发送音视频流的相关 API 文档。此外，如需通过摄像头采集视频流，查看[摄像头采集 (YuvCapturer)](#yuvcapturer)。 |
 | 实时控制信令   | 点击 [Linux API 参考](https://docs-preprod.agora.io/cn/rtm-2.x/api-overview-linux?platform=Linux)查看收发控制信令的相关 API 文档。 |
 
 <a id="yuvcapturer"></a>
@@ -170,7 +170,7 @@ Buffer get_one_frame();
 
 1. 自行实现将视频帧转换为 YUV420 格式。
 2. 调用 [`clear_one_frame`](#clear_one_frame) 释放设备内存。成功释放设备内存后，你才能调用 `get_one_frame` 获取下一帧视频。
-3. 调用 [`sendVideoFrame`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_frame_sender#sendVideoFrame()) 将 YUV420 格式的视频帧发送到 SDK 的视频轨道。
+3. 调用 [`sendVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender#sendvideoframe)) 将 YUV420 格式的视频帧发送到 SDK 的视频轨道。
 
 **返回值**
 

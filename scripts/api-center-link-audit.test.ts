@@ -8,13 +8,17 @@ const roots: string[] = [];
 
 afterEach(async () => {
   await Promise.all(
-    roots.splice(0).map((root) => fs.rm(root, { recursive: true, force: true })),
+    roots
+      .splice(0)
+      .map((root) => fs.rm(root, { recursive: true, force: true })),
   );
 });
 
 describe('API Center scoped link audit', () => {
   it('combines ownership ledgers, migration types, warnings, paths, and anchors', async () => {
-    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'api-center-links-'));
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-links-'),
+    );
     roots.push(repoRoot);
     const docsRoot = path.join(repoRoot, 'content/docs/zh-CN/api-reference');
     await fs.mkdir(docsRoot, { recursive: true });
@@ -70,5 +74,57 @@ describe('API Center scoped link audit', () => {
       missingFragments: 1,
       errors: 1,
     });
+  });
+
+  it('audits reused manifest targets and ignores provenance URLs in frontmatter', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-links-'),
+    );
+    roots.push(repoRoot);
+    const target =
+      'content/docs/zh-CN/solutions/art-class/reference/correction.mdx';
+    await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
+      recursive: true,
+    });
+    await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, target),
+      '---\ntitle: 在线美术教学 API\n_migration:\n  sourceUrl: https://doc.shengwang.cn/doc/art-class/android/api/correction\n---\n\n你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview)。\n',
+    );
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
+      JSON.stringify({
+        pageEvidence: [
+          {
+            requestedUrl:
+              'https://doc.shengwang.cn/doc/art-class/android/api/correction',
+            sourceResolution: { targetExists: true, targetPath: target },
+          },
+        ],
+      }),
+    );
+    const ownershipPaths = ['one.json', 'two.json', 'three.json'];
+    for (const ownershipPath of ownershipPaths) {
+      await fs.writeFile(
+        path.join(repoRoot, ownershipPath),
+        JSON.stringify({ files: [] }),
+      );
+    }
+
+    const result = await auditApiCenterLinks({ repoRoot, ownershipPaths });
+
+    expect(result.report.counts).toMatchObject({
+      errors: 1,
+      legacyOldSiteBodyLinks: 1,
+      ownedMdxPages: 0,
+      preservedMdxPages: 1,
+      visibleMdxPages: 1,
+    });
+    expect(result.report.issues).toContainEqual(
+      expect.objectContaining({
+        href: '/api-ref/rtc/android/API/rtc_api_overview',
+        reason: 'old-site-body-link',
+      }),
+    );
   });
 });

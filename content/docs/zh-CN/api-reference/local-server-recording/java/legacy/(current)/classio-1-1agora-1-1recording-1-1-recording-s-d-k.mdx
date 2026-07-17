@@ -7,7 +7,30 @@ _migration:
     https://doc.shengwang.cn/api-ref/recording/java/classio_1_1agora_1_1recording_1_1_recording_s_d_k
   sourcePath: html-docs/recording/Java/classio_1_1agora_1_1recording_1_1_recording_s_d_k.html
   generator: doxygen
-  warnings: []
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved generated-source link /cn/Recording/token_server as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /cn/Recording/token?platform=All%20Platforms as
+        local text.
 ---
 
 | <a id="pub-methods"></a> Public 成员函数 |  |
@@ -100,9 +123,9 @@ _migration:
 
 ### 参数
 
-| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见[获取 App ID](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
 | --- | --- |
-| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 的保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见[校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将 [privilegeExpiredTs](https://docs.agora.io/cn/Recording/token_server) 设置为 0，表示权限一旦生成，永不过期。 |
+| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 的保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。 |
 | name | 待录制频道的频道名。 |
 | uid | <Slot name="api-center-table-0" /> |
 | config | 录制的详细设置。详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。 |
@@ -158,9 +181,9 @@ _migration:
 
 ### 参数
 
-| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见[获取 App ID](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
 | --- | --- |
-| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见[校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
 | name | 待录制频道的频道名。 |
 | userAccount | <Slot name="api-center-table-2" /> |
 | config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。 |

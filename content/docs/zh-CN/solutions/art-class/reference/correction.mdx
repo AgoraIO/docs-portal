@@ -4,7 +4,7 @@ description: "查看在线美术课堂的在线美术教学 API，了解关键�
 ---
 <PlatformStructured platform="android">
 
-声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/android/rtc-api-overview) 文档来了解详细的 RTC API 用法。
 
 :::info[信息]
 明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
@@ -12,9 +12,9 @@ description: "查看在线美术课堂的在线美术教学 API，了解关键�
 
 此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
 
-- [RTM SDK](/api-ref/rtm2/android/toc-configuration/configuration)，实现实时消息相关功能
+- [RTM SDK](/zh-CN/api-reference/rtm/android/configuration)，实现实时消息相关功能
 - [互动白板 SDK](/zh-CN/api-reference/whiteboard/fastboard/android)，实现在线课堂中的白板功能
-- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+- [云端录制](/zh-CN/api-reference/api-ref/cloud-recording/acquire)，为实时音视频和互动白板提供录制功能
 
 <a id="enablebrightnesscorrection"></a>
 ## 明暗校正
@@ -122,7 +122,7 @@ public abstract int applyBrightnessCorrectionToRemoteEx(int uid, boolean enabled
 | `uid` | 需要开启明暗校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-android-html-2-2-1" /> |
 | `mode` | <Slot name="correction-android-html-2-3-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/android/class-rtcconnection)。 |
 
 <Slot for="correction-android-html-2-2-1">
 
@@ -193,7 +193,7 @@ public abstract int enableRemoteTrapezoidCorrectionEx(int uid, boolean enabled, 
 | --- | --- |
 | `uid` | 需要开启透视校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-android-html-4-2-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/android/class-rtcconnection)。 |
 
 <Slot for="correction-android-html-4-2-1">
 
@@ -342,7 +342,7 @@ public abstract int setRemoteTrapezoidCorrectionOptionsEx(int uid, final Trapezo
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/android/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -382,7 +382,7 @@ public abstract TrapezoidCorrectionOptions getRemoteTrapezoidCorrectionOptionsEx
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/android/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -433,7 +433,7 @@ public abstract int applyTrapezoidCorrectionToRemoteEx(int uid, boolean enabled,
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `enabled` | <Slot name="correction-android-html-12-2-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/android/class-rtcconnection)。 |
 
 <Slot for="correction-android-html-12-2-1">
 
@@ -794,7 +794,7 @@ public class TrapezoidCorrectionOptions {
 
 声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。
 
-除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/ios/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/ios/rtc-api-overview) 文档来了解详细的 RTC API 用法。
 
 :::info[信息]
 明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
@@ -802,11 +802,11 @@ public class TrapezoidCorrectionOptions {
 
 此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
 
-- [RTM SDK](/api-ref/rtm2/ios/toc-configuration/configuration)，实现实时消息相关功能
+- [RTM SDK](/zh-CN/api-reference/rtm/ios/configuration)，实现实时消息相关功能
 
 - [互动白板 SDK](/zh-CN/api-reference/whiteboard/fastboard/ios)，实现在线课堂中的白板功能
 
-- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+- [云端录制](/zh-CN/api-reference/api-ref/cloud-recording/acquire)，为实时音视频和互动白板提供录制功能
 
 <a id="enablebrightnesscorrection"></a>
 ## 明暗校正
@@ -921,7 +921,7 @@ public class TrapezoidCorrectionOptions {
 | `uid` | 需要开启明暗校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-2-2-1" /> |
 | `mode` | <Slot name="correction-ios-macos-html-2-3-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-2-2-1">
 
@@ -995,7 +995,7 @@ public class TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 需要开启透视校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-4-2-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-4-2-1">
 
@@ -1149,7 +1149,7 @@ public class TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `options` | 透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -1190,7 +1190,7 @@ public class TrapezoidCorrectionOptions {
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -1244,7 +1244,7 @@ public class TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-12-2-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-12-2-1">
 
@@ -1523,7 +1523,7 @@ struct TrapezoidCorrectionOptions {
 
 声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。
 
-除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/macos/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/macos/rtc-api-overview) 文档来了解详细的 RTC API 用法。
 
 :::info[信息]
 明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
@@ -1531,9 +1531,9 @@ struct TrapezoidCorrectionOptions {
 
 此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
 
-- [RTM SDK](/api-ref/rtm2/ios/toc-configuration/configuration)，实现实时消息相关功能
+- [RTM SDK](/zh-CN/api-reference/rtm/ios/configuration)，实现实时消息相关功能
 
-- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+- [云端录制](/zh-CN/api-reference/api-ref/cloud-recording/acquire)，为实时音视频和互动白板提供录制功能
 
 <a id="enablebrightnesscorrection"></a>
 ## 明暗校正
@@ -1648,7 +1648,7 @@ struct TrapezoidCorrectionOptions {
 | `uid` | 需要开启明暗校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-2-2-1" /> |
 | `mode` | <Slot name="correction-ios-macos-html-2-3-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-2-2-1">
 
@@ -1722,7 +1722,7 @@ struct TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 需要开启透视校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-4-2-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-4-2-1">
 
@@ -1876,7 +1876,7 @@ struct TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `options` | 透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -1917,7 +1917,7 @@ struct TrapezoidCorrectionOptions {
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -1971,7 +1971,7 @@ struct TrapezoidCorrectionOptions {
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `enabled` | <Slot name="correction-ios-macos-html-12-2-1" /> |
-| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。 |
 
 <Slot for="correction-ios-macos-html-12-2-1">
 
@@ -2250,7 +2250,7 @@ struct TrapezoidCorrectionOptions {
 
 声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。
 
-除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/windows/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview) 文档来了解详细的 RTC API 用法。
 
 :::info[信息]
 明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
@@ -2258,8 +2258,8 @@ struct TrapezoidCorrectionOptions {
 
 此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
 
-- [RTM SDK](/api-ref/rtm2/cpp/toc-configuration/configuration)，实现实时消息相关功能
-- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+- [RTM SDK](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp)，实现实时消息相关功能
+- [云端录制](/zh-CN/api-reference/api-ref/cloud-recording/acquire)，为实时音视频和互动白板提供录制功能
 
 <a id="enablebrightnesscorrection"></a>
 ## 明暗校正
@@ -2367,7 +2367,7 @@ virtual int applyBrightnessCorrectionToRemoteEx(uid_t uid, bool enabled, BRIGHTN
 | `uid` | 需要开启透视校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-windows-html-2-2-1" /> |
 | `mode` | <Slot name="correction-windows-html-2-3-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 <Slot for="correction-windows-html-2-2-1">
 
@@ -2438,7 +2438,7 @@ virtual int enableRemoteTrapezoidCorrectionEx(uid_t uid, bool enabled, const Rtc
 | --- | --- |
 | `uid` | 需要开启明暗校正的远端用户 ID。 |
 | `enabled` | <Slot name="correction-windows-html-4-2-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 <Slot for="correction-windows-html-4-2-1">
 
@@ -2589,7 +2589,7 @@ virtual int setRemoteTrapezoidCorrectionOptionsEx(uid_t uid, const TrapezoidCorr
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -2632,7 +2632,7 @@ virtual int getRemoteTrapezoidCorrectionOptionsEx(uid_t uid, TrapezoidCorrection
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 #### 返回值
 
@@ -2684,7 +2684,7 @@ virtual int applyTrapezoidCorrectionToRemoteEx(uid_t uid, bool enabled, const Rt
 | --- | --- |
 | `uid` | 远端用户 ID。 |
 | `enabled` | <Slot name="correction-windows-html-12-2-1" /> |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 <Slot for="correction-windows-html-12-2-1">
 
@@ -2772,7 +2772,7 @@ virtual void onTrapezoidAutoCorrectionFinished(const RtcConnection& connection, 
 | `dragSrcPointsLen` | `dragSrcPoints` 数组长度。 |
 | `dragDstPoints` | 拖动结束点时的梯形四个顶点坐标。 |
 | `dragDstPointsLen` | `dragDstPoints` 数组长度。 |
-| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 <Slot for="correction-windows-html-14-2-1">
 

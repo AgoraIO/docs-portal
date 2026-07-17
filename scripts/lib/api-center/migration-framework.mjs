@@ -131,6 +131,32 @@ const CODE_LANGUAGE_ALIASES = new Map([
   ['typescript', 'ts'],
 ]);
 
+const LEGACY_DOC_HOSTS = new Set([
+  'doc.shengwang.cn',
+  'docportal.shengwang.cn',
+  'docs.agora.io',
+]);
+
+const LEGACY_PLATFORM_SEGMENTS = new Set([
+  'android',
+  'cpp',
+  'electron',
+  'flutter',
+  'harmonyos',
+  'ios',
+  'javascript',
+  'macos',
+  'react',
+  'rn',
+  'restful',
+  'unity',
+  'unreal',
+  'unreal-blueprint',
+  'unreal-cpp',
+  'web',
+  'windows',
+]);
+
 function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
@@ -354,11 +380,19 @@ export function rewriteLegacyHref(
           ),
     };
   }
-  if (url.hostname !== 'doc.shengwang.cn') {
+  const legacyExternalTarget = legacyExternalRoute(url);
+  if (legacyExternalTarget) {
+    return { href: legacyExternalTarget, warning: null };
+  }
+  if (!LEGACY_DOC_HOSTS.has(url.hostname)) {
     return { href: url.href, warning: null };
   }
-  const key = `https://doc.shengwang.cn${url.pathname}${url.search}`;
-  const existingTarget = resolveExistingApiCenterTarget(url)?.targetRoute;
+  const normalizedUrl = normalizeLegacyDocUrl(url, sourceUrl);
+  const key = `https://doc.shengwang.cn${normalizedUrl.pathname}${normalizedUrl.search}`;
+  const existingTarget =
+    normalizedUrl.hostname === 'doc.shengwang.cn'
+      ? resolveExistingApiCenterTarget(normalizedUrl)?.targetRoute
+      : null;
   if (url.pathname.startsWith('/zh-CN/') && !existingTarget) {
     return {
       href: `${url.pathname}${url.search}${url.hash}`,
@@ -366,19 +400,25 @@ export function rewriteLegacyHref(
     };
   }
   const target =
-    existingTarget ?? routeMap.get(key) ?? routeMap.get(url.pathname);
+    existingTarget ??
+    legacyRouteCandidates(normalizedUrl).reduce(
+      (resolved, candidate) => resolved ?? routeMap.get(candidate),
+      null,
+    );
   if (!target) {
     return {
       href: null,
       warning: createWarning(
         'unresolved-link',
-        `No local target route for ${url.pathname}.`,
-        { href: `${url.pathname}${url.search}${url.hash}` },
+        `No local target route for ${normalizedUrl.pathname}.`,
+        {
+          href: `${normalizedUrl.pathname}${normalizedUrl.search}${normalizedUrl.hash}`,
+        },
       ),
     };
   }
   let fragment = '';
-  if (url.hash) {
+  if (url.hash && target.startsWith('/zh-CN/api-reference/')) {
     const raw = decodeURIComponent(url.hash.slice(1));
     const mapped = fragmentMap.get(`${key}#${raw}`) ?? stableAnchorId(raw);
     if (!mapped) {
@@ -393,6 +433,81 @@ export function rewriteLegacyHref(
     fragment = `#${markdownSafeFragment(mapped)}`;
   }
   return { href: `${target}${fragment}`, warning: null };
+}
+
+export function isLegacyDocsHref(href, sourceUrl = 'https://doc.shengwang.cn') {
+  const value = String(href ?? '');
+  if (value.startsWith('/')) {
+    return /^\/(?:api-ref|basics|doc)(?:\/|$)/i.test(value);
+  }
+  if (!/^(?:https?:)?\/\//i.test(value)) return false;
+  try {
+    return LEGACY_DOC_HOSTS.has(new URL(value, sourceUrl).hostname);
+  } catch {
+    return false;
+  }
+}
+
+function legacyExternalRoute(url) {
+  if (
+    url.hostname === 'docs.agora.io' &&
+    /^\/cn\/Agora%20Platform\/ticket$/i.test(url.pathname)
+  ) {
+    return 'https://ticket.shengwang.cn/';
+  }
+  return null;
+}
+
+function normalizeLegacyDocUrl(url, sourceUrl) {
+  const normalized = new URL(url);
+  normalized.hostname =
+    normalized.hostname === 'docportal.shengwang.cn'
+      ? 'doc.shengwang.cn'
+      : normalized.hostname;
+  const sourcePlatform = legacySourcePlatform(sourceUrl);
+  normalized.pathname = normalized.pathname.replace(
+    /^(\/(?:api-ref|doc)\/[^/]+)\/{2,}/i,
+    (_match, prefix) =>
+      sourcePlatform ? `${prefix}/${sourcePlatform}/` : `${prefix}/`,
+  );
+  normalized.pathname = normalized.pathname.replace(/\/{2,}/g, '/');
+  return normalized;
+}
+
+function legacySourcePlatform(sourceUrl) {
+  try {
+    const segments = new URL(sourceUrl, 'https://doc.shengwang.cn').pathname
+      .split('/')
+      .filter(Boolean);
+    if (
+      ['api-ref', 'doc'].includes(segments[0]) &&
+      LEGACY_PLATFORM_SEGMENTS.has(segments[2]?.toLowerCase())
+    ) {
+      return segments[2].toLowerCase();
+    }
+  } catch {
+    // Invalid source URLs are handled by the caller's unresolved-link path.
+  }
+  return null;
+}
+
+function legacyRouteCandidates(url) {
+  const candidates = new Set([
+    `https://doc.shengwang.cn${url.pathname}${url.search}`,
+    `${url.pathname}${url.search}`,
+    url.pathname,
+  ]);
+  const segments = url.pathname.split('/').filter(Boolean);
+  if (
+    segments[0] === 'doc' &&
+    LEGACY_PLATFORM_SEGMENTS.has(segments[2]?.toLowerCase())
+  ) {
+    const platformlessPath = `/${[segments[0], segments[1], ...segments.slice(3)].join('/')}`;
+    candidates.add(`https://doc.shengwang.cn${platformlessPath}${url.search}`);
+    candidates.add(`${platformlessPath}${url.search}`);
+    candidates.add(platformlessPath);
+  }
+  return [...candidates];
 }
 
 export function isLegacyFaqHref(href, sourceUrl = 'https://doc.shengwang.cn') {

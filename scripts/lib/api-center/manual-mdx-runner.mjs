@@ -18,6 +18,7 @@ import {
   assetTargetPath,
   buildLegacyRouteMap,
   createWarning,
+  isLegacyDocsHref,
   isLegacyFaqHref,
   loadFaqMappingRows,
   renderGeneratedMdx,
@@ -202,11 +203,8 @@ export function rewriteBodyLinks(body, { routeMap, sourceUrl }) {
         !href.startsWith('/') &&
         !/^[a-z][a-z\d+.-]*:/i.test(href);
       const legacy =
-        href.startsWith('/doc/') ||
-        href.startsWith('/api-ref/') ||
-        href.startsWith('/basics/') ||
         href.startsWith('/zh-CN/') ||
-        /^https?:\/\/doc\.shengwang\.cn\/(?:doc|api-ref)\//.test(href) ||
+        isLegacyDocsHref(href, sourceUrl) ||
         isLegacyFaqHref(href, sourceUrl) ||
         relative;
       if (!legacy) return raw;

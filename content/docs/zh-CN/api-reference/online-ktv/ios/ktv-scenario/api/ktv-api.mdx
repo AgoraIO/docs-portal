@@ -10,15 +10,6 @@ _migration:
     - code: manual-mdx-normalized
       severity: info
       message: Normalized 1 legacy MDX syntax signal(s).
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /doc/rtm2/javascript/user-guide/token/token-generation.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved legacy MDX link
-        https://doc.shengwang.cn/doc/rtm2/javascript/user-guide/token/token-generation as local
-        text.
     - code: manual-fragment-alias
       severity: info
       message: Added 1 stable legacy fragment alias(es).
@@ -134,7 +125,7 @@ func renewToken(
 
 #### 参数
 
-- `rtmToken`：用于音乐内容中心鉴权的 RTM Token，详见 部署 RTM Token 服务器。
+- `rtmToken`：用于音乐内容中心鉴权的 RTM Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
 - `chorusChannelRtcToken`：加入合唱子频道的 Token。在合唱场景下，领唱需要加入两个频道，主频道用于发布人声和播放器的混流，合唱子频道用于发布麦克风采集的音频流。伴唱需要加入合唱子频道来同步领唱的人声。
 
 <a id="renewinnerdatastreamid"></a>

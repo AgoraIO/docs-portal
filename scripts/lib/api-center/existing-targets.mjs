@@ -134,6 +134,24 @@ export function resolveExistingApiCenterTarget(value) {
   }
 
   match = pathname.match(
+    /^\/doc\/rtc\/[^/]+\/best-practice\/reduce-app-size$/i,
+  );
+  if (match) {
+    return targetForPath(
+      'content/docs/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size.mdx',
+    );
+  }
+
+  match = pathname.match(
+    /^\/doc\/online-ktv\/[^/]+\/(?:online-ktv-sdk\/)?overview\/billing$/i,
+  );
+  if (match) {
+    return targetForPath(
+      'content/docs/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/billing.mdx',
+    );
+  }
+
+  match = pathname.match(
     /^\/api-ref\/convoai\/(android)\/android-component\/([^/]+)$/i,
   );
   if (match) return targetFor(`android/${match[2].toLowerCase()}`);

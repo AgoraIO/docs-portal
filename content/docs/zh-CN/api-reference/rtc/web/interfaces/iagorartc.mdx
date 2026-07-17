@@ -106,11 +106,6 @@ _migration:
     - code: source-only-link-removed
       severity: info
       message: >-
-        Rendered unresolved generated-source link /doc/rtc/javascript/get-started/enable-service as
-        local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
         Rendered unresolved generated-source link /api-ref/rtc/javascript/classes/eventemitter.html
         as local text.
     - code: source-only-link-removed
@@ -118,11 +113,6 @@ _migration:
       message: >-
         Rendered unresolved generated-source link
         /api-ref/rtc/javascript/classes/eventemitter.html#removealllisteners as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link /doc/rtc/javascript/get-started/enable-service as
-        local text.
 ---
 
 Agora Web SDK 的入口。
@@ -1375,7 +1365,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
   - appid: string
 
-    你的声网项目的 [App ID](/zh-CN/introduction/glossary#app-id)。
+    你的声网项目的 [App ID](/zh-CN/introduction/glossary)。
   - channel: string
 
     标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -1390,7 +1380,7 @@ AgoraRTC.getSupportedCodec().then(result => {
     用于鉴权的 token。
 
     - 如果你的项目没有开启 token 鉴权，这里填 `null`。
-    - 安全要求不高: 你可以使用控制台生成的临时 token，详见获取 RTC 临时 Token。
+    - 安全要求不高: 你可以使用控制台生成的临时 token，详见[获取 RTC 临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
     - 安全要求高：传入从你的服务端获得的正式 token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
   - Optional uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)|null
 
@@ -1543,7 +1533,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
   - appid: string
 
-    你的声网项目的 [App ID](/zh-CN/introduction/glossary#app-id)。
+    你的声网项目的 [App ID](/zh-CN/introduction/glossary)。
   - channel: string
 
     标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -1558,7 +1548,7 @@ AgoraRTC.getSupportedCodec().then(result => {
     用于鉴权的 Token。
 
     - 如果你的项目没有开启 Token 鉴权，这里填 `null`。
-    - 安全要求不高: 你可以使用控制台生成的临时 Token，详见获取 RTC 临时 Token。
+    - 安全要求不高: 你可以使用控制台生成的临时 Token，详见[获取 RTC 临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
     - 安全要求高：传入从你的服务端获得的正式 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
   - Optional uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)|null
 

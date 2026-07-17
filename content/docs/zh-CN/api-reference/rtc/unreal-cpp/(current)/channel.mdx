@@ -196,7 +196,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -286,7 +286,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -385,7 +385,7 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection,
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -475,7 +475,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -573,7 +573,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -674,7 +674,7 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 :::info[注]
 - （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
@@ -1032,14 +1032,14 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
 
 - 预加载一个频道时：调用此方法来传入新的 Token。
 - 预加载多个频道时：
   - 如果你使用了通配的 Token，调用 updatePreloadChannelToken 来更新所有预加载频道的 Token。:::info [注]
-  生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](https://doc.shengwang.cn/doc/rtc/unreal-cpp/best-practice/wildcard-token)。:::
+  生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。:::
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
 #### `channelId`
@@ -1109,14 +1109,14 @@ virtual int preloadChannelWithUserAccount(const char* token, const char* channel
 
 #### `token`
 
-在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
 
 - 预加载一个频道时：调用此方法来传入新的 Token。
 - 预加载多个频道时：
   - 如果你使用了通配的 Token，调用 updatePreloadChannelToken 来更新所有预加载频道的 Token。:::info [注]
-  生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](https://doc.shengwang.cn/doc/rtc/unreal-cpp/best-practice/wildcard-token)。:::
+  生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。:::
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
 #### `channelId`
@@ -1409,7 +1409,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
 
 SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（role ）确定用户在 SDK 层的权限，包含是否有发流权限等。
 
-该方法与 [setClientRole [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 的区别在于，该方法还支持设置观众端延时级别（audienceLatencyLevel ）。 audienceLatencyLevel 需与 role 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。不同的延时级别会影响计费，详见 [计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8)。
+该方法与 [setClientRole [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 的区别在于，该方法还支持设置观众端延时级别（audienceLatencyLevel ）。 audienceLatencyLevel 需与 role 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。不同的延时级别会影响计费，详见 [计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 <a id="api_irtcengine_setclientrole2__timing"></a>
 

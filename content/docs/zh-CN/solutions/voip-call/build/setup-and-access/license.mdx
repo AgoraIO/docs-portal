@@ -73,7 +73,7 @@ License 申请通过后，License 激活标识（PID）会关联到你的 CID �
 <a id="activate"></a>
 ### 2. 激活许可证
 
-调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活 License。
+调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 接口激活 License。
 
 :::warning[注意]
 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
@@ -116,7 +116,7 @@ License 激活成功的响应示例如下：
 
 ### 4. 查询即将到期的许可证列表
 
-能正常使用 License 后，你可以调用 [`/expiringLicenses`](/doc/voip-callkit/restful/call/operations/getExpiringLicenses) 接口查询即将到期的 License 列表。
+能正常使用 License 后，你可以调用 [`/expiringLicenses`](/zh-CN/api-reference/api-ref/voip-callkit/list-expiring-licenses) 接口查询即将到期的 License 列表。
 
 ```shell
 curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses?expiringDay=90&size=10&page=1' \
@@ -144,7 +144,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 
 ### 5. 许可证续期
 
-如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 [`/renew`](/doc/voip-callkit/restful/call/operations/renewLicense) 接口续期 License。
+如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 [`/renew`](/zh-CN/api-reference/api-ref/voip-callkit/renew-license) 接口续期 License。
 
 ```shell
 curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
@@ -170,7 +170,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxx
 
 ### 6. 查询许可证续期
 
-如果想查询所有的续期订单，可以调用 [`/renewals`](/doc/voip-callkit/restful/call/operations/getLicenseRenewals) 接口。
+如果想查询所有的续期订单，可以调用 [`/renewals`](/zh-CN/api-reference/api-ref/voip-callkit/list-license-renewals) 接口。
 
 ```shell
 curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewals?size=10&page=1 \
@@ -212,7 +212,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 
 ### API 参考
 
-- [License 管理相关 RESTful API](/doc/voip-callkit/restful/call/operations/activateLicense)
+- [License 管理相关 RESTful API](/zh-CN/api-reference/api-ref/voip-callkit/activate-license)
 
 ### 概念区分
 
@@ -237,6 +237,6 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 声网推荐你先使用测试 License，在产品正式上线前，参考如下步骤改用正式 License：
 
 1. 联系 sales@shengwang.cn 申请正式 License（下称“新 License”）。License 申请成功后在 License 用量页面查看 License 的 PID。
-2. 调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 激活新的 License，在激活接口中传入新 License 的 PID、与老 License 一致的 `licenseKey`。
+2. 调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 激活新的 License，在激活接口中传入新 License 的 PID、与老 License 一致的 `licenseKey`。
 3. 在设备中写入并读取新的 License。
 4. 调用接口时，在参数中传入新的 License。

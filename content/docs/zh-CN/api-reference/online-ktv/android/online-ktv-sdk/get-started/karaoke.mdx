@@ -2,7 +2,7 @@
 title: 快速实现
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/get-started/karaoke
   sourcePath: docs/online-ktv/online-ktv-sdk/get-started/karaoke.android.mdx
   generator: legacy-mdx
@@ -10,6 +10,14 @@ _migration:
     - code: manual-mdx-normalized
       severity: info
       message: Normalized 1 legacy MDX syntax signal(s).
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /cn/Real-time-Messaging/token_upgrade_rtm.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved legacy MDX link
+        https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考 as local text.
 ---
 
 本文介绍如何通过声网实时互动 SDK v4.x 在你的 Android 项目里实现在线 K 歌房的主要功能。
@@ -98,7 +106,7 @@ _migration:
 - [Python](https://www.python.org/) 3.X。
 - 第三方云服务[命令行工具](https://leancloud.cn/docs/leanengine_faq.html#hash-864044521)。
 - 有效的声网[开发者账号](https://sso2.agora.io/cn/v4/signup/with-sms)。
-- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考[使用 RTM Token 鉴权](https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考)。
+- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考使用 RTM Token 鉴权。
 
 :::info[信息]
 在线 K 歌房仅使用 RTM Token 进行鉴权，不会产生云信令服务费用。

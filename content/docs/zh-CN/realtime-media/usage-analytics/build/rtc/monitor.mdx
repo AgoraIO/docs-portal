@@ -81,7 +81,7 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 ![](https://web-cdn.agora.io/docs-files/1634010391911)
 
 :::warning[注意]
-部分套餐包不支持数据采样的功能。详见[套餐包详情](https://docs.agora.io/cn/AgoraAnalytics/aa_billing#套餐包详情)。
+部分套餐包不支持数据采样的功能。详见套餐包详情。
 :::
 
 ### 告警通知
@@ -124,7 +124,7 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 - 频道采样：点击任一区域或气泡，可以看到对应时间范围内的频道排行列表。列表按照指标数据从高到低排列，最多显示 20 个频道。如果需要对某个频道进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面。
 
 :::warning[注意]
-部分套餐包不支持数据采样的功能。详见[套餐包详情](https://docs.agora.io/cn/AgoraAnalytics/aa_billing#套餐包详情)。
+部分套餐包不支持数据采样的功能。详见套餐包详情。
 :::
 
 ### 多维监测
@@ -145,20 +145,20 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 | --- | --- |
 | 在线用户数 | 各频道正在进行通话的人数之和。同一用户加入不同频道计为多人。 |
 | 在线频道数 | 有用户加入的频道的总数，按频道名称去重。 |
-| 云端录制任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务，仅开启云端录制时展示，详见[云端录制](https://docs.agora.io/cn/cloud-recording/product_cloud_recording)。 |
-| 输入在线媒体流任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务，仅开启输入在线媒体流时展示，详见[输入在线媒体流](https://docs.agora.io/cn/media-pull/inject_stream_restful_overview)。 |
+| 云端录制任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务，仅开启云端录制时展示，详见云端录制。 |
+| 输入在线媒体流任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务，仅开启输入在线媒体流时展示，详见输入在线媒体流。 |
 | 旁路推流任务数 | <Slot name="monitor-markdown-0-5-1" /> |
 
 
 <Slot for="monitor-markdown-0-5-1">
 
-仅开启旁路推流时展示，详见[旁路推流](https://docs.agora.io/cn/media-push/streaming_product)。
+仅开启旁路推流时展示，详见旁路推流。
 
 提供三种推流模式的数据：
 
 - `SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `false`。
 - `SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `true`。
-- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。
+- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见旁路推流 RESTful API。
 
 </Slot>
 

@@ -57,7 +57,7 @@ description: "了解如何快速接入 1v1 私密房三方信令方案，完成�
 
 ### 1. 初始化 RTC 引擎
 
-调用 RTC SDK 的 [`sharedEngineWithConfig`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
+调用 RTC SDK 的 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
 
 ```kotlin
 val config = RtcEngineConfig()
@@ -376,7 +376,7 @@ override fun onCallStateChanged(
 1. **客户端**：如果用户 B 收到 `onCallEventChanged` 回调，且 `event` 为 `remoteLeave`，表示用户 A 已离开通话频道。此时你可以调整用户界面，例如使用缺省的图像填充用户 A 的视图，并给出用户 A 暂时离开的提示。
 
 2. **服务端**：通过 RTC 频道事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel) 和 [`104`](/zh-CN/realtime-media/rtc/reference/events#104-broadcaster-leave-channel) 识别待观察用户。
-   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 将用户 A 从频道中踢出。
+   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将用户 A 从频道中踢出。
    - 收到用户 A 加入频道事件 `103` 后，识别事件中的 `channelName` 和 `uid`。如果缓存中该 `uid` 在当前频道中有记录，且未申请下麦，则将该 `uid` 从待观察用户列表中移除。
 
 3. **客户端**：如果用户 B 收到 `onCallError` 回调，且 `errorEvent` 为 `rtcOccurError`，`errorType` 为 `rtc`，`errorCode` 为 `123`，表示用户 A 被踢出 RTC 频道。此时用户 B 可以调用 `CallAPI` 的 `hangup` 方法结束当前通话并离开通话页面。
@@ -502,7 +502,7 @@ signalClient.logout()
 
 ### 1. 初始化 RTC 引擎
 
-调用 RTC SDK 的 [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
+调用 RTC SDK 的 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
 
 ```swift
 let config = AgoraRtcEngineConfig()
@@ -822,7 +822,7 @@ func onCallStateChanged(with state: CallStateType,
 1. **客户端**：如果用户 B 收到 `onCallEventChanged` 回调，且 `event` 为 `remoteLeave`，表示用户 A 已离开通话频道。此时你可以调整用户界面，例如使用缺省的图像填充用户 A 的视图，并给出用户 A 暂时离开的提示。
 
 2. **服务端**：通过 RTC 频道事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel) 和 [`104`](/zh-CN/realtime-media/rtc/reference/events#104-broadcaster-leave-channel) 识别待观察用户。
-   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 将用户 A 从频道中踢出。
+   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将用户 A 从频道中踢出。
    - 收到用户 A 加入频道事件 `103` 后，识别事件中的 `channelName` 和 `uid`。如果缓存中该 `uid` 在当前频道中有记录，且未申请下麦，则将该 `uid` 从待观察用户列表中移除。
 
 3. **客户端**：如果用户 B 收到 `onCallError` 回调，且 `errorEvent` 为 `rtcOccurError`，`errorType` 为 `rtc`，`errorCode` 为 `123`，表示用户 A 被踢出 RTC 频道。此时用户 B 可以调用 `CallAPI` 的 `hangup` 方法结束当前通话并离开通话页面。
