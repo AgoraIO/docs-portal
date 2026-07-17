@@ -15,12 +15,12 @@ Conversational AI Engine supports an intelligent interruption feature that allow
 
 To customize interruption behavior, configure turn detection when starting a conversational AI agent. To enable AIVAD-based interruption, set the end of speech mode to `"semantic"`. The following example shows how to configure turn detection:
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -113,7 +113,7 @@ To customize interruption behavior, configure turn detection when starting a con
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 
 ```bash
 curl --request post \
@@ -197,12 +197,12 @@ Conversational AI Engine supports actively triggering an interruption by calling
 
 Use the [Interrupt agent](/en/api-reference/api-ref/conversational-ai/interrupt) API to manually initiate an interruption request.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -231,7 +231,7 @@ if err := session.Interrupt(ctx); err != nil {
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 
 ```bash
 curl --request post \
@@ -271,7 +271,7 @@ Before you begin, make sure you:
 
 #### Integrate the toolkit
 
-<Tabs groupId="platform">
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
@@ -420,7 +420,7 @@ The structure of the client component folder and the functions of each file are 
 Copy only the following files and folders to integrate the client component. You do not need to copy other files.
 :::
 
-<Tabs groupId="platform">
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
@@ -467,7 +467,7 @@ Copy only the following files and folders to integrate the client component. You
 
 #### Toolkit
 
-<Tabs>
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
