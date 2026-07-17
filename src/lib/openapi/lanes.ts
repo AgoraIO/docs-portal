@@ -239,6 +239,7 @@ export const OPENAPI_LANES = [
   },
   {
     id: 'signaling-rest',
+    locales: ['en'],
     parentUrl: {
       en: '/en/api-reference/api-ref/signaling',
       'zh-CN': '/zh-CN/api-reference/api-ref/signaling',

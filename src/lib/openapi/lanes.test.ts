@@ -170,6 +170,9 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     );
+    expect(getOpenApiPrerenderPaths()).not.toContain(
+      '/zh-CN/api-reference/api-ref/signaling/peer-to-peer-message',
+    );
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/cloud-recording/acquire',
     );
@@ -194,7 +197,7 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(237);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(232);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

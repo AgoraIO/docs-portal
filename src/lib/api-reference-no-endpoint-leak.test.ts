@@ -105,6 +105,29 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     );
   });
 
+  it('lists localized RTC endpoint pages in the focused Chinese lane view', async () => {
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'api-ref',
+      'rtc',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a Chinese RTC lane payload');
+    }
+
+    const urls = flattenUrls(payload.sidebar as SidebarNode[]);
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/rtc',
+        '/zh-CN/api-reference/api-ref/rtc/authentication',
+        '/zh-CN/api-reference/api-ref/rtc/query-channel-list',
+        '/zh-CN/api-reference/api-ref/rtc/query-user-list',
+        '/zh-CN/api-reference/api-ref/rtc/query-ip-address',
+      ]),
+    );
+    expect(urls).not.toContain('/zh-CN/api-reference/overview');
+  });
+
   it('lists the Chinese Speech-to-Text lane in the overview and focused endpoint view', async () => {
     const overviewPayload = await loadDocsPagePayload(
       'zh-CN',
@@ -145,6 +168,41 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
         '/zh-CN/api-reference/api-ref/speech-to-text/leave',
         '/zh-CN/api-reference/api-ref/speech-to-text/update',
         '/zh-CN/api-reference/api-ref/speech-to-text/list',
+      ]),
+    );
+  });
+
+  it('does not list English Signaling REST endpoints in the focused Chinese RTM REST view', async () => {
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'api-ref',
+      'signaling',
+      'publish',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a Chinese RTM REST payload');
+    }
+
+    const urls = flattenUrls(payload.sidebar as SidebarNode[]);
+    const restApiSection = findSection(
+      payload.sidebar as SidebarNode[],
+      'RESTful API',
+    );
+
+    expect(restApiSection).toBeDefined();
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/signaling/publish',
+        '/zh-CN/api-reference/api-ref/signaling/receive',
+      ]),
+    );
+    expect(urls).not.toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/signaling/peer-to-peer-message',
+        '/zh-CN/api-reference/api-ref/signaling/channel-message',
+        '/zh-CN/api-reference/api-ref/signaling/message-history',
+        '/zh-CN/api-reference/api-ref/signaling/user-events',
+        '/zh-CN/api-reference/api-ref/signaling/channel-events',
       ]),
     );
   });
