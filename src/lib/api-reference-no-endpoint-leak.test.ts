@@ -184,9 +184,16 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     }
 
     const urls = flattenUrls(payload.sidebar as SidebarNode[]);
+    const restApiSection = findSection(
+      payload.sidebar as SidebarNode[],
+      'RESTful API',
+    );
+
+    expect(restApiSection).toBeDefined();
     expect(urls).toEqual(
       expect.arrayContaining([
         '/zh-CN/api-reference/api-ref/signaling/publish',
+        '/zh-CN/api-reference/api-ref/signaling/receive',
       ]),
     );
     expect(urls).not.toEqual(
