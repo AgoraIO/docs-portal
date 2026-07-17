@@ -11,16 +11,10 @@ import {
 const API_CENTER_URL = 'https://doc.shengwang.cn/api-center';
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference';
 const MANIFEST_SOURCE = 'docs/migration/api-center-html-manifest.json';
-const FOCUSED_LANE_ROOTS = [
-  'api-ref',
-  'conversational-ai',
-  'rtc',
-  'rtm',
-  'local-server-recording',
-  'flexible-classroom',
-  'cloud-recording',
-  'rtc-server-sdk',
-];
+const OUT_OF_SCOPE_SHARED_ROUTES = new Set([
+  '/zh-CN/introduction/mcp-integrate',
+  '/zh-CN/introduction/skills-integrate',
+]);
 
 const PRODUCT_ICONS = new Map([
   ['对话式 AI 引擎', 'ai'],
@@ -87,10 +81,16 @@ function targetRouteForUrl(url, routeMap) {
   );
 }
 
+function isOutOfScopeSharedRoute(route) {
+  return OUT_OF_SCOPE_SHARED_ROUTES.has(route);
+}
+
 function visibleNavigationLeaves(items, routeMap, trail = []) {
   const leaves = [];
   for (const item of items ?? []) {
     if (!item || item.excludedReason) continue;
+    const targetRoute = targetRouteForUrl(item.link?.url, routeMap);
+    if (isOutOfScopeSharedRoute(targetRoute)) continue;
     const nextTrail = [...trail, item.label];
     if (item.kind === 'category' && (item.items?.length ?? 0) > 0) {
       leaves.push(...visibleNavigationLeaves(item.items, routeMap, nextTrail));
@@ -100,7 +100,7 @@ function visibleNavigationLeaves(items, routeMap, trail = []) {
       label: item.label,
       trail: nextTrail,
       sourceUrl: item.link?.url ?? null,
-      targetRoute: targetRouteForUrl(item.link?.url, routeMap),
+      targetRoute,
     });
   }
   return leaves;
@@ -115,32 +115,54 @@ function routeMetaLink(label, href, rootRoute) {
   return `[${escapedLabel}](${href})`;
 }
 
+function renderNavigationLeaf(
+  label,
+  href,
+  { plainLocalLeaves, rootRoute, sidebarLabels },
+) {
+  if (plainLocalLeaves && href.startsWith(`${rootRoute}/`)) {
+    sidebarLabels[href] = label;
+    return href.slice(rootRoute.length + 1);
+  }
+  return routeMetaLink(label, href, rootRoute);
+}
+
 function renderNavigationItems(
   items,
-  { rootRoute, routeMap, plainLocalLeaves = false },
+  { rootRoute, routeMap, plainLocalLeaves = false, sidebarLabels = {} },
 ) {
   const pages = [];
   for (const item of items ?? []) {
     if (!item || item.excludedReason) continue;
     const href = targetRouteForUrl(item.link?.url, routeMap);
+    if (isOutOfScopeSharedRoute(href)) continue;
     if (item.kind === 'category' && (item.items?.length ?? 0) > 0) {
       const children = renderNavigationItems(item.items, {
         rootRoute,
         routeMap,
         plainLocalLeaves,
+        sidebarLabels,
       });
       if (children.length > 0) {
         pages.push(`---${item.label}---`, ...children);
       } else if (href) {
-        pages.push(routeMetaLink(item.label, href, rootRoute));
+        pages.push(
+          renderNavigationLeaf(item.label, href, {
+            plainLocalLeaves,
+            rootRoute,
+            sidebarLabels,
+          }),
+        );
       }
       continue;
     }
     if (href) {
       pages.push(
-        plainLocalLeaves && href.startsWith(`${rootRoute}/`)
-          ? href.slice(rootRoute.length + 1)
-          : routeMetaLink(item.label, href, rootRoute),
+        renderNavigationLeaf(item.label, href, {
+          plainLocalLeaves,
+          rootRoute,
+          sidebarLabels,
+        }),
       );
     }
   }
@@ -231,7 +253,15 @@ function entryEvidence(entry, byUrl) {
 
 function createMetaAccumulator(
   metaByPath,
-  { metaPath, rootRoute, title, pages, includeIndex = false },
+  {
+    metaPath,
+    rootRoute,
+    title,
+    pages,
+    includeIndex = false,
+    metaPatch = {},
+    preserveExistingPages = false,
+  },
 ) {
   const current = metaByPath.get(metaPath) ?? {
     metaPath,
@@ -239,10 +269,64 @@ function createMetaAccumulator(
     title,
     pages: [],
     includeIndex,
+    metaPatch,
+    preserveExistingPages,
   };
   current.includeIndex ||= includeIndex;
+  current.preserveExistingPages ||= preserveExistingPages;
+  const sidebarLabels = {
+    ...current.metaPatch.sidebarLabels,
+    ...metaPatch.sidebarLabels,
+  };
+  current.metaPatch = {
+    ...current.metaPatch,
+    ...metaPatch,
+    ...(Object.keys(sidebarLabels).length > 0 ? { sidebarLabels } : {}),
+  };
   mergeMetaPages(current.pages, pages);
   metaByPath.set(metaPath, current);
+}
+
+function addWhiteboardScopeMetaPlans(metaByPath, entries) {
+  const prefix = '/zh-CN/api-reference/whiteboard/whiteboard-sdk/';
+  const platforms = unique(
+    entries
+      .filter((entry) => entry.targetRoute?.startsWith(prefix))
+      .map((entry) => entry.targetRoute.slice(prefix.length).split('/')[0]),
+  );
+  if (platforms.length === 0) return;
+
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/whiteboard/meta.json`,
+    rootRoute: '/zh-CN/api-reference/whiteboard',
+    title: '互动白板',
+    pages: ['whiteboard-sdk'],
+    metaPatch: { sidebarHidden: true },
+    preserveExistingPages: true,
+  });
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/whiteboard/whiteboard-sdk/meta.json`,
+    rootRoute: '/zh-CN/api-reference/whiteboard/whiteboard-sdk',
+    title: 'Whiteboard SDK',
+    pages: platforms,
+  });
+  for (const platform of platforms) {
+    const entry = entries.find((candidate) =>
+      candidate.targetRoute?.startsWith(`${prefix}${platform}/`),
+    );
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${API_REFERENCE_ROOT}/whiteboard/whiteboard-sdk/${platform}/meta.json`,
+      rootRoute: `${prefix}${platform}`,
+      title: `互动白板 ${entry?.label ?? platform}`,
+      pages: ['(current)'],
+      metaPatch: {
+        navScope: {
+          defaultVersion: 'current',
+          versions: [{ id: 'current', label: 'Current', path: '(current)' }],
+        },
+      },
+    });
+  }
 }
 
 function buildEntryMetaPlans(manifest, routeMap, lanes) {
@@ -261,6 +345,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
       roots.push({
         metaPath: `${localRoot}/meta.json`,
         rootRoute: routeForDocsDirectory(localRoot),
+        plainLocalLeaves: true,
       });
     }
     for (const laneId of unique(
@@ -280,17 +365,23 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
       openApiEntries.set(laneId, values);
     }
     for (const root of roots) {
+      const sidebarLabels = {};
       const pages = renderNavigationItems(entry.pageGraph.navigation, {
         ...root,
         routeMap,
+        sidebarLabels,
       });
       createMetaAccumulator(metaByPath, {
         ...root,
         title: `${entry.product} ${entry.label}`,
         pages,
+        metaPatch:
+          Object.keys(sidebarLabels).length > 0 ? { sidebarLabels } : {},
       });
     }
   }
+
+  addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
 
   return { metaByPath, openApiEntries };
 }
@@ -406,46 +497,31 @@ function buildOverviewBody(entries, live) {
   return lines.join('\n').trim();
 }
 
-function rootMetaPages(entries) {
-  const pages = [
-    'overview',
-    'sdks',
-    'api',
-    '---指南---',
-    '[示例配方](/zh-CN/api-reference/recipes)',
-    'faq',
-    '---产品参考---',
-    ...FOCUSED_LANE_ROOTS,
-  ];
-  let lastCategory = null;
-  let lastSubcategory = null;
-  for (const group of productGroups(entries)) {
-    const first = group.first;
-    if (first.category !== lastCategory) {
-      pages.push(`---${first.category}---`);
-      lastCategory = first.category;
-      lastSubcategory = null;
-    }
-    const subcategory = first.subcategories?.join(' / ') || null;
-    if (subcategory && subcategory !== lastSubcategory) {
-      pages.push(`---${subcategory}---`);
-      lastSubcategory = subcategory;
-    }
-    pages.push({
-      type: 'group',
-      title: group.product,
-      icon: PRODUCT_ICONS.get(group.product) ?? 'tools',
-      collapsible: true,
-      pages: collapsedRootActions(group.entries).map((action) =>
-        routeMetaLink(
-          action.labels.join(' / '),
-          action.href,
-          '/zh-CN/api-reference',
-        ),
+function scopedRootMetaPages(pages, entries) {
+  const preserved = [...(pages ?? [])];
+  const requiredHiddenRoots = [
+    ...(entries.some((entry) =>
+      entry.targetRoute?.startsWith('/zh-CN/api-reference/api-ref/'),
+    )
+      ? ['api-ref']
+      : []),
+    ...(entries.some((entry) =>
+      entry.targetRoute?.startsWith(
+        '/zh-CN/api-reference/whiteboard/whiteboard-sdk/',
       ),
-    });
+    )
+      ? ['whiteboard']
+      : []),
+  ].filter((root) => !preserved.includes(root));
+  if (requiredHiddenRoots.length > 0) {
+    const productReferenceIndex = preserved.indexOf('---产品参考---');
+    preserved.splice(
+      productReferenceIndex >= 0 ? productReferenceIndex + 1 : preserved.length,
+      0,
+      ...requiredHiddenRoots,
+    );
   }
-  return pages;
+  return preserved;
 }
 
 async function readMeta(repoRoot, metaPath, fallbackTitle) {
@@ -501,7 +577,6 @@ function navigationParityReport({
   const rootActions = rootPages
     .filter((page) => page && typeof page === 'object' && page.type === 'group')
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
-  const collapsedRootDuplicates = entries.length - rootActions;
   const visibleLeaves = internalEntries.flatMap((entry) =>
     visibleNavigationLeaves(entry.pageGraph?.navigation, routeMap).map(
       (leaf) => ({
@@ -520,13 +595,6 @@ function navigationParityReport({
       severity: 'error',
       code: 'overview-entry-count',
       message: `Overview exposes ${overviewActions} actions for ${entries.length} live entries.`,
-    });
-  }
-  if (rootActions + collapsedRootDuplicates !== entries.length) {
-    issues.push({
-      severity: 'error',
-      code: 'root-meta-entry-count',
-      message: `Root meta represents ${rootActions + collapsedRootDuplicates} entries for ${entries.length} live entries.`,
     });
   }
   if (missingEntryTargets.length > 0) {
@@ -560,7 +628,6 @@ function navigationParityReport({
       externalEntries: externalEntries.length,
       overviewActions,
       rootActions,
-      collapsedRootDuplicates,
       entryMetaFiles: metaByPath.size,
       entryMetaLinks: [...metaByPath.values()].reduce(
         (count, plan) => count + countMetaLinks(plan.pages),
@@ -590,7 +657,6 @@ function navigationParityMarkdown(report) {
     `- External entries: ${report.counts.externalEntries}`,
     `- Overview actions: ${report.counts.overviewActions}`,
     `- Root navigation actions: ${report.counts.rootActions}`,
-    `- Root navigation entries collapsed into shared targets: ${report.counts.collapsedRootDuplicates}`,
     `- Entry meta files: ${report.counts.entryMetaFiles}`,
     `- Entry meta links: ${report.counts.entryMetaLinks}`,
     `- Visible legacy navigation leaves: ${report.counts.visibleNavigationLeaves}`,
@@ -666,7 +732,6 @@ export async function runApiCenterNavigation({
   });
 
   const overviewBody = buildOverviewBody(entries, manifest.live);
-  const rootPages = rootMetaPages(entries);
   const overviewPath = `${API_REFERENCE_ROOT}/overview.mdx`;
   run.planFile({
     targetPath: overviewPath,
@@ -690,10 +755,21 @@ export async function runApiCenterNavigation({
   });
 
   const rootMetaPath = `${API_REFERENCE_ROOT}/meta.json`;
+  const rootMetaSource = await fs.readFile(
+    path.resolve(repoRoot, rootMetaPath),
+    'utf8',
+  );
   const rootMeta = await readMeta(repoRoot, rootMetaPath, null);
+  const rootPages = scopedRootMetaPages(rootMeta.pages, entries);
+  const rootMetaContents =
+    JSON.stringify(rootPages) === JSON.stringify(rootMeta.pages)
+      ? rootMetaSource.endsWith('\n')
+        ? rootMetaSource
+        : `${rootMetaSource}\n`
+      : serializeJson({ ...rootMeta, pages: rootPages });
   run.planFile({
     targetPath: rootMetaPath,
-    contents: serializeJson({ ...rootMeta, pages: rootPages }),
+    contents: rootMetaContents,
     sourcePath: manifestPath,
     sourceUrl: API_CENTER_URL,
     type: 'navigation-meta',
@@ -726,14 +802,17 @@ export async function runApiCenterNavigation({
       .access(path.resolve(repoRoot, indexPath))
       .then(() => true)
       .catch(() => false);
+    const plannedPages = plan.preserveExistingPages
+      ? mergeMetaPages([...(meta.pages ?? [])], plan.pages)
+      : plan.pages;
     const pages =
       hasIndex || plan.includeIndex
-        ? mergeMetaPages(['index'], plan.pages)
-        : plan.pages;
+        ? mergeMetaPages(['index'], plannedPages)
+        : plannedPages;
     if (pages.length === 0) continue;
     run.planFile({
       targetPath: plan.metaPath,
-      contents: serializeJson({ ...meta, pages }),
+      contents: serializeJson({ ...meta, ...plan.metaPatch, pages }),
       sourcePath: manifestPath,
       sourceUrl: API_CENTER_URL,
       type: 'navigation-meta',

@@ -418,6 +418,15 @@ async function renderBlockNode($, node, state) {
   if (name === 'pre') {
     const code = element.find('code').first();
     const source = (code.length > 0 ? code : element).text();
+    if (!source.trim()) {
+      state.warnings.push(
+        createWarning(
+          'empty-source-code',
+          'The legacy source code block is empty; its stable anchor was preserved and the empty fence was omitted.',
+        ),
+      );
+      return anchor;
+    }
     return [anchor, renderCodeFence(source, languageFromCode(code))]
       .filter(Boolean)
       .join('\n\n');

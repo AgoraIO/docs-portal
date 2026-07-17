@@ -37,6 +37,12 @@ _migration:
 你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview) 文档。
 
 [旧录制说明](https://docs.agora.io/cn/Recording/token_server)
+
+<a id="empty-prototype"></a>
+
+\`\`\`arkts
+
+\`\`\`
 `,
     );
     await fs.writeFile(
@@ -91,8 +97,15 @@ _migration:
     );
     expect(output).toContain('\n旧录制说明\n');
     expect(output).not.toContain('https://docs.agora.io');
+    expect(output).not.toMatch(/```arkts\n\s*```/);
+    expect(output).toContain('<a id="empty-prototype"></a>');
+    expect(output).toContain('code: empty-source-code');
+    expect(output).toContain('status: warning');
     expect(result.report.counts).toMatchObject({
+      emptyCodeFencesRemoved: 1,
+      emptyCodeFilesNormalized: 1,
       errors: 0,
+      remainingEmptyCodeFences: 0,
       remainingLegacyBodyLinks: 0,
       renderedAsText: 1,
       rewrittenLocal: 1,

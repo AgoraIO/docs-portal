@@ -25,8 +25,11 @@ describe('API Center navigation runner', () => {
     const rtcOverviewUrl =
       'https://doc.shengwang.cn/api-ref/rtc/android/overview';
     const rtcClientUrl = 'https://doc.shengwang.cn/api-ref/rtc/android/client';
+    const rtcMcpUrl = 'https://doc.shengwang.cn/doc/rtc/android/mcp-integrate';
     const speechUrl =
       'https://doc.shengwang.cn/doc/speech-to-text/restful/v7/operations/join';
+    const whiteboardUrl =
+      'https://doc.shengwang.cn/api-ref/whiteboard/android/overview';
     const manifest = {
       source: { commit: 'fixture' },
       live: {
@@ -73,6 +76,11 @@ describe('API Center navigation runner', () => {
                 link: {
                   url: 'https://doc.shengwang.cn/api-ref/convoai/android/android-component/overview',
                 },
+              },
+              {
+                kind: 'link',
+                label: '使用 MCP 集成 🔌',
+                link: { url: rtcMcpUrl },
               },
             ],
           },
@@ -134,6 +142,28 @@ describe('API Center navigation runner', () => {
             ],
           },
         },
+        {
+          category: '扩展能力',
+          subcategories: [],
+          product: '互动白板',
+          productDescription: '互动白板能力。',
+          apiGroup: 'client',
+          label: 'Android',
+          legacyUrl: whiteboardUrl,
+          urlFamily: 'api-ref',
+          targetRoute:
+            '/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview',
+          pageGraph: {
+            pages: [{ url: whiteboardUrl, label: 'API 概览', trail: [] }],
+            navigation: [
+              {
+                kind: 'link',
+                label: 'API 概览',
+                link: { url: whiteboardUrl },
+              },
+            ],
+          },
+        },
       ],
       pageEvidence: [
         {
@@ -157,6 +187,14 @@ describe('API Center navigation runner', () => {
           },
         },
         {
+          requestedUrl: rtcMcpUrl,
+          sourceResolution: {
+            type: 'existing-mdx',
+            targetPath: 'content/docs/zh-CN/introduction/mcp-integrate.mdx',
+            targetRoute: '/zh-CN/introduction/mcp-integrate',
+          },
+        },
+        {
           requestedUrl: speechUrl,
           sourceResolution: {
             type: 'openapi',
@@ -164,6 +202,17 @@ describe('API Center navigation runner', () => {
             targetPath: 'content/openapi/speech.yaml',
             targetRoute: '/zh-CN/api-reference/api-ref/speech-to-text/join',
             route: { scopeKey: 'doc/speech-to-text/restful' },
+          },
+        },
+        {
+          requestedUrl: whiteboardUrl,
+          sourceResolution: {
+            type: 'generated-html',
+            targetPath:
+              'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/overview.mdx',
+            targetRoute:
+              '/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview',
+            route: { scopeKey: 'api-ref/whiteboard/android' },
           },
         },
       ],
@@ -176,6 +225,7 @@ describe('API Center navigation runner', () => {
     for (const target of [
       'content/docs/zh-CN/api-reference/rtc/android/(current)/overview.mdx',
       'content/docs/zh-CN/api-reference/rtc/android/(current)/client.mdx',
+      'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/overview.mdx',
     ]) {
       await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
         recursive: true,
@@ -194,7 +244,32 @@ describe('API Center navigation runner', () => {
     );
     await fs.writeFile(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/meta.json'),
-      JSON.stringify({ title: '参考中心', root: true, pages: ['old'] }),
+      JSON.stringify({
+        title: '参考中心',
+        root: true,
+        pages: [
+          'overview',
+          'api',
+          '---产品参考---',
+          'rtc',
+          {
+            type: 'group',
+            title: '实时互动 RTC',
+            pages: ['[Android](/zh-CN/api-reference/rtc/android/overview)'],
+          },
+        ],
+      }),
+    );
+    await fs.mkdir(
+      path.join(repoRoot, 'content/docs/zh-CN/api-reference/whiteboard'),
+      { recursive: true },
+    );
+    await fs.writeFile(
+      path.join(
+        repoRoot,
+        'content/docs/zh-CN/api-reference/whiteboard/meta.json',
+      ),
+      JSON.stringify({ title: '互动白板', pages: ['fastboard'] }),
     );
     const lanes = [
       {
@@ -244,14 +319,31 @@ describe('API Center navigation runner', () => {
         'utf8',
       ),
     );
+    const whiteboardRootMeta = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/whiteboard/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+    const whiteboardAndroidMeta = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/meta.json',
+        ),
+        'utf8',
+      ),
+    );
 
     expect(result.report.counts).toMatchObject({ errors: 0, warnings: 0 });
     expect(result.parity.counts).toMatchObject({
-      entries: 4,
-      overviewActions: 4,
-      rootActions: 3,
-      collapsedRootDuplicates: 1,
-      visibleNavigationLeaves: 4,
+      entries: 5,
+      overviewActions: 5,
+      rootActions: 1,
+      visibleNavigationLeaves: 5,
       missingNavigationTargets: 0,
       errors: 0,
     });
@@ -268,21 +360,25 @@ describe('API Center navigation runner', () => {
     expect(rootMeta.pages).toContain('api');
     expect(rootMeta.pages).toContain('---产品参考---');
     expect(rootMeta.pages).toContain('api-ref');
+    expect(rootMeta.pages).toContain('rtc');
+    expect(rootMeta.pages).toContain('whiteboard');
     expect(rootMeta.pages).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ title: '实时互动 RTC' }),
-        expect.objectContaining({ title: '实时转录翻译' }),
       ]),
     );
-    expect(JSON.stringify(rootMeta.pages)).toContain(
-      '[Android / iOS](./rtc/android/overview)',
-    );
+    expect(JSON.stringify(rootMeta.pages)).not.toContain('实时转录翻译');
     expect(rtcMeta.pages).toEqual([
-      '[概览](./overview)',
+      'overview',
       '---核心接口---',
-      '[客户端](./client)',
+      'client',
       '[客户端组件 API](/zh-CN/api-reference/conversational-ai/android/overview)',
     ]);
+    expect(JSON.stringify(rtcMeta.pages)).not.toContain('MCP');
+    expect(rtcMeta.sidebarLabels).toMatchObject({
+      '/zh-CN/api-reference/rtc/android/overview': '概览',
+      '/zh-CN/api-reference/rtc/android/client': '客户端',
+    });
     expect(speechMeta.pages[0]).toBe('index');
     expect(speechMeta.pages).toContain('---服务端 API---');
     expect(speechMeta.pages).toContain('join');
@@ -301,6 +397,14 @@ describe('API Center navigation runner', () => {
     expect(speechLanding).not.toContain('## 接口目录');
     expect(speechLanding).not.toContain('实时转录翻译 API');
     expect(speechLanding).toContain('content/openapi/speech.yaml');
+    expect(whiteboardRootMeta.pages).toEqual(['fastboard', 'whiteboard-sdk']);
+    expect(whiteboardAndroidMeta).toMatchObject({
+      navScope: {
+        defaultVersion: 'current',
+        versions: [{ id: 'current', label: 'Current', path: '(current)' }],
+      },
+      pages: ['(current)'],
+    });
 
     await expect(
       runApiCenterNavigation({
@@ -315,6 +419,6 @@ describe('API Center navigation runner', () => {
       ownershipPath:
         'docs/migration/api-center-navigation-generated-files.json',
     });
-    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 3 });
+    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 7 });
   });
 });

@@ -45,8 +45,15 @@ function sha256(value) {
 }
 
 function splitFrontmatter(source) {
-  const match = String(source).match(/^---\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
-  if (!match) return { data: null, body: String(source), error: 'Missing YAML frontmatter.' };
+  const match = String(source).match(
+    /^---\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/,
+  );
+  if (!match)
+    return {
+      data: null,
+      body: String(source),
+      error: 'Missing YAML frontmatter.',
+    };
   try {
     return {
       data: yaml.load(match[1]) ?? {},
@@ -75,7 +82,11 @@ function auditFrontmatter({ data, targetPath, record }) {
   if (!data) return issues;
   if (!data.title || typeof data.title !== 'string') {
     issues.push(
-      issue({ code: 'frontmatter-title', message: 'Frontmatter title is missing.', targetPath }),
+      issue({
+        code: 'frontmatter-title',
+        message: 'Frontmatter title is missing.',
+        targetPath,
+      }),
     );
   }
   const migration = data._migration;
@@ -127,6 +138,17 @@ function auditFrontmatter({ data, targetPath, record }) {
 
 function auditBody({ body, targetPath }) {
   const issues = [];
+  const emptyFence = /^(\s*)(`{3,}|~{3,})[^\n]*\n\s*^\1\2\s*$/m.exec(body);
+  if (emptyFence) {
+    issues.push(
+      issue({
+        code: 'empty-code-fence',
+        message: 'Generated MDX contains an empty fenced code block.',
+        targetPath,
+        line: lineForIndex(body, emptyFence.index),
+      }),
+    );
+  }
   const bodyWithoutFences = body.replace(
     /^(\s*)(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\2\s*$/gm,
     '',
@@ -151,7 +173,8 @@ function auditBody({ body, targetPath }) {
     issues.push(
       issue({
         code: 'heading-link',
-        message: 'Generated MDX contains a link inside an auto-linked Fumadocs heading.',
+        message:
+          'Generated MDX contains a link inside an auto-linked Fumadocs heading.',
         targetPath,
         line: lineForIndex(bodyWithoutFences, headingLink.index),
       }),
@@ -159,7 +182,13 @@ function auditBody({ body, targetPath }) {
   }
   const scannableBody = bodyWithoutFences.replace(/`[^`\n]*`/g, '');
   if (body.trim().length === 0) {
-    issues.push(issue({ code: 'empty-body', message: 'Generated MDX body is empty.', targetPath }));
+    issues.push(
+      issue({
+        code: 'empty-body',
+        message: 'Generated MDX body is empty.',
+        targetPath,
+      }),
+    );
     return issues;
   }
   for (const check of FORBIDDEN_BODY_PATTERNS) {
@@ -204,7 +233,7 @@ function reportMarkdown(report) {
     '',
     '- All owned outputs exist and match their recorded SHA-256.',
     '- Generated docs are local `.mdx` files with `_migration` provenance.',
-    '- MDX bodies are non-empty and contain no old-site links, iframe, redirect, placeholder, visible escaped anchor, or legacy raw HTML.',
+    '- MDX bodies are non-empty and contain no empty code fence, old-site link, iframe, redirect, placeholder, visible escaped anchor, or legacy raw HTML.',
     '- Generated assets are local and hash-verified.',
     '- Generated bodies pass the repository MDX migration syntax preflight.',
     '',
@@ -214,7 +243,9 @@ function reportMarkdown(report) {
   const entries = Object.entries(report.issueSummary);
   lines.push(
     ...(entries.length
-      ? entries.map(([code, value]) => `- \`${code}\`: ${value.count} ${value.severity}`)
+      ? entries.map(
+          ([code, value]) => `- \`${code}\`: ${value.count} ${value.severity}`,
+        )
       : ['- None.']),
     '',
     '## Issues',
@@ -223,7 +254,10 @@ function reportMarkdown(report) {
   if (report.issues.length === 0) {
     lines.push('- None.', '');
   } else {
-    lines.push('| Severity | Code | Target | Line | Message |', '| --- | --- | --- | --- | --- |');
+    lines.push(
+      '| Severity | Code | Target | Line | Message |',
+      '| --- | --- | --- | --- | --- |',
+    );
     for (const item of report.issues) {
       lines.push(
         `| ${item.severity} | ${item.code} | \`${item.targetPath}\` | ${item.line ?? ''} | ${item.message.replace(/\|/g, '\\|')} |`,
@@ -293,7 +327,8 @@ export async function auditApiCenterMigration({
           issues.push(
             issue({
               code: 'meta-pages',
-              message: 'Generated navigation meta must contain a non-empty pages array.',
+              message:
+                'Generated navigation meta must contain a non-empty pages array.',
               targetPath,
             }),
           );
@@ -317,7 +352,8 @@ export async function auditApiCenterMigration({
       issues.push(
         issue({
           code: 'mdx-output-path',
-          message: 'Generated document is not a local MDX file under zh-CN/api-reference.',
+          message:
+            'Generated document is not a local MDX file under zh-CN/api-reference.',
           targetPath,
         }),
       );
@@ -325,7 +361,9 @@ export async function auditApiCenterMigration({
     const source = contents.toString('utf8');
     const parsed = splitFrontmatter(source);
     if (parsed.error) {
-      issues.push(issue({ code: 'frontmatter-parse', message: parsed.error, targetPath }));
+      issues.push(
+        issue({ code: 'frontmatter-parse', message: parsed.error, targetPath }),
+      );
     }
     issues.push(...auditFrontmatter({ data: parsed.data, targetPath, record }));
     if (
@@ -340,14 +378,18 @@ export async function auditApiCenterMigration({
     }
   }
 
-  issues.sort((left, right) =>
-    left.targetPath.localeCompare(right.targetPath) ||
-    String(left.code).localeCompare(String(right.code)) ||
-    (left.line ?? 0) - (right.line ?? 0),
+  issues.sort(
+    (left, right) =>
+      left.targetPath.localeCompare(right.targetPath) ||
+      String(left.code).localeCompare(String(right.code)) ||
+      (left.line ?? 0) - (right.line ?? 0),
   );
   const issueSummary = {};
   for (const item of issues) {
-    const current = issueSummary[item.code] ?? { count: 0, severity: item.severity };
+    const current = issueSummary[item.code] ?? {
+      count: 0,
+      severity: item.severity,
+    };
     current.count += 1;
     issueSummary[item.code] = current;
   }

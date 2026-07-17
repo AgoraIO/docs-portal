@@ -74,6 +74,35 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('<iframe');
   });
 
+  it('omits source-empty code fences without inventing an API signature', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Audio capture</h1>
+        <section id="api_irtcengine_enableinearmonitoring">
+          <pre><code class="language-arkts"></code></pre>
+        </section>
+        <section id="api_irtcengine_enableinearmonitoring2">
+          <h2>enableInEarMonitoring</h2>
+          <pre><code class="language-arkts">public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Constants.EarMontoringFilterType): number;</code></pre>
+        </section>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_irtcengine',
+      sourcePath: 'html-docs/rtc/HarmonyOS/API/class_irtcengine.html',
+    });
+
+    expect(result.body).toContain(
+      '<a id="api_irtcengine_enableinearmonitoring"></a>',
+    );
+    expect(result.body).toContain('## enableInEarMonitoring');
+    expect(result.body).toContain(
+      'public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Constants.EarMontoringFilterType): number;',
+    );
+    expect(result.body).not.toMatch(/```arkts\n\s*```/);
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'empty-source-code' }),
+    );
+  });
+
   it('keeps a source image without alt text empty and reports the missing source text', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>Page</h1><img src="diagram.png"></article>',

@@ -79,6 +79,7 @@ export const docsMetaSchema = metaSchema.extend({
     .optional(),
   sidebarHidden: z.boolean().optional(),
   sidebarIndexTitle: z.string().min(1).optional(),
+  sidebarLabels: z.record(z.string(), z.string().min(1)).optional(),
 });
 
 export type DocsMeta = z.infer<typeof docsMetaSchema>;

@@ -14,7 +14,7 @@
 ## Source provenance
 
 - Owned MDX pages checked: 706
-- Ownership source paths checked: 880
+- Ownership source paths checked: 885
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Runtime label substitutions checked: 7
@@ -66,7 +66,7 @@
 - `preserved-root-navigation`: 7 non-product root navigation items keep their exact base-branch labels and routes.
 - `api-group-action-labels`: 客户端 and 服务端 action qualifiers are shortened from the live source group headings 客户端 API and 服务端 API.
 - `current-directory-elision`: (current) remains a filesystem grouping and is omitted from public routes.
-- `root-shared-target-collapse`: 9 root actions share targets; the overview retains all 91 live actions.
+- `root-shared-target-collapse`: undefined root actions share targets; the overview retains all 91 live actions.
 
 ## Source-text requests
 

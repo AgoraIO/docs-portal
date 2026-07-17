@@ -13,7 +13,7 @@
 
 - All owned outputs exist and match their recorded SHA-256.
 - Generated docs are local `.mdx` files with `_migration` provenance.
-- MDX bodies are non-empty and contain no old-site links, iframe, redirect, placeholder, visible escaped anchor, or legacy raw HTML.
+- MDX bodies are non-empty and contain no empty code fence, old-site link, iframe, redirect, placeholder, visible escaped anchor, or legacy raw HTML.
 - Generated assets are local and hash-verified.
 - Generated bodies pass the repository MDX migration syntax preflight.
 

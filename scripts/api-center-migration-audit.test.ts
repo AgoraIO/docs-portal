@@ -13,7 +13,9 @@ async function fixture(body: string, overrides: Record<string, unknown> = {}) {
   const sourceUrl = 'https://doc.shengwang.cn/api-ref/rtc/web/example';
   const sourcePath = 'html-docs/rtc/web/example.html';
   const content = `---\ntitle: Example\n_migration:\n  type: generated-html\n  status: migrated\n  sourceUrl: ${sourceUrl}\n  sourcePath: ${sourcePath}\n  generator: typedoc\n  warnings: []\n---\n\n${body}\n`;
-  await fs.mkdir(path.join(root, path.dirname(targetPath)), { recursive: true });
+  await fs.mkdir(path.join(root, path.dirname(targetPath)), {
+    recursive: true,
+  });
   await fs.writeFile(path.join(root, targetPath), content);
   const record = {
     targetPath,
@@ -32,7 +34,11 @@ async function fixture(body: string, overrides: Record<string, unknown> = {}) {
 }
 
 afterEach(async () => {
-  await Promise.all(roots.splice(0).map((root) => fs.rm(root, { recursive: true, force: true })));
+  await Promise.all(
+    roots
+      .splice(0)
+      .map((root) => fs.rm(root, { recursive: true, force: true })),
+  );
 });
 
 describe('API Center generated output audit', () => {
@@ -82,14 +88,28 @@ describe('API Center generated output audit', () => {
     );
     const { report } = await auditApiCenterMigration({ repoRoot: root });
     expect(report.issues).toEqual(
-      expect.arrayContaining([expect.objectContaining({ code: 'heading-link' })]),
+      expect.arrayContaining([
+        expect.objectContaining({ code: 'heading-link' }),
+      ]),
     );
   });
 
   it('ignores HTML examples inside fenced code', async () => {
-    const root = await fixture('```tsx\n<img src="https://example.com/icon.png" />\n```');
+    const root = await fixture(
+      '```tsx\n<img src="https://example.com/icon.png" />\n```',
+    );
     const { report } = await auditApiCenterMigration({ repoRoot: root });
     expect(report.counts.errors).toBe(0);
+  });
+
+  it('rejects empty fenced code blocks', async () => {
+    const root = await fixture('## Method\n\n```arkts\n\n```');
+    const { report } = await auditApiCenterMigration({ repoRoot: root });
+    expect(report.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: 'empty-code-fence' }),
+      ]),
+    );
   });
 
   it('accepts valid JSX object and array expression attributes', async () => {
@@ -104,7 +124,9 @@ describe('API Center generated output audit', () => {
     const root = await fixture('Content.', { contentHash: 'not-the-hash' });
     const { report } = await auditApiCenterMigration({ repoRoot: root });
     expect(report.issues).toEqual(
-      expect.arrayContaining([expect.objectContaining({ code: 'owned-hash-mismatch' })]),
+      expect.arrayContaining([
+        expect.objectContaining({ code: 'owned-hash-mismatch' }),
+      ]),
     );
   });
 
@@ -113,7 +135,9 @@ describe('API Center generated output audit', () => {
     roots.push(root);
     const targetPath = 'content/docs/zh-CN/api-reference/rtc/web/meta.json';
     const content = '{"title":"Web","pages":["overview"]}\n';
-    await fs.mkdir(path.join(root, path.dirname(targetPath)), { recursive: true });
+    await fs.mkdir(path.join(root, path.dirname(targetPath)), {
+      recursive: true,
+    });
     await fs.writeFile(path.join(root, targetPath), content);
     await fs.mkdir(path.join(root, 'docs/migration'), { recursive: true });
     await fs.writeFile(

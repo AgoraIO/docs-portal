@@ -24,6 +24,11 @@ export const API_CENTER_WARNING_DEFINITIONS = {
     explanation:
       'The legacy generator exposes a named page whose source body is intentionally empty.',
   },
+  'empty-source-code': {
+    severity: 'info',
+    explanation:
+      'The legacy source contains an empty code block; the migration preserves its anchor and omits the empty fence without inventing a signature.',
+  },
   'generated-target-collision': {
     severity: 'error',
     explanation:

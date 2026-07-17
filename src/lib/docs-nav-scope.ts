@@ -171,11 +171,13 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
-  return flattenNavScopeSidebarNodes(
-    navScope.sidebarRoot,
-    getNodeMeta,
-    navScope.scope.meta,
-  );
+  const sidebarRootMeta = getNodeMeta(navScope.sidebarRoot);
+  return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta, {
+    ...navScope.scope.meta,
+    ...(sidebarRootMeta?.sidebarLabels
+      ? { sidebarLabels: sidebarRootMeta.sidebarLabels }
+      : {}),
+  });
 }
 
 export function getSharedNavScopeSidebarNodes({
@@ -409,7 +411,11 @@ function flattenNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeNodeToSidebarNodes(child, getNodeMeta)) {
+    for (const node of navScopeNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+      rootMeta,
+    )) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -501,6 +507,7 @@ function remapSharedSidebarUrl(
 function navScopeNodeToSidebarNodes(
   node: Node,
   getNodeMeta: GetDocsNodeMeta,
+  rootMeta?: DocsMeta,
 ): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
@@ -510,7 +517,9 @@ function navScopeNodeToSidebarNodes(
     return [
       {
         id: node.url,
-        title: normalizeLabel(node.name, node.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.url] ??
+          normalizeLabel(node.name, node.url),
         type: 'page',
         url: node.url,
       },
@@ -535,7 +544,9 @@ function navScopeNodeToSidebarNodes(
     return [
       {
         id: node.index.url,
-        title: normalizeLabel(node.index.name, node.index.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.index.url] ??
+          normalizeLabel(node.index.name, node.index.url),
         type: 'page',
         url: node.index.url,
       },
