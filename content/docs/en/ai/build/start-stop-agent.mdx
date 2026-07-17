@@ -35,7 +35,7 @@ You also need:
 
 Select your preferred language and install the corresponding SDK.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
@@ -75,12 +75,12 @@ This section introduces the basic RESTful API requests you use to start and stop
 
 Call the `join` endpoint to create an agent instance that joins an Agora channel. 
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -238,7 +238,7 @@ func main() {
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
 
 ```bash
@@ -307,12 +307,12 @@ If the request is successful, the agent ID is returned. Store the agent ID to ma
 
 To end the conversation with the AI agent, call the `leave` endpoint. This causes the agent to leave the Agora channel.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -341,7 +341,7 @@ if err := session.Stop(ctx); err != nil {
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 
 ```bash
 curl --request POST \
