@@ -410,9 +410,11 @@ function rootMetaPages(entries) {
   const pages = [
     'overview',
     'sdks',
+    'api',
     '---指南---',
     '[示例配方](/zh-CN/api-reference/recipes)',
     'faq',
+    '---产品参考---',
     ...FOCUSED_LANE_ROOTS,
   ];
   let lastCategory = null;

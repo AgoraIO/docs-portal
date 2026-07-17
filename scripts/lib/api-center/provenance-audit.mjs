@@ -638,9 +638,11 @@ export async function auditApiCenterProvenance({
   const preservedRootItems = [
     'overview',
     'sdks',
+    'api',
     '---指南---',
     '[示例配方](/zh-CN/api-reference/recipes)',
     'faq',
+    '---产品参考---',
   ];
   const baseRootRaw = await readBaseFile(
     root,

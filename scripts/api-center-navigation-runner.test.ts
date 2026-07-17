@@ -265,6 +265,8 @@ describe('API Center navigation runner', () => {
     expect(overview).not.toContain('按旧站 API Center');
     expect(overview).toContain('https://im.shengwang.cn/docs/sdk/web.html');
     expect(rootMeta.root).toBe(true);
+    expect(rootMeta.pages).toContain('api');
+    expect(rootMeta.pages).toContain('---产品参考---');
     expect(rootMeta.pages).toContain('api-ref');
     expect(rootMeta.pages).toEqual(
       expect.arrayContaining([
