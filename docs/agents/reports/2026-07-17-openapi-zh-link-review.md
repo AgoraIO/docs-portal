@@ -9,8 +9,9 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 - Removal policy: no link is removed without user approval.
 - Inventory: 88 unique legacy `doc.shengwang.cn` hrefs across 160 total occurrences.
 - Focused audit: `openapiFiles: 15`, `invalidInternalLinks: 223`; audit output saved at `/tmp/openapi-zh-link-audit.txt` during generation.
+- Reproducibility: `/tmp/openapi-zh-link-audit.txt` was temporary and can be regenerated with `bun run docs:links:openapi-zh -- --max-samples=200`. If a fallback runtime is needed, this package script remains the canonical command.
 
-## High-Confidence Replacements Applied
+## Replacement Status
 
 | Source | Old href | New href | Evidence |
 | --- | --- | --- | --- |
