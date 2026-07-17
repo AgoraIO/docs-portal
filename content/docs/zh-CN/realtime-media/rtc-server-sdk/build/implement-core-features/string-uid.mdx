@@ -6,6 +6,8 @@ description: "了解如何在 RTC 服务端 SDK 中字符串型用户 ID，包�
 
 本文介绍如何使用 `String` 型用户 ID。
 
+<PlatformStructured platform="cpp">
+
 ## 实现方法
 
 1. 在初始化 `IAgoraService` 对象时，将 `AgoraServiceConfiguration.useStringUid` 设为 `true`。
@@ -43,6 +45,12 @@ description: "了解如何在 RTC 服务端 SDK 中字符串型用户 ID，包�
 ## 订阅用户注意事项
 
 在初始化 `IAgoraService` 对象时开启 `String` 型用户 ID 的设置会在调用 `connect` 成功连接频道之后生效。因此，在成功连接频道之前，SDK 使用的用户 ID 模式仍然为 `int` 型。你无法订阅包含数字之外的字符的用户 ID。如果你在成功连接频道之前调用 `subscribe` 方法订阅了特定 `uid`，`uid` 的字符必须仅包含数字。`connect` 完成之后，你可以订阅包含其他字符类型的用户 ID。
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+## 实现方法
 
 1. 在初始化 `AgoraService` 对象时，调用 `AgoraServiceConfiguration.setUseStringUid(1)`。
 
@@ -89,6 +97,8 @@ description: "了解如何在 RTC 服务端 SDK 中字符串型用户 ID，包�
 ## 订阅用户注意事项
 
 在初始化 `AgoraService` 对象时开启 `String` 型用户 ID 的设置会在调用 `connect` 成功连接频道之后生效。因此，在成功连接频道之前，SDK 使用的用户 ID 模式仍然为 `int` 型。你无法订阅包含数字之外的字符的用户 ID。如果你在成功连接频道之前调用 `subscribe` 方法订阅了特定 `uid`，`uid` 的字符必须仅包含数字。`connect` 完成之后，你可以订阅包含其他字符类型的用户 ID。
+
+</PlatformStructured>
 
 ## 其他注意事项
 
