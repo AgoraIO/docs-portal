@@ -27,6 +27,9 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
+    expect(pagePaths).not.toContain(
+      'zh-CN/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
+    );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/cloud-recording/acquire.mdx',
     );
@@ -45,7 +48,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
     );
-    expect(pagePaths).toHaveLength(237);
+    expect(pagePaths).toHaveLength(232);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
