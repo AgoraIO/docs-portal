@@ -63,6 +63,14 @@ import {
 import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
+const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
+const ZH_CN_RTM_REST_API_PAGE_URLS = [
+  '/zh-CN/api-reference/api-ref/signaling/publish',
+  '/zh-CN/api-reference/api-ref/signaling/receive',
+] as const;
+const ZH_CN_RTM_REST_API_PAGE_URL_SET = new Set<string>(
+  ZH_CN_RTM_REST_API_PAGE_URLS,
+);
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -1877,13 +1885,23 @@ async function getDocsSidebarNodes({
           tab,
         })
       : null;
+  const focusedZhCnRtmRestSidebar =
+    !navScope && activePath && locale
+      ? getFocusedZhCnRtmRestSidebarNodes({
+          activePath,
+          locale,
+          source,
+          tab,
+        })
+      : null;
   const sidebar = navScope
     ? getScopedSidebarNodes({
         locale,
         navScope,
         source,
       })
-    : (focusedOpenApiLaneSidebar ??
+    : (focusedZhCnRtmRestSidebar ??
+      focusedOpenApiLaneSidebar ??
       getNavScopeSidebarNodes({
         getNodeMeta: (node) =>
           getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -3031,6 +3049,19 @@ function resolveFocusedOpenApiLaneSidebarHeader(
     return undefined;
   }
 
+  if (
+    locale === 'zh-CN' &&
+    isSamePathOrDescendant(activePath, ZH_CN_RTM_REST_API_PARENT_URL)
+  ) {
+    const restApiProductBackLink = getZhCnRestApiProductBackLink(activePath);
+
+    return {
+      backHref: restApiProductBackLink?.backHref ?? '/zh-CN/api-reference',
+      backLabel: restApiProductBackLink?.backLabel ?? '实时消息 RTM',
+      title: 'RESTful API',
+    };
+  }
+
   const lane = getOpenApiLanes()
     .filter(
       (item) =>
@@ -3217,6 +3248,57 @@ async function addOpenApiEndpointSidebarItems(
       appendEndpointPagesToOpenApiParent(node, locale, tab),
     ),
   );
+}
+
+function getFocusedZhCnRtmRestSidebarNodes({
+  activePath,
+  locale,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  source: typeof docsSource;
+  tab: string;
+}): DocsSidebarNode[] | null {
+  if (
+    locale !== 'zh-CN' ||
+    !isOpenApiTab(tab) ||
+    !isSamePathOrDescendant(activePath, ZH_CN_RTM_REST_API_PARENT_URL)
+  ) {
+    return null;
+  }
+
+  const sourcePageByUrl = new Map(
+    source
+      .getPages(locale)
+      .filter((page) => ZH_CN_RTM_REST_API_PAGE_URL_SET.has(page.url))
+      .map((page) => [page.url, page]),
+  );
+  const children = ZH_CN_RTM_REST_API_PAGE_URLS.flatMap((url) => {
+    const page = sourcePageByUrl.get(url);
+    if (!page || !hasExistingDocsSourceFile(page, locale)) {
+      return [];
+    }
+
+    return [
+      {
+        id: url,
+        title: page.data.title ?? page.slugs.at(-1) ?? url,
+        type: 'page' as const,
+        url,
+      },
+    ];
+  });
+
+  return [
+    {
+      children,
+      id: ZH_CN_RTM_REST_API_PARENT_URL,
+      title: 'RESTful API',
+      type: 'section',
+    },
+  ];
 }
 
 async function getFocusedOpenApiLaneSidebarNodes({
