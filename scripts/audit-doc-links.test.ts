@@ -338,17 +338,6 @@ describe('auditDocsLinks', () => {
       ),
       '# 对话式 AI API\n',
     );
-    await writeDoc(
-      path.join(
-        docsRoot,
-        'zh-CN',
-        'api-reference',
-        'api-ref',
-        'conversational-ai',
-        'join.mdx',
-      ),
-      '# 加入频道\n',
-    );
     await writeDoc(path.join(docsRoot, 'zh-CN', 'ai', 'build', 'valid.mdx'));
     await writeDoc(path.join(docsRoot, 'en', 'ai', 'build', 'valid.mdx'));
 
