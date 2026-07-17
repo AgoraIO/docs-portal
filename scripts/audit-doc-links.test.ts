@@ -8,6 +8,7 @@ import {
   checkExternalLinks,
   formatReport,
   getOpenApiRoutePathsForAudit,
+  getZhCnOpenApiSourcePaths,
 } from './audit-doc-links.mjs';
 
 const tempDirs: string[] = [];
@@ -444,6 +445,21 @@ describe('auditDocsLinks', () => {
         }),
       ]),
     );
+  });
+
+  it('lists only zh-CN OpenAPI source paths for the focused CLI mode', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(tempRoot);
+    const openApiRoot = path.join(tempRoot, 'openapi');
+
+    await writeDoc(path.join(openApiRoot, 'a', 'one.zh-CN.yaml'));
+    await writeDoc(path.join(openApiRoot, 'a', 'one.en.yaml'));
+    await writeDoc(path.join(openApiRoot, 'b', 'two.zh-CN.yml'));
+
+    expect(getZhCnOpenApiSourcePaths(openApiRoot)).toEqual([
+      'openapi/a/one.zh-CN.yaml',
+      'openapi/b/two.zh-CN.yml',
+    ]);
   });
 
   it('reports missing internal paths and missing hash anchors with source, target, and reason', async () => {

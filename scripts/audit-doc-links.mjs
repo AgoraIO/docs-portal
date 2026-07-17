@@ -398,6 +398,16 @@ function toOpenApiSourcePath(openApiRoot, filePath) {
     .join(path.posix.sep);
 }
 
+export function getZhCnOpenApiSourcePaths(openApiRoot) {
+  if (!fs.existsSync(openApiRoot)) {
+    return [];
+  }
+
+  return listOpenApiYamlFiles(openApiRoot)
+    .map((filePath) => toOpenApiSourcePath(openApiRoot, filePath))
+    .filter(isZhCnOpenApiSourcePath);
+}
+
 function extractLinks(markdown) {
   const links = [];
   const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
@@ -3442,6 +3452,7 @@ function parseArgs(args) {
     failOnInvalid: args.includes('--fail-on-invalid'),
     failOnMissing: args.includes('--fail-on-missing'),
     maxSamples: parseNumberArg(args, '--max-samples=', DEFAULT_MAX_SAMPLES),
+    openapiZhOnly: args.includes('--openapi-zh-only'),
     overviewCards: args.includes('--overview-cards'),
   };
 }
@@ -3479,11 +3490,16 @@ function readAllowlistFile(filePath) {
 async function main() {
   const repoRoot = process.cwd();
   const docsRoot = path.join(repoRoot, 'content', 'docs');
+  const openApiRoot = path.join(repoRoot, 'content', 'openapi');
   const options = parseArgs(process.argv.slice(2));
   const stats = auditDocsLinks({
     docsRoot,
+    openApiRoot,
     ...(options.overviewCards
       ? { sourcePaths: OVERVIEW_CARD_SOURCE_PATHS }
+      : {}),
+    ...(options.openapiZhOnly
+      ? { openApiSourcePaths: getZhCnOpenApiSourcePaths(openApiRoot) }
       : {}),
   });
 
