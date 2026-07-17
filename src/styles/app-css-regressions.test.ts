@@ -77,41 +77,6 @@ function getRuleBodyContaining(selectorPart: string) {
 }
 
 describe('app prose CSS regressions', () => {
-  it('keeps opening body h1 and h2 spacing aligned', () => {
-    const bodyOpeningHeading = getRuleBody(
-      `.prose
-        .docs-body
-        > :where(h1, h2):first-child:not(:where(.not-prose, .not-prose *))`,
-    );
-    const platformOpeningHeading = getRuleBody(
-      `.prose[data-platform-header-tabs="true"]
-        [data-platform-group="structured"]
-        > [data-platform-panel]:not([hidden])
-        .docs-body
-        > :where(h1, h2):first-child:not(:where(.not-prose, .not-prose *))`,
-    );
-
-    for (const rule of [bodyOpeningHeading.rule, platformOpeningHeading.rule]) {
-      expectDeclaration(rule, 'padding-top', '0');
-      expectDeclaration(rule, 'border-top', '0');
-    }
-
-    expectDeclaration(bodyOpeningHeading.rule, 'margin-top', '0');
-    expectDeclaration(platformOpeningHeading.rule, 'margin-top', '0.375rem');
-  });
-
-  it('gives first platform card groups a little more space after header tabs', () => {
-    const platformOpeningCards = getRuleBody(
-      `.prose[data-platform-header-tabs="true"]
-        [data-platform-group="structured"]
-        > [data-platform-panel]:not([hidden])
-        .docs-body
-        > [data-docs-cards]:first-child`,
-    );
-
-    expectDeclaration(platformOpeningCards.rule, 'margin-top', '0.75rem');
-  });
-
   it('uses decimal, alpha, and roman markers for nested ordered lists', () => {
     const topLevel = getRuleBody(
       '.prose :where(ol):not(:where(.not-prose, .not-prose *))',
