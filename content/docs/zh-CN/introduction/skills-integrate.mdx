@@ -1,12 +1,11 @@
 ---
 title: "Agora Skills"
-description: "了解如何在声网开发者文档中 Agora Skills，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "配置 Agora Skills，让 AI Coding Agent 按声网官方工作流选择 Starter、接入步骤和代码实现方式。"
 ---
-你可以借助 AI Coding Agent 更高效地集成声网产品。
 
-当你希望 AI Coding Agent 在开始编码前选择正确的声网工作流时，安装 Agora Skills。Skills 可以帮助 Agent 选择合适的产品路径、Starter 和接入步骤，避免凭空猜测。
+配置 Agora Skills 后，AI Coding Agent 可以在编码前先确定声网产品路径、Starter 和接入步骤，再按官方流程完成实现。
 
-当文档查询本身不足以完成任务，难点在于“先做什么”或“该走哪条官方路径”时，优先使用 Skills。如果你也希望 Agent 在工作时查询最新文档，可以同时配置 [Shengwang Doc MCP Server](/zh-CN/introduction/mcp-integrate)。
+当任务需要判断“先做什么”或“该走哪条官方路径”时，优先使用 Agora Skills。如果还需要在生成代码前查询最新官方文档，可以同时配置 [Agora MCP](/zh-CN/introduction/mcp-integrate)。
 
 ## 安装 Agora Skills
 
@@ -28,18 +27,18 @@ npx skills add AgoraIO/skills
 
 <TabsContent value="manual">
 
-克隆仓库，并将 AI Coding Agent 指向 Agora skill 文件：
+克隆仓库，并将 AI Coding Agent 指向 Agora Skills 文件：
 
 ```bash
 git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 ```
 
-使用 `skills/agora/` 作为目录入口；如果你的工具需要单个根文件，也可以直接加载 `SKILL.md`。
+使用 `skills/agora/` 作为目录入口。如果你的工具需要单个根文件，也可以直接加载 `SKILL.md`。
 
 </TabsContent>
 </Tabs>
 
-如果你手动安装 Skills，请把文件放到 AI Coding Agent 已经读取本地指令的位置：
+手动安装时，请按工具要求放置 Agora Skills 文件：
 
 <Tabs>
 <TabsList>
@@ -52,9 +51,9 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 
 <TabsContent value="claude-code">
 
-在 Claude Code 中运行以下命令：
+在 Claude Code 中运行以下命令。
 
-- **用户级**，可在你的所有项目中使用：
+- **用户级**，可在所有项目中使用：
 
   ```bash
   /plugin marketplace add AgoraIO/skills
@@ -97,11 +96,11 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 
 ## 从提示词开始
 
-安装 Skills 后，让 AI Coding Agent 在开始创建项目或编辑代码前选择正确的声网路径。
+安装 Agora Skills 后，让 AI Coding Agent 在创建项目或编辑代码前选择正确的声网路径。
 
 ```text
-使用 Agora Skills 和 Shengwang Doc MCP Server 帮我构建一个网页端对话式 AI Demo。
-请先查询官方文档，选择合适的 Starter，并使用 Agora CLI 完成设置。
+使用 Agora Skills 和 Agora MCP 帮我构建一个网页端对话式 AI Demo。
+请先查询官方文档，选择合适的 Starter，并使用 Agora CLI 完成中国区项目配置。
 ```
 
-接下来，让 AI Coding Agent 在编辑代码前选择 Starter 和接入路径。
+接下来，让 AI Coding Agent 先确认 Starter 和接入路径，再开始创建项目或编辑代码。
