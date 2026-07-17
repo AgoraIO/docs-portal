@@ -49,6 +49,7 @@ describe('API Center navigation runner', () => {
           urlFamily: 'api-ref',
           targetRoute: '/zh-CN/api-reference/rtc/android/overview',
           pageGraph: {
+            closure: { scopeRoot: '/api-ref/rtc/android/' },
             pages: [
               { url: rtcOverviewUrl, label: '概览', trail: [] },
               {
@@ -83,6 +84,34 @@ describe('API Center navigation runner', () => {
                 link: { url: rtcMcpUrl },
               },
             ],
+            sourceNavigation: [
+              {
+                kind: 'link',
+                label: '概览',
+                link: { url: rtcOverviewUrl },
+              },
+              {
+                kind: 'category',
+                label: '核心接口',
+                link: { url: rtcClientUrl },
+                items: [
+                  {
+                    kind: 'link',
+                    label: '客户端',
+                    link: { url: rtcClientUrl },
+                  },
+                ],
+              },
+              {
+                kind: 'link',
+                label: '客户端组件 API',
+                link: {
+                  url: 'https://doc.shengwang.cn/api-ref/convoai/android/android-component/overview',
+                },
+              },
+            ],
+            sourceNavigationSource:
+              'html-docs/rtc/Android/API/rtc_api_overview.html',
           },
         },
         {
@@ -120,6 +149,7 @@ describe('API Center navigation runner', () => {
           urlFamily: 'doc',
           targetRoute: '/zh-CN/api-reference/api-ref/speech-to-text/join',
           pageGraph: {
+            closure: { scopeRoot: '/doc/speech-to-text/restful/' },
             pages: [
               {
                 url: speechUrl,
@@ -154,6 +184,7 @@ describe('API Center navigation runner', () => {
           targetRoute:
             '/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview',
           pageGraph: {
+            closure: { scopeRoot: '/api-ref/whiteboard/android/' },
             pages: [{ url: whiteboardUrl, label: 'API 概览', trail: [] }],
             navigation: [
               {
@@ -343,7 +374,7 @@ describe('API Center navigation runner', () => {
       entries: 5,
       overviewActions: 5,
       rootActions: 1,
-      visibleNavigationLeaves: 5,
+      visibleNavigationLeaves: 4,
       missingNavigationTargets: 0,
       errors: 0,
     });
@@ -370,10 +401,9 @@ describe('API Center navigation runner', () => {
     expect(JSON.stringify(rootMeta.pages)).not.toContain('实时转录翻译');
     expect(rtcMeta.pages).toEqual([
       'overview',
-      '---核心接口---',
-      'client',
-      '[客户端组件 API](/zh-CN/api-reference/conversational-ai/android/overview)',
+      { type: 'group', title: '核心接口', pages: ['client'] },
     ]);
+    expect(JSON.stringify(rtcMeta.pages)).not.toContain('客户端组件 API');
     expect(JSON.stringify(rtcMeta.pages)).not.toContain('MCP');
     expect(rtcMeta.sidebarLabels).toMatchObject({
       '/zh-CN/api-reference/rtc/android/overview': '概览',

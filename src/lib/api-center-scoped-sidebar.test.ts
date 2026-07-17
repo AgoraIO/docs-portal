@@ -13,6 +13,18 @@ function collectTitles(nodes: SidebarNode[]): string[] {
   ]);
 }
 
+function findNode(
+  nodes: SidebarNode[],
+  title: string,
+): SidebarNode | undefined {
+  for (const node of nodes) {
+    if (node.title === title) return node;
+    const nested = findNode(node.children ?? [], title);
+    if (nested) return nested;
+  }
+  return undefined;
+}
+
 async function loadApiReferenceSidebar(slugs: string[]) {
   const payload = await loadDocsPagePayload('zh-CN', 'api-reference', slugs);
   if (!payload || 'redirectUrl' in payload) {
@@ -52,6 +64,103 @@ describe('API Center scoped sidebars', () => {
       ]),
     );
     expect(titles).not.toContain('参考概览');
+  });
+
+  it('keeps a single-page Agent SDK entry in the Reference root sidebar', async () => {
+    const sidebar = await loadApiReferenceSidebar([
+      'conversational-ai',
+      'agent-go',
+    ]);
+    const titles = collectTitles(sidebar);
+
+    expect(titles).toContain('实时互动 RTC');
+    expect(titles).not.toContain('创建对话式智能体');
+  });
+
+  it('uses the Conversational AI Android SDK sidebar, not RESTful navigation', async () => {
+    const sidebar = await loadApiReferenceSidebar([
+      'conversational-ai',
+      'android',
+      'overview',
+    ]);
+    const titles = collectTitles(sidebar);
+
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        'API 概览',
+        '枚举类',
+        'IConversationalAIAPI 类',
+        'IConversationalAIAPIEventHandler 类',
+        '结构体',
+      ]),
+    );
+    expect(titles).not.toContain('创建对话式智能体');
+  });
+
+  it('uses the Cloud Recording Go REST Client sidebar, not RESTful navigation', async () => {
+    const sidebar = await loadApiReferenceSidebar([
+      'cloud-recording',
+      'go-api',
+      'overview.go',
+    ]);
+    const titles = collectTitles(sidebar);
+
+    expect(titles).toEqual(
+      expect.arrayContaining(['API 概览', 'Client 类', '结构体', '枚举类']),
+    );
+    expect(titles).not.toContain('获取云端录制资源');
+  });
+
+  it.each([
+    [
+      ['conversational-ai', 'rest-api', 'user-guides', 'http-basic-auth'],
+      ['Agent SDK API', '客户端组件 API'],
+    ],
+    [['cloud-recording', 'restful', 'landing-page'], ['REST Client API']],
+  ])('keeps cross-entry SDK links out of RESTful sidebars', async (route, excluded) => {
+    const titles = collectTitles(await loadApiReferenceSidebar(route));
+
+    for (const title of excluded) expect(titles).not.toContain(title);
+  });
+
+  it.each([
+    'android',
+    'ios',
+    'macos',
+    'flutter',
+  ])('preserves RTC %s first-level groups with second-level pages', async (platform) => {
+    const sidebar = await loadApiReferenceSidebar([
+      'rtc',
+      platform,
+      'play',
+      'audio-mixing',
+    ]);
+    const audio = findNode(sidebar, '音频功能');
+    const video = findNode(sidebar, '视频功能');
+
+    expect(collectTitles(audio?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '音频基础功能',
+        '音频采集',
+        '音频前处理和后处理',
+        '原始音频数据',
+        '已编码音频数据',
+        '自定义音频采集和渲染',
+        '音频频谱',
+      ]),
+    );
+    expect(collectTitles(video?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '视频基础功能',
+        '摄像头采集',
+        '屏幕采集',
+        '视频前处理和后处理',
+        '视频渲染',
+        '原始视频数据',
+        '已编码视频数据',
+        '自定义视频采集和渲染',
+      ]),
+    );
   });
 
   it.each([

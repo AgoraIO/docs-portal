@@ -10,8 +10,8 @@
 - Overview actions: 91
 - Root navigation actions: 65
 - Entry meta files: 85
-- Entry meta links: 1068
-- Visible legacy navigation leaves: 887
+- Entry meta links: 1294
+- Visible legacy navigation leaves: 1326
 - Missing navigation targets: 0
 - Warnings: 0
 - Errors: 0

@@ -1,23 +1,69 @@
 {
   "title": "Unreal Blueprint API 参考",
   "pages": [
-    "---API 参考---",
     "rtc-api-overview",
     "rtc-interface-class",
     "initialize",
     "channel",
     "publishnsubscribe",
-    "audio/audio-basic",
-    "video/video-basic",
-    "play/audio-mixing",
+    {
+      "type": "group",
+      "title": "音频相关",
+      "pages": [
+        "audio/audio-basic",
+        "audio/audio-capture",
+        "audio/audio-prenpost"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "视频相关",
+      "pages": [
+        "video/video-basic",
+        "video/camera-capture",
+        "video/screencapture",
+        "video/video-prenpro",
+        "video/video-rendering"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "播放相关",
+      "pages": [
+        "play/audio-mixing",
+        "play/audio-effect-file",
+        "play/rhythmplayer",
+        "play/mediaplayer"
+      ]
+    },
     "recording",
-    "cloud-media-relay/channel-media-relay",
-    "metadata/datastream",
-    "device-management/audio-route",
+    {
+      "type": "group",
+      "title": "媒体流云分发",
+      "pages": [
+        "cloud-media-relay/channel-media-relay",
+        "cloud-media-relay/media-push"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Metadata 观测器",
+      "pages": [
+        "metadata/datastream"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "设备管理",
+      "pages": [
+        "device-management/audio-route",
+        "device-management/video-device",
+        "device-management/audio-device"
+      ]
+    },
     "extension",
     "network",
-    "rtc-api-data-type-unreal",
-    "[错误码](/zh-CN/api-reference/rtc/error-code)"
+    "rtc-api-data-type-unreal"
   ],
   "sidebarLabels": {
     "/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview": "API 概览",
@@ -25,13 +71,25 @@
     "/zh-CN/api-reference/rtc/unreal-blueprint/initialize": "初始化相关",
     "/zh-CN/api-reference/rtc/unreal-blueprint/channel": "频道相关",
     "/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe": "发布和订阅",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic": "音频相关",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic": "视频相关",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing": "播放相关",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic": "音频基础功能",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture": "音频采集",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost": "音频前处理和后处理",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic": "视频基础功能",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/video/camera-capture": "摄像头采集",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture": "屏幕采集",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro": "视频前处理和后处理",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering": "视频渲染",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing": "音乐文件播放",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-effect-file": "音效文件播放",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/play/rhythmplayer": "虚拟节拍器",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer": "内置媒体播放器",
     "/zh-CN/api-reference/rtc/unreal-blueprint/recording": "音视频录制",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay": "媒体流云分发",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream": "Metadata 观测器",
-    "/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-route": "设备管理",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay": "跨频道媒体流转发",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push": "旁路推流",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream": "数据流 Datastream",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-route": "音频路由",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device": "视频设备管理",
+    "/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device": "音频设备管理",
     "/zh-CN/api-reference/rtc/unreal-blueprint/extension": "插件",
     "/zh-CN/api-reference/rtc/unreal-blueprint/network": "网络及其他",
     "/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-data-type-unreal": "Struct 及 Enum"

@@ -85,15 +85,40 @@ function isOutOfScopeSharedRoute(route) {
   return OUT_OF_SCOPE_SHARED_ROUTES.has(route);
 }
 
-function visibleNavigationLeaves(items, routeMap, trail = []) {
+function isOutsideLegacyScope(urlValue, scopeRoot) {
+  if (!urlValue || !scopeRoot) return false;
+  const url = new URL(urlValue, API_CENTER_URL);
+  if (
+    url.hostname !== 'doc.shengwang.cn' ||
+    (!url.pathname.startsWith('/api-ref/') && !url.pathname.startsWith('/doc/'))
+  ) {
+    return false;
+  }
+  return !url.pathname.startsWith(scopeRoot);
+}
+
+function visibleNavigationLeaves(
+  items,
+  routeMap,
+  trail = [],
+  scopeRoot = null,
+) {
   const leaves = [];
   for (const item of items ?? []) {
-    if (!item || item.excludedReason) continue;
-    const targetRoute = targetRouteForUrl(item.link?.url, routeMap);
+    if (
+      !item ||
+      item.excludedReason ||
+      isOutsideLegacyScope(item.link?.url, scopeRoot)
+    )
+      continue;
+    const targetRoute =
+      item.link?.targetRoute ?? targetRouteForUrl(item.link?.url, routeMap);
     if (isOutOfScopeSharedRoute(targetRoute)) continue;
     const nextTrail = [...trail, item.label];
     if (item.kind === 'category' && (item.items?.length ?? 0) > 0) {
-      leaves.push(...visibleNavigationLeaves(item.items, routeMap, nextTrail));
+      leaves.push(
+        ...visibleNavigationLeaves(item.items, routeMap, nextTrail, scopeRoot),
+      );
       continue;
     }
     leaves.push({
@@ -129,18 +154,58 @@ function renderNavigationLeaf(
 
 function renderNavigationItems(
   items,
-  { rootRoute, routeMap, plainLocalLeaves = false, sidebarLabels = {} },
+  {
+    groupedCategories = false,
+    plainLocalLeaves = false,
+    rootRoute,
+    routeMap,
+    scopeRoot = null,
+    sidebarLabels = {},
+  },
 ) {
   const pages = [];
   for (const item of items ?? []) {
-    if (!item || item.excludedReason) continue;
-    const href = targetRouteForUrl(item.link?.url, routeMap);
+    if (
+      !item ||
+      item.excludedReason ||
+      isOutsideLegacyScope(item.link?.url, scopeRoot)
+    )
+      continue;
+    const href =
+      item.link?.targetRoute ?? targetRouteForUrl(item.link?.url, routeMap);
     if (isOutOfScopeSharedRoute(href)) continue;
     if (item.kind === 'category' && (item.items?.length ?? 0) > 0) {
+      if (groupedCategories) {
+        const children = renderNavigationGroupLeaves(item.items, {
+          plainLocalLeaves,
+          rootRoute,
+          routeMap,
+          scopeRoot,
+          sidebarLabels,
+        });
+        if (children.length > 0) {
+          pages.push({
+            type: 'group',
+            title: item.label,
+            pages: children,
+          });
+        } else if (href) {
+          pages.push(
+            renderNavigationLeaf(item.label, href, {
+              plainLocalLeaves,
+              rootRoute,
+              sidebarLabels,
+            }),
+          );
+        }
+        continue;
+      }
       const children = renderNavigationItems(item.items, {
+        groupedCategories,
         rootRoute,
         routeMap,
         plainLocalLeaves,
+        scopeRoot,
         sidebarLabels,
       });
       if (children.length > 0) {
@@ -161,6 +226,46 @@ function renderNavigationItems(
         renderNavigationLeaf(item.label, href, {
           plainLocalLeaves,
           rootRoute,
+          sidebarLabels,
+        }),
+      );
+    }
+  }
+  return pages;
+}
+
+function renderNavigationGroupLeaves(
+  items,
+  { plainLocalLeaves, rootRoute, routeMap, scopeRoot, sidebarLabels },
+) {
+  const pages = [];
+  for (const item of items ?? []) {
+    if (
+      !item ||
+      item.excludedReason ||
+      isOutsideLegacyScope(item.link?.url, scopeRoot)
+    )
+      continue;
+    const href =
+      item.link?.targetRoute ?? targetRouteForUrl(item.link?.url, routeMap);
+    if (isOutOfScopeSharedRoute(href)) continue;
+    if (href) {
+      pages.push(
+        renderNavigationLeaf(item.label, href, {
+          plainLocalLeaves,
+          rootRoute,
+          sidebarLabels,
+        }),
+      );
+      continue;
+    }
+    if (item.kind === 'category' && (item.items?.length ?? 0) > 0) {
+      pages.push(
+        ...renderNavigationGroupLeaves(item.items, {
+          plainLocalLeaves,
+          rootRoute,
+          routeMap,
+          scopeRoot,
           sidebarLabels,
         }),
       );
@@ -366,11 +471,17 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
     }
     for (const root of roots) {
       const sidebarLabels = {};
-      const pages = renderNavigationItems(entry.pageGraph.navigation, {
-        ...root,
-        routeMap,
-        sidebarLabels,
-      });
+      const sourceNavigation = entry.pageGraph.sourceNavigation;
+      const pages = renderNavigationItems(
+        sourceNavigation ?? entry.pageGraph.navigation,
+        {
+          ...root,
+          groupedCategories: Boolean(sourceNavigation),
+          routeMap,
+          scopeRoot: entry.pageGraph.closure?.scopeRoot,
+          sidebarLabels,
+        },
+      );
       createMetaAccumulator(metaByPath, {
         ...root,
         title: `${entry.product} ${entry.label}`,
@@ -577,15 +688,20 @@ function navigationParityReport({
   const rootActions = rootPages
     .filter((page) => page && typeof page === 'object' && page.type === 'group')
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
-  const visibleLeaves = internalEntries.flatMap((entry) =>
-    visibleNavigationLeaves(entry.pageGraph?.navigation, routeMap).map(
-      (leaf) => ({
-        ...leaf,
-        product: entry.product,
-        entryLabel: entry.label,
-      }),
-    ),
-  );
+  const visibleLeaves = internalEntries.flatMap((entry) => {
+    const navigation =
+      entry.pageGraph?.sourceNavigation ?? entry.pageGraph?.navigation;
+    return visibleNavigationLeaves(
+      navigation,
+      routeMap,
+      [],
+      entry.pageGraph?.closure?.scopeRoot,
+    ).map((leaf) => ({
+      ...leaf,
+      product: entry.product,
+      entryLabel: entry.label,
+    }));
+  });
   const missingNavigationTargets = visibleLeaves.filter(
     (leaf) => !leaf.targetRoute,
   );
@@ -790,7 +906,10 @@ export async function runApiCenterNavigation({
   });
   if (parity.counts.errors > 0) {
     throw new Error(
-      `API Center navigation parity found ${parity.counts.errors} errors.`,
+      `API Center navigation parity found ${parity.counts.errors} errors: ${parity.issues
+        .filter((issue) => issue.severity === 'error')
+        .map((issue) => `${issue.code}: ${issue.message}`)
+        .join('; ')}`,
     );
   }
   for (const plan of [...metaByPath.values()].sort((left, right) =>

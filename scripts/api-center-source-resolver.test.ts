@@ -7,6 +7,7 @@ import {
   buildPathMapIndex,
   oxygenTocTargetIndex,
   parseCsv,
+  parseOxygenNavigationHtml,
   resolveLegacyPage,
 } from './lib/api-center/source-resolver.mjs';
 
@@ -111,6 +112,52 @@ describe('API Center source resolver', () => {
       parseCsv('source_path,target_path,notes\r\na.mdx,b.mdx,"one, two"\r\n'),
     ).toEqual([
       { source_path: 'a.mdx', target_path: 'b.mdx', notes: 'one, two' },
+    ]);
+  });
+
+  it('freezes the complete Oxygen navigation hierarchy from the source HTML', () => {
+    const navigation = parseOxygenNavigationHtml({
+      legacyUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/rtc_api_overview',
+      html: `
+        <nav class="toc">
+          <ul><li><span>Android API Reference</span><ul>
+            <li><a href="../API/rtc_api_overview.html">API 概览</a></li>
+            <li><a href="../API/toc_audio.html">音频功能</a><ul>
+              <li><a href="../API/toc_audio_basic.html">音频基础功能</a></li>
+              <li><a href="../API/toc_audio_capture.html">音频采集</a></li>
+            </ul></li>
+          </ul></li></ul>
+        </nav>
+      `,
+    });
+
+    expect(navigation).toEqual([
+      {
+        excludedReason: null,
+        kind: 'link',
+        label: 'API 概览',
+        link: expect.objectContaining({
+          path: '/api-ref/rtc/android/API/rtc_api_overview',
+        }),
+      },
+      {
+        items: [
+          expect.objectContaining({
+            kind: 'link',
+            label: '音频基础功能',
+            link: expect.objectContaining({
+              path: '/api-ref/rtc/android/API/toc_audio_basic',
+            }),
+          }),
+          expect.objectContaining({ kind: 'link', label: '音频采集' }),
+        ],
+        kind: 'category',
+        label: '音频功能',
+        link: expect.objectContaining({
+          path: '/api-ref/rtc/android/API/toc_audio',
+        }),
+      },
     ]);
   });
 

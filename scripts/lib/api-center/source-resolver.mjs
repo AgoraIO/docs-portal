@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
-import path from 'node:path';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import * as cheerio from 'cheerio';
 import yaml from 'js-yaml';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
@@ -25,7 +25,7 @@ const TARGET_PRODUCT_ROOTS = {
   console: 'console',
   'conversion-ppt': 'ppt-conversion-service',
   convoai: 'conversational-ai',
-  'fastboard': 'whiteboard/fastboard',
+  fastboard: 'whiteboard/fastboard',
   'fusion-cdn': 'fusion-cdn',
   'media-pull': 'media-pull',
   'media-push': 'media-push',
@@ -148,6 +148,92 @@ function parseOxygenTocList($, list) {
     .filter(Boolean);
 }
 
+function normalizeSourceNavigationLink(href, legacyUrl) {
+  if (!href) return null;
+  const url = new URL(href, legacyUrl);
+  url.pathname = url.pathname.replace(/\.html$/i, '');
+  return {
+    url: url.href,
+    origin: url.origin,
+    path: url.pathname,
+    search: url.search,
+    fragment: url.hash
+      ? decodeSourceNavigationFragment(url.hash.slice(1))
+      : null,
+  };
+}
+
+function decodeSourceNavigationFragment(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function parseOxygenNavigationList($, list, legacyUrl) {
+  return list
+    .children('li')
+    .toArray()
+    .map((node) => {
+      const item = $(node);
+      const anchor = item.children('a').first();
+      const labelNode =
+        anchor.length > 0 ? anchor : item.children('span').first();
+      const label = labelNode.text().replace(/\s+/g, ' ').trim();
+      const link = normalizeSourceNavigationLink(
+        anchor.attr('href'),
+        legacyUrl,
+      );
+      const children = parseOxygenNavigationList(
+        $,
+        item.children('ul').first(),
+        legacyUrl,
+      );
+      if (!label || (!link && children.length === 0)) return null;
+      return children.length > 0
+        ? { kind: 'category', label, link, items: children }
+        : { kind: 'link', label, link, excludedReason: null };
+    })
+    .filter(Boolean);
+}
+
+export function parseOxygenNavigationHtml({ html, legacyUrl }) {
+  const $ = cheerio.load(html);
+  const root = $('nav.toc > ul > li > ul').first().length
+    ? $('nav.toc > ul > li > ul').first()
+    : $('nav > ul > li > ul').first();
+  return root.length > 0 ? parseOxygenNavigationList($, root, legacyUrl) : [];
+}
+
+async function resolveSourceNavigationTargets(items, context) {
+  const resolved = [];
+  for (const item of items) {
+    let link = item.link;
+    if (link?.url) {
+      const resolution = await resolveLegacyPage({
+        page: { requestedUrl: link.url, status: 'resolved' },
+        ...context,
+      });
+      link = {
+        ...link,
+        targetPath: resolution.targetPath ?? null,
+        targetRoute: resolution.targetRoute ?? null,
+      };
+    }
+    resolved.push({
+      ...item,
+      link,
+      ...(item.items
+        ? {
+            items: await resolveSourceNavigationTargets(item.items, context),
+          }
+        : {}),
+    });
+  }
+  return resolved;
+}
+
 function assignOxygenTocRoutes(nodes, parentSegments, targetIndex) {
   for (const node of nodes) {
     const slug = tocSlug(node.sourceRelativePath);
@@ -155,9 +241,16 @@ function assignOxygenTocRoutes(nodes, parentSegments, targetIndex) {
     const routeSegments = isFolder
       ? [...parentSegments, slug, 'index']
       : [...parentSegments, slug];
-    targetIndex.set(node.sourceRelativePath.toLowerCase(), routeSegments.join('/'));
+    targetIndex.set(
+      node.sourceRelativePath.toLowerCase(),
+      routeSegments.join('/'),
+    );
     if (isFolder) {
-      assignOxygenTocRoutes(node.children, [...parentSegments, slug], targetIndex);
+      assignOxygenTocRoutes(
+        node.children,
+        [...parentSegments, slug],
+        targetIndex,
+      );
     }
   }
 }
@@ -206,11 +299,16 @@ export async function buildLegacySourceIndex(oldRoot) {
     const familyRoot = path.join(oldRoot, folder);
     const products = activeProductMetadata(familyRoot);
     for (const [product, productMeta] of products) {
-      const productFolder = path.resolve(familyRoot, productMeta.source ?? product);
+      const productFolder = path.resolve(
+        familyRoot,
+        productMeta.source ?? product,
+      );
       const platformMetaPath = path.join(productFolder, '_platforms_.meta.js');
       if (!(await fileExists(platformMetaPath))) continue;
       const productPlatforms = require(platformMetaPath);
-      const platformValues = new Set(productPlatforms.map((item) => item.value));
+      const platformValues = new Set(
+        productPlatforms.map((item) => item.value),
+      );
       for (const platformMeta of productPlatforms) {
         const key = `${family}/${product}/${platformMeta.value}`.toLowerCase();
         const sourceRoot = platformMeta.source
@@ -221,12 +319,7 @@ export async function buildLegacySourceIndex(oldRoot) {
                 productMeta.source ?? product,
                 platformMeta.source,
               )
-            : path.resolve(
-                oldRoot,
-                'html-docs',
-                product,
-                platformMeta.source,
-              )
+            : path.resolve(oldRoot, 'html-docs', product, platformMeta.source)
           : null;
         platforms.set(key, {
           family,
@@ -258,7 +351,10 @@ export async function buildLegacySourceIndex(oldRoot) {
               ),
             );
             if (platformMeta.docType === 'oxygen') {
-              generatedTocTargets.set(key, await oxygenTocTargetIndex(sourceRoot));
+              generatedTocTargets.set(
+                key,
+                await oxygenTocTargetIndex(sourceRoot),
+              );
             }
           }
         }
@@ -357,7 +453,9 @@ export function parseCsv(text) {
   return values
     .filter((value) => value.some(Boolean))
     .map((value) =>
-      Object.fromEntries(headers.map((header, index) => [header, value[index] ?? ''])),
+      Object.fromEntries(
+        headers.map((header, index) => [header, value[index] ?? '']),
+      ),
     );
 }
 
@@ -457,8 +555,13 @@ async function resolveOpenApi(route, metadata, sourceIndex, lanes, newRoot) {
   }
   const operationId = route.segments[operationMarker + 1];
   const yamlStem = route.segments[operationMarker - 1]?.toLowerCase();
-  const yamlCandidates = (sourceIndex.yamlFiles.get(route.scopeKey) ?? []).filter(
-    (file) => path.basename(file.relative, path.extname(file.relative)).toLowerCase() === yamlStem,
+  const yamlCandidates = (
+    sourceIndex.yamlFiles.get(route.scopeKey) ?? []
+  ).filter(
+    (file) =>
+      path
+        .basename(file.relative, path.extname(file.relative))
+        .toLowerCase() === yamlStem,
   );
   if (yamlCandidates.length !== 1) {
     return {
@@ -540,7 +643,9 @@ function generatedHtmlCandidate(route, metadata, sourceIndex) {
   if (['overview', 'api-overview'].includes(route.relative.toLowerCase())) {
     candidates.push('index.html');
   }
-  const file = candidates.map((candidate) => files.get(candidate)).find(Boolean);
+  const file = candidates
+    .map((candidate) => files.get(candidate))
+    .find(Boolean);
   return file
     ? {
         status: 'resolved',
@@ -590,8 +695,11 @@ function generatedTarget(route, resolution, sourceIndex) {
   const folder = `${productRoot}/${platform}${current}`.replace(/\/+/, '/');
   const targetPath = `content/docs/zh-CN/api-reference/${folder}/${normalized}.mdx`;
   const publicRelative = normalized.replace(/\/index$/, '');
-  const targetRoute = `/zh-CN/api-reference/${productRoot}/${platform}/${publicRelative}`
-    .replace(/\/+/g, '/');
+  const targetRoute =
+    `/zh-CN/api-reference/${productRoot}/${platform}/${publicRelative}`.replace(
+      /\/+/g,
+      '/',
+    );
   return { targetPath, targetRoute };
 }
 
@@ -602,7 +710,8 @@ function inferredManualTarget(route, sourcePath) {
     platform = `restclient-${route.platform}`;
   }
   if (route.product === 'fastboard') platform = '';
-  if (route.family === 'doc' && route.product === 'convoai') platform = 'rest-api';
+  if (route.family === 'doc' && route.product === 'convoai')
+    platform = 'rest-api';
   const normalized = route.relative
     .split('/')
     .map(kebabSegment)
@@ -643,13 +752,17 @@ async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
   const inferred = inferredManualTarget(route, sourcePath);
   const existingTarget = async (target) => {
     if (!target?.targetPath) return null;
-    if (await fileExists(path.resolve(newRoot, target.targetPath))) return target;
+    if (await fileExists(path.resolve(newRoot, target.targetPath)))
+      return target;
     const alternatePath = target.targetPath.endsWith('.md')
       ? `${target.targetPath}x`
       : target.targetPath.endsWith('.mdx')
         ? target.targetPath.slice(0, -1)
         : null;
-    if (!alternatePath || !(await fileExists(path.resolve(newRoot, alternatePath)))) {
+    if (
+      !alternatePath ||
+      !(await fileExists(path.resolve(newRoot, alternatePath)))
+    ) {
       return null;
     }
     return {
@@ -669,9 +782,7 @@ async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
         : existingInferred.targetDecision,
     };
   }
-  if (
-    mapped?.targetPath?.startsWith('content/docs/zh-CN/api-reference/')
-  ) {
+  if (mapped?.targetPath?.startsWith('content/docs/zh-CN/api-reference/')) {
     return mapped;
   }
   return {
@@ -719,7 +830,8 @@ export async function resolveLegacyPage({
     return {
       status: 'excluded',
       type: 'broken-live-link',
-      reason: 'The live source link is broken and has no visible body to migrate.',
+      reason:
+        'The live source link is broken and has no visible body to migrate.',
       sourcePath: null,
       targetPath: null,
       targetRoute: null,
@@ -807,12 +919,7 @@ export async function resolveLegacyPage({
   const target =
     resolveExistingApiCenterTarget(page.requestedUrl) ??
     (resolution.type === 'manual-mdx'
-      ? await selectManualTarget(
-          route,
-          resolution.sourcePath,
-          pathMap,
-          newRoot,
-        )
+      ? await selectManualTarget(route, resolution.sourcePath, pathMap, newRoot)
       : generatedTarget(route, resolution, sourceIndex));
   const targetPath = target.targetPath;
   const targetExists = targetPath
@@ -834,7 +941,10 @@ export async function resolveLegacyPage({
 function summarizeResolutions(pages) {
   const logical = pages.filter((page) => !page.aliasOf);
   const classified = logical.filter(
-    (page) => !['excluded', 'unresolved', 'ambiguous'].includes(page.sourceResolution.status),
+    (page) =>
+      !['excluded', 'unresolved', 'ambiguous'].includes(
+        page.sourceResolution.status,
+      ),
   );
   const byType = {};
   const byGenerator = {};
@@ -890,38 +1000,72 @@ export async function resolveManifestSources(
   }
   manifest.pageEvidence = pages;
   manifest.sourceResolutionSummary = summarizeResolutions(pages);
-  manifest.entries = manifest.entries.map((entry) => {
-    if (entry.scope !== 'current') return entry;
+  const entries = [];
+  for (const entry of manifest.entries) {
+    if (entry.scope !== 'current') {
+      entries.push(entry);
+      continue;
+    }
     const route = parseLegacyRoute(entry.legacyUrl);
     const scopePages = pages.filter(
       (page) =>
-        !page.aliasOf && page.sourceResolution.route?.scopeKey === route?.scopeKey,
+        !page.aliasOf &&
+        page.sourceResolution.route?.scopeKey === route?.scopeKey,
     );
-    const types = [...new Set(scopePages.map((page) => page.sourceResolution.type))];
+    const types = [
+      ...new Set(scopePages.map((page) => page.sourceResolution.type)),
+    ];
     const entryPage = pages.find(
       (page) => normalizeLegacyPath(page.requestedUrl) === route?.pathname,
     );
-    return {
+    let pageGraph = entry.pageGraph;
+    if (
+      route?.product === 'rtc' &&
+      entryPage?.sourceResolution.generator === 'oxygen' &&
+      entryPage.sourceResolution.sourceAbsolutePath
+    ) {
+      const sourceNavigation = await resolveSourceNavigationTargets(
+        parseOxygenNavigationHtml({
+          html: await fs.readFile(
+            entryPage.sourceResolution.sourceAbsolutePath,
+            'utf8',
+          ),
+          legacyUrl: entry.legacyUrl,
+        }),
+        { sourceIndex, pathMap, lanes, newRoot },
+      );
+      if (sourceNavigation.length > 0) {
+        pageGraph = {
+          ...pageGraph,
+          sourceNavigation,
+          sourceNavigationSource: entryPage.sourceResolution.sourcePath,
+        };
+      }
+    }
+    entries.push({
       ...entry,
+      pageGraph,
       sourceType:
         types.filter((type) => type !== 'broken-live-link').length > 1
           ? 'mixed'
-          : types.find((type) => type !== 'broken-live-link') ?? 'unresolved',
+          : (types.find((type) => type !== 'broken-live-link') ?? 'unresolved'),
       sourceResolution: {
-        status:
-          scopePages.some((page) => page.sourceResolution.status === 'ambiguous')
-            ? 'ambiguous'
-            : scopePages.some(
-                  (page) => page.sourceResolution.status === 'unresolved',
-                )
-              ? 'unresolved'
-              : 'resolved',
+        status: scopePages.some(
+          (page) => page.sourceResolution.status === 'ambiguous',
+        )
+          ? 'ambiguous'
+          : scopePages.some(
+                (page) => page.sourceResolution.status === 'unresolved',
+              )
+            ? 'unresolved'
+            : 'resolved',
         pageCount: scopePages.length,
         sourceTypes: types,
       },
       targetPath: entryPage?.sourceResolution.targetPath ?? null,
       targetRoute: entryPage?.sourceResolution.targetRoute ?? null,
-    };
-  });
+    });
+  }
+  manifest.entries = entries;
   return manifest;
 }
