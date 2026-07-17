@@ -618,7 +618,8 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
   'realtime-media/rtm/reference/topic-events':
     '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
-  'realtime-media/rtm/security': '/zh-CN/introduction/security/rtm-sdk',
+  'realtime-media/rtm/security':
+    '/zh-CN/introduction/security/sdk-compliance/rtm-sdk',
   'realtime-media/rtm/sunset-policy':
     '/zh-CN/realtime-media/rtm/reference/sunset-policy',
   'realtime-media/rtm/user-guide/channel/channel-basic':
