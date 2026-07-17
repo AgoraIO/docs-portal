@@ -62,7 +62,7 @@ To implement raw video data functionality in your project, refer to the followin
 private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver() {
   @Override
   public boolean onCaptureVideoFrame(VideoFrame videoFrame) {
-    Log.i(TAG, "OnEncodedVideoImageReceived" + \Thread.currentThread().getName());
+    Log.i(TAG, "OnEncodedVideoImageReceived" + Thread.currentThread().getName());
     if (isSnapshot) {
       isSnapshot = false;
 
@@ -138,7 +138,7 @@ private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver(
 ```kotlin
 private val iVideoFrameObserver = object : IVideoFrameObserver {
   override fun onCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
-    Log.i(TAG, "OnEncodedVideoImageReceived\${\Thread.currentThread().name\}")
+    Log.i(TAG, "OnEncodedVideoImageReceived${Thread.currentThread().name}")
     if (isSnapshot) {
       isSnapshot = false
 
@@ -633,6 +633,141 @@ Agora provides an open source sample project [ProcessRawData](https://github.com
 - [`RegisterVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_imediaengine_registervideoencodedframeobserver)
 - [`OnCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
 - [`OnRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+Video SDK allows you to process video frames using the [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas#manipulating_the_video_frame_data). Use the API to modify video frames before publishing to the channel.
+
+This guide explains how to extract video frames from the local video track, modify them, and publish the processed frames to the channel.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](https://assets-docs.agora.io/images/video-sdk/process-raw-video-web.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Extract video frames:
+
+   1. Create a local video track to capture the raw video stream from the camera.
+   1. Assign the local video stream to a hidden `<video>` element to enable frame extraction.
+   1. Call `processFrame` on `onplay` to modify frames before rendering or publishing.
+   1. Create a `canvas` to process the extracted video frames.
+   1. Obtain a 2D drawing context from the `canvas` to manipulate pixel data.
+
+      ```js
+      // Declare global variables for video processing
+      let cameraTrack, canvas, ctx;
+      let isProcessing = false;
+
+      async function extractVideoFrames() {
+        // Create a video track from the camera
+        cameraTrack = await AgoraRTC.createCameraVideoTrack();
+
+        // Create a hidden video element to play the camera feed
+        const videoElement = document.createElement('video');
+        videoElement.srcObject = new MediaStream([cameraTrack.getMediaStreamTrack()]);
+        videoElement.autoplay = true;
+        videoElement.playsInline = true;
+        videoElement.style.display = 'none';
+        document.body.appendChild(videoElement);
+
+        isProcessing = true;
+
+        videoElement.onloadedmetadata = () => {
+          canvas.width = videoElement.videoWidth;
+          canvas.height = videoElement.videoHeight;
+        };
+
+        videoElement.onplay = () => processFrame(videoElement);
+
+        // Create a canvas element to manipulate video frames
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d', { willReadFrequently: true });
+        document.body.appendChild(canvas);
+      }
+      ```
+
+1. Process video frames:
+
+   To modify video frames in real time, follow these steps:
+
+   1. Draw the video frame onto the `canvas` to capture pixel data.
+   1. Retrieve the pixel data from the `canvas` and modify it as needed.
+   1. Apply the modified pixel data back to the `canvas`.
+   1. Call `requestAnimationFrame` to continuously process frames in a loop.
+
+      ```js
+      function processFrame(videoElement) {
+        // Exit if processing is stopped or required elements are missing
+        if (!isProcessing || !canvas || !ctx) return;
+
+        // Ensure the video has loaded and has valid dimensions
+        if (!videoElement.videoWidth || !videoElement.videoHeight) return;
+
+        // Update canvas size to match video dimensions if necessary
+        if (canvas.width !== videoElement.videoWidth || canvas.height !== videoElement.videoHeight) {
+          canvas.width = videoElement.videoWidth;
+          canvas.height = videoElement.videoHeight;
+        }
+
+        // Draw the current video frame onto the canvas
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+        // Get pixel data from the canvas
+        const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // Iterate through each pixel and remove the green channel
+        for (let i = 0; i < frame.data.length; i += 4) {
+          frame.data[i + 1] = 0;
+        }
+
+        // Apply the modified pixel data back to the canvas
+        ctx.putImageData(frame, 0, 0);
+
+        // Request the next frame to continue processing in a loop
+        requestAnimationFrame(() => processFrame(videoElement));
+      }
+      ```
+
+1. Publish processed frames:
+
+   To publish the processed frame to the channel:
+
+   1. Create a custom video track from the modified frames using `createCustomVideoTrack`.
+   1. Publish the custom track.
+
+      ```js
+      async function extractVideoFrames() {
+        // Create a custom video track from the canvas stream
+        const processedTrack = await AgoraRTC.createCustomVideoTrack({
+          // Capture video frames from the canvas at 30 FPS and extract the video track
+          mediaStreamTrack: canvas.captureStream(30).getVideoTracks()[0],
+        });
+
+        // Publish the processed video track to the RTC channel
+        await rtc.client.publish([processedTrack]);
+      }
+      ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`createCameraVideoTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
+- [`createCustomVideoTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack)
+- [`publish`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#publish)
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">

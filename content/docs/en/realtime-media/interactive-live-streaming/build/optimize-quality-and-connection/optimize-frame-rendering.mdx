@@ -160,13 +160,13 @@ If your app knows the remote user ID (For example, from Signaling), set the view
 
 ```kotlin
 fun onShowChannels(channelId: String, remoteUid: Int) {
-        val canvas = VideoCanvas(null, VideoCanvas.RENDER_MODE_FIT, remoteUid)
-        mRtcEngine?.setupRemoteVideo(canvas)
-    }
+    val canvas = VideoCanvas(null, VideoCanvas.RENDER_MODE_FIT, remoteUid)
+    mRtcEngine?.setupRemoteVideo(canvas)
+}
 
-    fun onEIDUserJoined(uid: Int, elapsed: Int) {
-        // Already set - no additional setup needed
-    }
+fun onEIDUserJoined(uid: Int, elapsed: Int) {
+    // Already set - no additional setup needed
+}
 ```
 
 
@@ -175,19 +175,19 @@ fun onShowChannels(channelId: String, remoteUid: Int) {
 
 ```kotlin
 // Event handler class
-    private val mRtcEventHandler = object : IRtcEngineEventHandler() {
-        override fun onUserJoined(uid: Int, elapsed: Int) {
-            // Forward to UI logic
-            runOnUiThread {
-                onEIDUserJoined(uid, elapsed)
-            }
+private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+    override fun onUserJoined(uid: Int, elapsed: Int) {
+        // Forward to UI logic
+        runOnUiThread {
+            onEIDUserJoined(uid, elapsed)
         }
     }
+}
 
-    fun onEIDUserJoined(uid: Int, elapsed: Int) {
-        val canvas = VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid)
-        mRtcEngine?.setupRemoteVideo(canvas)
-    }
+fun onEIDUserJoined(uid: Int, elapsed: Int) {
+    val canvas = VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid)
+    mRtcEngine?.setupRemoteVideo(canvas)
+}
 ```
 
 
@@ -485,16 +485,16 @@ If your app knows the remote user ID (For example, from Signaling), set the view
 
 ```swift
 func onShowChannels(channelId: String, remoteUid: UInt) {
-        let canvas = AgoraRtcVideoCanvas()
-        canvas.uid = remoteUid
-        canvas.renderMode = .fit
-        canvas.view = nil
-        agoraKit?.setupRemoteVideo(canvas)
-    }
+    let canvas = AgoraRtcVideoCanvas()
+    canvas.uid = remoteUid
+    canvas.renderMode = .fit
+    canvas.view = nil
+    agoraKit?.setupRemoteVideo(canvas)
+}
 
-    func onEIDUserJoined(uid: UInt, elapsed: Int) {
-        // Already set - no additional setup needed
-    }
+func onEIDUserJoined(uid: UInt, elapsed: Int) {
+    // Already set - no additional setup needed
+}
 ```
 
 
@@ -503,22 +503,22 @@ func onShowChannels(channelId: String, remoteUid: UInt) {
 
 ```swift
 // Event handler class
-    extension AgoraQuickStartViewController: AgoraRtcEngineDelegate {
-        func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-            // Forward to UI logic
-            DispatchQueue.main.async {
-                self.onEIDUserJoined(uid: uid, elapsed: elapsed)
-            }
+extension AgoraQuickStartViewController: AgoraRtcEngineDelegate {
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        // Forward to UI logic
+        DispatchQueue.main.async {
+            self.onEIDUserJoined(uid: uid, elapsed: elapsed)
         }
     }
+}
 
-    func onEIDUserJoined(uid: UInt, elapsed: Int) {
-        let canvas = AgoraRtcVideoCanvas()
-        canvas.uid = uid
-        canvas.renderMode = .fit
-        canvas.view = surfaceView
-        agoraKit?.setupRemoteVideo(canvas)
-    }
+func onEIDUserJoined(uid: UInt, elapsed: Int) {
+    let canvas = AgoraRtcVideoCanvas()
+    canvas.uid = uid
+    canvas.renderMode = .fit
+    canvas.view = surfaceView
+    agoraKit?.setupRemoteVideo(canvas)
+}
 ```
 
 
@@ -764,7 +764,7 @@ class AgoraQuickStartViewController: UIViewController {
 
 ### Enable accelerated rendering
 
-Call [`enableInstantMediaRendering`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableinstantmediarendering()>) to reduce the time it takes to render the first video frame and play audio after joining a channel.
+Call [`enableInstantMediaRendering`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enableinstantmediarendering()>) to reduce the time it takes to render the first video frame and play audio after joining a channel.
 
 - Call this method **before** joining a channel. Ideally, call it right after engine initialization.
 - Both host and audience must call this method to benefit from faster rendering.
@@ -779,7 +779,7 @@ agoraKit?.enableInstantMediaRendering()
 
 ### Set a video scenario
 
-Use [`setVideoScenario`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setvideoscenario(_:)>) to optimize performance for your specific use case. The SDK applies strategies tailored to the selected scenario.
+Use [`setVideoScenario`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setvideoscenario(_:)>) to optimize performance for your specific use case. The SDK applies strategies tailored to the selected scenario.
 
 For example, for a one-on-one call, use `APPLICATION_SCENARIO_1V1`.
 
@@ -792,7 +792,7 @@ agoraKit?.setVideoScenario(.application1V1Scenario)
 
 ### Preload a channel
 
-Joining a channel involves acquiring server resources and establishing a connection. Call [`preloadChannel`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/preloadchannel(bytoken:channelid:uid:)>) to handle resource acquisition early and reduce join time.
+Joining a channel involves acquiring server resources and establishing a connection. Call [`preloadChannel`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/preloadchannel(bytoken:channelid:uid:)>) to handle resource acquisition early and reduce join time.
 
 - The `token`, `channelId`, and `uid` must match the values used in `joinChannel`.
 - Call `preloadChannel` as soon as you retrieve the required info.
@@ -824,16 +824,16 @@ If your app knows the remote user ID (For example, from Signaling), set the view
 
 ```swift
 func onShowChannels(channelId: String, remoteUid: UInt) {
-        let canvas = AgoraRtcVideoCanvas()
-        canvas.uid = remoteUid
-        canvas.renderMode = .fit
-        canvas.view = nil
-        agoraKit?.setupRemoteVideo(canvas)
-    }
+    let canvas = AgoraRtcVideoCanvas()
+    canvas.uid = remoteUid
+    canvas.renderMode = .fit
+    canvas.view = nil
+    agoraKit?.setupRemoteVideo(canvas)
+}
 
-    func onEIDUserJoined(uid: UInt, elapsed: Int) {
-        // Already set - no additional setup needed
-    }
+func onEIDUserJoined(uid: UInt, elapsed: Int) {
+    // Already set - no additional setup needed
+}
 ```
 
 
@@ -842,28 +842,28 @@ func onShowChannels(channelId: String, remoteUid: UInt) {
 
 ```swift
 // Event handler class
-    extension AgoraQuickStartViewController: AgoraRtcEngineDelegate {
-        func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-            // Forward to UI logic
-            DispatchQueue.main.async {
-                self.onEIDUserJoined(uid: uid, elapsed: elapsed)
-            }
+extension AgoraQuickStartViewController: AgoraRtcEngineDelegate {
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        // Forward to UI logic
+        DispatchQueue.main.async {
+            self.onEIDUserJoined(uid: uid, elapsed: elapsed)
         }
     }
+}
 
-    func onEIDUserJoined(uid: UInt, elapsed: Int) {
-        let canvas = AgoraRtcVideoCanvas()
-        canvas.uid = uid
-        canvas.renderMode = .fit
-        canvas.view = surfaceView
-        agoraKit?.setupRemoteVideo(canvas)
-    }
+func onEIDUserJoined(uid: UInt, elapsed: Int) {
+    let canvas = AgoraRtcVideoCanvas()
+    canvas.uid = uid
+    canvas.renderMode = .fit
+    canvas.view = surfaceView
+    agoraKit?.setupRemoteVideo(canvas)
+}
 ```
 
 
 ### Monitor rendering performance
 
-Use [`startMediaRenderingTracing`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracing()>) to monitor first-frame rendering metrics. Results are reported via [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>).
+Use [`startMediaRenderingTracing`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracing()>) to monitor first-frame rendering metrics. Results are reported via [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>).
 
 :::info
 
@@ -882,7 +882,7 @@ private func onJoinClicked() {
 
 ### Join a channel
 
-Call [`joinChannel`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:)>) to enter the channel. To speed up first-frame playback, avoid delays like fetching a token in this method.
+Call [`joinChannel`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:)>) to enter the channel. To speed up first-frame playback, avoid delays like fetching a token in this method.
 
 If you can’t retrieve a token early, consider using a [wildcard token](/en/realtime-media/interactive-live-streaming/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
@@ -937,9 +937,9 @@ The following figure illustrates the essential steps:
 
 ### Set up the rendering view
 
-If you know the host’s user ID before joining the channel, call [`setupRemoteVideoEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:)>) as early as possible to set up the rendering view. This ensures the rendering pipeline is initialized in advance, helping avoid delays in displaying the first decoded frame.
+If you know the host’s user ID before joining the channel, call [`setupRemoteVideoEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:)>) as early as possible to set up the rendering view. This ensures the rendering pipeline is initialized in advance, helping avoid delays in displaying the first decoded frame.
 
-If the host’s user ID is not available beforehand, wait for the `onUserJoined` callback, then call [`setupRemoteVideoEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:)>).
+If the host’s user ID is not available beforehand, wait for the `onUserJoined` callback, then call [`setupRemoteVideoEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:)>).
 
 
 ```swift
@@ -960,8 +960,8 @@ agoraKit?.setupRemoteVideoEx(canvas, connection: connection)
 
 Joining a channel typically takes the most time before the first video frame appears. For use cases like fast channel switching, delay subscribing to media streams to speed up rendering:
 
-1. Call [`joinChannelEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannelex(bytoken:connection:delegate:mediaoptions:joinsuccess:)>) to join the channel.
-2. In [`AgoraRtcChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcchannelmediaoptions), set `autoSubscribeAudio` and `autoSubscribeVideo` to `false`.
+1. Call [`joinChannelEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannelex(bytoken:connection:delegate:mediaoptions:joinsuccess:)>) to join the channel.
+2. In [`AgoraRtcChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcchannelmediaoptions), set `autoSubscribeAudio` and `autoSubscribeVideo` to `false`.
 3. Subscribe manually when the user is ready to view content.
 
 
@@ -986,9 +986,9 @@ Joining a channel typically takes the most time before the first video frame app
 
 When the user chooses to view content:
 
-1. Resume media subscription using [`muteRemoteVideoStreamEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/muteremotevideostreamex(_:mute:connection:)>) and [`muteRemoteAudioStreamEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/muteremoteaudiostreamex(_:mute:connection:)>).
-2. Call [`startMediaRenderingTracingEx`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracingex(_:)>) to log rendering metrics.
-3. The SDK reports results in the [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>) callback, which you can use for performance analysis.
+1. Resume media subscription using [`muteRemoteVideoStreamEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/muteremotevideostreamex(_:mute:connection:)>) and [`muteRemoteAudioStreamEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/muteremoteaudiostreamex(_:mute:connection:)>).
+2. Call [`startMediaRenderingTracingEx`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracingex(_:)>) to log rendering metrics.
+3. The SDK reports results in the [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>) callback, which you can use for performance analysis.
 
 
    ```swift
@@ -1158,14 +1158,14 @@ If your app knows the remote user ID (For example, from Signaling), set the view
 
 ```cpp
 void CAgoraQuickStartDlg::onShowChannels(const char* channelId, uid_t remoteUid) {
-        VideoCanvas canvas;
-        canvas.uid = remoteUid;
-        m_rtcEngine->setupRemoteVideo(canvas);
-    }
+    VideoCanvas canvas;
+    canvas.uid = remoteUid;
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
 
-    void CAgoraQuickStartDlg::onEIDUserJoined(uid_t uid, int elapsed) {
-        // Already set
-    }
+void CAgoraQuickStartDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    // Already set
+}
 ```
 
 
@@ -1174,14 +1174,14 @@ void CAgoraQuickStartDlg::onShowChannels(const char* channelId, uid_t remoteUid)
 
 ```cpp
 void EventHandler::onUserJoined(uid_t uid, int elapsed) {
-        // Forward to UI logic
-    }
+    // Forward to UI logic
+}
 
-    void CAgoraQuickStartDlg::onEIDUserJoined(uid_t uid, int elapsed) {
-        VideoCanvas canvas;
-        canvas.uid = uid;
-        m_rtcEngine->setupRemoteVideo(canvas);
-    }
+void CAgoraQuickStartDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    VideoCanvas canvas;
+    canvas.uid = uid;
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
 ```
 
 
