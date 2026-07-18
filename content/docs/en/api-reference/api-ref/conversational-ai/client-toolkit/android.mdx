@@ -137,13 +137,13 @@ Sends a manual Start of Speech (SoS) signal to the agent over RTM, explicitly de
 fun manualSOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
 ```
 
-:::caution
+Keep the following in mind when calling this method:
+
 - The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
 - `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
 - Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
 - The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
 - Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
-:::
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
@@ -158,13 +158,13 @@ Sends a manual End of Speech (EoS) signal to the agent over RTM, explicitly decl
 fun manualEOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
 ```
 
-:::caution
+Keep the following in mind when calling this method:
+
 - The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
 - `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
 - Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
 - The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
 - Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
-:::
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|

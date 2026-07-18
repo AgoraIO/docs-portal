@@ -53,6 +53,8 @@ The [iOS toolkit API](https://github.com/AgoraIO-Community/Conversational-AI-Dem
 | [`subscribeMessage`](#subscribemessage)  | Subscribe to channel messages.               |
 | [`unsubscribeMessage`](#unsubscribemessage)| Unsubscribe from channel messages.                   |
 | [`interrupt`](#interrupt)         | Interrupt the agent's current speech or task processing.                     |
+| [`manualSOS`](#manualsos) | Sends a manual Start of Speech (SoS) signal to the agent. |
+| [`manualEOS`](#manualeos) | Sends a manual End of Speech (EoS) signal to the agent. |
 | [`loadAudioSettings`[1/2]](#loadaudiosettings-12) | Set audio best practice parameters for optimal performance.           |
 | [`loadAudioSettings`[2/2]](#loadaudiosettings-22) | Set audio best practice parameters for specific scenarios.           |
 | [`destroy`](#destroy)           | Destroys the API instance and releases all resources.         |
@@ -148,6 +150,48 @@ If `error` has a value, it means the message sending failed. If `error` is nil, 
 | `agentUserId`   | `String` | The RTM user ID of the agent, must be globally unique. |
 | `completion`    | `(ConversationalAIAPIError?) -> Void` | The callback function when the operation is completed. You can get the result or error information of the operation through the parameters of the callback. See [`ConversationalAIAPIError`](#conversationalaiapierror). |
 
+### `manualSOS`
+
+Sends a manual Start of Speech (SoS) signal to the agent over RTM, explicitly declaring that the current user has started speaking.
+
+```objc
+@objc func manualSOS(agentUserId: String, completion: @escaping (String, ConversationalAIAPIError?) -> Void)
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
+- `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter       | Type  | Description           |
+|-----------------|-------|---------------------- |
+| `agentUserId`   | `String` | The RTM user ID of the agent. Must be globally unique. |
+| `completion`    | `@escaping (String, ConversationalAIAPIError?) -> Void` | Callback invoked when the operation completes. The first parameter is the `requestId` unique to this request; the second is error information, or `nil` on success. This callback only indicates whether the RTM publish succeeded. |
+
+### `manualEOS`
+
+Sends a manual End of Speech (EoS) signal to the agent over RTM, explicitly declaring that the current user has finished speaking.
+
+```objc
+@objc func manualEOS(agentUserId: String, completion: @escaping (String, ConversationalAIAPIError?) -> Void)
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
+- `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter       | Type  | Description           |
+|-----------------|-------|---------------------- |
+| `agentUserId`   | `String` | The RTM user ID of the agent. Must be globally unique. |
+| `completion`    | `@escaping (String, ConversationalAIAPIError?) -> Void` | Callback invoked when the operation completes. The first parameter is the `requestId` unique to this request; the second is error information, or `nil` on success. This callback only indicates whether the RTM publish succeeded. |
+
 ### `loadAudioSettings[1/2]`
 
 Set audio best practice parameters for optimal performance.
@@ -206,6 +250,9 @@ Calling this method destroys the current API instance and releases all resources
 |------------------------|----------------------------------|
 | [`onMessageError`](#onmessageerror) | A callback triggered when an error occurs during message processing. |
 | [`onMessageReceiptUpdated`](#onmessagereceiptupdated) | Image message information update callback. |
+| [`onUserManualSosEvent`](#onusermanualsosevent) | Manual SoS result callback. |
+| [`onUserManualEosEvent`](#onusermanualeosevent) | Manual EoS result callback. |
+| [`onAgentManualEosEvent`](#onagentmanualeosevent) | Server-triggered automatic EoS notification callback. |
 | [`onAgentStateChanged`](#onagentstatechanged)  | Callback when the agent status changes.          |
 | [`onAgentListeningChanged`](#onagentlisteningchanged) | Called when the agent's listening state changes. |
 | [`onAgentThinkingChanged`](#onagentthinkingchanged)   | Called when the agent's thinking state changes.  |
@@ -243,6 +290,57 @@ This callback is triggered when an image is processed in a session and provides 
 | `agentUserId`    | `String`            | RTM user ID of the agent. |
 | `messageReceipt` | `MessageReceipt`    | Message receipt containing the type, module, and image information. See [`MessageReceipt`](#messagereceipt) for more details. |
 
+
+### `onUserManualSosEvent`
+
+Manual SoS result callback.
+
+Receives the server's processing result for a manual SoS request. Both success and failure results are returned through this callback — check `event.payload.success` to determine the outcome.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```objc
+@objc optional func onUserManualSosEvent(agentUserId: String, event: UserManualSosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | The RTM user ID of the agent. |
+| `event`       | `UserManualSosEvent` | Manual SoS event object. See [`UserManualSosEvent`](#usermanualsosevent). |
+
+### `onUserManualEosEvent`
+
+Manual EoS result callback.
+
+Receives the server's processing result for a manual EoS request. Both success and failure results are returned through this callback — check `event.payload.success` to determine the outcome.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```objc
+@objc optional func onUserManualEosEvent(agentUserId: String, event: UserManualEosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | The RTM user ID of the agent. |
+| `event`       | `UserManualEosEvent` | Manual EoS event object. See [`UserManualEosEvent`](#usermanualeosevent). |
+
+### `onAgentManualEosEvent`
+
+Server-triggered automatic EoS notification callback.
+
+Triggered when a user's single speaking turn exceeds the server-side duration threshold. In this case, the server ends the current user's turn on its own and notifies the client through this callback. This event is not a result of calling `manualEOS()`.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```objc
+@objc optional func onAgentManualEosEvent(agentUserId: String, event: AgentManualEosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | The RTM user ID of the agent. |
+| `event`       | `AgentManualEosEvent` | Server-triggered automatic EoS event object. See [`AgentManualEosEvent`](#agentmanualeosevent). |
 
 ### `onAgentStateChanged`
 
@@ -454,6 +552,98 @@ Contains the error type, error code, error description, and timestamp.
 | `code`    | `Int`             | Error code to identify specific error conditions. |
 | `message` | `String`          | Error description, providing detailed error explanation, usually a JSON string containing resource information. |
 | `timestamp` | `TimeInterval` | Timestamp of the error (milliseconds since January 1, 1970, UTC). |
+
+### `UserManualEventPayload`
+
+Common payload for manual SoS/EoS events.
+
+```objc
+@objc public class UserManualEventPayload: NSObject {
+    @objc public let success: Bool
+    @objc public let requestId: String
+    @objc public let turnId: Int
+    @objc public let errorMessage: String?
+}
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `success` | `Bool` | Whether the server successfully processed this manual signal. |
+| `requestId` | `String` | Request ID, corresponding to the `requestId` returned in `completion` after calling `manualSOS` or `manualEOS`. |
+| `turnId` | `Int` | The associated conversation turn ID. This field may be empty or hold no valid value if the server's failure callback does not include a `turn_id`. |
+| `errorMessage` | `String?` | The raw error message returned by the server. Usually `nil` on success. |
+
+### `UserManualSosEvent`
+
+Represents a manual SoS event.
+
+```objc
+@objc public class UserManualSosEvent: NSObject {
+    @objc public let eventId: String
+    @objc public let timestamp: TimeInterval
+    @objc public let payload: UserManualEventPayload
+}
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `TimeInterval` | Event timestamp in milliseconds. |
+| `payload` | `UserManualEventPayload` | Event payload. See [`UserManualEventPayload`](#usermanualeventpayload). |
+
+### `UserManualEosEvent`
+
+Represents a manual EoS event.
+
+```objc
+@objc public class UserManualEosEvent: NSObject {
+    @objc public let eventId: String
+    @objc public let timestamp: TimeInterval
+    @objc public let payload: UserManualEventPayload
+}
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `TimeInterval` | Event timestamp in milliseconds. |
+| `payload` | `UserManualEventPayload` | Event payload. See [`UserManualEventPayload`](#usermanualeventpayload). |
+
+### `AgentManualEosPayload`
+
+Payload for a server-triggered automatic EoS event.
+
+```objc
+@objc public class AgentManualEosPayload: NSObject {
+    @objc public let reason: String
+    @objc public let maxDurationMs: Int
+    @objc public let turnId: Int
+}
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `reason` | `String` | The reason the server automatically ended the current user's turn. |
+| `maxDurationMs` | `Int` | The configured maximum duration, in milliseconds, for a single speaking turn. |
+| `turnId` | `Int` | The associated conversation turn ID. |
+
+### `AgentManualEosEvent`
+
+Represents a server-triggered automatic EoS event.
+
+```objc
+@objc public class AgentManualEosEvent: NSObject {
+    @objc public let eventId: String
+    @objc public let timestamp: TimeInterval
+    @objc public let payload: AgentManualEosPayload
+}
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `TimeInterval` | Event timestamp in milliseconds. |
+| `payload` | `AgentManualEosPayload` | Event payload. See [`AgentManualEosPayload`](#agentmanualeospayload). |
 
 ### `TextMessage`
 

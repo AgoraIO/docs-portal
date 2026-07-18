@@ -50,6 +50,8 @@ The [Web toolkit API](https://github.com/AgoraIO-Community/Conversational-AI-Dem
 | [`subscribeMessage`](#subscribemessage)  | Subscribes to the messaging channel to get real-time updates.               |
 | [`unsubscribe`](#unsubscribe)| Unsubscribes from the message channel and cleans up resources.                   |
 | [`interrupt`](#interrupt)         | Sends an interrupt message to the specified agent user.                     |
+| [`manualSOS`](#manualsos) | Sends a manual Start of Speech (SoS) signal to the agent. |
+| [`manualEOS`](#manualeos) | Sends a manual End of Speech (EoS) signal to the agent. |
 | [`destroy`](#destroy)           | Destroys the `ConversationalAIAPI` instance and cleans up resources.         |
 
 ## ConversationalAIAPI class
@@ -173,6 +175,52 @@ public async interrupt(agentUserId: string)
 |-----------|----------|-------------------------|
 | `agentUserId` | `string` | The user ID of the agent user to be interrupted. |
 
+### `manualSOS`
+
+Sends a manual Start of Speech (SoS) signal to the agent over RTM, explicitly declaring that the current user has started speaking.
+
+```javascript
+public async manualSOS(agentUserId: string): Promise<string>
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally and resolves it in the returned `Promise`. Your app can store this value to correlate it with the server-side event.
+- A resolved `Promise` only indicates that the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent `USER_MANUAL_SOS_RESULT` or `USER_MANUAL_EOS_RESULT` event. See [`EConversationalAIAPIEvents`](#econversationalaiapievents).
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `string` | Unique identifier of the agent. |
+
+**Return Value**  
+If the method call succeeds, a `Promise<string>` is returned, resolving to the `requestId` for this request. This result only indicates that the RTM publish succeeded.
+
+### `manualEOS`
+
+Sends a manual End of Speech (EoS) signal to the agent over RTM, explicitly declaring that the current user has finished speaking.
+
+```javascript
+public async manualEOS(agentUserId: string): Promise<string>
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally and resolves it in the returned `Promise`. Your app can store this value to correlate it with the server-side event.
+- A resolved `Promise` only indicates that the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent `USER_MANUAL_SOS_RESULT` or `USER_MANUAL_EOS_RESULT` event. See [`EConversationalAIAPIEvents`](#econversationalaiapievents).
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `string` | Unique identifier of the agent. |
+
+**Return Value**  
+If the method call succeeds, a `Promise<string>` is returned, resolving to the `requestId` for this request. This result only indicates that the RTM publish succeeded.
+
 ### `destroy`
 
 Destroys the `ConversationalAIAPI` instance and cleans up resources.
@@ -195,7 +243,7 @@ A set of event handlers that respond to various events emitted by the conversati
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
 | `agentUserId` | `string` | Unique identifier for the AI agent. |
-| `event` | `TStateChangeEvent \| { turnID: number; timestamp: number }` | Event data. The type depends on the event type. See [`TStateChangeEvent`](#tstatechangeevent). |
+| `event` | `TStateChangeEvent \| { turnID: number; timestamp: number } \| TUserManualSosEvent \| TUserManualEosEvent \| TAgentManualEosEvent` | Event data. The type depends on the event type. See [`TStateChangeEvent`](#tstatechangeevent), [`TUserManualSosEvent`](#tusermanualsosevent), [`TUserManualEosEvent`](#tusermanualeosevent), and [`TAgentManualEosEvent`](#tagentmanualeosevent). |
 | `metrics` | `TAgentMetric` | Performance indicator data of the agent. See [`TAgentMetric`](#tagentmetric). |
 | `error` | `TModuleError` | Error message when an error occurs in the agent. See [`TModuleError`](#tmoduleerror). |
 | `transcription` | `ISubtitleHelperItem<Partial<IUserTranscription \| IAgentTranscription>>[]` | An array of transcripts of the conversation between the user and the agent. See [`ISubtitleHelperItem`](#isubtitlehelperitem). |
@@ -226,6 +274,98 @@ export type TMessageReceipt = {
 | `messageType`   | `EChatMessageType`   | The type of message. See [`EChatMessageType`](#echatmessagetype).                    |
 | `message`       | `string`             | The content of the message.                                     |
 | `turnId`        | `number`             | Unique identifier for the conversation turn.
+
+### `TUserManualEventPayload`
+
+Common payload for manual SoS/EoS events.
+
+```typescript
+export type TUserManualEventPayload = {
+  success: boolean
+  requestId: string
+  turnId?: number
+  errorMessage?: string
+}
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `success` | `boolean` | Whether the server successfully processed this manual signal. |
+| `requestId` | `string` | Request ID, corresponding to the `requestId` resolved by `manualSOS` or `manualEOS`. |
+| `turnId` | `number` | The associated conversation turn ID. Omitted if the server's failure event does not include a `turn_id`. |
+| `errorMessage` | `string` | The raw error message returned by the server. Usually omitted on success. |
+
+### `TUserManualSosEvent`
+
+Represents a manual SoS event.
+
+```typescript
+export type TUserManualSosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TUserManualEventPayload
+}
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `eventId` | `string` | Unique event ID. |
+| `timestamp` | `number` | Event timestamp in milliseconds. |
+| `payload` | `TUserManualEventPayload` | Event payload. See [`TUserManualEventPayload`](#tusermanualeventpayload). |
+
+### `TUserManualEosEvent`
+
+Represents a manual EoS event.
+
+```typescript
+export type TUserManualEosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TUserManualEventPayload
+}
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `eventId` | `string` | Unique event ID. |
+| `timestamp` | `number` | Event timestamp in milliseconds. |
+| `payload` | `TUserManualEventPayload` | Event payload. See [`TUserManualEventPayload`](#tusermanualeventpayload). |
+
+### `TAgentManualEosPayload`
+
+Payload for a server-triggered automatic EoS event.
+
+```typescript
+export type TAgentManualEosPayload = {
+  reason: string
+  maxDurationMs: number
+  turnId: number
+}
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `reason` | `string` | The reason the server automatically ended the current user's turn. |
+| `maxDurationMs` | `number` | The configured maximum duration, in milliseconds, for a single speaking turn. |
+| `turnId` | `number` | The associated conversation turn ID. |
+
+### `TAgentManualEosEvent`
+
+Represents a server-triggered automatic EoS event.
+
+```typescript
+export type TAgentManualEosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TAgentManualEosPayload
+}
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `eventId` | `string` | Unique event ID. |
+| `timestamp` | `number` | Event timestamp in milliseconds. |
+| `payload` | `TAgentManualEosPayload` | Event payload. See [`TAgentManualEosPayload`](#tagentmanualeospayload). |
 
 ### `IChatMessageBase`
 
@@ -403,6 +543,9 @@ Since v1.6.0
 | `DEBUG_LOG` | `"debug-log"`: Debug log event. |
 | `MESSAGE_RECEIPT_UPDATED` | `"message-receipt-updated"`: Message receipt updated event. |
 | `MESSAGE_ERROR` | `"message-error"`: Message error event. |
+| `USER_MANUAL_SOS_RESULT` | `"user.manual_sos.result"`: Manual SoS result event. |
+| `USER_MANUAL_EOS_RESULT` | `"user.manual_eos.result"`: Manual EoS result event. |
+| `AGENT_MANUAL_EOS_RESULT` | `"assistant.manual_eos.result"`: Server-triggered automatic EoS notification event. |
 
 ### EChatMessagePriority
 
