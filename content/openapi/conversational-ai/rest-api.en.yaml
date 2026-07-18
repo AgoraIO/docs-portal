@@ -1699,13 +1699,14 @@ paths:
 
                             - `xai`: [xAI](/en/ai/models/tts/xai)
 
-                            - `generic_http`: Custom TTS service accessed over HTTP. Requires
-                            `tts.url`, `tts.headers`, and `tts.params`.
+                            - `generic_http`: [Generic TTS](/en/ai/models/tts/generic-http),
+                            integrated using the OpenAI TTS protocol. Requires `tts.url`,
+                            `tts.headers`, and `tts.params`.
                         url:
                           type: string
                           description: >-
-                            The TTS service endpoint. Required only when `tts.vendor` is
-                            `generic_http`.
+                            The OpenAI TTS protocol compatible service endpoint. Required only when
+                            `tts.vendor` is `generic_http`.
                         headers:
                           type: object
                           additionalProperties: true
@@ -1713,6 +1714,18 @@ paths:
                             Custom request headers to include in requests to the TTS service, such
                             as authentication credentials. Required only when `tts.vendor` is
                             `generic_http`.
+
+                            **Example:**
+
+                            ```json
+
+                            {
+
+                            "Authorization": "Bearer your_tts_api_key"
+
+                            }
+
+                            ```
                         params:
                           type: object
                           additionalProperties: true
