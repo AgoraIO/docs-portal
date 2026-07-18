@@ -1666,6 +1666,7 @@ paths:
                             - amazon
                             - sarvam
                             - xai
+                            - generic_http
                           description: >-
                             TTS provider.
 
@@ -1697,13 +1698,28 @@ paths:
                             - `sarvam`: [Sarvam](/en/ai/models/tts/sarvam)
 
                             - `xai`: [xAI](/en/ai/models/tts/xai)
+
+                            - `generic_http`: Custom TTS service accessed over HTTP. Requires
+                            `tts.url`, `tts.headers`, and `tts.params`.
+                        url:
+                          type: string
+                          description: >-
+                            The TTS service endpoint. Required only when `tts.vendor` is
+                            `generic_http`.
+                        headers:
+                          type: object
+                          additionalProperties: true
+                          description: >-
+                            Custom request headers to include in requests to the TTS service, such
+                            as authentication credentials. Required only when `tts.vendor` is
+                            `generic_http`.
                         params:
                           type: object
                           additionalProperties: true
                           description: >-
                             The configuration parameters for the selected TTS vendor. For
                             vendor-specific parameters, see the corresponding TTS provider page
-                            listed in `tts.vendor`.
+                            listed in `tts.vendor`. Required when `tts.vendor` is `generic_http`.
                         skip_patterns:
                           type: array
                           items:
