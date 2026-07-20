@@ -36,7 +36,7 @@ You can use the Agora unified domain name or bind your own domain name.
   - `cn`: Mainland China
 - To use your own domain name, contact Agora [technical support](mailto:support@agora.io) for configuration before use.
 
-2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key).
+2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../quickstart#get-streaming-key).
 
     :::note
     When using a custom domain name, you must add domain parameters to your stream key using the format:
