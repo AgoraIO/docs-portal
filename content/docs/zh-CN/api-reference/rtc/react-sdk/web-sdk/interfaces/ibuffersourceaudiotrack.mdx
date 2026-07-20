@@ -186,8 +186,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 playbackSpeed: number
 
-### 自从
-
+:::info[自从]
 *4.18.0*
 
 当前音频文件的播放速度。取值范围为 [50,400]，其中：
@@ -195,6 +194,7 @@ playbackSpeed: number
 - `50`: 0.5 倍速。
 - `100`: （默认）原始速度。
 - `400`: 4 倍速。
+:::
 
 <a id="processordestination"></a>
 
@@ -204,11 +204,11 @@ processorDestination: IAudioProcessor
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[processorDestination](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#processordestination)
 
-### 自从
-
+:::info[自从]
 *4.10.0*
 
 本地音频轨道上当前媒体处理链路的最终节点。
+:::
 
 <a id="source"></a>
 
@@ -477,23 +477,23 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - pipe(processor:IAudioProcessor):IAudioProcessor
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[pipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#pipe)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[pipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#pipe)
 
-  ### 自从
+:::info[自从]
+*4.10.0*
 
-  *4.10.0*
+将 `Processor` 注入本地音频轨道。
+:::
 
-  将 `Processor` 注入本地音频轨道。
+#### Parameters
 
-  Parameters
+- processor: IAudioProcessor
 
-  - processor: IAudioProcessor
+  `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-    `Processor` 实例。每个插件均有对应类型的 `Processor`。
+#### Returns IAudioProcessor
 
-  Returns IAudioProcessor
-
-  `Processor` 实例。
+`Processor` 实例。
 
 <a id="play"></a>
 
@@ -560,25 +560,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - setAudioBufferPlaybackSpeed(speed:number):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 设置当前音频文件的播放速度。
 
 在加入频道前和加入频道后，你都可以调用该方法。
+:::
 
-  Parameters
+#### Parameters
 
-  - speed: number
+- speed: number
 
-    播放速度。取值范围为 [50,400]，其中：
+  播放速度。取值范围为 [50,400]，其中：
 
-    - `50`: 0.5 倍速。
-    - `100`: （默认）原始速度。
-    - `400`: 4 倍速。
+  - `50`: 0.5 倍速。
+  - `100`: （默认）原始速度。
+  - `400`: 4 倍速。
 
-  Returns void
+#### Returns void
 
 <a id="setaudioframecallback"></a>
 
@@ -625,30 +625,30 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - setEnabled(enabled:boolean):Promise&lt;void&gt;
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled)
 
-  ### 自从
+:::info[自从]
+*4.0.0*
 
-  *4.0.0*
+启用/禁用该轨道。
 
-  启用/禁用该轨道。
+轨道禁用后，播放和发布都将被停止。
 
-  轨道禁用后，播放和发布都将被停止。
+> - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
+> - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
-  > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
-  > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+#### Parameters
 
-  Parameters
+- enabled: boolean
 
-  - enabled: boolean
+  是否启用该轨道:
 
-    是否启用该轨道:
+  - `true`: 启用该轨道。
+  - `false`: 禁用该轨道。
 
-    - `true`: 启用该轨道。
-    - `false`: 禁用该轨道。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setmuted"></a>
 
@@ -656,29 +656,29 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - setMuted(muted:boolean):Promise&lt;void&gt;
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setmuted)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setmuted)
 
-  发送或暂停发送该轨道的媒体数据。
+发送或暂停发送该轨道的媒体数据。
 
-  ### 自从
+:::info[自从]
+*4.6.0*
 
-  *4.6.0*
+如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 
-  如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+> - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
-  > - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+#### Parameters
 
-  Parameters
+- muted: boolean
 
-  - muted: boolean
+  是否发送该轨道的媒体数据:
 
-    是否发送该轨道的媒体数据:
+  - `true`: 暂停发送该轨道的媒体数据。
+  - `false`: 恢复发送该轨道的媒体数据。
 
-    - `true`: 暂停发送该轨道的媒体数据。
-    - `false`: 恢复发送该轨道的媒体数据。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setplaybackdevice"></a>
 
@@ -686,25 +686,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - setPlaybackDevice(deviceId:string):Promise&lt;void&gt;
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setplaybackdevice)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setplaybackdevice)
 
-  ### 自从
+:::info[自从]
+*4.1.0*
 
-  *4.1.0*
+> 注意事项：
+>
+> - 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
 
-  > 注意事项：
-  >
-  > - 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
+设置本地播放远端音频流的设备（扬声器）。
+:::
 
-  设置本地播放远端音频流的设备（扬声器）。
+#### Parameters
 
-  Parameters
+- deviceId: string
 
-  - deviceId: string
+  设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getplaybackdevices) 方法获取。
 
-    设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getplaybackdevices) 方法获取。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setvolume"></a>
 
@@ -771,12 +771,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - unpipe():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[unpipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#unpipe)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[unpipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#unpipe)
 
-  ### 自从
+:::info[自从]
+*4.10.0*
 
-  *4.10.0*
+取消本地音频轨道上注入的 `Processor`。
+:::
 
-  取消本地音频轨道上注入的 `Processor`。
-
-  Returns void
+#### Returns void

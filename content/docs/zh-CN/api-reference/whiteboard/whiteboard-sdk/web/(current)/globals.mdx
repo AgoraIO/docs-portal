@@ -273,8 +273,7 @@ CameraState: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 
 - Defined in [index-zh.d.ts:4781](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4781)
 
-### since
-
+:::info[since]
 2.10.0
 
 视角状态。该类型继承 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera) 且增加以下属性：
@@ -285,6 +284,7 @@ CameraState: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 - **height**: *number*
 
   视角的高。
+:::
 
 <a id="color"></a>
 
@@ -315,12 +315,12 @@ ConstructRoomParams: \{cameraBound?:[CameraBound](/zh-CN/api-reference/whiteboar
 
   是否允许按住 `command` 键并滑动鼠标滚轮来放大或缩小白板。
 
-  ### since
-
+  :::info[since]
   2.16.51
 
   - `true`：允许按住 `command` 键并滚动来放大缩小白板。
   - `false`：(默认)不允许按住 `command` 键并滚动来放大缩小白板。
+  :::
 
   ### note
 
@@ -348,14 +348,14 @@ ConstructRoomParams: \{cameraBound?:[CameraBound](/zh-CN/api-reference/whiteboar
 
   是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
 
-  ### since
-
+  :::info[since]
   2.12.0
 
   - `true`：隐藏其他人的高亮框。
   - `false`：显示其他人的高亮框。
 
   该属性不影响自己的高亮框显示。
+  :::
 - Optional invisiblePlugins?:ReadonlyArray&lt;[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)&lt;string,any,any&gt;&gt;
 
   不可见插件列表。
@@ -504,9 +504,9 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
     - 用户的可写权限发生改变的回调。
 
-    ### since
-
+    :::info[since]
     2.10.0
+    :::
 
       Parameters
 
@@ -628,9 +628,9 @@ DisplayerState: \{cameraState:[CameraState](/zh-CN/api-reference/whiteboard/whit
 
   当前视角的状态。
 
-  ### since
-
+  :::info[since]
   2.10.0
+  :::
 - globalState:[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)
 
   房间的全局状态。详见 [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)。
@@ -964,12 +964,12 @@ ImageInformation: \{centerX:number;centerY:number;crossOrigin?:boolean|string;he
 
   是否以跨域方式加载图片。
 
-  ### since
-
+  :::info[since]
   2.16.48
 
   - `true`: （默认）以跨域方式加载图片。
   - `false`: 不以跨域方式加载图片。
+  :::
 - height:number
 
   图片的高度，单位为像素。如果图片的高度超出视角的边界，用户将看不到超出部分。
@@ -983,12 +983,12 @@ ImageInformation: \{centerX:number;centerY:number;crossOrigin?:boolean|string;he
 
   图片是否只能等比放缩。
 
-  ### since
-
+  :::info[since]
   2.12.0
 
   - `true`: 只能等比缩放。
   - `false`: 可以非等比缩放。
+  :::
 - uuid:string
 
   图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
@@ -1288,11 +1288,11 @@ for (var member of room.state.roomMembers) {
   没有可写权限的用户进行写操作时，SDK 的应对方式。
 - **optimizeOptions?**: **OptimizeOptions**
 
-### since
-
+:::info[since]
 2.16.48
 
 白板绘制性能优化选项。详见 [OptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions)。
+:::
 
 <a id="level"></a>
 
@@ -1304,8 +1304,7 @@ Level: "debug"|"info"|"warn"|"error"
 
 日志等级。
 
-### since
-
+:::info[since]
 2.11.8
 
 日志级别由高到低的排序为 `error`，`warn`，`info`，和 `debug`。选择一个级别，你就可以看到不低于该级别的所有日志信息。
@@ -1315,6 +1314,7 @@ Level: "debug"|"info"|"warn"|"error"
 - `warn`：警告日志。当传入的参数不符合 SDK 要求时，SDK 会自动调整并发出警告。如果调用废弃 API，SDK 不会发出警告信息。
 - `info`：信息日志，主要为连接状态。
 - `debug`：调试日志，最详细的日志，目前内容与 `info` 一致。
+:::
 
 <a id="loggeroptions"></a>
 
@@ -1351,9 +1351,9 @@ MagixEventListenerOptions: \{fireInterval?:number;fireSelfEventAfterCommit?:bool
 
 自定义事件监听选项。
 
-### since
-
+:::info[since]
 v2.15.2
+:::
 
 #### Type declaration
 
@@ -2318,8 +2318,7 @@ ReplayRoomParams: [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboa
   该属性必须和 `room`、`beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
 - **crops?**: *Array*
 
-### since
-
+:::info[since]
 2.16.48
 
 回放录像裁剪区间，包含以下属性：
@@ -2327,20 +2326,21 @@ ReplayRoomParams: [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboa
  - `to`: number。裁剪区间终点时间戳。
 
 - **alignmentThreshold?**: *number*
+:::
 
-### since
-
+:::info[since]
 2.16.48
 
 回放时间轴对齐阈值, 超过此阈值会对齐回放播放器时间, 单位 ms, 默认值为 600 ms。
 
 - **alignmentInterval?**: *number*
+:::
 
-### since
-
+:::info[since]
 2.16.48
 
 回放时间轴对齐时长, 即在此段时间内，将回放时间通过倍速播放对齐到外部时间戳, 单位 ms, 默认值为 3000 ms。
+:::
 
 <a id="roomcallbacks"></a>
 
@@ -2475,9 +2475,9 @@ RoomMember: \{memberId:number;memberState:[MemberState](/zh-CN/api-reference/whi
 
   自定义用户信息，在用户加入房间时传入。详见 [UserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userpayload)。
 
-  ### since
-
+  :::info[since]
   v2.15.0
+  :::
 - session:string
 
   当前的 session ID。
@@ -2550,9 +2550,9 @@ SceneState: \{contextPath:string;index:number;sceneName:string;scenePath:string;
 
   当前场景所属场景目录的路径。
 
-  ### since
-
+  :::info[since]
   2.10.3
+  :::
 - index:number
 
   当前场景在所属场景目录中的索引号。
@@ -2560,9 +2560,9 @@ SceneState: \{contextPath:string;index:number;sceneName:string;scenePath:string;
 
   当前场景的名称。
 
-  ### since
-
+  :::info[since]
   2.10.3
+  :::
 - scenePath:string
 
   当前场景的路径。
@@ -2814,9 +2814,9 @@ UserPayload: \{\}&\{uid:string\}
 
   请确保同一房间内每个用户 `uid` 的唯一性。
 
-### since
-
+:::info[since]
 v2.15.0
+:::
 
 <a id="whitescene"></a>
 

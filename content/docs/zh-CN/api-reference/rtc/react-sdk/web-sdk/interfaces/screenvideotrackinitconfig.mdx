@@ -42,8 +42,7 @@ _migration:
 
 displaySurface: "browser"|"window"|"monitor"
 
-### 自从
-
+:::info[自从]
 *4.17.1*
 
 默认选中的共享内容类型，支持设为标签页、应用窗口（如下图）、或屏幕。详见 [displaySurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#displaySurface)。
@@ -51,6 +50,7 @@ displaySurface: "browser"|"window"|"monitor"
 ![Properties](https://wd.imgix.net/image/vvhSqZboQoZZN9wBvoXq72wzGAf1/AaQIUrKKCvoNuaBjvGOM.png?auto=format&w=1600)
 
 > 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="electronscreensourceid"></a>
 
@@ -88,8 +88,7 @@ extensionId: string
 
 optimizationMode: "motion"|"detail"
 
-### 自从
-
+:::info[自从]
 *4.2.0*
 
 设置视频传输优化模式。
@@ -97,6 +96,7 @@ optimizationMode: "motion"|"detail"
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
 > 注意事项：该方法只支持 Chrome 浏览器。
+:::
 
 ### param
 
@@ -129,8 +129,7 @@ screenSourceType: [ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/
 
 selfBrowserSurface: "include"|"exclude"
 
-### 自从
-
+:::info[自从]
 *4.17.1*
 
 是否允许用户共享当前标签页：
@@ -144,6 +143,7 @@ selfBrowserSurface: "include"|"exclude"
 >
 > - Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。
 > - 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="surfaceswitching"></a>
 
@@ -151,8 +151,7 @@ selfBrowserSurface: "include"|"exclude"
 
 surfaceSwitching: "include"|"exclude"
 
-### 自从
-
+:::info[自从]
 *4.17.1*
 
 是否允许用户动态切换共享的标签页：
@@ -163,6 +162,7 @@ surfaceSwitching: "include"|"exclude"
 详见 [surfaceSwitching](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#surfaceSwitching)。
 
 > 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="systemaudio"></a>
 
@@ -170,8 +170,7 @@ surfaceSwitching: "include"|"exclude"
 
 systemAudio: "include"|"exclude"
 
-### 自从
-
+:::info[自从]
 *4.17.1*
 
 是否允许采集系统音频：
@@ -182,3 +181,4 @@ systemAudio: "include"|"exclude"
 详见 [systemAudio](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#systemAudio)。
 
 > 注意事项：该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。
+:::

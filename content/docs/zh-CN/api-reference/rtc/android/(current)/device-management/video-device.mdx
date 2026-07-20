@@ -88,9 +88,9 @@ public abstract boolean isCameraExposurePositionSupported();
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v2.3.2 版本新增。
+:::
 
 :::note
 注： 你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）后调用该方法。
@@ -123,9 +123,9 @@ public abstract boolean isCameraExposureSupported();
 
 <a id="api_irtcengine_iscameraexposuresupported__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.2.2 版本新增。
+:::
 
 :::note
 注： 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）后调用。在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposurefactor) 之前，建议先调用该方法查询当前摄像头是否支持调节曝光值。该方法会调节当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
@@ -426,9 +426,9 @@ public abstract int setCameraExposureFactor(int factor);
 
 <a id="api_irtcengine_setcameraexposurefactor__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.2.2 版本新增。
+:::
 
 :::note
 注：
@@ -473,9 +473,9 @@ public abstract int setCameraExposurePosition(float positionXinView, float posit
 
 <a id="api_irtcengine_setcameraexposureposition__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v2.3.2 版本新增。
+:::
 
 :::note
 注： 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）后生效。成功调用该方法后，SDK 会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/android/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。

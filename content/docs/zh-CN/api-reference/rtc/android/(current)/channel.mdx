@@ -597,9 +597,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v3.3.0 版本新增。
+:::
 
 该方法新增了 `options` 参数，用于设置媒体选项，例如是否在频道内发布音视频流。默认情况下，用户会订阅频道内所有其他用户的音视频流，从而产生使用量和计费。如需停止订阅其他流，请设置 `options` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
@@ -987,9 +987,9 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 <a id="api_irtcengineex_leavechannelex2__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.1.0 版本新增。
+:::
 
 调用该方法后，SDK 会终止音视频互动，并释放与会话相关的所有资源。调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道后，必须调用此方法或 `leaveChannelEx(RtcConnection connection)` 结束通话，否则无法开始下一次通话。
 
@@ -1878,9 +1878,9 @@ public void onLocalUserRegistered(int uid, String userAccount)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v2.8.0 版本新增。
+:::
 
 当本地用户成功调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_registerlocaluseraccount) 方法注册用户 User Account，或调用 `joinChannelWithUserAccount` 方法加入频道后，SDK 会触发该回调，并返回本地用户的用户 ID 和用户 User Account。
 
@@ -1966,9 +1966,9 @@ public void onRenewTokenResult(String token, Constants.RenewTokenErrorCode code)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.6.0 版本新增。
+:::
 
 该回调在调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 方法后触发，用于通知更新结果。
 
@@ -2120,9 +2120,9 @@ public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v2.8.0 版本新增。
+:::
 
 当远端用户加入频道后，SDK 会获取该用户的用户 ID 和用户 User Account，并将其缓存在映射表中，然后在本地客户端触发该回调。
 

@@ -101,9 +101,9 @@ virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 
 
 <a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 该方法用于设置音视频录制的回调，使应用在录制过程中能够接收录制状态和信息通知。
 在调用该方法前，请确保：
@@ -314,9 +314,9 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 <a id="api_imediarecorder_startrecording__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 该方法用于开始录制音频和视频流，支持同时录制本地和远端用户的音视频流。
 在调用该方法前，请确保：
@@ -414,9 +414,9 @@ virtual int stopRecording() = 0;
 
 <a id="api_imediarecorder_stoprecording__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 :::note
 注： 调用 [startRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_startrecording) 后，必须调用该方法停止录制，否则生成的录制文件可能无法正常播放。
@@ -451,9 +451,9 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 成功注册该回调并开始音视频流录制后，SDK 会根据 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediarecorderconfiguration) 中设置的 `recorderInfoUpdateInterval` 的值定期触发该回调，报告当前录制文件的名称、时长和大小。
 
@@ -499,9 +499,9 @@ virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, Recor
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 当音视频流的录制状态发生变化时，SDK 会触发该回调，报告当前的录制状态及其变化原因。
 

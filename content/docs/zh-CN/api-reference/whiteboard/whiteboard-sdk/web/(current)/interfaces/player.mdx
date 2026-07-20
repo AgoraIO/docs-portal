@@ -162,8 +162,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
 
-### since
-
+:::info[since]
 2.12.0
 
 - `true`：隐藏高亮框。
@@ -172,6 +171,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 **Note**
 
 该属性不影响自己的高亮框显示。
+:::
 
 <a id="enablewritenow"></a>
 
@@ -185,12 +185,12 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 用户当前是否有写的权限:
 
-### since
-
+:::info[since]
 2.10.0
 
 - `true`：有写的权限。
 - `false`：没有写的权限。
+:::
 
 <a id="framescount"></a>
 
@@ -239,12 +239,12 @@ isPlayable: boolean
 
 是否能立即播放（可能会缓冲）。
 
-### since
-
+:::info[since]
 2.9.16
 
 - `true`：可以立即播放。
 - `false`：不能立即播放。
+:::
 
 <a id="observerid"></a>
 
@@ -382,9 +382,9 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 当前 SDK 的版本。
 
-### since
-
+:::info[since]
 2.13.14
+:::
 
 ## Methods
 
@@ -800,22 +800,23 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - scalePptToFit(animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
- Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
 
-  根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
+- Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
 
-  ### since
+根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
 
-  2.3.18
+:::info[since]
+2.3.18
+:::
 
-  Parameters
+#### Parameters
 
-  - Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+- Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
 
-    视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+  视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
 
-  Returns void
+#### Returns void
 
 <a id="scenepathtype"></a>
 
@@ -951,25 +952,25 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2852)
 
-  跳转到指定回放位置。
+跳转到指定回放位置。
 
-  ### since
+:::info[since]
+v2.15.0
 
-  v2.15.0
+白板回放的起始时间点为 0，你可以调用该方法，跳转到指定的回放位置。
 
-  白板回放的起始时间点为 0，你可以调用该方法，跳转到指定的回放位置。
+成功调用该方法后，SDK 会返回 `PlayerSeekingResult`，报告定位回放的结果。
+:::
 
-  成功调用该方法后，SDK 会返回 `PlayerSeekingResult`，报告定位回放的结果。
+#### Parameters
 
-  Parameters
+- progressTime: number
 
-  - progressTime: number
+  指定的回放位置，单位为毫秒。
 
-    指定的回放位置，单位为毫秒。
+#### Returns Promise&lt;PlayerSeekingResult&gt;
 
-  Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult)&gt;
-
-  定位回放的结果。详见 [PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult)。
+定位回放的结果。详见 [PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult)。
 
 <a id="setcamerabound"></a>
 

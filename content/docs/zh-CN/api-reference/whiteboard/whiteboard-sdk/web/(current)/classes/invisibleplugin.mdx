@@ -10,14 +10,14 @@ _migration:
   warnings: []
 ---
 
-### since
-
+:::info[since]
 2.10.0
 
 Agora 支持的自定义插件包括组件插件和不可见插件。二者的主要区别有：
 
 - 不可见插件全局唯一，只能建立一个对象。
 - 不可见插件不会显示在白板界面上，但它的 attributes 状态会在全房间自动同步。
+:::
 
 ### Type parameters
 
@@ -122,19 +122,19 @@ displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interf
 
 - Defined in [index-zh.d.ts:668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L668)
 
-  获取不可见插件属性的值。
+获取不可见插件属性的值。
 
-  ### since
+:::info[since]
+2.13.7
+:::
 
-  2.13.7
+#### Parameters
 
-  Parameters
+- key: string[]|string
 
-  - key: string[]|string
+  属性对应的 key。
 
-    属性对应的 key。
-
-  Returns any
+#### Returns any
 
 <a id="onattributesupdate"></a>
 
@@ -192,19 +192,19 @@ displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interf
 
 - Defined in [index-zh.d.ts:683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L683)
 
-  更新不可见插件的属性。
+更新不可见插件的属性。
 
-  ### since
+:::info[since]
+2.13.7
+:::
 
-  2.13.7
+#### Parameters
 
-  Parameters
+- keys: string|string[]
 
-  - keys: string|string[]
+  单个或多个属性对应的 key。
+- value: any
 
-    单个或多个属性对应的 key。
-  - value: any
+  属性的值。
 
-    属性的值。
-
-  Returns void
+#### Returns void

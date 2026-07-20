@@ -51,6 +51,18 @@ function stripHeadingLinks(value) {
   );
 }
 
+function isSinceDefinitionTerm(value) {
+  const normalized = cleanText(stripHeadingLinks(value)).toLowerCase();
+  return normalized === '自从' || normalized === 'since';
+}
+
+function containsTypeDocSinceDefinitionTerm($, element) {
+  return element
+    .find('dl.tsd-comment-tags > dt')
+    .toArray()
+    .some((term) => isSinceDefinitionTerm($(term).text()));
+}
+
 function anchorFor(element) {
   const id = element.attr('id') ?? element.attr('name');
   return id ? renderStableAnchor(id) : '';
@@ -400,6 +412,15 @@ async function renderList($, element, state, ordered) {
   return items.join('\n');
 }
 
+async function renderUnwrappedListItems($, element, state) {
+  const blocks = [];
+  for (const item of element.children('li').toArray()) {
+    const body = await renderChildren($, $(item), state);
+    if (body) blocks.push(body);
+  }
+  return blocks.join('\n\n');
+}
+
 async function renderTable($, table, state) {
   const rows = table.find('> thead > tr, > tbody > tr, > tr').toArray();
   if (rows.length === 0) return '';
@@ -454,8 +475,11 @@ async function renderTable($, table, state) {
 
 async function renderDefinitionList($, list, state) {
   const blocks = [];
+  const listIsSince = classNames(list).has('since');
+  const listIsTypeDocCommentTags = list.hasClass('tsd-comment-tags');
   let term = null;
   let termHasLink = false;
+  let termIsSince = false;
   for (const child of list.children('dt, dd').toArray()) {
     if (elementName(child) === 'dt') {
       const renderedTerm = cleanText(
@@ -463,15 +487,21 @@ async function renderDefinitionList($, list, state) {
       );
       termHasLink = /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
       term = termHasLink ? renderedTerm : stripHeadingLinks(renderedTerm);
+      termIsSince =
+        listIsSince ||
+        (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
       const body = await renderChildren($, $(child), state);
       if (term) {
         blocks.push(
-          `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
+          termIsSince
+            ? renderCallout({ type: 'info', title: term, body })
+            : `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
         );
       } else if (body) blocks.push(body);
       term = null;
       termHasLink = false;
+      termIsSince = false;
     }
   }
   return blocks.join('\n\n');
@@ -637,9 +667,12 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'ul' || name === 'ol') {
-    return [anchor, await renderList($, element, state, name === 'ol')]
-      .filter(Boolean)
-      .join('\n\n');
+    const body =
+      element.hasClass('tsd-descriptions') &&
+      containsTypeDocSinceDefinitionTerm($, element)
+        ? await renderUnwrappedListItems($, element, state)
+        : await renderList($, element, state, name === 'ol');
+    return [anchor, body].filter(Boolean).join('\n\n');
   }
   if (name === 'table') {
     return [anchor, await renderTable($, element, state)]

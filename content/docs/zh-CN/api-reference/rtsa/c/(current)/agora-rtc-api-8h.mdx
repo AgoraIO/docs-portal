@@ -278,9 +278,9 @@ RDT 消息类型。
 | typedef struct [user_info_s](/zh-CN/api-reference/rtsa/c/structuser-info-s) [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) |
 | --- |
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 用户信息。适用于使用 String 型用户 ID 的场景。
 
@@ -2633,9 +2633,9 @@ RTM 消息的发送状态。
 
 创建数据流。
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 在 Connection 生命周期内，每个用户最多可以创建五条数据流。
 
@@ -2759,9 +2759,9 @@ v1.9.5
 
 获取 RDT 通道的信息。
 
-### 自从
-
+:::info[自从]
 v1.9.2
+:::
 
 该方法可以获取当前 RDT 通道的连接状态和缓冲区长度，从而判断远端用户是否成功接收 RDT 消息、本地用户是否可以继续发送 RDT 消息。例如，发送缓冲区长度 (send_queue_size) 为 0 表示远端用户已接收完 RDT 消息。
 
@@ -2786,9 +2786,9 @@ v1.9.2
 
 通过用户 ID 获取用户信息。
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 ### 参数
 
@@ -2811,9 +2811,9 @@ v1.9.5
 
 通过用户 User account 获取用户信息。
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 ### 参数
 
@@ -2926,9 +2926,9 @@ v1.9.5
 
 使用用户 User account 加入指定 Connection 所关联的 RTC 频道。
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 该方法让本地用户加入指定频道。同一个频道内使用相同 App ID 的用户可以互相传输数据。
 
@@ -3308,9 +3308,9 @@ v1.9.5
 
 向所有频道或指定频道发送消息。
 
-### 自从
-
+:::info[自从]
 1.9.5
+:::
 
 成功调用该方法后，远端会触发 [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a) 回调，远端用户可以在该回调中获取接收到的消息。
 
@@ -3340,9 +3340,9 @@ v1.9.5
 
 发送 RDT（Reliable Data Transmission，可靠数据传输）消息。
 
-### 自从
-
+:::info[自从]
 v1.9.2
+:::
 
 在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
 
@@ -3424,9 +3424,9 @@ RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
 
 向频道内的所有用户发送数据流。
 
-### 自从
-
+:::info[自从]
 v1.9.5
+:::
 
 调用 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 

@@ -405,9 +405,9 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 
 <a id="api_irtcengineex_playeffectex__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.6.0 版本新增。
+:::
 
 你可以调用该方法在频道内向所有用户播放指定音效。每次调用该方法只能播放一个音效。若需同时播放多个音效，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。你还可以设置是否在频道中发布该音效。
 
@@ -564,9 +564,9 @@ virtual int preloadEffectEx(const RtcConnection& connection, int soundId, const 
 
 <a id="api_irtcengineex_preloadeffectex__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.6.0 版本新增。
+:::
 
 每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
 

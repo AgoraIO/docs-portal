@@ -27,9 +27,9 @@ virtual int enableInstantMediaRendering() = 0;
 
 <a id="api_irtcengine_enableinstantmediarendering__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.1.1 版本新增。
+:::
 
 调用该方法后，SDK 会启用极速帧渲染模式，从而加快用户加入频道后首帧的渲染速度。
 
@@ -630,9 +630,9 @@ virtual int startMediaRenderingTracing() = 0;
 
 <a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.1.1 版本新增。
+:::
 
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
 
@@ -678,9 +678,9 @@ virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 
 <a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
 
-### 自从
-
+:::info[自从]
 自 v4.1.1 版本新增。
+:::
 
 调用该方法后，SDK 会从调用时刻开始追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。你可以结合应用中的 UI 控件（如按钮、滑块）调用该方法，以优化用户体验，例如在用户点击“加入频道”按钮时调用该方法，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗时间，从而优化相关指标。
 

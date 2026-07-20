@@ -138,11 +138,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 processorDestination: IAudioProcessor
 
-### 自从
-
+:::info[自从]
 *4.13.0*
 
 远端音频轨道上当前媒体处理链路的最终节点。
+:::
 
 <a id="trackmediatype"></a>
 
@@ -384,21 +384,21 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - pipe(processor:IAudioProcessor):IAudioProcessor
 
-- ### 自从
-
+:::info[自从]
 *4.13.0*
 
 将 `Processor` 注入远端音频轨道。
+:::
 
-  Parameters
+#### Parameters
 
-  - processor: IAudioProcessor
+- processor: IAudioProcessor
 
-    `Processor` 实例。每个插件均有对应类型的 `Processor`。
+  `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-  Returns IAudioProcessor
+#### Returns IAudioProcessor
 
-  `Processor` 实例。
+`Processor` 实例。
 
 <a id="play"></a>
 
@@ -487,21 +487,21 @@ track.setAudioFrameCallback(null);
 
 - setPlaybackDevice(deviceId:string):Promise&lt;void&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 设置音频播放设备，比如扬声器。
 
 > 该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
+:::
 
-  Parameters
+#### Parameters
 
-  - deviceId: string
+- deviceId: string
 
-    设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
+  设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
 
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setvolume"></a>
 
@@ -537,10 +537,10 @@ track.setAudioFrameCallback(null);
 
 - unpipe():void
 
-- ### 自从
-
+:::info[自从]
 *4.13.0*
 
 取消远端音频轨道上注入的 `Processor`。
+:::
 
-  Returns void
+#### Returns void

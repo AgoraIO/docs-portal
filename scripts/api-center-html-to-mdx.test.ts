@@ -136,6 +136,49 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('### [VideoParameters]');
   });
 
+  it('renders Oxygen, Doxygen, and TypeDoc since definitions as info callouts', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>API</h1>
+        <dl class="dl since"><dt class="dt dlterm">自从</dt><dd class="dd">自 v4.6.2 版本新增。</dd></dl>
+        <p>Following content.</p>
+        <dl class="section since"><dt>自从</dt><dd><ul><li>v1.9.5</li></ul></dd></dl>
+        <ul class="tsd-descriptions"><li class="tsd-description">
+          <dl class="tsd-comment-tags">
+            <dt>自从</dt><dd><p><em>4.17.1</em></p><p>TypeDoc details.</p></dd>
+            <dt>deprecated</dt><dd>Use the replacement.</dd>
+          </dl>
+        </li></ul>
+        <ul class="tsd-descriptions"><li class="tsd-description"><p>Plain TypeDoc description.</p></li></ul>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/electron/API/class_multipathstats',
+      sourcePath: 'html-docs/rtc/Electron/API/class_multipathstats.html',
+    });
+
+    expect(result.body.match(/:::info\[自从\]/g)).toHaveLength(3);
+    expect(result.body).toContain(':::info[自从]\n自 v4.6.2 版本新增。\n:::');
+    expect(result.body).toContain(':::info[自从]\n- v1.9.5\n:::');
+    expect(result.body).toContain(
+      ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
+    );
+    expect(result.body).toContain('### deprecated\n\nUse the replacement.');
+    expect(result.body).toContain('Following content.');
+    expect(result.body).toContain('- Plain TypeDoc description.');
+    expect(result.body).not.toContain('### 自从');
+    expect(result.body).not.toContain('- :::info[自从]');
+  });
+
+  it('does not infer since callouts from arbitrary definition-list text', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>API</h1><dl><dt>自从</dt><dd>Ordinary definition.</dd></dl></article>',
+      sourceUrl: 'https://doc.shengwang.cn/doc/example',
+      sourcePath: 'html-docs/example.html',
+    });
+
+    expect(result.body).toContain('### 自从\n\nOrdinary definition.');
+    expect(result.body).not.toContain(':::info[自从]');
+  });
+
   it('preserves DITA related-link blocks with standalone strong labels', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Sound position</h1>

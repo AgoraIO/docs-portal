@@ -128,9 +128,9 @@ calibrationTimestamp: number
 
 与服务器时钟校准后的当前时间戳，单位为毫秒。
 
-### since
-
+:::info[since]
 2.13.8
+:::
 
 <a id="callbacks"></a>
 
@@ -243,9 +243,9 @@ disableEraseImage: boolean
 - `true`： 关闭橡皮擦擦除图片功能。
 - `false`：启用橡皮擦擦除图片功能。
 
-### since
-
+:::info[since]
 2.3.12
+:::
 
 <a id="disableothersselectingbox"></a>
 
@@ -259,8 +259,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
 
-### since
-
+:::info[since]
 2.12.0
 
 - `true`：隐藏高亮框。
@@ -269,6 +268,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 **Note**
 
 该属性不影响自己的高亮框显示。
+:::
 
 <a id="disableserialization"></a>
 
@@ -311,12 +311,12 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 用户当前是否有写的权限:
 
-### since
-
+:::info[since]
 2.10.0
 
 - `true`：有写的权限。
 - `false`：没有写的权限。
+:::
 
 <a id="handtoolactive"></a>
 
@@ -525,9 +525,9 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 当前 SDK 的版本。
 
-### since
-
+:::info[since]
 2.13.14
+:::
 
 ## Methods
 
@@ -647,22 +647,22 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2516](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2516)
 
-  清空可撤回的操作历史记录, 令可撤回次数 `canUndoSteps` 立刻等于 0。
+清空可撤回的操作历史记录, 令可撤回次数 `canUndoSteps` 立刻等于 0。
 
-  ### since
+:::info[since]
+2.16.48
+:::
 
-  2.16.48
+#### Parameters
 
-  Parameters
+- Optional includeRedo: boolean
 
-  - Optional includeRedo: boolean
+  是否同时清空重做的记录：
 
-    是否同时清空重做的记录：
+  - `true`：（默认）同时清空重做记录。
+  - `false`：不同时清空重做记录。
 
-    - `true`：（默认）同时清空重做记录。
-    - `false`：不同时清空重做记录。
-
-  Returns void
+#### Returns void
 
 <a id="completeimageupload"></a>
 
@@ -738,18 +738,18 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2472](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2472)
 
-  复制选中内容。
+复制选中内容。
 
-  **Note**
+**Note**
 
-  - 该方法会将选中的内容存储到内存中，不会粘贴到白板中。
-  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+- 该方法会将选中的内容存储到内存中，不会粘贴到白板中。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 
-  ### since
+:::info[since]
+2.9.0
+:::
 
-  2.9.0
-
-  Returns void
+#### Returns void
 
 <a id="createinvisibleplugin"></a>
 
@@ -875,18 +875,18 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2461](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2461)
 
-  复制选中的内容并粘贴到白板上（用户当前视角的中心）。
+复制选中的内容并粘贴到白板上（用户当前视角的中心）。
 
-  **Note**
+**Note**
 
-  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
-  - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+- 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
-  ### since
+:::info[since]
+2.9.0
+:::
 
-  2.9.0
-
-  Returns void
+#### Returns void
 
 <a id="entirescenes"></a>
 
@@ -911,25 +911,25 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2345](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2345)
 
-  导出场景。
+导出场景。
 
-  ### since
+:::info[since]
+v2.14.5
 
-  v2.14.5
+该方法导出指定场景中的所有内容，包括场景中展示的图片或网页。
 
-  该方法导出指定场景中的所有内容，包括场景中展示的图片或网页。
+成功调用该方法后，SDK 会导出指定场景的内容并保存为 Blob 对象。
+:::
 
-  成功调用该方法后，SDK 会导出指定场景的内容并保存为 Blob 对象。
+#### Parameters
 
-  Parameters
+- scenePath: string
 
-  - scenePath: string
+  需要导出的场景路径。
 
-    需要导出的场景路径。
+#### Returns Promise&lt;Blob&gt;
 
-  Returns Promise&lt;Blob&gt;
-
-  导出场景内容的 Blob 对象。
+导出场景内容的 Blob 对象。
 
 <a id="fillscenesnapshot"></a>
 
@@ -1086,28 +1086,28 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2364](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2364)
 
-  导入场景。
+导入场景。
 
-  ### since
+:::info[since]
+v2.14.5
 
-  v2.14.5
+你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene) 导出的场景内容导入指定的场景目录中。
+:::
 
-  你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene) 导出的场景内容导入指定的场景目录中。
+#### Parameters
 
-  Parameters
+- dir: string
 
-  - dir: string
+  场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype) 不为 `conflict`；否则，场景将无法导入。
+   你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scenepathtype) 查询路径类型。
+- payload: Blob
 
-    场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype) 不为 `conflict`；否则，场景将无法导入。
-     你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#scenepathtype) 查询路径类型。
-  - payload: Blob
+  场景内容的 Blob 对象。
 
-    场景内容的 Blob 对象。
+#### Returns Promise&lt;SceneDefinition&gt;
 
-  Returns Promise&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;
-
-  方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir`+ `name`。
-   如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)。
+方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir`+ `name`。
+ 如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)。
 
 <a id="insertimage"></a>
 
@@ -1214,24 +1214,24 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2534](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2534)
 
-  锁定选中图片。
+锁定选中图片。
 
-  ### since
+:::info[since]
+v2.14.5
 
-  v2.14.5
+该方法可以修改当前选中图片的锁定状态。当图片被锁定时，用户无法移动、放缩或删除该图片。
+:::
 
-  该方法可以修改当前选中图片的锁定状态。当图片被锁定时，用户无法移动、放缩或删除该图片。
+#### Parameters
 
-  Parameters
+- locked: boolean
 
-  - locked: boolean
+  是否锁定图片:
 
-    是否锁定图片:
+  - true：锁定图片。
+  - false：不锁定图片。
 
-    - true：锁定图片。
-    - false：不锁定图片。
-
-  Returns void
+#### Returns void
 
 <a id="memberstate"></a>
 
@@ -1326,13 +1326,13 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2548](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2548)
 
-  移动选中的组件到底层。
+移动选中的组件到底层。
 
-  ### since
+:::info[since]
+v2.14.5
+:::
 
-  v2.14.5
-
-  Returns void
+#### Returns void
 
 <a id="moveselectedcomponentstotop"></a>
 
@@ -1342,13 +1342,13 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2541](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2541)
 
-  移动选中的组件到顶层。
+移动选中的组件到顶层。
 
-  ### since
+:::info[since]
+v2.14.5
+:::
 
-  v2.14.5
-
-  Returns void
+#### Returns void
 
 <a id="paste"></a>
 
@@ -1358,19 +1358,19 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2484](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2484)
 
-  粘贴复制的内容。
+粘贴复制的内容。
 
-  **Note**
+**Note**
 
-  - 该方法会将 [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
-  - 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
-  - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
+- 该方法会将 [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) 设为 `false` 时生效。
+- 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
-  ### since
+:::info[since]
+2.9.0
+:::
 
-  2.9.0
-
-  Returns void
+#### Returns void
 
 <a id="pptnextstep"></a>
 
@@ -1544,22 +1544,23 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - scalePptToFit(animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
- Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
 
-  根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
+- Defined in [index-zh.d.ts:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
 
-  ### since
+根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
 
-  2.3.18
+:::info[since]
+2.3.18
+:::
 
-  Parameters
+#### Parameters
 
-  - Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+- Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
 
-    视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+  视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
 
-  Returns void
+#### Returns void
 
 <a id="scenepathtype"></a>
 
@@ -1905,13 +1906,13 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2261](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2261)
 
-  取消 [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncblocktimestamp) 方法设置的本地显示远端白板内容的时间。
+取消 [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncblocktimestamp) 方法设置的本地显示远端白板内容的时间。
 
-  ### since
+:::info[since]
+2.13.8
+:::
 
-  2.13.8
-
-  Returns void
+#### Returns void
 
 <a id="syncblocktimestamp"></a>
 
@@ -1921,23 +1922,23 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts:2255](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2255)
 
-  设置本地显示远端白板内容的 Unix 时间戳（ms）。
+设置本地显示远端白板内容的 Unix 时间戳（ms）。
 
-  ### since
+:::info[since]
+2.12.11
 
-  2.12.11
+调用该方法后，SDK 会根据你设置的 `timestamp` 的值显示接收到的远端白板内容。
 
-  调用该方法后，SDK 会根据你设置的 `timestamp` 的值显示接收到的远端白板内容。
+在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
+:::
 
-  在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
+#### Parameters
 
-  Parameters
+- timestamp: number
 
-  - timestamp: number
+  远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。
 
-    远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。
-
-  Returns void
+#### Returns void
 
 <a id="undo"></a>
 

@@ -681,25 +681,25 @@ client.on("image-moderation-connection-state-change", (curState, preState) => {
 
 - is-using-cloud-proxy(isUsingProxy:boolean):void
 
-- ### 自从
-
+:::info[自从]
 *4.4.0*
 
 SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触发时机如下：
 
 - v4.10.0 之前：成功调用 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) 后。
 - v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 后。
+:::
 
-  Parameters
+#### Parameters
 
-  - isUsingProxy: boolean
+- isUsingProxy: boolean
 
-    当前媒体流是否经云代理服务转发：
+  当前媒体流是否经云代理服务转发：
 
-    - `true`: 经云代理服务转发。
-    - `false`: 没有经云代理服务转发。
+  - `true`: 经云代理服务转发。
+  - `false`: 没有经云代理服务转发。
 
-  Returns void
+#### Returns void
 
 <a id="event_join_fallback_to_proxy"></a>
 
@@ -838,8 +838,7 @@ SDK 自动切换至 TCP/TLS 443 回调。
 
 - published-user-list(users:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)[]):void
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 如果开启了单频道支持 128 位主播的功能，该回调会在调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 时触发，返回当前频道内发布音频和视频轨道的用户。
@@ -851,14 +850,15 @@ SDK 自动切换至 TCP/TLS 443 回调。
 >
 >   - 如果监听了 `published-user-list`，已经在 `published-user-list` 中返回的用户不会再通过 `user-joined` 和 `user-published` 重复返回。
 >   - 如果没有监听 `published-user-list`，`user-joined` 和 `user-published` 会正常触发。
+:::
 
-  Parameters
+#### Parameters
 
-  - users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)[]
+- users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)[]
 
-    远端用户对象。
+  远端用户对象。
 
-  Returns void
+#### Returns void
 
 <a id="event_stream_fallback"></a>
 
@@ -1181,14 +1181,14 @@ SDK 和声网服务器的连接状态。
 
 localTracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack)[]
 
-### 自从
-
+:::info[自从]
 *4.0.0*
 
 保存当前正在发布的本地轨道对象列表。
 
 - 调用 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) 成功后，发布的轨道对象会自动添加到这个列表中。
 - 调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 成功后，取消发布的轨道对象会自动从这个列表中移除。
+:::
 
 <a id="remoteusers"></a>
 
@@ -1852,13 +1852,13 @@ client.enableContentInspect({
 
 - getLocalAudioStats():[LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取本地音频相关信息。
+:::
 
-  Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
+#### Returns LocalAudioTrackStats
 
 <a id="getlocalvideostats"></a>
 
@@ -1890,17 +1890,17 @@ client.enableContentInspect({
 
 - getRemoteAudioStats():object
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取远端用户的音频相关信息。
 
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats)
+- [uid: string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats)
 
 <a id="getremotenetworkquality"></a>
 
@@ -1908,15 +1908,15 @@ client.enableContentInspect({
 
 - getRemoteNetworkQuality():object
 
-- ### 自从
-
+:::info[自从]
 *4.2.0*
 
 获取本地订阅的所有远端用户的上下行网络质量。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[NetworkQuality](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/networkquality)
+- [uid: string]:[NetworkQuality](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/networkquality)
 
 <a id="getremotevideostats"></a>
 
@@ -1924,17 +1924,17 @@ client.enableContentInspect({
 
 - getRemoteVideoStats():object
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取远端用户的视频统计信息。
 
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+- [uid: string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
 
 <a id="masssubscribe"></a>
 
@@ -1942,8 +1942,7 @@ client.enableContentInspect({
 
 - massSubscribe(subscribeList:object[]):Promise&lt;object[]&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 批量订阅远端用户的音视频轨道。
@@ -1966,30 +1965,31 @@ for(const {track, mediaType, error} of result) {
   }
 }
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - subscribeList: object[]
+- subscribeList: object[]
 
-    订阅的远端用户列表。列表中的每一条都包含以下信息：
-
-    - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)。
-    - `mediaType`：订阅的轨道媒体类型。
-
-      - `"video"`: 订阅指定用户的视频轨道。
-      - `"audio"`: 订阅指定用户的音频轨道。
-
-  Returns Promise&lt;object[]&gt;
-
-  正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
+  订阅的远端用户列表。列表中的每一条都包含以下信息：
 
   - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)。
-  - `mediaType`：已订阅的轨道媒体类型。
+  - `mediaType`：订阅的轨道媒体类型。
 
-    - `"video"`: 已订阅指定用户发布的视频轨道。
-    - `"audio"`: 已订阅指定用户发布的音频轨道。
-  - `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack)。
-  - `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
+    - `"video"`: 订阅指定用户的视频轨道。
+    - `"audio"`: 订阅指定用户的音频轨道。
+
+#### Returns Promise&lt;object[]&gt;
+
+正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
+
+- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)。
+- `mediaType`：已订阅的轨道媒体类型。
+
+  - `"video"`: 已订阅指定用户发布的视频轨道。
+  - `"audio"`: 已订阅指定用户发布的音频轨道。
+- `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack)。
+- `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
 
 <a id="massunsubscribe"></a>
 
@@ -1997,8 +1997,7 @@ for(const {track, mediaType, error} of result) {
 
 - massUnsubscribe(unsubscribeList:object[]):Promise&lt;void&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 批量取消订阅远端用户的音视频轨道。
@@ -2006,21 +2005,22 @@ for(const {track, mediaType, error} of result) {
 ```javascript
 client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - unsubscribeList: object[]
+- unsubscribeList: object[]
 
-    取消订阅的远端用户列表。列表中的每一条都包含以下信息：
+  取消订阅的远端用户列表。列表中的每一条都包含以下信息：
 
-    - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)。
-    - `mediaType`：取消订阅的轨道媒体类型。
+  - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)。
+  - `mediaType`：取消订阅的轨道媒体类型。
 
-      - `"video"`: 取消订阅指定用户的视频轨道。
-      - `"audio"`: 取消订阅指定用户的音频轨道。
-      - 如不填，取消订阅该用户发布的所有轨道。
+    - `"video"`: 取消订阅指定用户的视频轨道。
+    - `"audio"`: 取消订阅指定用户的音频轨道。
+    - 如不填，取消订阅该用户发布的所有轨道。
 
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="off"></a>
 
@@ -2644,8 +2644,7 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 
 - setLocalAccessPointsV2(config:[LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)):void
 
-- ### 自从
-
+:::info[自从]
 *4.16.0*
 
 配置声网混合云或私有化平台的相关服务。
@@ -2675,14 +2674,15 @@ client.setLocalAccessPointsV2({
   }
 })
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)
+- config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)
 
-    混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)。
+  混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)。
 
-  Returns void
+#### Returns void
 
 ## Proxy Methods
 
@@ -2692,8 +2692,7 @@ client.setLocalAccessPointsV2({
 
 - setProxyServer(proxyServer:string):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 部署你的代理服务器。
@@ -2707,14 +2706,15 @@ client.setLocalAccessPointsV2({
 >
 > - 该方法必须在 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 之前调用。
 > - 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
+:::
 
-  Parameters
+#### Parameters
 
-  - proxyServer: string
+- proxyServer: string
 
-    你的代理服务器域名，ASCII 字符。
+  你的代理服务器域名，ASCII 字符。
 
-  Returns void
+#### Returns void
 
 <a id="startproxyserver"></a>
 

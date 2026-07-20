@@ -697,25 +697,25 @@ client.on("image-moderation-connection-state-change", (curState, preState) => {
 
 - is-using-cloud-proxy(isUsingProxy:boolean):void
 
-- ### 自从
-
+:::info[自从]
 *4.4.0*
 
 SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触发时机如下：
 
 - v4.10.0 之前：成功调用 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 后。
 - v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 后。
+:::
 
-  Parameters
+#### Parameters
 
-  - isUsingProxy: boolean
+- isUsingProxy: boolean
 
-    当前媒体流是否经云代理服务转发：
+  当前媒体流是否经云代理服务转发：
 
-    - `true`: 经云代理服务转发。
-    - `false`: 没有经云代理服务转发。
+  - `true`: 经云代理服务转发。
+  - `false`: 没有经云代理服务转发。
 
-  Returns void
+#### Returns void
 
 <a id="event_join_fallback_to_proxy"></a>
 
@@ -854,22 +854,22 @@ SDK 自动切换至 TCP/TLS 443 回调。
 
 - peerconnection-state-change(curState:RTCPeerConnectionState, revState:RTCPeerConnectionState):void
 
-- ### 自从
-
+:::info[自从]
 *4.23.0*
 
 本地媒体连接 PeerConnection 的状态回调。
+:::
 
-  Parameters
+#### Parameters
 
-  - curState: RTCPeerConnectionState
+- curState: RTCPeerConnectionState
 
-    当前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。
-  - revState: RTCPeerConnectionState
+  当前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。
+- revState: RTCPeerConnectionState
 
-    之前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。
+  之前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。
 
-  Returns void
+#### Returns void
 
 <a id="event_published_user_list"></a>
 
@@ -877,8 +877,7 @@ SDK 自动切换至 TCP/TLS 443 回调。
 
 - published-user-list(users:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)[]):void
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 如果开启了单频道支持 128 位主播的功能，该回调会在调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 时触发，返回当前频道内发布音频和视频轨道的用户。
@@ -890,14 +889,15 @@ SDK 自动切换至 TCP/TLS 443 回调。
 >
 >   - 如果监听了 `published-user-list`，已经在 `published-user-list` 中返回的用户不会再通过 `user-joined` 和 `user-published` 重复返回。
 >   - 如果没有监听 `published-user-list`，`user-joined` 和 `user-published` 会正常触发。
+:::
 
-  Parameters
+#### Parameters
 
-  - users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)[]
+- users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)[]
 
-    远端用户对象。
+  远端用户对象。
 
-  Returns void
+#### Returns void
 
 <a id="event_stream_fallback"></a>
 
@@ -1220,14 +1220,14 @@ SDK 和声网服务器的连接状态。
 
 localTracks: [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)[]
 
-### 自从
-
+:::info[自从]
 *4.0.0*
 
 保存当前正在发布的本地轨道对象列表。
 
 - 调用 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 成功后，发布的轨道对象会自动添加到这个列表中。
 - 调用 [unpublish](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#unpublish) 成功后，取消发布的轨道对象会自动从这个列表中移除。
+:::
 
 <a id="remoteusers"></a>
 
@@ -1916,13 +1916,13 @@ client.enableContentInspect({
 
 - getLocalAudioStats():[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取本地音频相关信息。
+:::
 
-  Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+#### Returns LocalAudioTrackStats
 
 <a id="getlocalvideostats"></a>
 
@@ -1977,17 +1977,17 @@ client.enableContentInspect({
 
 - getRemoteAudioStats():object
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取远端用户的音频相关信息。
 
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteaudiotrackstats)
+- [uid: string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteaudiotrackstats)
 
 <a id="getremotenetworkquality"></a>
 
@@ -1995,15 +1995,15 @@ client.enableContentInspect({
 
 - getRemoteNetworkQuality():object
 
-- ### 自从
-
+:::info[自从]
 *4.2.0*
 
 获取本地订阅的所有远端用户的上下行网络质量。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+- [uid: string]:[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
 
 <a id="getremotevideostats"></a>
 
@@ -2011,17 +2011,17 @@ client.enableContentInspect({
 
 - getRemoteVideoStats():object
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取远端用户的视频统计信息。
 
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+:::
 
-  Returns object
+#### Returns object
 
-  - [uid: string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remotevideotrackstats)
+- [uid: string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remotevideotrackstats)
 
 <a id="masssubscribe"></a>
 
@@ -2029,8 +2029,7 @@ client.enableContentInspect({
 
 - massSubscribe(subscribeList:object[]):Promise&lt;object[]&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 批量订阅远端用户的音视频轨道。
@@ -2053,30 +2052,31 @@ for(const {track, mediaType, error} of result) {
   }
 }
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - subscribeList: object[]
+- subscribeList: object[]
 
-    订阅的远端用户列表。列表中的每一条都包含以下信息：
-
-    - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
-    - `mediaType`：订阅的轨道媒体类型。
-
-      - `"video"`: 订阅指定用户的视频轨道。
-      - `"audio"`: 订阅指定用户的音频轨道。
-
-  Returns Promise&lt;object[]&gt;
-
-  正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
+  订阅的远端用户列表。列表中的每一条都包含以下信息：
 
   - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
-  - `mediaType`：已订阅的轨道媒体类型。
+  - `mediaType`：订阅的轨道媒体类型。
 
-    - `"video"`: 已订阅指定用户发布的视频轨道。
-    - `"audio"`: 已订阅指定用户发布的音频轨道。
-  - `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)。
-  - `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
+    - `"video"`: 订阅指定用户的视频轨道。
+    - `"audio"`: 订阅指定用户的音频轨道。
+
+#### Returns Promise&lt;object[]&gt;
+
+正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
+
+- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
+- `mediaType`：已订阅的轨道媒体类型。
+
+  - `"video"`: 已订阅指定用户发布的视频轨道。
+  - `"audio"`: 已订阅指定用户发布的音频轨道。
+- `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)。
+- `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
 
 <a id="massunsubscribe"></a>
 
@@ -2084,8 +2084,7 @@ for(const {track, mediaType, error} of result) {
 
 - massUnsubscribe(unsubscribeList:object[]):Promise&lt;void&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.11.0*
 
 批量取消订阅远端用户的音视频轨道。
@@ -2093,21 +2092,22 @@ for(const {track, mediaType, error} of result) {
 ```javascript
 client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - unsubscribeList: object[]
+- unsubscribeList: object[]
 
-    取消订阅的远端用户列表。列表中的每一条都包含以下信息：
+  取消订阅的远端用户列表。列表中的每一条都包含以下信息：
 
-    - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
-    - `mediaType`：取消订阅的轨道媒体类型。
+  - `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
+  - `mediaType`：取消订阅的轨道媒体类型。
 
-      - `"video"`: 取消订阅指定用户的视频轨道。
-      - `"audio"`: 取消订阅指定用户的音频轨道。
-      - 如不填，取消订阅该用户发布的所有轨道。
+    - `"video"`: 取消订阅指定用户的视频轨道。
+    - `"audio"`: 取消订阅指定用户的音频轨道。
+    - 如不填，取消订阅该用户发布的所有轨道。
 
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="off"></a>
 
@@ -2164,419 +2164,447 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 - on(event:"stream-message", listener:typeof event_stream_message):void
 - on(event:string, listener:Function):void
 
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.23.0*
 
-  *4.23.0*
+本地媒体连接 PeerConnection 的状态回调。
+:::
 
-  本地媒体连接 PeerConnection 的状态回调。
+#### Parameters
 
-  Parameters
+- event: "peerconnection-state-change"
 
-  - event: "peerconnection-state-change"
+  事件名称。
+- listener: typeof event_peerconnection_state_change
 
-    事件名称。
-  - listener: typeof event_peerconnection_state_change
+  详见 [peerconnection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_peerconnection_state_change)。
 
-    详见 [peerconnection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_peerconnection_state_change)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  SDK 与服务器的连接状态发生改变回调。
+SDK 与服务器的连接状态发生改变回调。
 
-  Parameters
+#### Parameters
 
-  - event: "connection-state-change"
+- event: "connection-state-change"
 
-    事件名称。
-  - listener: typeof event_connection_state_change
+  事件名称。
+- listener: typeof event_connection_state_change
 
-    详见 [connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change)。
+  详见 [connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change)。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Returns void
 
-  远端用户或主播加入频道回调。
+Overrides EventEmitter.on
 
-  Parameters
+远端用户或主播加入频道回调。
 
-  - event: "user-joined"
+#### Parameters
 
-    事件名称。
-  - listener: typeof event_user_joined
+- event: "user-joined"
 
-    详见 [user-joined](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_joined)。
+  事件名称。
+- listener: typeof event_user_joined
 
-  Returns void
-- Overrides EventEmitter.on
+  详见 [user-joined](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_joined)。
 
-  远端用户离线回调。
+#### Returns void
 
-  Parameters
+Overrides EventEmitter.on
 
-  - event: "user-left"
+远端用户离线回调。
 
-    事件名称。
-  - listener: typeof event_user_left
+#### Parameters
 
-    详见 [user-left](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_left)。
+- event: "user-left"
 
-  Returns void
-- Overrides EventEmitter.on
+  事件名称。
+- listener: typeof event_user_left
 
-  远端用户发布了新的音频轨道或视频轨道回调。
+  详见 [user-left](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_left)。
 
-  Parameters
+#### Returns void
 
-  - event: "user-published"
+Overrides EventEmitter.on
 
-    事件名称。
-  - listener: typeof event_user_published
+远端用户发布了新的音频轨道或视频轨道回调。
 
-    详见 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published)。
+#### Parameters
 
-  Returns void
-- Overrides EventEmitter.on
+- event: "user-published"
 
-  远端用户停止或取消发布了音频或视频轨道。
+  事件名称。
+- listener: typeof event_user_published
 
-  Parameters
+  详见 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published)。
 
-  - event: "user-unpublished"
+#### Returns void
 
-    事件名称。
-  - listener: typeof event_user_unpublished
+Overrides EventEmitter.on
 
-    详见 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished)。
+远端用户停止或取消发布了音频或视频轨道。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Parameters
 
-  用户状态发生变化回调。
+- event: "user-unpublished"
 
-  Parameters
+  事件名称。
+- listener: typeof event_user_unpublished
 
-  - event: "user-info-updated"
+  详见 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished)。
 
-    事件名称。
-  - listener: typeof event_user_info_updated
+#### Returns void
 
-    详见 [user-info-updated](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_info_updated)。
+Overrides EventEmitter.on
 
-  Returns void
-- Overrides EventEmitter.on
+用户状态发生变化回调。
 
-  SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
+#### Parameters
 
-  Parameters
+- event: "user-info-updated"
 
-  - event: "media-reconnect-start"
+  事件名称。
+- listener: typeof event_user_info_updated
 
-    事件名称。
-  - listener: typeof event_media_reconnect_start
+  详见 [user-info-updated](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_info_updated)。
 
-    详见 [media-reconnect-start](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_media_reconnect_start)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  SDk 重新建立媒体连接（用于发布和订阅）结束的回调。
+SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 
-  Parameters
+#### Parameters
 
-  - event: "media-reconnect-end"
+- event: "media-reconnect-start"
 
-    事件名称。
-  - listener: typeof event_media_reconnect_end
+  事件名称。
+- listener: typeof event_media_reconnect_start
 
-    详见 [media-reconnect-end](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_media_reconnect_end)。
+  详见 [media-reconnect-start](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_media_reconnect_start)。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Returns void
 
-  视频的订阅流类型发生改变回调。
+Overrides EventEmitter.on
 
-  Parameters
+SDk 重新建立媒体连接（用于发布和订阅）结束的回调。
 
-  - event: "stream-type-changed"
+#### Parameters
 
-    事件名称。
-  - listener: typeof event_stream_type_changed
+- event: "media-reconnect-end"
 
-    详见 [stream-type-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_type_changed)。
+  事件名称。
+- listener: typeof event_media_reconnect_end
 
-  Returns void
-- Overrides EventEmitter.on
+  详见 [media-reconnect-end](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_media_reconnect_end)。
 
-  订阅的音视频流回退为音频流或恢复为音视频流回调。
+#### Returns void
 
-  Parameters
+Overrides EventEmitter.on
 
-  - event: "stream-fallback"
+视频的订阅流类型发生改变回调。
 
-    事件名称。
-  - listener: typeof event_stream_fallback
+#### Parameters
 
-    详见 [stream-fallback](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_fallback)。
+- event: "stream-type-changed"
 
-  Returns void
-- Overrides EventEmitter.on
+  事件名称。
+- listener: typeof event_stream_type_changed
 
-  跨频道媒体流转发状态发生改变回调。
+  详见 [stream-type-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_type_changed)。
 
-  Parameters
+#### Returns void
 
-  - event: "channel-media-relay-state"
+Overrides EventEmitter.on
 
-    事件名称。
-  - listener: typeof event_channel_media_relay_state
+订阅的音视频流回退为音频流或恢复为音视频流回调。
 
-    详见 [channel-media-relay-state](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)。
+#### Parameters
 
-  Returns void
-- Overrides EventEmitter.on
+- event: "stream-fallback"
 
-  跨频道媒体流转发事件回调。
+  事件名称。
+- listener: typeof event_stream_fallback
 
-  Parameters
+  详见 [stream-fallback](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_fallback)。
 
-  - event: "channel-media-relay-event"
+#### Returns void
 
-    事件名称。
-  - listener: typeof event_channel_media_relay_event
+Overrides EventEmitter.on
 
-    详见 [channel-media-relay-event](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)。
+跨频道媒体流转发状态发生改变回调。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Parameters
 
-  报告频道内正在说话的本地和远端用户及其音量的回调。
+- event: "channel-media-relay-state"
 
-  Parameters
+  事件名称。
+- listener: typeof event_channel_media_relay_state
 
-  - event: "volume-indicator"
+  详见 [channel-media-relay-state](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)。
 
-    事件名称。
-  - listener: typeof event_volume_indicator
+#### Returns void
 
-    详见 [volume-indicator](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_volume_indicator)。
+Overrides EventEmitter.on
 
-  Returns void
-- Overrides EventEmitter.on
+跨频道媒体流转发事件回调。
 
-  解密失败回调。
+#### Parameters
 
-  Parameters
+- event: "channel-media-relay-event"
 
-  - event: "crypt-error"
+  事件名称。
+- listener: typeof event_channel_media_relay_event
 
-    事件名称。
-  - listener: typeof event_crypt_error
+  详见 [channel-media-relay-event](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)。
 
-    详见 [crypt-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_crypt_error)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  Token 即将过期回调。
+报告频道内正在说话的本地和远端用户及其音量的回调。
 
-  Parameters
+#### Parameters
 
-  - event: "token-privilege-will-expire"
+- event: "volume-indicator"
 
-    事件名称。
-  - listener: typeof event_token_privilege_will_expire
+  事件名称。
+- listener: typeof event_volume_indicator
 
-    详见 [token-privilege-will-expire](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_will_expire)。
+  详见 [volume-indicator](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_volume_indicator)。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Returns void
 
-  Token 已过期回调。
+Overrides EventEmitter.on
 
-  Parameters
+解密失败回调。
 
-  - event: "token-privilege-did-expire"
+#### Parameters
 
-    事件名称。
-  - listener: typeof event_token_privilege_did_expire
+- event: "crypt-error"
 
-    详见 [token-privilege-did-expire](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_did_expire)。
+  事件名称。
+- listener: typeof event_crypt_error
 
-  Returns void
-- Overrides EventEmitter.on
+  详见 [crypt-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_crypt_error)。
 
-  网络上下行质量报告回调。
+#### Returns void
 
-  Parameters
+Overrides EventEmitter.on
 
-  - event: "network-quality"
+Token 即将过期回调。
 
-    事件名称。
-  - listener: typeof event_network_quality
+#### Parameters
 
-    详见 [network-quality](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_network_quality)。
+- event: "token-privilege-will-expire"
 
-  Returns void
-- Overrides EventEmitter.on
+  事件名称。
+- listener: typeof event_token_privilege_will_expire
 
-  推流发生错误回调。
+  详见 [token-privilege-will-expire](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_will_expire)。
 
-  Parameters
+#### Returns void
 
-  - event: "live-streaming-error"
+Overrides EventEmitter.on
 
-    事件名称。
-  - listener: typeof event_live_streaming_error
+Token 已过期回调。
 
-    详见 [live-streaming-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_live_streaming_error)。
+#### Parameters
 
-  Returns void
-- Overrides EventEmitter.on
+- event: "token-privilege-did-expire"
 
-  推流发生警告回调。
+  事件名称。
+- listener: typeof event_token_privilege_did_expire
 
-  Parameters
+  详见 [token-privilege-did-expire](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_did_expire)。
 
-  - event: "live-streaming-warning"
+#### Returns void
 
-    事件名称。
-  - listener: typeof event_live_streaming_warning
+Overrides EventEmitter.on
 
-    详见 [live-streaming-warning](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_live_streaming_warning)。
+网络上下行质量报告回调。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Parameters
 
-  SDk 检测到异常事件回调。
+- event: "network-quality"
 
-  Parameters
+  事件名称。
+- listener: typeof event_network_quality
 
-  - event: "exception"
+  详见 [network-quality](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_network_quality)。
 
-    事件名称。
-  - listener: typeof event_exception
+#### Returns void
 
-    详见 [exception](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_exception)。
+Overrides EventEmitter.on
 
-  Returns void
-- Overrides EventEmitter.on
+推流发生错误回调。
 
-  通知当前媒体流是否经云代理服务转发回调。
+#### Parameters
 
-  Parameters
+- event: "live-streaming-error"
 
-  - event: "is-using-cloud-proxy"
+  事件名称。
+- listener: typeof event_live_streaming_error
 
-    事件名称。
-  - listener: typeof event_is_using_cloud_proxy
+  详见 [live-streaming-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_live_streaming_error)。
 
-    详见 [is-using-cloud-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_is_using_cloud_proxy)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### deprecated
+推流发生警告回调。
 
-  自 4.19.0 起废弃。
-   SDK 自动切换连接通道回调。
+#### Parameters
 
-  Parameters
+- event: "live-streaming-warning"
 
-  - event: "join-fallback-to-proxy"
+  事件名称。
+- listener: typeof event_live_streaming_warning
 
-    事件名称。
-  - listener: typeof event_join_fallback_to_proxy
+  详见 [live-streaming-warning](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_live_streaming_warning)。
 
-    详见 [join-fallback-to-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_join_fallback_to_proxy)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  128 人场景下，报告当前频道内发布音频和视频轨道的用户。
+SDk 检测到异常事件回调。
 
-  Parameters
+#### Parameters
 
-  - event: "published-user-list"
+- event: "exception"
 
-    事件名称。
-  - listener: typeof event_published_user_list
+  事件名称。
+- listener: typeof event_exception
 
-    详见 [published-user-list](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_published_user_list)。
+  详见 [exception](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_exception)。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Returns void
 
-  视频截图上传服务的连接状态发生改变回调。
+Overrides EventEmitter.on
 
-  Parameters
+通知当前媒体流是否经云代理服务转发回调。
 
-  - event: "content-inspect-connection-state-change"
+#### Parameters
 
-    事件名称。
-  - listener: typeof event_content_inspect_connection_state_change
+- event: "is-using-cloud-proxy"
 
-    详见 [content-inspect-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_content_inspect_connection_state_change)。
+  事件名称。
+- listener: typeof event_is_using_cloud_proxy
 
-  Returns void
-- Overrides EventEmitter.on
+  详见 [is-using-cloud-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_is_using_cloud_proxy)。
 
-  开启视频上传服务出错回调。
+#### Returns void
 
-  Parameters
+Overrides EventEmitter.on
 
-  - event: "content-inspect-error"
+### deprecated
 
-    事件名称。
-  - listener: typeof event_content_inspect_error
+自 4.19.0 起废弃。
+ SDK 自动切换连接通道回调。
 
-    详见 [content-inspect-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_content_inspect_error)。
+#### Parameters
 
-  Returns void
-- Overrides EventEmitter.on
+- event: "join-fallback-to-proxy"
 
-  第三方视频审核服务连接状态发生改变回调。
+  事件名称。
+- listener: typeof event_join_fallback_to_proxy
 
-  Parameters
+  详见 [join-fallback-to-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_join_fallback_to_proxy)。
 
-  - event: "image-moderation-connection-state-change"
+#### Returns void
 
-    事件名称。
-  - listener: typeof event_image_moderation_connection_state_change
+Overrides EventEmitter.on
 
-    详见 [image-moderation-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_image_moderation_connection_state_change)。
+128 人场景下，报告当前频道内发布音频和视频轨道的用户。
 
-  Returns void
-- Overrides EventEmitter.on
+#### Parameters
 
-  收到数据流消息回调。
+- event: "published-user-list"
 
-  Parameters
+  事件名称。
+- listener: typeof event_published_user_list
 
-  - event: "stream-message"
+  详见 [published-user-list](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_published_user_list)。
 
-    事件名称。
-  - listener: typeof event_stream_message
+#### Returns void
 
-    详见 [stream-message](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_message)。
+Overrides EventEmitter.on
 
-  Returns void
-- Overrides EventEmitter.on
+视频截图上传服务的连接状态发生改变回调。
 
-  当指定的事件触发时，会调用传入的回调函数。
+#### Parameters
 
-  Parameters
+- event: "content-inspect-connection-state-change"
 
-  - event: string
+  事件名称。
+- listener: typeof event_content_inspect_connection_state_change
 
-    事件名称。
-  - listener: Function
+  详见 [content-inspect-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_content_inspect_connection_state_change)。
 
-    回调函数。
+#### Returns void
 
-  Returns void
+Overrides EventEmitter.on
+
+开启视频上传服务出错回调。
+
+#### Parameters
+
+- event: "content-inspect-error"
+
+  事件名称。
+- listener: typeof event_content_inspect_error
+
+  详见 [content-inspect-error](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_content_inspect_error)。
+
+#### Returns void
+
+Overrides EventEmitter.on
+
+第三方视频审核服务连接状态发生改变回调。
+
+#### Parameters
+
+- event: "image-moderation-connection-state-change"
+
+  事件名称。
+- listener: typeof event_image_moderation_connection_state_change
+
+  详见 [image-moderation-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_image_moderation_connection_state_change)。
+
+#### Returns void
+
+Overrides EventEmitter.on
+
+收到数据流消息回调。
+
+#### Parameters
+
+- event: "stream-message"
+
+  事件名称。
+- listener: typeof event_stream_message
+
+  详见 [stream-message](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_message)。
+
+#### Returns void
+
+Overrides EventEmitter.on
+
+当指定的事件触发时，会调用传入的回调函数。
+
+#### Parameters
+
+- event: string
+
+  事件名称。
+- listener: Function
+
+  回调函数。
+
+#### Returns void
 
 <a id="once"></a>
 
@@ -2726,10 +2754,9 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 
 - setDualStreamMode(mode:[SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode), streamParameter?:[LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)):Promise&lt;void&gt;
 
-- 在发送端设置双流模式和视频小流属性。
+在发送端设置双流模式和视频小流属性。
 
-### 自从
-
+:::info[自从]
 *4.24.1*
 
 你可以通过该方法设置如下双流模式：
@@ -2749,17 +2776,18 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 >
 > - **观众身份**发送小流申请主播发送端默认无响应；
 > - 在和 Native 互通的场景中，Native 端申请 Web 端主播小流，默认不支持。
+:::
 
-  Parameters
+#### Parameters
 
-  - mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode)
+- mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode)
 
-    发送视频流的模式。
-  - Optional streamParameter: [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)
+  发送视频流的模式。
+- Optional streamParameter: [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)
 
-    小流的视频属性。
+  小流的视频属性。
 
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setencryptionconfig"></a>
 
@@ -2842,8 +2870,7 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 
 - setLocalAccessPointsV2(config:[LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)):void
 
-- ### 自从
-
+:::info[自从]
 *4.16.0*
 
 配置声网混合云或私有化平台的相关服务。
@@ -2873,14 +2900,15 @@ client.setLocalAccessPointsV2({
   }
 })
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)
+- config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)
 
-    混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)。
+  混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)。
 
-  Returns void
+#### Returns void
 
 ## Proxy Methods
 
@@ -2890,8 +2918,7 @@ client.setLocalAccessPointsV2({
 
 - setProxyServer(proxyServer:string):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 部署你的代理服务器。
@@ -2905,14 +2932,15 @@ client.setLocalAccessPointsV2({
 >
 > - 该方法必须在 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 之前调用。
 > - 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
+:::
 
-  Parameters
+#### Parameters
 
-  - proxyServer: string
+- proxyServer: string
 
-    你的代理服务器域名，ASCII 字符。
+  你的代理服务器域名，ASCII 字符。
 
-  Returns void
+#### Returns void
 
 <a id="startproxyserver"></a>
 

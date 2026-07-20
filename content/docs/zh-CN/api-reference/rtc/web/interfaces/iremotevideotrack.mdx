@@ -97,21 +97,21 @@ _migration:
 
 - video-element-visible-status(data?:[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)):void
 
-- ### 自从
-
+:::info[自从]
 *4.8.0*
 
 提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
 
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
+:::
 
-  Parameters
+#### Parameters
 
-  - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
+- Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
 
-    `&lt;video&gt;` 标签的可见状态信息。
+  `&lt;video&gt;` 标签的可见状态信息。
 
-  Returns void
+#### Returns void
 
 ## Properties
 
@@ -134,11 +134,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 processorDestination: IBaseProcessor
 
-### 自从
-
+:::info[自从]
 *4.13.0*
 
 远端视频轨道上当前媒体处理链路的最终节点。
+:::
 
 <a id="trackmediatype"></a>
 
@@ -161,17 +161,17 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getCurrentFrameData():ImageData
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 获取当前渲染的视频帧数据。
 
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 则返回空数据。
+:::
 
-  Returns ImageData
+#### Returns ImageData
 
-  存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
+存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
 <a id="getlisteners"></a>
 
@@ -440,21 +440,21 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - pipe(processor:IBaseProcessor):IBaseProcessor
 
-- ### 自从
-
+:::info[自从]
 *4.13.0*
 
 将 `Processor` 注入远端视频轨道。
+:::
 
-  Parameters
+#### Parameters
 
-  - processor: IBaseProcessor
+- processor: IBaseProcessor
 
-    `Processor` 实例。每个插件均有对应类型的 `Processor`。
+  `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-  Returns IBaseProcessor
+#### Returns IBaseProcessor
 
-  `Processor` 实例。
+`Processor` 实例。
 
 <a id="play"></a>
 
@@ -516,10 +516,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - unpipe():void
 
-- ### 自从
-
+:::info[自从]
 *4.13.0*
 
 取消远端视频轨道上注入的 `Processor`。
+:::
 
-  Returns void
+#### Returns void

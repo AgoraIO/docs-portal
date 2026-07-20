@@ -139,11 +139,11 @@ processorDestination: IBaseProcessor
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[processorDestination](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#processordestination)
 
-### 自从
-
+:::info[自从]
 *4.10.0*
 
 本地视频轨道上当前媒体处理链路的最终节点。
+:::
 
 <a id="trackmediatype"></a>
 
@@ -166,28 +166,28 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - clone(config?:[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset), cloneTrack?:boolean):[ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)
 
-- Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack).[clone](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#clone)
+Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack).[clone](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#clone)
 
-  ### 自从
+:::info[自从]
+*4.19.0*
 
-  *4.19.0*
+复制当前的视频轨道对象，生成一个新的视频轨道。
 
-  复制当前的视频轨道对象，生成一个新的视频轨道。
+在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
+:::
 
-  在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
+#### Parameters
 
-  Parameters
+- Optional config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
 
-  - Optional config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
+  新生成视频轨道的编码配置。你可以通过 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 传入 SDK 内置的编码配置；也可以通过传入一个 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 来自定义视频编码配置。
+- Optional cloneTrack: boolean
 
-    新生成视频轨道的编码配置。你可以通过 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 传入 SDK 内置的编码配置；也可以通过传入一个 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 来自定义视频编码配置。
-  - Optional cloneTrack: boolean
+  是否克隆当前轨道。默认为 `true`。
 
-    是否克隆当前轨道。默认为 `true`。
+#### Returns ICameraVideoTrack
 
-  Returns [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)
-
-  新生成的视频轨道。
+新生成的视频轨道。
 
 <a id="close"></a>
 
@@ -209,19 +209,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getCurrentFrameData():ImageData
 
-- Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[getCurrentFrameData](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#getcurrentframedata)
+Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[getCurrentFrameData](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#getcurrentframedata)
 
-  ### 自从
+:::info[自从]
+*4.1.0*
 
-  *4.1.0*
+获取当前渲染的视频帧数据。
 
-  获取当前渲染的视频帧数据。
+> 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#play) 则返回空数据。
+:::
 
-  > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#play) 则返回空数据。
+#### Returns ImageData
 
-  Returns ImageData
-
-  存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
+存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
 <a id="getlisteners"></a>
 
@@ -473,23 +473,23 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - pipe(processor:IBaseProcessor):IBaseProcessor
 
-- Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[pipe](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#pipe)
+Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[pipe](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#pipe)
 
-  ### 自从
+:::info[自从]
+*4.10.0*
 
-  *4.10.0*
+将 `Processor` 注入本地视频轨道。
+:::
 
-  将 `Processor` 注入本地视频轨道。
+#### Parameters
 
-  Parameters
+- processor: IBaseProcessor
 
-  - processor: IBaseProcessor
+  `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-    `Processor` 实例。每个插件均有对应类型的 `Processor`。
+#### Returns IBaseProcessor
 
-  Returns IBaseProcessor
-
-  `Processor` 实例。
+`Processor` 实例。
 
 <a id="play"></a>
 
@@ -540,58 +540,58 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - replaceTrack(track:MediaStreamTrack, stopOldTrack:boolean):Promise&lt;void&gt;
 
-- Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[replaceTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#replacetrack)
+Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[replaceTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#replacetrack)
 
-  ### 自从
+:::info[自从]
+*4.17.0*
 
-  *4.17.0*
+替换本地视频轨道。
 
-  替换本地视频轨道。
+该方法在本地视频流发布前或发布后都可以调用：
 
-  该方法在本地视频流发布前或发布后都可以调用：
+- 在发流前调用，新的视频轨道会在本地播放。
+- 在发流后调用，远端会接收到新的视频轨道。
 
-  - 在发流前调用，新的视频轨道会在本地播放。
-  - 在发流后调用，远端会接收到新的视频轨道。
+新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
 
-  新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
+> 注意事项：
+>
+> - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
+> - 部分移动设备上该方法可能不生效。
+> - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
+>
+>   - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
+>   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
+> - 订阅端无法知悉视频轨道被替换。
+> - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 方法。
 
-  > 注意事项：
-  >
-  > - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
-  > - 部分移动设备上该方法可能不生效。
-  > - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
-  >
-  >   - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
-  >   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
-  > - 订阅端无法知悉视频轨道被替换。
-  > - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 方法。
+**示例代码**
 
-  **示例代码**
+```javascript
+// 原有的本地视频轨道
+const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+// 获取新的视频轨道（方式一）
+const newTrack = localVideoTrack.getMediaStreamTrack();
+// 获取新的视频轨道（方式二）
+const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(mediaStream => mediaStream.getVideoTracks()[0]);
+// 替换本地视频轨道，并且停止原有的视频轨道
+await localVideoTrack.replaceTrack(newTrack, true);
+```
+:::
 
-  ```javascript
-  // 原有的本地视频轨道
-  const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-  // 获取新的视频轨道（方式一）
-  const newTrack = localVideoTrack.getMediaStreamTrack();
-  // 获取新的视频轨道（方式二）
-  const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(mediaStream => mediaStream.getVideoTracks()[0]);
-  // 替换本地视频轨道，并且停止原有的视频轨道
-  await localVideoTrack.replaceTrack(newTrack, true);
-  ```
+#### Parameters
 
-  Parameters
+- track: MediaStreamTrack
 
-  - track: MediaStreamTrack
+  新的视频轨道。需要传入一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+- stopOldTrack: boolean
 
-    新的视频轨道。需要传入一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
-  - stopOldTrack: boolean
+  是否停止原有的视频轨道：
 
-    是否停止原有的视频轨道：
+  - 停止原有的视频轨道。
+  - 保留原有的视频轨道。
 
-    - 停止原有的视频轨道。
-    - 保留原有的视频轨道。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="sendseidata"></a>
 
@@ -641,30 +641,30 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - setEnabled(enabled:boolean):Promise&lt;void&gt;
 
-- Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setenabled)
+Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setenabled)
 
-  ### 自从
+:::info[自从]
+*4.0.0*
 
-  *4.0.0*
+启用/禁用该轨道。
 
-  启用/禁用该轨道。
+轨道禁用后，播放和发布都将被停止。
 
-  轨道禁用后，播放和发布都将被停止。
+> - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
+> - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
-  > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
-  > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+#### Parameters
 
-  Parameters
+- enabled: boolean
 
-  - enabled: boolean
+  是否启用该轨道:
 
-    是否启用该轨道:
+  - `true`: 启用该轨道.
+  - `false`: 禁用该轨道.
 
-    - `true`: 启用该轨道.
-    - `false`: 禁用该轨道.
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setencoderconfiguration"></a>
 
@@ -690,29 +690,29 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - setMuted(muted:boolean):Promise&lt;void&gt;
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setmuted)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setmuted)
 
-  发送或暂停发送该轨道的媒体数据。
+发送或暂停发送该轨道的媒体数据。
 
-  ### 自从
+:::info[自从]
+*4.0.0*
 
-  *4.0.0*
+如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 
-  如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
+> - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
+> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
-  > - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)。
-  > - `setEnabled` 和 `setMuted` 不能同时调用。
+#### Parameters
 
-  Parameters
+- muted: boolean
 
-  - muted: boolean
+  是否发送该轨道的媒体数据:
 
-    是否发送该轨道的媒体数据:
+  - `true`: 暂停发送该轨道的媒体数据。
+  - `false`: 恢复发送该轨道的媒体数据。
 
-    - `true`: 暂停发送该轨道的媒体数据。
-    - `false`: 恢复发送该轨道的媒体数据。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="setoptimizationmode"></a>
 
@@ -720,38 +720,38 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - setOptimizationMode(mode:[OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)):Promise&lt;void&gt;
 
-- Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[setOptimizationMode](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setoptimizationmode)
+Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[setOptimizationMode](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setoptimizationmode)
 
-  ### 自从
+:::info[自从]
+*4.2.0*
 
-  *4.2.0*
+设置视频传输优化模式。
 
-  设置视频传输优化模式。
+你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-  你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
+> 注意事项：该方法只支持 Chrome 浏览器。
+:::
 
-  > 注意事项：该方法只支持 Chrome 浏览器。
+#### Parameters
 
-  Parameters
+- mode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
 
-  - mode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
+  视频传输优化模式：
 
-    视频传输优化模式：
+  - `"balanced"`: 使用默认的传输优化模式：
 
-    - `"balanced"`: 使用默认的传输优化模式：
+    - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
+    - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。
+  - `"detail"`: 清晰优先。
 
-      - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
-      - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。
-    - `"detail"`: 清晰优先。
+    - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+    - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
+  - `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
 
-      - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
-      - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
-    - `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+    - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+    - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
 
-      - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
-      - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
-
-  Returns Promise&lt;void&gt;
+#### Returns Promise&lt;void&gt;
 
 <a id="stop"></a>
 
@@ -771,12 +771,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - unpipe():void
 
-- Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[unpipe](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#unpipe)
+Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[unpipe](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#unpipe)
 
-  ### 自从
+:::info[自从]
+*4.10.0*
 
-  *4.10.0*
+取消本地视频轨道上注入的 `Processor`。
+:::
 
-  取消本地视频轨道上注入的 `Processor`。
-
-  Returns void
+#### Returns void

@@ -214,29 +214,29 @@ _migration:
 
 - audio-context-state-changed(currState:AudioContextState|"interrupted", prevState:AudioContextState|"interrupted"|undefined):void
 
-- ### 自从
-
+:::info[自从]
 *4.20.0*
 
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
+:::
 
-  Parameters
+#### Parameters
 
-  - currState: AudioContextState|"interrupted"
+- currState: AudioContextState|"interrupted"
 
-    当前的状态，取值如下：
+  当前的状态，取值如下：
 
-    - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
-    - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。你可以调用 [resumeAudioContext](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#resumeaudiocontext) 方法恢复音视频播放。
-  - prevState: AudioContextState|"interrupted"|undefined
+  - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
+  - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。你可以调用 [resumeAudioContext](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#resumeaudiocontext) 方法恢复音视频播放。
+- prevState: AudioContextState|"interrupted"|undefined
 
-    之前的状态，取值如下：
+  之前的状态，取值如下：
 
-    - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
-    - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
-    - `undefined`：无先前状态。
+  - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
+  - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
+  - `undefined`：无先前状态。
 
-  Returns void
+#### Returns void
 
 <a id="event_autoplay_failed"></a>
 
@@ -244,8 +244,7 @@ _migration:
 
 - autoplay-failed():void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onautoplayfailed)。
@@ -255,8 +254,9 @@ AgoraRTC.on("autoplay-failed", (info) => {
   console.log("Autoplay failed!", info.state, info.device);
 });
 ```
+:::
 
-  Returns void
+#### Returns void
 
 <a id="event_camera_changed"></a>
 
@@ -264,8 +264,7 @@ AgoraRTC.on("autoplay-failed", (info) => {
 
 - camera-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#oncamerachanged)。
@@ -275,14 +274,15 @@ AgoraRTC.on("camera-changed", (info) => {
   console.log("Camera changed!", info.state, info.device);
 });
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
 
-    设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
 
-  Returns void
+#### Returns void
 
 <a id="event_microphone_changed"></a>
 
@@ -290,8 +290,7 @@ AgoraRTC.on("camera-changed", (info) => {
 
 - microphone-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onmicrophonechanged)。
@@ -301,14 +300,15 @@ AgoraRTC.on("microphone-changed", (info) => {
   console.log("Microphone changed!", info.state, info.device);
 });
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
 
-    设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
 
-  Returns void
+#### Returns void
 
 <a id="event_playback_device_changed"></a>
 
@@ -316,8 +316,7 @@ AgoraRTC.on("microphone-changed", (info) => {
 
 - playback-device-changed(deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onplaybackdevicechanged)。
@@ -327,14 +326,15 @@ AgoraRTC.on("playback-device-changed", (info) => {
   console.log("Playback device changed!", info.state, info.device);
 });
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
 
-    设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
 
-  Returns void
+#### Returns void
 
 <a id="event_security_policy_violation"></a>
 
@@ -342,8 +342,7 @@ AgoraRTC.on("playback-device-changed", (info) => {
 
 - security-policy-violation():void
 
-- ### 自从
-
+:::info[自从]
 *4.18.0*
 
 如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onsecuritypolicyviolation)。
@@ -353,8 +352,9 @@ AgoraRTC.on("security-policy-violation", (info) => {
   console.log("Security policy violation!", info.state, info.device);
 });
 ```
+:::
 
-  Returns void
+#### Returns void
 
 ## Global Callback Properties
 
@@ -415,8 +415,7 @@ onAutoplayFailed: function
 
 音频或视频轨道自动播放失败回调。
 
-### 自从
-
+:::info[自从]
 *4.6.0*
 
 SDK 在音频或视频轨道自动播放失败时触发该回调。
@@ -444,6 +443,7 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 ```
 
 > 由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
+:::
 
 #### Type declaration
 
@@ -521,8 +521,7 @@ AgoraRTC.onMicrophoneChanged = (info) => {
 
 onPlaybackDeviceChanged: function
 
-### 自从
-
+:::info[自从]
 *4.1.0*
 
 音频播放设备状态变化回调。
@@ -538,6 +537,7 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 **Parameters**
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+:::
 
 #### Type declaration
 
@@ -555,14 +555,14 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 
 onSecurityPolicyViolation: function
 
-### 自从
-
+:::info[自从]
 *4.15.0*
 
 触发 CSP 规则回调。
 
 当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。
  收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
+:::
 
 #### Type declaration
 
@@ -1017,8 +1017,7 @@ contextBridge.exposeInMainWorld(
 
 - getPlaybackDevices(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- ### 自从
-
+:::info[自从]
 *4.1.0*
 
 该方法枚举可用的音频播放设备，比如扬声器。
@@ -1027,17 +1026,18 @@ contextBridge.exposeInMainWorld(
 
 > - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
 > - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
+:::
 
-  Parameters
+#### Parameters
 
-  - Optional skipPermissionCheck: boolean
+- Optional skipPermissionCheck: boolean
 
-    是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
+  是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
 
-    - `true`: 跳过权限检查。
-    - `false`:（默认）不跳过权限检查。
+  - `true`: 跳过权限检查。
+  - `false`:（默认）不跳过权限检查。
 
-  Returns Promise&lt;MediaDeviceInfo[]&gt;
+#### Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 ## Other Methods
 
@@ -1233,102 +1233,107 @@ AgoraRTC.getSupportedCodec().then(result => {
 - on(event:"security-policy-violation", listener:typeof event_security_policy_violation):void
 - on(event:"audio-context-state-changed", listener:typeof event_audio_context_state_changed):void
 
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.18.0*
+:::
 
-  *4.18.0*
+#### Parameters
 
-  Parameters
+- event: "camera-changed"
 
-  - event: "camera-changed"
+  事件名称。
+- listener: typeof event_camera_changed
 
-    事件名称。
-  - listener: typeof event_camera_changed
+  详见 [event_camera_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_camera_changed)。
 
-    详见 [event_camera_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_camera_changed)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.18.0*
+:::
 
-  *4.18.0*
+#### Parameters
 
-  Parameters
+- event: "microphone-changed"
 
-  - event: "microphone-changed"
+  事件名称。
+- listener: typeof event_microphone_changed
 
-    事件名称。
-  - listener: typeof event_microphone_changed
+  详见 [event_microphone_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_microphone_changed)。
 
-    详见 [event_microphone_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_microphone_changed)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.18.0*
+:::
 
-  *4.18.0*
+#### Parameters
 
-  Parameters
+- event: "playback-device-changed"
 
-  - event: "playback-device-changed"
+  事件名称。
+- listener: typeof event_playback_device_changed
 
-    事件名称。
-  - listener: typeof event_playback_device_changed
+  详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_playback_device_changed)。
 
-    详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_playback_device_changed)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.18.0*
+:::
 
-  *4.18.0*
+#### Parameters
 
-  Parameters
+- event: "autoplay-failed"
 
-  - event: "autoplay-failed"
+  事件名称。
+- listener: typeof event_autoplay_failed
 
-    事件名称。
-  - listener: typeof event_autoplay_failed
+  详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_autoplay_failed)。
 
-    详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_autoplay_failed)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.18.0*
+:::
 
-  *4.18.0*
+#### Parameters
 
-  Parameters
+- event: "security-policy-violation"
 
-  - event: "security-policy-violation"
+  事件名称。
+- listener: typeof event_security_policy_violation
 
-    事件名称。
-  - listener: typeof event_security_policy_violation
+  详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_security_policy_violation)。
 
-    详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_security_policy_violation)。
+#### Returns void
 
-  Returns void
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  ### 自从
+:::info[自从]
+*4.20.0*
+:::
 
-  *4.20.0*
+#### Parameters
 
-  Parameters
+- event: "audio-context-state-changed"
 
-  - event: "audio-context-state-changed"
+  事件名称。
+- listener: typeof event_audio_context_state_changed
 
-    事件名称。
-  - listener: typeof event_audio_context_state_changed
+  详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_audio_context_state_changed)。
 
-    详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_audio_context_state_changed)。
-
-  Returns void
+#### Returns void
 
 <a id="once"></a>
 
@@ -1416,8 +1421,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - processExternalMediaAEC(element:HTMLMediaElement):void
 
-- ### 自从
-
+:::info[自从]
 *4.5.0*
 
 对本地播放的音频启用回声消除。
@@ -1433,14 +1437,15 @@ AgoraRTC.getSupportedCodec().then(result => {
 ```
 
 > 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
+:::
 
-  Parameters
+#### Parameters
 
-  - element: HTMLMediaElement
+- element: HTMLMediaElement
 
-    需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
+  需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
 
-  Returns void
+#### Returns void
 
 <a id="registerextensions"></a>
 
@@ -1448,8 +1453,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - registerExtensions(extensions:IExtension&lt;any&gt;[]):void
 
-- ### 自从
-
+:::info[自从]
 *4.10.0*
 
 注册插件。
@@ -1459,14 +1463,15 @@ AgoraRTC.getSupportedCodec().then(result => {
 - 虚拟背景插件
 - AI 降噪插件
 - 美颜插件
+:::
 
-  Parameters
+#### Parameters
 
-  - extensions: IExtension&lt;any&gt;[]
+- extensions: IExtension&lt;any&gt;[]
 
-    插件实例。
+  插件实例。
 
-  Returns void
+#### Returns void
 
 <a id="removealllisteners"></a>
 
@@ -1509,8 +1514,7 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - setArea(area:[AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[]|object):void
 
-- ### 自从
-
+:::info[自从]
 *4.2.0*
 
 设置访问区域。
@@ -1525,11 +1529,12 @@ AgoraRTC.setArea({
   areaCode:"NORTH_AMERICA"
 })
 ```
+:::
 
-  Parameters
+#### Parameters
 
-  - area: [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[]|object
+- area: [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[]|object
 
-    服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
+  服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
 
-  Returns void
+#### Returns void
