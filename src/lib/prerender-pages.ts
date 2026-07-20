@@ -31,3 +31,14 @@ export function createDocsPrerenderPaths({
 
   return Array.from(paths).sort();
 }
+
+export function selectStaticDocsPrerenderPaths(
+  paths: Iterable<string>,
+  selectedPaths?: Iterable<string>,
+) {
+  const selection = selectedPaths ? new Set(selectedPaths) : null;
+
+  return Array.from(paths).filter(
+    (path) => path !== '/' && (!selection || selection.has(path)),
+  );
+}

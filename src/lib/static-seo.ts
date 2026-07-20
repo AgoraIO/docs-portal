@@ -18,6 +18,7 @@ export type StaticSeoHead = {
   links: Array<{
     href: string;
     rel: string;
+    type?: string;
   }>;
   meta: Array<
     | { title: string }
@@ -114,6 +115,11 @@ export function createStaticSeoHead(
       {
         rel: 'canonical',
         href: metadata.canonicalUrl,
+      },
+      {
+        rel: 'alternate',
+        type: 'text/markdown',
+        href: `${metadata.canonicalUrl}.md`,
       },
     ],
     meta: [
@@ -244,10 +250,11 @@ function createSeoHead(metadata: StaticSeoMetadata) {
 
       return `    <meta name="${escapeHtml(entry.name)}" content="${escapeHtml(entry.content)}">`;
     }),
-    ...head.links.map(
-      (entry) =>
-        `    <link rel="${escapeHtml(entry.rel)}" href="${escapeHtml(entry.href)}">`,
-    ),
+    ...head.links.map((entry) => {
+      const type = entry.type ? ` type="${escapeHtml(entry.type)}"` : '';
+
+      return `    <link rel="${escapeHtml(entry.rel)}"${type} href="${escapeHtml(entry.href)}">`;
+    }),
   ].join('\n');
 }
 
@@ -256,6 +263,10 @@ function stripManagedSeoTags(html: string) {
     .replace(/<title>[\s\S]*?<\/title>\s*/gi, '')
     .replace(/<meta\s+name=["']description["'][^>]*>\s*/gi, '')
     .replace(/<link\s+rel=["']canonical["'][^>]*>\s*/gi, '')
+    .replace(
+      /<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\btype=["']text\/markdown["'])[^>]*>\s*/gi,
+      '',
+    )
     .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>\s*/gi, '')
     .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>\s*/gi, '');
 }

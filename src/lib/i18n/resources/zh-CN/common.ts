@@ -197,7 +197,7 @@ const zhCnCommon = {
         },
         full: {
           title: 'llms-full.txt',
-          body: '提供更完整的聚合上下文导出。',
+          body: '用于离线索引和批量处理，不建议作为交互式 Agent 的默认上下文。',
         },
         search: {
           title: '搜索接口',
@@ -205,7 +205,7 @@ const zhCnCommon = {
         },
         markdown: {
           title: '原始 Markdown',
-          body: '直接读取已发布的 canonical Markdown 内容。',
+          body: '在文档 URL 后添加 .md，直接读取已发布的 Markdown 内容。',
         },
       },
     },
