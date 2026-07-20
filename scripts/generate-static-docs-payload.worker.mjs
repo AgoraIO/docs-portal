@@ -5,6 +5,7 @@ import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
 } from '../src/lib/docs-page.server.ts';
+import { createMarkdownLlmsIndex } from '../src/lib/llms-index.ts';
 import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import {
@@ -21,7 +22,11 @@ import {
   isPublishedDocsPath,
   PUBLISHED_DOCS_LOCALES,
 } from '../src/lib/site-region.ts';
-import { createSitemapXml, getSitemapUrls } from '../src/lib/sitemap.ts';
+import {
+  createSitemapXml,
+  getSitemapBaseUrl,
+  getSitemapUrls,
+} from '../src/lib/sitemap.ts';
 import {
   getLLMText,
   getPageMarkdownUrl,
@@ -194,14 +199,15 @@ async function removeGeneratedMachineReadableDocs() {
 async function generateStaticMachineReadableDocs() {
   const pages = source.getPages(MACHINE_READABLE_LOCALE);
   const openApiPages = await getOpenApiMarkdownPages();
-  const openApiIndex = openApiPages
-    .map((page) => `- [${page.title}](${page.url})`)
-    .join('\n');
   let generated = 0;
 
   await writeTextFile(
     path.join(markdownOutputRoot, 'llms.txt'),
-    `${llms(source).index(MACHINE_READABLE_LOCALE)}\n\n${openApiIndex}\n`,
+    createMarkdownLlmsIndex({
+      baseUrl: getSitemapBaseUrl(),
+      docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+      openApiPages,
+    }),
   );
   generated += 1;
 

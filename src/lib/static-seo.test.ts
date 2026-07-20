@@ -43,6 +43,7 @@ describe('static SEO metadata', () => {
       '<title>Agora Docs</title>',
       '<meta name="description" content="Global description">',
       '<meta property="og:title" content="Global">',
+      '<link type="text/markdown" rel="alternate" href="https://old.example.com/page.md">',
       '</head>',
       '<body></body>',
       '</html>',
@@ -63,6 +64,10 @@ describe('static SEO metadata', () => {
     expect(result).toContain(
       '<link rel="canonical" href="https://docs.agora.io/en/realtime-media/video">',
     );
+    expect(result).toContain(
+      '<link rel="alternate" type="text/markdown" href="https://docs.agora.io/en/realtime-media/video.md">',
+    );
+    expect(result.match(/type="text\/markdown"/g)).toHaveLength(1);
     expect(result).toContain(
       '<meta property="og:url" content="https://docs.agora.io/en/realtime-media/video">',
     );
