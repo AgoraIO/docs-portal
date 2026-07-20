@@ -12,6 +12,7 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 - Remaining review scope: 3 unique legacy-link rows (4 occurrences) and 22 unique broken-link rows (65 occurrences).
 - No links were removed in Task 5.
 - Reproducibility: run `bun run docs:links:openapi-zh -- --max-samples=200`. Use the bundled Node runtime if the default shell lacks Node 22.
+- CI gate: `bun run docs:links:openapi-zh:baseline` is wired into `.github/workflows/vercel-deploy.yml`. It allows the review baseline below but fails on new or increased zh-CN OpenAPI invalid-link rows.
 
 ## High-Confidence Replacements Applied
 
@@ -147,6 +148,7 @@ These are the remaining non-legacy `invalidInternalLinks` from the focused audit
 ## Verification Notes
 
 - `bun run docs:links:openapi-zh -- --max-samples=200`: exits 0 and reports the remaining review items above.
+- `bun run docs:links:openapi-zh:baseline`: exits 0 with `newOrIncreasedEntries: 0`.
 - `bun run docs:links:openapi-zh:strict -- --max-samples=200`: exits 1 while the review items above remain unresolved.
-- `bun run test scripts/audit-doc-links.test.ts`: passes, 9 tests.
+- `bun run test scripts/check-openapi-zh-link-baseline.test.ts scripts/audit-doc-links.test.ts`: passes, 11 tests.
 - `bun run types:check`: exits 2 in existing TypeScript OpenAPI renderer code (`fumadocs-openapi` no exported `Document`; `renderAPIPage` call arity mismatch). No TypeScript source files were changed in Task 5.
