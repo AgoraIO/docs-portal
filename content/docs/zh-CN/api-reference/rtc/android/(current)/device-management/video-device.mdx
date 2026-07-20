@@ -37,6 +37,10 @@ public abstract float getCameraMaxZoomFactor();
 
 方法调用成功，返回摄像头支持的最大变焦倍数。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_iscameraautofocusfacemodesupported"></a>
 
 <a id="ariaid-title3"></a>
@@ -63,6 +67,10 @@ public abstract boolean isCameraAutoFocusFaceModeSupported();
 
 - true：设备支持人脸自动对焦功能。
 - false：设备不支持人脸自动对焦功能。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_iscameraexposurepositionsupported"></a>
 
@@ -95,6 +103,10 @@ public abstract boolean isCameraExposurePositionSupported();
 - true：设备支持手动曝光。
 - false：设备不支持手动曝光。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_iscameraexposuresupported"></a>
 
 <a id="ariaid-title5"></a>
@@ -126,6 +138,10 @@ public abstract boolean isCameraExposureSupported();
 - true：当前摄像头支持调节曝光值。
 - false：当前摄像头不支持调节曝光值。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_iscamerafacedetectsupported"></a>
 
 <a id="ariaid-title6"></a>
@@ -148,6 +164,10 @@ public abstract boolean isCameraFaceDetectSupported();
 
 - true：设备摄像头支持人脸检测。
 - false：设备摄像头不支持人脸检测。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_iscamerafocussupported"></a>
 
@@ -176,6 +196,10 @@ public abstract boolean isCameraFocusSupported();
 - true：设备支持手动对焦功能。
 - false：设备不支持手动对焦功能。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_iscameratorchsupported"></a>
 
 <a id="ariaid-title8"></a>
@@ -202,6 +226,10 @@ public abstract boolean isCameraTorchSupported();
 
 - true：设备支持相机闪光灯功能。
 - false：设备不支持相机闪光灯功能。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_iscamerazoomsupported"></a>
 
@@ -232,6 +260,10 @@ public abstract boolean isCameraZoomSupported();
 - true：设备支持摄像头变焦。
 - false：设备不支持摄像头变焦。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_querycamerafocallengthcapability"></a>
 
 <a id="ariaid-title10"></a>
@@ -257,6 +289,10 @@ public abstract AgoraFocalLengthInfo[] queryCameraFocalLengthCapability();
 - 方法调用成功，返回 [AgoraFocalLengthInfo](/zh-CN/api-reference/rtc/android/class-focallengthinfo) 对象数组，包含摄像头的方向和焦距类型。
 - 方法调用失败，返回空数组。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_querycodeccapability"></a>
 
 <a id="ariaid-title11"></a>
@@ -278,6 +314,10 @@ public abstract CodecCapInfo[] queryCodecCapability();
 ### 返回值
 
 方法调用成功，返回 [CodecCapInfo](/zh-CN/api-reference/rtc/android/class-codeccapinfo) 数组，表示设备的视频编码能力。方法调用超时，请修改调用逻辑，避免在主线程中调用该方法。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled"></a>
 
@@ -318,6 +358,10 @@ public abstract int setCameraAutoFocusFaceModeEnabled(boolean enabled);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcameracapturerconfiguration"></a>
 
@@ -362,6 +406,10 @@ public abstract int setCameraCapturerConfiguration(CameraCapturerConfiguration c
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcameraexposurefactor"></a>
 
 <a id="ariaid-title14"></a>
@@ -404,6 +452,10 @@ public abstract int setCameraExposureFactor(int factor);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcameraexposureposition"></a>
 
@@ -448,6 +500,10 @@ public abstract int setCameraExposurePosition(float positionXinView, float posit
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcamerafocuspositioninpreview"></a>
 
 <a id="ariaid-title16"></a>
@@ -487,6 +543,10 @@ public abstract int setCameraFocusPositionInPreview(float positionX, float posit
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcameratorchon"></a>
 
 <a id="ariaid-title17"></a>
@@ -525,6 +585,10 @@ public abstract int setCameraTorchOn(boolean isOn);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcamerazoomfactor"></a>
 
 <a id="ariaid-title18"></a>
@@ -560,6 +624,10 @@ public abstract int setCameraZoomFactor(float factor);
 - 方法调用成功，返回摄像头缩放因子 `factor` 的值。
 - 方法调用失败，返回小于 0 的值。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_switchcamera"></a>
 
 <a id="ariaid-title19"></a>
@@ -594,6 +662,10 @@ public abstract int switchCamera();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_switchcamera2"></a>
 
@@ -638,6 +710,10 @@ public abstract int switchCamera(String cameraId);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged"></a>
 
 <a id="ariaid-title21"></a>
@@ -670,6 +746,10 @@ public void onCameraExposureAreaChanged(Rect rect)
 
 本地预览中的曝光矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged"></a>
 
 <a id="ariaid-title22"></a>
@@ -696,6 +776,10 @@ public void onCameraFocusAreaChanged(Rect rect)
 
 本地预览中的对焦矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_oncameraready"></a>
 
 <a id="ariaid-title23"></a>
@@ -721,3 +805,7 @@ public void onCameraReady() {}
 ### 触发时机
 
 该回调在摄像头成功开启并准备好采集视频时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -5,7 +5,7 @@
 - Owned MDX pages: 4956
 - Visible MDX pages: 5252
 - Preserved/reused MDX pages: 296
-- Links checked: 70017
+- Links checked: 83539
 - Old-site body links: 0
 - Invalid links: 0
 - Missing local paths: 0

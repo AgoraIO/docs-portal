@@ -55,6 +55,10 @@ virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
 
 <a id="ariaid-title3"></a>
@@ -98,6 +102,10 @@ virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_createcustomaudiotrack_imediaengine"></a>
 
@@ -150,6 +158,10 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 - 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识符。
 - 方法调用失败，返回 `0xffffffff`。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_destroycustomaudiotrack_imediaengine"></a>
 
 <a id="ariaid-title5"></a>
@@ -180,6 +192,10 @@ virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
 
@@ -224,6 +240,10 @@ virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_pullaudioframe_imediaengine"></a>
 
@@ -273,6 +293,10 @@ virtual int pullAudioFrame(IAudioFrameObserverBase::AudioFrame* frame) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_pushaudioframe"></a>
 
 <a id="ariaid-title8"></a>
@@ -316,6 +340,10 @@ virtual int pushAudioFrame(IAudioFrameObserverBase::AudioFrame* frame, rtc::trac
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalaudiosink_imediaengine"></a>
 
@@ -373,6 +401,10 @@ virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalaudiosource_imediaengine"></a>
 
@@ -439,3 +471,7 @@ virtual int setExternalAudioSource(bool enabled, int sampleRate, int channels, b
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)

@@ -29,6 +29,10 @@ _migration:
 
 SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler) 类向 App 报告 SDK 运行时的各种事件。该类中定义的所有方法都是可选的实现方法。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
 <a id="ariaid-title3"></a>
@@ -71,6 +75,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 - 方法调用成功，返回 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo) 对象，详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo)。
 - 方法调用失败，返回 nil。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuidex"></a>
 
@@ -121,6 +129,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 方法调用成功，返回 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo) 对象。详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo)。
 方法调用失败，返回 nil。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
 
 <a id="ariaid-title5"></a>
@@ -163,6 +175,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 - 方法调用成功，返回 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo) 对象，详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo)。
 - 方法调用失败，返回 nil。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex"></a>
 
@@ -211,6 +227,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 ### 返回值
 
 方法调用成功，返回指定用户的 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo) 对象。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannel1"></a>
 
@@ -306,6 +326,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
   - -17：加入频道请求被拒绝。常见原因是用户已在频道中。声网建议使用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。仅当收到 `AgoraConnectionStateDisconnected`（1）状态时再调用本方法。
   - -102：频道名无效。请在 `channelId` 中传入有效频道名重新加入。
   - -121：用户 ID 无效。请在 `uid` 中传入有效用户 ID 重新加入频道。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
 
@@ -406,6 +430,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
 - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_joinchannelex"></a>
 
 <a id="ariaid-title9"></a>
@@ -504,6 +532,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
 - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_joinchannelwithuseraccount1"></a>
 
 <a id="ariaid-title10"></a>
@@ -601,6 +633,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
   - -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。只有在收到 `AgoraConnectionStateDisconnected`（1）状态时才调用该方法加入频道。
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
 
@@ -705,6 +741,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议使用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。只有在收到 `AgoraConnectionStateDisconnected`（1）状态时才调用该方法。
 - -102：频道名无效。你需要传入有效的 `channelId` 重新加入频道。
 - -121：用户 ID 无效。你需要传入有效的 `uid` 重新加入频道。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex"></a>
 
@@ -820,6 +860,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - -102：频道名无效。请在 `channelId` 中传入有效的频道名后重新加入频道。
 - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 后重新加入频道。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_leavechannel"></a>
 
 <a id="ariaid-title13"></a>
@@ -879,6 +923,10 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
   - -2：参数无效。
   - -7：SDK 未初始化。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_leavechannel2"></a>
 
 <a id="ariaid-title14"></a>
@@ -935,6 +983,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
 
@@ -1002,6 +1054,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengineex_leavechannelex2"></a>
 
 <a id="ariaid-title16"></a>
@@ -1067,6 +1123,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 0：方法调用成功。
 &lt; 0：方法调用失败。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
 
@@ -1142,6 +1202,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
   - -7：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化该对象再调用此方法。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
 
@@ -1222,6 +1286,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
   - -7：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前初始化该对象。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_registerlocaluseraccount"></a>
 
 <a id="ariaid-title19"></a>
@@ -1285,6 +1353,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_renewtoken"></a>
 
 <a id="ariaid-title20"></a>
@@ -1328,6 +1400,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
     - 生成 `token` 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
     - 生成的 `token` 与加入频道时传入的 `token` 一致。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
 
@@ -1377,6 +1453,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - -2：参数无效。
 - -7：SDK 尚未初始化。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole1"></a>
 
@@ -1437,6 +1517,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
 
@@ -1514,6 +1598,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - -5：请求被拒绝。
 - -7：SDK 未初始化。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
 
 <a id="ariaid-title24"></a>
@@ -1550,6 +1638,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
   - -2：[AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中某个成员的值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
   - -7：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象的内部状态错误。可能的原因是你尚未加入频道。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断是否已加入频道。如果你收到 `AgoraConnectionStateDisconnected`（1）或 `AgoraConnectionStateFailed`（5）状态，说明你未加入频道。你需要先调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道，再调用该方法。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
 
@@ -1597,6 +1689,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
   - -7：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象的内部状态错误，可能的原因是你尚未加入频道。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断是否已加入频道。如果你收到 `AgoraConnectionStateDisconnected`（1）或 `AgoraConnectionStateFailed`（5）状态，说明你尚未加入频道。你需要先调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道，再调用该方法。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
 
 <a id="ariaid-title26"></a>
@@ -1638,6 +1734,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
   - -2：参数无效，例如 Token 无效。你需要传入有效的参数并重新加入频道。
   - -7：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象再调用此方法。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
 
@@ -1688,6 +1788,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 用户切换后的角色属性。详见 [AgoraClientRoleOptions](/zh-CN/api-reference/rtc/ios/class-clientroleoptions)。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
 
 <a id="ariaid-title28"></a>
@@ -1721,6 +1825,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### currentRole
 
 当前的用户角色，详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
 
@@ -1757,6 +1865,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### errorCode
 
 错误码。详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
 
@@ -1802,6 +1914,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 从调用 `joinChannelByToken` 方法到 SDK 触发该回调的时间间隔（毫秒）。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
 
 <a id="ariaid-title31"></a>
@@ -1837,6 +1953,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### stats
 
 通话统计信息，详见 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
 
@@ -1877,6 +1997,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### userAccount
 
 本地用户的用户 User Account。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
 
@@ -1920,6 +2044,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调所经过的时间（毫秒）。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
 
 <a id="ariaid-title34"></a>
@@ -1962,6 +2090,10 @@ Token。
 
 错误码，详见 [AgoraRenewTokenErrorCode](/zh-CN/api-reference/rtc/ios/enum-renewtokenerrorcode)。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
 
 <a id="ariaid-title35"></a>
@@ -2000,6 +2132,10 @@ Token。
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
 
 <a id="ariaid-title36"></a>
@@ -2033,6 +2169,10 @@ Token。
 ### stats
 
 通话统计信息，详见 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
 
@@ -2078,6 +2218,10 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 即将过期的 Token。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
 
 <a id="ariaid-title38"></a>
@@ -2117,6 +2261,10 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 ### userInfo
 
 包含远端用户的用户 ID 和用户 User Account 的对象。详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
 
@@ -2163,6 +2311,10 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 从你调用 [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 到该回调被触发的延迟时间（毫秒）。
 
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
 
 <a id="ariaid-title40"></a>
@@ -2205,3 +2357,7 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 ### reason
 
 远端用户（在通信场景中）或主播（在直播场景中）离线的原因，详见 [AgoraUserOfflineReason](/zh-CN/api-reference/rtc/ios/enum-userofflinereasontype)。
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

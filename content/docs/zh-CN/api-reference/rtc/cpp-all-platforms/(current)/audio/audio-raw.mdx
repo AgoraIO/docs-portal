@@ -39,6 +39,10 @@ virtual AudioParams getEarMonitoringAudioParams() = 0;
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 对象，表示耳返音频数据格式，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title3"></a>
@@ -66,6 +70,10 @@ virtual AudioParams getMixedAudioParams() = 0;
 ### 返回值
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 实例，表示混合后的采集和播放音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase"></a>
 
@@ -105,6 +113,10 @@ virtual int getObservedAudioFramePosition() = 0;
 - `AUDIO_FRAME_POSITION_BEFORE_MIXING`（0x0008）：可观察单个远端用户混音前的音频。对应回调为 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase)。
 - `AUDIO_FRAME_POSITION_EAR_MONITORING`（0x0010）：可观察本地用户的耳返音频。对应回调为 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase)。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title5"></a>
@@ -133,6 +145,10 @@ virtual AudioParams getPlaybackAudioParams() = 0;
 
 方法调用成功时，返回一个用于播放的音频参数，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title6"></a>
@@ -160,6 +176,10 @@ virtual AudioParams getRecordAudioParams() = 0;
 ### 返回值
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 实例，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine"></a>
 
@@ -199,6 +219,10 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
@@ -255,6 +279,10 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title9"></a>
@@ -305,6 +333,10 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
 
 <a id="ariaid-title10"></a>
@@ -350,6 +382,10 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
@@ -400,6 +436,10 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -461,6 +501,10 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title13"></a>
@@ -515,6 +559,10 @@ virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AU
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title14"></a>
@@ -554,6 +602,10 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 - true：回调处理成功。
 - false：回调处理失败。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase"></a>
 
@@ -597,6 +649,10 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 - true：回调处理成功。
 - false：回调处理失败。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title16"></a>
@@ -639,6 +695,10 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 - true：回调处理成功。
 - false：回调处理失败。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase"></a>
 
 <a id="ariaid-title17"></a>
@@ -677,6 +737,10 @@ virtual bool onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_
 
 - true：回调处理成功。
 - false：回调处理失败。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase"></a>
 
@@ -725,3 +789,7 @@ SDK 根据采样间隔触发该回调。
 
 - true：回调处理成功。
 - false：回调处理失败。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)

@@ -69,6 +69,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enablelocalvideo"></a>
 
 <a id="ariaid-title3"></a>
@@ -122,6 +126,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
 
@@ -177,6 +185,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
 
 <a id="ariaid-title5"></a>
@@ -224,6 +236,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
 
@@ -276,6 +292,10 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setvideoscenario"></a>
 
@@ -355,6 +375,10 @@ APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景�
   - -4：不支持设置视频业务场景。可能的原因是当前使用的是音频 SDK。
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startpreview2"></a>
 
 <a id="ariaid-title8"></a>
@@ -401,6 +425,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
 
@@ -452,6 +480,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
 
 <a id="ariaid-title10"></a>
@@ -493,6 +525,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 StartPreview 开启本地视频预览到发生此事件过去的时间。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
 
 <a id="ariaid-title11"></a>
@@ -527,6 +563,10 @@ SDK 会在以下三种时机触发该回调：
 ### elapsed
 
 从调用 JoinChannelWithOptions 方法到触发该回调的时间间隔（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
 
@@ -576,6 +616,10 @@ SDK 会在以下时机触发该回调：
 
 从本地调用 JoinChannelWithOptions 开始到该回调触发的延迟（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
 
 <a id="ariaid-title13"></a>
@@ -616,6 +660,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ### elapsed
 
 从本地调用 JoinChannelWithOptions 到发生此事件过去的时间（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
 
@@ -679,6 +727,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 本地视频状态改变原因，详见 [ELOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-localvideostreamreason)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
 
 <a id="ariaid-title15"></a>
@@ -711,6 +763,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ### stats
 
 本地视频流统计信息。详见 [FLocalVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-localvideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
 
@@ -755,6 +811,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从本地用户调用 JoinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
 
 <a id="ariaid-title17"></a>
@@ -783,6 +843,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ### stats
 
 远端视频统计数据。详见 [FRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-remotevideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
 
@@ -833,6 +897,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 远端视频包的接收码率（Kbps）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
 
 <a id="ariaid-title19"></a>
@@ -876,6 +944,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - `true`: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
 - `false`: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
 
 <a id="ariaid-title20"></a>
@@ -911,6 +983,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 - `true`: 该用户已启用视频功能。
 - `false`: 该用户已关闭视频功能。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
 
@@ -949,6 +1025,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 - `true`: 取消发布视频流。
 - `false`: 发布视频流。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
 
@@ -990,6 +1070,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
 
@@ -1034,6 +1118,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 注： 在 iOS 平台上，该参数值始终为 0。
 :::
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onvideostopped"></a>
 
 <a id="ariaid-title24"></a>
@@ -1058,3 +1146,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 <a id="callback_irtcengineeventhandler_onvideostopped__desc"></a>
 
 App 如需在停止视频后对 view 做其他处理（比如显示其他画面），可以在这个回调中进行。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

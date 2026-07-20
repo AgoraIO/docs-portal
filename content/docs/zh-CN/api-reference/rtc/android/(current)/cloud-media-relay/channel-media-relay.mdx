@@ -42,6 +42,10 @@ public abstract int pauseAllChannelMediaRelay();
 
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_pauseallchannelmediarelayex"></a>
 
 <a id="ariaid-title3"></a>
@@ -91,6 +95,10 @@ public abstract int pauseAllChannelMediaRelayEx(RtcConnection connection);
 
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_resumeallchannelmediarelay"></a>
 
 <a id="ariaid-title4"></a>
@@ -121,6 +129,10 @@ public abstract int resumeAllChannelMediaRelay();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
   - -5：调用被拒绝，当前没有已暂停的跨频道媒体流转发。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_resumeallchannelmediarelayex"></a>
 
@@ -166,6 +178,10 @@ public abstract int resumeAllChannelMediaRelayEx(RtcConnection connection);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
   - -5：调用被拒绝，当前没有处于暂停状态的跨频道媒体流转发。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startorupdatechannelmediarelay"></a>
 
@@ -220,6 +236,10 @@ public abstract int startOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -8：内部状态错误，可能是因为用户不是主播。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex"></a>
 
@@ -290,6 +310,10 @@ public abstract int startOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfigurat
   - -2：参数无效。
   - -8：内部状态错误，可能是因为用户不是主播。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_stopchannelmediarelay"></a>
 
 <a id="ariaid-title8"></a>
@@ -320,6 +344,10 @@ public abstract int stopChannelMediaRelay();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stopchannelmediarelayex"></a>
 
@@ -365,6 +393,10 @@ public abstract int stopChannelMediaRelayEx(RtcConnection connection);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged"></a>
 
@@ -419,3 +451,7 @@ public void onChannelMediaRelayStateChanged(int state, int code)
 - `RELAY_ERROR_INTERNAL_ERROR`：服务器内部发生错误。
 - `RELAY_ERROR_SRC_TOKEN_EXPIRED`：源频道的 Token 已过期。
 - `RELAY_ERROR_DEST_TOKEN_EXPIRED`：目标频道的 Token 已过期。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

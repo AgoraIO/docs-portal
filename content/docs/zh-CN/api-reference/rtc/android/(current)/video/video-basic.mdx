@@ -58,6 +58,10 @@ public abstract int disableVideo();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enablelocalvideo"></a>
 
 <a id="ariaid-title3"></a>
@@ -106,6 +110,10 @@ public abstract int enableLocalVideo(boolean enabled);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
 
@@ -158,6 +166,10 @@ public abstract int enableVideo();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
 
 <a id="ariaid-title5"></a>
@@ -201,6 +213,10 @@ public abstract int setVideoEncoderConfiguration(VideoEncoderConfiguration confi
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
 
@@ -254,6 +270,10 @@ public abstract int setVideoEncoderConfigurationEx(VideoEncoderConfiguration con
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setvideoscenario"></a>
 
@@ -325,6 +345,10 @@ public abstract int setVideoScenario(Constants.VideoScenario scenarioType);
   - -4：不支持视频应用场景。可能原因包括使用了语音 SDK 而非视频 SDK。
   - -7：[RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startpreview"></a>
 
 <a id="ariaid-title8"></a>
@@ -360,6 +384,10 @@ public abstract int startPreview();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview2"></a>
 
@@ -405,6 +433,10 @@ public abstract int startPreview(Constants.VideoSourceType sourceType);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoppreview"></a>
 
 <a id="ariaid-title10"></a>
@@ -435,6 +467,10 @@ public abstract int stopPreview();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
 
@@ -475,6 +511,10 @@ public abstract int stopPreview(Constants.VideoSourceType sourceType);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
 
 <a id="ariaid-title12"></a>
@@ -510,6 +550,10 @@ public void onFirstLocalVideoFrame(Constants.VideoSourceType source, int width, 
 ### elapsed
 
 从本地用户调用 `joinChannel` 加入频道到该回调触发的时间间隔，单位为毫秒。如果在加入频道前调用了 `startPreview`，该参数表示从调用 `startPreview` 到该事件触发的时间间隔。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
 
@@ -551,6 +595,10 @@ public void onFirstLocalVideoFramePublished(Constants.VideoSourceType source, in
 ### elapsed
 
 从本地用户调用 `joinChannel` 成功加入频道到该回调触发的时间（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
 
@@ -607,6 +655,10 @@ SDK 在以下任一情况下会触发该回调：
 
 从本地用户调用 `joinChannel` 加入频道到触发该回调的时间（单位为毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
 
 <a id="ariaid-title15"></a>
@@ -653,6 +705,10 @@ public void onFirstRemoteVideoFrame(int uid, int width, int height, int elapsed)
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocalvideoevent"></a>
 
 <a id="ariaid-title16"></a>
@@ -687,6 +743,10 @@ public void onLocalVideoEvent(Constants.VideoSourceType source, int event)
 - `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_WINDOW_RECOVER_FROM_HIDDEN`：屏幕采集窗口从隐藏状态恢复。
 - `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_STOPPED_BY_USER`：屏幕采集被用户停止。
 - `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_SYSTEM_INTERNAL_ERROR`：屏幕采集过程中发生系统内部错误。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
 
@@ -752,6 +812,10 @@ public void onLocalVideoStateChanged(Constants.VideoSourceType source, int state
 - `LOCAL_VIDEO_STREAM_REASON_DEVICE_FATAL_ERROR` (15)：视频采集设备出现错误。提示用户关闭并重启摄像头以恢复功能。如果该操作无法解决问题，请检查摄像头是否存在硬件故障。
 - `LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_FAILURE` (21)：当前采集的窗口无数据。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
 
 <a id="ariaid-title18"></a>
@@ -787,6 +851,10 @@ public void onLocalVideoStats(Constants.VideoSourceType source, LocalVideoStats 
 ### stats
 
 本地视频流的统计信息，详见 [LocalVideoStats](/zh-CN/api-reference/rtc/android/class-localvideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
 
@@ -852,6 +920,10 @@ public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapse
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
 
 <a id="ariaid-title20"></a>
@@ -883,6 +955,10 @@ SDK 每两秒为每个远端用户触发一次该回调。如果频道中有多�
 ### stats
 
 远端视频流的统计信息。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/android/class-remotevideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
 
@@ -932,6 +1008,10 @@ public void onRemoteVideoTransportStats(int uid, int delay, int lost, int rxKBit
 
 接收视频的码率（Kbps）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
 
 <a id="ariaid-title22"></a>
@@ -976,6 +1056,10 @@ public void onUserEnableLocalVideo(int uid, boolean enabled)
 - true：启用视频模块，频道内其他用户可以看到该远端用户的视频。
 - false：关闭视频模块，频道内其他用户无法接收该远端用户的视频流，但该远端用户仍可接收其他用户的视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
 
 <a id="ariaid-title23"></a>
@@ -1014,6 +1098,10 @@ public void onUserEnableVideo(int uid, boolean enabled)
 
 - true：启用视频模块。
 - false：关闭视频模块。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
 
@@ -1057,6 +1145,10 @@ public void onUserMuteVideo(int uid, boolean muted)
 
 - true：远端用户停止发布视频流。
 - false：远端用户恢复发布视频流。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
 
@@ -1108,6 +1200,10 @@ public void onVideoPublishStateChanged(Constants.VideoSourceType source, String 
 
 从上一个状态到当前状态所经历的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
 
 <a id="ariaid-title26"></a>
@@ -1154,6 +1250,10 @@ public void onVideoSizeChanged(Constants.VideoSourceType source, int uid, int wi
 
 视频的旋转角度，取值范围为 [0, 360)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onvideostopped"></a>
 
 <a id="ariaid-title27"></a>
@@ -1181,3 +1281,7 @@ public void onVideoStopped() {}
 ### 触发时机
 
 该回调在视频停止播放时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -64,6 +64,10 @@ virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_enablecontentinspectex"></a>
 
 <a id="ariaid-title3"></a>
@@ -123,6 +127,10 @@ virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConf
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_takesnapshot"></a>
 
@@ -189,6 +197,10 @@ virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_takesnapshot2"></a>
 
 <a id="ariaid-title5"></a>
@@ -242,6 +254,10 @@ virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_takesnapshotex"></a>
 
@@ -310,6 +326,10 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const cha
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
 
@@ -381,6 +401,10 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const med
 - 0：调用成功。
 - &lt; 0：调用失败。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
 
 <a id="ariaid-title8"></a>
@@ -435,3 +459,7 @@ virtual void onSnapshotTaken(uid_t uid, const char* filePath, int width, int hei
   - -1：SDK 写入文件或编码 JPEG 图像失败。
   - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
   - -3：调用 `takeSnapshot` 方法过于频繁。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

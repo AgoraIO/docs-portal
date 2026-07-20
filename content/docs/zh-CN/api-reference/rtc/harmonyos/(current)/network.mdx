@@ -75,6 +75,10 @@ public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): nu
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
   - -7: SDK 尚未初始化。需在调用 API 之前已创建 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象并完成初始化。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getcallid"></a>
 
 <a id="ariaid-title3"></a>
@@ -119,6 +123,10 @@ public abstract getCallId(): string;
 
 ### 返回值
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_getcallidex"></a>
 
 <a id="ariaid-title4"></a>
@@ -159,6 +167,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 ### 返回值
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
 
 <a id="ariaid-title5"></a>
@@ -198,6 +210,10 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_geterrordescription"></a>
 
 <a id="ariaid-title6"></a>
@@ -228,6 +244,10 @@ SDK 报告的错误码。
 
 具体的错误描述。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getnativehandle"></a>
 
 <a id="ariaid-title7"></a>
@@ -254,6 +274,10 @@ public abstract getNativeHandle():bigint;
 
 SDK 引擎的 Native 句柄。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getversion"></a>
 
 <a id="ariaid-title8"></a>
@@ -279,6 +303,10 @@ public static getSdkVersion(): string {
 ### 返回值
 
 当前的 SDK 版本号。格式为字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setparameters"></a>
 
@@ -308,6 +336,10 @@ JSON 字符串形式的参数。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startlastmileprobetest"></a>
 
@@ -363,6 +395,10 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoplastmileprobetest"></a>
 
 <a id="ariaid-title11"></a>
@@ -384,6 +420,10 @@ public abstract stopLastmileProbeTest(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
 
 <a id="ariaid-title12"></a>
@@ -401,6 +441,10 @@ onConnectionLost?:() => void;
 <a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
 
 SDK 在调用 joinChannelWithOptions 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
 
@@ -436,6 +480,10 @@ onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constan
 
 引起当前网络连接状态改变的原因。详见 [ConnectionChangedReason](/zh-CN/api-reference/rtc/harmonyos/enum-connectionchangedreasontype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
 
 <a id="ariaid-title14"></a>
@@ -462,6 +510,10 @@ onEncryptionError?:(errorType:Constants.EncryptionError) => void;
 
 错误类型，详见 [EncryptionError](/zh-CN/api-reference/rtc/harmonyos/enum-encryptionerrortype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
 
 <a id="ariaid-title15"></a>
@@ -487,6 +539,10 @@ onLastmileProbeResult? : (result:LastmileProbeResult) => void;
 ### result
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/harmonyos/class-lastmileproberesult)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
 
@@ -515,6 +571,10 @@ onLastmileQuality? : (quality:Constants.QualityType) => void;
 ### quality
 
 Last mile 网络质量。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
 
@@ -562,6 +622,10 @@ onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
 
 <a id="ariaid-title18"></a>
@@ -587,3 +651,7 @@ onPermissionError?:(permission:Constants.PermissionType) => void;
 ### permission
 
 设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/harmonyos/enum-permissiontype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

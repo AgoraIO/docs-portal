@@ -43,6 +43,10 @@ virtual IAudioDeviceCollection* enumeratePlaybackDevices() = 0;
 - 方法调用成功：返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection) 对象，包含所有的音频播放设备。
 - 方法调用失败: NULL。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
 
 <a id="ariaid-title3"></a>
@@ -73,6 +77,10 @@ virtual IAudioDeviceCollection* enumerateRecordingDevices() = 0;
 
 - 方法调用成功：返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection) 对象，包含所有的音频采集设备。
 - 方法调用失败: NULL。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
 
@@ -113,6 +121,10 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
 
@@ -155,6 +167,10 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
 
@@ -200,6 +216,10 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicecollection_getapplicationvolume"></a>
 
 <a id="ariaid-title7"></a>
@@ -228,6 +248,10 @@ App 当前的音量，取值范围为 [0,255]。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_irtcengine_getaudiodeviceinfo"></a>
 
@@ -274,6 +298,10 @@ virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_iaudiodevicecollection_getcount"></a>
 
 <a id="ariaid-title9"></a>
@@ -299,6 +327,10 @@ virtual int getCount() = 0;
 ### 返回值
 
 语音设备数目。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdefaultdevice"></a>
 
@@ -337,6 +369,10 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见 [错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2"></a>
 
@@ -382,6 +418,10 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceT
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见 [错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
+
 <a id="api_iaudiodevicecollection_getdevice"></a>
 
 <a id="ariaid-title12"></a>
@@ -424,6 +464,10 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdevice2"></a>
 
@@ -477,6 +521,10 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
+
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
 
 <a id="ariaid-title14"></a>
@@ -514,6 +562,10 @@ virtual int getLoopbackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
 
 <a id="ariaid-title15"></a>
@@ -550,6 +602,10 @@ virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
 
@@ -591,6 +647,10 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2"></a>
 
@@ -667,6 +727,10 @@ virtual int getPlaybackDeviceMute(bool *mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
 
 <a id="ariaid-title19"></a>
@@ -733,6 +797,10 @@ virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
 
 <a id="ariaid-title21"></a>
@@ -773,6 +841,10 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2"></a>
 
@@ -849,6 +921,10 @@ virtual int getRecordingDeviceMute(bool *mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
 
 <a id="ariaid-title24"></a>
@@ -886,6 +962,10 @@ virtual int getRecordingDeviceVolume(int *volume) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicecollection_isapplicationmute"></a>
 
 <a id="ariaid-title25"></a>
@@ -918,6 +998,10 @@ App 当前是否静音：
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
+
 <a id="api_iaudiodevicecollection_release"></a>
 
 <a id="ariaid-title26"></a>
@@ -932,6 +1016,10 @@ App 当前是否静音：
 virtual void release() = 0;
 ```
 
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
+
 <a id="api_iaudiodevicemanager_release"></a>
 
 <a id="ariaid-title27"></a>
@@ -945,6 +1033,10 @@ virtual void release() = 0;
 ```text
 virtual void release() = 0;
 ```
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicecollection_setapplicationmute"></a>
 
@@ -978,6 +1070,10 @@ virtual int setApplicationMute(bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
+
 <a id="api_iaudiodevicecollection_setapplicationvolume"></a>
 
 <a id="ariaid-title29"></a>
@@ -1006,6 +1102,10 @@ App 的音量，取值范围为 [0,255]。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_setdevice"></a>
 
@@ -1041,6 +1141,10 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
 
@@ -1095,6 +1199,10 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
 
 <a id="ariaid-title32"></a>
@@ -1136,6 +1244,10 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
 
 <a id="ariaid-title33"></a>
@@ -1167,6 +1279,10 @@ virtual int setPlaybackDeviceMute(bool mute) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
 
@@ -1204,6 +1320,10 @@ virtual int setPlaybackDeviceVolume(int volume) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
 
@@ -1246,6 +1366,10 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
 
 <a id="ariaid-title36"></a>
@@ -1277,6 +1401,10 @@ virtual int setRecordingDeviceMute(bool mute) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
 
@@ -1312,6 +1440,10 @@ virtual int setRecordingDeviceVolume(int volume) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
 
@@ -1357,6 +1489,10 @@ SDK 触发 onAudioVolumeIndication 回调的时间间隔，单位为毫秒。建
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
 
@@ -1404,6 +1540,10 @@ virtual int startPlaybackDeviceTest(const char* testAudioFilePath) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
 
 <a id="ariaid-title40"></a>
@@ -1447,6 +1587,10 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/a
 
   - -2: 参数设置错误，请重新设置参数。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
 
 <a id="ariaid-title41"></a>
@@ -1481,6 +1625,10 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
 
 <a id="ariaid-title42"></a>
@@ -1512,6 +1660,10 @@ virtual int stopPlaybackDeviceTest() = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
+
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
 
 <a id="ariaid-title43"></a>
@@ -1542,6 +1694,10 @@ virtual int stopRecordingDeviceTest() = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
 
@@ -1589,6 +1745,10 @@ virtual void onAudioDeviceStateChanged(const char* deviceId,
 
 设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediadevicestatetype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
 
 <a id="ariaid-title45"></a>
@@ -1633,3 +1793,7 @@ virtual void onAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume
 
 - `true`: 音频设备已静音。
 - `false`: 音频设备未被静音。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

@@ -46,6 +46,10 @@ abstract registerEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 - true：方法调用成功。
 - false：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_addlistener"></a>
 
 <a id="ariaid-title3"></a>
@@ -84,6 +88,10 @@ const onJoinChannelSuccess = (connection: RtcConnection, elapsed: number) => {};
 engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
 ```
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_createagorartcengine"></a>
 
 <a id="ariaid-title4"></a>
@@ -110,6 +118,10 @@ export function createAgoraRtcEngine(): IRtcEngineEx {
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex) 对象。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getmediaengine"></a>
 
 <a id="ariaid-title5"></a>
@@ -135,6 +147,10 @@ abstract getMediaEngine(): IMediaEngine;
 ### 返回值
 
 [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_initialize"></a>
 
@@ -184,6 +200,10 @@ SDK 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/elect
   - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
   - -101: App ID 无效。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_release"></a>
 
 <a id="ariaid-title7"></a>
@@ -221,6 +241,10 @@ abstract release(sync?: boolean): void;
 - true:该方法为同步调用。
 - false:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_removealllisteners"></a>
 
 <a id="ariaid-title8"></a>
@@ -246,6 +270,10 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 ### eventType
 
 需要监听的目标事件名。详见 [IRtcEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineevent)。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removehandler"></a>
 
@@ -279,6 +307,10 @@ abstract unregisterEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 
 - true: 方法调用成功。
 - false: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removelistener"></a>
 
@@ -318,3 +350,7 @@ const onJoinChannelSuccess = (connection: RtcConnection, elapsed: number) => {};
 engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
 engine.removeListener('onJoinChannelSuccess', onJoinChannelSuccess);
 ```
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

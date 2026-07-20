@@ -48,6 +48,10 @@ public abstract int queryScreenCaptureCapability();
 - 2：设备最多支持 60 fps 的帧率。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setexternalmediaprojection"></a>
 
 <a id="ariaid-title3"></a>
@@ -102,6 +106,10 @@ public abstract int setExternalMediaProjection(MediaProjection mediaProjection);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturescenario"></a>
 
 <a id="ariaid-title4"></a>
@@ -142,6 +150,10 @@ SDK 会根据设置的场景自动调整共享的视频质量和用户体验。
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
 
@@ -213,6 +225,10 @@ public abstract int startScreenCapture(ScreenCaptureParameters screenCapturePara
   - -2：系统版本过低。请确保 Android API 级别不低于 21。
   - -3：无法采集系统音频。请确保 Android API 级别不低于 29。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopscreencapture"></a>
 
 <a id="ariaid-title6"></a>
@@ -256,6 +272,10 @@ public abstract int stopScreenCapture();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
 
@@ -302,3 +322,7 @@ public abstract int updateScreenCaptureParameters(ScreenCaptureParameters screen
 
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/android/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，然后重新开始共享屏幕。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

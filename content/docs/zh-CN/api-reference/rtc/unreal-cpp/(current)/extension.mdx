@@ -80,6 +80,10 @@ virtual int enableExtension(const char* provider, const char* extension, bool en
 
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getextensionproperty2"></a>
 
 <a id="ariaid-title3"></a>
@@ -145,6 +149,10 @@ virtual int getExtensionProperty(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_loadextensionprovider"></a>
 
 <a id="ariaid-title4"></a>
@@ -200,6 +208,10 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerextension"></a>
 
@@ -259,6 +271,10 @@ virtual int registerExtension(const char* provider, const char* extension,
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproperty"></a>
 
@@ -329,6 +345,10 @@ virtual int setExtensionProperty(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setextensionproviderproperty"></a>
 
 <a id="ariaid-title7"></a>
@@ -383,6 +403,10 @@ virtual int setExtensionProviderProperty(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
 
 <a id="ariaid-title8"></a>
@@ -420,6 +444,10 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 ### message
 
 错误原因。详见插件服务商提供的插件文档。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
 
@@ -459,6 +487,10 @@ virtual void onExtensionEventWithContext(const ExtensionContext &context, const 
 
 插件属性 Key 对应的值。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
 
 <a id="ariaid-title10"></a>
@@ -487,6 +519,10 @@ virtual void onExtensionStartedWithContext(const ExtensionContext &context) {
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/unreal-cpp/class-extensioncontext)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
 
 <a id="ariaid-title11"></a>
@@ -514,3 +550,7 @@ virtual void onExtensionStoppedWithContext(const ExtensionContext &context) {
 ### context
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/unreal-cpp/class-extensioncontext)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

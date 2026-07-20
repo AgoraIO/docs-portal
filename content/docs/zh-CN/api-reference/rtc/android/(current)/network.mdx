@@ -57,6 +57,10 @@ public abstract int complain(String callId, String description);
   - -2：参数无效。
   - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enableencryption"></a>
 
 <a id="ariaid-title3"></a>
@@ -119,6 +123,10 @@ public abstract int enableEncryption(boolean enabled, EncryptionConfig config);
   - -2：参数无效。请传入有效参数。
   - -4：内置加密模式错误或 SDK 加载外部加密库失败。请检查枚举值或重新加载外部加密库。
   - -7：SDK 未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例后再调用该方法。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableencryptionex"></a>
 
@@ -183,6 +191,10 @@ public abstract int enableEncryptionEx(boolean enabled, EncryptionConfig config,
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
 
 <a id="ariaid-title5"></a>
@@ -223,6 +235,10 @@ public abstract int enableWebSdkInteroperability(boolean enabled);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getcallid"></a>
 
 <a id="ariaid-title6"></a>
@@ -253,6 +269,10 @@ public abstract String getCallId();
 
 - 方法调用成功时，返回当前通话的 `callId`。
 - 方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getcallidex"></a>
 
@@ -299,6 +319,10 @@ public abstract String getCallIdEx(RtcConnection connection);
 方法调用成功时，返回通话 ID。
 方法调用失败，返回空字符串。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getconnectionstate"></a>
 
 <a id="ariaid-title8"></a>
@@ -326,6 +350,10 @@ public abstract int getConnectionState();
 ### 返回值
 
 - 方法调用成功，返回当前的连接状态。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getconnectionstateex"></a>
 
@@ -370,6 +398,10 @@ public abstract int getConnectionStateEx(RtcConnection connection);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
 
 <a id="ariaid-title10"></a>
@@ -400,6 +432,10 @@ public abstract long getCurrentMonotonicTimeInMs();
 
 - 方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geterrordescription"></a>
 
@@ -432,6 +468,10 @@ SDK 报告的错误码。
 方法调用成功时，返回错误码对应的描述信息。
 方法调用失败，返回空字符串。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getnativehandle"></a>
 
 <a id="ariaid-title12"></a>
@@ -455,6 +495,10 @@ public abstract long getNativeHandle();
 ### 返回值
 
 方法调用成功，返回 SDK 的原生句柄。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnetworktype"></a>
 
@@ -495,6 +539,10 @@ public abstract int getNetworkType();
 
   - -1：网络类型未知。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getntpwalltimeinms"></a>
 
 <a id="ariaid-title14"></a>
@@ -519,6 +567,10 @@ public abstract long getNtpWallTimeInMs();
 
 方法调用成功，返回当前 NTP 时间的 Unix 时间戳（毫秒）。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getversion"></a>
 
 <a id="ariaid-title15"></a>
@@ -541,6 +593,10 @@ public static String getSdkVersion()
 
 方法调用成功时，返回 SDK 的版本号字符串。
 方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
 
@@ -582,6 +638,10 @@ public abstract boolean isFeatureAvailableOnDevice(int type);
 - true：当前设备支持指定的功能。
 - false：当前设备不支持指定的功能。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_querydevicescore"></a>
 
 <a id="ariaid-title17"></a>
@@ -606,6 +666,10 @@ public abstract int queryDeviceScore();
 
 - &gt; 0：方法调用成功，返回当前设备评分，范围为 [0, 100]，数值越大表示设备性能越强。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_rate"></a>
 
@@ -652,6 +716,10 @@ public abstract int rate(String callId, int rating, String description);
 
   - -1：发生通用错误。
   - -2：参数无效。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_sendcustomreportmessage"></a>
 
@@ -701,6 +769,10 @@ public abstract int sendCustomReportMessage(String id, String category, String e
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
 
@@ -761,6 +833,10 @@ public abstract int sendCustomReportMessageEx(String id, String category, String
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_setavsyncsource"></a>
 
 <a id="ariaid-title21"></a>
@@ -801,6 +877,10 @@ public abstract int setAVSyncSource(String channelId, int uid);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcloudproxy"></a>
 
@@ -853,6 +933,10 @@ public abstract int setCloudProxy(int proxyType);
   - -2：参数无效。
   - -7：SDK 未初始化。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlocalaccesspoint"></a>
 
 <a id="ariaid-title23"></a>
@@ -895,6 +979,10 @@ public abstract int setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfile"></a>
 
@@ -942,6 +1030,10 @@ public abstract int setLogFile(String filePath);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilesize"></a>
 
@@ -1000,6 +1092,10 @@ public abstract int setLogFileSize(long fileSizeInKBytes);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlogfilter"></a>
 
 <a id="ariaid-title26"></a>
@@ -1044,6 +1140,10 @@ SDK 的日志输出等级。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setloglevel"></a>
 
 <a id="ariaid-title27"></a>
@@ -1081,6 +1181,10 @@ public abstract int setLogLevel(int level);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setparameters"></a>
 
 <a id="ariaid-title28"></a>
@@ -1111,6 +1215,10 @@ public abstract int setParameters(String parameters);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
 
@@ -1148,6 +1256,10 @@ public abstract int setRemoteSubscribeFallbackOption(Constants.StreamFallbackOpt
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption2"></a>
 
@@ -1193,6 +1305,10 @@ public abstract int setRemoteSubscribeFallbackOption(int option)
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startechotest3"></a>
 
@@ -1241,6 +1357,10 @@ public abstract int startEchoTest(EchoTestConfiguration config);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startlastmileprobetest"></a>
 
 <a id="ariaid-title32"></a>
@@ -1282,6 +1402,10 @@ Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopechotest"></a>
 
 <a id="ariaid-title33"></a>
@@ -1309,6 +1433,10 @@ public abstract int stopEchoTest();
 
   - -5：停止回声测试失败，可能未在运行回声测试。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoplastmileprobetest"></a>
 
 <a id="ariaid-title34"></a>
@@ -1331,6 +1459,10 @@ public abstract int stopLastmileProbeTest();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
 
@@ -1357,6 +1489,10 @@ public void onConnectionBanned() {}
 ### 触发时机
 
 该回调在连接被声网服务器封禁时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
 
@@ -1392,6 +1528,10 @@ public void onConnectionInterrupted() {}
 
 该回调在 SDK 与服务器断开连接超过四秒时被触发。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
 
 <a id="ariaid-title37"></a>
@@ -1415,6 +1555,10 @@ public void onConnectionLost() {}
 ### 触发时机
 
 该回调在调用 `joinChannel` 后，SDK 与服务器连接中断并在 10 秒内无法重新连接时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
 
@@ -1500,6 +1644,10 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 - `CONNECTION_CHANGED_SAME_UID_LOGIN` (19)：用户在不同设备上以相同的 `uid` 加入同一频道。注意：以相同 `uid` 加入同一 RTC 频道属于未定义行为，声网不保证在相同情况下始终触发该错误码。
 - `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` (20)：频道中的主播数量已达上限。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
 
 <a id="ariaid-title39"></a>
@@ -1538,6 +1686,10 @@ public void onEncryptionError(int errorType)
 - `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE`（3）：数据流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
 - `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE`（4）：数据流加密错误。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
 
 <a id="ariaid-title40"></a>
@@ -1569,6 +1721,10 @@ public void onLastmileProbeResult(LastmileProbeResult result) {}
 ### result
 
 上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/android/class-lastmileproberesult)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
 
@@ -1611,6 +1767,10 @@ Last-mile 网络质量：
 - `QUALITY_DOWN` (6)：网络连接已断，无法通信。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onmultipathstats"></a>
 
 <a id="ariaid-title42"></a>
@@ -1644,6 +1804,10 @@ public void onMultipathStats(MultipathStats stats) {}
 ### stats
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/android/class-multipathstats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
 
@@ -1709,6 +1873,10 @@ public void onNetworkQuality(int uid, int txQuality, int rxQuality)
 - `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
 
 <a id="ariaid-title44"></a>
@@ -1750,6 +1918,10 @@ public void onNetworkTypeChanged(int type)
 - `NETWORK_TYPE_MOBILE_4G`（5）：网络类型为移动 4G。
 - `NETWORK_TYPE_MOBILE_5G`（6）：网络类型为移动 5G。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
 
 <a id="ariaid-title45"></a>
@@ -1786,6 +1958,10 @@ public void onPermissionError(int permission)
 - `CAMERA`（1）：摄像头的权限。
 - `SCREEN_CAPTURE`（2）：屏幕共享的权限。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
 
 <a id="ariaid-title46"></a>
@@ -1813,6 +1989,10 @@ public void onPermissionGranted(int permission)
 - `RECORD_AUDIO`：录音权限。
 - `CAMERA`：摄像头权限。
 - `SCREEN_CAPTURE`：屏幕采集权限。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
 
@@ -1868,6 +2048,10 @@ public void onProxyConnected(String channel, int uid, int proxyType, String loca
 
 从调用 `joinChannel` 到触发该回调所经历的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
 
 <a id="ariaid-title48"></a>
@@ -1914,6 +2098,10 @@ public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRe
 - true：由于网络条件差，已订阅的媒体流降级为纯音频流。
 - false：网络条件改善后，已订阅的媒体流恢复为视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
 
 <a id="ariaid-title49"></a>
@@ -1947,3 +2135,7 @@ public void onUplinkNetworkInfoUpdated(UplinkNetworkInfo info) {}
 ### info
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/android/class-uplinknetworkinfo)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

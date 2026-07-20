@@ -47,6 +47,10 @@ void registerVideoEncodedFrameObserver(VideoEncodedFrameObserver observer);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_unregistervideoencodedframeobserver"></a>
 
 <a id="ariaid-title3"></a>
@@ -76,6 +80,10 @@ void unregisterVideoEncodedFrameObserver(VideoEncodedFrameObserver observer);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
 
@@ -119,3 +127,7 @@ final void Function(String channelId, int uid, Uint8List imageBuffer, int length
 ### videoEncodedFrameInfo
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/flutter/class-encodedvideoframeinfo)。
+
+### 所属接口类
+
+- [VideoEncodedFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoencodedframeobserver)

@@ -55,6 +55,10 @@ virtual int complain(const char* callId, const char* description) = 0;
   - -2: 参数无效。
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enableencryption"></a>
 
 <a id="ariaid-title3"></a>
@@ -117,6 +121,10 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
   - -2: 调用了无效的参数。需重新指定参数。
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
   - -7: SDK 尚未初始化。需在调用 API 之前已创建 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 对象并完成初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableencryptionex"></a>
 
@@ -181,6 +189,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
 
 <a id="ariaid-title5"></a>
@@ -224,6 +236,10 @@ virtual int enableWebSdkInteroperability(bool enabled) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getcallid"></a>
 
@@ -272,6 +288,10 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_getcallidex"></a>
 
 <a id="ariaid-title7"></a>
@@ -319,6 +339,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getconnectionstate"></a>
 
 <a id="ariaid-title8"></a>
@@ -352,6 +376,10 @@ virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 ### 返回值
 
 当前网络连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-connectionstatetype)。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getconnectionstateex"></a>
 
@@ -395,6 +423,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 当前网络连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-connectionstatetype)。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
 
 <a id="ariaid-title10"></a>
@@ -434,6 +466,10 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_geterrordescription"></a>
 
 <a id="ariaid-title11"></a>
@@ -461,6 +497,10 @@ SDK 报告的错误码。
 ### 返回值
 
 具体的错误描述。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnetworktype"></a>
 
@@ -503,6 +543,10 @@ virtual int getNetworkType() = 0;
 
   - -1：网络连接类型未知。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getntpwalltimeinms"></a>
 
 <a id="ariaid-title13"></a>
@@ -528,6 +572,10 @@ virtual uint64_t getNtpWallTimeInMs() = 0;
 ### 返回值
 
 当前 NTP 时间的 Unix 时间戳 (毫秒)。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getversion"></a>
 
@@ -556,6 +604,10 @@ virtual const char* getVersion(int* build) = 0;
 ### 返回值
 
 当前的 SDK 版本号。格式为字符串。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
 
@@ -598,6 +650,10 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 - `true`: 设备支持指定进阶功能。
 - `false`: 设备不支持指定进阶功能。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
 
 <a id="ariaid-title16"></a>
@@ -639,6 +695,10 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 - `true`: 由于网络环境不理想，订阅流已回退为音频流。
 - `false`: 由于网络环境改善，订阅流已恢复为音视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="api_irtcengine_querydevicescore"></a>
 
 <a id="ariaid-title17"></a>
@@ -668,6 +728,10 @@ virtual int queryDeviceScore() = 0;
 ### 返回值
 
 - &lt; 0: 方法调用失败。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_queryinterface"></a>
 
@@ -701,6 +765,10 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_rate"></a>
 
@@ -752,6 +820,10 @@ virtual int rate(const char* callId,
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_registerpacketobserver"></a>
 
 <a id="ariaid-title20"></a>
@@ -796,6 +868,10 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_sendcustomreportmessage"></a>
 
 <a id="ariaid-title21"></a>
@@ -822,6 +898,10 @@ virtual int sendCustomReportMessage(const char *id,
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
 
 <a id="ariaid-title22"></a>
@@ -842,6 +922,10 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 ### 详情
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setavsyncsource"></a>
 
@@ -885,6 +969,10 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcloudproxy"></a>
 
@@ -939,6 +1027,10 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
   - -2: 传入的参数无效。
   - -7: SDK 尚未初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalaccesspoint"></a>
 
@@ -1034,6 +1126,10 @@ App 必须保证指定的目录存在而且可写。
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlogfilesize"></a>
 
 <a id="ariaid-title27"></a>
@@ -1096,6 +1192,10 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlogfilter"></a>
 
 <a id="ariaid-title28"></a>
@@ -1138,6 +1238,10 @@ virtual int setLogFilter(unsigned int filter) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setloglevel"></a>
 
 <a id="ariaid-title29"></a>
@@ -1175,6 +1279,10 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setparameters"></a>
 
 <a id="ariaid-title30"></a>
@@ -1207,6 +1315,10 @@ JSON 字符串形式的参数。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_iagoraparameter_setparameters"></a>
 
@@ -1244,6 +1356,10 @@ JSON 字符串形式的参数。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAgoraParameter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iagoraparameter)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
 
@@ -1285,6 +1401,10 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startechotest3"></a>
 
@@ -1336,6 +1456,10 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startlastmileprobetest"></a>
 
@@ -1391,6 +1515,10 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopechotest"></a>
 
 <a id="ariaid-title35"></a>
@@ -1418,6 +1546,10 @@ virtual int stopEchoTest() = 0;
 
   - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoplastmileprobetest"></a>
 
 <a id="ariaid-title36"></a>
@@ -1439,6 +1571,10 @@ virtual int stopLastmileProbeTest() = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
 
 <a id="ariaid-title37"></a>
@@ -1458,6 +1594,10 @@ virtual void onConnectionBanned()
 ### 弃用:
 
 请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
 
@@ -1486,6 +1626,10 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
 
 <a id="ariaid-title39"></a>
@@ -1503,6 +1647,10 @@ virtual void onConnectionLost()
 <a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
 
 SDK 在调用 joinChannel [2/2] 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
 
@@ -1541,6 +1689,10 @@ virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CH
 
 引起当前网络连接状态改变的原因。详见 [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-connectionchangedreasontype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
 
 <a id="ariaid-title41"></a>
@@ -1569,6 +1721,10 @@ virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType) {
 
 错误类型，详见 [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-encryptionerrortype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
 
 <a id="ariaid-title42"></a>
@@ -1596,6 +1752,10 @@ virtual void onLastmileProbeResult(const LastmileProbeResult& result) {
 ### result
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/unreal-cpp/class-lastmileproberesult)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
 
@@ -1626,6 +1786,10 @@ virtual void onLastmileQuality(int quality) {
 ### quality
 
 Last mile 网络质量。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-qualitytype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
 
@@ -1677,6 +1841,10 @@ virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality) {
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-qualitytype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
 
 <a id="ariaid-title45"></a>
@@ -1707,6 +1875,10 @@ virtual void onNetworkTypeChanged(NETWORK_TYPE type) {
 
 本地网络连接类型。详见 [NETWORK_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-networktype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
 
 <a id="ariaid-title46"></a>
@@ -1734,6 +1906,10 @@ virtual void onPermissionError(PERMISSION_TYPE permissionType) {
 ### permissionType
 
 设备权限类型。详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-permissiontype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
 
@@ -1783,6 +1959,10 @@ virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyTy
 
 从调用 joinChannel [2/2] 到 SDK 触发该回调的经过的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_ipacketobserver_onreceiveaudiopacket"></a>
 
 <a id="ariaid-title48"></a>
@@ -1811,6 +1991,10 @@ virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 
 - `true`: 成功接收音频包。
 - `false`: 丢弃音频包。
+
+### 所属接口类
+
+- [IPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ipacketobserver)
 
 <a id="callback_ipacketobserver_onreceivevideopacket"></a>
 
@@ -1841,6 +2025,10 @@ virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 - `true`: 成功接收视频包。
 - `false`: 丢弃视频包。
 
+### 所属接口类
+
+- [IPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ipacketobserver)
+
 <a id="callback_ipacketobserver_onsendaudiopacket"></a>
 
 <a id="ariaid-title50"></a>
@@ -1870,6 +2058,10 @@ virtual bool onSendAudioPacket(Packet& packet) = 0;
 - `true`: 成功发送音频包。
 - `false`: 丢弃音频包。
 
+### 所属接口类
+
+- [IPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ipacketobserver)
+
 <a id="callback_ipacketobserver_onsendvideopacket"></a>
 
 <a id="ariaid-title51"></a>
@@ -1898,6 +2090,10 @@ virtual bool onSendVideoPacket(Packet& packet) = 0;
 
 - `true`: 成功发送视频包；
 - `false`: 丢弃视频包。
+
+### 所属接口类
+
+- [IPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ipacketobserver)
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
 
@@ -1930,3 +2126,7 @@ virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info) {
 ### info
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-uplinknetworkinfo)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

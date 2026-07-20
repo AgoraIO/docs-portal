@@ -37,6 +37,10 @@ virtual unsigned int getCount() = 0;
 
 方法调用成功，返回可共享窗口和屏幕的数量。
 
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
+
 <a id="api_irtcengine_getscreencapturesources"></a>
 
 <a id="ariaid-title3"></a>
@@ -85,6 +89,10 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 - 方法调用成功，返回 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist) 实例，详见 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)。
 - 方法调用失败，返回 NULL。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist"></a>
 
 <a id="ariaid-title4"></a>
@@ -120,6 +128,10 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 ### 返回值
 
 方法调用成功，返回 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo) 对象，详见 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo)。
+
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_queryscreencapturecapability"></a>
 
@@ -160,6 +172,10 @@ virtual int queryScreenCaptureCapability() = 0;
 - 方法调用成功，返回设备支持的最高帧率，详见 [SCREEN_CAPTURE_FRAMERATE_CAPABILITY](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screencaptureframeratecapability)。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_iscreencapturesourcelist_release_iscreencapturesourcelist"></a>
 
 <a id="ariaid-title6"></a>
@@ -181,6 +197,10 @@ virtual void release() = 0;
 :::note
 注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
+
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
 
@@ -236,6 +256,10 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
 
 <a id="ariaid-title8"></a>
@@ -276,6 +300,10 @@ virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
   - -2：参数无效。
   - -8：屏幕共享状态无效，可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturescenario"></a>
 
 <a id="ariaid-title9"></a>
@@ -312,6 +340,10 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
 
@@ -378,6 +410,10 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
   - -2（iOS 平台）：参数为 NULL。
   - -2（Android 平台）：系统版本过低。请确保 Android API 级别不低于 21。
   - -3（Android 平台）：无法采集系统音频。请确保 Android API 级别不低于 29。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture2"></a>
 
@@ -447,6 +483,10 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
 
 <a id="ariaid-title12"></a>
@@ -512,6 +552,10 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
 
 <a id="ariaid-title13"></a>
@@ -566,6 +610,10 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Re
 
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
 
@@ -666,6 +714,10 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopscreencapture"></a>
 
 <a id="ariaid-title15"></a>
@@ -705,6 +757,10 @@ virtual int stopScreenCapture() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture2"></a>
 
@@ -748,6 +804,10 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencapture"></a>
 
@@ -795,6 +855,10 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
 
 <a id="ariaid-title18"></a>
@@ -832,6 +896,10 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureregion1"></a>
 
@@ -878,3 +946,7 @@ virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 
   - -2：参数无效。
   - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

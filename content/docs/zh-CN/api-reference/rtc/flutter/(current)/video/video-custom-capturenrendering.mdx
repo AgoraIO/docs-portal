@@ -40,6 +40,10 @@ Future<int> createCustomVideoTrack();
 - 方法调用成功，返回视频轨道 ID 作为该视频轨道的唯一标识。
 - 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroycustomvideotrack"></a>
 
 <a id="ariaid-title3"></a>
@@ -70,6 +74,10 @@ Future<void> destroyCustomVideoTrack(int videoTrackId);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_agorapip_ispipactivated"></a>
 
 <a id="ariaid-title4"></a>
@@ -97,6 +105,10 @@ Future<bool> isPipActivated();
 - true：画中画模式已激活。
 - false：画中画模式未激活。
 
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipdispose"></a>
 
 <a id="ariaid-title5"></a>
@@ -116,6 +128,10 @@ Future<void> pipDispose();
 ### 自从
 
 自 v6.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
 
 <a id="api_agorapip_pipisautoentersupported"></a>
 
@@ -144,6 +160,10 @@ Future<bool> pipIsAutoEnterSupported();
 - true：支持自动进入画中画模式。
 - false：不支持自动进入画中画模式。
 
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipissupported"></a>
 
 <a id="ariaid-title7"></a>
@@ -170,6 +190,10 @@ Future<bool> pipIsSupported();
 
 - true：当前设备支持画中画模式。
 - false：当前设备不支持画中画模式。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
 
 <a id="api_agorapip_pipsetup"></a>
 
@@ -206,6 +230,10 @@ Future<bool> pipSetup(AgoraPipOptions options);
 - true：方法调用成功。
 - false：方法调用失败。
 
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipstart"></a>
 
 <a id="ariaid-title9"></a>
@@ -233,6 +261,10 @@ Future<bool> pipStart();
 - true：方法调用成功。
 - false：方法调用失败。
 
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipstop"></a>
 
 <a id="ariaid-title10"></a>
@@ -252,6 +284,10 @@ Future<void> pipStop();
 ### 自从
 
 自 v6.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
 
 <a id="api_imediaengine_pushvideoframe"></a>
 
@@ -305,6 +341,10 @@ Future<void> pushVideoFrame(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
 <a id="api_agorapip_registerpipstatechangedobserver"></a>
 
 <a id="ariaid-title12"></a>
@@ -333,6 +373,10 @@ Future<void> registerPipStateChangedObserver(AgoraPipStateChangedObserver observ
 
 画中画状态改变观测器，详见 [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)。
 
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_release_agorapip"></a>
 
 <a id="ariaid-title13"></a>
@@ -352,6 +396,10 @@ Future<void> dispose();
 ### 自从
 
 自 v6.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
 
 <a id="api_irtcengine_setexternalremoteeglcontext"></a>
 
@@ -401,6 +449,10 @@ Future<void> setExternalRemoteEglContext(int eglContext);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_setexternalvideosource"></a>
 
@@ -466,6 +518,10 @@ Future<void> setExternalVideoSource(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
 <a id="api_agorapip_unregisterpipstatechangedobserver"></a>
 
 <a id="ariaid-title16"></a>
@@ -485,6 +541,10 @@ Future<void> unregisterPipStateChangedObserver();
 ### 自从
 
 自 v6.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
 
 <a id="callback_agorapipstatechangedobserver_onpipstatechanged"></a>
 
@@ -519,3 +579,7 @@ final void Function(AgoraPipState state, String? error) onPipStateChanged;
 ### error
 
 如果状态改变失败，返回错误信息；否则返回 null。
+
+### 所属接口类
+
+- [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)

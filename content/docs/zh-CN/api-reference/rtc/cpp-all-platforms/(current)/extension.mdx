@@ -63,6 +63,10 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getextensionproperty2"></a>
 
 <a id="ariaid-title3"></a>
@@ -114,6 +118,10 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_loadextensionprovider"></a>
 
 <a id="ariaid-title4"></a>
@@ -163,6 +171,10 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerextension"></a>
 
@@ -223,6 +235,10 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setextensionproperty"></a>
 
 <a id="ariaid-title6"></a>
@@ -269,6 +285,10 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
 
@@ -321,6 +341,10 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
 
 <a id="ariaid-title8"></a>
@@ -354,6 +378,10 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 ### message
 
 错误原因。详见扩展提供方的扩展文档。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
 
@@ -389,6 +417,10 @@ virtual void onExtensionEventWithContext(const ExtensionContext &context, const 
 
 扩展事件键对应的值。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
 
 <a id="ariaid-title10"></a>
@@ -412,6 +444,10 @@ virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 ### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
 
@@ -442,3 +478,7 @@ virtual void onExtensionStoppedWithContext(const ExtensionContext &context)
 ### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

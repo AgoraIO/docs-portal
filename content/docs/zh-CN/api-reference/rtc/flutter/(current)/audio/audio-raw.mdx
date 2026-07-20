@@ -49,6 +49,10 @@ void registerAudioFrameObserver(AudioFrameObserver observer);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
 <a id="ariaid-title3"></a>
@@ -109,6 +113,10 @@ Future<void> setEarMonitoringAudioFrameParameters(
 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title4"></a>
@@ -161,6 +169,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
 <a id="ariaid-title5"></a>
@@ -211,6 +223,10 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -271,6 +287,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title7"></a>
@@ -330,6 +350,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine"></a>
 
 <a id="ariaid-title8"></a>
@@ -359,6 +383,10 @@ void unregisterAudioFrameObserver(AudioFrameObserver observer);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
 
@@ -391,6 +419,10 @@ final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 ### audioFrame
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
+
+### 所属接口类
+
+- [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
 
@@ -429,6 +461,10 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 频道 ID。
 
+### 所属接口类
+
+- [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
 
 <a id="ariaid-title11"></a>
@@ -465,6 +501,10 @@ final void Function(String channelId, AudioFrame audioFrame)?
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
@@ -503,6 +543,10 @@ final void Function(String channelId, int uid, AudioFrame audioFrame)?
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
+### 所属接口类
+
+- [AudioFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe"></a>
 
 <a id="ariaid-title13"></a>
@@ -539,3 +583,7 @@ final void Function(String channelId, AudioFrame audioFrame)?
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)

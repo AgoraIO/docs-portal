@@ -124,7 +124,13 @@ function loadHtmlPage({ html, rootSelector, titleSelector }) {
   const preferredTitle = titleSelector
     ? cleanText($(titleSelector).first().text())
     : '';
-  $('script, style, nav, footer, header').remove();
+  $('script, style, footer, header').remove();
+  $('nav').each((_, node) => {
+    const element = $(node);
+    const isRelatedLinks =
+      element.hasClass('related-links') || element.find('.relinfo').length > 0;
+    if (!isRelatedLinks) element.remove();
+  });
   const article = rootSelector ? $(rootSelector).first() : selectArticle($);
   if (article.length === 0) {
     return {
@@ -471,6 +477,32 @@ async function renderDefinitionList($, list, state) {
   return blocks.join('\n\n');
 }
 
+async function renderRelatedLinks($, element, state) {
+  const containers = element
+    .find('.linklist')
+    .filter(
+      (_, node) =>
+        $(node).children('strong, b').length > 0 &&
+        $(node).parents('.linklist').length === 0,
+    )
+    .toArray();
+  const blocks = [];
+  for (const node of containers.length > 0 ? containers : [element.get(0)]) {
+    const container = $(node);
+    const titleNode = container.children('strong, b').first();
+    const title = cleanText(titleNode.text());
+    if (titleNode.length > 0) titleNode.remove();
+    container.children('br').first().remove();
+    const body = await renderChildren($, container, state);
+    blocks.push(
+      [title ? `### ${escapeMdxText(title)}` : '', body]
+        .filter(Boolean)
+        .join('\n\n'),
+    );
+  }
+  return blocks.filter(Boolean).join('\n\n');
+}
+
 async function renderChildren($, element, state) {
   const blocks = [];
   let inline = '';
@@ -496,6 +528,7 @@ async function renderChildren($, element, state) {
         'hr',
         'iframe',
         'img',
+        'nav',
         'object',
         'ol',
         'p',
@@ -526,7 +559,15 @@ async function renderBlockNode($, node, state) {
   const element = $(node);
   const name = elementName(node);
   const anchor = anchorFor(element);
-  if (['script', 'style', 'nav', 'footer'].includes(name)) return '';
+  if (name === 'nav') {
+    const isRelatedLinks =
+      element.hasClass('related-links') || element.find('.relinfo').length > 0;
+    if (!isRelatedLinks) return '';
+    return [anchor, await renderRelatedLinks($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (['script', 'style', 'footer'].includes(name)) return '';
   if (['iframe', 'object', 'video'].includes(name)) {
     state.warnings.push(
       createWarning(

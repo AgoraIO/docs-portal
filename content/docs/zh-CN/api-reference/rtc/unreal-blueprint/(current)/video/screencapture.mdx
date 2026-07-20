@@ -40,6 +40,10 @@ int GetCount();
 
 可共享的窗口和屏幕的个数。
 
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iscreencapturesourcelist)
+
 <a id="api_irtcengine_getscreencapturesources"></a>
 
 <a id="ariaid-title3"></a>
@@ -90,6 +94,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iscreencapturesourcelist)
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_iscreencapturesourcelist_getsourceinfo"></a>
 
 <a id="ariaid-title4"></a>
@@ -129,6 +137,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|ScreenCaptureSourceList")
 
 [FScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-screencapturesourceinfo)
 
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iscreencapturesourcelist)
+
 <a id="api_irtcengine_queryscreencapturecapability"></a>
 
 <a id="ariaid-title5"></a>
@@ -167,6 +179,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - 2：最高支持 60 fps。
 - &lt;0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_iscreencapturesourcelist_release"></a>
 
 <a id="ariaid-title6"></a>
@@ -191,6 +207,10 @@ void Release();
 :::note
 注： 该方法仅适用于 macOS 和 Windows。
 :::
+
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
 
@@ -239,6 +259,10 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturescenario"></a>
 
 <a id="ariaid-title8"></a>
@@ -278,6 +302,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
 
@@ -359,6 +387,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapture2"></a>
 
 <a id="ariaid-title10"></a>
@@ -430,6 +462,10 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
 
@@ -513,6 +549,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
 
 <a id="ariaid-title12"></a>
@@ -576,6 +616,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
 
@@ -682,6 +726,10 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopscreencapture"></a>
 
 <a id="ariaid-title14"></a>
@@ -723,6 +771,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture2"></a>
 
@@ -778,6 +830,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencapture"></a>
 
 <a id="ariaid-title16"></a>
@@ -827,6 +883,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
 
 <a id="ariaid-title17"></a>
@@ -875,6 +935,10 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencaptureregion"></a>
 
 <a id="ariaid-title18"></a>
@@ -915,3 +979,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

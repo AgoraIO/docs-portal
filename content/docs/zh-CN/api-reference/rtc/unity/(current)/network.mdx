@@ -57,6 +57,10 @@ public abstract int Complain(string callId, string description);
   - -2: 参数无效。
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enableencryption"></a>
 
 <a id="ariaid-title3"></a>
@@ -119,6 +123,10 @@ public abstract int EnableEncryption(bool enabled, EncryptionConfig config);
   - -2: 调用了无效的参数。需重新指定参数。
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
   - -7: SDK 尚未初始化。需在调用 API 之前已创建 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象并完成初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableencryptionex"></a>
 
@@ -183,6 +191,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
 
 <a id="ariaid-title5"></a>
@@ -224,6 +236,10 @@ public abstract int EnableWebSdkInteroperability(bool enabled);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getcallid"></a>
 
 <a id="ariaid-title6"></a>
@@ -263,6 +279,10 @@ public abstract int GetCallId(ref string callId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_getcallidex"></a>
 
 <a id="ariaid-title7"></a>
@@ -299,6 +319,10 @@ public abstract int GetCallIdEx(ref string callId, RtcConnection connection);
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getconnectionstate"></a>
 
 <a id="ariaid-title8"></a>
@@ -326,6 +350,10 @@ public abstract CONNECTION_STATE_TYPE GetConnectionState();
 ### 返回值
 
 当前网络连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/unity/enum-connectionstatetype)。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getconnectionstateex"></a>
 
@@ -363,6 +391,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 当前网络连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/unity/enum-connectionstatetype)。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
 
 <a id="ariaid-title10"></a>
@@ -395,6 +427,10 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_geterrordescription"></a>
 
 <a id="ariaid-title11"></a>
@@ -424,6 +460,10 @@ SDK 报告的错误码。
 ### 返回值
 
 具体的错误描述。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnativehandle"></a>
 
@@ -457,6 +497,10 @@ public abstract int GetNativeHandler(ref IntPtr nativeHandler);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnetworktype"></a>
 
@@ -497,6 +541,10 @@ public abstract int GetNetworkType();
 
   - -1：网络连接类型未知。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getntpwalltimeinms"></a>
 
 <a id="ariaid-title14"></a>
@@ -520,6 +568,10 @@ public abstract UInt64 GetNtpWallTimeInMs();
 ### 返回值
 
 当前 NTP 时间的 Unix 时间戳 (毫秒)。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getversion"></a>
 
@@ -550,6 +602,10 @@ public abstract string GetVersion(ref int build);
 ### 返回值
 
 当前的 SDK 版本号。格式为字符串。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
 
@@ -590,6 +646,10 @@ public abstract bool IsFeatureAvailableOnDevice(FeatureType type);
 - true: 设备支持指定进阶功能。
 - false: 设备不支持指定进阶功能。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_querydevicescore"></a>
 
 <a id="ariaid-title17"></a>
@@ -618,6 +678,10 @@ public abstract int QueryDeviceScore();
 
 - &gt; 0: 方法调用成功，值为当前设备的评分等级，取值范围为[0,100]，数值越大表示设备能力越强。大部分设备的评分在 60 到 100 之间。
 - &lt; 0: 方法调用失败。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_rate"></a>
 
@@ -665,6 +729,10 @@ public abstract int Rate(string callId, int rating, string description);
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_sendcustomreportmessage"></a>
 
 <a id="ariaid-title19"></a>
@@ -683,6 +751,10 @@ public abstract int SendCustomReportMessage(string id, string category, string @
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
 
 <a id="ariaid-title20"></a>
@@ -700,6 +772,10 @@ public abstract int SendCustomReportMessageEx(string id, string category, string
 <a id="api_irtcengineex_sendcustomreportmessageex__detailed_desc"></a>
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setavsyncsource"></a>
 
@@ -741,6 +817,10 @@ public abstract int SetAVSyncSource(string channelId, uint uid);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcloudproxy"></a>
 
@@ -790,6 +870,10 @@ public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
   - -2: 传入的参数无效。
   - -7: SDK 尚未初始化。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlocalaccesspoint"></a>
 
 <a id="ariaid-title23"></a>
@@ -832,6 +916,10 @@ Local Access Point 配置。详见 LocalAccessPointConfiguration。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfile"></a>
 
@@ -879,6 +967,10 @@ public abstract int SetLogFile(string filePath);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilesize"></a>
 
@@ -934,6 +1026,10 @@ public abstract int SetLogFileSize(uint fileSizeInKBytes);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setlogfilter"></a>
 
 <a id="ariaid-title26"></a>
@@ -968,6 +1064,10 @@ public abstract int SetLogFilter(uint filter);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setloglevel"></a>
 
@@ -1006,6 +1106,10 @@ public abstract int SetLogLevel(LOG_LEVEL level);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setparameters"></a>
 
 <a id="ariaid-title28"></a>
@@ -1041,6 +1145,10 @@ value 值。
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_iagoraparameter_setparameters_iagoraparameter"></a>
 
 <a id="ariaid-title29"></a>
@@ -1073,6 +1181,10 @@ JSON 字符串形式的参数。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IAgoraParameter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iagoraparameter)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
 
@@ -1107,6 +1219,10 @@ public abstract int SetRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS opt
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startechotest3"></a>
 
@@ -1156,6 +1272,10 @@ public abstract int StartEchoTest(EchoTestConfiguration config);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startlastmileprobetest"></a>
 
 <a id="ariaid-title32"></a>
@@ -1204,6 +1324,10 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopechotest"></a>
 
 <a id="ariaid-title33"></a>
@@ -1231,6 +1355,10 @@ public abstract int StopEchoTest();
 
   - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoplastmileprobetest"></a>
 
 <a id="ariaid-title34"></a>
@@ -1253,6 +1381,10 @@ public abstract int StopLastmileProbeTest();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
 
@@ -1281,6 +1413,10 @@ public virtual void OnConnectionBanned(RtcConnection connection) {}
 ### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
 
@@ -1317,6 +1453,10 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
 
 <a id="ariaid-title37"></a>
@@ -1342,6 +1482,10 @@ SDK 在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irt
 ### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
 
@@ -1377,6 +1521,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 引起当前网络连接状态改变的原因。详见 [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc/unity/enum-connectionchangedreasontype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
 
 <a id="ariaid-title39"></a>
@@ -1407,6 +1555,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 错误类型，详见 [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc/unity/enum-encryptionerrortype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
 
 <a id="ariaid-title40"></a>
@@ -1432,6 +1584,10 @@ public virtual void OnLastmileProbeResult(LastmileProbeResult result)
 ### result
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/unity/class-lastmileproberesult)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
 
@@ -1459,6 +1615,10 @@ public virtual void OnLastmileQuality(int quality)
 ### quality
 
 Last mile 网络质量。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/unity/enum-qualitytype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onmultipathstats"></a>
 
@@ -1493,6 +1653,10 @@ public virtual void OnMultipathStats(RtcConnection connection, MultipathStats st
 ### stats
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/unity/class-multipathstats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
 
@@ -1538,6 +1702,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/unity/enum-qualitytype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
 
 <a id="ariaid-title44"></a>
@@ -1568,6 +1736,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 本地网络连接类型。详见 [NETWORK_TYPE](/zh-CN/api-reference/rtc/unity/enum-networktype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
 
 <a id="ariaid-title45"></a>
@@ -1594,6 +1766,10 @@ public virtual void OnPermissionError(PERMISSION_TYPE permissionType) {}
 
 设备权限类型。详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/unity/enum-permissiontype)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
 
 <a id="ariaid-title46"></a>
@@ -1617,6 +1793,10 @@ public virtual void OnPermissionGranted(PermissionType permissionType)
 ### permissionType
 
 权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/unity/enum-permissiontype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
 
@@ -1660,6 +1840,10 @@ public virtual void OnProxyConnected(string channel, uint uid, PROXY_TYPE proxyT
 
 从调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调的经过的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
 
 <a id="ariaid-title48"></a>
@@ -1698,6 +1882,10 @@ public virtual void OnRemoteSubscribeFallbackToAudioOnly(uint uid, bool isFallba
 - true: 由于网络环境不理想，订阅流已回退为音频流。
 - false: 由于网络环境改善，订阅流已恢复为音视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
 
 <a id="ariaid-title49"></a>
@@ -1727,3 +1915,7 @@ public virtual void OnUplinkNetworkInfoUpdated(UplinkNetworkInfo info) {}
 ### info
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/unity/class-uplinknetworkinfo)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

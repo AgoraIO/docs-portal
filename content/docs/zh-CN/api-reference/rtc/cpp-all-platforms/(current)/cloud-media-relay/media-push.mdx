@@ -67,6 +67,10 @@ virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
 
 <a id="ariaid-title3"></a>
@@ -129,6 +133,10 @@ virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnec
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
 
 <a id="ariaid-title4"></a>
@@ -178,6 +186,10 @@ virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscodin
   - -2：URL 或转码配置不合法，请检查 `url` 和 `transcoding`。
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
 
@@ -240,6 +252,10 @@ virtual int startRtmpStreamWithTranscodingEx(const char* url, const LiveTranscod
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_stoprtmpstream"></a>
 
 <a id="ariaid-title6"></a>
@@ -283,6 +299,10 @@ virtual int stopRtmpStream(const char* url) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stoprtmpstreamex"></a>
 
@@ -334,6 +354,10 @@ virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) =
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_updatertmptranscoding"></a>
 
 <a id="ariaid-title8"></a>
@@ -367,6 +391,10 @@ virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatertmptranscodingex"></a>
 
@@ -412,6 +440,10 @@ virtual int updateRtmpTranscodingEx(const LiveTranscoding& transcoding, const Rt
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
 
 <a id="ariaid-title10"></a>
@@ -439,6 +471,10 @@ virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCod
 ### eventCode
 
 旁路推流的事件码，详见 [RTMP_STREAMING_EVENT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtmpstreamingevent)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
 
@@ -474,6 +510,10 @@ virtual void onRtmpStreamingStateChanged(const char* url, RTMP_STREAM_PUBLISH_ST
 
 旁路推流状态变化的原因，详见 [RTMP_STREAM_PUBLISH_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtmpstreampublishreason)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
 
 <a id="ariaid-title12"></a>
@@ -495,3 +535,7 @@ virtual void onTranscodingUpdated() {}
 :::note
 注： 如果你首次调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding)，SDK 不会触发该回调。
 :::
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

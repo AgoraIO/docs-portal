@@ -37,6 +37,10 @@ abstract clearRemotePositions(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
+
 <a id="api_irtcengine_enablespatialaudio"></a>
 
 <a id="ariaid-title3"></a>
@@ -80,6 +84,10 @@ abstract enableSpatialAudio(enabled: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getlocalspatialaudioengine"></a>
 
 <a id="ariaid-title4"></a>
@@ -105,6 +113,10 @@ abstract getLocalSpatialAudioEngine(): ILocalSpatialAudioEngine;
 ### 返回值
 
 一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
 
@@ -135,6 +147,10 @@ abstract initialize(): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
 
@@ -180,6 +196,10 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
 
 <a id="ariaid-title7"></a>
@@ -223,6 +243,10 @@ abstract muteLocalAudioStream(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
 
 <a id="ariaid-title8"></a>
@@ -261,6 +285,10 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine"></a>
 
 <a id="ariaid-title9"></a>
@@ -279,6 +307,10 @@ abstract release(): void;
 
 该方法释放 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine) 下的所有资源。当用户不需要使用空间音频时，你可以调用该方法将资源释放出来用于其他操作。
 调用该方法后，你将无法再使用 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine) 下的任何 API。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
 
@@ -314,6 +346,10 @@ abstract removeRemotePosition(uid: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
 
 <a id="ariaid-title11"></a>
@@ -346,6 +382,10 @@ abstract setAudioRecvRange(range: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
 
@@ -380,6 +420,10 @@ abstract setDistanceUnit(unit: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
 
@@ -420,6 +464,10 @@ abstract setHeadphoneEQParameters(lowGain: number, highGain: number): number;
 
   - -1：一般性的错误（未明确归类）。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
 
 <a id="ariaid-title14"></a>
@@ -459,6 +507,10 @@ abstract setHeadphoneEQPreset(preset: HeadphoneEqualizerPreset): number;
 
   - -1：一般性的错误（未明确归类）。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
 
 <a id="ariaid-title15"></a>
@@ -491,6 +543,10 @@ abstract setMaxAudioRecvCount(maxCount: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
 
@@ -546,6 +602,10 @@ abstract setPlayerAttenuation(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
 
 <a id="ariaid-title17"></a>
@@ -595,6 +655,10 @@ abstract setRemoteAudioAttenuation(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
+
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
 
 <a id="ariaid-title18"></a>
@@ -631,6 +695,10 @@ abstract setRemoteUserSpatialAudioParams(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_imediaplayer_setspatialaudioparams"></a>
 
 <a id="ariaid-title19"></a>
@@ -656,6 +724,10 @@ abstract setSpatialAudioParams(params: SpatialAudioParams): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
 
@@ -706,6 +778,10 @@ abstract setZones(zones: SpatialAudioZone, zoneCount: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
 
 <a id="ariaid-title21"></a>
@@ -752,6 +828,10 @@ abstract updatePlayerPositionInfo(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
 
 <a id="ariaid-title22"></a>
@@ -795,6 +875,10 @@ abstract updateRemotePosition(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
 
@@ -845,3 +929,7 @@ abstract updateSelfPosition(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)

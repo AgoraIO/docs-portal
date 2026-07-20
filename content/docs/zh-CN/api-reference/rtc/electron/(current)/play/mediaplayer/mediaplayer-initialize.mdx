@@ -49,6 +49,10 @@ const onPlayerSourceStateChanged = (connection: RtcConnection, elapsed: number) 
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+
 <a id="api_irtcengine_createmediaplayer"></a>
 
 <a id="ariaid-title3"></a>
@@ -88,6 +92,10 @@ abstract createMediaPlayer(): IMediaPlayer;
 - 方法调用成功：返回 [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer) 对象。
 - 方法调用失败：返回空指针。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroymediaplayer"></a>
 
 <a id="ariaid-title4"></a>
@@ -118,6 +126,10 @@ abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 
 - ≥ 0: 方法调用成功，返回媒体播放器 ID
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager"></a>
 
@@ -155,6 +167,10 @@ export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
 
 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayer_removealllisteners_imediaplayer"></a>
 
 <a id="ariaid-title6"></a>
@@ -180,6 +196,10 @@ removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
 ### eventType
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_removelistener_imediaplayer"></a>
 
@@ -217,3 +237,7 @@ const onPlayerSourceStateChanged = (state: MediaPlayerState, ec: MediaPlayerErro
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 engine.removeListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)

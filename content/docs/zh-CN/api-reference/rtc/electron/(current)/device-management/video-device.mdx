@@ -34,6 +34,10 @@ abstract enumerateVideoDevices(): VideoDeviceInfo[];
 - 方法调用成功：返回一个 [VideoDeviceInfo](/zh-CN/api-reference/rtc/electron/class-videodeviceinfo) 数组，其中包含系统中所有视频设备。
 - 方法调用失败: 返回空列表。
 
+### 所属接口类
+
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
 <a id="api_ivideodevicemanager_getcapability"></a>
 
 <a id="ariaid-title3"></a>
@@ -73,6 +77,10 @@ abstract getCapability(
 
 指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/electron/class-videoformat)。
 
+### 所属接口类
+
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager"></a>
 
 <a id="ariaid-title4"></a>
@@ -95,6 +103,10 @@ abstract getDevice(): string;
 
 视频采集设备。
 
+### 所属接口类
+
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
 <a id="api_irtcengine_getvideodevicemanager"></a>
 
 <a id="ariaid-title5"></a>
@@ -116,6 +128,10 @@ abstract getVideoDeviceManager(): IVideoDeviceManager;
 ### 返回值
 
 一个 [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_ivideodevicemanager_numberofcapabilities"></a>
 
@@ -151,6 +167,10 @@ abstract numberOfCapabilities(deviceIdUTF8: string): number;
 - &gt; 0: 方法调用成功。返回该设备支持的视频格式数量。例如：如果指定的摄像头支持 10 种不同的视频格式，则返回值为 10。
 - ≤ 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
 <a id="api_irtcengine_querycodeccapability"></a>
 
 <a id="ariaid-title7"></a>
@@ -176,6 +196,10 @@ abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
   - `codecInfo`：[CodecCapInfo](/zh-CN/api-reference/rtc/electron/class-codeccapinfo) 数组，表示 SDK 的视频编码能力。
   - `size`：[CodecCapInfo](/zh-CN/api-reference/rtc/electron/class-codeccapinfo) 数组的大小。
 - 如果调用超时，请修改调用逻辑，不要在主线程中调用该方法。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcameracapturerconfiguration"></a>
 
@@ -214,6 +238,10 @@ abstract setCameraCapturerConfiguration(
 ### 返回值
 
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcameradeviceorientation"></a>
 
@@ -257,6 +285,10 @@ abstract setCameraDeviceOrientation(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager"></a>
 
 <a id="ariaid-title10"></a>
@@ -295,6 +327,10 @@ abstract setDevice(deviceIdUTF8: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
 <a id="callback_irtcengineeventhandler_oncameraready"></a>
 
 <a id="ariaid-title11"></a>
@@ -316,6 +352,10 @@ onCameraReady?(): void;
 弃用: 请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 中的 LocalVideoStreamStateCapturing(1)。
 
 该回调提示已成功打开摄像头，可以开始捕获视频。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged"></a>
 
@@ -354,3 +394,7 @@ onVideoDeviceStateChanged?(
 ### deviceState
 
 设备状态。详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/electron/enum-mediadevicestatetype) 。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

@@ -57,6 +57,10 @@ abstract addOrUpdateVideoEffect(nodeId: number, templateName: string): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_irtcengine_createvideoeffectobject"></a>
 
 <a id="ariaid-title3"></a>
@@ -99,6 +103,10 @@ abstract createVideoEffectObject(
 - 方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject) 对象指针，详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)。
 - 方法调用失败，返回 `NULL`。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroyvideoeffectobject"></a>
 
 <a id="ariaid-title4"></a>
@@ -135,6 +143,10 @@ abstract destroyVideoEffectObject(
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
 
@@ -195,6 +207,10 @@ abstract getFaceShapeAreaOptions(
 - 方法调用成功，返回 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/react-native/class-faceshapeareaoptions) 对象。
 - 方法调用失败，返回 null。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
 
 <a id="ariaid-title6"></a>
@@ -249,6 +265,10 @@ abstract getFaceShapeBeautyOptions(
 - 方法调用成功，返回 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/class-faceshapebeautyoptions) 对象。
 - 方法调用失败，返回 null。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
 
 <a id="ariaid-title7"></a>
@@ -287,6 +307,10 @@ abstract getVideoEffectBoolParam(option: string, key: string): boolean;
 
 - true：参数已启用。
 - false：参数未启用或不存在。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
 
@@ -327,6 +351,10 @@ abstract getVideoEffectFloatParam(option: string, key: string): number;
 - 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
 
 <a id="ariaid-title9"></a>
@@ -365,6 +393,10 @@ abstract getVideoEffectIntParam(option: string, key: string): number;
 
 - 如果参数存在，返回对应的整数值。
 - 如果参数不存在或发生错误，返回 0。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
 
@@ -408,6 +440,10 @@ abstract performVideoEffectAction(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
 
 <a id="ariaid-title11"></a>
@@ -442,6 +478,10 @@ abstract removeVideoEffect(nodeId: number): number;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
 
@@ -516,6 +556,10 @@ abstract setBeautyEffectOptions(
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 5.0，不支持该操作，建议更换设备或升级操作系统。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
 
 <a id="ariaid-title13"></a>
@@ -579,6 +623,10 @@ abstract setColorEnhanceOptions(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
 
@@ -645,6 +693,10 @@ abstract setFaceShapeAreaOptions(
 
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
 
@@ -720,6 +772,10 @@ abstract setFaceShapeBeautyOptions(
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setfiltereffectoptions"></a>
 
 <a id="ariaid-title16"></a>
@@ -785,6 +841,10 @@ abstract setFilterEffectOptions(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
 
@@ -863,6 +923,10 @@ abstract setLowlightEnhanceOptions(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
 
@@ -943,6 +1007,10 @@ abstract setVideoDenoiserOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
 
 <a id="ariaid-title19"></a>
@@ -993,6 +1061,10 @@ abstract setVideoEffectBoolParam(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
 
 <a id="ariaid-title20"></a>
@@ -1040,6 +1112,10 @@ abstract setVideoEffectFloatParam(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
 
 <a id="ariaid-title21"></a>
@@ -1086,3 +1162,7 @@ abstract setVideoEffectIntParam(
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)

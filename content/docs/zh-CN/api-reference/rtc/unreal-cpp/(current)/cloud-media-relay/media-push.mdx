@@ -62,6 +62,10 @@ virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
 
 <a id="ariaid-title3"></a>
@@ -116,6 +120,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
 
@@ -175,6 +183,10 @@ virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscodin
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
 
@@ -238,6 +250,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_stoprtmpstream"></a>
 
 <a id="ariaid-title6"></a>
@@ -276,6 +292,10 @@ virtual int stopRtmpStream(const char* url) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stoprtmpstreamex"></a>
 
@@ -316,6 +336,10 @@ virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) =
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_updatertmptranscoding"></a>
 
 <a id="ariaid-title8"></a>
@@ -352,6 +376,10 @@ virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatertmptranscodingex"></a>
 
@@ -394,6 +422,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
 
 <a id="ariaid-title10"></a>
@@ -422,6 +454,10 @@ virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCod
 ### eventCode
 
 旁路推流事件码。详见 [RTMP_STREAMING_EVENT](/zh-CN/api-reference/rtc/unreal-cpp/enum-rtmpstreamingevent)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
 
@@ -462,6 +498,10 @@ virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCod
 
 推流状态改变的原因，详见 [RTMP_STREAM_PUBLISH_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-rtmpstreampublishreason)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
 
 <a id="ariaid-title12"></a>
@@ -485,3 +525,7 @@ virtual void onTranscodingUpdated()
 :::note
 注意： 首次调用 startRtmpStreamWithTranscoding 方法设置转码参数 LiveTranscoding 时，不会触发此回调。
 :::
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

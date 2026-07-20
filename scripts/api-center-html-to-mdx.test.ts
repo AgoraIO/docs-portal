@@ -136,6 +136,60 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('### [VideoParameters]');
   });
 
+  it('preserves DITA related-link blocks with standalone strong labels', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Sound position</h1>
+        <p>Method details.</p>
+        <nav role="navigation" class="related-links"><div class="linklist relinfo">
+          <strong>所属接口类</strong><br>
+          <ul class="linklist"><li class="linklist"><a class="link" href="rtc_interface_class.html#class_irtcengine">IRtcEngine</a></li></ul>
+        </div></nav>
+        <p>Following content.</p>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_sound_position',
+      sourcePath: 'html-docs/rtc/Electron/API/toc_sound_position.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/electron/API/rtc_interface_class.html',
+          '/zh-CN/api-reference/rtc/electron/rtc-interface-class',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain('### 所属接口类');
+    expect(result.body).toContain(
+      '- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)',
+    );
+    expect(result.body).toContain('Following content.');
+  });
+
+  it('promotes other DITA related-link labels to block headings', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Configuration</h1>
+        <nav role="navigation" class="related-links"><div class="linklist relref">
+          <strong>相关参考</strong><br>
+          <ul class="linklist"><li class="linklist"><a class="link" href="method.html">setConfig</a></li></ul>
+        </div></nav>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/class_config',
+      sourcePath: 'html-docs/rtc/Android/API/class_config.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/android/API/method.html',
+          '/zh-CN/api-reference/rtc/android/set-config',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain('### 相关参考');
+    expect(result.body).toContain(
+      '- [setConfig](/zh-CN/api-reference/rtc/android/set-config)',
+    );
+    expect(result.body).not.toContain('**相关参考**');
+  });
+
   it('removes self links from headings with bracketed overload labels', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Music</h1><h2><a href="#api_searchmusic2">searchMusic [2/2]</a></h2></article>`,

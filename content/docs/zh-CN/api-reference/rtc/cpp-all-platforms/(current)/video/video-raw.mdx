@@ -52,6 +52,10 @@ virtual bool getMirrorApplied() { return false; }
 - true：镜像采集的视频。
 - false：（默认）不镜像采集的视频。
 
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="api_ivideoframeobserver_getobservedframeposition"></a>
 
 <a id="ariaid-title3"></a>
@@ -88,6 +92,10 @@ virtual uint32_t getObservedFramePosition()
 ### 返回值
 
 方法调用成功，返回用于控制视频观察器帧位置的位掩码。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomoduleposition)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getrotationapplied"></a>
 
@@ -129,6 +137,10 @@ virtual bool getRotationApplied() { return false; }
 - true：旋转采集的视频。
 - false：（默认）不旋转采集的视频。
 
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="api_ivideoframeobserver_getvideoformatpreference"></a>
 
 <a id="ariaid-title5"></a>
@@ -164,6 +176,10 @@ virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAU
 
 设置 SDK 输出的原始数据格式，详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videopixelformat)。
 
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="api_ivideoframeobserver_getvideoframeprocessmode"></a>
 
 <a id="ariaid-title6"></a>
@@ -193,6 +209,10 @@ virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() { return PROCESS_MOD
 ### 返回值
 
 方法调用成功时，返回一个 [VIDEO_FRAME_PROCESS_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoframeprocessmode) 枚举值，表示你设置的视频帧处理模式。详见 [VIDEO_FRAME_PROCESS_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoframeprocessmode)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_imediaengine_registervideoframeobserver_imediaengine"></a>
 
@@ -239,6 +259,10 @@ virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
 
@@ -306,6 +330,10 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="callback_ivideoframeobserver_onframe_ivideoframeobserver"></a>
 
 <a id="ariaid-title9"></a>
@@ -331,6 +359,10 @@ virtual void onFrame(const VideoFrame* frame) = 0;
 ### frame
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
 
@@ -398,6 +430,10 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
 
@@ -468,3 +504,7 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)

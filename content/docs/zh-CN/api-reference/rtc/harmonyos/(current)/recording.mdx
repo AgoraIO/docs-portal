@@ -48,6 +48,10 @@ public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorde
 - 方法调用成功：返回一个 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 实例。
 - 方法调用失败：返回空指针。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroymediarecorder"></a>
 
 <a id="ariaid-title3"></a>
@@ -122,6 +126,10 @@ public abstract setMediaRecorderObserver(callback: IMediaRecorderCallback | null
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording"></a>
 
@@ -229,6 +237,10 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_imediarecorder_startrecording"></a>
 
 <a id="ariaid-title7"></a>
@@ -294,6 +306,10 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
   - -4: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 当前状态不支持该操作。可能因为录制正在进行中或录制出错停止。
   - -7: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
 
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
+
 <a id="api_irtcengine_stopaudiorecording"></a>
 
 <a id="ariaid-title8"></a>
@@ -316,6 +332,10 @@ public abstract stopAudioRecording(): number;;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
 
@@ -347,6 +367,10 @@ public abstract stopRecording(): number;
 - &lt; 0: 方法调用失败：
 
   - -7: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
 
@@ -381,6 +405,10 @@ onRecorderInfoUpdated(channelId: string, uid: number, info: RecorderInfo): void;
 ### info
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/harmonyos/class-recorderinfo)。
+
+### 所属接口类
+
+- [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
 
@@ -429,3 +457,7 @@ onRecorderStateChanged(channelId: string, uid: number, state: number, reason: nu
 - RECORDER_ERROR_NO_STREAM（2）：没有可录制的音视频流或者录制的音视频流中断超过 5 秒。
 - RECORDER_ERROR_OVER_MAX_DURATION（3）：录制时长超出上限。
 - RECORDER_ERROR_CONFIG_CHANGED（4）：录制配置改变。
+
+### 所属接口类
+
+- [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)

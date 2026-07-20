@@ -58,6 +58,10 @@ public abstract ScreenCaptureSourceInfo[] GetScreenCaptureSources(SIZE thumbSize
 
 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/unity/class-screencapturesourceinfo) 数组。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_queryscreencapturecapability"></a>
 
 <a id="ariaid-title3"></a>
@@ -86,6 +90,10 @@ public abstract int QueryScreenCaptureCapability();
 
 - 方法调用成功时，返回设备支持的最高帧率。详见 [SCREEN_CAPTURE_FRAMERATE_CAPABILITY](/zh-CN/api-reference/rtc/unity/enum-screencaptureframeratecapability)。
 - &lt;0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
 
@@ -141,6 +149,10 @@ public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
 
 <a id="ariaid-title5"></a>
@@ -181,6 +193,10 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setscreencapturescenario"></a>
 
 <a id="ariaid-title6"></a>
@@ -217,6 +233,10 @@ public abstract int SetScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
 
@@ -288,6 +308,10 @@ public abstract int StartScreenCapture(ScreenCaptureParameters2 captureParams);
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapture2"></a>
 
 <a id="ariaid-title8"></a>
@@ -353,6 +377,10 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
 
@@ -426,6 +454,10 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
 
 <a id="ariaid-title10"></a>
@@ -482,6 +514,10 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
 
@@ -575,6 +611,10 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stopscreencapture"></a>
 
 <a id="ariaid-title12"></a>
@@ -609,6 +649,10 @@ public abstract int StopScreenCapture();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture2"></a>
 
@@ -657,6 +701,10 @@ public abstract int StopScreenCapture(VIDEO_SOURCE_TYPE sourceType);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencapture"></a>
 
 <a id="ariaid-title14"></a>
@@ -703,6 +751,10 @@ public abstract int UpdateScreenCapture(ScreenCaptureParameters2 captureParams);
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
 
 <a id="ariaid-title15"></a>
@@ -748,6 +800,10 @@ public abstract int UpdateScreenCaptureParameters(ScreenCaptureParameters captur
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatescreencaptureregion1"></a>
 
 <a id="ariaid-title16"></a>
@@ -785,3 +841,7 @@ public abstract int UpdateScreenCaptureRegion(Rectangle regionRect);
 
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)

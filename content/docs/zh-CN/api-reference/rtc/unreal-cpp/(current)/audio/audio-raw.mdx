@@ -56,6 +56,10 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
 <a id="ariaid-title3"></a>
@@ -115,6 +119,10 @@ onEarMonitoringAudioFrame 中报告的音频的采样点数，如旁路推流应
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title4"></a>
@@ -171,6 +179,10 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
 
 <a id="ariaid-title5"></a>
@@ -222,6 +234,10 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -286,6 +302,10 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title7"></a>
@@ -349,6 +369,10 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="callback_iaudioframeobserverbase_getearmonitoringaudioparams"></a>
 
 <a id="ariaid-title8"></a>
@@ -385,6 +409,10 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 耳返的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_getmixedaudioparams"></a>
 
 <a id="ariaid-title9"></a>
@@ -416,6 +444,10 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 ### 返回值
 
 SDK 采集和播放音频混音后的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_getobservedaudioframeposition"></a>
 
@@ -457,6 +489,10 @@ virtual int getObservedAudioFramePosition() = 0;
 - AUDIO_FRAME_POSITION_BEFORE_MIXING (0x0008)：该位置可观测单个远端用户混音前的音频，对应 onPlaybackAudioFrameBeforeMixing 回调。
 - AUDIO_FRAME_POSITION_EAR_MONITORING (0x0010)：该位置可观测单个本地用户耳返的音频，对应 onEarMonitoringAudioFrame 回调。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_getplaybackaudioparams"></a>
 
 <a id="ariaid-title11"></a>
@@ -489,6 +525,10 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 SDK 播放的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_getrecordaudioparams"></a>
 
 <a id="ariaid-title12"></a>
@@ -520,6 +560,10 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 ### 返回值
 
 SDK 采集的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
 
@@ -563,6 +607,10 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
 
@@ -610,6 +658,10 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
@@ -694,6 +746,10 @@ virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) =
 
 无实际含义。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
 
 <a id="ariaid-title17"></a>
@@ -740,3 +796,7 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)

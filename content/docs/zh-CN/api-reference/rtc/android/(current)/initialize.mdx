@@ -38,6 +38,10 @@ SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interfa
 
 要添加的回调事件处理器，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_create"></a>
 
 <a id="ariaid-title3"></a>
@@ -87,6 +91,10 @@ Android Activity 的上下文。
 方法调用成功，返回已初始化的 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。
 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroy1"></a>
 
 <a id="ariaid-title4"></a>
@@ -119,6 +127,10 @@ public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback call
 
 - 非 `null`：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 [onEngineReleased](/zh-CN/api-reference/rtc/android/initialize#callback_irtcenginereleasecallback_onenginereleased) 回调。
 - `null`：同步销毁。方法仅在引擎资源完全释放后才返回。详见 [IRtcEngineReleaseCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcenginereleasecallback)。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_initialize"></a>
 
@@ -163,6 +175,10 @@ public static synchronized RtcEngine create(RtcEngineConfig config) throws Excep
 方法调用成功，返回初始化后的 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。
 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_release"></a>
 
 <a id="ariaid-title6"></a>
@@ -184,6 +200,10 @@ public static synchronized void destroy()
 :::note
 注： 不建议在 SDK 的任何回调中调用该方法。否则，SDK 需等待回调返回结果后才能释放资源，可能导致死锁。
 :::
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removehandler"></a>
 
@@ -211,6 +231,10 @@ public void removeHandler(IRtcEngineEventHandler handler)
 
 要移除的回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcenginereleasecallback_onenginereleased"></a>
 
 <a id="ariaid-title8"></a>
@@ -234,3 +258,7 @@ public void removeHandler(IRtcEngineEventHandler handler)
 ### 触发时机
 
 该回调在调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法以异步方式释放 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象时被触发。
+
+### 所属接口类
+
+- [IRtcEngineReleaseCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcenginereleasecallback)

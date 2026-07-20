@@ -42,6 +42,10 @@ Future<int> getAudioBufferDelay();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_getduration"></a>
 
 <a id="ariaid-title3"></a>
@@ -63,6 +67,10 @@ Future<int> getDuration();
 ### 返回值
 
 媒体文件总时长（毫秒）。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
 
@@ -87,6 +95,10 @@ int getMediaPlayerId();
 - 方法调用成功，返回播放器 ID。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_getmute"></a>
 
 <a id="ariaid-title5"></a>
@@ -109,6 +121,10 @@ Future<bool> getMute();
 
 - true：当前播放的媒体文件为静音。
 - false：当前播放的媒体文件没有静音。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
 
@@ -135,6 +151,10 @@ Future<int> getPlayoutVolume();
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_getplayposition"></a>
 
 <a id="ariaid-title7"></a>
@@ -158,6 +178,10 @@ Future<int> getPlayPosition();
 - 方法调用成功，返回当前播放进度（毫秒）。
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
 
 <a id="ariaid-title8"></a>
@@ -179,6 +203,10 @@ Future<String> getPlaySrc();
 ### 返回值
 
 播放的媒体资源的路径。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
 
@@ -203,6 +231,10 @@ Future<int> getPublishSignalVolume();
 - ≥ 0: 播放文件的远端播放音量。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_getstate"></a>
 
 <a id="ariaid-title10"></a>
@@ -224,6 +256,10 @@ Future<MediaPlayerState> getState();
 ### 返回值
 
 播放器当前状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerstate)。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
 
@@ -251,6 +287,10 @@ Future<int> getStreamCount();
 
 - 方法调用成功，返回该媒体文件中媒体流的数量。
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
 
@@ -289,6 +329,10 @@ Future<PlayerStreamInfo> getStreamInfo(int index);
 - 方法调用成功，返回媒体流信息，详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/flutter/class-playerstreaminfo)。
 - 方法调用失败，返回 `NULL`。
 
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
 
 <a id="ariaid-title13"></a>
@@ -314,3 +358,7 @@ final void Function(PlayerPlaybackStats stats)? onPlayerPlaybackStats;
 ### stats
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/flutter/class-playerplaybackstats)。
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)

@@ -75,6 +75,10 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_createdatastream2"></a>
 
 <a id="ariaid-title3"></a>
@@ -121,6 +125,10 @@ virtual int createDataStream(int* streamId, const DataStreamConfig& config) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex1"></a>
 
@@ -195,6 +203,10 @@ virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengineex_createdatastreamex2"></a>
 
 <a id="ariaid-title5"></a>
@@ -252,6 +264,10 @@ virtual int createDataStreamEx(int* streamId, const DataStreamConfig& config, co
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_sendstreammessage"></a>
 
 <a id="ariaid-title6"></a>
@@ -306,6 +322,10 @@ virtual int sendStreamMessage(int streamId, const char* data, size_t length) = 0
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
 
@@ -375,6 +395,10 @@ virtual int sendStreamMessageEx(int streamId, const char* data, size_t length, c
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
 
 <a id="ariaid-title8"></a>
@@ -421,6 +445,10 @@ virtual void onStreamMessage(uid_t uid, int streamId, const char* data, size_t l
 
 发送该数据流的时间戳。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
 
 <a id="ariaid-title9"></a>
@@ -466,3 +494,7 @@ virtual void onStreamMessageError(uid_t uid, int streamId, int code, int missed,
 ### cached
 
 数据流中断期间接收到的缓存消息数量。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

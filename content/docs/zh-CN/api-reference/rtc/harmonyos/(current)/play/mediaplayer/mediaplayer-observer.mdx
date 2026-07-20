@@ -109,6 +109,10 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 播放器的当前音量，取值范围为 [0,255]。
 
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
+
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
 
 <a id="ariaid-title5"></a>
@@ -139,6 +143,10 @@ onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 
 具体数据，用户自定义格式的数据。
 
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
+
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
 
 <a id="ariaid-title6"></a>
@@ -167,6 +175,10 @@ onPlayBufferUpdated?:(playCachedBuffer:number) => void
 ### playCachedBuffer
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
 
@@ -202,6 +214,10 @@ onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:
 
 事件的信息。
 
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
+
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
 
 <a id="ariaid-title8"></a>
@@ -227,6 +243,10 @@ onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 ### info
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/harmonyos/class-playerupdatedinfo)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
 
@@ -258,6 +278,10 @@ onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPl
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
+
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
 
 <a id="ariaid-title10"></a>
@@ -283,6 +307,10 @@ onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 ### to
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/harmonyos/class-srcinfo)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
 
@@ -314,6 +342,10 @@ onPositionChanged?:(positionMs:number,timestampMs:number) => void
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
+
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
 
 <a id="ariaid-title12"></a>
@@ -335,3 +367,7 @@ onPreloadEvent?:(src:string,event:Constants.MediaPlayerPreloadEvent) => void
 ### event
 
 预加载媒体资源时发生的事件。详见 [MediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/harmonyos/enum-playerpreloadevent)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)

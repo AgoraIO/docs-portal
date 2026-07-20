@@ -40,6 +40,10 @@ abstract createCustomVideoTrack(): number;
 - 方法调用成功，返回视频轨道 ID 作为该视频轨道的唯一标识。
 - 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroycustomvideotrack"></a>
 
 <a id="ariaid-title3"></a>
@@ -71,6 +75,10 @@ abstract destroyCustomVideoTrack(videoTrackId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_agorapip_ispipactivated"></a>
 
 <a id="ariaid-title4"></a>
@@ -98,6 +106,10 @@ abstract isPipActivated(): boolean;
 - true：画中画模式已激活。
 - false：画中画模式未激活。
 
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipdispose"></a>
 
 <a id="ariaid-title5"></a>
@@ -117,6 +129,10 @@ abstract pipDispose(): void;
 ### 自从
 
 自 v4.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
 
 <a id="api_agorapip_pipisautoentersupported"></a>
 
@@ -145,6 +161,10 @@ abstract pipIsAutoEnterSupported(): boolean;
 - true：支持自动进入画中画模式。
 - false：不支持自动进入画中画模式。
 
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipissupported"></a>
 
 <a id="ariaid-title7"></a>
@@ -171,6 +191,10 @@ abstract pipIsSupported(): boolean;
 
 - true：当前设备支持画中画模式。
 - false：当前设备不支持画中画模式。
+
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
 
 <a id="api_agorapip_pipsetup"></a>
 
@@ -207,6 +231,10 @@ abstract pipSetup(options: AgoraPipOptions): boolean;
 - true：方法调用成功。
 - false：方法调用失败。
 
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipstart"></a>
 
 <a id="ariaid-title9"></a>
@@ -234,6 +262,10 @@ abstract pipStart(): boolean;
 - true：方法调用成功。
 - false：方法调用失败。
 
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_pipstop"></a>
 
 <a id="ariaid-title10"></a>
@@ -253,6 +285,10 @@ abstract pipStop(): void;
 ### 自从
 
 自 v4.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
 
 <a id="api_imediaengine_pushvideoframe"></a>
 
@@ -309,6 +345,10 @@ abstract pushVideoFrame(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
+
 <a id="api_agorapip_registerpipstatechangedobserver"></a>
 
 <a id="ariaid-title12"></a>
@@ -333,6 +373,10 @@ abstract registerPipStateChangedObserver(observer: AgoraPipStateChangedObserver)
 
 画中画状态改变观测器，详见 [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapipstatechangedobserver)。
 
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+
 <a id="api_agorapip_release_agorapip"></a>
 
 <a id="ariaid-title13"></a>
@@ -352,6 +396,10 @@ abstract release(): void;
 ### 自从
 
 自 v4.6.2 版本新增。
+
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
 
 <a id="api_irtcengine_setexternalremoteeglcontext"></a>
 
@@ -402,6 +450,10 @@ abstract setExternalRemoteEglContext(eglContext: any): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_setexternalvideosource"></a>
 
@@ -469,6 +521,10 @@ abstract setExternalVideoSource(
 - 0：方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
+
 <a id="api_agorapip_unregisterpipstatechangedobserver"></a>
 
 <a id="ariaid-title16"></a>
@@ -492,6 +548,10 @@ abstract unregisterPipStateChangedObserver(observer: AgoraPipStateChangedObserve
 ### observer
 
 画中画状态改变观测器，详见 [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapipstatechangedobserver)。
+
+### 所属接口类
+
+- [AgoraPip](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
 
 <a id="callback_agorapipstatechangedobserver_onpipstatechanged"></a>
 
@@ -526,3 +586,7 @@ onPipStateChanged: (state: AgoraPipState, error: string | null) => void;
 ### error
 
 如果状态改变失败，返回错误信息；否则返回 null。
+
+### 所属接口类
+
+- [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapipstatechangedobserver)

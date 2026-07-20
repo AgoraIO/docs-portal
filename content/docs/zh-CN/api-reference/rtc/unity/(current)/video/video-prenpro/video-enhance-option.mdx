@@ -57,6 +57,10 @@ public abstract int AddOrUpdateVideoEffect(uint nodeId, string templateName);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_irtcengine_createvideoeffectobject"></a>
 
 <a id="ariaid-title3"></a>
@@ -96,6 +100,10 @@ public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, ME
 - 方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject) 对象指针，详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)。
 - 方法调用失败，返回 `NULL`。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_destroyvideoeffectobject"></a>
 
 <a id="ariaid-title4"></a>
@@ -130,6 +138,10 @@ public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
 
@@ -191,6 +203,10 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
 
 <a id="ariaid-title6"></a>
@@ -247,6 +263,10 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
 
 <a id="ariaid-title7"></a>
@@ -285,6 +305,10 @@ public abstract bool GetVideoEffectBoolParam(string option, string key);
 
 - true：参数已启用。
 - false：参数未启用或不存在。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
 
@@ -325,6 +349,10 @@ public abstract float GetVideoEffectFloatParam(string option, string key);
 - 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
 
 <a id="ariaid-title9"></a>
@@ -363,6 +391,10 @@ public abstract int GetVideoEffectIntParam(string option, string key);
 
 - 如果参数存在，返回对应的整数值。
 - 如果参数不存在或发生错误，返回 0。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
 
@@ -403,6 +435,10 @@ public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION ac
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
 
 <a id="ariaid-title11"></a>
@@ -437,6 +473,10 @@ public abstract int RemoveVideoEffect(uint nodeId);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
 
@@ -507,6 +547,10 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 5.0，不支持该操作，建议更换设备或升级操作系统。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
 
 <a id="ariaid-title13"></a>
@@ -566,6 +610,10 @@ public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions opt
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
 
@@ -629,6 +677,10 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
 
@@ -700,6 +752,10 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setfiltereffectoptions"></a>
 
 <a id="ariaid-title16"></a>
@@ -761,6 +817,10 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
 
@@ -835,6 +895,10 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
 
@@ -911,6 +975,10 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
 
 <a id="ariaid-title19"></a>
@@ -957,6 +1025,10 @@ public abstract int SetVideoEffectBoolParam(string option, string key, bool para
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
 
 <a id="ariaid-title20"></a>
@@ -1000,6 +1072,10 @@ public abstract int SetVideoEffectFloatParam(string option, string key, float pa
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
 
 <a id="ariaid-title21"></a>
@@ -1042,3 +1118,7 @@ public abstract int SetVideoEffectIntParam(string option, string key, int param)
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)

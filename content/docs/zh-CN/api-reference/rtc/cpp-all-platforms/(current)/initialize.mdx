@@ -36,6 +36,10 @@ AGORA_API agora::rtc::IRtcEngine* AGORA_CALL createAgoraRtcEngine();
 - 方法调用成功，返回 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象，详见 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)。
 - 方法调用失败，返回 NULL。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_initialize"></a>
 
 <a id="ariaid-title3"></a>
@@ -86,6 +90,10 @@ virtual int initialize(const RtcEngineContext& context) = 0;
   - -22：资源请求失败。由于你的 App 占用过多系统资源或系统资源不足，SDK 无法分配资源。
   - -101：App ID 无效。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_release"></a>
 
 <a id="ariaid-title4"></a>
@@ -119,6 +127,10 @@ AGORA_CPP_API static void release(RtcEngineReleaseCallback callback = nullptr);
 - 非 `nullptr`：异步销毁引擎。该方法会立即返回，此时引擎资源可能尚未完全释放。引擎销毁后，SDK 会触发 [RtcEngineReleaseCallback](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengineeventhandler_rtcenginereleasecallback)。
 - `nullptr`：同步销毁引擎。该方法仅在引擎资源完全释放后才返回。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineeventhandler_rtcenginereleasecallback"></a>
 
 <a id="ariaid-title5"></a>
@@ -144,3 +156,7 @@ using RtcEngineReleaseCallback = void(*)();
 ### 调用时机
 
 当调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_release) 方法以异步释放 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象时，会触发该回调。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

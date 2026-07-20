@@ -40,6 +40,10 @@ abstract isSpeakerphoneEnabled(): boolean;
 - true: 扬声器已开启，语音会输出到扬声器。
 - false: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
 
 <a id="ariaid-title3"></a>
@@ -102,6 +106,10 @@ abstract setDefaultAudioRouteToSpeakerphone(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setenablespeakerphone"></a>
 
 <a id="ariaid-title4"></a>
@@ -163,6 +171,10 @@ abstract setEnableSpeakerphone(speakerOn: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
 
 <a id="ariaid-title5"></a>
@@ -221,6 +233,10 @@ abstract setRouteInCommunicationMode(route: number): number;
 
 无实际意义。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
 
 <a id="ariaid-title6"></a>
@@ -252,3 +268,7 @@ onAudioRoutingChanged?(routing: number): void;
 - 3：音频路由为设备自带的扬声器。
 - 4：音频路由为外接的扬声器。（仅适用于 iOS 和 macOS）
 - 5：音频路由为蓝牙耳机。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

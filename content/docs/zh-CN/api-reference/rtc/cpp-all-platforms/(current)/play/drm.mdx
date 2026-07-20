@@ -36,6 +36,10 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 - 方法调用成功，返回一个 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer) 对象，详见 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)。
 - 方法调用失败，返回 NULL。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
 
 <a id="ariaid-title3"></a>
@@ -75,6 +79,10 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musicchartcollection_get"></a>
 
 <a id="ariaid-title4"></a>
@@ -105,6 +113,10 @@ virtual MusicChartInfo* get(int index) = 0;
 
 - 方法调用成功，返回 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo) 实例，详见 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo)。
 - 方法调用失败，返回 NULL。
+
+### 所属接口类
+
+- [MusicChartCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_musicchartcollection)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
 
@@ -146,6 +158,10 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musicchartcollection_getcount_musicchartcollection"></a>
 
 <a id="ariaid-title6"></a>
@@ -168,6 +184,10 @@ virtual int getCount() = 0;
 
 方法调用成功，返回当前请求中的音乐排行榜数量。
 
+### 所属接口类
+
+- [MusicChartCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_musicchartcollection)
+
 <a id="api_musiccollection_getcount_musiccollection"></a>
 
 <a id="ariaid-title7"></a>
@@ -189,6 +209,10 @@ virtual int getCount() = 0;
 ### 返回值
 
 方法调用成功，返回当前请求中的音乐项数量。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
 
@@ -233,6 +257,10 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。详见错误码及其解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
 
@@ -282,6 +310,10 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musiccollection_getmusic_musiccollection"></a>
 
 <a id="ariaid-title10"></a>
@@ -312,6 +344,10 @@ virtual Music* getMusic(int32_t index) = 0;
 
 - 方法调用成功，返回 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music) 实例，详见 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music)。
 - 方法调用失败，返回 NULL。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
 
@@ -349,6 +385,10 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
 
@@ -413,6 +453,10 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。请参见错误码文档获取详细信息和解决方案。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musiccollection_getpage_musiccollection"></a>
 
 <a id="ariaid-title13"></a>
@@ -435,6 +479,10 @@ virtual int getPage() = 0;
 
 方法调用成功，返回当前页码。
 
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
+
 <a id="api_musiccollection_getpagesize_musiccollection"></a>
 
 <a id="ariaid-title14"></a>
@@ -456,6 +504,10 @@ virtual int getPageSize() = 0;
 ### 返回值
 
 方法调用成功，返回 SDK 实际返回的音乐资源数量。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
 
@@ -500,6 +552,10 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musiccollection_gettotal_musiccollection"></a>
 
 <a id="ariaid-title16"></a>
@@ -521,6 +577,10 @@ virtual int getTotal() = 0;
 ### 返回值
 
 方法调用成功，返回音乐资源的总数。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
 
@@ -555,6 +615,10 @@ virtual int initialize(const MusicContentCenterConfiguration & configuration) = 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_ispreloaded"></a>
 
 <a id="ariaid-title18"></a>
@@ -587,6 +651,10 @@ virtual int isPreloaded(int64_t songCode) = 0;
 
 - 0：方法调用成功，音乐资源已预加载。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。详见错误码。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
 
@@ -635,6 +703,10 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_preload"></a>
 
@@ -689,6 +761,10 @@ virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_preload2"></a>
 
 <a id="ariaid-title21"></a>
@@ -730,6 +806,10 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
 
 <a id="ariaid-title22"></a>
@@ -761,6 +841,10 @@ virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_release_imusiccontentcenter"></a>
 
 <a id="ariaid-title23"></a>
@@ -778,6 +862,10 @@ virtual void release() = 0;
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__detailed_desc"></a>
 
 该方法必须在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 之前调用。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
 
@@ -816,6 +904,10 @@ virtual int removeCache(int64_t songCode) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
 
 <a id="ariaid-title25"></a>
@@ -848,6 +940,10 @@ virtual int renewToken(const char* token) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
 
@@ -913,6 +1009,10 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusicplayer_setplaymode"></a>
 
 <a id="ariaid-title27"></a>
@@ -964,6 +1064,10 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
   - -2：参数无效。请重新设置参数。
 
+### 所属接口类
+
+- [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)
+
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
 
 <a id="ariaid-title28"></a>
@@ -986,6 +1090,10 @@ virtual int unregisterEventHandler() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
 
@@ -1025,6 +1133,10 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
+
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
 
 <a id="ariaid-title30"></a>
@@ -1058,6 +1170,10 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 ### reason
 
 请求的状态码。详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
 
@@ -1098,6 +1214,10 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 ### reason
 
 请求状态码。详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
 
@@ -1144,6 +1264,10 @@ virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent
 ### reason
 
 来自音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
 
@@ -1194,3 +1318,7 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 ### reason
 
 请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)

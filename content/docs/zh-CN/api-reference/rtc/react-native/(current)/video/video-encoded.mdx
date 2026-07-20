@@ -49,6 +49,10 @@ const onPlaybackAudioFrameBeforeMixing = (channelId: string, uid: number, audioF
 engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_registervideoencodedframeobserver"></a>
 
 <a id="ariaid-title3"></a>
@@ -88,6 +92,10 @@ abstract registerVideoEncodedFrameObserver(
 - 0：方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_removealllisteners_imediaengine"></a>
 
 <a id="ariaid-title4"></a>
@@ -113,6 +121,10 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 ### eventType
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengineevent)。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_removelistener_imediaengine"></a>
 
@@ -151,6 +163,10 @@ engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBefor
 engine.removeListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_unregistervideoencodedframeobserver"></a>
 
 <a id="ariaid-title6"></a>
@@ -183,6 +199,10 @@ abstract unregisterVideoEncodedFrameObserver(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
 
@@ -231,3 +251,7 @@ onEncodedVideoFrameReceived?(
 ### videoEncodedFrameInfo
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/react-native/class-encodedvideoframeinfo)。
+
+### 所属接口类
+
+- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoencodedframeobserver)

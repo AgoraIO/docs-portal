@@ -39,6 +39,10 @@ _migration:
 
 方法调用成功，返回耳返音频数据格式对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="api_iaudioframeobserver_getmixedaudioparams"></a>
 
 <a id="ariaid-title3"></a>
@@ -66,6 +70,10 @@ _migration:
 ### 返回值
 
 方法调用成功，返回混合后的采集和播放音频数据对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
+
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_iaudioframeobserver_getobservedaudioframeposition"></a>
 
@@ -105,6 +113,10 @@ _migration:
 - `AgoraAudioFramePositionBeforeMixing`（0x0008）：该位置可观察单个远端用户混音前的音频。对应 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
 - `AgoraAudioFramePositionEarMonitoring`（0x0010）：该位置可观察本地用户的耳返音频。对应 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="api_iaudioframeobserver_getplaybackaudioparams"></a>
 
 <a id="ariaid-title5"></a>
@@ -133,6 +145,10 @@ _migration:
 
 方法调用成功，返回用于播放的音频参数对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="api_iaudioframeobserver_getrecordaudioparams"></a>
 
 <a id="ariaid-title6"></a>
@@ -160,6 +176,10 @@ _migration:
 ### 返回值
 
 方法调用成功，返回采集的音频参数对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
+
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_irtcengine_registeraudioframeobserver"></a>
 
@@ -199,6 +219,10 @@ _migration:
 
 - YES：方法调用成功。
 - NO：方法调用失败。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
@@ -258,6 +282,10 @@ _migration:
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title9"></a>
@@ -310,6 +338,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
 
 <a id="ariaid-title10"></a>
@@ -357,6 +389,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
 <a id="ariaid-title11"></a>
@@ -402,6 +438,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -466,6 +506,10 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title13"></a>
@@ -523,6 +567,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe"></a>
 
 <a id="ariaid-title14"></a>
@@ -570,6 +618,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 - YES：回调处理成功。
 - NO：回调处理失败。
+
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe"></a>
 
@@ -623,6 +675,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 - YES：回调处理成功。
 - NO：回调处理失败。
 
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="callback_iaudioframeobserver_onplaybackaudioframe"></a>
 
 <a id="ariaid-title16"></a>
@@ -673,6 +729,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 - YES：处理成功。
 - NO：处理失败。
 
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
 <a id="ariaid-title17"></a>
@@ -711,6 +771,10 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 - YES：回调处理成功。
 - NO：回调处理失败。
+
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe"></a>
 
@@ -761,3 +825,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 - YES：处理成功。
 - NO：处理失败。
+
+### 所属接口类
+
+- [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)

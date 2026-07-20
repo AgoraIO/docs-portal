@@ -64,6 +64,10 @@ public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObs
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
 <a id="ariaid-title3"></a>
@@ -119,6 +123,10 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title4"></a>
@@ -169,6 +177,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
 
 <a id="ariaid-title5"></a>
@@ -214,6 +226,10 @@ SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
@@ -264,6 +280,10 @@ SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -320,6 +340,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title8"></a>
@@ -374,6 +398,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_unregisteraudioframeobserver"></a>
 
 <a id="ariaid-title9"></a>
@@ -396,6 +424,10 @@ public abstract int UnRegisterAudioFrameObserver();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
 
@@ -431,6 +463,10 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
 
@@ -471,6 +507,10 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 
 无实际含义。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
 
 <a id="ariaid-title12"></a>
@@ -509,6 +549,10 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
@@ -553,6 +597,10 @@ public virtual bool OnPlaybackAudioFrameBeforeMixing(string channel_id,
 
 无实际含义。
 
+### 所属接口类
+
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe"></a>
 
 <a id="ariaid-title14"></a>
@@ -591,3 +639,7 @@ public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
 ### 返回值
 
 无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)

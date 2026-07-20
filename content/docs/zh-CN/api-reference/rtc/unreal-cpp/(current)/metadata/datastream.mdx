@@ -82,6 +82,10 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_createdatastreamex"></a>
 
 <a id="ariaid-title3"></a>
@@ -159,6 +163,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_createdatastream2"></a>
 
 <a id="ariaid-title4"></a>
@@ -207,6 +215,10 @@ virtual int createDataStream(int* streamId, DataStreamConfig& config) = 0;
 
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
 
@@ -260,6 +272,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
 
@@ -324,6 +340,10 @@ SDK 对该方法的实现进行了如下限制：
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_sendstreammessageex"></a>
 
 <a id="ariaid-title7"></a>
@@ -385,6 +405,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
 
 <a id="ariaid-title8"></a>
@@ -432,6 +456,10 @@ virtual void onStreamMessage(uid_t userId, int streamId, const char* data, size_
 ### sentTs
 
 数据流发出的时间。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
 
@@ -481,3 +509,7 @@ virtual void onStreamMessageError(uid_t userId, int streamId, int code, int miss
 ### cached
 
 数据流中断时，后面缓存的消息数量。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

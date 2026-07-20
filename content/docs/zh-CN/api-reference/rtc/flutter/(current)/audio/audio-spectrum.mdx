@@ -39,6 +39,10 @@ Future<void> disableAudioSpectrumMonitor();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
 
 <a id="ariaid-title3"></a>
@@ -74,6 +78,10 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/flutter/audio/audio-s
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
 
@@ -111,6 +119,10 @@ void registerAudioSpectrumObserver(AudioSpectrumObserver observer);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
 
 <a id="ariaid-title5"></a>
@@ -139,6 +151,10 @@ void unregisterAudioSpectrumObserver(AudioSpectrumObserver observer);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
 
 <a id="ariaid-title6"></a>
@@ -164,6 +180,10 @@ final void Function(AudioSpectrumData data)? onLocalAudioSpectrum;
 ### data
 
 本地用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/flutter/class-audiospectrumdata)。
+
+### 所属接口类
+
+- [AudioSpectrumObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
 
@@ -196,3 +216,7 @@ final void Function(
 ### spectrumNumber
 
 远端用户的数量。
+
+### 所属接口类
+
+- [AudioSpectrumObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiospectrumobserver)

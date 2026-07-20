@@ -56,6 +56,10 @@ Future<UserInfo> getUserInfoByUid(int uid);
 - 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/flutter/class-userinfo) 对象。
 - 方法调用失败，则返回 `null`。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
 
 <a id="ariaid-title3"></a>
@@ -100,6 +104,10 @@ Future<UserInfo> getUserInfoByUserAccount(String userAccount);
 
 - 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/flutter/class-userinfo) 对象。
 - 方法调用失败，则返回 `null`。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
 
@@ -197,6 +205,10 @@ Future<void> joinChannel(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_joinchannelex"></a>
 
 <a id="ariaid-title5"></a>
@@ -286,6 +298,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
   - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/flutter/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 `connectionStateDisconnected`(1) 状态外，不要再次调用该方法加入频道。
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
 
@@ -379,6 +395,10 @@ Future<void> joinChannelWithUserAccount(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_joinchannelwithuseraccountex"></a>
 
 <a id="ariaid-title7"></a>
@@ -471,6 +491,10 @@ Future<void> joinChannelWithUserAccountEx(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_leavechannel2"></a>
 
 <a id="ariaid-title8"></a>
@@ -523,6 +547,10 @@ Future<void> leaveChannel({LeaveChannelOptions? options});
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
 
@@ -595,6 +623,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
 
@@ -669,6 +701,10 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
   - -7：[RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
 
@@ -753,6 +789,10 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7：[RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_registerlocaluseraccount"></a>
 
 <a id="ariaid-title12"></a>
@@ -813,6 +853,10 @@ Future<void> registerLocalUserAccount(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_renewtoken"></a>
 
 <a id="ariaid-title13"></a>
@@ -853,6 +897,10 @@ Future<void> renewToken(String token);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
 
@@ -900,6 +948,10 @@ Future<void> setChannelProfile(ChannelProfileType profile);
 
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
 
@@ -966,6 +1018,10 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
 
 <a id="ariaid-title16"></a>
@@ -995,6 +1051,10 @@ Future<void> updateChannelMediaOptions(ChannelMediaOptions options);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
 
@@ -1031,6 +1091,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
 
@@ -1069,6 +1133,10 @@ Future<void> updatePreloadChannelToken(String token);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
 
@@ -1123,6 +1191,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/flutter/class-clientroleoptions)。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
 
 <a id="ariaid-title20"></a>
@@ -1166,6 +1238,10 @@ final void Function(
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onerror"></a>
 
 <a id="ariaid-title21"></a>
@@ -1195,6 +1271,10 @@ final void Function(ErrorCodeType err, String msg)? onError;
 ### msg
 
 错误描述。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
 
@@ -1233,6 +1313,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 开始到发生此事件过去的时间（毫秒）。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
 
 <a id="ariaid-title23"></a>
@@ -1269,6 +1353,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/flutter/class-rtcstats)。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
 
 <a id="ariaid-title24"></a>
@@ -1298,6 +1386,10 @@ final void Function(int uid, String userAccount)? onLocalUserRegistered;
 ### userAccount
 
 本地用户的 User Account。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
 
@@ -1329,6 +1421,10 @@ final void Function(RtcConnection connection, int elapsed)?
 ### elapsed
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
 
@@ -1366,6 +1462,10 @@ final void Function(RtcConnection connection, int elapsed)?
 
 错误码，详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/flutter/enum-renewtokenerrorcode)。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
 
 <a id="ariaid-title27"></a>
@@ -1398,6 +1498,10 @@ final void Function(RtcConnection connection)? onRequestToken;
 ### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
 
@@ -1432,6 +1536,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 ### stats
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/flutter/class-rtcstats)。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
 
@@ -1472,6 +1580,10 @@ final void Function(RtcConnection connection, String token)?
 
 即将过期的 Token。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
 
 <a id="ariaid-title30"></a>
@@ -1501,6 +1613,10 @@ final void Function(int uid, UserInfo info)? onUserInfoUpdated;
 ### info
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/flutter/class-userinfo) 类。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
 
@@ -1548,6 +1664,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 到该回调触发的延迟（毫秒）。
 
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
 
 <a id="ariaid-title32"></a>
@@ -1591,3 +1711,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 ### reason
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [UserOfflineReasonType](/zh-CN/api-reference/rtc/flutter/enum-userofflinereasontype)。
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

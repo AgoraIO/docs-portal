@@ -65,6 +65,10 @@ void registerVideoFrameObserver(VideoFrameObserver observer);
 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
 
 <a id="ariaid-title3"></a>
@@ -94,6 +98,10 @@ void unregisterVideoFrameObserver(VideoFrameObserver observer);
 ### 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
 
@@ -149,6 +157,10 @@ final void Function(VideoSourceType sourceType, VideoFrame videoFrame)?
 - Windows：YUV420
 :::
 
+### 所属接口类
+
+- [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver"></a>
 
 <a id="ariaid-title5"></a>
@@ -174,6 +186,10 @@ final void Function(VideoFrame frame)? onFrame;
 ### frame
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
+
+### 所属接口类
+
+- [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
 
@@ -221,6 +237,10 @@ final void Function(VideoFrame videoFrame)? onPreEncodeVideoFrame;
 - macOS：I420
 - Windows：YUV420
 :::
+
+### 所属接口类
+
+- [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
 
@@ -273,3 +293,7 @@ final void Function(String channelId, int remoteUid, VideoFrame videoFrame)?
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)

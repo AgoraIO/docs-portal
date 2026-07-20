@@ -36,6 +36,10 @@ abstract createMusicPlayer(): IMusicPlayer;
 - 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
 
 <a id="ariaid-title3"></a>
@@ -75,6 +79,10 @@ abstract destroyMusicPlayer(musicPlayer: IMusicPlayer): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musicchartcollection_get"></a>
 
 <a id="ariaid-title4"></a>
@@ -105,6 +113,10 @@ abstract get(index: number): MusicChartInfo;
 
 [MusicChartInfo](/zh-CN/api-reference/rtc/electron/class-musicchartinfo)，包含音乐榜单的详细信息。
 
+### 所属接口类
+
+- [MusicChartCollection](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_musicchartcollection)
+
 <a id="api_imusiccontentcenter_getcaches"></a>
 
 <a id="ariaid-title5"></a>
@@ -133,6 +145,10 @@ abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 - `cacheInfo`：音乐缓存信息数组。
 - `cacheInfoSize`：音乐缓存信息数组的长度。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musicchartcollection_getcount_musicchartcollection"></a>
 
 <a id="ariaid-title6"></a>
@@ -155,6 +171,10 @@ abstract getCount(): number;
 
 本次请求的音乐榜单数量。
 
+### 所属接口类
+
+- [MusicChartCollection](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_musicchartcollection)
+
 <a id="api_musiccollection_getcount_musiccollection"></a>
 
 <a id="ariaid-title7"></a>
@@ -176,6 +196,10 @@ abstract getCount(): number;
 ### 返回值
 
 本次请求的音乐数量。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
 
@@ -225,6 +249,10 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 - 方法调用成功，返回创建的音乐资源内部编号。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_getlyric"></a>
 
 <a id="ariaid-title9"></a>
@@ -264,6 +292,10 @@ abstract getLyric(songCode: number, lyricType?: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musiccollection_getmusic_musiccollection"></a>
 
 <a id="ariaid-title10"></a>
@@ -294,6 +326,10 @@ abstract getMusic(index: number): Music;
 
 一个 [Music](/zh-CN/api-reference/rtc/electron/class-music) 实例。
 
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)
+
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
 
 <a id="ariaid-title11"></a>
@@ -317,6 +353,10 @@ abstract getMusicCharts(): string;
 ### 返回值
 
 一个 `requestId`，为本次请求的唯一标识。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
 
@@ -377,6 +417,10 @@ abstract getMusicCollectionByMusicChartId(
 
 一个 `requestId`，为本次请求的唯一标识。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_irtcengine_getmusiccontentcenter"></a>
 
 <a id="ariaid-title13"></a>
@@ -398,6 +442,10 @@ abstract getMusicContentCenter(): IMusicContentCenter;
 ### 返回值
 
 一个 [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_musiccollection_getpage_musiccollection"></a>
 
@@ -421,6 +469,10 @@ abstract getPage(): number;
 
 当前页的页码。
 
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)
+
 <a id="api_musiccollection_getpagesize_musiccollection"></a>
 
 <a id="ariaid-title15"></a>
@@ -442,6 +494,10 @@ virtual int getPageSize() = 0;
 ### 返回值
 
 SDK 实际返回的音乐资源数量。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
 
@@ -476,6 +532,10 @@ abstract getSongSimpleInfo(songCode: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_musiccollection_gettotal_musiccollection"></a>
 
 <a id="ariaid-title17"></a>
@@ -497,6 +557,10 @@ abstract getTotal(): number;
 ### 返回值
 
 列表内音乐资源的总数量。
+
+### 所属接口类
+
+- [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
 
@@ -531,6 +595,10 @@ abstract initialize(configuration: MusicContentCenterConfiguration): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_ispreloaded"></a>
 
 <a id="ariaid-title19"></a>
@@ -563,6 +631,10 @@ abstract isPreloaded(songCode: number): number;
 
 - 0: 方法调用成功，该音乐资源已被预加载。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
 
@@ -606,6 +678,10 @@ abstract openWithSongCode(songCode: number, startPos?: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusicplayer)
+
 <a id="api_imusiccontentcenter_preload2"></a>
 
 <a id="ariaid-title21"></a>
@@ -643,6 +719,10 @@ abstract preload(songCode: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
 
 <a id="ariaid-title22"></a>
@@ -676,6 +756,10 @@ abstract registerEventHandler(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_release_imusiccontentcenter"></a>
 
 <a id="ariaid-title23"></a>
@@ -693,6 +777,10 @@ abstract release(): void;
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__detailed_desc"></a>
 
 该方法需要在 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的 [release](/zh-CN/api-reference/rtc/electron/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法前调用。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
 
@@ -727,6 +815,10 @@ abstract removeCache(songCode: number): number;
 - 0: 方法调用成功，音乐资源已删除。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
 
 <a id="ariaid-title25"></a>
@@ -759,6 +851,10 @@ abstract renewToken(token: string): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
 
@@ -825,6 +921,10 @@ abstract searchMusic(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
+
 <a id="api_imusicplayer_setplaymode"></a>
 
 <a id="ariaid-title27"></a>
@@ -876,6 +976,10 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 
   - -2: 参数设置错误，请重新设置参数。
 
+### 所属接口类
+
+- [IMusicPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusicplayer)
+
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
 
 <a id="ariaid-title28"></a>
@@ -898,6 +1002,10 @@ abstract unregisterEventHandler(): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
 
@@ -938,6 +1046,10 @@ onLyricResult?(
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/electron/enum-musiccontentcenterstatereason)。
 
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcentereventhandler)
+
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
 
 <a id="ariaid-title30"></a>
@@ -976,6 +1088,10 @@ onMusicChartsResult?(
 
 当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/electron/class-musicchartinfo)。
 
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcentereventhandler)
+
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
 
 <a id="ariaid-title31"></a>
@@ -1013,6 +1129,10 @@ onMusicCollectionResult?(
 ### result
 
 音乐资源列表的详细信息。详见 [MusicCollection](/zh-CN/api-reference/rtc/electron/class-musiccollection)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
 
@@ -1063,6 +1183,10 @@ onPreLoadEvent?(
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/electron/enum-musiccontentcenterstatereason)。
 
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcentereventhandler)
+
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
 
 <a id="ariaid-title33"></a>
@@ -1111,3 +1235,7 @@ onSongSimpleInfoResult?(
 ### reason
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/electron/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcentereventhandler)

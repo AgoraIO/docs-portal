@@ -48,6 +48,10 @@ virtual int adjustPlayoutVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_adjustpublishsignalvolume"></a>
 
 <a id="ariaid-title3"></a>
@@ -89,6 +93,10 @@ virtual int adjustPublishSignalVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_mute"></a>
 
 <a id="ariaid-title4"></a>
@@ -129,6 +137,10 @@ virtual int mute(bool muted) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_pause"></a>
 
 <a id="ariaid-title5"></a>
@@ -157,6 +169,10 @@ virtual int pause() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_play"></a>
 
@@ -187,6 +203,10 @@ virtual int play() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_playpreloadedsrc"></a>
 
@@ -229,6 +249,10 @@ virtual int playPreloadedSrc(const char* src) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_resume"></a>
 
 <a id="ariaid-title8"></a>
@@ -251,6 +275,10 @@ virtual int resume() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_seek"></a>
 
@@ -298,6 +326,10 @@ virtual int seek(int64_t newPos) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
 <a id="api_imediaplayer_stop"></a>
 
 <a id="ariaid-title10"></a>
@@ -328,6 +360,10 @@ virtual int stop() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayercustomdataprovider_onseek"></a>
 
@@ -371,3 +407,7 @@ virtual int64_t onSeek(int64_t offset, int whence) = 0;
 - `whence` 为 `65536` 时，返回媒体文件大小。
 - `whence` 为 `0`、`1` 或 `2` 时，返回定位后的实际数据偏移量。
 - -1：定位失败。
+
+### 所属接口类
+
+- [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercustomdataprovider)

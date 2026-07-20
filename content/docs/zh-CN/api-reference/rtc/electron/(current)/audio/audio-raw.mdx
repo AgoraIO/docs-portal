@@ -50,6 +50,10 @@ abstract registerAudioFrameObserver(observer: IAudioFrameObserver): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
+
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
 <a id="ariaid-title3"></a>
@@ -110,6 +114,10 @@ abstract setEarMonitoringAudioFrameParameters(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
 <a id="ariaid-title4"></a>
@@ -164,6 +172,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
 <a id="ariaid-title5"></a>
@@ -217,6 +229,10 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -277,6 +293,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
 <a id="ariaid-title7"></a>
@@ -336,6 +356,10 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine"></a>
 
 <a id="ariaid-title8"></a>
@@ -367,6 +391,10 @@ abstract unregisterAudioFrameObserver(observer: IAudioFrameObserver): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
+
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
 
 <a id="ariaid-title9"></a>
@@ -392,6 +420,10 @@ onEarMonitoringAudioFrame?(audioFrame: AudioFrame): void;
 ### audioFrame
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
 
@@ -423,6 +455,10 @@ onMixedAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 频道 ID。
 
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserverbase)
+
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
 
 <a id="ariaid-title11"></a>
@@ -452,6 +488,10 @@ onPlaybackAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
@@ -493,6 +533,10 @@ onPlaybackAudioFrameBeforeMixing?(
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
 
+### 所属接口类
+
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserver)
+
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe"></a>
 
 <a id="ariaid-title13"></a>
@@ -522,3 +566,7 @@ onRecordAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserverbase)

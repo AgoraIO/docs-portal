@@ -63,6 +63,10 @@ public abstract disableVideo(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_enablelocalvideo"></a>
 
 <a id="ariaid-title3"></a>
@@ -115,6 +119,10 @@ public abstract enableLocalVideo(enabled: boolean): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
 
@@ -169,6 +177,10 @@ public abstract enableVideo(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
 
 <a id="ariaid-title5"></a>
@@ -215,6 +227,10 @@ public abstract setVideoEncoderConfiguration(configuration: VideoEncoderConfigur
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
 
@@ -267,6 +283,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_startpreview2"></a>
 
 <a id="ariaid-title7"></a>
@@ -312,6 +332,10 @@ public abstract startPreview(sourceType?: Constants.VideoSourceType): number;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
 
@@ -362,6 +386,10 @@ public abstract stopPreview(sourceType?: Constants.VideoSourceType): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
 
 <a id="ariaid-title9"></a>
@@ -402,6 +430,10 @@ onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:nu
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel) 或[joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 startPreview 开启本地视频预览到发生此事件过去的时间。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
 
 <a id="ariaid-title10"></a>
@@ -441,6 +473,10 @@ onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) 
 ### elapsed
 
 从本地调用 joinChannel 或joinChannelWithOptions 到发生此事件过去的时间（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
 
@@ -500,6 +536,10 @@ onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.Lo
 
 本地视频状态改变原因，详见 [LocalVideoStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-localvideostreamreason)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
 
 <a id="ariaid-title12"></a>
@@ -531,6 +571,10 @@ onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) =
 ### stats
 
 本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-localvideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
 
@@ -574,6 +618,10 @@ onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamSta
 
 从本地用户调用 joinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
 
 <a id="ariaid-title14"></a>
@@ -601,6 +649,10 @@ onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
 ### stats
 
 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-remotevideostats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
 
@@ -636,6 +688,10 @@ onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 
 - `true`: 该用户已启用视频功能。
 - `false`: 该用户已关闭视频功能。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
 
@@ -674,6 +730,10 @@ onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 - `true`: 取消发布视频流。
 - `false`: 发布视频流。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
 
 <a id="ariaid-title17"></a>
@@ -709,6 +769,10 @@ onVideoPublishStateChanged?:(source:Constants.VideoSourceType, channel:string, o
 ### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
 
@@ -747,3 +811,7 @@ onVideoSizeChanged?:(source:Constants.VideoSourceType, uid:number, width:number,
 ### rotation
 
 旋转信息，取值范围 [0,360)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

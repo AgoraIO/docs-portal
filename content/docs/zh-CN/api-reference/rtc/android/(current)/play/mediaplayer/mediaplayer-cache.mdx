@@ -47,6 +47,10 @@ int enableAutoRemoveCache(boolean enable);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayercachemanager_getcachedir"></a>
 
 <a id="ariaid-title3"></a>
@@ -72,6 +76,10 @@ String getCacheDir();
 方法调用成功时，返回缓存媒体文件的存储路径。
 方法调用失败，返回空字符串。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayercachemanager_getcachefilecount"></a>
 
 <a id="ariaid-title4"></a>
@@ -94,6 +102,10 @@ int getCacheFileCount();
 
 - 0：方法调用成功，返回已缓存的媒体文件数量。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
 
@@ -120,6 +132,10 @@ int getMaxCacheFileCount();
 - 0：方法调用成功，返回获取可缓存的媒体文件的最大数量。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
 
 <a id="ariaid-title6"></a>
@@ -144,6 +160,10 @@ long getMaxCacheFileSize();
 
 - &gt; 0：方法调用成功，返回缓存媒体文件聚合存储空间的最大大小（单位为字节）。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeallcaches"></a>
 
@@ -171,6 +191,10 @@ int removeAllCaches();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removecachebyuri"></a>
 
@@ -207,6 +231,10 @@ int removeCacheByUri(String uri);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayercachemanager_removeoldcache"></a>
 
 <a id="ariaid-title9"></a>
@@ -235,6 +263,10 @@ int removeOldCache();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setcachedir"></a>
 
@@ -271,6 +303,10 @@ int setCacheDir(String path);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
 
 <a id="ariaid-title11"></a>
@@ -301,6 +337,10 @@ int setMaxCacheFileCount(int count);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
 
@@ -333,6 +373,10 @@ int setMaxCacheFileSize(long cacheSize);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
+### 所属接口类
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
 <a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
 
 <a id="ariaid-title13"></a>
@@ -364,3 +408,7 @@ void onPlayerCacheStats(CacheStatistics stats)
 ### stats
 
 正在缓存的媒体文件的统计信息。详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-cachestatistics)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)

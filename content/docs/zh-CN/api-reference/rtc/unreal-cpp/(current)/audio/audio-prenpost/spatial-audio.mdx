@@ -52,6 +52,10 @@ ILocalSpatialAudioEngine 的配置。详见 [LocalSpatialAudioConfig](/zh-CN/api
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams"></a>
 
 <a id="ariaid-title3"></a>
@@ -98,6 +102,10 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream"></a>
 
 <a id="ariaid-title4"></a>
@@ -142,6 +150,10 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream"></a>
 
@@ -190,6 +202,10 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
 
 <a id="ariaid-title6"></a>
@@ -232,6 +248,10 @@ virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posIn
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
 
@@ -282,6 +302,10 @@ virtual int updateSelfPosition(float position[3], float axisForward[3], float ax
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_release"></a>
 
 <a id="ariaid-title8"></a>
@@ -307,6 +331,10 @@ virtual void release() = 0;
 :::note
 注： 该方法需要在 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 的 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法前调用。
 :::
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions"></a>
 
@@ -336,6 +364,10 @@ virtual int clearRemotePositions() = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
 
@@ -374,6 +406,10 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
 
 <a id="ariaid-title11"></a>
@@ -408,6 +444,10 @@ virtual int setAudioRecvRange(float range) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
 
@@ -445,6 +485,10 @@ virtual int setDistanceUnit(float unit) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
 
@@ -487,6 +531,10 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
   - -1：一般性的错误（未明确归类）。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
 
 <a id="ariaid-title14"></a>
@@ -528,6 +576,10 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
   - -1：一般性的错误（未明确归类）。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
 
 <a id="ariaid-title15"></a>
@@ -562,6 +614,10 @@ virtual int setMaxAudioRecvCount(int maxCount) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
 
@@ -617,6 +673,10 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
 
 <a id="ariaid-title17"></a>
@@ -669,6 +729,10 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
 
 <a id="ariaid-title18"></a>
@@ -708,6 +772,10 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
 <a id="api_imediaplayer_setspatialaudioparams"></a>
 
 <a id="ariaid-title19"></a>
@@ -744,6 +812,10 @@ virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
 
@@ -796,6 +868,10 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
 
 <a id="ariaid-title21"></a>
@@ -845,6 +921,10 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
+
 <a id="api_irtcengine_enablespatialaudio"></a>
 
 <a id="ariaid-title22"></a>
@@ -889,3 +969,7 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)

@@ -62,6 +62,10 @@ public abstract int ConfigRhythmPlayer(AgoraRhythmPlayerConfig config);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_startrhythmplayer"></a>
 
 <a id="ariaid-title3"></a>
@@ -128,6 +132,10 @@ public abstract int StartRhythmPlayer(string sound1, string sound2, AgoraRhythmP
 
   - -22: 无法找到音频文件。请填写正确的 `sound1` 和 `sound2`。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_stoprhythmplayer"></a>
 
 <a id="ariaid-title4"></a>
@@ -160,6 +168,10 @@ public abstract int StopRhythmPlayer();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
 
@@ -198,3 +210,7 @@ public virtual void OnRhythmPlayerStateChanged(RHYTHM_PLAYER_STATE_TYPE state, R
 ### reason
 
 虚拟节拍器发生错误的错误码和错误信息，详见 [RHYTHM_PLAYER_REASON](/zh-CN/api-reference/rtc/unity/enum-rhythmplayerreason)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

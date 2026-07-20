@@ -71,6 +71,10 @@ public abstract int GetUserInfoByUid(uint uid, ref UserInfo userInfo);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
 
 <a id="ariaid-title3"></a>
@@ -128,6 +132,10 @@ public abstract int GetUserInfoByUserAccount(string userAccount, ref UserInfo us
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel"></a>
 
@@ -320,6 +328,10 @@ public abstract int JoinChannel(string token, string channelId, uint uid,
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengineex_joinchannelex"></a>
 
 <a id="ariaid-title6"></a>
@@ -409,6 +421,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
   - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount"></a>
 
@@ -617,6 +633,10 @@ public abstract int JoinChannelWithUserAccount(string token, string channelId, s
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_leavechannel"></a>
 
 <a id="ariaid-title9"></a>
@@ -739,6 +759,10 @@ public abstract int LeaveChannel(LeaveChannelOptions options);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
 
@@ -886,6 +910,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
 <a id="api_irtcengine_preloadchannel"></a>
 
 <a id="ariaid-title13"></a>
@@ -975,6 +1003,10 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
 
@@ -1073,6 +1105,10 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_registerlocaluseraccount"></a>
 
 <a id="ariaid-title15"></a>
@@ -1141,6 +1177,10 @@ public abstract int RegisterLocalUserAccount(string appId, string userAccount);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_renewtoken"></a>
 
 <a id="ariaid-title16"></a>
@@ -1197,6 +1237,10 @@ public abstract int RenewToken(string token);
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
     - 生成的 Token 和加入频道使用的 Token 一致。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setchannelprofile"></a>
 
 <a id="ariaid-title17"></a>
@@ -1244,6 +1288,10 @@ public abstract int SetChannelProfile(CHANNEL_PROFILE_TYPE profile);
 
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole"></a>
 
@@ -1398,6 +1446,10 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -5: 调用被拒绝。
   - -7: SDK 尚未初始化。
 
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
 
 <a id="ariaid-title20"></a>
@@ -1430,6 +1482,10 @@ public abstract int UpdateChannelMediaOptions(ChannelMediaOptions options);
   - -2：[ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8：IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED(1) 或 CONNECTION_STATE_FAILED(5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
 
@@ -1467,6 +1523,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
   - -2：[ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8：IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED(1) 或 CONNECTION_STATE_FAILED(5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
 
@@ -1511,6 +1571,10 @@ public abstract int UpdatePreloadChannelToken(string token);
 
   - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
   - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
 
@@ -1563,6 +1627,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/csharp-windows/class-clientroleoptions)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
 
 <a id="ariaid-title24"></a>
@@ -1609,6 +1677,10 @@ public virtual void OnClientRoleChangeFailed(RtcConnection connection, CLIENT_RO
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onerror"></a>
 
 <a id="ariaid-title25"></a>
@@ -1640,6 +1712,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### msg
 
 错误描述。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
 
@@ -1685,6 +1761,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 从本地调用 JoinChannel [2/2] 开始到发生此事件过去的时间（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
 
 <a id="ariaid-title27"></a>
@@ -1727,6 +1807,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/csharp-windows/class-rtcstats)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
 
 <a id="ariaid-title28"></a>
@@ -1756,6 +1840,10 @@ public virtual void OnLocalUserRegistered(uint uid, string userAccount) {}
 ### userAccount
 
 本地用户的 User Account。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
 
@@ -1798,6 +1886,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### elapsed
 
 从调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
 
@@ -1843,6 +1935,10 @@ public virtual void OnRequestToken(RtcConnection connection) {}
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
 
 <a id="ariaid-title31"></a>
@@ -1882,6 +1978,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### stats
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/csharp-windows/class-rtcstats)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
 
@@ -1933,6 +2033,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 即将过期的 Token。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
 
 <a id="ariaid-title33"></a>
@@ -1962,6 +2066,10 @@ public virtual void OnUserInfoUpdated(uint uid, UserInfo info)
 ### info
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/csharp-windows/class-userinfo) 类。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
 
@@ -2016,6 +2124,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 从本地用户调用 JoinChannel [1/2] 或 JoinChannel [2/2] 到该回调触发的延迟（毫秒）。
 
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
 
 <a id="ariaid-title35"></a>
@@ -2066,3 +2178,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### reason
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-userofflinereasontype)。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

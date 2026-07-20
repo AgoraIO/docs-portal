@@ -40,6 +40,10 @@ public abstract boolean isSpeakerphoneEnabled();
 - true：扬声器已启用，音频将从扬声器播放。
 - false：扬声器未启用，音频将从其他设备播放，例如耳机或听筒。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
 
 <a id="ariaid-title3"></a>
@@ -91,6 +95,10 @@ public abstract int setDefaultAudioRoutetoSpeakerphone(boolean defaultToSpeaker)
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
 
@@ -148,6 +156,10 @@ public abstract int setEnableSpeakerphone(boolean enabled);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
 
@@ -207,6 +219,10 @@ public abstract int setRouteInCommunicationMode(int route);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
 
 <a id="ariaid-title6"></a>
@@ -245,3 +261,7 @@ public void onAudioRouteChanged(int routing) {}
 - `AUDIO_ROUTE_LOUDSPEAKER`（4）：音频路由为外接扬声器（预留）。
 - `AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP`（5）：音频路由为使用 HFP 协议的蓝牙设备。
 - `AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP`（10）：音频路由为使用 A2DP 协议的蓝牙设备。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

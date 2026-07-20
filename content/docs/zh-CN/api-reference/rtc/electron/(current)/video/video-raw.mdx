@@ -64,6 +64,10 @@ abstract registerVideoFrameObserver(observer: IVideoFrameObserver): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
+
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
 
 <a id="ariaid-title3"></a>
@@ -94,6 +98,10 @@ abstract unregisterVideoFrameObserver(observer: IVideoFrameObserver): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
 
@@ -150,6 +158,10 @@ onCaptureVideoFrame?(
 - Windows：YUV420
 :::
 
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)
+
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver"></a>
 
 <a id="ariaid-title5"></a>
@@ -176,6 +188,10 @@ onFrame?(frame: VideoFrame): void;
 ### frame
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/electron/class-videoframe)。
+
+### 所属接口类
+
+- [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayervideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
 
@@ -226,6 +242,10 @@ onPreEncodeVideoFrame?(
 - macOS：I420
 - Windows：YUV420
 :::
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
 
@@ -280,3 +300,7 @@ onRenderVideoFrame?(
 ### channelId
 
 频道 ID。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)
