@@ -115,7 +115,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 这项变更会影响查询对话轮次数超过 50 的单个会话。你需要适配响应 Body 新增的分页相关字段（`total_turn_count` 和 `pagination`），根据分页信息补全后续页面的数据，详见[查询对话轮次信息](/zh-CN/api-reference/api-ref/conversational-ai/turns)。
 
-此外，该版本新增 `112 turns finished` 消息通知事件，用于在会话结束后按批次回调对话轮次数据，便于你进行更灵活的数据分析与处理。详见[事件类型](/zh-CN/ai/reference/event-types#116)。
+此外，该版本新增 `112 turns finished` 消息通知事件，用于在会话结束后按批次回调对话轮次数据，便于你进行更灵活的数据分析与处理。详见[事件类型](/zh-CN/ai/reference/event-types#112)。
 
 #### 发送自定义指令接口行为与动作模型优化
 
@@ -335,7 +335,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 #### 新增
 
-- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)新增:
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)新增：
     - `advanced_features.enable_tools`
     - `llm.mcp_servers`
     - `filler_words`
@@ -612,7 +612,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 - 腾讯云 ASR
 - 微软 ASR
 
-同时，**旧版对话式 AI 引擎服务费用**拆分出**凤鸣 ASR 处理费用**，当 ASR 服务采用默认的凤鸣 ASR 时，总价维持之前的版本不变，即**旧版对话式 AI 引擎服务费用** = **新版对话式 AI 引擎服务费用** + **凤鸣 ASR 处理费用**，当 ASR 服务采用其他供应商时，仅收取**新版对话式 AI 引擎服务费用**，详见[计费说明](/zh-CN/ai/overview/billing)。
+同时，**旧版对话式 AI 引擎服务费用**拆分出**凤鸣 ASR 处理费用**，当 ASR 服务采用默认的凤鸣 ASR 时，总价维持之前的版本不变，即**旧版对话式 AI 引擎服务费用** = **新版对话式 AI 引擎服务费用** + **凤鸣 ASR 处理费用**，当 ASR 服务采用其他供应商时，仅收取**新版对话式 AI 引擎服务费用**，详见[计费说明](/zh-CN/ai/reference/pricing)。
 
 ### 新增特性
 
@@ -726,7 +726,7 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 
 #### 加油包
 
-自该版本起，你可以在控制台购买加油包，用于抵扣对话式 AI 引擎服务的实际用量，同时享受一定折扣，详见[计费说明](/zh-CN/ai/overview/billing#计费方式)。
+自该版本起，你可以在控制台购买加油包，用于抵扣对话式 AI 引擎服务的实际用量，同时享受一定折扣，详见[计费说明](/zh-CN/ai/reference/pricing#计费方式)。
 
 ### 新增特性
 
@@ -811,7 +811,7 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 
 #### 计费说明
 
-声网对话式 AI 引擎于 2025 年 3 月 5 日正式 GA 发布，并公布了产品定价：声网对话式 AI 引擎的计费规则，详见[计费说明](/zh-CN/ai/overview/billing)。
+声网对话式 AI 引擎于 2025 年 3 月 5 日正式 GA 发布，并公布了产品定价：声网对话式 AI 引擎的计费规则，详见[计费说明](/zh-CN/ai/reference/pricing)。
 
 #### SDK 版本要求
 
