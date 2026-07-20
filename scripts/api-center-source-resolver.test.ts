@@ -14,6 +14,26 @@ import {
 
 const temporaryDirectories: string[] = [];
 
+type SupplementalEduStorePage = {
+  supplementalGeneratedSource: {
+    kind?: string;
+    navigationRole?: 'hidden-reachable' | 'visible-entry';
+    sourceToc?: Array<{ depth: number; fragment: string; label: string }>;
+    targetPlatform: string;
+  };
+};
+
+type ApiCenterManifestPage = {
+  sourceResolution?: { generator?: string };
+  supplementalGeneratedSource?: SupplementalEduStorePage['supplementalGeneratedSource'];
+};
+
+function isSupplementalEduStorePage(
+  page: ApiCenterManifestPage,
+): page is SupplementalEduStorePage & ApiCenterManifestPage {
+  return page.supplementalGeneratedSource?.kind === 'edu-store-typedoc';
+}
+
 afterEach(async () => {
   await Promise.all(
     temporaryDirectories
@@ -94,6 +114,18 @@ describe('API Center source resolver', () => {
         'module.exports = [];\n',
       );
     }
+    const storeHeadings = [
+      'Cloud Drive Store',
+      'Group Store',
+      'Hand Up Store',
+      'Media Store',
+      'Recording Store',
+      'Room Store',
+      'Statistics Store',
+      'Stream Store',
+      'User Store',
+      'Connection Store',
+    ];
     for (const sourcePlatform of ['Web', 'Electron']) {
       const sourceRoot = path.join(
         oldRoot,
@@ -107,7 +139,12 @@ describe('API Center source resolver', () => {
         `<nav class="tsd-navigation"><ul>
           <li><a href="modules.html">Exports</a></li>
           <li><a href="modules/agora_edu_core_src_index_.html">"agora-edu-core/src/index"</a></li>
-        </ul></nav><main>Index</main>`,
+        </ul></nav><div class="col-content">${storeHeadings
+          .map(
+            (heading) =>
+              `<a id="${heading.toLowerCase().replaceAll(' ', '-')}"><h3>${heading}</h3></a>`,
+          )
+          .join('')}</div>`,
       );
       await fs.writeFile(
         path.join(sourceRoot, 'modules.html'),
@@ -155,6 +192,7 @@ describe('API Center source resolver', () => {
               'content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/index.mdx',
           }),
           supplementalGeneratedSource: expect.objectContaining({
+            navigationRole: 'visible-entry',
             sourceNavigation: [
               {
                 label: 'Exports',
@@ -165,11 +203,19 @@ describe('API Center source resolver', () => {
                 sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
               },
             ],
+            sourceToc: storeHeadings.map((label) => ({
+              depth: 3,
+              fragment: label.toLowerCase().replaceAll(' ', '-'),
+              label,
+            })),
           }),
         }),
         expect.objectContaining({
           requestedUrl:
             'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/cloud-drive.html',
+          supplementalGeneratedSource: expect.objectContaining({
+            navigationRole: 'hidden-reachable',
+          }),
           sourceResolution: expect.objectContaining({
             sourcePath:
               'html-docs/flexible-classroom/Electron/classes/cloud-drive.html',
@@ -179,7 +225,73 @@ describe('API Center source resolver', () => {
         }),
       ]),
     );
+    const supplementalPages =
+      manifest.pageEvidence as SupplementalEduStorePage[];
+    for (const targetPlatform of ['web', 'electron']) {
+      const platformPages = supplementalPages.filter(
+        (page) =>
+          page.supplementalGeneratedSource.targetPlatform === targetPlatform,
+      );
+      expect(platformPages).toHaveLength(4);
+      expect(
+        platformPages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        ),
+      ).toHaveLength(1);
+      expect(
+        platformPages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole ===
+            'hidden-reachable',
+        ),
+      ).toHaveLength(3);
+    }
     expect(JSON.stringify(manifest)).not.toContain(oldRoot);
+  });
+
+  it('keeps exactly one visible entry and 398 hidden reachable Edu Store pages per platform', async () => {
+    const manifest = JSON.parse(
+      await fs.readFile(
+        path.resolve('docs/migration/api-center-html-manifest.json'),
+        'utf8',
+      ),
+    ) as { pageEvidence: ApiCenterManifestPage[] };
+
+    for (const targetPlatform of ['web', 'electron']) {
+      const pages = manifest.pageEvidence.filter(
+        (page): page is SupplementalEduStorePage & ApiCenterManifestPage =>
+          isSupplementalEduStorePage(page) &&
+          page.supplementalGeneratedSource.targetPlatform === targetPlatform,
+      );
+      expect(pages).toHaveLength(399);
+      expect(
+        pages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        ),
+      ).toHaveLength(1);
+      expect(
+        pages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole ===
+            'hidden-reachable',
+        ),
+      ).toHaveLength(398);
+      expect(
+        pages.find(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        )?.supplementalGeneratedSource.sourceToc,
+      ).toHaveLength(10);
+    }
+    expect(
+      manifest.pageEvidence.filter(
+        (page) =>
+          page.sourceResolution?.generator === 'typedoc' &&
+          !isSupplementalEduStorePage(page),
+      ),
+    ).toHaveLength(162);
   });
 
   it.each([

@@ -1,11 +1,17 @@
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { auditDocsLinks } from './audit-doc-links.mjs';
 import { auditApiCenterMigration } from './lib/api-center/migration-audit.mjs';
 import { runApiCenterNavigation } from './lib/api-center/navigation-runner.mjs';
 
 const roots: string[] = [];
+
+function sha256(value: string) {
+  return createHash('sha256').update(value).digest('hex');
+}
 
 afterEach(async () => {
   await Promise.all(
@@ -492,7 +498,7 @@ describe('API Center navigation runner', () => {
     expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
   });
 
-  it('generates expandable Edu Store TypeDoc navigation from supplemental source evidence', async () => {
+  it('keeps supplemental Edu Store TypeDoc details hidden, reachable, and reconciled', async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-navigation-edu-store-'),
     );
@@ -508,8 +514,21 @@ describe('API Center navigation runner', () => {
         'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/overview',
       supplementalGeneratedSource: {
         kind: 'edu-store-typedoc',
+        navigationRole: 'visible-entry',
         targetPlatform: 'web',
         sourceRelativePath: 'index.html',
+        sourceToc: [
+          'Cloud Drive Store',
+          'Group Store',
+          'Hand Up Store',
+          'Media Store',
+          'Recording Store',
+          'Room Store',
+          'Statistics Store',
+          'Stream Store',
+          'User Store',
+          'Connection Store',
+        ].map((label) => ({ depth: 3, fragment: label, label })),
         sourceNavigation: [
           { label: 'Exports', sourceRelativePath: 'modules.html' },
           {
@@ -529,6 +548,7 @@ describe('API Center navigation runner', () => {
         'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules.html',
       supplementalGeneratedSource: {
         kind: 'edu-store-typedoc',
+        navigationRole: 'hidden-reachable',
         targetPlatform: 'web',
         sourceRelativePath: 'modules.html',
       },
@@ -543,6 +563,7 @@ describe('API Center navigation runner', () => {
         'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules/agora_edu_core_src_index_.html',
       supplementalGeneratedSource: {
         kind: 'edu-store-typedoc',
+        navigationRole: 'hidden-reachable',
         targetPlatform: 'web',
         sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
       },
@@ -552,6 +573,35 @@ describe('API Center navigation runner', () => {
         targetRoute: `${routeRoot}/modules/agora-edu-core-src-index`,
       },
     };
+    const hiddenPages = [
+      exportsPage,
+      modulePage,
+      ...[
+        'classes/cloud-drive',
+        'interfaces/cloud-drive',
+        'enums/store-kind',
+      ].map((relative) => ({
+        requestedUrl: `https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/${relative}.html`,
+        supplementalGeneratedSource: {
+          kind: 'edu-store-typedoc',
+          navigationRole: 'hidden-reachable',
+          targetPlatform: 'web',
+          sourceRelativePath: `${relative}.html`,
+        },
+        sourceResolution: {
+          generator: 'typedoc',
+          status: 'resolved',
+          targetPath: `${eduRoot}/${relative}.mdx`,
+          targetRoute: `${routeRoot}/${relative}`,
+        },
+      })),
+    ];
+    const regularTypeDocTargets = [
+      `${root}/rtc/web/meta.json`,
+      `${root}/rtc/react-sdk/web-sdk/meta.json`,
+      `${root}/whiteboard/whiteboard-sdk/web/(current)/meta.json`,
+      `${root}/rtc/mini-program/meta.json`,
+    ];
     const manifest = {
       source: { commit: 'fixture' },
       live: {
@@ -560,7 +610,18 @@ describe('API Center navigation runner', () => {
         heroDescription: '查看 API。',
       },
       entries: [],
-      pageEvidence: [overview, exportsPage, modulePage],
+      pageEvidence: [
+        overview,
+        ...hiddenPages,
+        ...regularTypeDocTargets.map((targetPath) => ({
+          requestedUrl: `https://doc.shengwang.cn/api-ref/${targetPath}`,
+          sourceResolution: {
+            generator: 'typedoc',
+            status: 'resolved',
+            targetPath,
+          },
+        })),
+      ],
     };
     await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
     await fs.writeFile(
@@ -589,18 +650,64 @@ describe('API Center navigation runner', () => {
         ],
       }),
     );
-    for (const targetPath of [
-      overview.sourceResolution.targetPath,
-      exportsPage.sourceResolution.targetPath,
-      modulePage.sourceResolution.targetPath,
-    ]) {
+    for (const targetPath of [overview, ...hiddenPages].map(
+      (page) => page.sourceResolution.targetPath,
+    )) {
       await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
         recursive: true,
       });
+      const body = targetPath.endsWith('/index.mdx')
+        ? `## Overview\n\n[CloudDrive](${routeRoot}/classes/cloud-drive#cancelupload)\n`
+        : targetPath.endsWith('/classes/cloud-drive.mdx')
+          ? `## cancelUpload\n\n[Module](${routeRoot}/modules/agora-edu-core-src-index#clouddrivestore)\n`
+          : targetPath.endsWith('/modules/agora-edu-core-src-index.mdx')
+            ? '## CloudDriveStore\n'
+            : '## Detail\n';
       await fs.writeFile(
         path.join(repoRoot, targetPath),
-        '---\ntitle: Page\n---\n',
+        `---\ntitle: Page\n---\n\n${body}`,
       );
+    }
+    const staleModulesMetaPath = `${eduRoot}/modules/meta.json`;
+    const staleModulesMeta = `${JSON.stringify(
+      { title: 'Exports', pages: ['index', 'agora-edu-core-src-index'] },
+      null,
+      2,
+    )}\n`;
+    await fs.writeFile(
+      path.join(repoRoot, staleModulesMetaPath),
+      staleModulesMeta,
+    );
+    await fs.writeFile(
+      path.join(
+        repoRoot,
+        'docs/migration/api-center-navigation-generated-files.json',
+      ),
+      JSON.stringify({
+        schemaVersion: 1,
+        files: [
+          {
+            contentHash: sha256(staleModulesMeta),
+            sourcePath: manifestPath,
+            sourceUrl: 'https://doc.shengwang.cn/api-center',
+            targetPath: staleModulesMetaPath,
+            type: 'navigation-meta',
+          },
+        ],
+      }),
+    );
+    const regularTypeDocMeta = new Map<string, string>();
+    for (const [index, targetPath] of regularTypeDocTargets.entries()) {
+      const contents = `${JSON.stringify(
+        { title: `Regular TypeDoc ${index}`, pages: ['overview', 'details'] },
+        null,
+        2,
+      )}\n`;
+      regularTypeDocMeta.set(targetPath, contents);
+      await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
+        recursive: true,
+      });
+      await fs.writeFile(path.join(repoRoot, targetPath), contents);
     }
 
     const result = await runApiCenterNavigation({
@@ -614,12 +721,6 @@ describe('API Center navigation runner', () => {
     const eduMeta = JSON.parse(
       await fs.readFile(path.join(repoRoot, `${eduRoot}/meta.json`), 'utf8'),
     );
-    const exportsMeta = JSON.parse(
-      await fs.readFile(
-        path.join(repoRoot, `${eduRoot}/modules/meta.json`),
-        'utf8',
-      ),
-    );
     const platformMeta = JSON.parse(
       await fs.readFile(
         path.join(repoRoot, `${platformRoot}/meta.json`),
@@ -627,25 +728,47 @@ describe('API Center navigation runner', () => {
       ),
     );
 
-    expect(result.parity.counts.supplementalNavigationLeaves).toBe(2);
+    expect(result.parity.counts).toMatchObject({
+      hiddenReachableTypeDocTargets: 5,
+      invalidHiddenTargetLinks: 0,
+      missingHiddenTargets: 0,
+      promotedSupplementalNavigationLeaves: 0,
+      visibleSupplementalEntryPages: 1,
+    });
     expect(parentMeta.pages).toEqual([
       '[Classroom SDK API](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)',
-      'edu-store',
+      `[Edu Store API](${routeRoot})`,
     ]);
     expect(eduMeta).toMatchObject({
       title: 'Edu Store API',
-      pages: ['index', 'modules'],
+      pages: ['index'],
     });
-    expect(exportsMeta).toMatchObject({
-      title: 'Exports',
-      pages: ['index', 'agora-edu-core-src-index'],
-    });
-    expect(platformMeta).toMatchObject({
+    await expect(
+      fs.access(path.join(repoRoot, staleModulesMetaPath)),
+    ).rejects.toThrow();
+    expect(platformMeta).toEqual({
+      title: 'Web',
       navScope: {},
-      sidebarLabels: {
-        [`${routeRoot}/modules/agora-edu-core-src-index`]:
-          '"agora-edu-core/src/index"',
-      },
+      pages: ['api-reference'],
+    });
+    for (const [targetPath, contents] of regularTypeDocMeta) {
+      expect(await fs.readFile(path.join(repoRoot, targetPath), 'utf8')).toBe(
+        contents,
+      );
+    }
+    const linkAudit = auditDocsLinks({
+      docsRoot: path.join(repoRoot, 'content/docs'),
+      sourcePaths: [
+        overview.sourceResolution.targetPath.replace('content/docs/', ''),
+        `${eduRoot}/classes/cloud-drive.mdx`.replace('content/docs/', ''),
+      ],
+    });
+    expect(linkAudit.totalLinks).toBe(2);
+    expect(linkAudit.invalidLinks).toEqual([]);
+    await runApiCenterNavigation({
+      repoRoot,
+      manifestPath,
+      lanes: [],
     });
     await expect(
       runApiCenterNavigation({

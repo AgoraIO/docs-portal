@@ -317,21 +317,34 @@ describe('API Center scoped sidebars', () => {
   it.each([
     'electron',
     'web',
-  ])('keeps the Flexible Classroom %s Edu Store source directory expandable', async (platform) => {
-    const sidebar = await loadApiReferenceSidebar([
+  ])('keeps the Flexible Classroom %s Edu Store details reachable but out of the sidebar', async (platform) => {
+    const payload = await loadApiReferencePayload([
       'flexible-classroom',
       platform,
       'api-reference',
-      'classroom-sdk',
+      'edu-store',
     ]);
+    const sidebar = payload.sidebar as SidebarNode[];
     const eduStore = findNode(sidebar, 'Edu Store API');
 
     expect(eduStore).toBeDefined();
     const titles = collectTitles(eduStore?.children ?? []);
-    expect(titles).toContain('Exports');
-    expect(titles).toContain('"agora-edu-core/src/configs/index"');
-    expect(titles).not.toContain(
-      'Namespace "agora-edu-core/src/configs/index"',
+    expect(titles).toEqual([]);
+    expect(collectTitles(sidebar)).not.toContain('Exports');
+    expect(collectTitles(sidebar)).not.toContain(
+      '"agora-edu-core/src/configs/index"',
     );
+    expect(payload.toc.map((item) => item.title)).toEqual([
+      'Cloud Drive Store',
+      'Group Store',
+      'Hand Up Store',
+      'Media Store',
+      'Recording Store',
+      'Room Store',
+      'Statistics Store',
+      'Stream Store',
+      'User Store',
+      'Connection Store',
+    ]);
   });
 });

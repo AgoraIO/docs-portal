@@ -14,7 +14,7 @@
 ## Source provenance
 
 - Owned MDX pages checked: 4956
-- Ownership source paths checked: 5148
+- Ownership source paths checked: 5146
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Generated HTML descriptions checked: 4757

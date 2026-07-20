@@ -172,6 +172,30 @@ export function parseTypeDocNavigationHtml(html) {
     .filter(Boolean);
 }
 
+export function parseTypeDocContentTocHtml(html) {
+  const $ = cheerio.load(html);
+  return $('.col-content h3')
+    .toArray()
+    .map((node) => {
+      const heading = $(node);
+      const label = heading
+        .clone()
+        .find('a.hash-link')
+        .remove()
+        .end()
+        .text()
+        .replace(/\s+/g, ' ')
+        .trim();
+      const fragment =
+        heading.attr('id') ??
+        heading.parent('a[id]').attr('id') ??
+        heading.closest('[id]').attr('id');
+      if (!fragment || !label) return null;
+      return { depth: 3, fragment, label };
+    })
+    .filter(Boolean);
+}
+
 async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
   const retained = (manifest.pageEvidence ?? []).filter(
     (page) => page.supplementalGeneratedSource?.kind !== 'edu-store-typedoc',
@@ -187,10 +211,14 @@ async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
       name.toLowerCase().endsWith('.html'),
     );
     const overviewFile = files.find((file) => file.relative === 'index.html');
-    const sourceNavigation = overviewFile
-      ? parseTypeDocNavigationHtml(
-          await fs.readFile(overviewFile.absolute, 'utf8'),
-        )
+    const overviewHtml = overviewFile
+      ? await fs.readFile(overviewFile.absolute, 'utf8')
+      : null;
+    const sourceNavigation = overviewHtml
+      ? parseTypeDocNavigationHtml(overviewHtml)
+      : [];
+    const sourceToc = overviewHtml
+      ? parseTypeDocContentTocHtml(overviewHtml)
       : [];
     for (const file of files) {
       const isOverview = file.relative === 'index.html';
@@ -222,9 +250,10 @@ async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
           targetPlatform: source.targetPlatform,
           sourcePath: posix(path.relative(oldRoot, file.absolute)),
           sourceRelativePath: file.relative,
+          navigationRole: isOverview ? 'visible-entry' : 'hidden-reachable',
           targetPath: `content/docs/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${targetStem}.mdx`,
           targetRoute,
-          ...(isOverview ? { sourceNavigation } : {}),
+          ...(isOverview ? { sourceNavigation, sourceToc } : {}),
         },
       });
     }
