@@ -2044,6 +2044,104 @@ Web body
     });
   });
 
+  it('returns scoped Chinese OpenAPI lanes to the reference center', async () => {
+    const basePage = createPage();
+    const fusionCdnPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+          path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+        },
+        title: '融合 CDN 直播 RESTful API',
+      },
+      path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'fusion-cdn', 'index'],
+      url: '/zh-CN/api-reference/api-ref/fusion-cdn',
+    } as unknown as PageWithSource;
+    const zhCnApiReferenceTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'api-reference-fusion-cdn-folder',
+                  children: [],
+                  index: {
+                    $id: 'api-reference-fusion-cdn-index',
+                    name: '融合 CDN 直播 RESTful API',
+                    type: 'page',
+                    url: fusionCdnPage.url,
+                  },
+                  name: '融合 CDN 直播 RESTful API',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-overview',
+                name: '参考概览',
+                type: 'page',
+                url: '/zh-CN/api-reference/overview',
+              },
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(fusionCdnPage);
+    mockedGetPages.mockReturnValue([fusionCdnPage]);
+    mockedGetPageTree.mockReturnValue(zhCnApiReferenceTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-fusion-cdn-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: '融合 CDN 直播 RESTful API',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'fusion-cdn',
+      ]),
+    );
+
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/overview',
+      backLabel: '参考中心',
+    });
+
+    mockedGetNodeMeta.mockReturnValue(undefined);
+
+    const unscopedPayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'fusion-cdn',
+      ]),
+    );
+
+    expect(unscopedPayload.sidebarHeader).toEqual({
+      backHref: '/zh-CN/api-reference/overview',
+      backLabel: '参考中心',
+      title: 'RESTful API',
+    });
+  });
+
   it('redirects legacy Conversational AI REST endpoint URLs to the OpenAPI lane', async () => {
     await expect(
       loadDocsPagePayload('en', 'api-reference', [
@@ -3594,6 +3692,36 @@ Web body
       title: '接收历史消息',
       url: receivePage.url,
     });
+
+    const futureSignalingPage = {
+      ...publishPage,
+      data: {
+        ...publishPage.data,
+        title: '未来的 Signaling API 页面',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/future.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'future'],
+      url: '/zh-CN/api-reference/api-ref/signaling/future',
+    } as unknown as PageWithSource;
+
+    mockedGetPage.mockReturnValue(futureSignalingPage);
+    mockedGetPages.mockReturnValue([futureSignalingPage]);
+    mockedGetNodeMeta.mockReturnValue(undefined);
+
+    const futurePayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'signaling',
+        'future',
+      ]),
+    );
+
+    expect(futurePayload.sidebarHeader).not.toEqual(
+      expect.objectContaining({
+        backHref: '/zh-CN/realtime-media/rtm',
+        backLabel: '实时消息 RTM',
+      }),
+    );
   });
 
   it('uses the get-started-sdk page as the video quickstart sidebar entry', async () => {
