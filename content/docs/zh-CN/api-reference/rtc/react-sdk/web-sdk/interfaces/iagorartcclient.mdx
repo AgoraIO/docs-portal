@@ -690,7 +690,7 @@ SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触�
 - v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 后。
 :::
 
-#### Parameters
+Parameters
 
 - isUsingProxy: boolean
 
@@ -699,7 +699,7 @@ SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触�
   - `true`: 经云代理服务转发。
   - `false`: 没有经云代理服务转发。
 
-#### Returns void
+Returns void
 
 <a id="event_join_fallback_to_proxy"></a>
 
@@ -852,13 +852,13 @@ SDK 自动切换至 TCP/TLS 443 回调。
 >   - 如果没有监听 `published-user-list`，`user-joined` 和 `user-published` 会正常触发。
 :::
 
-#### Parameters
+Parameters
 
 - users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)[]
 
   远端用户对象。
 
-#### Returns void
+Returns void
 
 <a id="event_stream_fallback"></a>
 
@@ -1858,7 +1858,7 @@ client.enableContentInspect({
 获取本地音频相关信息。
 :::
 
-#### Returns LocalAudioTrackStats
+Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localaudiotrackstats)
 
 <a id="getlocalvideostats"></a>
 
@@ -1898,7 +1898,7 @@ client.enableContentInspect({
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
-#### Returns object
+Returns object
 
 - [uid: string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats)
 
@@ -1914,7 +1914,7 @@ client.enableContentInspect({
 获取本地订阅的所有远端用户的上下行网络质量。
 :::
 
-#### Returns object
+Returns object
 
 - [uid: string]:[NetworkQuality](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/networkquality)
 
@@ -1932,7 +1932,7 @@ client.enableContentInspect({
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
-#### Returns object
+Returns object
 
 - [uid: string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
 
@@ -1967,7 +1967,7 @@ for(const {track, mediaType, error} of result) {
 ```
 :::
 
-#### Parameters
+Parameters
 
 - subscribeList: object[]
 
@@ -1979,7 +1979,7 @@ for(const {track, mediaType, error} of result) {
     - `"video"`: 订阅指定用户的视频轨道。
     - `"audio"`: 订阅指定用户的音频轨道。
 
-#### Returns Promise&lt;object[]&gt;
+Returns Promise&lt;object[]&gt;
 
 正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
 
@@ -2007,7 +2007,7 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
 :::
 
-#### Parameters
+Parameters
 
 - unsubscribeList: object[]
 
@@ -2020,7 +2020,7 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
     - `"audio"`: 取消订阅指定用户的音频轨道。
     - 如不填，取消订阅该用户发布的所有轨道。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="off"></a>
 
@@ -2676,13 +2676,13 @@ client.setLocalAccessPointsV2({
 ```
 :::
 
-#### Parameters
+Parameters
 
 - config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)
 
   混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#localaccesspointconfig)。
 
-#### Returns void
+Returns void
 
 ## Proxy Methods
 
@@ -2708,13 +2708,13 @@ client.setLocalAccessPointsV2({
 > - 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
 :::
 
-#### Parameters
+Parameters
 
 - proxyServer: string
 
   你的代理服务器域名，ASCII 字符。
 
-#### Returns void
+Returns void
 
 <a id="startproxyserver"></a>
 

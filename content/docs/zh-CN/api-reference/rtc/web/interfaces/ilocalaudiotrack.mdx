@@ -431,13 +431,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 将 `Processor` 注入本地音频轨道。
 :::
 
-#### Parameters
+Parameters
 
 - processor: IAudioProcessor
 
   `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-#### Returns IAudioProcessor
+Returns IAudioProcessor
 
 `Processor` 实例。
 
@@ -530,7 +530,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-#### Parameters
+Parameters
 
 - enabled: boolean
 
@@ -539,7 +539,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - `true`: 启用该轨道。
   - `false`: 禁用该轨道。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setmuted"></a>
 
@@ -560,7 +560,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-#### Parameters
+Parameters
 
 - muted: boolean
 
@@ -569,7 +569,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - `true`: 暂停发送该轨道的媒体数据。
   - `false`: 恢复发送该轨道的媒体数据。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setplaybackdevice"></a>
 
@@ -587,13 +587,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 设置本地播放远端音频流的设备（扬声器）。
 :::
 
-#### Parameters
+Parameters
 
 - deviceId: string
 
   设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setvolume"></a>
 
@@ -635,4 +635,4 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 取消本地音频轨道上注入的 `Processor`。
 :::
 
-#### Returns void
+Returns void

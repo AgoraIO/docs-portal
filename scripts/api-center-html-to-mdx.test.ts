@@ -147,6 +147,7 @@ describe('API Center shared HTML to MDX converter', () => {
             <dt>自从</dt><dd><p><em>4.17.1</em></p><p>TypeDoc details.</p></dd>
             <dt>deprecated</dt><dd>Use the replacement.</dd>
           </dl>
+          <h4 class="tsd-returns-title">Returns <a href="/zh-CN/api-reference/rtc/electron/replacement">Replacement</a></h4>
         </li></ul>
         <ul class="tsd-descriptions"><li class="tsd-description"><p>Plain TypeDoc description.</p></li></ul>
       </article>`,
@@ -162,6 +163,10 @@ describe('API Center shared HTML to MDX converter', () => {
       ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
     );
     expect(result.body).toContain('### deprecated\n\nUse the replacement.');
+    expect(result.body).toContain(
+      'Returns [Replacement](/zh-CN/api-reference/rtc/electron/replacement)',
+    );
+    expect(result.body).not.toContain('#### Returns');
     expect(result.body).toContain('Following content.');
     expect(result.body).toContain('- Plain TypeDoc description.');
     expect(result.body).not.toContain('### 自从');

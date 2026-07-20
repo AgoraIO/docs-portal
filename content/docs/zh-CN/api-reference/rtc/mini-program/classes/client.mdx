@@ -387,18 +387,18 @@ v2.5.4
 当你在服务端踢除频道内的用户后，被踢出频道的用户会收到该回调。
 :::
 
-#### Parameters
+Parameters
 
 - event: "client-banned"
 
   当前触发的事件。`"client-banned"` 表示用户被服务器禁止。
 
-#### Returns void
+Returns void
 
 通知应用程序发生错误。
  该回调中会包含详细的错误码和错误信息。
 
-#### Parameters
+Parameters
 
 - event: "error"
 
@@ -418,12 +418,12 @@ v2.5.4
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序已添加远端音视频流。
  该回调中会包含已添加的远端用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "stream-added"
 
@@ -442,12 +442,12 @@ v2.5.4
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序已删除远端音视频流。
  该回调中会包含已删除的远端用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "stream-removed"
 
@@ -466,12 +466,12 @@ v2.5.4
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序已更新 URL 地址。
  该回调中会包含远端用户的 ID 和更新后的拉流地址。
 
-#### Parameters
+Parameters
 
 - event: "update-url"
 
@@ -491,12 +491,12 @@ v2.5.4
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序远端视频已旋转。
  该回调中会包含视频的旋转信息以及远端用户的 ID。
 
-#### Parameters
+Parameters
 
 - event: "video-rotation"
 
@@ -516,7 +516,7 @@ v2.5.4
 
       Returns void
 
-#### Returns void
+Returns void
 
 Token 已过期回调。
 
@@ -528,13 +528,13 @@ v2.5.3
 一般情况下，在收到该消息之后，应向服务端重新申请 Token，并调用 [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 方法传入新的 Token 重新加入频道。
 :::
 
-#### Parameters
+Parameters
 
 - event: "token-privilege-did-expire"
 
   当前触发的事件。`"token-privilege-did-expire"` 表示 Token 已过期。
 
-#### Returns void
+Returns void
 
 Token 服务即将过期回调。
 
@@ -545,18 +545,18 @@ v2.5.3
  然后调用 [renewToken](/zh-CN/api-reference/rtc/mini-program/classes/client#renewtoken) 将新生成的 Token 传给 SDK。
 :::
 
-#### Parameters
+Parameters
 
 - event: "token-privilege-will-expire"
 
   当前触发的事件。`"token-privilege-will-expire"` 表示 Token 即将过期。
 
-#### Returns void
+Returns void
 
 通知应用程序远端用户已停止发送音频流。
  该回调中会包含停止发送音频流的用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "mute-audio"
 
@@ -575,12 +575,12 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序远端用户已停止发送视频流。
  该回调中会包含停止发送视频流的用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "mute-video"
 
@@ -599,12 +599,12 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序远端用户已恢复发送音频流。
  该回调中会包含恢复发送音频流的用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "unmute-audio"
 
@@ -623,12 +623,12 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 通知应用程序远端用户已恢复发送视频流。
  该回调中会包含恢复发送视频流的用户 ID。
 
-#### Parameters
+Parameters
 
 - event: "unmute-video"
 
@@ -647,13 +647,13 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 跨频道媒体流转发事件回调。
 
 该回调报告跨频道媒体流转发过程中发生的事件。
 
-#### Parameters
+Parameters
 
 - event: "channel-media-relay-event"
 
@@ -672,13 +672,13 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 跨频道媒体流转发状态回调。
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
-#### Parameters
+Parameters
 
 - event: "channel-media-relay-state"
 
@@ -698,7 +698,7 @@ v2.5.3
 
       Returns void
 
-#### Returns void
+Returns void
 
 <a id="publish"></a>
 
@@ -824,7 +824,7 @@ v2.5.3
  当收到 `client.on("token-privilege-will-expire")` 消息时，调用该 API 以更新 Token，否则 SDK 会无法和服务器建立连接。
 :::
 
-#### Parameters
+Parameters
 
 - token: string
 
@@ -851,7 +851,7 @@ v2.5.3
 
       Returns void
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setaudiocodec"></a>
 
@@ -865,7 +865,7 @@ v2.5.3
 v2.5.6
 :::
 
-#### Parameters
+Parameters
 
 - audioCodec: [AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)
 
@@ -875,7 +875,7 @@ v2.5.6
   - 8: PCMA/G711a 格式。
   - 9: G722 格式。
 
-#### Returns void
+Returns void
 
 <a id="setremotevideostreamtype"></a>
 
@@ -891,7 +891,7 @@ v2.5.3
 如果发送端选择发送视频双流 (大流和小流)，该方法可以在订阅端选择接收大流还是小流。如果不设置，订阅端默认接收大流。
 :::
 
-#### Parameters
+Parameters
 
 - uid: number
 
@@ -920,7 +920,7 @@ v2.5.3
 
       Returns void
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setrole"></a>
 
@@ -1352,7 +1352,7 @@ v2.5.3
 当收到 live-player 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-#### Parameters
+Parameters
 
 - uid: number
 
@@ -1362,7 +1362,7 @@ v2.5.3
   微信事件回调的 `e.detail` 对象。
    Note：要收到 live-player 组件报告的网络状态数据，你需要在创建 live-player 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 
-#### Returns void
+Returns void
 
 <a id="updateplayerstatechange"></a>
 
@@ -1378,7 +1378,7 @@ v2.5.3
 当收到 live-player 组件报告的拉流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-#### Parameters
+Parameters
 
 - uid: number
 
@@ -1388,7 +1388,7 @@ v2.5.3
   微信事件回调的 `e.detail` 对象。
    Note：要收到 live-player 组件报告的拉流状态码，你需要在创建 live-player 组件时注册监听 `bindstatechange`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 
-#### Returns void
+Returns void
 
 <a id="updatepushernetstatus"></a>
 
@@ -1404,14 +1404,14 @@ v2.5.3
 当收到 live-pusher 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-#### Parameters
+Parameters
 
 - detail: any
 
   微信事件回调的 `e.detail` 对象。
    Note：要收到 live-pusher 组件报告的网络状态通知，你需要在创建 live-pusher 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
-#### Returns void
+Returns void
 
 <a id="updatepusherstatechange"></a>
 
@@ -1427,11 +1427,11 @@ v2.5.3
 当收到 live-pusher 组件报告的推流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-#### Parameters
+Parameters
 
 - detail: any
 
   微信事件回调的 `e.detail` 对象。
    Note：要收到 live-pusher 组件报告的推流状态码，你需要在创建 live-pusher 组件时注册监听 `bindstatechange`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
-#### Returns void
+Returns void

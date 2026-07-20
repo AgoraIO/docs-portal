@@ -125,13 +125,13 @@ event_beauty_effect_overload:
 从 H.264 或 H.265 视频流中解析出 SEI 数据时触发，此事件会返回 SEI 数据。
 :::
 
-#### Parameters
+Parameters
 
 - sei: Uint8Array
 
   Uint8Array 类型的 SEI 数据
 
-#### Returns void
+Returns void
 
 <a id="event_video_element_visible_status"></a>
 
@@ -147,13 +147,13 @@ event_beauty_effect_overload:
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 :::
 
-#### Parameters
+Parameters
 
 - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
 
   `&lt;video&gt;` 标签的可见状态信息。
 
-#### Returns void
+Returns void
 
 ## Properties
 
@@ -231,7 +231,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
 :::
 
-#### Parameters
+Parameters
 
 - Optional config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
 
@@ -240,7 +240,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
   是否克隆当前轨道。默认为 `true`。
 
-#### Returns ILocalVideoTrack
+Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
 
 新生成的视频轨道。
 
@@ -272,7 +272,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#play) 则返回空数据。
 :::
 
-#### Returns ImageData
+Returns ImageData
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
@@ -525,13 +525,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 将 `Processor` 注入本地视频轨道。
 :::
 
-#### Parameters
+Parameters
 
 - processor: IBaseProcessor
 
   `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-#### Returns IBaseProcessor
+Returns IBaseProcessor
 
 `Processor` 实例。
 
@@ -620,7 +620,7 @@ await localVideoTrack.replaceTrack(newTrack, true);
 ```
 :::
 
-#### Parameters
+Parameters
 
 - track: MediaStreamTrack
 
@@ -632,7 +632,7 @@ await localVideoTrack.replaceTrack(newTrack, true);
   - 停止原有的视频轨道。
   - 保留原有的视频轨道。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="sendseidata"></a>
 
@@ -670,7 +670,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-#### Parameters
+Parameters
 
 - enabled: boolean
 
@@ -679,7 +679,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - `true`: 启用该轨道。
   - `false`: 禁用该轨道。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setencoderconfiguration"></a>
 
@@ -716,7 +716,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-#### Parameters
+Parameters
 
 - muted: boolean
 
@@ -725,7 +725,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
   - `true`: 暂停发送该轨道的媒体数据。
   - `false`: 恢复发送该轨道的媒体数据。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setoptimizationmode"></a>
 
@@ -743,7 +743,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > 注意事项：该方法只支持 Chrome 浏览器。
 :::
 
-#### Parameters
+Parameters
 
 - mode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
 
@@ -762,7 +762,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
     - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
     - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
 
-#### Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="stop"></a>
 
@@ -788,4 +788,4 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 取消本地视频轨道上注入的 `Processor`。
 :::
 
-#### Returns void
+Returns void

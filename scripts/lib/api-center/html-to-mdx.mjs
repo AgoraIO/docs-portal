@@ -619,6 +619,19 @@ async function renderBlockNode($, node, state) {
       .filter(Boolean)
       .join('\n\n');
   }
+  const isTypeDocSectionLabel =
+    name === 'h4' &&
+    [
+      'tsd-parameters-title',
+      'tsd-returns-title',
+      'tsd-type-parameters-title',
+    ].some((className) => element.hasClass(className));
+  if (isTypeDocSectionLabel) {
+    const label = cleanText(
+      await renderInlineNodes($, element.contents().toArray(), state),
+    );
+    return [anchor, label].filter(Boolean).join('\n\n');
+  }
   if (/^h[1-6]$/.test(name)) {
     const level = Number(name.slice(1));
     const nestedAnchors = element

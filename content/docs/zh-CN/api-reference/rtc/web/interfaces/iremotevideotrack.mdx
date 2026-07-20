@@ -105,13 +105,13 @@ _migration:
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 :::
 
-#### Parameters
+Parameters
 
 - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
 
   `&lt;video&gt;` 标签的可见状态信息。
 
-#### Returns void
+Returns void
 
 ## Properties
 
@@ -169,7 +169,7 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 则返回空数据。
 :::
 
-#### Returns ImageData
+Returns ImageData
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
@@ -446,13 +446,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 将 `Processor` 注入远端视频轨道。
 :::
 
-#### Parameters
+Parameters
 
 - processor: IBaseProcessor
 
   `Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-#### Returns IBaseProcessor
+Returns IBaseProcessor
 
 `Processor` 实例。
 
@@ -522,4 +522,4 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 取消远端视频轨道上注入的 `Processor`。
 :::
 
-#### Returns void
+Returns void

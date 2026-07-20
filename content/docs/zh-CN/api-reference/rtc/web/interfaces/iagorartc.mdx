@@ -206,7 +206,7 @@ _migration:
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
 :::
 
-#### Parameters
+Parameters
 
 - currState: AudioContextState|"interrupted"
 
@@ -222,7 +222,7 @@ _migration:
   - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
   - `undefined`：无先前状态。
 
-#### Returns void
+Returns void
 
 <a id="event_autoplay_failed"></a>
 
@@ -242,7 +242,7 @@ AgoraRTC.on("autoplay-failed", (info) => {
 ```
 :::
 
-#### Returns void
+Returns void
 
 <a id="event_camera_changed"></a>
 
@@ -262,13 +262,13 @@ AgoraRTC.on("camera-changed", (info) => {
 ```
 :::
 
-#### Parameters
+Parameters
 
 - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
 
   设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
 
-#### Returns void
+Returns void
 
 <a id="event_microphone_changed"></a>
 
@@ -288,13 +288,13 @@ AgoraRTC.on("microphone-changed", (info) => {
 ```
 :::
 
-#### Parameters
+Parameters
 
 - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
 
   设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
 
-#### Returns void
+Returns void
 
 <a id="event_playback_device_changed"></a>
 
@@ -314,13 +314,13 @@ AgoraRTC.on("playback-device-changed", (info) => {
 ```
 :::
 
-#### Parameters
+Parameters
 
 - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
 
   设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
 
-#### Returns void
+Returns void
 
 <a id="event_security_policy_violation"></a>
 
@@ -340,7 +340,7 @@ AgoraRTC.on("security-policy-violation", (info) => {
 ```
 :::
 
-#### Returns void
+Returns void
 
 ## Global Callback Properties
 
@@ -1015,7 +1015,7 @@ contextBridge.exposeInMainWorld(
 > - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 :::
 
-#### Parameters
+Parameters
 
 - Optional skipPermissionCheck: boolean
 
@@ -1024,7 +1024,7 @@ contextBridge.exposeInMainWorld(
   - `true`: 跳过权限检查。
   - `false`:（默认）不跳过权限检查。
 
-#### Returns Promise&lt;MediaDeviceInfo[]&gt;
+Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 ## Other Methods
 
@@ -1226,7 +1226,7 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "camera-changed"
 
@@ -1235,7 +1235,7 @@ Overrides EventEmitter.on
 
   详见 [event_camera_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_camera_changed)。
 
-#### Returns void
+Returns void
 
 Overrides EventEmitter.on
 
@@ -1243,7 +1243,7 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "microphone-changed"
 
@@ -1252,7 +1252,7 @@ Overrides EventEmitter.on
 
   详见 [event_microphone_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_microphone_changed)。
 
-#### Returns void
+Returns void
 
 Overrides EventEmitter.on
 
@@ -1260,7 +1260,7 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "playback-device-changed"
 
@@ -1269,7 +1269,7 @@ Overrides EventEmitter.on
 
   详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_playback_device_changed)。
 
-#### Returns void
+Returns void
 
 Overrides EventEmitter.on
 
@@ -1277,7 +1277,7 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "autoplay-failed"
 
@@ -1286,7 +1286,7 @@ Overrides EventEmitter.on
 
   详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_autoplay_failed)。
 
-#### Returns void
+Returns void
 
 Overrides EventEmitter.on
 
@@ -1294,7 +1294,7 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "security-policy-violation"
 
@@ -1303,7 +1303,7 @@ Overrides EventEmitter.on
 
   详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_security_policy_violation)。
 
-#### Returns void
+Returns void
 
 Overrides EventEmitter.on
 
@@ -1311,7 +1311,7 @@ Overrides EventEmitter.on
 *4.20.0*
 :::
 
-#### Parameters
+Parameters
 
 - event: "audio-context-state-changed"
 
@@ -1320,7 +1320,7 @@ Overrides EventEmitter.on
 
   详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_audio_context_state_changed)。
 
-#### Returns void
+Returns void
 
 <a id="once"></a>
 
@@ -1424,13 +1424,13 @@ Overrides EventEmitter.on
 > 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
 :::
 
-#### Parameters
+Parameters
 
 - element: HTMLMediaElement
 
   需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
 
-#### Returns void
+Returns void
 
 <a id="registerextensions"></a>
 
@@ -1444,13 +1444,13 @@ Overrides EventEmitter.on
 注册插件。
 :::
 
-#### Parameters
+Parameters
 
 - extensions: IExtension&lt;any&gt;[]
 
   插件实例。
 
-#### Returns void
+Returns void
 
 <a id="removealllisteners"></a>
 
@@ -1510,13 +1510,13 @@ AgoraRTC.setArea({
 ```
 :::
 
-#### Parameters
+Parameters
 
 - area: [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)[]|object
 
   服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
 
-#### Returns void
+Returns void
 
 <a id="startlastmileprobetest"></a>
 
@@ -1530,7 +1530,7 @@ AgoraRTC.setArea({
 *4.24.1*
 :::
 
-#### Parameters
+Parameters
 
 - appid: string
 
@@ -1566,4 +1566,4 @@ AgoraRTC.setArea({
   > - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/api-reference/faq/integration/string_uid)。
   > - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
 
-#### Returns Promise&lt;LastmileProbeResult&gt;
+Returns Promise&lt;[LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)&gt;

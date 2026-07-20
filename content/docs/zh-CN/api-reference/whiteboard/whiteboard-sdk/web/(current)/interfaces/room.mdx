@@ -653,7 +653,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.16.48
 :::
 
-#### Parameters
+Parameters
 
 - Optional includeRedo: boolean
 
@@ -662,7 +662,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
   - `true`：（默认）同时清空重做记录。
   - `false`：不同时清空重做记录。
 
-#### Returns void
+Returns void
 
 <a id="completeimageupload"></a>
 
@@ -749,7 +749,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.9.0
 :::
 
-#### Returns void
+Returns void
 
 <a id="createinvisibleplugin"></a>
 
@@ -886,7 +886,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.9.0
 :::
 
-#### Returns void
+Returns void
 
 <a id="entirescenes"></a>
 
@@ -921,13 +921,13 @@ v2.14.5
 成功调用该方法后，SDK 会导出指定场景的内容并保存为 Blob 对象。
 :::
 
-#### Parameters
+Parameters
 
 - scenePath: string
 
   需要导出的场景路径。
 
-#### Returns Promise&lt;Blob&gt;
+Returns Promise&lt;Blob&gt;
 
 导出场景内容的 Blob 对象。
 
@@ -1094,7 +1094,7 @@ v2.14.5
 你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene) 导出的场景内容导入指定的场景目录中。
 :::
 
-#### Parameters
+Parameters
 
 - dir: string
 
@@ -1104,7 +1104,7 @@ v2.14.5
 
   场景内容的 Blob 对象。
 
-#### Returns Promise&lt;SceneDefinition&gt;
+Returns Promise&lt;[SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)&gt;
 
 方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir`+ `name`。
  如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)。
@@ -1222,7 +1222,7 @@ v2.14.5
 该方法可以修改当前选中图片的锁定状态。当图片被锁定时，用户无法移动、放缩或删除该图片。
 :::
 
-#### Parameters
+Parameters
 
 - locked: boolean
 
@@ -1231,7 +1231,7 @@ v2.14.5
   - true：锁定图片。
   - false：不锁定图片。
 
-#### Returns void
+Returns void
 
 <a id="memberstate"></a>
 
@@ -1332,7 +1332,7 @@ v2.14.5
 v2.14.5
 :::
 
-#### Returns void
+Returns void
 
 <a id="moveselectedcomponentstotop"></a>
 
@@ -1348,7 +1348,7 @@ v2.14.5
 v2.14.5
 :::
 
-#### Returns void
+Returns void
 
 <a id="paste"></a>
 
@@ -1370,7 +1370,7 @@ v2.14.5
 2.9.0
 :::
 
-#### Returns void
+Returns void
 
 <a id="pptnextstep"></a>
 
@@ -1554,13 +1554,13 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.3.18
 :::
 
-#### Parameters
+Parameters
 
 - Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
 
   视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
 
-#### Returns void
+Returns void
 
 <a id="scenepathtype"></a>
 
@@ -1912,7 +1912,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.13.8
 :::
 
-#### Returns void
+Returns void
 
 <a id="syncblocktimestamp"></a>
 
@@ -1932,13 +1932,13 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
 :::
 
-#### Parameters
+Parameters
 
 - timestamp: number
 
   远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。
 
-#### Returns void
+Returns void
 
 <a id="undo"></a>
 
