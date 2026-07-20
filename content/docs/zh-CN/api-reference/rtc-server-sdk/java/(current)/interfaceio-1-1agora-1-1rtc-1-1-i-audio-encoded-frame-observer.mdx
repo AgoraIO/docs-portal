@@ -1,5 +1,6 @@
 ---
 title: io.agora.rtc.IAudioEncodedFrameObserver接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -16,15 +17,9 @@ _migration:
         /api-ref/rtc-server-sdk/java/_i_audio_encoded_frame_observer_8java.html as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| default int | [onEncodedAudioFrameReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer#a15dd0f01400dc3b630df2820dba6715b) (String remoteUserId, ByteBuffer buffer, [EncodedAudioFrameReceiverInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-receiver-info) info) |
-
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 IAudioEncodedFrameObserver 类。
 
@@ -36,7 +31,7 @@ IAudioEncodedFrameObserver 类。
 
 <a id="a15dd0f01400dc3b630df2820dba6715b"></a>
 
-## ◆onEncodedAudioFrameReceived()
+### onEncodedAudioFrameReceived()
 
 | default int io.agora.rtc.IAudioEncodedFrameObserver.onEncodedAudioFrameReceived | ( | String | *remoteUserId*, |
 | --- | --- | --- | --- |
@@ -45,18 +40,18 @@ IAudioEncodedFrameObserver 类。
 
 接收到远端用户编码后的音频数据回调。
 
-### 注解
-
+:::info[注解]
 为保证数据传输效率，音频数据缓存使用 DirectByteBuffer 类型。请确保同步提取回调中的 Byte 数组的值，然后将其发送到非同步线程进行处理。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | remoteUserId | 远端用户 ID。 |
 | --- | --- |
 | buffer | 编码后的音频数据缓存。 |
 | info | 编码后的音频数据信息：[EncodedAudioFrameReceiverInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-receiver-info)。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 返回 0 或 1。返回值当前没有实际意义。
 

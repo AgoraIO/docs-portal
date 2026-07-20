@@ -1,5 +1,6 @@
 ---
 title: agora::linuxsdk::LiteraWatermarkConfig结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,23 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| const char * | [wm_litera](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#a26fade266702adc31b30950a427e2fd5) |
-|  |  |
-| const char * | [font_file_path](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#ab6433ccaeb8f6b9c82a54b3759a50cc2) |
-|  |  |
-| uint32_t | [font_size](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#a0f96e9ae360814e74c26c48030540eb9) |
-|  |  |
-| uint32_t | [offset_x](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#a2a872b443f5f919c7322de469cac5259) |
-|  |  |
-| uint32_t | [offset_y](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#a34c48f8a46eb0c875825e0aa0622dd79) |
-|  |  |
-| uint32_t | [wm_width](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#a47e7205977681fd02ebd375d30974a07) |
-|  |  |
-| uint32_t | [wm_height](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-litera-watermark-config#afcd887be70d150fe2598e022a87791a5) |
-|  |  |
 
 <a id="details"></a>
 
@@ -37,37 +21,37 @@ _migration:
 
 <a id="a26fade266702adc31b30950a427e2fd5"></a>
 
-## ◆wm_litera
+### wm_litera
 
 | const char* agora::linuxsdk::LiteraWatermarkConfig::wm_litera |
 | --- |
 
 文字内容，字符串格式。
 
-### 注解
-
+:::info[注解]
 - 仅支持 UTF-8 编码。
 - 支持的字符依赖于字体。默认字体为 NotoSansMonoCJKsc-Regular，支持的语言和字符详见[字体介绍](https://www.google.com/get/noto/help/cjk/)。你也可以设置 `font_file_path` 参数自行指定字体文件路径来更换字体。
 - 支持自动换行。当文字内容长度超过水印框宽度时，会自动换行。支持换行符。
 - 字符串长度没有限制。文字内容的最终显示受字体大小和水印框大小的影响，超出水印框的部分不显示。
 - 文字颜色为黑色或白色，会根据视频画布的颜色自动调整。若视频背景较暗，则颜色为白色；若视频背景较亮，则颜色为黑色。当视频背景不均匀时，颜色为黑白相间。
+:::
 
 <a id="ab6433ccaeb8f6b9c82a54b3759a50cc2"></a>
 
-## ◆font_file_path
+### font_file_path
 
 | const char* agora::linuxsdk::LiteraWatermarkConfig::font_file_path |
 | --- |
 
 指定字体文件的路径。如不指定，使用默认字体 NotoSansMonoCJKsc-Regular。
 
-### 注解
-
+:::info[注解]
 支持 ttf，otf 等字体格式。
+:::
 
 <a id="a0f96e9ae360814e74c26c48030540eb9"></a>
 
-## ◆font_size
+### font_size
 
 | uint32_t agora::linuxsdk::LiteraWatermarkConfig::font_size |
 | --- |
@@ -76,7 +60,7 @@ _migration:
 
 <a id="a2a872b443f5f919c7322de469cac5259"></a>
 
-## ◆offset_x
+### offset_x
 
 | uint32_t agora::linuxsdk::LiteraWatermarkConfig::offset_x |
 | --- |
@@ -85,7 +69,7 @@ _migration:
 
 <a id="a34c48f8a46eb0c875825e0aa0622dd79"></a>
 
-## ◆offset_y
+### offset_y
 
 | uint32_t agora::linuxsdk::LiteraWatermarkConfig::offset_y |
 | --- |
@@ -94,7 +78,7 @@ _migration:
 
 <a id="a47e7205977681fd02ebd375d30974a07"></a>
 
-## ◆wm_width
+### wm_width
 
 | uint32_t agora::linuxsdk::LiteraWatermarkConfig::wm_width |
 | --- |
@@ -103,7 +87,7 @@ _migration:
 
 <a id="afcd887be70d150fe2598e022a87791a5"></a>
 
-## ◆wm_height
+### wm_height
 
 | uint32_t agora::linuxsdk::LiteraWatermarkConfig::wm_height |
 | --- |

@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.AudioMixerImplement类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,11 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [setMediaState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-mixer-implement#a243f0cb117c353fc1aefac24a3689d78) (long state, long errorCode) |
-|  |  |
 
 <a id="details"></a>
 
@@ -29,7 +25,7 @@ _migration:
 
 <a id="a243f0cb117c353fc1aefac24a3689d78"></a>
 
-## ◆setMediaState()
+### setMediaState()
 
 | void com.herewhite.sdk.AudioMixerImplement.setMediaState | ( | long | *state*, |
 | --- | --- | --- | --- |
@@ -40,11 +36,11 @@ _migration:
 
 你需要在 Agora RTC SDK 触发的 `onAudioMixingStateChanged` 回调中调用该方法，将音乐文件播放状态传递给白板中的 PPT。 PPT 根据收到的音频播放状态判断是否显示画面，以确保音画同步。
 
-### 注解
-
+:::info[注解]
 如果你使用的实时音视频 SDK 没有混音状态回调方法，会导致播放的 PPT音画不同步。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | state | 音乐文件播放状态：`MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)`: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED(711)`：RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED(713)`：RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR(714)`：音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。 |
 | --- | --- |

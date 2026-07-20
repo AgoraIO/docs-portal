@@ -770,7 +770,7 @@ export function DocsTableOfContents({
 
       observer.disconnect();
     };
-  }, [toc]);
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -1013,6 +1013,7 @@ function isHiddenFromToc(element: HTMLElement) {
     if (
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
+      current.getAttribute('data-toc-hidden') === 'true' ||
       current.hasAttribute('inert')
     ) {
       return true;

@@ -569,6 +569,9 @@ describe('DocsContent', () => {
           <h2 id="overview">Overview</h2>
           <h2 id="guide">Guide</h2>
           <h3 id="late-section">Late section</h3>
+          <h4 data-toc-hidden="true" id="parameter-details">
+            Parameter details
+          </h4>
           <DocsTableOfContents
             toc={[
               { depth: 2, title: 'Overview', url: '#overview' },
@@ -582,6 +585,9 @@ describe('DocsContent', () => {
     expect(
       await screen.findByRole('link', { name: 'Late section' }),
     ).toHaveAttribute('href', '#late-section');
+    expect(
+      screen.queryByRole('link', { name: 'Parameter details' }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {

@@ -1,5 +1,6 @@
 ---
 title: io.agora.rtc.ILocalUserObserver接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -15,40 +16,9 @@ _migration:
         /api-ref/rtc-server-sdk/java/_i_local_user_observer_8java.html as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [onAudioTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#aaca31a6556391e1a4398345ddc9a3522) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) agora_local_audio_track) |
-| void | [onLocalAudioTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a57aebc7dc03f1620719916f2a9d93cdd) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) agora_local_audio_track, int state, int error) |
-| void | [onLocalAudioTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a9f06a67f5a276d67b438c70974699ed8) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [LocalAudioStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-local-audio-stats) stats) |
-| void | [onRemoteAudioTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#af7099c322002d5c4cd1811a1cc12380b) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-audio-track) agora_remote_audio_track, [RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-remote-audio-track-stats) stats) |
-| void | [onUserAudioTrackSubscribed](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a4bb144ed08f545f360900288f48401e9) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, [AgoraRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-audio-track) agora_remote_audio_track) |
-| void | [onUserAudioTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a47bb8d6d1fb6ea8f466dad982b60d916) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, [AgoraRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-audio-track) agora_remote_audio_track, int state, int reason, int elapsed) |
-| void | [onAudioSubscribeStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a893f075e0cd17756e1ccc1d8bbcc4df8) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String channel, String user_id, int old_state, int new_state, int elapse_since_last_state) |
-| void | [onAudioPublishStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#af11491eec8fcb0926bc9f3a90a160059) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String channel, int old_state, int new_state, int elapse_since_last_state) |
-| void | [onFirstRemoteAudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#acec3868c1e288ccd201fcf8697281d7d) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int elapsed) |
-| void | [onFirstRemoteAudioDecoded](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#af5ae9dc7a551fba06e275a321fb302e5) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int elapsed) |
-| void | [onVideoTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a4517b2811a2e5cae167aed670a78b5d4) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) agora_local_video_track) |
-| void | [onLocalVideoTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a73405b75fce5cfdfe6955cf9d6f1c17c) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) agora_local_video_track, int state, int error) |
-| void | [onLocalVideoTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#ad8777160e3fd299da517393d196ad871) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) agora_local_video_track, [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-local-video-track-stats) stats) |
-| void | [onUserVideoTrackSubscribed](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#acbbc068c086c073d17323d585cc87a6d) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-track-info) info, [AgoraRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-video-track) agora_remote_video_track) |
-| void | [onUserVideoTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#ac5812e331e7427a1821130cae146e876) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, [AgoraRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-video-track) agora_remote_video_track, int state, int reason, int elapsed) |
-| void | [onRemoteVideoTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#aae992265777934baf63946523ea18ee6) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, [AgoraRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-remote-video-track) agora_remote_video_track, [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-remote-video-track-stats) stats) |
-| void | [onVideoSubscribeStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a00186826ced7729f1a62df6501b2a4b9) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String channel, String user_id, int old_state, int new_state, int elapse_since_last_state) |
-| void | [onVideoPublishStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#ab06d8faa1da5d4c7fe19ac0fc6343bbd) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String channel, int old_state, int new_state, int elapse_since_last_state) |
-| void | [onFirstRemoteVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a968d024987365215f680d07fa79ab4ae) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int width, int height, int elapsed) |
-| void | [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a3abd440ee7ae421c085e93ae14134b0e) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int width, int height, int elapsed) |
-| void | [onUserInfoUpdated](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a4bee98192f243990b5b20a2bdb8fe7a7) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int msg, int val) |
-| void | [onIntraRequestReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a246ab96ccc302d174b4dd7411a560aec) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user) |
-| void | [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#af2855e97343091a279987dd03259d6f5) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int is_fallback_or_recover) |
-| void | [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int stream_id, String data, long length) |
-| void | [onUserStateChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a49b34c2c06aca4f1142a54564df60bef) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agora_local_user, String user_id, int state) |
-| void | [onAudioMetaDataReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) ([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) agoraLocalUser, String userId, byte[] metaData) |
-
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 ILocalUserObserver 接口。
 
@@ -60,7 +30,7 @@ ILocalUserObserver 接口。
 
 <a id="a84c4706b0f30c43b6274b480ceaa9638"></a>
 
-## ◆onAudioMetaDataReceived()
+### onAudioMetaDataReceived()
 
 | void io.agora.rtc.ILocalUserObserver.onAudioMetaDataReceived | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agoraLocalUser*, |
 | --- | --- | --- | --- |
@@ -69,7 +39,7 @@ ILocalUserObserver 接口。
 
 接收到对方音频 Metadata 数据的回调。该回调表示本地用户收到了远端用户调用 [sendAudioMetaData](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) 方法发送的音频 Metadata 数据。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | agoraLocalUser | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -78,7 +48,7 @@ ILocalUserObserver 接口。
 
 <a id="af11491eec8fcb0926bc9f3a90a160059"></a>
 
-## ◆onAudioPublishStateChanged()
+### onAudioPublishStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onAudioPublishStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -89,7 +59,7 @@ ILocalUserObserver 接口。
 
 音频发布状态变更后触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -122,7 +92,7 @@ ILocalUserObserver 接口。
 
 <a id="a893f075e0cd17756e1ccc1d8bbcc4df8"></a>
 
-## ◆onAudioSubscribeStateChanged()
+### onAudioSubscribeStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onAudioSubscribeStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -134,7 +104,7 @@ ILocalUserObserver 接口。
 
 对远端用户音频订阅状态变更时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -168,7 +138,7 @@ ILocalUserObserver 接口。
 
 <a id="aaca31a6556391e1a4398345ddc9a3522"></a>
 
-## ◆onAudioTrackPublishSuccess()
+### onAudioTrackPublishSuccess()
 
 | void io.agora.rtc.ILocalUserObserver.onAudioTrackPublishSuccess | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -176,7 +146,7 @@ ILocalUserObserver 接口。
 
 在第一个本地音频包发送时触发，表明本地音频轨道已成功发布。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -184,7 +154,7 @@ ILocalUserObserver 接口。
 
 <a id="af5ae9dc7a551fba06e275a321fb302e5"></a>
 
-## ◆onFirstRemoteAudioDecoded()
+### onFirstRemoteAudioDecoded()
 
 | void io.agora.rtc.ILocalUserObserver.onFirstRemoteAudioDecoded | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -193,7 +163,7 @@ ILocalUserObserver 接口。
 
 在 SDK 解码第一个收到的远端音频帧时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -202,7 +172,7 @@ ILocalUserObserver 接口。
 
 <a id="acec3868c1e288ccd201fcf8697281d7d"></a>
 
-## ◆onFirstRemoteAudioFrame()
+### onFirstRemoteAudioFrame()
 
 | void io.agora.rtc.ILocalUserObserver.onFirstRemoteAudioFrame | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -211,7 +181,7 @@ ILocalUserObserver 接口。
 
 接收到远端用户发送的第一个音频帧时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -220,7 +190,7 @@ ILocalUserObserver 接口。
 
 <a id="a3abd440ee7ae421c085e93ae14134b0e"></a>
 
-## ◆onFirstRemoteVideoDecoded()
+### onFirstRemoteVideoDecoded()
 
 | void io.agora.rtc.ILocalUserObserver.onFirstRemoteVideoDecoded | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -231,7 +201,7 @@ ILocalUserObserver 接口。
 
 在 SDK 解码第一个视频帧时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -242,7 +212,7 @@ ILocalUserObserver 接口。
 
 <a id="a968d024987365215f680d07fa79ab4ae"></a>
 
-## ◆onFirstRemoteVideoFrame()
+### onFirstRemoteVideoFrame()
 
 | void io.agora.rtc.ILocalUserObserver.onFirstRemoteVideoFrame | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -253,7 +223,7 @@ ILocalUserObserver 接口。
 
 在第一个远端发送的视频帧渲染时触发。 当用户的视频窗口显示第一个远端发送的视频帧时，SDK 会触发该回调。App 可以获取从用户加入频道到第一个视频帧渲染出来的时间。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -264,21 +234,21 @@ ILocalUserObserver 接口。
 
 <a id="a246ab96ccc302d174b4dd7411a560aec"></a>
 
-## ◆onIntraRequestReceived()
+### onIntraRequestReceived()
 
 | void io.agora.rtc.ILocalUserObserver.onIntraRequestReceived | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 本地用户收到来自远端用户的关键帧请求时触发。该回调提醒本地用户编码关键帧。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
 
 <a id="a57aebc7dc03f1620719916f2a9d93cdd"></a>
 
-## ◆onLocalAudioTrackStateChanged()
+### onLocalAudioTrackStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onLocalAudioTrackStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -288,7 +258,7 @@ ILocalUserObserver 接口。
 
 在本地音频轨道状态变化时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -322,7 +292,7 @@ ILocalUserObserver 接口。
 
 <a id="a9f06a67f5a276d67b438c70974699ed8"></a>
 
-## ◆onLocalAudioTrackStatistics()
+### onLocalAudioTrackStatistics()
 
 | void io.agora.rtc.ILocalUserObserver.onLocalAudioTrackStatistics | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -330,7 +300,7 @@ ILocalUserObserver 接口。
 
 报告本地用户的音频统计信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -338,7 +308,7 @@ ILocalUserObserver 接口。
 
 <a id="a73405b75fce5cfdfe6955cf9d6f1c17c"></a>
 
-## ◆onLocalVideoTrackStateChanged()
+### onLocalVideoTrackStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onLocalVideoTrackStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -348,7 +318,7 @@ ILocalUserObserver 接口。
 
 <a id="ad8777160e3fd299da517393d196ad871"></a>
 
-## ◆onLocalVideoTrackStatistics()
+### onLocalVideoTrackStatistics()
 
 | void io.agora.rtc.ILocalUserObserver.onLocalVideoTrackStatistics | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -357,7 +327,7 @@ ILocalUserObserver 接口。
 
 报告本地视频轨道的统计信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -366,7 +336,7 @@ ILocalUserObserver 接口。
 
 <a id="af7099c322002d5c4cd1811a1cc12380b"></a>
 
-## ◆onRemoteAudioTrackStatistics()
+### onRemoteAudioTrackStatistics()
 
 | void io.agora.rtc.ILocalUserObserver.onRemoteAudioTrackStatistics | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -375,7 +345,7 @@ ILocalUserObserver 接口。
 
 报告远端用户的音频统计信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -384,7 +354,7 @@ ILocalUserObserver 接口。
 
 <a id="af2855e97343091a279987dd03259d6f5"></a>
 
-## ◆onRemoteSubscribeFallbackToAudioOnly()
+### onRemoteSubscribeFallbackToAudioOnly()
 
 | void io.agora.rtc.ILocalUserObserver.onRemoteSubscribeFallbackToAudioOnly | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -393,7 +363,7 @@ ILocalUserObserver 接口。
 
 <a id="aae992265777934baf63946523ea18ee6"></a>
 
-## ◆onRemoteVideoTrackStatistics()
+### onRemoteVideoTrackStatistics()
 
 | void io.agora.rtc.ILocalUserObserver.onRemoteVideoTrackStatistics | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -402,7 +372,7 @@ ILocalUserObserver 接口。
 
 报告远端视频轨道的统计信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -411,7 +381,7 @@ ILocalUserObserver 接口。
 
 <a id="a24d008cf23fa8d07ff8d1600a14ccc53"></a>
 
-## ◆onStreamMessage()
+### onStreamMessage()
 
 | void io.agora.rtc.ILocalUserObserver.onStreamMessage | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -424,7 +394,7 @@ ILocalUserObserver 接口。
 
 该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) 方法发送的流消息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -435,7 +405,7 @@ ILocalUserObserver 接口。
 
 <a id="a47bb8d6d1fb6ea8f466dad982b60d916"></a>
 
-## ◆onUserAudioTrackStateChanged()
+### onUserAudioTrackStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onUserAudioTrackStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -447,7 +417,7 @@ ILocalUserObserver 接口。
 
 在远端音频轨道状态变化时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -486,7 +456,7 @@ ILocalUserObserver 接口。
 
 <a id="a4bb144ed08f545f360900288f48401e9"></a>
 
-## ◆onUserAudioTrackSubscribed()
+### onUserAudioTrackSubscribed()
 
 | void io.agora.rtc.ILocalUserObserver.onUserAudioTrackSubscribed | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -497,7 +467,7 @@ ILocalUserObserver 接口。
 
 该回调表示本地用户已订阅指定远端音频轨道，并且收到首帧来自该轨道的音频。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -506,7 +476,7 @@ ILocalUserObserver 接口。
 
 <a id="a4bee98192f243990b5b20a2bdb8fe7a7"></a>
 
-## ◆onUserInfoUpdated()
+### onUserInfoUpdated()
 
 | void io.agora.rtc.ILocalUserObserver.onUserInfoUpdated | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -516,7 +486,7 @@ ILocalUserObserver 接口。
 
 用户媒体信息更新时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -526,7 +496,7 @@ ILocalUserObserver 接口。
 
 <a id="a49b34c2c06aca4f1142a54564df60bef"></a>
 
-## ◆onUserStateChanged()
+### onUserStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onUserStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -535,7 +505,7 @@ ILocalUserObserver 接口。
 
 远端用户状态更新时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -544,7 +514,7 @@ ILocalUserObserver 接口。
 
 <a id="ac5812e331e7427a1821130cae146e876"></a>
 
-## ◆onUserVideoTrackStateChanged()
+### onUserVideoTrackStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onUserVideoTrackStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -556,7 +526,7 @@ ILocalUserObserver 接口。
 
 在远端视频轨道状态变更时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -596,7 +566,7 @@ ILocalUserObserver 接口。
 
 <a id="acbbc068c086c073d17323d585cc87a6d"></a>
 
-## ◆onUserVideoTrackSubscribed()
+### onUserVideoTrackSubscribed()
 
 | void io.agora.rtc.ILocalUserObserver.onUserVideoTrackSubscribed | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -606,7 +576,7 @@ ILocalUserObserver 接口。
 
 成功订阅远端用户发送的视频流时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -616,7 +586,7 @@ ILocalUserObserver 接口。
 
 <a id="ab06d8faa1da5d4c7fe19ac0fc6343bbd"></a>
 
-## ◆onVideoPublishStateChanged()
+### onVideoPublishStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onVideoPublishStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -627,7 +597,7 @@ ILocalUserObserver 接口。
 
 视频发布状态变更后触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -660,7 +630,7 @@ ILocalUserObserver 接口。
 
 <a id="a00186826ced7729f1a62df6501b2a4b9"></a>
 
-## ◆onVideoSubscribeStateChanged()
+### onVideoSubscribeStateChanged()
 
 | void io.agora.rtc.ILocalUserObserver.onVideoSubscribeStateChanged | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -672,7 +642,7 @@ ILocalUserObserver 接口。
 
 对远端用户视频订阅状态变更时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |
@@ -706,7 +676,7 @@ ILocalUserObserver 接口。
 
 <a id="a4517b2811a2e5cae167aed670a78b5d4"></a>
 
-## ◆onVideoTrackPublishSuccess()
+### onVideoTrackPublishSuccess()
 
 | void io.agora.rtc.ILocalUserObserver.onVideoTrackPublishSuccess | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
 | --- | --- | --- | --- |
@@ -714,7 +684,7 @@ ILocalUserObserver 接口。
 
 在第一个本地视频包发送时触发，表明本地音视频轨道已成功发布。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
 
 | agora_local_user | 一个 AgoraLocalUser 对象。 |
 | --- | --- |

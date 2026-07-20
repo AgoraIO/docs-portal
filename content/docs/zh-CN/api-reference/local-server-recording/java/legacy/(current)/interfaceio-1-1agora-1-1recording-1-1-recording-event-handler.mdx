@@ -1,5 +1,6 @@
 ---
 title: io.agora.recording.RecordingEventHandler接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -10,78 +11,25 @@ _migration:
   warnings: []
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [onLeaveChannel](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a197e834c8147b89415c0d34ad2630615) (int reason) |
-|  |  |
-| void | [onError](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab6562c4957b4db231fb538aa2f43b9d6) (int error, int stat_code) |
-|  |  |
-| void | [onWarning](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7a563e37bcdffdc0a611e89da218836f) (int warn) |
-|  |  |
-| void | [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a493b31ae39de3060a852f5e93b260eb4) (String channelId, long uid) |
-|  |  |
-| void | [onRemoteVideoStreamStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab37521764aa117678792b2059cd9b572) (long uid, [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) state, [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) reason) |
-|  |  |
-| void | [onRemoteAudioStreamStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad0a0dde5cad8c9bad7d5896cf242c188) (long uid, [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) state, [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) reason) |
-|  |  |
-| void | [onUserOffline](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a6df6225e70e38920ae6072cedcdc60b6) (long uid, int reason) |
-|  |  |
-| void | [onUserJoined](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a873e9e611135f0db276d67a3d3f8b8c6) (long uid, String recordingDir) |
-|  |  |
-| void | [onActiveSpeaker](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#af8e43e2c55a53bb09b0137e800132c0f) (long uid) |
-|  |  |
-| void | [audioFrameReceived](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9a99eb2936c493fc7bb5626d5da27fdc) (long uid, [AudioFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-frame) frame) |
-|  |  |
-| void | [videoFrameReceived](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ae2e1e70d70f12bddf1ff01e255c0d800) (long uid, int type, [VideoFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-frame) frame, int rotation) |
-|  |  |
-| void | [recordingPathCallBack](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad02e649b29b195bfb52a5862b6d460f2) (String path) |
-|  |  |
-| void | [onAudioVolumeIndication](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a5c27a357d938c5d72482a80612574b1b) ([AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-volume-info)[] infos) |
-|  |  |
-| void | [onFirstRemoteVideoDecoded](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a8e52cde6096aa5dcfe527aa9eb3f8ced) (long uid, int width, int height, int elapsed) |
-|  |  |
-| void | [onFirstRemoteAudioFrame](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9fc38c0068b5d10abc9acadea36c6f7b) (long uid, int elapsed) |
-|  |  |
-| void | [onReceivingStreamStatusChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a82809f42c9a3acafe93471be82a70d35) (boolean receivingAudio, boolean receivingVideo) |
-|  |  |
-| void | [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) () |
-|  |  |
-| void | [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) () |
-|  |  |
-| void | [onRejoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad1e4e6b15ebb5a4fcd4ad2044fd2123d) (String channelId, long uid) |
-|  |  |
-| void | [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) ([CONNECTION_STATE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e) state, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-c-h-a-n-g-e-d-r-e-a-s-o-n-t-y-p-e) reason) |
-|  |  |
-| void | [onRemoteVideoStats](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a08e74df3eb8e50d6eea1dc184bd89891) (long uid, [RemoteVideoStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-video-stats) stats) |
-|  |  |
-| void | [onRemoteAudioStats](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a23b6982a342835a273731663db6fb6b7) (long uid, [RemoteAudioStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-audio-stats) stats) |
-|  |  |
-| void | [onRecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a85d77169268158aa440da2bbf7ed9660) ([RecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-recording-stats) stats) |
-|  |  |
-| void | [onLocalUserRegistered](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a508670ebca9c30b673a962a23137a6a6) (long uid, String userAccount) |
-|  |  |
-| void | [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) (long uid, String userAccount) |
-|  |  |
-
 ## 成员函数说明
 
 <a id="a197e834c8147b89415c0d34ad2630615"></a>
 
-## ◆onLeaveChannel()
+### onLeaveChannel()
 
 | void io.agora.recording.RecordingEventHandler.onLeaveChannel | ( | int | *reason* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该回调方法提示离开频道成功。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | reason | 录制端离开频道的原因，详见 [LEAVE_PATH_CODE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-l-e-a-v-e-p-a-t-h-c-o-d-e)。 |
 | --- | --- |
 
 <a id="ab6562c4957b4db231fb538aa2f43b9d6"></a>
 
-## ◆onError()
+### onError()
 
 | void io.agora.recording.RecordingEventHandler.onError | ( | int | *error*, |
 | --- | --- | --- | --- |
@@ -90,7 +38,7 @@ _migration:
 
 该回调方法表示 SDK 运行时出现了（网络或媒体相关的）错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | error | [错误代码](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-e-r-r-o-r-c-o-d-e-t-y-p-e)。 |
 | --- | --- |
@@ -98,21 +46,21 @@ _migration:
 
 <a id="a7a563e37bcdffdc0a611e89da218836f"></a>
 
-## ◆onWarning()
+### onWarning()
 
 | void io.agora.recording.RecordingEventHandler.onWarning | ( | int | *warn* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该回调方法表示 SDK 运行时出现了（网络或媒体相关的）警告。通常情况下，SDK 上报的警告信息应用程序可以忽略，SDK 会自动恢复。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | warn | [警告代码](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-w-a-r-n-c-o-d-e-t-y-p-e)。 |
 | --- | --- |
 
 <a id="a493b31ae39de3060a852f5e93b260eb4"></a>
 
-## ◆onJoinChannelSuccess()
+### onJoinChannelSuccess()
 
 | void io.agora.recording.RecordingEventHandler.onJoinChannelSuccess | ( | String | *channelId*, |
 | --- | --- | --- | --- |
@@ -121,7 +69,7 @@ _migration:
 
 该回调方法表示录制端成功加入了指定频道。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | channelId | 和调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) 时设置的频道名一致. |
 | --- | --- |
@@ -129,7 +77,7 @@ _migration:
 
 <a id="ab37521764aa117678792b2059cd9b572"></a>
 
-## ◆onRemoteVideoStreamStateChanged()
+### onRemoteVideoStreamStateChanged()
 
 | void io.agora.recording.RecordingEventHandler.onRemoteVideoStreamStateChanged | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -141,7 +89,7 @@ _migration:
 
 该回调在远端用户视频流状态发生变化时触发，并报告该用户当前的视频流状态和引起变化的原因。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | uid | 远端用户的 UID。 |
 | --- | --- |
@@ -150,7 +98,7 @@ _migration:
 
 <a id="ad0a0dde5cad8c9bad7d5896cf242c188"></a>
 
-## ◆onRemoteAudioStreamStateChanged()
+### onRemoteAudioStreamStateChanged()
 
 | void io.agora.recording.RecordingEventHandler.onRemoteAudioStreamStateChanged | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -162,7 +110,7 @@ _migration:
 
 该回调在远端用户音频流状态发生变化时触发，并报告该用户当前的音频流状态和引起变化的原因。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | uid | 远端用户的 UID。 |
 | --- | --- |
@@ -171,7 +119,7 @@ _migration:
 
 <a id="a6df6225e70e38920ae6072cedcdc60b6"></a>
 
-## ◆onUserOffline()
+### onUserOffline()
 
 | void io.agora.recording.RecordingEventHandler.onUserOffline | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -182,7 +130,7 @@ _migration:
 
 SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（15 秒）没有收到对方的任何数据包。 在网络较差的情况下，可能会有误报。建议可靠的掉线检测应该由信令来做。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | uid | 用户的 UID。 |
 | --- | --- |
@@ -190,7 +138,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="a873e9e611135f0db276d67a3d3f8b8c6"></a>
 
-## ◆onUserJoined()
+### onUserJoined()
 
 | void io.agora.recording.RecordingEventHandler.onUserJoined | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -201,7 +149,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 如果在录制端加入之前，已经有用户在频道中，SDK 也会上报这些已在频道中的用户 UID。频道内有多少用户，该回调就会调用几次。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | uid | 用户的 UID。 |
 | --- | --- |
@@ -209,7 +157,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="af8e43e2c55a53bb09b0137e800132c0f"></a>
 
-## ◆onActiveSpeaker()
+### onActiveSpeaker()
 
 | void io.agora.recording.RecordingEventHandler.onActiveSpeaker | ( | long | *uid* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -218,14 +166,14 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [audioIndicationInterval](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#aa27f2777c8abf5d5a3f085054786cf21) 大于 0 时（建议设置时间间隔大于 200 ms），如果 SDK 监测到频道内有新的活跃用户说话时，会触发该回调，返回当前时间段声音最大的用户的 UID。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | uid | 当前时间段声音最大的用户的 UID。 |
 | --- | --- |
 
 <a id="a9a99eb2936c493fc7bb5626d5da27fdc"></a>
 
-## ◆audioFrameReceived()
+### audioFrameReceived()
 
 | void io.agora.recording.RecordingEventHandler.audioFrameReceived | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -236,7 +184,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 当你将 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [decodeAudio](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#af956c9163fd20067386ecc307652e8e9) 设置为 `1`、`2` 或 `3` 时，可通过该回调接收原始音频数据。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | uid | 用户的 UID。 |
 | --- | --- |
@@ -244,7 +192,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="ae2e1e70d70f12bddf1ff01e255c0d800"></a>
 
-## ◆videoFrameReceived()
+### videoFrameReceived()
 
 | void io.agora.recording.RecordingEventHandler.videoFrameReceived | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -261,7 +209,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 该回调可用于实现高级功能，如鉴黄。这些功能可以通过采集并分析 I 帧实现。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | uid | `createChannel` 方法中指定的远端用户的 UID。 如果先前未分配 UID，则 Agora 服务器会自动分配 UID。 |
 | --- | --- |
@@ -283,21 +231,21 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="ad02e649b29b195bfb52a5862b6d460f2"></a>
 
-## ◆recordingPathCallBack()
+### recordingPathCallBack()
 
 | void io.agora.recording.RecordingEventHandler.recordingPathCallBack | ( | String | *path* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该回调方法获取录制文件的存放路径。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
 
 | path | 录制文件的存放路径。 |
 | --- | --- |
 
 <a id="a5c27a357d938c5d72482a80612574b1b"></a>
 
-## ◆onAudioVolumeIndication()
+### onAudioVolumeIndication()
 
 | void io.agora.recording.RecordingEventHandler.onAudioVolumeIndication | ( | [AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-volume-info)[] | *infos* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -306,14 +254,14 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [audioIndicationInterval](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#aa27f2777c8abf5d5a3f085054786cf21) 大于 0 时（建议设置时间间隔大于 200 ms），该回调会返回在时间间隔内所有说话者的 UID 和音量。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
 
 | infos | 每个说话者的用户 ID 和音量信息的数组，详见 [AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-volume-info)。 |
 | --- | --- |
 
 <a id="a8e52cde6096aa5dcfe527aa9eb3f8ced"></a>
 
-## ◆onFirstRemoteVideoDecoded()
+### onFirstRemoteVideoDecoded()
 
 | void io.agora.recording.RecordingEventHandler.onFirstRemoteVideoDecoded | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -326,7 +274,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 本地收到首帧远端视频流并解码成功时，触发此调用。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
 
 | uid | 用户 ID，指定是哪个用户的视频流。 |
 | --- | --- |
@@ -336,7 +284,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="a9fc38c0068b5d10abc9acadea36c6f7b"></a>
 
-## ◆onFirstRemoteAudioFrame()
+### onFirstRemoteAudioFrame()
 
 | void io.agora.recording.RecordingEventHandler.onFirstRemoteAudioFrame | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -345,7 +293,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 该回调提示本地已接收到首帧远端音频流。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
 
 | uid | 发送音频帧的远端用户的 ID。 |
 | --- | --- |
@@ -353,7 +301,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="a82809f42c9a3acafe93471be82a70d35"></a>
 
-## ◆onReceivingStreamStatusChanged()
+### onReceivingStreamStatusChanged()
 
 | void io.agora.recording.RecordingEventHandler.onReceivingStreamStatusChanged | ( | boolean | *receivingAudio*, |
 | --- | --- | --- | --- |
@@ -362,7 +310,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 该回调提示接收音频流或视频流的状态发生改变。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
 
 | receivingAudio | 录制端是否在接收音频流。 |
 | --- | --- |
@@ -370,7 +318,7 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 <a id="a7ce0f7b40d2a6dded70ef323751910ca"></a>
 
-## ◆onConnectionLost()
+### onConnectionLost()
 
 | void io.agora.recording.RecordingEventHandler.onConnectionLost | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -388,7 +336,7 @@ SDK 在调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/l
 
 <a id="a31d0cfee3f57d8851457276b70ae5b63"></a>
 
-## ◆onConnectionInterrupted()
+### onConnectionInterrupted()
 
 | void io.agora.recording.RecordingEventHandler.onConnectionInterrupted | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -404,7 +352,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="ad1e4e6b15ebb5a4fcd4ad2044fd2123d"></a>
 
-## ◆onRejoinChannelSuccess()
+### onRejoinChannelSuccess()
 
 | void io.agora.recording.RecordingEventHandler.onRejoinChannelSuccess | ( | String | *channelId*, |
 | --- | --- | --- | --- |
@@ -415,7 +363,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 有时由于网络原因，录制客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
 
 | channelId | 频道名。 |
 | --- | --- |
@@ -423,7 +371,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="ab673b3a08e3134631af1c3e7209000e3"></a>
 
-## ◆onConnectionStateChanged()
+### onConnectionStateChanged()
 
 | void io.agora.recording.RecordingEventHandler.onConnectionStateChanged | ( | [CONNECTION_STATE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e) | *state*, |
 | --- | --- | --- | --- |
@@ -434,7 +382,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调在网络连接状态发生改变的时候触发，并告知用户当前的网络连接状态和网络状态改变的原因。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
 
 | state | 当前的网络连接状态，详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e)。 |
 | --- | --- |
@@ -442,7 +390,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="a08e74df3eb8e50d6eea1dc184bd89891"></a>
 
-## ◆onRemoteVideoStats()
+### onRemoteVideoStats()
 
 | void io.agora.recording.RecordingEventHandler.onRemoteVideoStats | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -453,7 +401,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调报告远端用户端到端的视频流统计信息，针对每个发送视频流的远端用户（通信模式）/主播（直播模式）每 2 秒触发一次。如果远端有多个用户/主播发送视频流，该回调每 2 秒会被触发多次。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
 
 | uid | 用户 ID，指定是哪个用户的视频流。 |
 | --- | --- |
@@ -461,7 +409,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="a23b6982a342835a273731663db6fb6b7"></a>
 
-## ◆onRemoteAudioStats()
+### onRemoteAudioStats()
 
 | void io.agora.recording.RecordingEventHandler.onRemoteAudioStats | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -472,7 +420,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调描述远端用户端到端的音频流统计信息，针对每个发送音频流的远端用户（通信模式）/主播（直播模式）每 2 秒触发一次。如果远端有多个用户/主播发送音频流，该回调每 2 秒会被触发多次。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
 
 | uid | 用户 ID，指定是哪个用户的音频流。 |
 | --- | --- |
@@ -480,7 +428,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="a85d77169268158aa440da2bbf7ed9660"></a>
 
-## ◆onRecordingStats()
+### onRecordingStats()
 
 | void io.agora.recording.RecordingEventHandler.onRecordingStats | ( | [RecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-recording-stats) | *stats* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -489,14 +437,14 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 录制 SDK 定期向录制端报告当前录制的统计信息，每两秒触发一次。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
 
 | stats | 详见 [RecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-recording-stats)。 |
 | --- | --- |
 
 <a id="a508670ebca9c30b673a962a23137a6a6"></a>
 
-## ◆onLocalUserRegistered()
+### onLocalUserRegistered()
 
 | void io.agora.recording.RecordingEventHandler.onLocalUserRegistered | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -507,7 +455,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 录制端调用 [createChannelWithUserAccount](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a38dc626a437d251be0d47a546c4cd29f) 方法成功注册 User Account 后，SDK 会触发该回调，并报告录制端的 UID 和 User Account。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
 
 | uid | 录制端的 UID。 |
 | --- | --- |
@@ -515,7 +463,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 <a id="a218c435fe91344c143bf109afb844e3d"></a>
 
-## ◆onUserInfoUpdated()
+### onUserInfoUpdated()
 
 | void io.agora.recording.RecordingEventHandler.onUserInfoUpdated | ( | long | *uid*, |
 | --- | --- | --- | --- |
@@ -526,7 +474,7 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 远端用户加入频道后， SDK 会获取到该远端用户的 UID 和 User Account，在本地触发 `onUserInfoUpdated`。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
 
 | uid | 远端用户的 UID。 |
 | --- | --- |

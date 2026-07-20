@@ -1,5 +1,6 @@
 ---
 title: rtc_service_option_t结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -12,29 +13,11 @@ _migration:
       message: >-
         Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
         local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
-        local text.
 ---
-
-`#include <agora_rtc_api.h>`
-
-| <a id="pub-attribs"></a> 成员变量 |  |
-| --- | --- |
-| uint32_t | [area_code](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a04d7b1c6994ae0fd3aef923bcbf4f039) |
-| char | [product_id](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a5b083e8c11932263a8ddababf4501da0) [[AGORA_RTC_PRODUCT_ID_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a3720a5f468d3696ba1bbe0b6da18f1b5)+1] |
-| [log_config_t](/zh-CN/api-reference/rtsa/c/structlog-config-t) | [log_cfg](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a466d542376b0c53d41525a1e138d4f5b) |
-| char | [license_value](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a22f2aa6ab4a573a6d897293765a8b6f7) [[AGORA_LICENSE_VALUE_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6969509dce36d0a1cb63a7d0e00804ae)+1] |
-| bool | [domain_limit](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a08348d0b8dc724dd8c4c448e32529651) |
-| bool | [use_string_uid](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t#a62210a8ee40f31d8b3d6aff4145303c5) |
 
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 RTSA 服务配置选项。
 
@@ -46,7 +29,7 @@ RTSA 服务配置选项。
 
 <a id="a04d7b1c6994ae0fd3aef923bcbf4f039"></a>
 
-## ◆area_code
+### area_code
 
 | uint32_t area_code |
 | --- |
@@ -55,7 +38,7 @@ RTSA 服务配置选项。
 
 <a id="a08348d0b8dc724dd8c4c448e32529651"></a>
 
-## ◆domain_limit
+### domain_limit
 
 | bool domain_limit |
 | --- |
@@ -65,27 +48,27 @@ RTSA 服务配置选项。
 - true: 开启。SDK 只能访问指定域名的网络。
 - false: （默认）不开启。SDK 可以访问任意域名的网络。
 
-### 注解
-
+:::info[注解]
 - 该参数仅对使用定向物联网卡的场景有效。为保证使用定向物联网卡的设备与其他设备互通， 你需要将该参数设置为 true。
 - 开启域名限制前，你需要先联系物联网卡运营商将泛域名 *.agora.io 和 *.agoraio.cn 添加到白名单中，再联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 进行设置。
+:::
 
 <a id="a22f2aa6ab4a573a6d897293765a8b6f7"></a>
 
-## ◆license_value
+### license_value
 
 | char license_value[[AGORA_LICENSE_VALUE_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6969509dce36d0a1cb63a7d0e00804ae)+1] |
 | --- |
 
 License 激活之后返回的 License 字符串。
 
-### 注解
-
+:::info[注解]
 SDK 通过 License 计费。为保证你的业务不受影响，你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 了解并购买 License。
+:::
 
 <a id="a466d542376b0c53d41525a1e138d4f5b"></a>
 
-## ◆log_cfg
+### log_cfg
 
 | [log_config_t](/zh-CN/api-reference/rtsa/c/structlog-config-t) log_cfg |
 | --- |
@@ -94,7 +77,7 @@ SDK 日志文件配置。详见 [log_config_t](/zh-CN/api-reference/rtsa/c/struc
 
 <a id="a5b083e8c11932263a8ddababf4501da0"></a>
 
-## ◆product_id
+### product_id
 
 | char product_id[[AGORA_RTC_PRODUCT_ID_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a3720a5f468d3696ba1bbe0b6da18f1b5)+1] |
 | --- |
@@ -103,7 +86,7 @@ SDK 日志文件配置。详见 [log_config_t](/zh-CN/api-reference/rtsa/c/struc
 
 <a id="a62210a8ee40f31d8b3d6aff4145303c5"></a>
 
-## ◆use_string_uid
+### use_string_uid
 
 | bool use_string_uid |
 | --- |

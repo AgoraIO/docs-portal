@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.CommonCallback接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: warning
@@ -20,23 +21,6 @@ _migration:
 
 ![com.herewhite.sdk.CommonCallback接口 参考 图示](/img/api-center-generated/b3b5af5f6e2e-interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.png)
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| default void | [throwError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a721b4489c52b2740f233a1742f555916) (Object args) |
-|  |  |
-| default String | [urlInterrupter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a28839222c6e4b44a001da833300991d4) (String sourceUrl) |
-|  |  |
-| default void | [onPPTMediaPlay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a695dc7abd40851cd0ffe0e573566e8f1) () |
-|  |  |
-| default void | [onPPTMediaPause](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9967d9cd3eb16c0db3024f7a6a8c7d64) () |
-|  |  |
-| default void | [onMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae) (JSONObject object) |
-|  |  |
-| default void | [sdkSetupFail](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a0a988489c8559923f178eef3ba322704) (SDKError error) |
-|  |  |
-| default void | [onLogger](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9ccc2cfa4bf7288dd894347454eaead7) (JSONObject object) |
-|  |  |
-
 <a id="details"></a>
 
 ## 详细描述
@@ -53,14 +37,14 @@ _migration:
 
 <a id="a721b4489c52b2740f233a1742f555916"></a>
 
-## ◆throwError()
+### throwError()
 
 | default void com.herewhite.sdk.CommonCallback.throwError | ( | Object | *args* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 SDK 出现未捕获的全局错误回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | args | 错误信息。 |
 | --- | --- |
@@ -69,7 +53,7 @@ SDK 出现未捕获的全局错误回调。
 
 <a id="a28839222c6e4b44a001da833300991d4"></a>
 
-## ◆urlInterrupter()
+### urlInterrupter()
 
 | default String com.herewhite.sdk.CommonCallback.urlInterrupter | ( | String | *sourceUrl* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -84,16 +68,16 @@ SDK 出现未捕获的全局错误回调。
 
 开启后，在白板中插入图片时，SDK 会触发该回调，报告图片的原 URL 地址。你可以在该回调中将原 URL 地址替换成指定的 URL 地址。
 
-### 注解
-
+:::info[注解]
 开启后，SDK 会频繁触发该回调，因此 Agora 不推荐开启该回调；在 Android 平台，你可以使用 WebView 的拦截功能进行图片拦截。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | sourceUrl | 原 URL 地址。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 替换后的图片地址。请确保在返回值中进行传参。
 
@@ -101,7 +85,7 @@ SDK 出现未捕获的全局错误回调。
 
 <a id="a695dc7abd40851cd0ffe0e573566e8f1"></a>
 
-## ◆onPPTMediaPlay()
+### onPPTMediaPlay()
 
 | default void com.herewhite.sdk.CommonCallback.onPPTMediaPlay | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -116,7 +100,7 @@ SDK 出现未捕获的全局错误回调。
 
 <a id="a9967d9cd3eb16c0db3024f7a6a8c7d64"></a>
 
-## ◆onPPTMediaPause()
+### onPPTMediaPause()
 
 | default void com.herewhite.sdk.CommonCallback.onPPTMediaPause | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -131,7 +115,7 @@ SDK 出现未捕获的全局错误回调。
 
 <a id="a2a843f00164c64d248143d2194beecae"></a>
 
-## ◆onMessage()
+### onMessage()
 
 | default void com.herewhite.sdk.CommonCallback.onMessage | ( | JSONObject | *object* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -144,11 +128,11 @@ SDK 出现未捕获的全局错误回调。
 
 当本地用户收到了网页（如 iframe 插件、动态 PPT）发送的消息时会触发该回调。
 
-### 注解
-
+:::info[注解]
 不保证所有用户都能接收到该回调。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | object | JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收到。 |
 | --- | --- |
@@ -157,7 +141,7 @@ SDK 出现未捕获的全局错误回调。
 
 <a id="a0a988489c8559923f178eef3ba322704"></a>
 
-## ◆sdkSetupFail()
+### sdkSetupFail()
 
 | default void com.herewhite.sdk.CommonCallback.sdkSetupFail | ( | SDKError | *error* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -173,7 +157,7 @@ SDK 初始化失败回调。
 - 初始化 SDK 时候，网络异常，导致获取配置信息失败。
 - 传入了不合法的 App Identifier。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | error | 错误信息。 |
 | --- | --- |
@@ -182,7 +166,7 @@ SDK 初始化失败回调。
 
 <a id="a9ccc2cfa4bf7288dd894347454eaead7"></a>
 
-## ◆onLogger()
+### onLogger()
 
 | default void com.herewhite.sdk.CommonCallback.onLogger | ( | JSONObject | *object* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -197,11 +181,11 @@ SDK 初始化失败回调。
 
 如果你需要关闭该回调，可以设置 `setLog(false)`。
 
-### 注解
-
+:::info[注解]
 设置 `setLog(false)` 后，SDK 会停止通过 `onLogger` 回调发送本地调试日志，但仍然会通过该回调发送 [`video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 插件的日志信息。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | object | JSON 对象格式的日志消息，每条日志消息包含以下 key：`funName`：功能名称。 `params`：具体的参数设置。 |
 | --- | --- |

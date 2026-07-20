@@ -1,8 +1,9 @@
 ---
 title: agora::rtc::IRtcConnection类 参考abstract
+tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection
   sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection.html
   generator: doxygen
@@ -12,50 +13,6 @@ _migration:
       message: >-
         Rendered unresolved generated-source link
         /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
-        as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
-        as local text.
     - code: source-only-link-removed
       severity: info
       message: >-
@@ -64,82 +21,6 @@ _migration:
 ---
 
 继承自 agora::RefCountInterface.
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| virtual int | [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a035389095b76329b60b539ca43f24f17) (const char *token, const char *channelId, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) userId)=0 |
-|  |  |
-| virtual int | [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#aa83ca15b81922af3cb3f5d81221556e4) ()=0 |
-|  |  |
-| virtual int | [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#aca1f51af680b303f4ddbca3bff23baff) (const [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) &config)=0 |
-|  |  |
-| virtual int | [stopLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a28a8f2e53b0df3aba62f9387e0fedcdc) ()=0 |
-|  |  |
-| virtual int | [renewToken](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a718d33addd2e49f1932b666ab3551087) (const char *token)=0 |
-|  |  |
-| virtual [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) | [getConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#ab91ff9124027bdc7a3ce6e77addf8da1) ()=0 |
-|  |  |
-| virtual [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user) * | [getLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a1cf54986a330713047da51c1503ec86c) ()=0 |
-|  |  |
-| virtual int | [getRemoteUsers](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#ae1b27f3868e38f5dc434ec572e31de4f) ([UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) &users)=0 |
-|  |  |
-| virtual int | [getUserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af2c7166f692f2285a0ba060aa6b16739) ([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) userId, [agora::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) &userInfo)=0 |
-|  |  |
-| virtual int | [registerObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#adb1a91a55d1a549d058d347ec5175d60) ([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *observer, void(*safeDeleter)([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *)=NULL)=0 |
-|  |  |
-| virtual int | [unregisterObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af2d87e566c2cd918e12d777cdeae37ee) ([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *observer)=0 |
-|  |  |
-| virtual int | [registerNetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a99362b41a6cdc80ce04a6bb329ef0d9a) ([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *observer, void(*safeDeleter)([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *)=NULL)=0 |
-|  |  |
-| virtual int | [unregisterNetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a562653dfda203cd768f89748c7af6022) ([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *observer)=0 |
-|  |  |
-| virtual [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) | [getConnId](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a4cc6181ddb6280c2f37239eef88bbd2f) ()=0 |
-|  |  |
-| virtual [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) | [getTransportStats](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#aa87931e6de4996dc36d57369d6a8a153) ()=0 |
-|  |  |
-| virtual [agora::base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) * | [getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a44ce079c780ace4b8188d59ad68d96fb) ()=0 |
-|  |  |
-| virtual int | [createDataStream](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a53f87120cf152e9a80a64de9f0144ede) (int *streamId, bool reliable, bool ordered, bool sync)=0 |
-|  |  |
-| virtual int | [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a2545d46a802312553e260e1acb45b721) (int streamId, const char *data, size_t length)=0 |
-|  |  |
-| virtual int | [enableEncryption](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af34378df5af2c9e95518d1c8c0167d85) (bool enabled, const [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) &config)=0 |
-|  |  |
-| virtual int | [getUserInfoByUserAccount](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#ab3d10eedee141e857313fdebdc95041d) (const char *userAccount, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) *userInfo)=0 |
-|  |  |
-| virtual int | [getUserInfoByUid](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a8f77c8e61a79ce40dda190c333dc8585) ([uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) uid, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) *userInfo)=0 |
-|  |  |
-| <Slot name="api-center-table-0" /> |  |
-| virtual void | AddRef () const =0 |
-|  |  |
-| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
-|  |  |
-| virtual bool | HasOneRef () const =0 |
-|  |  |
-
-<Slot for="api-center-table-0">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Public 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
-
-| <a id="pro-methods"></a> Protected 成员函数 |  |
-| --- | --- |
-|  | [~IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a693a3656b09680f3e77c12105e28abc0) () |
-|  |  |
-| <Slot name="api-center-table-1" /> |  |
-| virtual | ~RefCountInterface () |
-|  |  |
-
-<Slot for="api-center-table-1">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Protected 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
 
 <a id="details"></a>
 
@@ -155,7 +36,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 <a id="a693a3656b09680f3e77c12105e28abc0"></a>
 
-## ◆~IRtcConnection()
+### ~IRtcConnection()
 
 | agora::rtc::IRtcConnection::~IRtcConnection () | inlineprotected |
 | --- | --- |
@@ -164,7 +45,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 <a id="a035389095b76329b60b539ca43f24f17"></a>
 
-## ◆connect()
+### connect()
 
 | virtual int agora::rtc::IRtcConnection::connect ( const char * *token*, const char * *channelId*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*) | pure virtual |
 | --- | --- |
@@ -175,14 +56,14 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 根据连接是否成功，连接状态会变更为 `CONNECTION_STATE_CONNECTED(3)` 或 `CONNECTION_STATE_FAILED(5)`。 SDK 会触发 `onConnected` 或 `onDisconnected` 提醒连接状态变更。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | token | RTC Token。详见 使用 Token 鉴权。如果你的项目中未开启 App 证书，则仅需在该参数中填写你声网项目的 App ID。 |
 | --- | --- |
-| channelId | <Slot name="api-center-table-2" /> |
-| userId | <Slot name="api-center-table-3" /> |
+| channelId | <Slot name="api-center-table-0" /> |
+| userId | <Slot name="api-center-table-1" /> |
 
-<Slot for="api-center-table-2">
+<Slot for="api-center-table-0">
 
 频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
 
@@ -194,7 +75,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 </Slot>
 
-<Slot for="api-center-table-3">
+<Slot for="api-center-table-1">
 
 本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 NULL，SDK 在 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a1df408778b1886055df47cd7d0ff8e5c) 回调中自动返回一个 user ID。 你必须自行记录并管理此 ID。根据你在 [initialize](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a6f1fb6e792c564dee46903cbb3bc35fc) 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
 
@@ -211,7 +92,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
@@ -221,7 +102,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 <a id="aa83ca15b81922af3cb3f5d81221556e4"></a>
 
-## ◆disconnect()
+### disconnect()
 
 | virtual int agora::rtc::IRtcConnection::disconnect () | pure virtual |
 | --- | --- |
@@ -230,14 +111,14 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNECTED(1)`。你还可以通过 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#ae62590c268ad2904583dc9c62c337056) 回调得知。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="aca1f51af680b303f4ddbca3bff23baff"></a>
 
-## ◆startLastmileProbeTest()
+### startLastmileProbeTest()
 
 | virtual int agora::rtc::IRtcConnection::startLastmileProbeTest ( const [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) & *config*) | pure virtual |
 | --- | --- |
@@ -251,37 +132,39 @@ SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNEC
 - [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
 - [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
 
-  ### 注解
+  :::info[注解]
+
+  :::
 - 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | config | Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config)。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a28a8f2e53b0df3aba62f9387e0fedcdc"></a>
 
-## ◆stopLastmileProbeTest()
+### stopLastmileProbeTest()
 
 | virtual int agora::rtc::IRtcConnection::stopLastmileProbeTest () | pure virtual |
 | --- | --- |
 
 停止通话前网络质量探测。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a718d33addd2e49f1932b666ab3551087"></a>
 
-## ◆renewToken()
+### renewToken()
 
 | virtual int agora::rtc::IRtcConnection::renewToken ( const char * *token*) | pure virtual |
 | --- | --- |
@@ -292,185 +175,185 @@ Token 会在一定时间后过期。
 
 当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a27ee9184ccaba5855389412846f6949f) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | token | 新 Token。 |
 | --- | --- |
 
 <a id="ab91ff9124027bdc7a3ce6e77addf8da1"></a>
 
-## ◆getConnectionInfo()
+### getConnectionInfo()
 
 | virtual [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) agora::rtc::IRtcConnection::getConnectionInfo () | pure virtual |
 | --- | --- |
 
 获取连接信息。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
 - [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a1cf54986a330713047da51c1503ec86c"></a>
 
-## ◆getLocalUser()
+### getLocalUser()
 
 | virtual [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user)* agora::rtc::IRtcConnection::getLocalUser () | pure virtual |
 | --- | --- |
 
 获取本地用户对象的指针。每个连接仅对应一个本地用户。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
 - [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="ae1b27f3868e38f5dc434ec572e31de4f"></a>
 
-## ◆getRemoteUsers()
+### getRemoteUsers()
 
 | virtual int agora::rtc::IRtcConnection::getRemoteUsers ( [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) & *users*) | pure virtual |
 | --- | --- |
 
 获取频道中全部远端用户的信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | [out] | users | 用户列表： [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) 对象。 |
 | --- | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="af2c7166f692f2285a0ba060aa6b16739"></a>
 
-## ◆getUserInfo()
+### getUserInfo()
 
 | virtual int agora::rtc::IRtcConnection::getUserInfo ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) & *userInfo*) | pure virtual |
 | --- | --- |
 
 获取频道中指定远端用户的信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | [in] | userId | 用户 ID。 |
 | --- | --- | --- |
 | [out] | userInfo | 用户信息： [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) 对象。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="adb1a91a55d1a549d058d347ec5175d60"></a>
 
-## ◆registerObserver()
+### registerObserver()
 
 | virtual int agora::rtc::IRtcConnection::registerObserver ( [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*, void(*)([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *) *safeDeleter* = `NULL`) | pure virtual |
 | --- | --- |
 
 注册 RTC 连接 observer。你必须先创建 [`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | observer | [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="af2d87e566c2cd918e12d777cdeae37ee"></a>
 
-## ◆unregisterObserver()
+### unregisterObserver()
 
 | virtual int agora::rtc::IRtcConnection::unregisterObserver ( [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*) | pure virtual |
 | --- | --- |
 
 销毁 RTC 连接 observer。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | observer | [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a99362b41a6cdc80ce04a6bb329ef0d9a"></a>
 
-## ◆registerNetworkObserver()
+### registerNetworkObserver()
 
 | virtual int agora::rtc::IRtcConnection::registerNetworkObserver ( [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*, void(*)([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *) *safeDeleter* = `NULL`) | pure virtual |
 | --- | --- |
 
 注册网络状态 observer。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | observer | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a562653dfda203cd768f89748c7af6022"></a>
 
-## ◆unregisterNetworkObserver()
+### unregisterNetworkObserver()
 
 | virtual int agora::rtc::IRtcConnection::unregisterNetworkObserver ( [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*) | pure virtual |
 | --- | --- |
 
 销毁网络状态 observer。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | observer | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a4cc6181ddb6280c2f37239eef88bbd2f"></a>
 
-## ◆getConnId()
+### getConnId()
 
 | virtual [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) agora::rtc::IRtcConnection::getConnId () | pure virtual |
 | --- | --- |
 
 获取连接 ID。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
 - 连接 ID： 方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="aa87931e6de4996dc36d57369d6a8a153"></a>
 
-## ◆getTransportStats()
+### getTransportStats()
 
 | virtual [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) agora::rtc::IRtcConnection::getTransportStats () | pure virtual |
 | --- | --- |
 
 获取 RTC 连接的传输状态。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
 - [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats)：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a44ce079c780ace4b8188d59ad68d96fb"></a>
 
-## ◆getAgoraParameter()
+### getAgoraParameter()
 
 | virtual [agora::base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)* agora::rtc::IRtcConnection::getAgoraParameter () | pure virtual |
 | --- | --- |
@@ -479,14 +362,14 @@ Token 会在一定时间后过期。
 
 通过该方法获取的 `IAgoraParameter` 对象，设置仅对当前 Connection 有效。如需进行全局设置，改用 [IAgoraService::getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a1c707744b5e4f06467219a25ecaeccb7) 方法。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
 - `IAgoraParameter` 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a53f87120cf152e9a80a64de9f0144ede"></a>
 
-## ◆createDataStream()
+### createDataStream()
 
 | virtual int agora::rtc::IRtcConnection::createDataStream ( int * *streamId*, bool *reliable*, bool *ordered*, bool *sync*) | pure virtual |
 | --- | --- |
@@ -495,21 +378,21 @@ Token 会在一定时间后过期。
 
 每个用户在每个频道中最多只能创建 5 个数据流。
 
-### 注解
-
+:::info[注解]
 - 声网不支持你将 `reliable` 设为 `true` 且 `ordered` 设为 `false`。
 - 当需要数据包立刻到达接收端时，不能将 `ordered` 参数设置为 `true`。
 - 设置为与音频同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调。 当需要数据包立刻到达接收端时，不能将 `sync` 参数设置为 `true`。声网推荐你仅在需要实现特殊场景，例如歌词同步时，设置为与音频同步。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | streamId | 输出参数，数据流 ID。 |
 | --- | --- |
-| reliable | <Slot name="api-center-table-4" /> |
-| ordered | <Slot name="api-center-table-5" /> |
-| sync | <Slot name="api-center-table-6" /> |
+| reliable | <Slot name="api-center-table-2" /> |
+| ordered | <Slot name="api-center-table-3" /> |
+| sync | <Slot name="api-center-table-4" /> |
 
-<Slot for="api-center-table-4">
+<Slot for="api-center-table-2">
 
 该数据流是否可靠：
 
@@ -518,7 +401,7 @@ Token 会在一定时间后过期。
 
 </Slot>
 
-<Slot for="api-center-table-5">
+<Slot for="api-center-table-3">
 
 该数据流是否有序：
 
@@ -527,7 +410,7 @@ Token 会在一定时间后过期。
 
 </Slot>
 
-<Slot for="api-center-table-6">
+<Slot for="api-center-table-4">
 
 是否与本地发送的音频流同步：
 
@@ -536,14 +419,14 @@ Token 会在一定时间后过期。
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a2545d46a802312553e260e1acb45b721"></a>
 
-## ◆sendStreamMessage()
+### sendStreamMessage()
 
 | virtual int agora::rtc::IRtcConnection::sendStreamMessage ( int *streamId*, const char * *data*, size_t *length*) | pure virtual |
 | --- | --- |
@@ -558,26 +441,26 @@ Token 会在一定时间后过期。
 
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调，远端用户可以在该回调中获取接收到的流消息。
 
-### 注解
-
+:::info[注解]
 - 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a53f87120cf152e9a80a64de9f0144ede) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | streamId | 数据流 ID。可以通过 `createDataStream` 获取。 |
 | --- | --- |
 | data | 待发送的数据。 |
 | length | 数据长度。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="af34378df5af2c9e95518d1c8c0167d85"></a>
 
-## ◆enableEncryption()
+### enableEncryption()
 
 | virtual int agora::rtc::IRtcConnection::enableEncryption ( bool *enabled*, const [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) & *config*) | pure virtual |
 | --- | --- |
@@ -588,37 +471,37 @@ Token 会在一定时间后过期。
 
 同一频道内所有用户必须使用相同的加密模式和密钥。用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
 
-### 注解
-
+:::info[注解]
 - 如果开启了内置加密，则不能使用直推 CDN 功能。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
 
 | enabled | 是否开启内置加密：true: 开启内置加密。 false: 关闭内置加密。 |
 | --- | --- |
 | config | 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config)。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="ab3d10eedee141e857313fdebdc95041d"></a>
 
-## ◆getUserInfoByUserAccount()
+### getUserInfoByUserAccount()
 
 | virtual int agora::rtc::IRtcConnection::getUserInfoByUserAccount ( const char * *userAccount*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*) | pure virtual |
 | --- | --- |
 
 根据 user account（String 型用户 ID） 获取用户信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
 
 |  | userAccount | 用户的 user account。 |
 | --- | --- | --- |
-| [in,out] | userInfo | <Slot name="api-center-table-7" /> |
+| [in,out] | userInfo | <Slot name="api-center-table-5" /> |
 
-<Slot for="api-center-table-7">
+<Slot for="api-center-table-5">
 
 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
 
@@ -627,27 +510,27 @@ Token 会在一定时间后过期。
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a8f77c8e61a79ce40dda190c333dc8585"></a>
 
-## ◆getUserInfoByUid()
+### getUserInfoByUid()
 
 | virtual int agora::rtc::IRtcConnection::getUserInfoByUid ( [uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) *uid*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*) | pure virtual |
 | --- | --- |
 
 根据用户 ID 获取用户信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
 
 |  | uid | 用户 ID |
 | --- | --- | --- |
-| [in,out] | userInfo | <Slot name="api-center-table-8" /> |
+| [in,out] | userInfo | <Slot name="api-center-table-6" /> |
 
-<Slot for="api-center-table-8">
+<Slot for="api-center-table-6">
 
 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
 
@@ -656,7 +539,7 @@ Token 会在一定时间后过期。
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。

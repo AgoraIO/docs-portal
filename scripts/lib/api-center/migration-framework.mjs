@@ -631,6 +631,7 @@ export function renderMigrationFrontmatter({
   const frontmatter = {
     title,
     ...(description ? { description } : {}),
+    ...(migration.generator === 'doxygen' ? { tocMaxDepth: 3 } : {}),
     ...extra,
     _migration: {
       type: migration.type,

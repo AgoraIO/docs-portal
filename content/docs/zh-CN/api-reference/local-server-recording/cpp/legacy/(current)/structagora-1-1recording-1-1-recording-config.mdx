@@ -1,5 +1,6 @@
 ---
 title: agora::recording::RecordingConfig结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -29,80 +30,6 @@ _migration:
         as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a511201f4e63f0fae5ef416fb98cb49af) () |
-|  |  |
-| virtual | [~RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#acee250ba1e85c148d3a22ab21e85e28f) () |
-|  |  |
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| bool | [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) |
-|  |  |
-| bool | [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) |
-|  |  |
-| bool | [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) |
-|  |  |
-| bool | [autoSubscribe](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afc2322e9bf7424f4e692d99967a50f6e) |
-|  |  |
-| bool | [enableCloudProxy](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a507ace41dec60a46d04233e03fb6c2e6) |
-|  |  |
-| [agora::linuxsdk::MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af8f3a6529f57ccfa3621014808d1283a) | [mixedVideoAudio](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a9912a5fc16b3f0737290c618846d76a7) |
-|  |  |
-| const char * | [mixResolution](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aa3e5ae4cacfa51a8cfc709e1cc46877e) |
-|  |  |
-| const char * | [decryptionMode](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1a52a08c95d1c1368da61902db279edb) |
-|  |  |
-| const char * | [secret](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afcf89b565958ed7c8e305a0aa8809aa9) |
-|  |  |
-| const char * | [appliteDir](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a697655316c967ab9d98d89846063e196) |
-|  |  |
-| const char * | [recordFileRootDir](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aebb07961e45d095c5191e30a30aa689a) |
-|  |  |
-| const char * | [cfgFilePath](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afd78b4f136e4deeaf310061606e7bc62) |
-|  |  |
-| [agora::linuxsdk::VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) | [decodeVideo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a723e05b00dc63e2f2fc85e3e7489e051) |
-|  |  |
-| [agora::linuxsdk::AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f) | [decodeAudio](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#ae33efa98ee00667f2e568612ecfd2a69) |
-|  |  |
-| int | [lowUdpPort](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a8f431772bcd5056682b5a90120ed4120) |
-|  |  |
-| int | [highUdpPort](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#acabaa4b99e0dfa92dc8bb392700916b8) |
-|  |  |
-| int | [idleLimitSec](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aca9710dfdb0596c88f26e3c1c3daf48b) |
-|  |  |
-| int | [captureInterval](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a9f90bd61e4ebf3ab9506825cb68ef393) |
-|  |  |
-| int | [audioIndicationInterval](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a611f4c05d64eafcc5e304b10d58b3477) |
-|  |  |
-| [agora::linuxsdk::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ad9f9be8fcec3408e36ec870c8eb9808e) | [channelProfile](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a15fe9c97882629e8d5d74a75720506dd) |
-|  |  |
-| [agora::linuxsdk::REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d) | [streamType](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a0b6b285ed59fb50b34fb8fe9c52073ed) |
-|  |  |
-| [agora::linuxsdk::TRIGGER_MODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a652d8aefc1931391ff65ae7a088b932f) | [triggerMode](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#ad3427cfda0f4dc3055da823f00a1cdb7) |
-|  |  |
-| [agora::linuxsdk::LANGUAGE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#aed12bf14a903009cb75f432d9159696f) | [lang](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#ab995c9f2f8d90e794bf3f4566c9df136) |
-|  |  |
-| int | [proxyType](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1d9c1b40a777c50e3dc951e7698b1165) |
-|  |  |
-| const char * | [proxyServer](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a8b5ec73dc9ce407c360c7be21b11e111) |
-|  |  |
-| [agora::linuxsdk::AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087) | [audioProfile](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a0664fe3ead0bc66e31988a1cd9b98fff) |
-|  |  |
-| const char * | [defaultVideoBg](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#abf37d73566b06c334822c77564912ac5) |
-|  |  |
-| const char * | [defaultUserBg](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#af55938564ac912abda04529f35e26dfb) |
-|  |  |
-| const char * | [subscribeVideoUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#addcb1762cb3604744159ee783f0567b2) |
-|  |  |
-| const char * | [subscribeAudioUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aecb73c90fc5dbb8c36a13a6e5c5bd618) |
-|  |  |
-| bool | [enableIntraRequest](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a8029943cfe4af34d0a616d2a7db41296) |
-|  |  |
-| bool | [enableH265Support](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afc5ce5091c51fd43bb3923f64987b672) |
-|  |  |
-
 <a id="details"></a>
 
 ## 详细描述
@@ -113,14 +40,14 @@ _migration:
 
 <a id="a511201f4e63f0fae5ef416fb98cb49af"></a>
 
-## ◆RecordingConfig()
+### RecordingConfig()
 
 | agora::recording::RecordingConfig::RecordingConfig () | inline |
 | --- | --- |
 
 <a id="acee250ba1e85c148d3a22ab21e85e28f"></a>
 
-## ◆~RecordingConfig()
+### ~RecordingConfig()
 
 | virtual agora::recording::RecordingConfig::~RecordingConfig () | inlinevirtual |
 | --- | --- |
@@ -129,7 +56,7 @@ _migration:
 
 <a id="adadf31bf660b1f3fe21fc5ca05b78f89"></a>
 
-## ◆isAudioOnly
+### isAudioOnly
 
 | bool agora::recording::RecordingConfig::isAudioOnly |
 | --- |
@@ -148,7 +75,7 @@ _migration:
 
 <a id="a01e487ff9d854f53b9f768ce2a3210cb"></a>
 
-## ◆isVideoOnly
+### isVideoOnly
 
 | bool agora::recording::RecordingConfig::isVideoOnly |
 | --- |
@@ -167,7 +94,7 @@ _migration:
 
 <a id="a1ee4fc94e7de4c810a5ad0f4f4327299"></a>
 
-## ◆isMixingEnabled
+### isMixingEnabled
 
 | bool agora::recording::RecordingConfig::isMixingEnabled |
 | --- |
@@ -179,7 +106,7 @@ _migration:
 
 <a id="afc2322e9bf7424f4e692d99967a50f6e"></a>
 
-## ◆autoSubscribe
+### autoSubscribe
 
 | bool agora::recording::RecordingConfig::autoSubscribe |
 | --- |
@@ -189,13 +116,13 @@ _migration:
 - true: （默认）录制所有用户。
 - false: 录制指定 UID 用户。
 
-### 注解
-
+:::info[注解]
 `autoSubscribe` 设为 false 后，必须设置 [subscribeVideoUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#addcb1762cb3604744159ee783f0567b2) 或 [subscribeAudioUids](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aecb73c90fc5dbb8c36a13a6e5c5bd618) 参数选择音频流或视频流进行录制，否则就不会录制。
+:::
 
 <a id="a507ace41dec60a46d04233e03fb6c2e6"></a>
 
-## ◆enableCloudProxy
+### enableCloudProxy
 
 | bool agora::recording::RecordingConfig::enableCloudProxy |
 | --- |
@@ -209,7 +136,7 @@ _migration:
 
 <a id="a9912a5fc16b3f0737290c618846d76a7"></a>
 
-## ◆mixedVideoAudio
+### mixedVideoAudio
 
 | [agora::linuxsdk::MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af8f3a6529f57ccfa3621014808d1283a) agora::recording::RecordingConfig::mixedVideoAudio |
 | --- |
@@ -218,38 +145,38 @@ _migration:
 
 该参数有六种设置，详见 [MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af8f3a6529f57ccfa3621014808d1283a)。
 
-### 注解
-
+:::info[注解]
 - 仅当 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 为 true 启用合流模式时有效。
 - 推荐设置 `mixedVideoAudio` 为 `AV_CODEC_MIXED_TS_ONLY(6)` 或 `AV_CODEC_MIXED_TS_AND_MP4(7)`，以保证录制进程崩溃后录制文件的可用性。如果设置为 AV_CODEC_MIXED_TS_AND_MP4(7)，录制会有一定程度的性能回退。
+:::
 
 <a id="aa3e5ae4cacfa51a8cfc709e1cc46877e"></a>
 
-## ◆mixResolution
+### mixResolution
 
 | const char* agora::recording::RecordingConfig::mixResolution |
 | --- |
 
 合流模式下设置录制文件的视频属性，格式为：width，hight，fps，kbps，分别对应录制文件的宽、高、帧率和码率。默认设置为 360 x 640, 15 fps, 500 Kbps。
 
-### 注解
-
+:::info[注解]
 设置帧率时，仅支持声网标准帧率：1 fps，7 fps，10 fps，15 fps，24 fps，30 fps 和 60 fps。如果你设置成其他帧率，SDK 会采用默认帧率 15 fps。
+:::
 
 请参考视频属性对照表设置分辨率、帧率、码率。
 
 <a id="a1a52a08c95d1c1368da61902db279edb"></a>
 
-## ◆decryptionMode
+### decryptionMode
 
 | const char* agora::recording::RecordingConfig::decryptionMode |
 | --- |
 
 当整个频道进行加密时，录制 SDK 启用内置的解密功能。默认为 NULL。
 
-### 注解
-
+:::info[注解]
 录制 SDK 的解密方式必须与频道设置的加密方式一致。
+:::
 
 目前支持以下几种解密方式：
 
@@ -261,7 +188,7 @@ _migration:
 
 <a id="afcf89b565958ed7c8e305a0aa8809aa9"></a>
 
-## ◆secret
+### secret
 
 | const char* agora::recording::RecordingConfig::secret |
 | --- |
@@ -270,7 +197,7 @@ _migration:
 
 <a id="a697655316c967ab9d98d89846063e196"></a>
 
-## ◆appliteDir
+### appliteDir
 
 | const char* agora::recording::RecordingConfig::appliteDir |
 | --- |
@@ -281,7 +208,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="aebb07961e45d095c5191e30a30aa689a"></a>
 
-## ◆recordFileRootDir
+### recordFileRootDir
 
 | const char* agora::recording::RecordingConfig::recordFileRootDir |
 | --- |
@@ -292,7 +219,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="afd78b4f136e4deeaf310061606e7bc62"></a>
 
-## ◆cfgFilePath
+### cfgFilePath
 
 | const char* agora::recording::RecordingConfig::cfgFilePath |
 | --- |
@@ -320,7 +247,9 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
   示例：`{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
 
-### 注解
+:::info[注解]
+
+:::
 
 - `Chunk_Time_Span` 参数仅适用于直播场景下的单流录制模式。
 - 要使用 `Chunk_Time_Span` 参数，必须将 `enableIntraRequest` 设为 `true`，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
@@ -330,33 +259,33 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a723e05b00dc63e2f2fc85e3e7489e051"></a>
 
-## ◆decodeVideo
+### decodeVideo
 
 | [agora::linuxsdk::VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) agora::recording::RecordingConfig::decodeVideo |
 | --- |
 
 设置录制视频格式。详见 [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd)。
 
-### 注解
-
+:::info[注解]
 - [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) = 1，2，3 或 4 时，[isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 不能设为 true。
+:::
 
 <a id="ae33efa98ee00667f2e568612ecfd2a69"></a>
 
-## ◆decodeAudio
+### decodeAudio
 
 | [agora::linuxsdk::AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f) agora::recording::RecordingConfig::decodeAudio |
 | --- |
 
 设置录制音频格式。详见 [AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f)。
 
-### 注解
-
+:::info[注解]
 [AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f) = 1 或 2 时，[isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 不能设为 true。
+:::
 
 <a id="a8f431772bcd5056682b5a90120ed4120"></a>
 
-## ◆lowUdpPort
+### lowUdpPort
 
 | int agora::recording::RecordingConfig::lowUdpPort |
 | --- |
@@ -365,7 +294,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="acabaa4b99e0dfa92dc8bb392700916b8"></a>
 
-## ◆highUdpPort
+### highUdpPort
 
 | int agora::recording::RecordingConfig::highUdpPort |
 | --- |
@@ -374,7 +303,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="aca9710dfdb0596c88f26e3c1c3daf48b"></a>
 
-## ◆idleLimitSec
+### idleLimitSec
 
 | int agora::recording::RecordingConfig::idleLimitSec |
 | --- |
@@ -383,28 +312,28 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 该值需大于等于 3 秒。录制时，如果频道空闲（无用户）超过设定的时间，录制端自动退出频道，停止录制。
 
-### 注解
-
+:::info[注解]
 - 该段时间也会纳入计费。
 - 通信场景下，如果频道内有用户，但用户没有发流，不算作无用户状态。
 - 直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 `idleLimitSec`，录制程序会自动退出。
+:::
 
 <a id="a9f90bd61e4ebf3ab9506825cb68ef393"></a>
 
-## ◆captureInterval
+### captureInterval
 
 | int agora::recording::RecordingConfig::captureInterval |
 | --- |
 
 设置视频截图的时间间隔。默认值为 5 秒。该值需大于等于 1 秒。
 
-### 注解
-
+:::info[注解]
 仅当 [decodeVideo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a723e05b00dc63e2f2fc85e3e7489e051) 设为 3，4 或 5 时有效。
+:::
 
 <a id="a611f4c05d64eafcc5e304b10d58b3477"></a>
 
-## ◆audioIndicationInterval
+### audioIndicationInterval
 
 | int agora::recording::RecordingConfig::audioIndicationInterval |
 | --- |
@@ -416,7 +345,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a15fe9c97882629e8d5d74a75720506dd"></a>
 
-## ◆channelProfile
+### channelProfile
 
 | [agora::linuxsdk::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ad9f9be8fcec3408e36ec870c8eb9808e) agora::recording::RecordingConfig::channelProfile |
 | --- |
@@ -425,7 +354,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a0b6b285ed59fb50b34fb8fe9c52073ed"></a>
 
-## ◆streamType
+### streamType
 
 | [agora::linuxsdk::REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d) agora::recording::RecordingConfig::streamType |
 | --- |
@@ -434,7 +363,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="ad3427cfda0f4dc3055da823f00a1cdb7"></a>
 
-## ◆triggerMode
+### triggerMode
 
 | [agora::linuxsdk::TRIGGER_MODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a652d8aefc1931391ff65ae7a088b932f) agora::recording::RecordingConfig::triggerMode |
 | --- |
@@ -443,7 +372,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="ab995c9f2f8d90e794bf3f4566c9df136"></a>
 
-## ◆lang
+### lang
 
 | [agora::linuxsdk::LANGUAGE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#aed12bf14a903009cb75f432d9159696f) agora::recording::RecordingConfig::lang |
 | --- |
@@ -452,7 +381,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a1d9c1b40a777c50e3dc951e7698b1165"></a>
 
-## ◆proxyType
+### proxyType
 
 | int agora::recording::RecordingConfig::proxyType |
 | --- |
@@ -467,7 +396,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a8b5ec73dc9ce407c360c7be21b11e111"></a>
 
-## ◆proxyServer
+### proxyServer
 
 | const char* agora::recording::RecordingConfig::proxyServer |
 | --- |
@@ -482,33 +411,33 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a0664fe3ead0bc66e31988a1cd9b98fff"></a>
 
-## ◆audioProfile
+### audioProfile
 
 | [agora::linuxsdk::AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087) agora::recording::RecordingConfig::audioProfile |
 | --- |
 
 设置合流模式下录制文件的音频属性。详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087)。
 
-### 注解
-
+:::info[注解]
 仅当 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 为 true 启用合流模式时有效。
+:::
 
 <a id="abf37d73566b06c334822c77564912ac5"></a>
 
-## ◆defaultVideoBg
+### defaultVideoBg
 
 | const char* agora::recording::RecordingConfig::defaultVideoBg |
 | --- |
 
 设置合流模式下画布的默认背景图片的路径。如不设置会显示背景色。
 
-### 注解
-
+:::info[注解]
 仅支持本地 JPEG 文件。
+:::
 
 <a id="af55938564ac912abda04529f35e26dfb"></a>
 
-## ◆defaultUserBg
+### defaultUserBg
 
 | const char* agora::recording::RecordingConfig::defaultUserBg |
 | --- |
@@ -517,14 +446,14 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 合流模式下，如果某用户没有视频流，就会显示该图片。
 
-### 注解
-
+:::info[注解]
 - 仅支持本地 JPEG 文件。
 - 该设置对 Agora Web SDK 的用户无效。
+:::
 
 <a id="addcb1762cb3604744159ee783f0567b2"></a>
 
-## ◆subscribeVideoUids
+### subscribeVideoUids
 
 | const char* agora::recording::RecordingConfig::subscribeVideoUids |
 | --- |
@@ -535,7 +464,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="aecb73c90fc5dbb8c36a13a6e5c5bd618"></a>
 
-## ◆subscribeAudioUids
+### subscribeAudioUids
 
 | const char* agora::recording::RecordingConfig::subscribeAudioUids |
 | --- |
@@ -546,7 +475,7 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 <a id="a8029943cfe4af34d0a616d2a7db41296"></a>
 
-## ◆enableIntraRequest
+### enableIntraRequest
 
 | bool agora::recording::RecordingConfig::enableIntraRequest |
 | --- |
@@ -556,13 +485,13 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 - true:（默认）启用关键帧请求。发流端通过接收关键帧请求生成关键帧。启用后，单流模式下录制的视频文件播放时无法指定播放位置。
 - false: 禁用关键帧请求，频道内的所有发流端均每 2 秒发送一次关键帧。禁用后，单流模式下录制的视频可指定播放位置。
 
-### 注解
-
+:::info[注解]
 如发流端使用的是 Agora RTC SDK v2.9.2 及之前的版本，通信模式下设置该参数将无效，仅在直播模式下生效。
+:::
 
 <a id="afc5ce5091c51fd43bb3923f64987b672"></a>
 
-## ◆enableH265Support
+### enableH265Support
 
 | bool agora::recording::RecordingConfig::enableH265Support |
 | --- |

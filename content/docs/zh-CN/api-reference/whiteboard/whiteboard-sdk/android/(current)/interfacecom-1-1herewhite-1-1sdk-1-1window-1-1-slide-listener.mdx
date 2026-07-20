@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.window.SlideListener接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -10,18 +11,11 @@ _migration:
   warnings: []
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [slideUrlInterrupter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#aa7b55dbd3cb671d2ba2ae5b69973baed) (String sourceUrl, ResultCaller&lt; String &gt; resultCaller) |
-|  |  |
-| default void | [onSlideError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#afb9deb51a77275c18ebc66369ba98ea9) ([SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) errorType, String errorMsg, String slideId, int slideIndex) |
-|  |  |
-
 ## 成员函数说明
 
 <a id="aa7b55dbd3cb671d2ba2ae5b69973baed"></a>
 
-## ◆slideUrlInterrupter()
+### slideUrlInterrupter()
 
 | void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter | ( | String | *sourceUrl*, |
 | --- | --- | --- | --- |
@@ -38,11 +32,11 @@ _migration:
 
 开启后，在 PPT 资源加载时，SDK 会触发该回调，报告资源的原 URL 地址。你需要将替换后的 URL 通过 `resultCaller` 回调到 SDK。
 
-### 注解
-
+:::info[注解]
 不要在此方法中作过多耗时操作。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | sourceUrl | 原 URL 地址。 |
 | --- | --- |
@@ -50,7 +44,7 @@ _migration:
 
 <a id="afb9deb51a77275c18ebc66369ba98ea9"></a>
 
-## ◆onSlideError()
+### onSlideError()
 
 | default void com.herewhite.sdk.window.SlideListener.onSlideError | ( | [SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) | *errorType*, |
 | --- | --- | --- | --- |
@@ -65,7 +59,7 @@ PPT 加载错误回调，用于监听 PPT 渲染错误事件。
 2.16.93
 :::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | errorType | 错误类型。 |
 | --- | --- |

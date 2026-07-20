@@ -1,5 +1,6 @@
 ---
 title: io.agora.rtc.EncryptionConfig类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -15,28 +16,9 @@ _migration:
         /api-ref/rtc-server-sdk/java/_encryption_config_8java.html as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#ae80b9ba12c306f3c5de620c9833c3e64) () |
-|  | [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a07ea07e93bab13b80678e8e1af33dc98) (int [encryptionMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a056809cc04ea4e997ab74dfd1aa120ea), java.lang.String [encryptionKey](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#acad371a2d17f97fab19f637b3a6f4d2c), byte[] [encryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#ad86b040fa0a03d09789169e6bc1aea80)) |
-| int | [getEncryptionMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a740e47c9f79fad9b51b6d8e023c46176) () |
-| void | [setEncryptionMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a012dd22347bfffe386b4f9bfa130cd76) (int [encryptionMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a056809cc04ea4e997ab74dfd1aa120ea)) |
-| java.lang.String | [getEncryptionKey](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#aa3d497e3bc984c1573b2d75dbb210cf0) () |
-| void | [setEncryptionKey](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a080749693f328cab6283a268d6e0e543) (java.lang.String [encryptionKey](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#acad371a2d17f97fab19f637b3a6f4d2c)) |
-| byte[] | [getEncryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a3f03b74f270240c2f8fc037cedf86132) () |
-| void | [setEncryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a91fc00b91e163d13917d2943dbe42bf5) (byte[] [encryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#ad86b040fa0a03d09789169e6bc1aea80)) |
-
-| <a id="pri-attribs"></a> Private 属性 |  |
-| --- | --- |
-| int | [encryptionMode](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#a056809cc04ea4e997ab74dfd1aa120ea) |
-| java.lang.String | [encryptionKey](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#acad371a2d17f97fab19f637b3a6f4d2c) |
-| byte[] | [encryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config#ad86b040fa0a03d09789169e6bc1aea80) |
-
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 EncryptionConfig 类。
 
@@ -48,14 +30,14 @@ EncryptionConfig 类。
 
 <a id="ae80b9ba12c306f3c5de620c9833c3e64"></a>
 
-## ◆EncryptionConfig() [1/2]
+### EncryptionConfig() [1/2]
 
 | io.agora.rtc.EncryptionConfig.EncryptionConfig | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 <a id="a07ea07e93bab13b80678e8e1af33dc98"></a>
 
-## ◆EncryptionConfig() [2/2]
+### EncryptionConfig() [2/2]
 
 | io.agora.rtc.EncryptionConfig.EncryptionConfig | ( | int | *encryptionMode*, |
 | --- | --- | --- | --- |
@@ -64,7 +46,7 @@ EncryptionConfig 类。
 
 构造函数。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | encryptionMode | 加密模式，默认为 ENCRYPTION_MODE_AES_128_GCM2。ENCRYPTION_MODE_AES_128_XTS(1)：128-bit AES 加密， XTS 模式。 ENCRYPTION_MODE_AES_128_ECB(2)：128-bit AES 加密， ECB 模式。 ENCRYPTION_MODE_AES_256_XTS(3)：256-bit AES 加密， XTS 模式。 ENCRYPTION_MODE_SM4_128_ECB(4)：128-bit SM4 加密， ECB 模式。 ENCRYPTION_MODE_AES_128_GCM(5)：128-bit AES 加密， GCM 模式。 ENCRYPTION_MODE_AES_256_GCM(6)：256-bit AES 加密， GCM 模式。 ENCRYPTION_MODE_AES_128_GCM2(7)：（默认）128-bit AES 加密， GCM 模式，带 KDF 盐。 ENCRYPTION_MODE_AES_256_GCM2(8)：256-bit AES 加密， GCM 模式，带 KDF 盐。 |
 | --- | --- |
@@ -79,42 +61,42 @@ EncryptionConfig 类。
 
 <a id="a3f03b74f270240c2f8fc037cedf86132"></a>
 
-## ◆getEncryptionKdfSalt()
+### getEncryptionKdfSalt()
 
 | byte[] io.agora.rtc.EncryptionConfig.getEncryptionKdfSalt | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 <a id="aa3d497e3bc984c1573b2d75dbb210cf0"></a>
 
-## ◆getEncryptionKey()
+### getEncryptionKey()
 
 | java.lang.String io.agora.rtc.EncryptionConfig.getEncryptionKey | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 <a id="a740e47c9f79fad9b51b6d8e023c46176"></a>
 
-## ◆getEncryptionMode()
+### getEncryptionMode()
 
 | int io.agora.rtc.EncryptionConfig.getEncryptionMode | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 <a id="a91fc00b91e163d13917d2943dbe42bf5"></a>
 
-## ◆setEncryptionKdfSalt()
+### setEncryptionKdfSalt()
 
 | void io.agora.rtc.EncryptionConfig.setEncryptionKdfSalt | ( | byte[] | *encryptionKdfSalt* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 <a id="a080749693f328cab6283a268d6e0e543"></a>
 
-## ◆setEncryptionKey()
+### setEncryptionKey()
 
 | void io.agora.rtc.EncryptionConfig.setEncryptionKey | ( | java.lang.String | *encryptionKey* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 <a id="a012dd22347bfffe386b4f9bfa130cd76"></a>
 
-## ◆setEncryptionMode()
+### setEncryptionMode()
 
 | void io.agora.rtc.EncryptionConfig.setEncryptionMode | ( | int | *encryptionMode* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -127,21 +109,21 @@ EncryptionConfig 类。
 
 <a id="ad86b040fa0a03d09789169e6bc1aea80"></a>
 
-## ◆encryptionKdfSalt
+### encryptionKdfSalt
 
 | byte [] io.agora.rtc.EncryptionConfig.encryptionKdfSalt | private |
 | --- | --- |
 
 <a id="acad371a2d17f97fab19f637b3a6f4d2c"></a>
 
-## ◆encryptionKey
+### encryptionKey
 
 | java.lang.String io.agora.rtc.EncryptionConfig.encryptionKey | private |
 | --- | --- |
 
 <a id="a056809cc04ea4e997ab74dfd1aa120ea"></a>
 
-## ◆encryptionMode
+### encryptionMode
 
 | int io.agora.rtc.EncryptionConfig.encryptionMode | private |
 | --- | --- |

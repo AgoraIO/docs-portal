@@ -1,5 +1,6 @@
 ---
 title: io.agora.recording.RecordingSDK类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -33,53 +34,11 @@ _migration:
         local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [RecordingSDK](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ac25e213615dafbdb96353fe027f6bedb) () |
-|  |  |
-| void | [registerOberserver](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a245e20d9c0ce9a23a0777fbbf77c8a10) ([RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) recordingEventHandler) |
-|  |  |
-| void | [unRegisterOberserver](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae19ee04b5e4b33be0d31683bf206bf20) ([RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) recordingEventHandler) |
-|  |  |
-| native boolean | [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) (String appId, String channelKey, String name, int uid, [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) config, int logLevel) |
-|  |  |
-| native boolean | [createChannelWithUserAccount](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a38dc626a437d251be0d47a546c4cd29f) (String appId, String channelKey, String name, String userAccount, [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) config, int logLevel) |
-|  |  |
-| long | [getUidByUserAccount](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#aa8ae6f43af622778973a662b6fb8c53f) (String userAccount) |
-|  |  |
-| String | [getUserAccountByUid](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a487eb008c5d17a7a1ff9f4204d5b4a53) (int uid) |
-|  |  |
-| synchronized boolean | [leaveChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1) () |
-|  |  |
-| int | [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) ([VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout) layout) |
-|  |  |
-| int | [updateWatermarkConfigs](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a88eb63ddbae307480770c4376444d473) ([LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config)[] literaWms, [TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config)[] timestampWms, [ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config)[] imgWms) |
-|  |  |
-| int | [updateSubscribeVideoUids](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ad666136ad88d9720adf9c4756edd7764) (int[] uids) |
-|  |  |
-| int | [updateSubscribeAudioUids](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a8da971dafb0058d6bafdc6449608c503) (int[] uids) |
-|  |  |
-| int | [startService](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#adf5f07d0092f3532de708c45c1ee813a) () |
-|  |  |
-| int | [stopService](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a2008d6e1c37bc969669ffdc6575b2ba8) () |
-|  |  |
-| [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-engine-properties) | [getProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a10322f19fa23c3a9d83b656e99220cb0) () |
-|  |  |
-| int | [setUserBackground](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae82325935aca8da456dbe2969c7a5cb8) (int uid, String imagePath) |
-|  |  |
-| void | [setLogLevel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a68badbea723a48c7ea40162d03243e8e) (int level) |
-|  |  |
-
-| <a id="pub-static-attribs"></a> 静态 Public 属性 |  |
-| --- | --- |
-| static int | [MAX_USER_ACCOUNT_LENGTH](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ac998925b4e600291b14ea25316c8a5c6) = 256 |
-|  |  |
-
 ## 构造及析构函数说明
 
 <a id="ac25e213615dafbdb96353fe027f6bedb"></a>
 
-## ◆RecordingSDK()
+### RecordingSDK()
 
 | io.agora.recording.RecordingSDK.RecordingSDK | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -90,7 +49,7 @@ _migration:
 
 <a id="a245e20d9c0ce9a23a0777fbbf77c8a10"></a>
 
-## ◆registerOberserver()
+### registerOberserver()
 
 | void io.agora.recording.RecordingSDK.registerOberserver | ( | [RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) | *recordingEventHandler* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -99,7 +58,7 @@ _migration:
 
 <a id="ae19ee04b5e4b33be0d31683bf206bf20"></a>
 
-## ◆unRegisterOberserver()
+### unRegisterOberserver()
 
 | void io.agora.recording.RecordingSDK.unRegisterOberserver | ( | [RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) | *recordingEventHandler* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -108,7 +67,7 @@ _migration:
 
 <a id="ae55bfee56ef78d93993e0d04d7b1402b"></a>
 
-## ◆createChannel()
+### createChannel()
 
 | native boolean io.agora.recording.RecordingSDK.createChannel | ( | String | *appId*, |
 | --- | --- | --- | --- |
@@ -121,7 +80,7 @@ _migration:
 
 该方法创建并让录制端加入频道，随后开始录制。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
 | --- | --- |
@@ -153,14 +112,14 @@ _migration:
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a38dc626a437d251be0d47a546c4cd29f"></a>
 
-## ◆createChannelWithUserAccount()
+### createChannelWithUserAccount()
 
 | native boolean io.agora.recording.RecordingSDK.createChannelWithUserAccount | ( | String | *appId*, |
 | --- | --- | --- | --- |
@@ -175,11 +134,11 @@ _migration:
 
 录制端成功加入频道后，在本地触发 [onLocalUserRegistered](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a508670ebca9c30b673a962a23137a6a6) 和 [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a493b31ae39de3060a852f5e93b260eb4) 回调。
 
-### 注解
-
+:::info[注解]
 为保证通信质量，我们建议一个频道内使用同一类型的数据标识用户身份，因此录制端的用户标识数据类型要与 Native/Web SDK 的保持一致。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
 | --- | --- |
@@ -214,14 +173,14 @@ _migration:
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="aa8ae6f43af622778973a662b6fb8c53f"></a>
 
-## ◆getUidByUserAccount()
+### getUidByUserAccount()
 
 | long io.agora.recording.RecordingSDK.getUidByUserAccount | ( | String | *userAccount* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -232,18 +191,18 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) 回调后，你可以调用 getUidByUserAccount 方法，通过传入 User Account 获取指定用户的 UID。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | userAccount | 用户 User Account，必填。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
 用户的 UID。
 
 <a id="a487eb008c5d17a7a1ff9f4204d5b4a53"></a>
 
-## ◆getUserAccountByUid()
+### getUserAccountByUid()
 
 | String io.agora.recording.RecordingSDK.getUserAccountByUid | ( | int | *uid* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -254,55 +213,55 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) 回调后，你可以调用 getUserAccountByUid 方法，通过传入 UID 获取指定用户的 User Account。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | uid | 用户 UID，必填。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
 用户的 User Account。
 
 <a id="a498f6797e2d90999110e04af9c5ea5e1"></a>
 
-## ◆leaveChannel()
+### leaveChannel()
 
 | synchronized boolean io.agora.recording.RecordingSDK.leaveChannel | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
 
 录制端退出频道，并释放占用的线程资源。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a5834d23933d66ff7a5555b0de22c4313"></a>
 
-## ◆setVideoMixingLayout()
+### setVideoMixingLayout()
 
 | int io.agora.recording.RecordingSDK.setVideoMixingLayout | ( | [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout) | *layout* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该方法设置视频合流布局。
 
-### 注解
-
+:::info[注解]
 合流模式下如果有视频，必须调用该方法设置布局。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | layout | 视频合流布局的具体设置，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout)。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a88eb63ddbae307480770c4376444d473"></a>
 
-## ◆updateWatermarkConfigs()
+### updateWatermarkConfigs()
 
 | int io.agora.recording.RecordingSDK.updateWatermarkConfigs | ( | [LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config)[] | *literaWms*, |
 | --- | --- | --- | --- |
@@ -319,71 +278,71 @@ _migration:
 - 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) 方法时没有设置 `LiteraWatermarkConfig`、`TimestampWatermarkConfig` 或 `ImageWatermarkConfig` 参数，你可直接调用 `updateWatermarkConfigs` 方法添加水印。
 - 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) 方法时已设置 `LiteraWatermarkConfig`、`TimestampWatermarkConfig` 或 `ImageWatermarkConfig` 参数添加了水印，你可调用 `updateWatermarkConfigs` 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
 
-### 注解
-
+:::info[注解]
 水印仅适用于合流模式（[RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 true）。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | literaWms | 设置文字水印。[LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config) 组成的数组。录制 SDK 最多支持 10 个文字水印。 |
 | --- | --- |
 | timestampWms | 设置时间戳水印。[TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config) 组成的数组。录制 SDK 只支持 1 个时间戳水印。 |
 | imgWms | 设置图片水印。[ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config) 组成的数组。录制 SDK 最多支持 4 个图片水印。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="ad666136ad88d9720adf9c4756edd7764"></a>
 
-## ◆updateSubscribeVideoUids()
+### updateSubscribeVideoUids()
 
 | int io.agora.recording.RecordingSDK.updateSubscribeVideoUids | ( | int[] | *uids* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该方法允许录制 SDK 只录制指定 UID 的视频。
 
-### 注解
-
+:::info[注解]
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a85cd3d1ddc810c3b01997c994aed41a0) 为 false 时有效。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | uids | UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a8da971dafb0058d6bafdc6449608c503"></a>
 
-## ◆updateSubscribeAudioUids()
+### updateSubscribeAudioUids()
 
 | int io.agora.recording.RecordingSDK.updateSubscribeAudioUids | ( | int[] | *uids* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 该方法允许录制 SDK 只录制指定 UID 的音频。
 
-### 注解
-
+:::info[注解]
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a85cd3d1ddc810c3b01997c994aed41a0) 为 false 时有效。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | uids | UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="adf5f07d0092f3532de708c45c1ee813a"></a>
 
-## ◆startService()
+### startService()
 
 | int io.agora.recording.RecordingSDK.startService | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -392,14 +351,14 @@ _migration:
 
 仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [triggerMode](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a200db782de0040c3383558e62d220e26) 参数为 manually（手动模式）时有效。。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a2008d6e1c37bc969669ffdc6575b2ba8"></a>
 
-## ◆stopService()
+### stopService()
 
 | int io.agora.recording.RecordingSDK.stopService | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -408,33 +367,33 @@ _migration:
 
 仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [triggerMode](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a200db782de0040c3383558e62d220e26) 参数为 manually（手动模式）时有效。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a10322f19fa23c3a9d83b656e99220cb0"></a>
 
-## ◆getProperties()
+### getProperties()
 
 | [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-engine-properties) io.agora.recording.RecordingSDK.getProperties | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取录制属性信息。
 
-### 注解
-
+:::info[注解]
 - 必须要在加入频道后调用。
 - 目前仅支持获取录制路径信息。
 - 该方法与 [onUserJoined](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a873e9e611135f0db276d67a3d3f8b8c6) 的区别是: onUserJoined 只能在加入频道后有其他用户进入频道时使用。
+:::
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
 录制属性，详见 [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-engine-properties)。
 
 <a id="ae82325935aca8da456dbe2969c7a5cb8"></a>
 
-## ◆setUserBackground()
+### setUserBackground()
 
 | int io.agora.recording.RecordingSDK.setUserBackground | ( | int | *uid*, |
 | --- | --- | --- | --- |
@@ -443,24 +402,24 @@ _migration:
 
 该方法设置指定 UID 用户的背景图片。当指定 UID 用户在线且没有发送视频流时，会显示该背景图片。
 
-### 注解
-
+:::info[注解]
 该设置对 Agora Web SDK 的用户无效。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | uid | 该用户的 UID。 |
 | --- | --- |
 | imagePath | 背景图片路径。仅支持本地 JPEG 文件。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。
 
 <a id="a68badbea723a48c7ea40162d03243e8e"></a>
 
-## ◆setLogLevel()
+### setLogLevel()
 
 | void io.agora.recording.RecordingSDK.setLogLevel | ( | int | *level* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -469,7 +428,7 @@ _migration:
 
 设置完成后，只有等级低于和等于所设 level 的 log 才会被生成。默认值为 5。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | level | log 过滤等级： 1: 日志等级为 Fatal。 2: 日志等级为 Error。 3: 日志等级为 Warning。 4: 日志等级为 Notice。 5: 日志等级为 Info。 6: 日志等级为 Debug。 |
 | --- | --- |
@@ -478,7 +437,7 @@ _migration:
 
 <a id="ac998925b4e600291b14ea25316c8a5c6"></a>
 
-## ◆MAX_USER_ACCOUNT_LENGTH
+### MAX_USER_ACCOUNT_LENGTH
 
 | int io.agora.recording.RecordingSDK.MAX_USER_ACCOUNT_LENGTH = 256 | static |
 | --- | --- |

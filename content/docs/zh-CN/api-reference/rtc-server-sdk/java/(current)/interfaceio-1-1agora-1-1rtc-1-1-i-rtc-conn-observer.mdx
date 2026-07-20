@@ -1,5 +1,6 @@
 ---
 title: io.agora.rtc.IRtcConnObserver接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -15,35 +16,9 @@ _migration:
         /api-ref/rtc-server-sdk/java/_i_rtc_conn_observer_8java.html as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [onConnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a4077abc157aa8be3c0060c97f394f48a) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info, int reason) |
-| void | [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a356b9549fdb5034082a2847b668648c1) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info, int reason) |
-| void | [onConnecting](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ac6ef9c272168210b778e9fd70791b0fc) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info, int reason) |
-| void | [onReconnecting](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a696ada34c92c6854c52a4056645abb57) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info, int reason) |
-| void | [onConnectionLost](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad7193347c1c2287ed83e792d4cb69f1c) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info) |
-| void | [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, int quality) |
-| void | [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-result) result) |
-| void | [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2e51cc9d7a69266ed6efdd2709b8bd26) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String token) |
-| void | [onTokenPrivilegeDidExpire](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a1a58efc510b461c20c29b41607622d2c) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn) |
-| void | [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a27c2faad49c53f80dc36b3b26676393f) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) conn_info, int reason) |
-| void | [onUserJoined](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a868be93b5f0663aad464ef17a799ea37) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String user_id) |
-| void | [onUserLeft](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a5262bb0e4f42060f97d739cf5fb3b31f) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String user_id, int reason) |
-| void | [onTransportStats](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#aa828df0e65064592438a2c60f1ae8aea) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) stats) |
-| void | [onChangeRoleSuccess](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a75c5f2d534ad966a96571ea7f088e8ec) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, int old_role, int new_role) |
-| void | [onChangeRoleFailure](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a17f8c09993fcbb8a1e1fb627598a70dc) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn) |
-| void | [onUserNetworkQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a3e391cbf2a400e434297b5a7a7655fba) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String user_id, int tx_quality, int rx_quality) |
-| void | [onNetworkTypeChanged](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a808e8d156fd0c9cbc92b804e48d3450a) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, int type) |
-| void | [onStreamMessageError](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a0d7041532b86e399cc018562fd8a8eca) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String user_id, int stream_id, int code, int missed, int cached) |
-| void | [onError](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2b22a2cc1455588328adf616af2b8964) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, int error, String msg) |
-| void | [onEncryptionError](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a6f48938089ae1f84f929cc245779263f) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, int error_type) |
-| void | [onUploadLogResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#abb011d22902dfdf3de0acd06ec860884) ([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) agora_rtc_conn, String request_id, int success, int reason) |
-
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 IRtcConnObserver 接口。
 
@@ -55,21 +30,21 @@ IRtcConnObserver 接口。
 
 <a id="a17f8c09993fcbb8a1e1fb627598a70dc"></a>
 
-## ◆onChangeRoleFailure()
+### onChangeRoleFailure()
 
 | void io.agora.rtc.IRtcConnObserver.onChangeRoleFailure | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 本地用户角色切换失败时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
 
 <a id="a75c5f2d534ad966a96571ea7f088e8ec"></a>
 
-## ◆onChangeRoleSuccess()
+### onChangeRoleSuccess()
 
 | void io.agora.rtc.IRtcConnObserver.onChangeRoleSuccess | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -78,7 +53,7 @@ IRtcConnObserver 接口。
 
 本地用户角色变更时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -105,7 +80,7 @@ IRtcConnObserver 接口。
 
 <a id="a4077abc157aa8be3c0060c97f394f48a"></a>
 
-## ◆onConnected()
+### onConnected()
 
 | void io.agora.rtc.IRtcConnObserver.onConnected | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -114,7 +89,7 @@ IRtcConnObserver 接口。
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -149,7 +124,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
 
 <a id="ac6ef9c272168210b778e9fd70791b0fc"></a>
 
-## ◆onConnecting()
+### onConnecting()
 
 | void io.agora.rtc.IRtcConnObserver.onConnecting | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -158,7 +133,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -167,7 +142,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发�
 
 <a id="a27c2faad49c53f80dc36b3b26676393f"></a>
 
-## ◆onConnectionFailure()
+### onConnectionFailure()
 
 | void io.agora.rtc.IRtcConnObserver.onConnectionFailure | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -176,7 +151,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发�
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -185,7 +160,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
 
 <a id="ad7193347c1c2287ed83e792d4cb69f1c"></a>
 
-## ◆onConnectionLost()
+### onConnectionLost()
 
 | void io.agora.rtc.IRtcConnObserver.onConnectionLost | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -193,7 +168,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
 
 SDK 失去与频道的连接时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -201,7 +176,7 @@ SDK 失去与频道的连接时触发。
 
 <a id="a356b9549fdb5034082a2847b668648c1"></a>
 
-## ◆onDisconnected()
+### onDisconnected()
 
 | void io.agora.rtc.IRtcConnObserver.onDisconnected | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -210,7 +185,7 @@ SDK 失去与频道的连接时触发。
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -219,7 +194,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 <a id="a6f48938089ae1f84f929cc245779263f"></a>
 
-## ◆onEncryptionError()
+### onEncryptionError()
 
 | void io.agora.rtc.IRtcConnObserver.onEncryptionError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -227,7 +202,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 加密出错回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -235,7 +210,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 <a id="a2b22a2cc1455588328adf616af2b8964"></a>
 
-## ◆onError()
+### onError()
 
 | void io.agora.rtc.IRtcConnObserver.onError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -246,7 +221,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -255,7 +230,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 <a id="ad174cd3a03ae31bf36b97eab3e82fe12"></a>
 
-## ◆onLastmileProbeResult()
+### onLastmileProbeResult()
 
 | void io.agora.rtc.IRtcConnObserver.onLastmileProbeResult | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -265,7 +240,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) 方法 30 秒之后触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -273,7 +248,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 <a id="a879a97e08a9c3ad444a394ec2eca9c4a"></a>
 
-## ◆onLastmileQuality()
+### onLastmileQuality()
 
 | void io.agora.rtc.IRtcConnObserver.onLastmileQuality | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -283,7 +258,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 SDK 在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) 两秒后触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -305,7 +280,7 @@ Last-mile 网络质量。
 
 <a id="a808e8d156fd0c9cbc92b804e48d3450a"></a>
 
-## ◆onNetworkTypeChanged()
+### onNetworkTypeChanged()
 
 | void io.agora.rtc.IRtcConnObserver.onNetworkTypeChanged | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -313,7 +288,7 @@ Last-mile 网络质量。
 
 本地网络类型发生改变回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -335,7 +310,7 @@ Last-mile 网络质量。
 
 <a id="a696ada34c92c6854c52a4056645abb57"></a>
 
-## ◆onReconnecting()
+### onReconnecting()
 
 | void io.agora.rtc.IRtcConnObserver.onReconnecting | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -344,7 +319,7 @@ Last-mile 网络质量。
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -353,7 +328,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发
 
 <a id="a0d7041532b86e399cc018562fd8a8eca"></a>
 
-## ◆onStreamMessageError()
+### onStreamMessageError()
 
 | void io.agora.rtc.IRtcConnObserver.onStreamMessageError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -365,7 +340,7 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发
 
 接收数据流消息发生错误的回调。该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) 方法发送的流消息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
 
 | agora_rtc_conn | RTC 连接对象。 |
 | --- | --- |
@@ -377,21 +352,21 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发
 
 <a id="a1a58efc510b461c20c29b41607622d2c"></a>
 
-## ◆onTokenPrivilegeDidExpire()
+### onTokenPrivilegeDidExpire()
 
 | void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeDidExpire | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 Token 已过期时触发。 当收到该回调时，你需要重新在服务端生成新的 Token，然后重新连接频道。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
 
 <a id="a2e51cc9d7a69266ed6efdd2709b8bd26"></a>
 
-## ◆onTokenPrivilegeWillExpire()
+### onTokenPrivilegeWillExpire()
 
 | void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeWillExpire | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -401,7 +376,7 @@ Token 将在 30s 内过期时触发。
 
 在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 app 更新 Token。 当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [renewToken](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7a892b8f954dad6d16b730418e84296b) 将新生成的 Token 传给 SDK。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -409,7 +384,7 @@ Token 将在 30s 内过期时触发。
 
 <a id="aa828df0e65064592438a2c60f1ae8aea"></a>
 
-## ◆onTransportStats()
+### onTransportStats()
 
 | void io.agora.rtc.IRtcConnObserver.onTransportStats | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -419,7 +394,7 @@ Token 将在 30s 内过期时触发。
 
 当连接状态为 CONNECTION_STATE_CONNECTED(3) 时，SDK 每两秒触发一次回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -427,7 +402,7 @@ Token 将在 30s 内过期时触发。
 
 <a id="abb011d22902dfdf3de0acd06ec860884"></a>
 
-## ◆onUploadLogResult()
+### onUploadLogResult()
 
 | void io.agora.rtc.IRtcConnObserver.onUploadLogResult | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -437,7 +412,7 @@ Token 将在 30s 内过期时触发。
 
 <a id="a868be93b5f0663aad464ef17a799ea37"></a>
 
-## ◆onUserJoined()
+### onUserJoined()
 
 | void io.agora.rtc.IRtcConnObserver.onUserJoined | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -447,7 +422,7 @@ Token 将在 30s 内过期时触发。
 
 你可以在该回调中获取远端用户 ID。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -455,7 +430,7 @@ Token 将在 30s 内过期时触发。
 
 <a id="a5262bb0e4f42060f97d739cf5fb3b31f"></a>
 
-## ◆onUserLeft()
+### onUserLeft()
 
 | void io.agora.rtc.IRtcConnObserver.onUserLeft | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -466,7 +441,7 @@ Token 将在 30s 内过期时触发。
 
 你可以通过 reason 参数获取该用户离开频道的原因。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |
@@ -475,7 +450,7 @@ Token 将在 30s 内过期时触发。
 
 <a id="a3e391cbf2a400e434297b5a7a7655fba"></a>
 
-## ◆onUserNetworkQuality()
+### onUserNetworkQuality()
 
 | void io.agora.rtc.IRtcConnObserver.onUserNetworkQuality | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
 | --- | --- | --- | --- |
@@ -487,7 +462,7 @@ Token 将在 30s 内过期时触发。
 
 该回调每 2 秒触发一次，报告频道内每个用户（包括本地用户）的上下行网络状态。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
 
 | agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
 | --- | --- |

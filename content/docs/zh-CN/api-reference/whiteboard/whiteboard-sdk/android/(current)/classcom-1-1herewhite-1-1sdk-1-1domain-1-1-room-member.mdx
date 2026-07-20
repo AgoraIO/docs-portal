@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.domain.RoomMember类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -20,19 +21,6 @@ _migration:
         /api-ref/whiteboard/android/deprecated.html#_deprecated000010 as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) | [getMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#a934d1e14e95dadb807bddc0eb149612b) () |
-|  |  |
-| Object | [getPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#adc3e8b99d3bb703c19122ebd2430a876) () |
-|  |  |
-| Long | [getMemberId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#a14f4887ee69cc739385bb870d29e38ec) () |
-|  |  |
-| String | [getCurrentApplianceName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#ac20b71be02834d8a625c739803c1ed81) () |
-|  |  |
-| [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) | [getInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#af258eda0f8afd216bbb0e459877a6881) () |
-|  |  |
-
 <a id="details"></a>
 
 ## 详细描述
@@ -47,7 +35,7 @@ _migration:
 
 <a id="a934d1e14e95dadb807bddc0eb149612b"></a>
 
-## ◆getMemberState()
+### getMemberState()
 
 | [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) com.herewhite.sdk.domain.RoomMember.getMemberState | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -58,13 +46,13 @@ _migration:
 2.4.8
 :::
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 白板工具信息，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
 
 <a id="adc3e8b99d3bb703c19122ebd2430a876"></a>
 
-## ◆getPayload()
+### getPayload()
 
 | Object com.herewhite.sdk.domain.RoomMember.getPayload | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -77,7 +65,7 @@ _migration:
 
 <a id="a14f4887ee69cc739385bb870d29e38ec"></a>
 
-## ◆getMemberId()
+### getMemberId()
 
 | Long com.herewhite.sdk.domain.RoomMember.getMemberId | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -86,13 +74,13 @@ _migration:
 
 在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
 用户 ID。
 
 <a id="ac20b71be02834d8a625c739803c1ed81"></a>
 
-## ◆getCurrentApplianceName()
+### getCurrentApplianceName()
 
 | String com.herewhite.sdk.domain.RoomMember.getCurrentApplianceName | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -103,27 +91,27 @@ _migration:
 2.4.8
 :::
 
-### **弃用:**
+****弃用:****
 
 该方法已废弃。请改用 [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#a934d1e14e95dadb807bddc0eb149612b) 获取详细的白板工具信息。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
 白板工具名称。
 
 <a id="af258eda0f8afd216bbb0e459877a6881"></a>
 
-## ◆getInformation()
+### getInformation()
 
 | [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) com.herewhite.sdk.domain.RoomMember.getInformation | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取用户加入房间时携带的用户信息。
 
-### **弃用:**
+****弃用:****
 
 该方法已经废弃。请改用 [`getPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#adc3e8b99d3bb703c19122ebd2430a876) 获取用户信息。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
 用户信息。

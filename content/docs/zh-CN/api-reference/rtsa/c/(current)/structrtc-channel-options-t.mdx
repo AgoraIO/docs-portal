@@ -1,5 +1,6 @@
 ---
 title: rtc_channel_options_t结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -12,33 +13,11 @@ _migration:
       message: >-
         Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
         local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
-        local text.
 ---
-
-`#include <agora_rtc_api.h>`
-
-| <a id="pub-attribs"></a> 成员变量 |  |
-| --- | --- |
-| bool | [auto_subscribe_audio](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a3be744a260a3b32d8c5d6609c687251c) |
-| bool | [auto_subscribe_video](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a1fb8613606a7f2660db5f4bc256f84d5) |
-| bool | [enable_audio_jitter_buffer](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a8f34d0553bdc017b0c89eeab3d1702e0) |
-| bool | [enable_audio_mixer](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a86f37d1c3b251e110e18a6e2a55bd7c1) |
-| bool | [enable_audio_decode](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a5b22a5c4c25c60162c0db1d3c6bfd255) |
-| bool | [enable_audio_downlink_aec](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#aa34aaf710f816b54826eb2ef00ce1cff) |
-| bool | [enable_audio_downlink_aec_pcm_dump](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a9f0467e026bd689f473dafdeacd76301) |
-| [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t) | [audio_codec_opt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#a7a2a5b0d860e4bd1069b496f189b90a3) |
-| [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t) | [crypto_opt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#abf884b88afc6821cf8826ebeebe68cc5) |
-| bool | [enable_rdt](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t#aae90344dd5002b2076e22c06da7c17ff) |
 
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 频道设置选项。
 
@@ -50,7 +29,7 @@ _migration:
 
 <a id="a7a2a5b0d860e4bd1069b496f189b90a3"></a>
 
-## ◆audio_codec_opt
+### audio_codec_opt
 
 | [audio_codec_option_t](/zh-CN/api-reference/rtsa/c/structaudio-codec-option-t) audio_codec_opt |
 | --- |
@@ -59,7 +38,7 @@ _migration:
 
 <a id="a3be744a260a3b32d8c5d6609c687251c"></a>
 
-## ◆auto_subscribe_audio
+### auto_subscribe_audio
 
 | bool auto_subscribe_audio |
 | --- |
@@ -71,7 +50,7 @@ _migration:
 
 <a id="a1fb8613606a7f2660db5f4bc256f84d5"></a>
 
-## ◆auto_subscribe_video
+### auto_subscribe_video
 
 | bool auto_subscribe_video |
 | --- |
@@ -83,7 +62,7 @@ _migration:
 
 <a id="abf884b88afc6821cf8826ebeebe68cc5"></a>
 
-## ◆crypto_opt
+### crypto_opt
 
 | [crypto_option_t](/zh-CN/api-reference/rtsa/c/structcrypto-option-t) crypto_opt |
 | --- |
@@ -92,7 +71,7 @@ _migration:
 
 <a id="a5b22a5c4c25c60162c0db1d3c6bfd255"></a>
 
-## ◆enable_audio_decode
+### enable_audio_decode
 
 | bool enable_audio_decode |
 | --- |
@@ -104,7 +83,7 @@ _migration:
 
 <a id="aa34aaf710f816b54826eb2ef00ce1cff"></a>
 
-## ◆enable_audio_downlink_aec
+### enable_audio_downlink_aec
 
 | bool enable_audio_downlink_aec |
 | --- |
@@ -116,7 +95,7 @@ _migration:
 
 <a id="a9f0467e026bd689f473dafdeacd76301"></a>
 
-## ◆enable_audio_downlink_aec_pcm_dump
+### enable_audio_downlink_aec_pcm_dump
 
 | bool enable_audio_downlink_aec_pcm_dump |
 | --- |
@@ -128,7 +107,7 @@ _migration:
 
 <a id="a8f34d0553bdc017b0c89eeab3d1702e0"></a>
 
-## ◆enable_audio_jitter_buffer
+### enable_audio_jitter_buffer
 
 | bool enable_audio_jitter_buffer |
 | --- |
@@ -140,7 +119,7 @@ _migration:
 
 <a id="a86f37d1c3b251e110e18a6e2a55bd7c1"></a>
 
-## ◆enable_audio_mixer
+### enable_audio_mixer
 
 | bool enable_audio_mixer |
 | --- |
@@ -150,13 +129,13 @@ _migration:
 - true: 开启。
 - false: 不开启。
 
-### 注解
-
+:::info[注解]
 开启混音后，SDK 也会自动开启 enable_audio_jitter_buffer。
+:::
 
 <a id="aae90344dd5002b2076e22c06da7c17ff"></a>
 
-## ◆enable_rdt
+### enable_rdt
 
 | bool enable_rdt |
 | --- |

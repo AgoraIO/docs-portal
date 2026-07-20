@@ -680,7 +680,7 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toMatch(/^### .*\]\(/m);
   });
 
-  it('removes Doxygen self-links from headings while keeping their text', async () => {
+  it('removes generic self-links from headings while keeping their text', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Page</h1>
         <h2><a href="#member">◆</a>member</h2><p>Member details.</p>
@@ -697,6 +697,52 @@ describe('API Center shared HTML to MDX converter', () => {
 
     expect(result.body).toContain('## ◆member');
     expect(result.body).not.toMatch(/^## .*\]\(/m);
+  });
+
+  it('keeps Doxygen member titles and definition labels out of the page TOC', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="contents">
+        <div class="textblock"><code>#include &lt;member.h&gt;</code></div>
+        <p><a href="member_8h_source.html">浏览该文件的源代码.</a></p>
+        <table class="memberdecls"><tr><td>Generated member summary</td></tr></table>
+        <a id="details"></a><h2 id="header-details" class="groupheader">详细描述</h2>
+        <div class="textblock"><p>Page details.</p></div>
+        <h2 class="groupheader">枚举类型说明</h2>
+        <h2 class="groupheader">函数说明</h2>
+        <a id="member"></a>
+        <h2 class="memtitle"><span class="permalink"><a href="#member">◆&nbsp;</a></span>agora_member()</h2>
+        <div class="memitem"><div class="memdoc">
+          <p>Member details.</p>
+          <dl class="params"><dt>参数</dt><dd><p>Parameter details.</p></dd></dl>
+          <dl class="section return"><dt>返回</dt><dd><p>Return details.</p></dd></dl>
+          <dl class="section note"><dt>注解</dt><dd><p>Note details.</p></dd></dl>
+          <dl class="deprecated"><dt><b><a href="deprecated.html">弃用</a></b></dt><dd>Deprecated details.</dd></dl>
+        </div></div>
+      </div>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtsa/c/member',
+      sourcePath: 'html-docs/rtsa/c/member.html',
+      rootSelector: '.contents',
+    });
+
+    expect(result.body).not.toContain('#include');
+    expect(result.body).not.toContain('Generated member summary');
+    expect(result.body).not.toContain('浏览该文件的源代码');
+    expect(result.body).not.toContain('## 详细描述');
+    expect(result.body).not.toContain('## 枚举类型说明');
+    expect(result.body).toContain('Page details.');
+    expect(result.body).toContain('## 函数说明');
+    expect(result.body).toContain('<a id="member"></a>');
+    expect(result.body).toContain('### agora_member()');
+    expect(result.body).toContain(
+      '<h4 data-toc-hidden="true" id={"参数"}>参数</h4>',
+    );
+    expect(result.body).toContain(
+      '<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>',
+    );
+    expect(result.body).toContain(':::info[注解]');
+    expect(result.body).toContain('**弃用**');
+    expect(result.body).not.toContain('### **弃用**');
+    expect(result.body).not.toContain('◆');
   });
 
   it('builds route aliases for extension and extensionless legacy URLs', () => {

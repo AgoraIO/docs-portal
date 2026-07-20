@@ -1,5 +1,6 @@
 ---
 title: io.agora.recording.common.Common.VideoMixingLayout类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -11,36 +12,6 @@ _migration:
   warnings: []
 ---
 
-| <a id="nested-classes"></a> 类 |  |
-| --- | --- |
-| class | [Region](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout-1-1-region) |
-|  |  |
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| int | [canvasWidth](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#aef4d298498d1a63781c019f1904a7583) = 0 |
-|  |  |
-| int | [canvasHeight](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#a3a3da117016c4267c27c58626dc14af4) = 0 |
-|  |  |
-| String | [backgroundColor](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#a752ddcb2e8b7774097518e88ae24abe8) = "" |
-|  |  |
-| int | [regionCount](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#af719c88cecd05e28951cd36627762fbf) = 0 |
-|  |  |
-| [Region](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout-1-1-region)[] | [regions](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#adaa44e8f595d18e12793235086c64a79) |
-|  |  |
-| String | [appData](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#a3d7a2972bbddd1057415bb5234a2c205) = "" |
-|  |  |
-| int | [appDataLength](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#ad0d3a6e55f2745f62272b7cbfe029a9d) = 0 |
-|  |  |
-| int | [keepLastFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#ae8305b38e68310cf5b33f3a9666865a8) = 0 |
-|  |  |
-| [LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config)[] | [literalWms](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#a5628793bedcd588cbe3c8a034060a178) |
-|  |  |
-| [TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config)[] | [timestampWms](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#a1df3cd8f171aa7230bbe287935ffc83e) |
-|  |  |
-| [ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config)[] | [imageWms](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout#abdc043ff741fe65766c9f1ebceaafb10) |
-|  |  |
-
 <a id="details"></a>
 
 ## 详细描述
@@ -51,7 +22,7 @@ _migration:
 
 <a id="aef4d298498d1a63781c019f1904a7583"></a>
 
-## ◆canvasWidth
+### canvasWidth
 
 | int io.agora.recording.common.Common.VideoMixingLayout.canvasWidth = 0 |
 | --- |
@@ -60,7 +31,7 @@ _migration:
 
 <a id="a3a3da117016c4267c27c58626dc14af4"></a>
 
-## ◆canvasHeight
+### canvasHeight
 
 | int io.agora.recording.common.Common.VideoMixingLayout.canvasHeight = 0 |
 | --- |
@@ -69,20 +40,20 @@ _migration:
 
 <a id="a752ddcb2e8b7774097518e88ae24abe8"></a>
 
-## ◆backgroundColor
+### backgroundColor
 
 | String io.agora.recording.common.Common.VideoMixingLayout.backgroundColor = "" |
 | --- |
 
 屏幕（画布）的背景颜色。可根据所需颜色填写对应的 6 位 RGB 值，例如 "#000000"。
 
-### 注解
-
+:::info[注解]
 如果你调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) 方法加入频道时设置了 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [defaultVideoBgPath](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a31ea0b5b53f3b396cb113918e2c7e138) 参数，`backgroundColor` 不会生效。
+:::
 
 <a id="af719c88cecd05e28951cd36627762fbf"></a>
 
-## ◆regionCount
+### regionCount
 
 | int io.agora.recording.common.Common.VideoMixingLayout.regionCount = 0 |
 | --- |
@@ -91,7 +62,7 @@ _migration:
 
 <a id="adaa44e8f595d18e12793235086c64a79"></a>
 
-## ◆regions
+### regions
 
 | [Region](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout-1-1-region) [] io.agora.recording.common.Common.VideoMixingLayout.regions |
 | --- |
@@ -100,7 +71,7 @@ _migration:
 
 <a id="a3d7a2972bbddd1057415bb5234a2c205"></a>
 
-## ◆appData
+### appData
 
 | String io.agora.recording.common.Common.VideoMixingLayout.appData = "" |
 | --- |
@@ -109,7 +80,7 @@ _migration:
 
 <a id="ad0d3a6e55f2745f62272b7cbfe029a9d"></a>
 
-## ◆appDataLength
+### appDataLength
 
 | int io.agora.recording.common.Common.VideoMixingLayout.appDataLength = 0 |
 | --- |
@@ -118,7 +89,7 @@ _migration:
 
 <a id="ae8305b38e68310cf5b33f3a9666865a8"></a>
 
-## ◆keepLastFrame
+### keepLastFrame
 
 | int io.agora.recording.common.Common.VideoMixingLayout.keepLastFrame = 0 |
 | --- |
@@ -130,39 +101,39 @@ _migration:
 
 <a id="a5628793bedcd588cbe3c8a034060a178"></a>
 
-## ◆literalWms
+### literalWms
 
 | [LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config) [] io.agora.recording.common.Common.VideoMixingLayout.literalWms |
 | --- |
 
 设置文字水印。[LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config) 组成的数组。
 
-### 注解
-
+:::info[注解]
 录制 SDK 最多支持 10 个文字水印。
+:::
 
 <a id="a1df3cd8f171aa7230bbe287935ffc83e"></a>
 
-## ◆timestampWms
+### timestampWms
 
 | [TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config) [] io.agora.recording.common.Common.VideoMixingLayout.timestampWms |
 | --- |
 
 设置时间戳水印。[TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config) 组成的数组。
 
-### 注解
-
+:::info[注解]
 录制 SDK 只支持 1 个时间戳水印。
+:::
 
 <a id="abdc043ff741fe65766c9f1ebceaafb10"></a>
 
-## ◆imageWms
+### imageWms
 
 | [ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config) [] io.agora.recording.common.Common.VideoMixingLayout.imageWms |
 | --- |
 
 设置图片水印。[ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config) 组成的数组。
 
-### 注解
-
+:::info[注解]
 录制 SDK 最多支持 4 个图片水印。
+:::

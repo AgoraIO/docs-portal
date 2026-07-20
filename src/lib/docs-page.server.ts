@@ -684,9 +684,10 @@ export async function loadDocsPagePayload(
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const defaultStructuredPlatform = structuredPlatformTabs?.defaultPlatform;
   const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
-  const toc = isOpenApiPage
+  const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
+  const toc = applyPageTocDepthLimit(page, unboundedToc);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
@@ -1690,6 +1691,7 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
     if (
       typeof item.title !== 'string' ||
       item.title.trim().length === 0 ||
+      item.title.includes('[!toc]') ||
       typeof item.url !== 'string' ||
       item.url.length === 0
     ) {
@@ -1704,6 +1706,18 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
+}
+
+function applyPageTocDepthLimit<T extends { depth: number }>(
+  page: PageWithSource,
+  toc: T[],
+) {
+  const maxDepth =
+    'tocMaxDepth' in page.data && typeof page.data.tocMaxDepth === 'number'
+      ? page.data.tocMaxDepth
+      : null;
+
+  return maxDepth === null ? toc : toc.filter((item) => item.depth <= maxDepth);
 }
 
 function hasProcessedText(page: PageWithSource): page is PageWithSource & {

@@ -1,5 +1,6 @@
 ---
 title: io.agora.rtc.AgoraRtcConn类 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -19,39 +20,9 @@ _migration:
         /api-ref/rtc-server-sdk/java/_agora_rtc_conn_8java.html as local text.
 ---
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7789316cddbf2653108e2b6e41c57aa9) (long cptr) |
-| void | [destroy](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a30227d5310e6771cb8fde8837cd84484) () |
-| native int | [connect](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a636c5a1d4a1d9581295628f3ca664ca8) (String token, String chan_id, String user_id) |
-| native int | [disconnect](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1f16d5f0070b67c62a063c7879eafd75) () |
-| native int | [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) ([LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config) config) |
-| native int | [stopLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ad341b99e60e5040add21907603fcd57f) () |
-| native int | [renewToken](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7a892b8f954dad6d16b730418e84296b) (String token) |
-| native [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | [getConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a8a503e74e759a2064a3f7837bcef564a) () |
-| native void | [destroyConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a6b0c448ed433ed57693e5f555c013150) ([RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) info) |
-| native [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | [getLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ab3bc18e6635aa0acece8f782ff7c8a38) () |
-| native [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) | [getUserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac6e4af5cfe118a7dd6681ca8e6cbdc7f) (String user_id) |
-| native void | [destroyUserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7ef197e3bb1ba5faa9756b7d59e8acc4) ([UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) info) |
-| native int | [registerObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a12845e92047ef8e155645f812915ad60) ([IRtcConnObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer) observer) |
-| native int | [unregisterObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a484a8c8fb741b8883c998d49d8ace962) () |
-| native int | [registerNetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a5f43d9c65ce68975f2055ac3e4181e58) ([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer) observer) |
-| native int | [unregisterNetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a58071bb16af2a10b382c4eb105395630) () |
-| native int | [getConnId](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a82ca6b31b1df392a9bbf95c1d32b9203) () |
-| native [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) | [getTransportStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a93c9243d6f6f155a526ce60945fd60d9) () |
-| native void | [destroyTransportStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#adbb04db5feb85a156d24fa98fb8c853e) ([RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) stats) |
-| native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) | [getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a4887841b3c2232730440ad6ca3d74570) () |
-| native int | [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) (Out stream_id, int reliable, int ordered) |
-| native int | [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) (int stream_id, String data, int length) |
-| int | [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) (int streamId, byte[] messageData) |
-| native int | [enableEncryption](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7dcb882f89f79656c7120036922f193d) (int enabled, [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config) config) |
-| native int | [sendCustomReportMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a453af56f9b421e1427e0a0e0f582ddf1) (String id, String category, String event, String label, int value) |
-
 <a id="details"></a>
 
 <a id="header-details"></a>
-
-## 详细描述
 
 AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
@@ -67,7 +38,7 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 <a id="a7789316cddbf2653108e2b6e41c57aa9"></a>
 
-## ◆AgoraRtcConn()
+### AgoraRtcConn()
 
 | io.agora.rtc.AgoraRtcConn.AgoraRtcConn | ( | long | *cptr* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -82,7 +53,7 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 <a id="a636c5a1d4a1d9581295628f3ca664ca8"></a>
 
-## ◆connect()
+### connect()
 
 | native int io.agora.rtc.AgoraRtcConn.connect | ( | String | *token*, |
 | --- | --- | --- | --- |
@@ -95,7 +66,7 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 根据连接是否成功，连接状态会变更为 CONNECTION_STATE_CONNECTED(3) 或 CONNECTION_STATE_FAILED(5)。SDK 会触发 onConnected 或 onDisconnected 提醒连接状态变更。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | token | RTC token。 |
 | --- | --- |
@@ -131,14 +102,14 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a9af79d071be59940c37dd2338fcdb67b"></a>
 
-## ◆createDataStream()
+### createDataStream()
 
 | native int io.agora.rtc.AgoraRtcConn.createDataStream | ( | Out | *stream_id*, |
 | --- | --- | --- | --- |
@@ -149,12 +120,12 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 每个用户在每个频道中最多只能创建 5 个数据流。
 
-### 注解
-
+:::info[注解]
 - 声网不支持你将 reliable 设为 1 且 ordered 设为 0。
 - 当需要数据包立刻到达接收端时，不能将 ordered 参数设置为 0。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | stream_id | 输出参数，数据流 ID。 |
 | --- | --- |
@@ -179,14 +150,14 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 </Slot>
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a30227d5310e6771cb8fde8837cd84484"></a>
 
-## ◆destroy()
+### destroy()
 
 | void io.agora.rtc.AgoraRtcConn.destroy | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
@@ -195,28 +166,28 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 <a id="a6b0c448ed433ed57693e5f555c013150"></a>
 
-## ◆destroyConnInfo()
+### destroyConnInfo()
 
 | native void io.agora.rtc.AgoraRtcConn.destroyConnInfo | ( | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *info* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 <a id="adbb04db5feb85a156d24fa98fb8c853e"></a>
 
-## ◆destroyTransportStats()
+### destroyTransportStats()
 
 | native void io.agora.rtc.AgoraRtcConn.destroyTransportStats | ( | [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) | *stats* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 <a id="a7ef197e3bb1ba5faa9756b7d59e8acc4"></a>
 
-## ◆destroyUserInfo()
+### destroyUserInfo()
 
 | native void io.agora.rtc.AgoraRtcConn.destroyUserInfo | ( | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) | *info* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 <a id="a1f16d5f0070b67c62a063c7879eafd75"></a>
 
-## ◆disconnect()
+### disconnect()
 
 | native int io.agora.rtc.AgoraRtcConn.disconnect | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
@@ -225,14 +196,14 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECTED(1)。你还可以通过 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a356b9549fdb5034082a2847b668648c1) 回调得知。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a7dcb882f89f79656c7120036922f193d"></a>
 
-## ◆enableEncryption()
+### enableEncryption()
 
 | native int io.agora.rtc.AgoraRtcConn.enableEncryption | ( | int | *enabled*, |
 | --- | --- | --- | --- |
@@ -242,20 +213,20 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 在安全要求较高的场景下，声网建议你在加入频道前，调用本方法开启内置加密。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | enabled | 是否开启内置加密：true: 开启内置加密。 false: 关闭内置加密。 |
 | --- | --- |
 | config | 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config)。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a4887841b3c2232730440ad6ca3d74570"></a>
 
-## ◆getAgoraParameter()
+### getAgoraParameter()
 
 | native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraRtcConn.getAgoraParameter | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
@@ -264,123 +235,123 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 通过该方法获取的 AgoraParameter 对象，设置仅对当前 Connection 有效。如需进行全局设置，改用 [AgoraService.getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#af776ee9767ecb895b3e7aec2e38d1c0c) 方法。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
 - AgoraParameter 对象：方法调用成功。
 - null：方法调用失败。
 
 <a id="a82ca6b31b1df392a9bbf95c1d32b9203"></a>
 
-## ◆getConnId()
+### getConnId()
 
 | native int io.agora.rtc.AgoraRtcConn.getConnId | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取连接 ID。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
 连接 ID。
 
 <a id="a8a503e74e759a2064a3f7837bcef564a"></a>
 
-## ◆getConnInfo()
+### getConnInfo()
 
 | native [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) io.agora.rtc.AgoraRtcConn.getConnInfo | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取连接信息。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
 一个 [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) 对象。
 
 <a id="ab3bc18e6635aa0acece8f782ff7c8a38"></a>
 
-## ◆getLocalUser()
+### getLocalUser()
 
 | native [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) io.agora.rtc.AgoraRtcConn.getLocalUser | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取 [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
 - [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a93c9243d6f6f155a526ce60945fd60d9"></a>
 
-## ◆getTransportStats()
+### getTransportStats()
 
 | native [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) io.agora.rtc.AgoraRtcConn.getTransportStats | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 获取 RTC 连接的传输状态。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
 一个 [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) 对象。
 
 <a id="ac6e4af5cfe118a7dd6681ca8e6cbdc7f"></a>
 
-## ◆getUserInfo()
+### getUserInfo()
 
 | native [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) io.agora.rtc.AgoraRtcConn.getUserInfo | ( | String | *user_id* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 获取频道中指定远端用户的信息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | user_id | 用户 ID。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) 对象，其中包含某一指定用户的有关信息。
 
 <a id="a5f43d9c65ce68975f2055ac3e4181e58"></a>
 
-## ◆registerNetworkObserver()
+### registerNetworkObserver()
 
 | native int io.agora.rtc.AgoraRtcConn.registerNetworkObserver | ( | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer) | *observer* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 注册网络状态 observer。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | observer | INetworkObserver 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a12845e92047ef8e155645f812915ad60"></a>
 
-## ◆registerObserver()
+### registerObserver()
 
 | native int io.agora.rtc.AgoraRtcConn.registerObserver | ( | [IRtcConnObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer) | *observer* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 注册 RTC 连接 observer。你必须先创建 IRtcConnection 对象。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | observer | IRtcConnObserver 对象。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a7a892b8f954dad6d16b730418e84296b"></a>
 
-## ◆renewToken()
+### renewToken()
 
 | native int io.agora.rtc.AgoraRtcConn.renewToken | ( | String | *token* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -389,14 +360,14 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2e51cc9d7a69266ed6efdd2709b8bd26) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | token | 新 Token。 |
 | --- | --- |
 
 <a id="a453af56f9b421e1427e0a0e0f582ddf1"></a>
 
-## ◆sendCustomReportMessage()
+### sendCustomReportMessage()
 
 | native int io.agora.rtc.AgoraRtcConn.sendCustomReportMessage | ( | String | *id*, |
 | --- | --- | --- | --- |
@@ -407,7 +378,7 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 
 发送自定义上报消息。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | id | 自定义事件的 ID。 |
 | --- | --- |
@@ -416,14 +387,14 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 | label | 自定义事件的标签。 |
 | value | 自定义事件的值。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a79f7b350516319c880cba474d98d4844"></a>
 
-## ◆sendStreamMessage() [1/2]
+### sendStreamMessage() [1/2]
 
 | native int io.agora.rtc.AgoraRtcConn.sendStreamMessage | ( | int | *stream_id*, |
 | --- | --- | --- | --- |
@@ -432,7 +403,7 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 
 发送数据流消息。
 
-### **弃用**
+****弃用****
 
 v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) 。
 
@@ -444,26 +415,26 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) 回调，远端用户可以在该回调中获取接收到的流消息。
 
-### 注解
-
+:::info[注解]
 - 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | stream_id | 数据流 ID。可以通过 createDataStream 获取。 |
 | --- | --- |
 | data | 待发送的数据。 |
 | length | 数据长度。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a1286a74a33789cc9777bf58a04f777c0"></a>
 
-## ◆sendStreamMessage() [2/2]
+### sendStreamMessage() [2/2]
 
 | int io.agora.rtc.AgoraRtcConn.sendStreamMessage | ( | int | *streamId*, |
 | --- | --- | --- | --- |
@@ -479,25 +450,25 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) 回调，远端用户可以在该回调中获取接收到的流消息。
 
-### 注解
-
+:::info[注解]
 - 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | stream_id | 数据流 ID。可以通过 createDataStream 获取。 |
 | --- | --- |
 | messageData | 待发送的数据。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="ac79983e9fbfa370c273e9e3c926f7634"></a>
 
-## ◆startLastmileProbeTest()
+### startLastmileProbeTest()
 
 | native int io.agora.rtc.AgoraRtcConn.startLastmileProbeTest | ( | [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config) | *config* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -511,59 +482,59 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 - [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
 - [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
 
-### 注解
-
+:::info[注解]
 - 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | config | Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config)。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="ad341b99e60e5040add21907603fcd57f"></a>
 
-## ◆stopLastmileProbeTest()
+### stopLastmileProbeTest()
 
 | native int io.agora.rtc.AgoraRtcConn.stopLastmileProbeTest | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 停止通话前网络质量探测。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a58071bb16af2a10b382c4eb105395630"></a>
 
-## ◆unregisterNetworkObserver()
+### unregisterNetworkObserver()
 
 | native int io.agora.rtc.AgoraRtcConn.unregisterNetworkObserver | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 释放 INetworkObserver 对象。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
 <a id="a484a8c8fb741b8883c998d49d8ace962"></a>
 
-## ◆unregisterObserver()
+### unregisterObserver()
 
 | native int io.agora.rtc.AgoraRtcConn.unregisterObserver | ( | ** | ) |  |
 | --- | --- | --- | --- | --- |
 
 释放 IRtcConnObserver 对象。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。

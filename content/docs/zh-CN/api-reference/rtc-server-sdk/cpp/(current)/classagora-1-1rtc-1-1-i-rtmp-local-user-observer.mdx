@@ -1,5 +1,6 @@
 ---
 title: agora::rtc::IRtmpLocalUserObserver类 参考abstract
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,19 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| virtual | [~IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer#a87d1002519dc6d3743cad5421fc49dd1) () |
-|  |  |
-| virtual void | [onAudioTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer#abe9563be302786d9169bd0497966f159) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; audioTrack)=0 |
-|  |  |
-| virtual void | [onAudioTrackPublicationFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer#af119ccd1ffc2ba46a936633682202788) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; audioTrack, [PublishAudioError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47) error)=0 |
-|  |  |
-| virtual void | [onVideoTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer#aebd9dae26bcec9794ae48a070a875703) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; videoTrack)=0 |
-|  |  |
-| virtual void | [onVideoTrackPublicationFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer#a78e9bf0041f021465584df39bf2434bd) ([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; videoTrack, [PublishVideoError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63e) error)=0 |
-|  |  |
 
 <a id="details"></a>
 
@@ -33,7 +21,7 @@ _migration:
 
 <a id="a87d1002519dc6d3743cad5421fc49dd1"></a>
 
-## ◆~IRtmpLocalUserObserver()
+### ~IRtmpLocalUserObserver()
 
 | virtual agora::rtc::IRtmpLocalUserObserver::~IRtmpLocalUserObserver () | inlinevirtual |
 | --- | --- |
@@ -42,7 +30,7 @@ _migration:
 
 <a id="abe9563be302786d9169bd0497966f159"></a>
 
-## ◆onAudioTrackPublishSuccess()
+### onAudioTrackPublishSuccess()
 
 | virtual void agora::rtc::IRtmpLocalUserObserver::onAudioTrackPublishSuccess ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*) | pure virtual |
 | --- | --- |
@@ -51,14 +39,14 @@ _migration:
 
 本地音频轨道中的数据推送成功时，SDK 会触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | audioTrack | [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针。 |
 | --- | --- |
 
 <a id="af119ccd1ffc2ba46a936633682202788"></a>
 
-## ◆onAudioTrackPublicationFailure()
+### onAudioTrackPublicationFailure()
 
 | virtual void agora::rtc::IRtmpLocalUserObserver::onAudioTrackPublicationFailure ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, [PublishAudioError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae1713f658284be303aaa022bcf018d47) *error*) | pure virtual |
 | --- | --- |
@@ -67,7 +55,7 @@ _migration:
 
 本地音频轨道中的数据推送失败时，SDK 会触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | audioTrack | [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针。 |
 | --- | --- |
@@ -75,7 +63,7 @@ _migration:
 
 <a id="aebd9dae26bcec9794ae48a070a875703"></a>
 
-## ◆onVideoTrackPublishSuccess()
+### onVideoTrackPublishSuccess()
 
 | virtual void agora::rtc::IRtmpLocalUserObserver::onVideoTrackPublishSuccess ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*) | pure virtual |
 | --- | --- |
@@ -84,14 +72,14 @@ _migration:
 
 本地视频轨道中的数据推送成功时，SDK 会触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | videoTrack | [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针。 |
 | --- | --- |
 
 <a id="a78e9bf0041f021465584df39bf2434bd"></a>
 
-## ◆onVideoTrackPublicationFailure()
+### onVideoTrackPublicationFailure()
 
 | virtual void agora::rtc::IRtmpLocalUserObserver::onVideoTrackPublicationFailure ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, [PublishVideoError](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a68e2825c220df8afbe45a98f59ccd63e) *error*) | pure virtual |
 | --- | --- |
@@ -100,7 +88,7 @@ _migration:
 
 本地视频轨道中的数据推送失败时，SDK 会触发该回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | videoTrack | [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针。 |
 | --- | --- |

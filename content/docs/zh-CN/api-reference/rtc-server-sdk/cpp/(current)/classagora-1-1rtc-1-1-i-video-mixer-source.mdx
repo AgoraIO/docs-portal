@@ -1,8 +1,9 @@
 ---
 title: agora::rtc::IVideoMixerSource类 参考abstract
+tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_mixer_source
   sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_mixer_source.html
   generator: doxygen
@@ -12,211 +13,109 @@ _migration:
       message: >-
         Rendered unresolved generated-source link
         /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
-        as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
-        as local text.
 ---
 
 继承自 agora::RefCountInterface.
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| virtual int | [addVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#ae40451b2417642d1bf63f5420b858507) (const char *id, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; track, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [removeVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#add4230742e8c247bfcd195d2c9eb716f) (const char *id, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; track, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [setStreamLayout](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#ac826c24aacb08b50da12a8a92f232749) (const char *id, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) &config, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [delStreamLayout](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#aaf31620d98bffdf1176f619f81f3e718) (const char *id, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [addImageSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a5aaf3b865e223b598bedcbf3f2bebf1e) (const char *id, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) &config, [ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) type=[kPng](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173), aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [delImageSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a52c0f2b52ba27f6762337364963b3464) (const char *id, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [clearLayout](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a29726accf5b89238abda9122fd598188) (aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [refresh](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a36f13e12798900ee54243f86478da9f6) (aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [setBackground](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#aed51f2730614bda9514d312b103dbce8) (uint32_t width, uint32_t height, int fps, uint32_t color_argb=0, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [setBackground](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a2aa3311b08c7f47fe139633a634c6a53) (uint32_t width, uint32_t height, int fps, const char *url, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [setRotation](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#ac8206ba62fc73ea5898f267ed7c0b87b) (uint8_t rotation, aosl_ref_t ares=AOSL_REF_INVALID)=0 |
-|  |  |
-| virtual int | [getAvgMixerDelay](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source#a7d3864a698467757c9185f06deb6877e) ()=0 |
-|  |  |
-| <Slot name="api-center-table-0" /> |  |
-| virtual void | AddRef () const =0 |
-|  |  |
-| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
-|  |  |
-| virtual bool | HasOneRef () const =0 |
-|  |  |
-
-<Slot for="api-center-table-0">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Public 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
-
-| <a id="inherited"></a> 额外继承的成员函数 |  |
-| --- | --- |
-| <Slot name="api-center-table-1" /> |  |
-| virtual | ~RefCountInterface () |
-|  |  |
-
-<Slot for="api-center-table-1">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Protected 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`IVideoMixerSource`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source) 类是一个多输入多输出视频源，可以从本地或远端接收多个视频轨道，并根据指定格式生成混合流。
-
 ## 成员函数说明
 
 <a id="ae40451b2417642d1bf63f5420b858507"></a>
 
-## ◆addVideoTrack()
+### addVideoTrack()
 
 | virtual int agora::rtc::IVideoMixerSource::addVideoTrack ( const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 向流增加视频轨道。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
 | track | 用于合图的视频轨道。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="add4230742e8c247bfcd195d2c9eb716f"></a>
 
-## ◆removeVideoTrack()
+### removeVideoTrack()
 
 | virtual int agora::rtc::IVideoMixerSource::removeVideoTrack ( const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 从流中删除视频轨道。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
 | track | 需要删除的视频轨道。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="ac826c24aacb08b50da12a8a92f232749"></a>
 
-## ◆setStreamLayout()
+### setStreamLayout()
 
 | virtual int agora::rtc::IVideoMixerSource::setStreamLayout ( const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 配置流中的视频布局。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
 | config | 布局配置。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="aaf31620d98bffdf1176f619f81f3e718"></a>
 
-## ◆delStreamLayout()
+### delStreamLayout()
 
 | virtual int agora::rtc::IVideoMixerSource::delStreamLayout ( const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 删除视频布局。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a5aaf3b865e223b598bedcbf3f2bebf1e"></a>
 
-## ◆addImageSource()
+### addImageSource()
 
 | virtual int agora::rtc::IVideoMixerSource::addImageSource ( const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, [ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) *type* = [`kPng`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173), aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 向流添加图像源。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
@@ -224,79 +123,79 @@ Protected 成员函数 继承自 agora::RefCountInterface
 | type | 图像类型。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a52c0f2b52ba27f6762337364963b3464"></a>
 
-## ◆delImageSource()
+### delImageSource()
 
 | virtual int agora::rtc::IVideoMixerSource::delImageSource ( const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 删除图像源。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | id | 流 ID。 |
 | --- | --- |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a29726accf5b89238abda9122fd598188"></a>
 
-## ◆clearLayout()
+### clearLayout()
 
 | virtual int agora::rtc::IVideoMixerSource::clearLayout ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 删除全部布局设置。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a36f13e12798900ee54243f86478da9f6"></a>
 
-## ◆refresh()
+### refresh()
 
 | virtual int agora::rtc::IVideoMixerSource::refresh ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 刷新布局。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
 
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="aed51f2730614bda9514d312b103dbce8"></a>
 
-## ◆setBackground() [1/2]
+### setBackground() [1/2]
 
 | virtual int agora::rtc::IVideoMixerSource::setBackground ( uint32_t *width*, uint32_t *height*, int *fps*, uint32_t *color_argb* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 设置合图背景。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
 
 | width | 画布宽度（px）。 |
 | --- | --- |
@@ -305,21 +204,21 @@ Protected 成员函数 继承自 agora::RefCountInterface
 | color_argb | 背景色（argb）。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a2aa3311b08c7f47fe139633a634c6a53"></a>
 
-## ◆setBackground() [2/2]
+### setBackground() [2/2]
 
 | virtual int agora::rtc::IVideoMixerSource::setBackground ( uint32_t *width*, uint32_t *height*, int *fps*, const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 设置合图背景图片。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
 
 | width | 画布宽度（px）。 |
 | --- | --- |
@@ -328,40 +227,40 @@ Protected 成员函数 继承自 agora::RefCountInterface
 | url | 背景图片 URL。 |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="ac8206ba62fc73ea5898f267ed7c0b87b"></a>
 
-## ◆setRotation()
+### setRotation()
 
 | virtual int agora::rtc::IVideoMixerSource::setRotation ( uint8_t *rotation*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
 | --- | --- |
 
 设置合图旋转角度。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
 
 | rotation | 旋转角度。0\:无 1\:90° 2\:180° 3\:270° |
 | --- | --- |
 | ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
 - 0: 成功。
 - &lt;0: 失败。
 
 <a id="a7d3864a698467757c9185f06deb6877e"></a>
 
-## ◆getAvgMixerDelay()
+### getAvgMixerDelay()
 
 | virtual int agora::rtc::IVideoMixerSource::getAvgMixerDelay () | pure virtual |
 | --- | --- |
 
 获取合图模块造成的平均延迟（ms），包括合图功能延迟和编码器延迟。
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
 平均延迟（ms）

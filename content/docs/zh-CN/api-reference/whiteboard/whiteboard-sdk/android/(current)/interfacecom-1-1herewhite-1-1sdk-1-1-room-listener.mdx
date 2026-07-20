@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.RoomListener接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: warning
@@ -20,23 +21,6 @@ _migration:
 
 ![com.herewhite.sdk.RoomListener接口 参考 图示](/img/api-center-generated/92595244b275-interfacecom_1_1herewhite_1_1sdk_1_1_room_listener.png)
 
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [onPhaseChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a435c4e0371cf97bb4f60af1bb950a354) ([RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase) phase) |
-|  |  |
-| void | [onDisconnectWithError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a27be03d9afa099e6fea594cf459fb5ad) (Exception e) |
-|  |  |
-| void | [onKickedWithReason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a7671d2258528ecaaadb5718854cd8964) (String reason) |
-|  |  |
-| void | [onRoomStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a48ebcd9188489a05226fe00c963f857b) ([RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state) modifyState) |
-|  |  |
-| void | [onCanUndoStepsUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a45494cc4c33779d052d8662424e7690c) (long canUndoSteps) |
-|  |  |
-| void | [onCanRedoStepsUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#adaa02e554b0b5c3bce169122e5dcc18a) (long canRedoSteps) |
-|  |  |
-| void | [onCatchErrorWhenAppendFrame](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a8fa461f4b6c4891481fa11c8c0392368) (long userId, Exception error) |
-|  |  |
-
 <a id="details"></a>
 
 ## 详细描述
@@ -47,14 +31,14 @@ _migration:
 
 <a id="a435c4e0371cf97bb4f60af1bb950a354"></a>
 
-## ◆onPhaseChanged()
+### onPhaseChanged()
 
 | void com.herewhite.sdk.RoomListener.onPhaseChanged | ( | [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase) | *phase* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 房间连接状态变化回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | phase | 房间的连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。 |
 | --- | --- |
@@ -63,14 +47,14 @@ _migration:
 
 <a id="a27be03d9afa099e6fea594cf459fb5ad"></a>
 
-## ◆onDisconnectWithError()
+### onDisconnectWithError()
 
 | void com.herewhite.sdk.RoomListener.onDisconnectWithError | ( | Exception | *e* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 白板 SDK 与白板服务器连接中断回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | e | 错误信息。 |
 | --- | --- |
@@ -79,14 +63,14 @@ _migration:
 
 <a id="a7671d2258528ecaaadb5718854cd8964"></a>
 
-## ◆onKickedWithReason()
+### onKickedWithReason()
 
 | void com.herewhite.sdk.RoomListener.onKickedWithReason | ( | String | *reason* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 用户被服务器移出房间回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
 
 | reason | 用户被移除房间的原因。 |
 | --- | --- |
@@ -95,7 +79,7 @@ _migration:
 
 <a id="a48ebcd9188489a05226fe00c963f857b"></a>
 
-## ◆onRoomStateChanged()
+### onRoomStateChanged()
 
 | void com.herewhite.sdk.RoomListener.onRoomStateChanged | ( | [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state) | *modifyState* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -104,7 +88,7 @@ _migration:
 
 该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段，均未空。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
 
 | modifyState | 发生变化的房间状态属性，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。 |
 | --- | --- |
@@ -113,7 +97,7 @@ _migration:
 
 <a id="a45494cc4c33779d052d8662424e7690c"></a>
 
-## ◆onCanUndoStepsUpdate()
+### onCanUndoStepsUpdate()
 
 | void com.herewhite.sdk.RoomListener.onCanUndoStepsUpdate | ( | long | *canUndoSteps* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -122,7 +106,7 @@ _migration:
 
 当本地用户调用 [`undo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cd3966f1df8de10f2bb5759fa28998b) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
 
 | canUndoSteps | 剩余的可撤销次数。 |
 | --- | --- |
@@ -131,7 +115,7 @@ _migration:
 
 <a id="adaa02e554b0b5c3bce169122e5dcc18a"></a>
 
-## ◆onCanRedoStepsUpdate()
+### onCanRedoStepsUpdate()
 
 | void com.herewhite.sdk.RoomListener.onCanRedoStepsUpdate | ( | long | *canRedoSteps* | ) |  |
 | --- | --- | --- | --- | --- | --- |
@@ -140,7 +124,7 @@ _migration:
 
 当本地用户调用 [`redo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9ad047897d74af1590316cc5d338408c) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
 
 | canRedoSteps | 剩余的可重做次数。 |
 | --- | --- |
@@ -149,7 +133,7 @@ _migration:
 
 <a id="a8fa461f4b6c4891481fa11c8c0392368"></a>
 
-## ◆onCatchErrorWhenAppendFrame()
+### onCatchErrorWhenAppendFrame()
 
 | void com.herewhite.sdk.RoomListener.onCatchErrorWhenAppendFrame | ( | long | *userId*, |
 | --- | --- | --- | --- |
@@ -158,7 +142,7 @@ _migration:
 
 同步用户操作发生错误回调。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
 
 | userId | 用户 ID，表明在同步哪个用户的操作时发生了错误。 |
 | --- | --- |

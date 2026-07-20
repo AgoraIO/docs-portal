@@ -1,5 +1,6 @@
 ---
 title: com.herewhite.sdk.AudioMixerBridge接口 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,19 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| void | [startAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a6ec58c0aa178a1efc687c7825c088914) (String filepath, boolean loopback, boolean replace, int cycle) |
-|  |  |
-| void | [stopAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a7bae27d4001ab200ba0800faf64a5c76) () |
-|  |  |
-| void | [setAudioMixingPosition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a591d888b0e40ab022a1d1a0d9ac7ad52) (int position) |
-|  |  |
-| void | [pauseAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#a1033eec3c9df95156650be1864e27df0) () |
-|  |  |
-| void | [resumeAudioMixing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-audio-mixer-bridge#adace83b509fdfc63f4816a04ad202903) () |
-|  |  |
 
 <a id="details"></a>
 
@@ -48,7 +36,7 @@ _migration:
 
 <a id="a6ec58c0aa178a1efc687c7825c088914"></a>
 
-## ◆startAudioMixing()
+### startAudioMixing()
 
 | void com.herewhite.sdk.AudioMixerBridge.startAudioMixing | ( | String | *filepath*, |
 | --- | --- | --- | --- |
@@ -61,7 +49,7 @@ _migration:
 
 进行混音后，需要将混音结果通过 [`setMediaState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-mixer-implement#a243f0cb117c353fc1aefac24a3689d78) 传递给动态 PPT 内部。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | filepath | 指定需要混音的本地或在线音频文件的绝对路径。 |
 | --- | --- |
@@ -98,7 +86,7 @@ _migration:
 
 <a id="a7bae27d4001ab200ba0800faf64a5c76"></a>
 
-## ◆stopAudioMixing()
+### stopAudioMixing()
 
 | void com.herewhite.sdk.AudioMixerBridge.stopAudioMixing | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -107,21 +95,21 @@ _migration:
 
 <a id="a591d888b0e40ab022a1d1a0d9ac7ad52"></a>
 
-## ◆setAudioMixingPosition()
+### setAudioMixingPosition()
 
 | void com.herewhite.sdk.AudioMixerBridge.setAudioMixingPosition | ( | int | *position* | ) |  |
 | --- | --- | --- | --- | --- | --- |
 
 设置音乐文件的播放位置。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
 
 | position | 整数。进度条位置，单位为毫秒。 |
 | --- | --- |
 
 <a id="a1033eec3c9df95156650be1864e27df0"></a>
 
-## ◆pauseAudioMixing()
+### pauseAudioMixing()
 
 | void com.herewhite.sdk.AudioMixerBridge.pauseAudioMixing | ( |  | ) |  |
 | --- | --- | --- | --- | --- |
@@ -130,7 +118,7 @@ _migration:
 
 <a id="adace83b509fdfc63f4816a04ad202903"></a>
 
-## ◆resumeAudioMixing()
+### resumeAudioMixing()
 
 | void com.herewhite.sdk.AudioMixerBridge.resumeAudioMixing | ( |  | ) |  |
 | --- | --- | --- | --- | --- |

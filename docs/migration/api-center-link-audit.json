@@ -3,13 +3,13 @@
     "errors": 0,
     "invalidLinks": 0,
     "legacyOldSiteBodyLinks": 0,
-    "links": 83539,
+    "links": 78016,
     "missingFragments": 0,
     "missingLocalPaths": 0,
     "ownedMdxPages": 4956,
     "preservedMdxPages": 296,
     "visibleMdxPages": 5252,
-    "warnings": 203
+    "warnings": 117
   },
   "issues": [],
   "outputTypes": {
@@ -34,6 +34,11 @@
     "empty-source-code": {
       "count": 9,
       "explanation": "The legacy source contains an empty code block; the migration preserves its anchor and omits the empty fence without inventing a signature.",
+      "severity": "info"
+    },
+    "generated-fragment-alias": {
+      "count": 1,
+      "explanation": "A stable alias was added so a legacy generated-page fragment remains reachable.",
       "severity": "info"
     },
     "generated-fragment-normalized": {
@@ -62,12 +67,12 @@
       "severity": "info"
     },
     "missing-source-text": {
-      "count": 156,
+      "count": 70,
       "explanation": "The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.",
       "severity": "warning"
     },
     "source-only-link-removed": {
-      "count": 809,
+      "count": 642,
       "explanation": "A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.",
       "severity": "info"
     },

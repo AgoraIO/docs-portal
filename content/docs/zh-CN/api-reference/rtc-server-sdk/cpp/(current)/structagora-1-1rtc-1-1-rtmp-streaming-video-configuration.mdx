@@ -1,5 +1,6 @@
 ---
 title: agora::rtc::RtmpStreamingVideoConfiguration结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,32 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#a1600fdcdeb0948512b9fe29d2dcb0e90) () |
-|  |  |
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| int | [width](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#a0e173e914dddf1a75eac72f16852ae91) |
-|  |  |
-| int | [height](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#aaf2fe7e652d42c94255d2d90e8c9eb16) |
-|  |  |
-| int | [framerate](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#a5af94eb1974774ecbbd197efaf938ad5) |
-|  |  |
-| int | [bitrate](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#ad79fe13bc5076b76b16b646393405365) |
-|  |  |
-| int | [maxBitrate](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#ae4ae6f7fcffd8ef0a1b1fcb87213db23) |
-|  |  |
-| int | [minBitrate](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#aeecea6a861612bece29245296551b30c) |
-|  |  |
-| unsigned int | [gopInMs](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#a556cde00494a99818d081d7cf554fc42) |
-|  |  |
-| int | [encoderHwSwMode](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#a6d228a47289b2d51dcf8080daadd5c65) |
-|  |  |
-| [ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) | [orientationMode](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration#ab0414e65411d9e226ab4e70c68b5bc25) |
-|  |  |
 
 <a id="details"></a>
 
@@ -46,7 +21,7 @@ CDN 推流的视频编码属性。
 
 <a id="a1600fdcdeb0948512b9fe29d2dcb0e90"></a>
 
-## ◆RtmpStreamingVideoConfiguration()
+### RtmpStreamingVideoConfiguration()
 
 | agora::rtc::RtmpStreamingVideoConfiguration::RtmpStreamingVideoConfiguration () | inline |
 | --- | --- |
@@ -55,33 +30,33 @@ CDN 推流的视频编码属性。
 
 <a id="a0e173e914dddf1a75eac72f16852ae91"></a>
 
-## ◆width
+### width
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::width |
 | --- |
 
 视频宽度，单位为像素。默认值为 640。
 
-### 注解
-
+:::info[注解]
 该参数与 `height` 参数决定的视频尺寸不会影响视频编码的方向模式。 如需设置视频编码的方向模式，详见 `orientationMode` 参数。
+:::
 
 <a id="aaf2fe7e652d42c94255d2d90e8c9eb16"></a>
 
-## ◆height
+### height
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::height |
 | --- |
 
 视频高度，单位为像素。默认值为 360。
 
-### 注解
-
+:::info[注解]
 该参数与 `width` 参数决定的视频尺寸不会影响视频编码的方向模式。 如需设置视频编码的方向模式，详见 `orientationMode` 参数。
+:::
 
 <a id="a5af94eb1974774ecbbd197efaf938ad5"></a>
 
-## ◆framerate
+### framerate
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::framerate |
 | --- |
@@ -90,7 +65,7 @@ CDN 推流的视频编码属性。
 
 <a id="ad79fe13bc5076b76b16b646393405365"></a>
 
-## ◆bitrate
+### bitrate
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::bitrate |
 | --- |
@@ -99,7 +74,7 @@ CDN 推流的视频编码属性。
 
 <a id="ae4ae6f7fcffd8ef0a1b1fcb87213db23"></a>
 
-## ◆maxBitrate
+### maxBitrate
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::maxBitrate |
 | --- |
@@ -108,7 +83,7 @@ CDN 推流的视频编码属性。
 
 <a id="aeecea6a861612bece29245296551b30c"></a>
 
-## ◆minBitrate
+### minBitrate
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::minBitrate |
 | --- |
@@ -117,7 +92,7 @@ CDN 推流的视频编码属性。
 
 <a id="a556cde00494a99818d081d7cf554fc42"></a>
 
-## ◆gopInMs
+### gopInMs
 
 | unsigned int agora::rtc::RtmpStreamingVideoConfiguration::gopInMs |
 | --- |
@@ -126,7 +101,7 @@ CDN 推流的视频编码属性。
 
 <a id="a6d228a47289b2d51dcf8080daadd5c65"></a>
 
-## ◆encoderHwSwMode
+### encoderHwSwMode
 
 | int agora::rtc::RtmpStreamingVideoConfiguration::encoderHwSwMode |
 | --- |
@@ -139,7 +114,7 @@ CDN 推流的视频编码属性。
 
 <a id="ab0414e65411d9e226ab4e70c68b5bc25"></a>
 
-## ◆orientationMode
+### orientationMode
 
 | [ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) agora::rtc::RtmpStreamingVideoConfiguration::orientationMode |
 | --- |

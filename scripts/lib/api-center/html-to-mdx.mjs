@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { getTableOfContents } from 'fumadocs-core/content/toc';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
@@ -49,6 +50,31 @@ function stripHeadingLinks(value) {
     /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\((?:<[^>\n]+>|[^)\n]+)\)/g,
     '$1',
   );
+}
+
+function renderNoTocHeadings(body) {
+  if (!body.includes('[!toc]')) return body;
+
+  const headingSource = body.replace(/ \[!toc\](?=\s*$)/gm, '');
+  const toc = getTableOfContents(headingSource);
+  let headingIndex = 0;
+
+  return body
+    .split('\n')
+    .map((line) => {
+      const heading = line.match(/^(#{1,6}) (.+) \[!toc\]$/);
+      if (!/^#{1,6} /.test(line)) return line;
+      const item = toc[headingIndex];
+      headingIndex += 1;
+      if (!heading || !item?.url?.startsWith('#')) {
+        return line;
+      }
+      const level = heading[1].length;
+      const title = escapeMdxText(heading[2]);
+      const id = JSON.stringify(item.url.slice(1));
+      return `<h${level} data-toc-hidden="true" id={${id}}>${title}</h${level}>`;
+    })
+    .join('\n');
 }
 
 function isSinceDefinitionTerm(value) {
@@ -604,6 +630,12 @@ async function renderDefinitionList($, list, state) {
   const blocks = [];
   const listIsSince = classNames(list).has('since');
   const listIsTypeDocCommentTags = list.hasClass('tsd-comment-tags');
+  const listIsDoxygenMemberDetail = list.closest('.memdoc').length > 0;
+  const listIsDoxygenNote = listIsDoxygenMemberDetail && list.hasClass('note');
+  const listIsDoxygenParams =
+    listIsDoxygenMemberDetail && list.hasClass('params');
+  const listIsDoxygenReturn =
+    listIsDoxygenMemberDetail && list.hasClass('return');
   let term = null;
   let termHasLink = false;
   let termIsSince = false;
@@ -612,7 +644,9 @@ async function renderDefinitionList($, list, state) {
       const renderedTerm = cleanText(
         await renderInlineNodes($, $(child).contents().toArray(), state),
       );
-      termHasLink = /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
+      termHasLink =
+        $(child).find('a').length > 0 ||
+        /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
       term = termHasLink ? renderedTerm : stripHeadingLinks(renderedTerm);
       termIsSince =
         listIsSince ||
@@ -620,11 +654,16 @@ async function renderDefinitionList($, list, state) {
     } else {
       const body = await renderChildren($, $(child), state);
       if (term) {
-        blocks.push(
-          termIsSince
-            ? renderCallout({ type: 'info', title: term, body })
-            : `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
-        );
+        if (termIsSince || listIsDoxygenNote) {
+          blocks.push(renderCallout({ type: 'info', title: term, body }));
+        } else if (listIsDoxygenParams || listIsDoxygenReturn) {
+          const title = listIsDoxygenReturn ? '返回值' : term;
+          blocks.push(`#### ${title} [!toc]\n\n${body}`);
+        } else {
+          blocks.push(
+            `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
+          );
+        }
       } else if (body) blocks.push(body);
       term = null;
       termHasLink = false;
@@ -758,6 +797,24 @@ async function renderBlockNode($, node, state) {
       await renderInlineNodes($, element.contents().toArray(), state),
     );
     return [anchor, label].filter(Boolean).join('\n\n');
+  }
+  const isDoxygenMemberTitle = name === 'h2' && element.hasClass('memtitle');
+  if (isDoxygenMemberTitle) {
+    element.children('.permalink').remove();
+    const title = cleanText(
+      stripHeadingLinks(
+        await renderInlineNodes($, element.contents().toArray(), state),
+      ),
+    );
+    return [anchor, title ? `### ${title}` : ''].filter(Boolean).join('\n\n');
+  }
+  const isDoxygenHiddenGroupTitle =
+    name === 'h2' &&
+    element.hasClass('groupheader') &&
+    (element.attr('id') === 'header-details' ||
+      cleanText(element.text()) === '枚举类型说明');
+  if (isDoxygenHiddenGroupTitle) {
+    return anchor;
   }
   if (/^h[1-6]$/.test(name)) {
     const level = Number(name.slice(1));
@@ -920,6 +977,20 @@ export async function convertHtmlToMdx({
     const value = element.attr('id') ?? element.attr('name');
     if (value && !fragments.includes(value)) fragments.push(value);
   });
+  article.children('table.memberdecls').remove();
+  article
+    .children('.textblock, p')
+    .filter((_, node) => {
+      const element = $(node);
+      const text = cleanText(element.text());
+      const sourceLink = element.find('a[href*="_source.html"]').length > 0;
+      const includeOnly =
+        text.startsWith('#include') &&
+        element.find('code').length > 0 &&
+        element.find('p').length === 0;
+      return sourceLink || includeOnly;
+    })
+    .remove();
   const titleElement = titleNode.get(0);
   const titleIsInsideArticle =
     titleElement &&
@@ -927,7 +998,9 @@ export async function convertHtmlToMdx({
       article.find('*').toArray().includes(titleElement));
   if (titleIsInsideArticle) titleNode.remove();
   if (description) descriptionNode.remove();
-  const renderedBody = await renderChildren($, article, state);
+  const renderedBody = renderNoTocHeadings(
+    await renderChildren($, article, state),
+  );
   const normalizedLinks = rewriteLegacyBodyLinks(renderedBody, {
     routeMap,
     sourcePath,

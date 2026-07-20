@@ -1,8 +1,9 @@
 ---
 title: agora::rtc::IConfigCenter类 参考abstract
+tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_config_center
   sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_config_center.html
   generator: doxygen
@@ -12,89 +13,9 @@ _migration:
       message: >-
         Rendered unresolved generated-source link
         /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ab2a8ac8b61c8025cd686c76b68c0ffc2
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ac738be75e041ba80ad54946233a15533
-        as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#a56f31c466689a10049f1c37020cb1bfc
-        as local text.
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image closed.png has no meaningful alt or title text; the converter used
-        contextual alt text "展开继承成员".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html#ad92e0293cd52148b58a788fa79187e1f
-        as local text.
 ---
 
 继承自 agora::RefCountInterface.
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| virtual int | [SetLocalAccessPoint](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-config-center#a70a2ee3d1faafb0ed050e464dea53f8a) (const [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-local-access-point-configuration) &config)=0 |
-|  |  |
-| <Slot name="api-center-table-0" /> |  |
-| virtual void | AddRef () const =0 |
-|  |  |
-| virtual [RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) | Release () const =0 |
-|  |  |
-| virtual bool | HasOneRef () const =0 |
-|  |  |
-
-<Slot for="api-center-table-0">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Public 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
-
-| <a id="pro-methods"></a> Protected 成员函数 |  |
-| --- | --- |
-| virtual | [~IConfigCenter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-config-center#aa16b54f90fbfb03933ff5b7e8bfc4e81) () |
-|  |  |
-| <Slot name="api-center-table-1" /> |  |
-| virtual | ~RefCountInterface () |
-|  |  |
-
-<Slot for="api-center-table-1">
-
-![展开继承成员](/img/api-center-generated/c98c02adc573-closed.png)
-
-Protected 成员函数 继承自 agora::RefCountInterface
-
-</Slot>
 
 <a id="details"></a>
 
@@ -106,7 +27,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 <a id="aa16b54f90fbfb03933ff5b7e8bfc4e81"></a>
 
-## ◆~IConfigCenter()
+### ~IConfigCenter()
 
 | virtual agora::rtc::IConfigCenter::~IConfigCenter () | inlineprotectedvirtual |
 | --- | --- |
@@ -115,7 +36,7 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 <a id="a70a2ee3d1faafb0ed050e464dea53f8a"></a>
 
-## ◆SetLocalAccessPoint()
+### SetLocalAccessPoint()
 
 | virtual int agora::rtc::IConfigCenter::SetLocalAccessPoint ( const [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-local-access-point-configuration) & *config*) | pure virtual |
 | --- | --- |
@@ -128,17 +49,17 @@ Protected 成员函数 继承自 agora::RefCountInterface
 
 成功部署声网私有媒体服务器并在内网终端集成 SDK 后，你可以调用该方法指定 Local Access Point，给 SDK 分配 Native 接入模块。
 
-### 注解
-
+:::info[注解]
 - 该方法仅在部署声网混合云方案后生效。你可以联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-config-center) 了解和部署声网混合云。
 - 该方法需要在加入频道前调用。
+:::
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | config | Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-local-access-point-configuration)。 |
 | --- | --- |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。

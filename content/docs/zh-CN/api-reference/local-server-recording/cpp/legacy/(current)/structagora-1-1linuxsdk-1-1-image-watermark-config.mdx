@@ -1,5 +1,6 @@
 ---
 title: agora::linuxsdk::ImageWatermarkConfig结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,19 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| const char * | [image_path](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-image-watermark-config#af8fa8efa8256e0c839de4b696b3dbdcd) |
-|  |  |
-| uint32_t | [offset_x](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-image-watermark-config#a917b82fb41cfb57d4904c69ceb22e007) |
-|  |  |
-| uint32_t | [offset_y](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-image-watermark-config#a246cd0ebae1f88cc1c73c5a7ada39e6b) |
-|  |  |
-| uint32_t | [wm_width](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-image-watermark-config#a5179eb584783bac44b70b6fd3cdcca83) |
-|  |  |
-| uint32_t | [wm_height](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-image-watermark-config#a96b5c41b934aa4ac173a0a17f5433e47) |
-|  |  |
 
 <a id="details"></a>
 
@@ -33,22 +21,22 @@ _migration:
 
 <a id="af8fa8efa8256e0c839de4b696b3dbdcd"></a>
 
-## ◆image_path
+### image_path
 
 | const char* agora::linuxsdk::ImageWatermarkConfig::image_path |
 | --- |
 
 指定图片文件路径。
 
-### 注解
-
+:::info[注解]
 - 只支持本地 PNG 格式的图片。
 - 建议图片分辨率不超过 480p。
 - 如果图片小于水印框，图片居中显示，不拉伸；如果图片大于水印框，图片等比缩小至合适水平，再居中显示。
+:::
 
 <a id="a917b82fb41cfb57d4904c69ceb22e007"></a>
 
-## ◆offset_x
+### offset_x
 
 | uint32_t agora::linuxsdk::ImageWatermarkConfig::offset_x |
 | --- |
@@ -57,7 +45,7 @@ _migration:
 
 <a id="a246cd0ebae1f88cc1c73c5a7ada39e6b"></a>
 
-## ◆offset_y
+### offset_y
 
 | uint32_t agora::linuxsdk::ImageWatermarkConfig::offset_y |
 | --- |
@@ -66,7 +54,7 @@ _migration:
 
 <a id="a5179eb584783bac44b70b6fd3cdcca83"></a>
 
-## ◆wm_width
+### wm_width
 
 | uint32_t agora::linuxsdk::ImageWatermarkConfig::wm_width |
 | --- |
@@ -75,7 +63,7 @@ _migration:
 
 <a id="a96b5c41b934aa4ac173a0a17f5433e47"></a>
 
-## ◆wm_height
+### wm_height
 
 | uint32_t agora::linuxsdk::ImageWatermarkConfig::wm_height |
 | --- |

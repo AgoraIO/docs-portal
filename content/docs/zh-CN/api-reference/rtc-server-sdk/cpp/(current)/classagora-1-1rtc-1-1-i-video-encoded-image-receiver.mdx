@@ -1,5 +1,6 @@
 ---
 title: agora::rtc::IVideoEncodedImageReceiver类 参考abstract
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -9,13 +10,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-| virtual bool | [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) (const uint8_t *imageBuffer, size_t length, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) &videoEncodedFrameInfo)=0 |
-|  |  |
-| virtual | [~IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#af2cd1d47da63e409160c27e57082456f) () |
-|  |  |
 
 <a id="details"></a>
 
@@ -27,7 +21,7 @@ _migration:
 
 <a id="af2cd1d47da63e409160c27e57082456f"></a>
 
-## ◆~IVideoEncodedImageReceiver()
+### ~IVideoEncodedImageReceiver()
 
 | virtual agora::rtc::IVideoEncodedImageReceiver::~IVideoEncodedImageReceiver () | inlinevirtual |
 | --- | --- |
@@ -36,21 +30,21 @@ _migration:
 
 <a id="ad4e316784b48ac30cd3208a34e840254"></a>
 
-## ◆OnEncodedVideoImageReceived()
+### OnEncodedVideoImageReceived()
 
 | virtual bool agora::rtc::IVideoEncodedImageReceiver::OnEncodedVideoImageReceived ( const uint8_t * *imageBuffer*, size_t *length*, const [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-video-frame-info) & *videoEncodedFrameInfo*) | pure virtual |
 | --- | --- |
 
 SDK 每次收到已编码视频帧时触发。
 
-### 参数
+<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
 
 | imageBuffer | 视频帧缓冲区。 |
 | --- | --- |
 | length | 视频帧数据长度。 |
 | videoEncodedFrameInfo | 已编码视频帧的信息。 |
 
-### 返回
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
 是否接受已编码视频帧。
 

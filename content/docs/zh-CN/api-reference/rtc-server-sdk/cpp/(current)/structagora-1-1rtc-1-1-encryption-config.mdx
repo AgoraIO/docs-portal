@@ -1,5 +1,6 @@
 ---
 title: agora::rtc::EncryptionConfig结构体 参考
+tocMaxDepth: 3
 _migration:
   type: generated-html
   status: migrated
@@ -8,20 +9,6 @@ _migration:
   generator: doxygen
   warnings: []
 ---
-
-| <a id="pub-methods"></a> Public 成员函数 |  |
-| --- | --- |
-|  | [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config#a5a7c5219d09945bc0fae78a870b3fa19) () |
-|  |  |
-
-| <a id="pub-attribs"></a> Public 属性 |  |
-| --- | --- |
-| [ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0) | [encryptionMode](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config#ad52b2cf9c771a97da7bdfa6537ac8a2a) |
-|  |  |
-| const char * | [encryptionKey](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config#a51409473d2893735e9cc21557e2fa395) |
-|  |  |
-| uint8_t | [encryptionKdfSalt](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config#a84798c8311b7a8740fa16c284259aef2) [32] |
-|  |  |
 
 <a id="details"></a>
 
@@ -33,7 +20,7 @@ _migration:
 
 <a id="a5a7c5219d09945bc0fae78a870b3fa19"></a>
 
-## ◆EncryptionConfig()
+### EncryptionConfig()
 
 | agora::rtc::EncryptionConfig::EncryptionConfig () | inline |
 | --- | --- |
@@ -42,7 +29,7 @@ _migration:
 
 <a id="ad52b2cf9c771a97da7bdfa6537ac8a2a"></a>
 
-## ◆encryptionMode
+### encryptionMode
 
 | [ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0) agora::rtc::EncryptionConfig::encryptionMode |
 | --- |
@@ -51,20 +38,20 @@ _migration:
 
 <a id="a51409473d2893735e9cc21557e2fa395"></a>
 
-## ◆encryptionKey
+### encryptionKey
 
 | const char* agora::rtc::EncryptionConfig::encryptionKey |
 | --- |
 
 内置加密密钥，字符串类型，长度无限制。声网推荐使用 32 字节的密钥。
 
-### 注解
-
+:::info[注解]
 如果未指定该参数或将该参数设置为空，则无法启用内置加密，且 SDK 会返回错误码 ERR_INVALID_ARGUMENT (-2) 。
+:::
 
 <a id="a84798c8311b7a8740fa16c284259aef2"></a>
 
-## ◆encryptionKdfSalt
+### encryptionKdfSalt
 
 | uint8_t agora::rtc::EncryptionConfig::encryptionKdfSalt[32] |
 | --- |

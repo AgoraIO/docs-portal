@@ -347,4 +347,36 @@ describe('API Center scoped sidebars', () => {
       'Connection Store',
     ]);
   });
+
+  it('matches the live RTSA C Doxygen TOC hierarchy', async () => {
+    const payload = await loadApiReferencePayload([
+      'rtsa',
+      'c',
+      'agora-rtc-api-8h',
+    ]);
+
+    const toc = payload.toc.map((item) => ({
+      depth: item.depth,
+      title: item.title,
+    }));
+
+    expect(toc).toHaveLength(73);
+    expect(toc.filter((item) => item.depth === 2)).toEqual([
+      { depth: 2, title: '宏定义说明' },
+      { depth: 2, title: '类型定义说明' },
+      { depth: 2, title: '函数说明' },
+    ]);
+    expect(toc.filter((item) => item.depth === 3)).toHaveLength(70);
+    expect(toc.map((item) => item.title)).not.toEqual(
+      expect.arrayContaining([
+        '枚举类型说明',
+        '参数',
+        '返回',
+        '返回值',
+        '注解',
+        '自从',
+      ]),
+    );
+    expect(toc.every((item) => !item.title.includes('◆'))).toBe(true);
+  });
 });
