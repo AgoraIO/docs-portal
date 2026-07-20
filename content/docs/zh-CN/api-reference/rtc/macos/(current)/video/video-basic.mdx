@@ -647,7 +647,7 @@ _migration:
 该回调在发布首帧本地视频时触发，触发时机包括：
 
 - 启用视频模块并调用 `joinChannelByToken` 成功加入频道；
-- 依次调用 `muteLocalVideoStream\:YES` 和 `muteLocalVideoStream\:NO`；
+- 依次调用 `muteLocalVideoStream:YES` 和 `muteLocalVideoStream:NO`；
 - 依次调用 [disableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_disablevideo) 和 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo)；
 - 调用 `pushExternalVideoFrame` 成功向 SDK 推送视频帧。
 
@@ -1037,7 +1037,7 @@ _migration:
 
 ### 废弃
 
-自 v4.5.0 版本废弃，请改用 `remoteVideoStateChangedOfUid\:state\:reason\:elapsed:`。
+自 v4.5.0 版本废弃，请改用 `remoteVideoStateChangedOfUid:state:reason:elapsed:`。
 
 当远端用户调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 方法启用或关闭本地视频采集功能时，SDK 会触发该回调。
 

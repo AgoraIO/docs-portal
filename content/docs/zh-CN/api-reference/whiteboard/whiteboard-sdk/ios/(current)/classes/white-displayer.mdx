@@ -27,7 +27,7 @@ _migration:
 
 该属性已废弃。`WhiteboardView` 类继承自 `UIView` 类，你可以直接在 `WhiteboardView` 对象中调用 `UIView` 类的 `backgroundcolor` 属性修改白板背景色。详见 [`backgroundcolor`](https://developer.apple.com/documentation/uikit/uiview/1622591-backgroundcolor)。
 
-`@property (nonatomic, strong) UIColor *__deprecated_msg ( "use WhiteboardView's backgroundColor property")`
+`@property (nonatomic, strong) UIColor *__deprecated_msg ( "use WhiteboardView's backgroundColor property" )`
 
 #### Declared In
 
@@ -52,11 +52,11 @@ _migration:
 
 <a id="//api/name/getSceneFromScenePath:result:"></a>
 
-### `– getSceneFromScenePath\:result:`
+### `– getSceneFromScenePath:result:`
 
 获取指定场景的信息。
 
-`- (void)getSceneFromScenePath:(NSString *)*scenePath* result:(void ( ^) ( WhiteScene *_Nullable scene))*result*`
+`- (void)getSceneFromScenePath:(NSString *)*scenePath* result:(void ( ^ ) ( WhiteScene *_Nullable scene ))*result*`
 
 #### Parameters
 
@@ -76,11 +76,11 @@ _migration:
 
 <a id="//api/name/getScenePathType:result:"></a>
 
-### `– getScenePathType\:result:`
+### `– getScenePathType:result:`
 
 查询场景路径类型。
 
-`- (void)getScenePathType:(NSString *)*pathOrDir* result:(void ( ^) ( WhiteScenePathType pathType))*result*`
+`- (void)getScenePathType:(NSString *)*pathOrDir* result:(void ( ^ ) ( WhiteScenePathType pathType ))*result*`
 
 #### Parameters
 
@@ -108,7 +108,7 @@ _migration:
 
 获取当前房间内所有场景的信息。
 
-`- (void)getEntireScenes:(void ( ^) ( NSDictionary&lt;NSString*,NSArray&lt;WhiteScene*&gt; *&gt; *dict))*result*`
+`- (void)getEntireScenes:(void ( ^ ) ( NSDictionary<NSString*,NSArray<WhiteScene*> *> *dict ))*result*`
 
 #### Parameters
 
@@ -146,7 +146,7 @@ _migration:
 
 <a id="//api/name/addHighFrequencyEventListener:fireInterval:"></a>
 
-### `– addHighFrequencyEventListener\:fireInterval:`
+### `– addHighFrequencyEventListener:fireInterval:`
 
 注册高频自定义事件监听。
 
@@ -211,11 +211,11 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 <a id="//api/name/convertToPointInWorld:result:"></a>
 
-### `– convertToPointInWorld\:result:`
+### `– convertToPointInWorld:result:`
 
 转换白板上点的坐标。
 
-`- (void)convertToPointInWorld:(WhitePanEvent *)*point* result:(void ( ^) ( WhitePanEvent *convertPoint))*result*`
+`- (void)convertToPointInWorld:(WhitePanEvent *)*point* result:(void ( ^ ) ( WhitePanEvent *convertPoint ))*result*`
 
 #### Parameters
 
@@ -369,11 +369,11 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 <a id="//api/name/getScenePreviewImage:completion:"></a>
 
-### `– getScenePreviewImage\:completion:`
+### `– getScenePreviewImage:completion:`
 
 获取特定场景的预览图。
 
-`- (void)getScenePreviewImage:(NSString *)*scenePath* completion:(void ( ^) ( UIImage *_Nullable image))*completionHandler*`
+`- (void)getScenePreviewImage:(NSString *)*scenePath* completion:(void ( ^ ) ( UIImage *_Nullable image ))*completionHandler*`
 
 #### Parameters
 
@@ -393,11 +393,11 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 <a id="//api/name/getSceneSnapshotImage:completion:"></a>
 
-### `– getSceneSnapshotImage\:completion:`
+### `– getSceneSnapshotImage:completion:`
 
 获取特定场景的截图。
 
-`- (void)getSceneSnapshotImage:(NSString *)*scenePath* completion:(void ( ^) ( UIImage *_Nullable image))*completionHandler*`
+`- (void)getSceneSnapshotImage:(NSString *)*scenePath* completion:(void ( ^ ) ( UIImage *_Nullable image ))*completionHandler*`
 
 #### Parameters
 
@@ -431,7 +431,7 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 获取当前的白板截图。
 
-`- (void)getLocalSnapShotWithCompletion:(void ( ^) ( UIImage *_Nullable image, NSError *_Nullable error))*completionHandler*`
+`- (void)getLocalSnapShotWithCompletion:(void ( ^ ) ( UIImage *_Nullable image , NSError *_Nullable error ))*completionHandler*`
 
 #### Parameters
 

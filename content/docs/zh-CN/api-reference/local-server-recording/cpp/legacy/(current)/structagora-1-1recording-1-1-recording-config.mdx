@@ -303,22 +303,22 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 - `Recording_Dir`: 字符串类型，指定存放录制文件的绝对路径。指定路径后，SDK 不会自动生成子目录。
 
-  示例：`\{"Recording_Dir": "/home/guest/recording_dir/"\}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
+  示例：`{"Recording_Dir": "/home/guest/recording_dir/"}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
 - `Chunk_Time_Span`: 字符串类型，设置直播场景中单流录制模式下录制文件切片的间隔时间，单位为秒，最小值为 10。
 
-  示例：`\{"Chunk_Time_Span": "15"\}`，表示每隔 15 秒生成一个录制文件。
+  示例：`{"Chunk_Time_Span": "15"}`，表示每隔 15 秒生成一个录制文件。
 - `Secondary_Recorder`: 字符串类型，表示录制两种格式的音频文件，`Secondary_Recorder` 为增加的音频文件格式。
 
-  示例：`\{"Secondary_Recorder":"mp3"\}`，表示生成 AAC 和 MP3 两种格式的音频文件。
+  示例：`{"Secondary_Recorder":"mp3"}`，表示生成 AAC 和 MP3 两种格式的音频文件。
 - `Audio_Only_Record`: 字符串类型，表示仅录制一种格式的音频文件，`Audio_Only_Record` 为仅录制的音频文件格式。
 
-  示例：`\{"Audio_Only_Record":"mp3"\}`，表示只生成 MP3 格式的音频文件。
+  示例：`{"Audio_Only_Record":"mp3"}`，表示只生成 MP3 格式的音频文件。
 - `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。
 
-  示例：`\{"Audio_Sample_Rate"\:16000\}`，表示录制音频的采样率是 16000Hz。
+  示例：`{"Audio_Sample_Rate":16000}`，表示录制音频的采样率是 16000Hz。
 - `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。
 
-  示例：`\{"Pcm_Sample_Rate"\:16000\}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
+  示例：`{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
 
 ### 注解
 
@@ -474,9 +474,9 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 根据 `proxyType` 参数中选择的代理服务器类型设置代理服务器的 IP 地址（域名）和端口，从而实现在内网进行录制：
 
-- 如 `proxyType` 为 0，`proxyServer` 设为 `"&lt;ip&gt;:&lt;port&gt;"`。
-- 如 `proxyType` 为 1，`proxyServer` 设为 `"&lt;domain&gt;:&lt;port&gt;"`。
-- 如 `proxyType` 为 2，`proxyServer` 设为 `"&lt;ip1&gt;,&lt;ip2&gt;,...,&lt;ipx&gt;:&lt;port&gt;"`。
+- 如 `proxyType` 为 0，`proxyServer` 设为 `"<ip>:<port>"`。
+- 如 `proxyType` 为 1，`proxyServer` 设为 `"<domain>:<port>"`。
+- 如 `proxyType` 为 2，`proxyServer` 设为 `"<ip1>,<ip2>,...,<ipx>:<port>"`。
 
 详见使用云代理服务。
 

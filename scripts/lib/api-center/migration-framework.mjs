@@ -308,6 +308,33 @@ export function renderCallout({ type, title, body, indent = '' }) {
   return `${header}\n${content}\n${indent}:::`;
 }
 
+function protectTableCodeSpans(value, protect) {
+  const source = String(value);
+  let protectedSource = '';
+  let cursor = 0;
+  while (cursor < source.length) {
+    const start = source.indexOf('`', cursor);
+    if (start < 0) {
+      protectedSource += source.slice(cursor);
+      break;
+    }
+    let fenceEnd = start + 1;
+    while (source[fenceEnd] === '`') fenceEnd += 1;
+    const fence = source.slice(start, fenceEnd);
+    const end = source.indexOf(fence, fenceEnd);
+    if (end < 0) {
+      protectedSource += source.slice(cursor);
+      break;
+    }
+    protectedSource += source.slice(cursor, start);
+    protectedSource += protect(
+      source.slice(start, end + fence.length).replace(/\|/g, '\\|'),
+    );
+    cursor = end + fence.length;
+  }
+  return protectedSource;
+}
+
 function escapeTableCell(value) {
   const source = String(value);
   if (/^<Slot name="[^"]+" \/>$/.test(source.trim())) {
@@ -319,7 +346,7 @@ function escapeTableCell(value) {
     protectedValues.push(protectedValue);
     return marker;
   };
-  const protectedSource = source
+  const protectedSource = protectTableCodeSpans(source, protect)
     .replace(/<a id=("[^"]*"|'[^']*')><\/a>/g, (anchor) => protect(anchor))
     .replace(/\\:(?=[\p{Letter}\p{Number}\p{Mark}_-])/gu, (escapedColon) =>
       protect(escapedColon),

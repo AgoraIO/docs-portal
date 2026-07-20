@@ -742,7 +742,7 @@ _migration:
 在虚拟互动场景中，你可以使用此方法设置隔音区域和声音衰减系数。
 
 - 当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外部时，声音的衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中的声音衰减系数决定。
-- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation\:playerId\:forceSet:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation\:userId\:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation\:playerId\:forceSet:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation:userId:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
 - 如果声源和接收者分别处于两个不同的隔音区域内，接收者将无法听到声源的声音。
 
 :::note

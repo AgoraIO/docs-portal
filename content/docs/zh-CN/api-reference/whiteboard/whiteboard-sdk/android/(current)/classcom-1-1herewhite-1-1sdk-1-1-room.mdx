@@ -603,11 +603,11 @@ static final Gson
 
 该方法会把与当前房间实例相关的所有资源释放掉。如果要再次加入房间，需要重新调用 `joinRoom`。
 
-你可以在该方法中传入 `Promise&lt;Object&gt;` 接口实例，以获取方法调用结果。
+你可以在该方法中传入 `Promise<Object>` 接口实例，以获取方法调用结果。
 
 ### 参数
 
-| promise | `Promise&lt;Object&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `disconnect` 的调用结果：如果方法调用成功，则返回房间的全局状态。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `disconnect` 的调用结果：如果方法调用成功，则返回房间的全局状态。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a195049bf53b03d538c847e0eecf9b679"></a>
@@ -692,7 +692,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 <Slot for="api-center-table-9">
 
-`Promise&lt;String&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+`Promise<String>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则返回文字标识符。
 - 如果方法调用失败，则返回错误信息。
@@ -759,7 +759,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;GlobalState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getGlobalState` 的调用结果：如果方法调用成功，则返回 `GlobalState` 对象，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<GlobalState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getGlobalState` 的调用结果：如果方法调用成功，则返回 `GlobalState` 对象，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="adb7d0a6430be84c8ff5ce5ae67aeb5ca"></a>
@@ -799,7 +799,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;MemberState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getMemberState` 的调用结果：如果方法调用成功，则返回白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<MemberState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getMemberState` 的调用结果：如果方法调用成功，则返回白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a2388307121c075620ba48f71fa970483"></a>
@@ -836,7 +836,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;RoomMember[]&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomMembers` 的调用结果：如果方法调用成功，则返回用户列表，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomMember[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomMembers` 的调用结果：如果方法调用成功，则返回用户列表，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="af6f8d5c76a3d331cd1cd9d6f15565976"></a>
@@ -877,7 +877,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;BroadcastState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getBroadcastState` 的调用结果：如果方法调用成功，则返回用户视角状态，详见 [`BroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<BroadcastState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getBroadcastState` 的调用结果：如果方法调用成功，则返回用户视角状态，详见 [`BroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a8a708f07fc9914a6a54a6c18e696ce2d"></a>
@@ -926,7 +926,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;SceneState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneState` 的调用结果：如果方法调用成功，则返回场景状态，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<SceneState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneState` 的调用结果：如果方法调用成功，则返回场景状态，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a5a9590e60683101fc8715c606180cd19"></a>
@@ -975,7 +975,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;Scene[]&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenes` 的调用结果：如果方法调用成功，则返回场景列表，详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Scene[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenes` 的调用结果：如果方法调用成功，则返回场景列表，详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="ac287ed3712b957412281f1330f7df32c"></a>
@@ -1024,7 +1024,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;Number&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getZoomScale` 的调用结果：如果方法调用成功，则返回视角缩放比例。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Number>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getZoomScale` 的调用结果：如果方法调用成功，则返回视角缩放比例。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a2c0ef694235dccda2fb92b3ba141880d"></a>
@@ -1065,7 +1065,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;RoomPhase&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomPhase` 的调用结果：如果方法调用成功，则返回房间连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomPhase>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomPhase` 的调用结果：如果方法调用成功，则返回房间连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a9578a9ae744eb64d8bd939e3af3b68db"></a>
@@ -1106,7 +1106,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 ### 参数
 
-| promise | `Promise&lt;RoomState&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomState` 的调用结果：如果方法调用成功，则返回房间所有状态，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomState` 的调用结果：如果方法调用成功，则返回房间所有状态，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a4dfb1c0aac90cd2678aa773629198b1e"></a>
@@ -1167,7 +1167,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 <Slot for="api-center-table-10">
 
-`Promise&lt;Boolean&gt;` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setScenePath` 的调用结果：
+`Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setScenePath` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`.
 - 如果方法调用失败，则返回错误信息。
@@ -1195,7 +1195,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 <Slot for="api-center-table-11">
 
-`Promise&lt;Boolean&gt;` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setSceneIndex` 的调用结果：
+`Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setSceneIndex` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`。
 - 如果方法调用失败，则返回错误信息。
@@ -1401,7 +1401,7 @@ room.setScenePath("ppt" + "/page1");
 
 ### 参数
 
-| promise | `Promise&lt;JSONObject&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `debugInfo` 的调用结果：如果方法调用成功，则返回调试日志信息。 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<JSONObject>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `debugInfo` 的调用结果：如果方法调用成功，则返回调试日志信息。 如果方法调用失败，则返回错误信息。 |
 | --- | --- |
 
 <a id="a6b265bdee91f2d961373d172bb969fe0"></a>
@@ -1446,7 +1446,7 @@ room.setScenePath("ppt" + "/page1");
 
 <Slot for="api-center-table-13">
 
-`Promise&lt;Boolean&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setWritable` 的调用结果：
+`Promise<Boolean>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setWritable` 的调用结果：
 
 - 如果方法调用成功，则返回用户在房间中的读写状态。
 - 如果方法调用失败，则返回错误信息。
@@ -1599,7 +1599,7 @@ room.setScenePath("ppt" + "/page1");
 
 <Slot for="api-center-table-14">
 
-`Promise&lt;String&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+`Promise<String>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则返回小窗应用 ID。
 - 如果方法调用失败，则返回错误信息。
@@ -1631,7 +1631,7 @@ room.setScenePath("ppt" + "/page1");
 
 <Slot for="api-center-table-15">
 
-`Promise&lt;Boolean&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+`Promise<Boolean>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则窗口关闭。
 - 如果方法调用失败，则返回错误信息。
@@ -1671,7 +1671,7 @@ room.setScenePath("ppt" + "/page1");
 
 | appId | 小窗应用 ID。 |
 | --- | --- |
-| promise | `Promise&lt;Object&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
+| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
 
 - 如果方法调用成功，则返回小窗应用相关信息，详见 [`WindowAppSyncAttrs`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-sync-attrs)。
 - 如果方法调用失败，则返回错误信息。
@@ -1689,7 +1689,7 @@ room.setScenePath("ppt" + "/page1");
 
 ### 参数
 
-| promise | `Promise&lt;Object&gt;` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
+| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
 | --- | --- |
 
 - 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 `WhiteAppSyncAttributes`。
@@ -1714,7 +1714,7 @@ room.setScenePath("ppt" + "/page1");
 
 <Slot for="api-center-table-16">
 
-`Promise&lt;Boolean&gt;` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：
+`Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`.
 - 如果方法调用失败，则返回错误信息。

@@ -153,10 +153,10 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 
 耳返监听的音频滤镜类型：
 
-- `EAR_MONITORING_FILTER_NONE (1 &lt;&lt; 0)`：（1）耳返监听中不添加音频滤镜。
-- `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS (1 &lt;&lt; 1)`：（2）在耳返监听中添加人声特效音频滤镜。如果你实现了美声、音效等功能，用户可以听到添加这些效果后的声音。该枚举值支持使用按位或运算符（|）组合使用。
-- `EAR_MONITORING_FILTER_NOISE_SUPPRESSION (1 &lt;&lt; 2)`：（4）在耳返监听中添加降噪音频滤镜。该枚举值支持使用按位或运算符（|）组合使用。
-- `EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 &lt;&lt; 15)`：复用发送端已处理的音频滤镜用于耳返监听。该枚举值可降低 CPU 使用率，但会增加耳返监听延迟，适用于对延迟不敏感但要求低 CPU 消耗的场景。该枚举值仅支持单独使用，选中后其他音频滤镜配置将自动失效。
+- `EAR_MONITORING_FILTER_NONE (1 << 0)`：（1）耳返监听中不添加音频滤镜。
+- `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS (1 << 1)`：（2）在耳返监听中添加人声特效音频滤镜。如果你实现了美声、音效等功能，用户可以听到添加这些效果后的声音。该枚举值支持使用按位或运算符（|）组合使用。
+- `EAR_MONITORING_FILTER_NOISE_SUPPRESSION (1 << 2)`：（4）在耳返监听中添加降噪音频滤镜。该枚举值支持使用按位或运算符（|）组合使用。
+- `EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 << 15)`：复用发送端已处理的音频滤镜用于耳返监听。该枚举值可降低 CPU 使用率，但会增加耳返监听延迟，适用于对延迟不敏感但要求低 CPU 消耗的场景。该枚举值仅支持单独使用，选中后其他音频滤镜配置将自动失效。
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 

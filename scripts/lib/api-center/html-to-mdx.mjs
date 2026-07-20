@@ -210,34 +210,130 @@ function createState(options) {
   };
 }
 
-async function renderInlineNodes($, nodes, state) {
-  const values = [];
-  for (const node of nodes) values.push(await renderInlineNode($, node, state));
-  return values
-    .join('')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\s+([，。！？：；、,.!?;:)\]}>])/g, '$1')
-    .trim();
+function renderCodeSpan(value) {
+  const content = String(value ?? '');
+  const longestBacktickRun = Math.max(
+    0,
+    ...[...content.matchAll(/`+/g)].map((match) => match[0].length),
+  );
+  const fence = '`'.repeat(longestBacktickRun + 1);
+  const padding = content.startsWith('`') || content.endsWith('`') ? ' ' : '';
+  return `${fence}${padding}${content}${padding}${fence}`;
 }
 
-async function renderInlineNode($, node, state) {
-  if (node.type === 'text') return escapeMdxText(node.data ?? '');
+function inlineCodeElement($, node) {
+  if (node?.type !== 'tag') return null;
+  const name = elementName(node);
+  return name === 'code' || name === 'kbd' ? $(node) : null;
+}
+
+function legacySplitCodeIdentifier(node) {
+  if (node?.type !== 'text') return null;
+  const value = node.data ?? '';
+  if (value !== value.trim()) return null;
+  return /^[\p{Letter}\p{Number}_$]+$/u.test(value) ? value : null;
+}
+
+function consumeLegacySplitCodeRun($, nodes, startIndex) {
+  const opening = inlineCodeElement($, nodes[startIndex]);
+  if (!opening || cleanText(opening.text())) return null;
+
+  const identifier = legacySplitCodeIdentifier(nodes[startIndex + 1]);
+  if (!identifier) return null;
+  let content = identifier;
+  let cursor = startIndex + 2;
+  let codeChunks = 0;
+  while (cursor < nodes.length) {
+    const code = inlineCodeElement($, nodes[cursor]);
+    if (!code || !cleanText(code.text())) break;
+    content += code.text().replace(/[ \t]+/g, ' ');
+    codeChunks += 1;
+    cursor += 1;
+
+    const nextIdentifier = legacySplitCodeIdentifier(nodes[cursor]);
+    if (!nextIdentifier || !inlineCodeElement($, nodes[cursor + 1])) break;
+    content += nextIdentifier;
+    cursor += 1;
+  }
+  if (codeChunks === 0) return null;
+  return {
+    nextIndex: cursor,
+    value: renderCodeSpan(content.replace(/[ \t]+/g, ' ').trim()),
+  };
+}
+
+function tightenInlinePunctuation(value) {
+  const source = String(value);
+  let normalized = '';
+  let cursor = 0;
+  const tighten = (segment) =>
+    segment.replace(/\s+([，。！？：；、,.!?;:)\]}>])/g, '$1');
+  while (cursor < source.length) {
+    const start = source.indexOf('`', cursor);
+    if (start < 0) {
+      normalized += tighten(source.slice(cursor));
+      break;
+    }
+    let fenceEnd = start + 1;
+    while (source[fenceEnd] === '`') fenceEnd += 1;
+    const fence = source.slice(start, fenceEnd);
+    const end = source.indexOf(fence, fenceEnd);
+    if (end < 0) {
+      normalized += tighten(source.slice(cursor));
+      break;
+    }
+    normalized += tighten(source.slice(cursor, start));
+    normalized += source.slice(start, end + fence.length);
+    cursor = end + fence.length;
+  }
+  return normalized;
+}
+
+async function renderInlineNodes($, nodes, state, options = {}) {
+  const values = [];
+  for (let index = 0; index < nodes.length; index += 1) {
+    const legacySplitCode = options.rawText
+      ? null
+      : consumeLegacySplitCodeRun($, nodes, index);
+    if (legacySplitCode) {
+      values.push(legacySplitCode.value);
+      index = legacySplitCode.nextIndex - 1;
+      continue;
+    }
+    values.push(await renderInlineNode($, nodes[index], state, options));
+  }
+  const normalizedWhitespace = values.join('').replace(/[ \t]+/g, ' ');
+  if (options.rawText) return normalizedWhitespace.trim();
+  return tightenInlinePunctuation(normalizedWhitespace).trim();
+}
+
+async function renderInlineNode($, node, state, options = {}) {
+  if (node.type === 'text') {
+    return options.rawText ? (node.data ?? '') : escapeMdxText(node.data ?? '');
+  }
   if (node.type !== 'tag') return '';
   const element = $(node);
   const name = elementName(node);
+  if (name === 'code' || name === 'kbd') {
+    const codeContent = await renderInlineNodes(
+      $,
+      element.contents().toArray(),
+      state,
+      { rawText: true },
+    );
+    const linkedCode = codeContent.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
+    if (linkedCode) {
+      return `[${renderCodeSpan(linkedCode[1])}](${linkedCode[2]})`;
+    }
+    return renderCodeSpan(codeContent);
+  }
   const content = await renderInlineNodes(
     $,
     element.contents().toArray(),
     state,
+    options,
   );
   if (name === 'br') return '  \n';
-  if (name === 'code' || name === 'kbd') {
-    const linkedCode = content.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
-    if (linkedCode) {
-      return `[\`${linkedCode[1].replace(/`/g, '\\`')}\`](${linkedCode[2]})`;
-    }
-    return `\`${content.replace(/`/g, '\\`')}\``;
-  }
   if (name === 'strong' || name === 'b') return `**${content}**`;
   if (name === 'em' || name === 'i') return `*${content}*`;
   if (name === 'del' || name === 's') return `~~${content}~~`;

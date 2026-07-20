@@ -213,9 +213,9 @@ NO：（默认）不将回调方法派发到主线程。
   - 2：直播场景：背景音乐播放。
   - 3：（默认）语聊场景：在线 K 歌房。
   - 4：语聊场景：背景音乐播放。
-  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例：`\{"sceneType"\:1\}`
+  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例：`{"sceneType":1}`
 
-- `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例：`\{"format": \{"highpart": 0\}\}`
+- `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例：`{"format": {"highpart": 0}}`
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -584,7 +584,7 @@ NO：（默认）不将回调方法派发到主线程。
 - 4：频道场景：声动语聊中的背景音乐播放。
 - 5：频道场景：VR 中的在线 K 歌和背景音乐播放。
 
-如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。示例：`\{"sceneType"\:1\}`。
+如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。示例：`{"sceneType":1}`。
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 
@@ -800,14 +800,14 @@ NO：（默认）不将回调方法派发到主线程。
   - `1`：可评分的音乐资源。
   - `2`：不可评分的音乐资源。
 
-示例：`\{"pitchType"\:1\}`。
+示例：`{"pitchType":1}`。
 
 - `needHighPart`：是否需要合唱片段资源。
 
   - YES：需要合唱片段资源。
   - NO：不需要合唱片段资源。
 
-示例：`\{"needHighPart"\:true\}`。
+示例：`{"needHighPart":true}`。
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 

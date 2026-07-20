@@ -423,6 +423,51 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.warnings).toEqual([]);
   });
 
+  it('keeps paragraph inline code as Markdown code inside table cells', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Logger</h1>
+        <p>Call <code>logger</code>.</p>
+        <p>Payload: <code>{"plain": true}</code>.</p>
+        <p>Constraint: <code>{ max: 30, min: 5 }</code>.</p>
+        <p>Template <code>value&#96;with&#96;tick</code>.</p>
+        <table><tr><th>Parameter</th><th>Description</th></tr>
+          <tr><td><code>dict</code></td><td><p>例如，<code>{"funName": "joinRoom", "params": {"isWritable": 1}}</code>。</p></td></tr>
+        </table>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteCommonCallbackDelegate',
+      sourcePath:
+        'html-docs/whiteboard/iOS/Protocols/WhiteCommonCallbackDelegate.html',
+    });
+
+    expect(result.body).toContain('Call `logger`.');
+    expect(result.body).toContain('Payload: `{"plain": true}`.');
+    expect(result.body).toContain('Constraint: `{ max: 30, min: 5 }`.');
+    expect(result.body).toContain('Template ``value`with`tick``.');
+    expect(result.body).toContain(
+      '例如，`{"funName": "joinRoom", "params": {"isWritable": 1}}`。',
+    );
+    expect(result.body).not.toContain('`\\\\\\{');
+    expect(await compileGeneratedMdx(result.body)).toContain('funName');
+  });
+
+  it('repairs legacy paragraph code split by empty code markers', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Legacy code</h1>
+        <p>Use <code></code>WhiteSDK<code>.setSlideDelegate</code> now.</p>
+        <p>Formula <code></code>originX<code> = - </code>width<code> / 2.0d</code>。</p>
+      </article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/whiteboard/ios/legacy-code',
+      sourcePath: 'html-docs/whiteboard/iOS/legacy-code.html',
+    });
+
+    expect(result.body).toContain('Use `WhiteSDK.setSlideDelegate` now.');
+    expect(result.body).toContain('Formula `originX = - width / 2.0d`。');
+    expect(await compileGeneratedMdx(result.body)).toContain(
+      'WhiteSDK.setSlideDelegate',
+    );
+  });
+
   it('keeps Slot placeholders when a legacy table header spans ragged data columns', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Page</h1><table>

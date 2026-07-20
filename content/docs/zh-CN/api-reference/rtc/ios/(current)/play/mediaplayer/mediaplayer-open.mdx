@@ -41,7 +41,7 @@ _migration:
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 `didChangedToState\:reason:` 回调。在收到播放状态为 `AgoraMediaPlayerStateOpenCompleted` 的报告后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+成功调用该方法后，SDK 会触发 `didChangedToState:reason:` 回调。在收到播放状态为 `AgoraMediaPlayerStateOpenCompleted` 的报告后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
 <a id="api_imediaplayer_open__parameters"></a>
 
@@ -195,7 +195,7 @@ _migration:
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 `didOccurEvent\:elapsedTime\:message:` 回调报告 `AgoraMediaPlayerEventSwitchComplete` 事件表示切换成功。如果切换失败，SDK 会自动重试 3 次，若仍失败，会触发 `didOccurEvent\:elapsedTime\:message:` 回调报告 `AgoraMediaPlayerEventSwitchError` 事件表示切换出错。
+成功调用该方法后，SDK 会触发 `didOccurEvent:elapsedTime:message:` 回调报告 `AgoraMediaPlayerEventSwitchComplete` 事件表示切换成功。如果切换失败，SDK 会自动重试 3 次，若仍失败，会触发 `didOccurEvent:elapsedTime:message:` 回调报告 `AgoraMediaPlayerEventSwitchError` 事件表示切换出错。
 
 <a id="api_imediaplayer_switchsrc__parameters"></a>
 

@@ -454,7 +454,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_joinchannelex__detailed_desc"></a>
 
-在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
+在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
 一旦用户加入频道，默认会订阅频道中其他所有用户的音视频流，从而产生用量和计费。如果你希望停止订阅其他用户的媒体流，可以设置 `mediaOptions` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
 :::note
@@ -555,7 +555,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__detailed_desc"></a>
 
-在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
+在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
 一旦用户加入频道，默认会订阅频道中所有其他用户的音视频流，从而产生用量和计费。如需停止订阅指定或所有远端流，请调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
 :::note
@@ -658,7 +658,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__detailed_desc"></a>
 
-在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
+在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
 
 与 [joinChannelByToken\:channelId\:userAccount\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount1) 方法相比，该方法多了一个 `mediaOptions` 参数，用于设置媒体选项，例如是否在频道内发布音视频流。默认情况下，你会订阅频道内所有其他用户的音视频流，从而产生使用量和计费。若要停止订阅其他流，请设置 `mediaOptions` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
@@ -767,7 +767,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__detailed_desc"></a>
 
-在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID\:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
+在调用该方法之前，如果你尚未调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，当你调用该方法加入频道时，SDK 会自动为你创建一个用户 User Account。先调用 `registerLocalUserAccountWithAppID:userAccount:` 注册用户 User Account，再调用该方法加入频道，可以缩短进入频道所需的时间。
 一旦你加入频道，默认会订阅频道中所有其他用户的音视频流，从而产生使用量和计费。如果你希望停止订阅其他用户的媒体流，可以设置 `mediaOptions` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
 :::note
@@ -1974,7 +1974,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__detailed_desc"></a>
 
-当你成功调用 `registerLocalUserAccountWithAppID\:userAccount:` 方法注册用户 User Account，或调用 [joinChannelByToken\:channelId\:userAccount\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道后，SDK 会触发该回调，并返回你的用户 ID 和用户 User Account。
+当你成功调用 `registerLocalUserAccountWithAppID:userAccount:` 方法注册用户 User Account，或调用 [joinChannelByToken\:channelId\:userAccount\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道后，SDK 会触发该回调，并返回你的用户 ID 和用户 User Account。
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__timing"></a>
 

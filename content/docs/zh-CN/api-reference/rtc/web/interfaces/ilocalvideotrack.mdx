@@ -142,16 +142,16 @@ Returns void
 :::info[自从]
 *4.8.0*
 
-提示 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
+提示 HTML `<video>` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
 
-调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
+调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 :::
 
 Parameters
 
 - Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
 
-  `&lt;video&gt;` 标签的可见状态信息。
+  `<video>` 标签的可见状态信息。
 
 Returns void
 
@@ -395,9 +395,9 @@ Returns ImageData
 
    *4.8.0*
 
-获取 HTML `&lt;video&gt;` 标签的可见状态和不可见原因。
+获取 HTML `<video>` 标签的可见状态和不可见原因。
 
-调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `&lt;video&gt;`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
+调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
   Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
    |
@@ -406,8 +406,8 @@ Returns ImageData
   [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
   - `localVideoTrack.isPlaying` 为 `false`。
-  - `&lt;video&gt;` 标签不存在。
-  - `&lt;video&gt;` 标签不是通过 `play` 方法调用产生的。
+  - `<video>` 标签不存在。
+  - `<video>` 标签不是通过 `play` 方法调用产生的。
 
 <a id="off"></a>
 
@@ -549,7 +549,7 @@ Returns IBaseProcessor
 
   - element: string|HTMLElement
 
-    指定一个 DOM 元素，SDK 将在这个元素下创建 `&lt;video&gt;` 元素播放视频轨道，支持 2 种类型：
+    指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
 
     - `string`: 指定该 DOM 元素的 ID 值。
     - `HTMLElement`: 直接传入一个 DOM 元素对象。

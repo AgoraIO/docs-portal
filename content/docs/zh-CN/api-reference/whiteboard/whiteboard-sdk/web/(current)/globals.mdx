@@ -1282,7 +1282,7 @@ for (var member of room.state.roomMembers) {
   | Ctrl + C 或 Command + C | 复制 |
   | Ctrl + V 或 Command + V | 粘贴 |
 
-  如果你想关闭快捷键功能，可以将该属性的其值设为 `\{\}`。
+  如果你想关闭快捷键功能，可以将该属性的其值设为 `{}`。
 - **rejectWhenReadonlyErrorLevel?**: *RoomErrorLevel*
 
   没有可写权限的用户进行写操作时，SDK 的应对方式。
@@ -2923,7 +2923,7 @@ WhiteWebSdkConfiguration: \{appIdentifier:string;deviceType?:[DeviceType](/zh-CN
     });
     ```
 
-    该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk(\{...\})` 时提示发生错误。
+    该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk({...})` 时提示发生错误。
 
       Parameters
 

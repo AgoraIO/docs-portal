@@ -199,8 +199,8 @@ public abstract long getInternalSongCode(long songCode, String jsonOption);
 
 扩展 JSON 字段，默认为 `null`。目前支持以下字段：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`\{"sceneType"\:1\}`。
-- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例：`\{"format": \{"highpart": 0\}\}`。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`{"sceneType":1}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例：`{"format": {"highpart": 0}}`。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -398,7 +398,7 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
   - true：需要合唱片段。
   - false：不需要合唱片段。
 
-示例：`\{"pitchType"\:1\}`，`\{"needHighPart"\:true\}`。
+示例：`{"pitchType":1}`，`{"needHighPart":true}`。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__return_values"></a>
 
@@ -704,7 +704,7 @@ public abstract int preload(long songCode, String jsonOption)
 - 4：声动语聊场景：背景音乐播放。
 - 5：VR 场景：在线 K 歌房和背景音乐播放。
 
-如果你需要切换到其他场景，必须重新调用该方法并在该字段中传入新的 `sceneType` 值。示例：`\{"sceneType"\:1\}`。
+如果你需要切换到其他场景，必须重新调用该方法并在该字段中传入新的 `sceneType` 值。示例：`{"sceneType":1}`。
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 

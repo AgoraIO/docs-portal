@@ -73,6 +73,9 @@ describe('API Center shared migration framework', () => {
     expect(renderSimpleTable(['A', 'B'], [['x|y', '<value>']])).toContain(
       '| x\\|y | &lt;value&gt; |',
     );
+    expect(renderSimpleTable(['Payload'], [['`{"plain": true}`']])).toContain(
+      '| `{"plain": true}` |',
+    );
   });
 
   it('puts migration status and warning details in MDX frontmatter', () => {
