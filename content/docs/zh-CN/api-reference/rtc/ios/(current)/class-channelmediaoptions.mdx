@@ -276,7 +276,7 @@ _migration:
 注：
 
 - 该参数仅在调用 `updateChannelWithMediaOptions` 或 `updateChannelExWithMediaOptions` 方法时生效。
-- 请确保用于生成 Token 的 App ID、频道名和用户名与用于初始化 RTC 引擎的 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法，以及用于加入频道的 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 和 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法中使用的参数一致。
+- 请确保用于生成 Token 的 App ID、频道名和用户名与用于初始化 RTC 引擎的 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法，以及用于加入频道的 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 和 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法中使用的参数一致。
 :::
 
 ### enableBuiltInMediaEncryption
@@ -302,7 +302,7 @@ _migration:
 :::note
 注：
 
-- 该参数仅适用于连麦直播场景。联播主播需调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法以观众身份加入其他主播的频道，并将 `isInteractiveAudience` 设置为 YES。
+- 该参数仅适用于连麦直播场景。联播主播需调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法以观众身份加入其他主播的频道，并将 `isInteractiveAudience` 设置为 YES。
 - 该参数仅在用户角色为 `AgoraClientRoleAudience` 时生效。
 :::
 

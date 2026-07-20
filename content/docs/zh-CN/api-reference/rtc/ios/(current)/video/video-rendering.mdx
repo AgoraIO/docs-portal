@@ -66,7 +66,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## setLocalRenderMode:mode:
+## setLocalRenderMode\:mode:
 
 设置本地视频显示模式。
 
@@ -112,7 +112,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## setLocalRenderMode:mirror:
+## setLocalRenderMode\:mirror:
 
 更新本地视频视图的显示模式。
 
@@ -167,7 +167,7 @@ _migration:
 
 <a id="ariaid-title5"></a>
 
-## setLocalRenderTargetFps:targetFps:
+## setLocalRenderTargetFps\:targetFps:
 
 设置本地视频渲染的最大帧率。
 
@@ -260,7 +260,7 @@ _migration:
 
 <a id="ariaid-title7"></a>
 
-## setRemoteRenderMode:mode:mirror:
+## setRemoteRenderMode\:mode\:mirror:
 
 更新远端用户视频视图的显示模式。
 
@@ -314,7 +314,7 @@ _migration:
 
 <a id="ariaid-title8"></a>
 
-## setRemoteRenderModeEx:mode:mirror:connection:
+## setRemoteRenderModeEx\:mode\:mirror\:connection:
 
 设置指定远端用户的视频显示模式。
 
@@ -480,7 +480,7 @@ _migration:
 在实时互动场景中，如果你需要在本地视频预览中同时查看多个处于视频链路不同观察位置的预览画面，可以多次调用该方法，设置不同的 `view`，并为每个 `view` 设置不同的观察位置。例如，将视频源设置为摄像头后，配置两个 `view`，分别设置 `position` 为 `AgoraVideoModulePositionPostCaptureOrigin` 和 `AgoraVideoModulePositionPostCapture`，即可在本地视频预览中同时查看原始未处理的视频帧和经过美颜特效、虚拟背景、水印等预处理后的视频帧。
 
 :::note
-注： 若仅需在通话中更新本地视频画面的渲染模式或镜像模式，请调用 [setLocalRenderMode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
+注： 若仅需在通话中更新本地视频画面的渲染模式或镜像模式，请调用 [setLocalRenderMode\:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -530,7 +530,7 @@ _migration:
 
 <a id="api_irtcengine_setupremotevideo__detailed_desc"></a>
 
-该方法在本地设备上初始化远端视频流的视频视图，仅影响你本地看到的视频画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户 ID。如果你尚未获取远端用户 ID，请在收到 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。
+该方法在本地设备上初始化远端视频流的视频视图，仅影响你本地看到的视频画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户 ID。如果你尚未获取远端用户 ID，请在收到 [rtcEngine\:didJoinedOfUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。
 
 若要解绑远端用户与视图的绑定关系，请将 `view` 参数设置为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。
 
@@ -540,7 +540,7 @@ _migration:
 注：
 
 - 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderMode` 方法。
-- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
+- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [rtcEngine\:firstRemoteVideoDecodedOfUid\:size\:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -566,7 +566,7 @@ _migration:
 
 <a id="ariaid-title13"></a>
 
-## setupRemoteVideoEx:connection:
+## setupRemoteVideoEx\:connection:
 
 初始化远端用户的视频视图。
 
@@ -640,12 +640,12 @@ _migration:
 自 v4.1.1 版本新增。
 :::
 
-从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关事件信息。
+从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关事件信息。
 
 :::note
 注：
 
-- 如果你未调用该方法，SDK 会从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
+- 如果你未调用该方法，SDK 会从调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
@@ -653,7 +653,7 @@ _migration:
 
 ### 适用场景
 
-你可以结合应用中的 UI 设置（如按钮、滑块）调用该方法，以提升用户体验。例如，在用户点击“加入频道”按钮时调用该方法，然后通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗费的时间，从而优化相关指标。
+你可以结合应用中的 UI 设置（如按钮、滑块）调用该方法，以提升用户体验。例如，在用户点击“加入频道”按钮时调用该方法，然后通过 [rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗费的时间，从而优化相关指标。
 
 <a id="api_irtcengine_startmediarenderingtracing__return_values"></a>
 
@@ -688,7 +688,7 @@ _migration:
 自 v4.1.1 版本新增。
 :::
 
-从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
+从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
 
 :::note
 注：
@@ -726,7 +726,7 @@ _migration:
 
 <a id="ariaid-title16"></a>
 
-## rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:
+## rtcEngine\:didTranscodedStreamLayoutInfoUpdatedWithUserId\:videoLayoutInfo:
 
 当本地用户接收到携带视频合流布局信息的合图视频时触发。
 
@@ -770,7 +770,7 @@ _migration:
 
 <a id="ariaid-title17"></a>
 
-## rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:
+## rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:
 
 视频帧渲染事件的回调。
 

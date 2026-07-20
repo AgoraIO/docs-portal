@@ -166,7 +166,7 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 
 扩展 JSON 字段，默认为 `null`。目前支持传入下列值：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`\{"sceneType":1\}`。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`\{"sceneType"\:1\}`。
 - highPart：副歌片段的索引，从 `onMusicCollectionResult` 回调中获取，索引从 0 开始。示例：`\{"format": \{"highpart": 0\}\}`。
 
 ### internalSongCode
@@ -566,7 +566,7 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 - 4：语聊场景：背景音乐播放。
 - 5：VR 场景：K 歌及背景音乐播放。
 
-如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 `sceneType` 的值。示例：`\{"sceneType":1\}`
+如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 `sceneType` 的值。示例：`\{"sceneType"\:1\}`
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 

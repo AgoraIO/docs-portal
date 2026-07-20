@@ -27,7 +27,7 @@ _migration:
 
 <a id="api_agoramediametadatadatasource_metadatamaxsize__detailed_desc"></a>
 
-调用 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法成功注册后，SDK 每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
+调用 [setMediaMetadataDelegate\:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法成功注册后，SDK 每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
 
 <a id="api_agoramediametadatadatasource_metadatamaxsize__return_values"></a>
 
@@ -43,7 +43,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## readyToSendMetadataAtTimestamp:sourceType:
+## readyToSendMetadataAtTimestamp\:sourceType:
 
 当 SDK 准备好发送元数据时触发回调。
 
@@ -98,7 +98,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## setMediaMetadataDelegate:withType:
+## setMediaMetadataDelegate\:withType:
 
 注册元数据观察者。
 
@@ -143,7 +143,7 @@ _migration:
 
 <a id="ariaid-title5"></a>
 
-## setMediaMetadataDataSource:withType:
+## setMediaMetadataDataSource\:withType:
 
 设置元数据的数据源。
 
@@ -155,7 +155,7 @@ _migration:
 
 <a id="api_irtcengine_setmediametadatadatasource__detailed_desc"></a>
 
-你需要在该方法中实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议，并指定元数据的数据格式。成功调用该方法后，SDK 会触发 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调。你可以结合 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法，在视频流中添加同步的元数据，实现更丰富的直播互动，例如发送购物链接、数字优惠券和在线问答。
+你需要在该方法中实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议，并指定元数据的数据格式。成功调用该方法后，SDK 会触发 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调。你可以结合 [setMediaMetadataDelegate\:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法，在视频流中添加同步的元数据，实现更丰富的直播互动，例如发送购物链接、数字优惠券和在线问答。
 
 :::note
 注： 该方法需要在加入频道前调用。

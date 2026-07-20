@@ -20,7 +20,7 @@ _migration:
 
 <a id="ariaid-title2"></a>
 
-## complain:description:
+## complain\:description:
 
 允许你在通话结束后投诉通话质量。
 
@@ -66,7 +66,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## enableEncryption:encryptionConfig:
+## enableEncryption\:encryptionConfig:
 
 启用或关闭内置加密。
 
@@ -133,7 +133,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## enableEncryptionEx:encryptionConfig:connection:
+## enableEncryptionEx\:encryptionConfig\:connection:
 
 启用或关闭内置加密。
 
@@ -329,7 +329,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengineex_getcallidex__detailed_desc"></a>
 
-当你在客户端加入频道时，SDK 会生成一个用于标识该通话的 `callId`。你可以调用该方法获取 `callId`，并在调用如 [rate:rating:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) 和 [complain:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) 等方法时传入该 `callId`。
+当你在客户端加入频道时，SDK 会生成一个用于标识该通话的 `callId`。你可以调用该方法获取 `callId`，并在调用如 [rate\:rating\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) 和 [complain\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) 等方法时传入该 `callId`。
 
 <a id="api_irtcengineex_getcallidex__scenario"></a>
 
@@ -710,7 +710,7 @@ SDK 报告的错误码。
 
 <a id="ariaid-title19"></a>
 
-## rate:rating:description:
+## rate\:rating\:description:
 
 允许你在通话结束后对通话进行评分。
 
@@ -762,7 +762,7 @@ SDK 报告的错误码。
 
 <a id="ariaid-title20"></a>
 
-## sendCustomReportMessage:category:event:label:value:
+## sendCustomReportMessage\:category\:event\:label\:value:
 
 上报自定义消息。
 
@@ -819,7 +819,7 @@ SDK 报告的错误码。
 
 <a id="ariaid-title21"></a>
 
-## sendCustomReportMessageEx:category:event:label:value:connection:
+## sendCustomReportMessageEx\:category\:event\:label\:value\:connection:
 
 支持上报和分析自定义消息。
 
@@ -887,7 +887,7 @@ SDK 报告的错误码。
 
 <a id="ariaid-title22"></a>
 
-## setAVSyncSource:uid:
+## setAVSyncSource\:uid:
 
 设置发布端的音视频同步。
 
@@ -958,7 +958,7 @@ SDK 报告的错误码。
 
 - 该方法需要在加入频道前调用。
 - 当你处于防火墙之后并使用强制 UDP 云代理时，旁路推流和跨频道联播服务不可用。
-- 当你使用强制 TCP 云代理时，若调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放 HTTP 协议的在线音乐文件，会出现错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
+- 当你使用强制 TCP 云代理时，若调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放 HTTP 协议的在线音乐文件，会出现错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__parameters"></a>
@@ -1048,7 +1048,7 @@ SDK 报告的错误码。
 
 ### 废弃
 
-该方法已废弃，请在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
+该方法已废弃，请在调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
 
 指定一个 SDK 输出日志文件。该日志文件记录 SDK 运行过程中的所有日志数据。
 
@@ -1060,7 +1060,7 @@ SDK 报告的错误码。
 
 ### 调用时机
 
-该方法需在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 后立即调用，否则输出的日志可能不完整。
+该方法需在调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 后立即调用，否则输出的日志可能不完整。
 
 <a id="api_irtcengine_setlogfile__parameters"></a>
 
@@ -1099,7 +1099,7 @@ SDK 报告的错误码。
 
 ### 废弃
 
-该方法已废弃，请改用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+该方法已废弃，请改用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
@@ -1157,7 +1157,7 @@ SDK 报告的错误码。
 
 ### 废弃
 
-该方法已废弃，请改用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig`。
+该方法已废弃，请改用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig`。
 
 你可以使用该方法设置 SDK 的日志输出等级。日志等级按以下顺序排列：`AgoraLogFilterOff`、`AgoraLogFilterCritical`、`AgoraLogFilterError`、`AgoraLogFilterWarning`、`AgoraLogFilterInfo` 和 `AgoraLogFilterDebug`。选择某个等级后，你可以查看该等级及其之前的日志内容。例如，如果将日志等级设置为 `AgoraLogFilterWarning`，你将看到 `AgoraLogFilterCritical`、`AgoraLogFilterError` 和 `AgoraLogFilterWarning` 等级的日志。
 
@@ -1198,7 +1198,7 @@ SDK 报告的错误码。
 
 ### 废弃
 
-该方法已废弃，请在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
+该方法已废弃，请在调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
 
 你可以选择一个日志等级，以查看该等级及更高级别的日志信息。详见 [AgoraLogLevel](/zh-CN/api-reference/rtc/ios/enum-loglevel)。
 
@@ -1278,7 +1278,7 @@ SDK 报告的错误码。
 
 ### 相关回调
 
-当订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+当订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [rtcEngine\:didRemoteSubscribeFallbackToAudioOnly\:byUid:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
 
@@ -1369,7 +1369,7 @@ SDK 报告的错误码。
 该方法在加入频道前启动 Last mile 网络探测测试，以获取上行和下行 Last mile 网络的统计数据，包括带宽、丢包率、抖动和往返时延（RTT）。
 
 :::note
-注： 在收到 [rtcEngine:lastmileQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmilequality) 和 [rtcEngine:lastmileProbeTestResult:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。
+注： 在收到 [rtcEngine\:lastmileQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmilequality) 和 [rtcEngine\:lastmileProbeTestResult:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。
 :::
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
@@ -1467,7 +1467,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 ### 废弃
 
-该方法已废弃，请改用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+该方法已废弃，请改用 [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
 
 该回调在连接被声网服务器封禁时触发。
 
@@ -1507,7 +1507,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 ### 废弃
 
-该方法已废弃，请改用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+该方法已废弃，请改用 [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
 
 当 SDK 在建立连接后与服务器断开连接超过四秒时，会触发该回调。触发该回调后，SDK 会尝试重新连接服务器。你可以使用该回调实现弹窗提醒功能。该回调与 [rtcEngineConnectionDidLost:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
 
@@ -1574,7 +1574,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="ariaid-title38"></a>
 
-## rtcEngine:connectionChangedToState:reason:
+## rtcEngine\:connectionChangedToState\:reason:
 
 网络连接状态发生变化时的回调。
 
@@ -1618,7 +1618,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="ariaid-title39"></a>
 
-## rtcEngine:didOccurEncryptionError:
+## rtcEngine\:didOccurEncryptionError:
 
 内置加密错误回调。
 
@@ -1630,7 +1630,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
 
-当你调用 [enableEncryption:encryptionConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enableencryption) 启用加密功能后，如果在发送端或接收端的加密或解密过程中发生错误，SDK 会触发该回调。
+当你调用 [enableEncryption\:encryptionConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enableencryption) 启用加密功能后，如果在发送端或接收端的加密或解密过程中发生错误，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__timing"></a>
 
@@ -1658,7 +1658,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="ariaid-title40"></a>
 
-## rtcEngine:lastmileProbeTestResult:
+## rtcEngine\:lastmileProbeTestResult:
 
 报告 Last-mile 网络探测结果。
 
@@ -1698,7 +1698,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="ariaid-title41"></a>
 
-## rtcEngine:lastmileQuality:
+## rtcEngine\:lastmileQuality:
 
 上报本地用户的 Last-mile 网络质量。
 
@@ -1738,7 +1738,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title42"></a>
 
-## rtcEngine:multiPathStats:
+## rtcEngine\:multiPathStats:
 
 上报多路径传输统计信息。
 
@@ -1780,7 +1780,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title43"></a>
 
-## rtcEngine:networkQuality:txQuality:rxQuality:
+## rtcEngine\:networkQuality\:txQuality\:rxQuality:
 
 报告频道中每个用户的 Last-mile 网络质量。
 
@@ -1792,7 +1792,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
 
-[rtcEngine:networkQuality:txQuality:rxQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworkquality) 回调报告频道中每个用户的 Last-mile 网络状况。Last-mile 指的是本地设备与声网边缘服务器之间的连接。SDK 每两秒触发一次该回调。如果频道中有多个用户，SDK 会触发多次该回调。该回调通过在频道内发送和接收广播数据包来反馈网络质量。过多的广播数据包可能会导致广播风暴。为防止广播风暴造成频道内大量数据传输，该回调默认支持同时反馈最多 4 个远端用户的网络质量。
+[rtcEngine\:networkQuality\:txQuality\:rxQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworkquality) 回调报告频道中每个用户的 Last-mile 网络状况。Last-mile 指的是本地设备与声网边缘服务器之间的连接。SDK 每两秒触发一次该回调。如果频道中有多个用户，SDK 会触发多次该回调。该回调通过在频道内发送和接收广播数据包来反馈网络质量。过多的广播数据包可能会导致广播风暴。为防止广播风暴造成频道内大量数据传输，该回调默认支持同时反馈最多 4 个远端用户的网络质量。
 
 :::note
 注： `txQuality` 在用户未发送流时为 `Unknown`；`rxQuality` 在用户未接收流时为 `Unknown`。
@@ -1832,7 +1832,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title44"></a>
 
-## rtcEngine:networkTypeChanged:
+## rtcEngine\:networkTypeChanged:
 
 本地网络类型发生变化回调。
 
@@ -1866,7 +1866,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title45"></a>
 
-## rtcEngine:permissionError:
+## rtcEngine\:permissionError:
 
 当 SDK 无法获取设备权限时触发的回调。
 
@@ -1904,7 +1904,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title46"></a>
 
-## rtcEngine:didProxyConnected:withUid:proxyType:localProxyIp:elapsed:
+## rtcEngine\:didProxyConnected\:withUid\:proxyType\:localProxyIp\:elapsed:
 
 代理连接状态回调。
 
@@ -1960,7 +1960,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title47"></a>
 
-## rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:
+## rtcEngine\:didRemoteSubscribeFallbackToAudioOnly\:byUid:
 
 远端媒体流因网络变化在音频流与视频流之间切换时触发的回调。
 
@@ -2012,7 +2012,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 <a id="ariaid-title48"></a>
 
-## rtcEngine:uplinkNetworkInfoUpdate:
+## rtcEngine\:uplinkNetworkInfoUpdate:
 
 当上行网络信息发生变化时触发该回调。
 

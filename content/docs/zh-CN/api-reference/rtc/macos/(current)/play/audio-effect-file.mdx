@@ -30,7 +30,7 @@ _migration:
 获取指定音效文件的播放位置，单位为毫秒。
 
 :::note
-注： 请在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
+注： 请在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
 :::
 
 <a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
@@ -112,7 +112,7 @@ _migration:
 音量为整数，范围为 0 到 100。默认值为 100，表示原始音量。
 
 :::note
-注： 请在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
+注： 请在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
 :::
 
 <a id="api_irtcengine_geteffectsvolume__return_values"></a>
@@ -229,7 +229,7 @@ _migration:
 
 <a id="ariaid-title8"></a>
 
-## playAllEffectsWithLoopCount:pitch:pan:gain:publish:
+## playAllEffectsWithLoopCount\:pitch\:pan\:gain\:publish:
 
 播放所有音效。
 
@@ -245,7 +245,7 @@ _migration:
 
 <a id="api_irtcengine_playalleffects__detailed_desc"></a>
 
-在多次调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 预加载多个音效到内存中后，你可以调用此方法为频道内的所有用户播放所有预加载的音效。
+在多次调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 预加载多个音效到内存中后，你可以调用此方法为频道内的所有用户播放所有预加载的音效。
 
 <a id="api_irtcengine_playalleffects__parameters"></a>
 
@@ -297,7 +297,7 @@ _migration:
 
 <a id="ariaid-title9"></a>
 
-## playEffect:filePath:loopCount:pitch:pan:gain:
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain:
 
 播放指定的本地或在线音效文件。
 
@@ -319,7 +319,7 @@ _migration:
 :::note
 注：
 
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，然后再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声音。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，然后再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声音。
 - 如果在调用 `playEffect` 之前调用了 `preloadEffect`，`playEffect` 播放后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，`playEffect` 播放后将销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
@@ -336,11 +336,11 @@ _migration:
 
 ### soundId
 
-音效 ID。每个音效文件的 ID 必须唯一。注意：如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+音效 ID。每个音效文件的 ID 必须唯一。注意：如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
 
 ### filePath
 
-音效文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。注意：如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+音效文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。注意：如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
 
 ### loopCount
 
@@ -380,7 +380,7 @@ _migration:
 
 <a id="ariaid-title10"></a>
 
-## playEffect:filePath:loopCount:pitch:pan:gain:publish:
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish:
 
 播放指定的本地或在线音效文件。
 
@@ -403,7 +403,7 @@ _migration:
 :::note
 注：
 
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
 - 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
@@ -418,7 +418,7 @@ _migration:
 
 ### 相关回调
 
-音效文件播放完成后，SDK 会触发 [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+音效文件播放完成后，SDK 会触发 [rtcEngineDidAudioEffectFinish\:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
 <a id="api_irtcengine_playeffect2__parameters"></a>
 
@@ -429,7 +429,7 @@ _migration:
 音效 ID。每个音效文件的 ID 是唯一的。
 
 :::note
-注： 如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
 :::
 
 ### filePath
@@ -437,7 +437,7 @@ _migration:
 文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
 
 :::note
-注： 如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
 :::
 
 ### loopCount
@@ -485,7 +485,7 @@ _migration:
 
 <a id="ariaid-title11"></a>
 
-## playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:
 
 播放指定的本地或在线音效文件。
 
@@ -509,7 +509,7 @@ _migration:
 :::note
 注：
 
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将文件预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将文件预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
 - 如果在调用 `playEffect` 之前已调用 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
@@ -524,7 +524,7 @@ _migration:
 
 ### 相关回调
 
-播放音效文件结束后，SDK 会触发 [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+播放音效文件结束后，SDK 会触发 [rtcEngineDidAudioEffectFinish\:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
 <a id="api_irtcengine_playeffect3__parameters"></a>
 
@@ -535,7 +535,7 @@ _migration:
 音效 ID。每个音效文件的 ID 必须唯一。
 
 :::note
-注： 如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
 :::
 
 ### filePath
@@ -543,7 +543,7 @@ _migration:
 文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
 
 :::note
-注： 如果你已通过调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
 :::
 
 ### loopCount
@@ -595,7 +595,7 @@ _migration:
 
 <a id="ariaid-title12"></a>
 
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:
 
 在频道中播放指定的音效。
 
@@ -702,7 +702,7 @@ _migration:
 
 <a id="ariaid-title13"></a>
 
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish:
 
 在频道中播放指定的音效。
 
@@ -725,13 +725,13 @@ _migration:
 自 v4.6.0 版本新增。
 :::
 
-该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx:filePath:` 预加载音效后，可调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用此方法。
+该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx\:filePath:` 预加载音效后，可调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用此方法。
 
 :::note
 注：
 
 - 声网建议不要同时播放超过三个音效。
-- 此方法中的 `soundId` 和 `filePath` 必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 此方法中的 `soundId` 和 `filePath` 必须与 `preloadEffectEx\:filePath:` 方法中的保持一致。
 - 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
@@ -752,7 +752,7 @@ _migration:
 
 ### soundId
 
-音效的 ID。每个音效文件的唯一 ID。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+音效的 ID。每个音效文件的唯一 ID。请确保该参数值与 `preloadEffectEx\:filePath:` 方法中的值一致。
 
 ### filePath
 
@@ -804,7 +804,7 @@ _migration:
 
 <a id="ariaid-title14"></a>
 
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:startPos:
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:startPos:
 
 在频道中播放指定的音效。
 
@@ -827,13 +827,13 @@ _migration:
 自 v4.6.0 版本新增。
 :::
 
-你可以使用该方法在频道中播放指定的音效。若需同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。在调用 `preloadEffectEx:filePath:` 预加载音效后，你可以调用该方法将音效播放给频道内所有用户。每次调用该方法只能播放一个音效，若需同时播放多个音效，请多次调用该方法。
+你可以使用该方法在频道中播放指定的音效。若需同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。在调用 `preloadEffectEx\:filePath:` 预加载音效后，你可以调用该方法将音效播放给频道内所有用户。每次调用该方法只能播放一个音效，若需同时播放多个音效，请多次调用该方法。
 
 :::note
 注：
 
 - 声网建议你不要同时播放超过三个音效。
-- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx\:filePath:` 方法中的保持一致。
 - 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
@@ -854,7 +854,7 @@ _migration:
 
 ### soundId
 
-音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx\:filePath:` 方法中的值一致。
 
 ### filePath
 
@@ -903,7 +903,7 @@ _migration:
 
 <a id="ariaid-title15"></a>
 
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain:
 
 在频道中播放指定的音效。
 
@@ -925,15 +925,15 @@ _migration:
 自 v4.6.0 版本新增。
 :::
 
-该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx:filePath:` 预加载音效后，可以调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用该方法。
+该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx\:filePath:` 预加载音效后，可以调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用该方法。
 
 :::note
 注：
 
 - 声网建议不要同时播放超过三个音效。
-- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
-- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
-- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx\:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx\:filePath:`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx\:filePath:`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex4__scenario"></a>
@@ -952,7 +952,7 @@ _migration:
 
 ### soundId
 
-音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx\:filePath:` 方法中的值一致。
 
 ### filePath
 
@@ -997,7 +997,7 @@ _migration:
 
 <a id="ariaid-title16"></a>
 
-## preloadEffect:filePath:startPos:
+## preloadEffect\:filePath\:startPos:
 
 预加载指定的音效文件。
 
@@ -1012,7 +1012,7 @@ _migration:
 <a id="api_irtcengine_preloadeffect__detailed_desc"></a>
 
 该方法每次调用时仅将一个指定的音效文件预加载到内存中。如需预加载多个音效文件，请多次调用该方法。
-你可以调用 `playEffect` 播放已预加载的音效，或调用 [playAllEffectsWithLoopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有已预加载的音效。
+你可以调用 `playEffect` 播放已预加载的音效，或调用 [playAllEffectsWithLoopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有已预加载的音效。
 
 - 为确保通信顺畅，请限制音效文件的大小。
 - 声网建议你在加入频道前调用此方法。
@@ -1056,7 +1056,7 @@ _migration:
 
 <a id="ariaid-title17"></a>
 
-## preloadEffect:filePath:
+## preloadEffect\:filePath:
 
 将指定的音效文件预加载到内存中。
 
@@ -1113,7 +1113,7 @@ _migration:
 
 <a id="ariaid-title18"></a>
 
-## preloadEffectEx:soundId:filePath:startPos:
+## preloadEffectEx\:soundId\:filePath\:startPos:
 
 预加载指定的音效文件到频道中。
 
@@ -1184,7 +1184,7 @@ _migration:
 
 <a id="ariaid-title19"></a>
 
-## preloadEffectEx:soundId:filePath:
+## preloadEffectEx\:soundId\:filePath:
 
 预加载指定的音效文件到频道中。
 
@@ -1202,7 +1202,7 @@ _migration:
 自 v4.6.0 版本新增。
 :::
 
-每次调用该方法时，你只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，你可以调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 `playAllEffects:loopCount:pitch:pan:gain:publish:` 播放所有预加载的音效。
+每次调用该方法时，你只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，你可以调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 `playAllEffects\:loopCount\:pitch\:pan\:gain\:publish:` 播放所有预加载的音效。
 
 :::note
 注：
@@ -1320,7 +1320,7 @@ _migration:
 
 <a id="ariaid-title22"></a>
 
-## setEffectPosition:pos:
+## setEffectPosition\:pos:
 
 设置音效文件的播放位置。
 
@@ -1381,7 +1381,7 @@ _migration:
 
 ### 调用时机
 
-在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
 
 <a id="api_irtcengine_seteffectsvolume__parameters"></a>
 
@@ -1406,7 +1406,7 @@ _migration:
 
 <a id="ariaid-title24"></a>
 
-## setVolumeOfEffect:withVolume:
+## setVolumeOfEffect\:withVolume:
 
 设置指定音效文件的播放音量。
 
@@ -1419,13 +1419,13 @@ _migration:
 
 <a id="api_irtcengine_setvolumeofeffect__detailed_desc"></a>
 
-调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后，可调用该方法设置指定音效文件的播放音量。
+调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后，可调用该方法设置指定音效文件的播放音量。
 
 <a id="api_irtcengine_setvolumeofeffect__timing"></a>
 
 ### 调用时机
 
-在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用。
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用。
 
 <a id="api_irtcengine_setvolumeofeffect__parameters"></a>
 
@@ -1507,7 +1507,7 @@ _migration:
 
 ### 调用时机
 
-在调用 [playEffect:filePath:loopCount:pitch:pan:gain:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect1)、[playEffect:filePath:loopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect2) 或 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect1)、[playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect2) 或 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
 
 <a id="api_irtcengine_stopeffect__parameters"></a>
 
@@ -1544,7 +1544,7 @@ _migration:
 
 <a id="api_irtcengine_unloadeffect__detailed_desc"></a>
 
-调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 方法将音效文件加载到内存后，如需释放该音效文件，可调用 [unloadEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_unloadeffect) 方法。
+调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 方法将音效文件加载到内存后，如需释放该音效文件，可调用 [unloadEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_unloadeffect) 方法。
 
 <a id="api_irtcengine_unloadeffect__timing"></a>
 
@@ -1575,7 +1575,7 @@ _migration:
 
 <a id="ariaid-title28"></a>
 
-## rtcEngineDidAudioEffectFinish:soundId:
+## rtcEngineDidAudioEffectFinish\:soundId:
 
 本地音效文件播放完成时的回调。
 

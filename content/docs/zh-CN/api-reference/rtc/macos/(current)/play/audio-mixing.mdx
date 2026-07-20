@@ -76,7 +76,7 @@ _migration:
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用。
+在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged\:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
 
@@ -116,14 +116,14 @@ _migration:
 你可以通过该方法在本地客户端和远端客户端调节混音音量。
 
 :::note
-注： 该方法不会影响通过 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
+注： 该方法不会影响通过 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法之后调用该方法。
+请在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法之后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingvolume__parameters"></a>
 
@@ -165,7 +165,7 @@ _migration:
 :::note
 注：
 
-- 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying`）后调用此方法。
+- 你需要在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying`）后调用此方法。
 - 如果你需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -200,7 +200,7 @@ _migration:
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
+在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_getaudiomixingduration__return_values"></a>
 
@@ -235,7 +235,7 @@ _migration:
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
+请在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
 
@@ -298,7 +298,7 @@ _migration:
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
 :::note
-注： 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
+注： 你需要在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine\:audioMixingStateChanged\:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -430,7 +430,7 @@ _migration:
 
 <a id="ariaid-title13"></a>
 
-## selectMultiAudioTrack:publishTrackIndex:
+## selectMultiAudioTrack\:publishTrackIndex:
 
 分别选择要在本地设备播放和发布到频道的音轨。
 
@@ -511,7 +511,7 @@ _migration:
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:`（`AgoraAudioMixingStateTypePlaying`）回调后调用该方法。
+在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged\:reasonCode:`（`AgoraAudioMixingStateTypePlaying`）回调后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
 
@@ -554,7 +554,7 @@ _migration:
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
+你需要在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged\:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
 
@@ -591,7 +591,7 @@ _migration:
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__detailed_desc"></a>
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调报告状态为 `AgoraAudioMixingStateTypePlaying` 后调用此方法。
+请在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged\:reasonCode:` 回调报告状态为 `AgoraAudioMixingStateTypePlaying` 后调用此方法。
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
 
@@ -638,7 +638,7 @@ _migration:
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
+请在调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged\:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingposition__parameters"></a>
 
@@ -663,7 +663,7 @@ _migration:
 
 <a id="ariaid-title18"></a>
 
-## startAudioMixing:loopback:cycle:
+## startAudioMixing\:loopback\:cycle:
 
 开始播放音乐文件。
 
@@ -682,7 +682,7 @@ _migration:
 :::note
 注：
 
-- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果你需要多次调用该方法，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -739,7 +739,7 @@ _migration:
 
 <a id="ariaid-title19"></a>
 
-## startAudioMixing:loopback:cycle:startPos:
+## startAudioMixing\:loopback\:cycle\:startPos:
 
 开始播放音乐文件。
 
@@ -759,7 +759,7 @@ _migration:
 :::note
 注：
 
-- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果需要多次调用该方法，确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -773,7 +773,7 @@ _migration:
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypePlaying`）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypeStopped`）回调。
+成功调用该方法后，SDK 会触发 [rtcEngine\:audioMixingStateChanged\:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypePlaying`）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine\:audioMixingStateChanged\:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypeStopped`）回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
@@ -901,7 +901,7 @@ _migration:
 
 <a id="ariaid-title22"></a>
 
-## rtcEngine:audioMixingPositionChanged:
+## rtcEngine\:audioMixingPositionChanged:
 
 报告音乐文件的播放进度。
 
@@ -913,13 +913,13 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__detailed_desc"></a>
 
-你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
+你调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__timing"></a>
 
 ### 触发时机
 
-你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调。
+你调用 [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
 
@@ -941,7 +941,7 @@ _migration:
 
 <a id="ariaid-title23"></a>
 
-## rtcEngine:audioMixingStateChanged:reasonCode:
+## rtcEngine\:audioMixingStateChanged\:reasonCode:
 
 音乐文件播放状态发生变化回调。
 

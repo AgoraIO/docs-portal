@@ -1,6 +1,28 @@
+import { compile } from '@mdx-js/mdx';
+import { remarkDirectiveAdmonition } from 'fumadocs-core/mdx-plugins';
+import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
+import { directiveCalloutTypes } from '../src/lib/mdx/directive-callouts';
 import { convertHtmlToMdx } from './lib/api-center/html-to-mdx.mjs';
 import { buildLegacyRouteMap } from './lib/api-center/migration-framework.mjs';
+
+async function compileGeneratedMdx(source: string) {
+  return String(
+    await compile(source, {
+      format: 'mdx',
+      jsx: true,
+      remarkPlugins: [
+        remarkDirective,
+        [
+          remarkDirectiveAdmonition,
+          {
+            types: directiveCalloutTypes,
+          },
+        ],
+      ],
+    }),
+  );
+}
 
 describe('API Center shared HTML to MDX converter', () => {
   it('converts headings, stable anchors, links, lists, callouts, code, definitions, tables, and images', async () => {
@@ -182,6 +204,35 @@ describe('API Center shared HTML to MDX converter', () => {
 
     expect(result.body).toContain('### 自从\n\nOrdinary definition.');
     expect(result.body).not.toContain(':::info[自从]');
+  });
+
+  it('escapes inline prose colons that remark-directive would parse as empty directives', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Release</h1><p>agora::rtc::IConfig</p><ul>
+        <li><span class="xref"><span class="keyword">true</span></span>:该方法为同步调用。</li>
+        <li><code>false</code>:该方法为异步调用。目前仅支持同步调用。</li>
+      </ul><table><tr><th>Source</th></tr><tr><td><a href="https://github.com/example/repo#method:param">index.d.ts:42</a></td></tr></table></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_initialize',
+      sourcePath: 'html-docs/rtc/Electron/API/toc_initialize.html',
+    });
+    const compiled = await compileGeneratedMdx(result.body);
+
+    expect(result.body).toContain('- true\\:该方法为同步调用。');
+    expect(result.body).toContain(
+      '- `false`\\:该方法为异步调用。目前仅支持同步调用。',
+    );
+    expect(result.body).toContain('agora::rtc::IConfig');
+    expect(result.body).not.toContain('agora:\\:rtc');
+    expect(compiled).toContain('true:该方法为同步调用。');
+    expect(compiled).toContain('该方法为异步调用。目前仅支持同步调用。');
+    expect(result.body).toContain(
+      '[index.d.ts\\:42](https://github.com/example/repo#method:param)',
+    );
+    expect(compiled).toContain(
+      'href="https://github.com/example/repo#method:param"',
+    );
+    expect(compiled).not.toContain('<_components.div />');
   });
 
   it('preserves DITA related-link blocks with standalone strong labels', async () => {

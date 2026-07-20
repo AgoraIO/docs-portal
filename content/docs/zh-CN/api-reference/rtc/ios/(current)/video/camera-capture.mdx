@@ -46,7 +46,7 @@ _migration:
 
 ### 调用时机
 
-你必须在摄像头成功开启后调用该方法，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing`（1）之后。
+你必须在摄像头成功开启后调用该方法，即 SDK 触发 [rtcEngine\:localVideoStateChangedOfState\:reason\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing`（1）之后。
 
 <a id="api_irtcengine_setcamerastabilizationmode__parameters"></a>
 
@@ -71,7 +71,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## startCameraCapture:config:
+## startCameraCapture\:config:
 
 开始视频采集。
 
@@ -86,7 +86,7 @@ _migration:
 你可以调用此方法并指定 `sourceType` 来开始从一个或多个摄像头进行视频采集。
 
 :::note
-注： 在 iOS 上，如果你想启用多摄像头采集，需要先调用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 并将 `enabled` 设置为 YES，然后再调用此方法。
+注： 在 iOS 上，如果你想启用多摄像头采集，需要先调用 [enableMultiCamera\:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 并将 `enabled` 设置为 YES，然后再调用此方法。
 :::
 
 <a id="api_irtcengine_startcameracapture__parameters"></a>
@@ -99,7 +99,7 @@ _migration:
 
 ### config
 
-视频采集的配置。在 iOS 上，此参数无实际作用。请使用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数来设置视频采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
+视频采集的配置。在 iOS 上，此参数无实际作用。请使用 [enableMultiCamera\:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数来设置视频采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
 
 <a id="api_irtcengine_startcameracapture__return_values"></a>
 
@@ -128,7 +128,7 @@ _migration:
 
 <a id="api_irtcengine_stopcameracapture__detailed_desc"></a>
 
-调用 [startCameraCapture:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) 方法通过一个或多个摄像头开始视频采集后，你可以调用该方法并设置 `sourceType` 参数以停止指定摄像头的视频采集。
+调用 [startCameraCapture\:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) 方法通过一个或多个摄像头开始视频采集后，你可以调用该方法并设置 `sourceType` 参数以停止指定摄像头的视频采集。
 
 - 如果你正在使用本地视频合流功能，调用该方法可能会导致本地视频合流中断。
 - 在 iOS 上，如果你想禁用多摄像头采集，需要在调用该方法后调用 `enableMultiCamera:` 并将 `enabled` 设置为 NO。

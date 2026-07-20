@@ -15,7 +15,7 @@ _migration:
 
 <a id="ariaid-title2"></a>
 
-## addView:config:error:
+## addView\:config\:error:
 
 添加一个渲染视图。
 
@@ -47,7 +47,7 @@ _migration:
 
 ### 调用时机
 
-你必须在调用 [setCanvas:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_setcanvas) 之前调用此方法。
+你必须在调用 [setCanvas\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_setcanvas) 之前调用此方法。
 
 <a id="api_canvas_addview__parameters"></a>
 
@@ -83,7 +83,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## initWithRte:initialConfig:
+## initWithRte\:initialConfig:
 
 构造一个 [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas) 对象。
 
@@ -218,7 +218,7 @@ _migration:
 
 ### 调用时机
 
-你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
 <a id="api_playerconfig_getabrfallbacklayer__parameters"></a>
 
@@ -262,7 +262,7 @@ _migration:
 
 ### 调用时机
 
-你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
 <a id="api_playerconfig_getabrsubscriptionlayer__parameters"></a>
 
@@ -346,14 +346,14 @@ _migration:
 你可以调用此方法获取媒体播放器当前的自动播放设置。
 
 :::note
-注： 必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
+注： 必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
 :::
 
 <a id="api_playerconfig_getautoplay__timing"></a>
 
 ### 调用时机
 
-必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
+必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
 
 <a id="api_playerconfig_getautoplay__parameters"></a>
 
@@ -380,7 +380,7 @@ _migration:
 
 <a id="ariaid-title10"></a>
 
-## getConfigs:error:
+## getConfigs\:error:
 
 获取当前播放器的视频渲染配置。
 
@@ -400,7 +400,7 @@ _migration:
 
 ### 调用时机
 
-你需要在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_canvas_canvas) 方法之后调用该方法。
+你需要在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_canvas_canvas) 方法之后调用该方法。
 
 <a id="api_canvas_getconfigs_canvas__parameters"></a>
 
@@ -429,7 +429,7 @@ _migration:
 
 <a id="ariaid-title11"></a>
 
-## getConfigs:error:
+## getConfigs\:error:
 
 获取当前媒体播放器配置选项。
 
@@ -449,7 +449,7 @@ _migration:
 
 ### 调用时机
 
-你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
+你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 
 <a id="api_player_getconfigs_player__parameters"></a>
 
@@ -478,7 +478,7 @@ _migration:
 
 <a id="ariaid-title12"></a>
 
-## getConfigs:error:
+## getConfigs\:error:
 
 获取 RTE 对象的配置信息。
 
@@ -543,13 +543,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-通过调用此方法创建的 `RTE` 对象无需通过 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。如果你尚未创建并初始化 RTC 引擎，可以先调用 [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte) 创建一个 `RTE` 对象，然后使用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。
+通过调用此方法创建的 `RTE` 对象无需通过 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。如果你尚未创建并初始化 RTC 引擎，可以先调用 [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte) 创建一个 `RTE` 对象，然后使用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。
 
 <a id="api_rte_getfrombridge__timing"></a>
 
 ### 调用时机
 
-在调用此方法之前，请确保你已通过调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 初始化 RTC 引擎。
+在调用此方法之前，请确保你已通过调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 初始化 RTC 引擎。
 
 <a id="api_rte_getfrombridge__parameters"></a>
 
@@ -573,7 +573,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title14"></a>
 
-## getInfo:error:
+## getInfo\:error:
 
 获取播放器播放和媒体流相关的信息。
 
@@ -592,7 +592,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你可以使用该方法获取播放器和媒体流相关的信息，例如音频采样率和视频帧尺寸。
 
 :::note
-注： 你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
+注： 你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
 <a id="api_player_getinfo__parameters"></a>
@@ -721,7 +721,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
 <a id="api_canvasconfig_getmirrormode__parameters"></a>
 
@@ -887,7 +887,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你需要在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+你需要在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
 <a id="api_canvasconfig_getrendermode__parameters"></a>
 
@@ -930,7 +930,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法用于获取播放器的统计信息，并通过回调函数异步返回结果。统计信息包括解码和渲染帧率、音视频码率等。
 
 :::note
-注： 你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后再调用此方法。
+注： 你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后再调用此方法。
 :::
 
 <a id="api_player_getstats__parameters"></a>
@@ -952,7 +952,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title23"></a>
 
-## initMediaEngine:error:
+## initMediaEngine\:error:
 
 初始化 `RTE` 引擎。
 
@@ -990,7 +990,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### error
 
-初始化过程中发生的错误信息。当调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法进行初始化时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
+初始化过程中发生的错误信息。当调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法进行初始化时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
 <a id="api_rte_initmediaengine__return_values"></a>
 
@@ -1046,7 +1046,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title25"></a>
 
-## muteAudio:error:
+## muteAudio\:error:
 
 开始或停止接收音频流。
 
@@ -1066,7 +1066,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
 
 <a id="api_player_muteaudio__related"></a>
 
@@ -1104,7 +1104,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title26"></a>
 
-## muteVideo:error:
+## muteVideo\:error:
 
 开始或停止接收远端视频流。
 
@@ -1124,7 +1124,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
 
 <a id="api_player_mutevideo__related"></a>
 
@@ -1162,7 +1162,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title27"></a>
 
-## openWithUrl:startTime:cb:
+## openWithUrl\:startTime\:cb:
 
 打开一个 URL 资源。
 
@@ -1178,7 +1178,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-该方法支持通过 URL 打开实时流媒体资源。若希望加快打开 URL 资源的速度，可以在调用该方法前先调用 [preloadWithUrl:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_preloadwithurl) 预加载资源。
+该方法支持通过 URL 打开实时流媒体资源。若希望加快打开 URL 资源的速度，可以在调用该方法前先调用 [preloadWithUrl\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_preloadwithurl) 预加载资源。
 
 :::note
 注： 该方法目前仅支持打开以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
@@ -1188,13 +1188,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-该方法必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用。
+该方法必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用。
 
 <a id="api_player_openwithurl__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调报告播放器连接状态为 `AgoraRtePlayerStateOpening`，表示正在打开 URL。打开成功后，播放器连接状态会报告为 `AgoraRtePlayerStateOpenCompleted`。如果资源打开失败，会收到 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调，报告连接状态为 `AgoraRtePlayerStateFailed`。此时需先调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)，再调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 重新打开 URL 资源。如果已关闭自动播放，可在资源打开后调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 开始播放。
+成功调用该方法后，SDK 会触发 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调报告播放器连接状态为 `AgoraRtePlayerStateOpening`，表示正在打开 URL。打开成功后，播放器连接状态会报告为 `AgoraRtePlayerStateOpenCompleted`。如果资源打开失败，会收到 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调，报告连接状态为 `AgoraRtePlayerStateFailed`。此时需先调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)，再调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 重新打开 URL 资源。如果已关闭自动播放，可在资源打开后调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 开始播放。
 
 <a id="api_player_openwithurl__parameters"></a>
 
@@ -1283,13 +1283,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你已关闭自动播放，在使用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 成功打开直播流后，可以调用此方法开始播放。
+如果你已关闭自动播放，在使用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 成功打开直播流后，可以调用此方法开始播放。
 
 <a id="api_player_play_player__timing"></a>
 
 ### 调用时机
 
-仅在收到 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调并报告状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
+仅在收到 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调并报告状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
 
 <a id="api_player_play_player__parameters"></a>
 
@@ -1314,7 +1314,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title30"></a>
 
-## initWithRte:initialConfig:
+## initWithRte\:initialConfig:
 
 构造一个播放器对象。
 
@@ -1334,7 +1334,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之后调用此方法。
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之后调用此方法。
 
 <a id="api_player_player_player__parameters"></a>
 
@@ -1356,7 +1356,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title31"></a>
 
-## preloadWithUrl:error:
+## preloadWithUrl\:error:
 
 预加载 URL 资源。
 
@@ -1372,7 +1372,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-你可以在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用该方法，成功预加载 URL 资源后，可以更快地通过 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 打开该资源，从而减少等待时间，提升视听体验的流畅度。
+你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用该方法，成功预加载 URL 资源后，可以更快地通过 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 打开该资源，从而减少等待时间，提升视听体验的流畅度。
 
 :::note
 注： 该方法当前仅对以 `rte://` 为前缀的 URL 生效。最多可预加载 20 个 URL，若超过限制，最新预加载的 URL 会替换最早的 URL。
@@ -1411,7 +1411,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title32"></a>
 
-## registerObserver:error:
+## registerObserver\:error:
 
 注册一个播放器观察者对象。
 
@@ -1427,7 +1427,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-在调用此方法之前，你需要实现一个继承自 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver) 的接口类。你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后再调用此方法。
+在调用此方法之前，你需要实现一个继承自 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver) 的接口类。你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后再调用此方法。
 
 <a id="api_player_registerobserver_player__parameters"></a>
 
@@ -1456,7 +1456,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title33"></a>
 
-## removeView:config:error:
+## removeView\:config\:error:
 
 移除一个渲染视图。
 
@@ -1472,7 +1472,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-调用 [addView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview) 方法添加视图后，可以调用该方法移除渲染视图。
+调用 [addView\:config\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview) 方法添加视图后，可以调用该方法移除渲染视图。
 
 :::note
 注： 每次只能移除一个视图。
@@ -1482,7 +1482,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-必须在调用 [addView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview) 方法之后调用。
+必须在调用 [addView\:config\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview) 方法之后调用。
 
 <a id="api_canvas_removeview__parameters"></a>
 
@@ -1531,13 +1531,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-`RTE` 对象用于组织和管理 `RTE` 的内部资源。你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
+`RTE` 对象用于组织和管理 `RTE` 的内部资源。你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
 
 <a id="api_rte_rte_rte__timing"></a>
 
 ### 调用时机
 
-你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
 
 <a id="api_rte_rte_rte__parameters"></a>
 
@@ -1562,7 +1562,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title35"></a>
 
-## seek:error:
+## seek\:error:
 
 跳转到指定的播放位置。
 
@@ -1605,7 +1605,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title36"></a>
 
-## setAbrFallbackLayer:error:
+## setAbrFallbackLayer\:error:
 
 设置已订阅远端视频流的分层推流回退选项。
 
@@ -1640,7 +1640,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
+必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
 
 <a id="api_playerconfig_setabrfallbacklayer__parameters"></a>
 
@@ -1677,7 +1677,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title37"></a>
 
-## setAbrSubscriptionLayer:error:
+## setAbrSubscriptionLayer\:error:
 
 设置订阅端媒体流的视频质量层级。
 
@@ -1709,7 +1709,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
+你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
 
 <a id="api_playerconfig_setabrsubscriptionlayer__parameters"></a>
 
@@ -1744,7 +1744,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title38"></a>
 
-## setAppId:error:
+## setAppId\:error:
 
 设置声网 App ID。
 
@@ -1764,7 +1764,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
 
 <a id="api_config_setappid__parameters"></a>
 
@@ -1786,7 +1786,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title39"></a>
 
-## setAutoPlay:error:
+## setAutoPlay\:error:
 
 设置是否启用自动播放。
 
@@ -1802,17 +1802,17 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-你可以在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用此方法设置是否启用自动播放。如果未设置，默认启用自动播放。
+你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用此方法设置是否启用自动播放。如果未设置，默认启用自动播放。
 
 :::note
-注： 该方法必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
+注： 该方法必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
 :::
 
 <a id="api_playerconfig_setautoplay__timing"></a>
 
 ### 调用时机
 
-该方法必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
+该方法必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
 
 <a id="api_playerconfig_setautoplay__parameters"></a>
 
@@ -1837,7 +1837,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title40"></a>
 
-## setCanvas:error:
+## setCanvas\:error:
 
 设置用于显示视频的视图窗口。
 
@@ -1856,7 +1856,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法用于设置用于显示视频的视图窗口。在视频流成功开始播放后，视频将渲染在指定的 `canvas` 上。
 
 :::note
-注： 你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
+注： 你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
 <a id="api_player_setcanvas__parameters"></a>
@@ -1886,7 +1886,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title41"></a>
 
-## setConfigs:error:
+## setConfigs\:error:
 
 设置播放器的视频渲染配置。
 
@@ -1906,7 +1906,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用此方法。
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用此方法。
 
 <a id="api_canvas_setconfigs_canvas__parameters"></a>
 
@@ -1935,7 +1935,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 
 <a id="ariaid-title42"></a>
 
-## setConfigs:error:
+## setConfigs\:error:
 
 配置播放器参数。
 
@@ -1954,7 +1954,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 你可以调用此方法配置播放器，例如启用自动播放、订阅不同分辨率和码率的视频流。
 
 :::note
-注： 必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
+注： 必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
 <a id="api_player_setconfigs_player__parameters"></a>
@@ -1984,7 +1984,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 
 <a id="ariaid-title43"></a>
 
-## setConfigs:error:
+## setConfigs\:error:
 
 配置 RTE 对象的信息。
 
@@ -2033,7 +2033,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title44"></a>
 
-## setJsonParameter:error:
+## setJsonParameter\:error:
 
 通过 JSON 配置 SDK 提供的技术预览或定制功能。
 
@@ -2052,7 +2052,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 当你需要设置私有参数或使用定制功能时，可以调用此方法。
 
 :::note
-注： 你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
+注： 你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
 :::
 
 <a id="api_config_setjsonparameter_config__scenario"></a>
@@ -2081,7 +2081,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title45"></a>
 
-## setLoopCount:error:
+## setLoopCount\:error:
 
 设置播放媒体文件的循环次数。
 
@@ -2124,7 +2124,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title46"></a>
 
-## setVideoMirrorMode:error:
+## setVideoMirrorMode\:error:
 
 设置视频镜像模式。
 
@@ -2144,7 +2144,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 ### 调用时机
 
-你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
+你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
 
 <a id="api_canvasconfig_setmirrormode__parameters"></a>
 
@@ -2166,7 +2166,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title47"></a>
 
-## setPlaybackSpeed:error:
+## setPlaybackSpeed\:error:
 
 设置播放速度参数。
 
@@ -2183,7 +2183,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 :::
 
 :::note
-注： 你可以在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
+注： 你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
 :::
 
 <a id="api_playerconfig_setplaybackspeed__parameters"></a>
@@ -2206,7 +2206,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title48"></a>
 
-## setPlayoutVolume:error:
+## setPlayoutVolume\:error:
 
 设置播放音量参数。
 
@@ -2247,7 +2247,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title49"></a>
 
-## setVideoRenderMode:error:
+## setVideoRenderMode\:error:
 
 设置视频渲染模式。
 
@@ -2328,7 +2328,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title51"></a>
 
-## switchWithUrl:syncPts:cb:
+## switchWithUrl\:syncPts\:cb:
 
 在播放过程中切换到新的 URL。
 
@@ -2375,7 +2375,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title52"></a>
 
-## unregisterObserver:error:
+## unregisterObserver\:error:
 
 取消注册媒体播放器事件观察者对象。
 
@@ -2391,17 +2391,17 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 注册媒体播放器事件观察者对象后，如需取消注册该观察者对象，可以调用此方法。
+调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 注册媒体播放器事件观察者对象后，如需取消注册该观察者对象，可以调用此方法。
 
 :::note
-注： 该方法必须在调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
+注： 该方法必须在调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
 :::
 
 <a id="api_player_unregisterobserver_player__timing"></a>
 
 ### 调用时机
 
-该方法必须在调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
+该方法必须在调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
 
 <a id="api_player_unregisterobserver_player__parameters"></a>
 
@@ -2484,7 +2484,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你需要监听播放器事件，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+如果你需要监听播放器事件，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
 <a id="callback_playerobserver_onevent__timing"></a>
 
@@ -2508,7 +2508,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title55"></a>
 
-## onMetadata:data:
+## onMetadata\:data:
 
 接收媒体元数据的回调。
 
@@ -2524,7 +2524,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你需要从输入在线媒体流中获取元数据，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 注册一个播放器观察者对象。
+如果你需要从输入在线媒体流中获取元数据，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 注册一个播放器观察者对象。
 
 <a id="callback_playerobserver_onmetadata_playerobserver__timing"></a>
 
@@ -2568,7 +2568,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你希望获取播放器或媒体流的信息，需要先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。你也可以直接使用 [getInfo:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getinfo) 方法获取信息。
+如果你希望获取播放器或媒体流的信息，需要先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。你也可以直接使用 [getInfo\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getinfo) 方法获取信息。
 
 <a id="callback_playerobserver_onplayerinfoupdated_playerobserver__timing"></a>
 
@@ -2592,9 +2592,9 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title57"></a>
 
-## onPositionChanged:utcTime:
+## onPositionChanged\:utcTime:
 
-[onPositionChanged:utcTime:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onpositionchanged_playerobserver) 回调。报告媒体资源的当前播放进度。
+[onPositionChanged\:utcTime:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onpositionchanged_playerobserver) 回调。报告媒体资源的当前播放进度。
 
 <a id="callback_playerobserver_onpositionchanged_playerobserver__prototype"></a>
 
@@ -2634,7 +2634,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title58"></a>
 
-## onResolutionChanged:height:
+## onResolutionChanged\:height:
 
 视频分辨率变化的回调。
 
@@ -2650,7 +2650,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你需要监控播放器正在播放的视频流的分辨率变化，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+如果你需要监控播放器正在播放的视频流的分辨率变化，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
 <a id="callback_playerobserver_onresolutionchanged__timing"></a>
 
@@ -2678,7 +2678,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 <a id="ariaid-title59"></a>
 
-## onStateChanged:newState:error:
+## onStateChanged\:newState\:error:
 
 播放器状态发生变化回调。
 
@@ -2694,7 +2694,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 自 v4.4.0 版本新增。
 :::
 
-如果你需要监听播放器状态的变化，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+如果你需要监听播放器状态的变化，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
 <a id="callback_playerobserver_onstatechanged__timing"></a>
 

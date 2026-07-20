@@ -15,7 +15,7 @@ _migration:
 
 <a id="ariaid-title2"></a>
 
-## sharedEngineWithAppId:delegate:
+## sharedEngineWithAppId\:delegate:
 
 创建并初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
 
@@ -34,7 +34,7 @@ _migration:
 注：
 
 - 在调用其他 API 之前，必须先调用该方法创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
-- 你可以通过该方法或 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。与该方法相比，[sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 支持更多配置，例如指定连接区域和设置日志文件。
+- 你可以通过该方法或 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。与该方法相比，[sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 支持更多配置，例如指定连接区域和设置日志文件。
 - 每个 App 仅支持创建一个 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
 :::
 
@@ -55,7 +55,7 @@ _migration:
 ### 返回值
 
 - 方法调用成功，返回 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
-- 方法调用失败，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 的 [rtcEngine:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
+- 方法调用失败，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 的 [rtcEngine\:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
 
 ### 所属接口类
 
@@ -102,7 +102,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## sharedEngineWithConfig:delegate:
+## sharedEngineWithConfig\:delegate:
 
 创建并初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
 
@@ -115,7 +115,7 @@ _migration:
 
 <a id="api_irtcengine_initialize__detailed_desc"></a>
 
-你可以通过调用此方法或调用 [sharedEngineWithAppId:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 来创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。与 [sharedEngineWithAppId:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 不同，此方法在创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例时支持更多配置，例如指定连接区域和设置日志文件。
+你可以通过调用此方法或调用 [sharedEngineWithAppId\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 来创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。与 [sharedEngineWithAppId\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 不同，此方法在创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例时支持更多配置，例如指定连接区域和设置日志文件。
 
 :::note
 注： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 每个 App 仅支持创建一个实例。[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 提供的所有方法均为异步执行。声网建议你在同一线程中调用这些方法。
@@ -144,7 +144,7 @@ _migration:
 ### 返回值
 
 - 方法调用成功时，返回初始化后的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
-- 方法调用失败时，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 的 [rtcEngine:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
+- 方法调用失败时，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 的 [rtcEngine\:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
 
 ### 所属接口类
 
@@ -166,7 +166,7 @@ _migration:
 
 <a id="api_irtcengine_release__detailed_desc"></a>
 
-该方法会释放 SDK 使用的所有资源。适用于用户偶尔进行语音或视频通话的场景。当你不再进行通话时，可以通过该方法释放资源，以便用于其他操作。成功调用该方法后，将无法再使用 SDK 中的任何方法或回调。如需再次使用实时通信功能，必须调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法重新创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
+该方法会释放 SDK 使用的所有资源。适用于用户偶尔进行语音或视频通话的场景。当你不再进行通话时，可以通过该方法释放资源，以便用于其他操作。成功调用该方法后，将无法再使用 SDK 中的任何方法或回调。如需再次使用实时通信功能，必须调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法重新创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
 
 :::note
 注： 声网不建议你在 SDK 的任何回调中调用 [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) 方法。否则，SDK 需等待回调返回结果后才能释放资源，可能导致死锁。

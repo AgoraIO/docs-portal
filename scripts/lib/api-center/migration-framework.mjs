@@ -258,7 +258,8 @@ export function escapeMdxText(value) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/\{/g, '\\{')
-    .replace(/\}/g, '\\}');
+    .replace(/\}/g, '\\}')
+    .replace(/(?<![:\\]):(?=[\p{Letter}\p{Number}\p{Mark}_-])/gu, '\\:');
 }
 
 export function normalizeCodeLanguage(value) {
@@ -311,20 +312,33 @@ function escapeTableCell(value) {
   if (/^<Slot name="[^"]+" \/>$/.test(source.trim())) {
     return source.trim();
   }
-  const anchors = [];
-  const protectedSource = source.replace(
-    /<a id=("[^"]*"|'[^']*')><\/a>/g,
-    (anchor) => {
-      const marker = `API_CENTER_STABLE_ANCHOR_${anchors.length}`;
-      anchors.push(anchor);
-      return marker;
-    },
-  );
+  const protectedValues = [];
+  const protect = (protectedValue) => {
+    const marker = `API_CENTER_TABLE_PROTECTED_${protectedValues.length}`;
+    protectedValues.push(protectedValue);
+    return marker;
+  };
+  const protectedSource = source
+    .replace(/<a id=("[^"]*"|'[^']*')><\/a>/g, (anchor) => protect(anchor))
+    .replace(/\\:(?=[\p{Letter}\p{Number}\p{Mark}_-])/gu, (escapedColon) =>
+      protect(escapedColon),
+    )
+    .replace(
+      /(\]\()(<[^>\n]+>|[^)\n]+)(\))/g,
+      (_, opening, destination, closing) =>
+        `${opening}${destination.replace(
+          /(?<![:\\]):(?=[\p{Letter}\p{Number}\p{Mark}_-])/gu,
+          (colon) => protect(colon),
+        )}${closing}`,
+    );
   let escaped = escapeMdxText(protectedSource)
     .replace(/\|/g, '\\|')
     .replace(/\r?\n+/g, ' ');
-  for (const [index, anchor] of anchors.entries()) {
-    escaped = escaped.replace(`API_CENTER_STABLE_ANCHOR_${index}`, anchor);
+  for (const [index, protectedValue] of protectedValues.entries()) {
+    escaped = escaped.replace(
+      `API_CENTER_TABLE_PROTECTED_${index}`,
+      protectedValue,
+    );
   }
   return escaped;
 }

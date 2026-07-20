@@ -28,7 +28,7 @@ _migration:
 
 ### AgoraErrorCodeNotReady
 
-（3）：SDK 尚未就绪。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败；调用方法时无用户加入频道；调用 [rate:rating:description:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_rate) 或 [complain:description:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_complain) 方法时用户尚未离开频道；音频模块被禁用；程序不完整。
+（3）：SDK 尚未就绪。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败；调用方法时无用户加入频道；调用 [rate\:rating\:description:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_rate) 或 [complain\:description:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_complain) 方法时用户尚未离开频道；音频模块被禁用；程序不完整。
 
 ### AgoraErrorCodeNotSupported
 
@@ -36,7 +36,7 @@ _migration:
 
 ### AgoraErrorCodeRefused
 
-（5）：请求被拒绝。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空字符串 `""`；调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 方法加入多个频道时，指定的频道名已被使用。
+（5）：请求被拒绝。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空字符串 `""`；调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 方法加入多个频道时，指定的频道名已被使用。
 
 ### AgoraErrorCodeBufferTooSmall
 
@@ -60,11 +60,11 @@ _migration:
 
 ### AgoraErrorCodeJoinChannelRejected
 
-（17）：加入频道请求被拒绝。可能的原因包括：用户已在频道中。建议通过 connectionChangedToState:reason: 回调判断用户是否在频道中，除非收到 AgoraConnectionStateDisconnected（1）状态，否则不要调用此方法加入频道；调用 startEchoTestWithConfig: 进行通话测试后，未调用 stopEchoTest 结束测试就尝试加入频道。要加入频道，必须先调用 stopEchoTest 结束测试。
+（17）：加入频道请求被拒绝。可能的原因包括：用户已在频道中。建议通过 connectionChangedToState\:reason: 回调判断用户是否在频道中，除非收到 AgoraConnectionStateDisconnected（1）状态，否则不要调用此方法加入频道；调用 startEchoTestWithConfig: 进行通话测试后，未调用 stopEchoTest 结束测试就尝试加入频道。要加入频道，必须先调用 stopEchoTest 结束测试。
 
 ### AgoraErrorCodeLeaveChannelRejected
 
-（18）：离开频道失败。可能的原因包括：在调用 leaveChannel:leaveChannelBlock: 方法前用户已离开频道，建议停止调用此方法以清除错误；在加入频道前调用了 leaveChannel:leaveChannelBlock: 方法，此情况下无需额外操作。
+（18）：离开频道失败。可能的原因包括：在调用 leaveChannel\:leaveChannelBlock: 方法前用户已离开频道，建议停止调用此方法以清除错误；在加入频道前调用了 leaveChannel\:leaveChannelBlock: 方法，此情况下无需额外操作。
 
 ### AgoraErrorCodeAlreadyInUse
 
@@ -115,19 +115,19 @@ _migration:
 
 ### AgoraErrorCodeNotInChannel
 
-（113）：调用 sendStreamMessage:data: 方法时，用户不在频道中。
+（113）：调用 sendStreamMessage\:data: 方法时，用户不在频道中。
 
 ### AgoraErrorCodeSizeTooLarge
 
-（114）：调用 sendStreamMessage:data: 方法时，数据大小超过 1 KB。
+（114）：调用 sendStreamMessage\:data: 方法时，数据大小超过 1 KB。
 
 ### AgoraErrorCodeBitrateLimit
 
-（115）：调用 sendStreamMessage:data: 方法时，数据传输码率超过 6 KB/s。
+（115）：调用 sendStreamMessage\:data: 方法时，数据传输码率超过 6 KB/s。
 
 ### AgoraErrorCodeTooManyDataStreams
 
-（116）：调用 createDataStream:config: 方法时创建了超过五个数据流。
+（116）：调用 createDataStream\:config: 方法时创建了超过五个数据流。
 
 ### AgoraErrorCodeEncryptedStreamNotAllowedPublish
 

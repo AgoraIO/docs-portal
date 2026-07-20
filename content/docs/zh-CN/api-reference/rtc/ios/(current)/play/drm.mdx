@@ -177,7 +177,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title7"></a>
 
-## getInternalSongCode:jsonOption:
+## getInternalSongCode\:jsonOption:
 
 创建音乐资源副歌片段的内部 ID。
 
@@ -197,7 +197,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### songCode
 
-音乐资源的唯一标识。你可以通过调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法，并从 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
+音乐资源的唯一标识。你可以通过调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法，并从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
 
 ### jsonOption
 
@@ -213,9 +213,9 @@ NO：（默认）不将回调方法派发到主线程。
   - 2：直播场景：背景音乐播放。
   - 3：（默认）语聊场景：在线 K 歌房。
   - 4：语聊场景：背景音乐播放。
-  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例：`\{"sceneType":1\}`
+  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例：`\{"sceneType"\:1\}`
 
-- `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例：`\{"format": \{"highpart": 0\}\}`
+- `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例：`\{"format": \{"highpart": 0\}\}`
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -232,7 +232,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title8"></a>
 
-## getLyricWithSongCode:lyricType:
+## getLyricWithSongCode\:lyricType:
 
 获取音乐资源歌词的下载链接。
 
@@ -244,13 +244,13 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getlyric__detailed_desc"></a>
 
-调用该方法后，SDK 会触发 [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，返回歌词的下载链接。
+调用该方法后，SDK 会触发 [onLyricResult\:songCode\:lyricUrl\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，返回歌词的下载链接。
 
 <a id="api_imusiccontentcenter_getlyric__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，报告歌词的下载链接。
+成功调用该方法后，SDK 会触发 [onLyricResult\:songCode\:lyricUrl\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，报告歌词的下载链接。
 
 <a id="api_imusiccontentcenter_getlyric__parameters"></a>
 
@@ -294,13 +294,13 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getmusiccharts__detailed_desc"></a>
 
-调用该方法后，SDK 会触发 [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
+调用该方法后，SDK 会触发 [onMusicChartsResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
 
 <a id="api_imusiccontentcenter_getmusiccharts__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
+成功调用该方法后，SDK 会触发 [onMusicChartsResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
 
 <a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
 
@@ -316,7 +316,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title10"></a>
 
-## getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:
+## getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:
 
 获取指定音乐榜单中的音乐资源列表。
 
@@ -389,10 +389,10 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
 
-在调用该方法前，你需要先获取对应音乐资源的标识符。你可以通过调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取音乐资源，并通过这些方法触发的 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源标识符（`songCode`）。
+在调用该方法前，你需要先获取对应音乐资源的标识符。你可以通过调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取音乐资源，并通过这些方法触发的 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源标识符（`songCode`）。
 
 :::note
-注： 成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult:songCode:simpleInfo:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回音乐资源的详细信息。
+注： 成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult\:songCode\:simpleInfo\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回音乐资源的详细信息。
 :::
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
@@ -491,7 +491,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title14"></a>
 
-## openMediaWithSongCode:startPos:
+## openMediaWithSongCode\:startPos:
 
 通过资源 ID 打开音乐资源。
 
@@ -505,10 +505,10 @@ NO：（默认）不将回调方法派发到主线程。
 
 调用该方法前，请确保要播放的音乐资源已加载完成。你可以通过调用 [isPreloadedWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_ispreloaded) 方法，或监听 `onPreLoadEvent` 回调来确认音乐资源是否已预加载。
 
-调用该方法后，SDK 会触发 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到播放状态 `AgoraMediaPlayerStateOpenCompleted` 后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法开始播放。
+调用该方法后，SDK 会触发 [AgoraRtcMediaPlayer\:didChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到播放状态 `AgoraMediaPlayerStateOpenCompleted` 后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法开始播放。
 
 :::note
-注： 如果要打开的音乐资源受数字版权保护，必须使用该方法。对于未受数字版权保护的音乐资源，你可以选择使用该方法或 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法打开。
+注： 如果要打开的音乐资源受数字版权保护，必须使用该方法。对于未受数字版权保护的音乐资源，你可以选择使用该方法或 [open\:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法打开。
 :::
 
 <a id="api_imusicplayer_open_imusicplayer__parameters"></a>
@@ -538,7 +538,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title15"></a>
 
-## preloadWithSongCode:jsonOption:
+## preloadWithSongCode\:jsonOption:
 
 预加载音乐资源。
 
@@ -557,14 +557,14 @@ NO：（默认）不将回调方法派发到主线程。
 你可以调用此方法预加载你想播放的音乐资源。
 
 :::note
-注： 在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，请确保等待 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
+注： 在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，请确保等待 [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
+成功调用该方法后，SDK 会触发 [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
 
 <a id="api_imusiccontentcenter_preload__parameters"></a>
 
@@ -584,7 +584,7 @@ NO：（默认）不将回调方法派发到主线程。
 - 4：频道场景：声动语聊中的背景音乐播放。
 - 5：频道场景：VR 中的在线 K 歌和背景音乐播放。
 
-如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。示例：`\{"sceneType":1\}`。
+如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。示例：`\{"sceneType"\:1\}`。
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 
@@ -613,17 +613,17 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
 
-你可以调用此方法预加载你想播放的音乐资源。调用成功后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调，报告音乐资源的预加载事件。
+你可以调用此方法预加载你想播放的音乐资源。调用成功后，SDK 会触发 [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调，报告音乐资源的预加载事件。
 
 :::note
-注： 在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，必须等待收到 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
+注： 在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，必须等待收到 [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload2__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告音乐资源的预加载事件。调用此方法前，你需要先调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 获取你想播放的音乐资源，并从这些方法触发的 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号（`songCode`）。
+成功调用该方法后，SDK 会触发 [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告音乐资源的预加载事件。调用此方法前，你需要先调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 获取你想播放的音乐资源，并从这些方法触发的 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号（`songCode`）。
 
 <a id="api_imusiccontentcenter_preload2__parameters"></a>
 
@@ -761,7 +761,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title20"></a>
 
-## searchMusicWithKeyWord:page:pageSize:jsonOption:
+## searchMusicWithKeyWord\:page\:pageSize\:jsonOption:
 
 搜索音乐资源。
 
@@ -773,7 +773,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_searchmusic__detailed_desc"></a>
 
-调用该方法后，SDK 会触发 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回检索到的音乐资源列表。
+调用该方法后，SDK 会触发 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回检索到的音乐资源列表。
 
 <a id="api_imusiccontentcenter_searchmusic__parameters"></a>
 
@@ -800,14 +800,14 @@ NO：（默认）不将回调方法派发到主线程。
   - `1`：可评分的音乐资源。
   - `2`：不可评分的音乐资源。
 
-示例：`\{"pitchType":1\}`。
+示例：`\{"pitchType"\:1\}`。
 
 - `needHighPart`：是否需要合唱片段资源。
 
   - YES：需要合唱片段资源。
   - NO：不需要合唱片段资源。
 
-示例：`\{"needHighPart":true\}`。
+示例：`\{"needHighPart"\:true\}`。
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 
@@ -879,7 +879,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title22"></a>
 
-## onLyricResult:songCode:lyricUrl:reason:
+## onLyricResult\:songCode\:lyricUrl\:reason:
 
 歌词下载链接的回调。
 
@@ -891,13 +891,13 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
 
-调用 [getLyricWithSongCode:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 方法获取指定歌曲的歌词下载链接后，SDK 会触发该回调。
+调用 [getLyricWithSongCode\:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 方法获取指定歌曲的歌词下载链接后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__timing"></a>
 
 ### 触发时机
 
-该回调在你调用 [getLyricWithSongCode:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载链接后被触发。
+该回调在你调用 [getLyricWithSongCode\:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载链接后被触发。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__parameters"></a>
 
@@ -927,7 +927,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title23"></a>
 
-## onMusicChartsResult:result:reason:
+## onMusicChartsResult\:result\:reason:
 
 获取音乐排行榜结果的回调。
 
@@ -971,7 +971,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title24"></a>
 
-## onMusicCollectionResult:result:reason:
+## onMusicCollectionResult\:result\:reason:
 
 获取音乐内容列表的回调。
 
@@ -983,13 +983,13 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
 
-当你调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取指定榜单或搜索音乐内容时，SDK 会触发该回调，返回音乐内容列表的详细信息。
+当你调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取指定榜单或搜索音乐内容时，SDK 会触发该回调，返回音乐内容列表的详细信息。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__timing"></a>
 
 ### 触发时机
 
-该回调在你调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 后被触发。
+该回调在你调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 后被触发。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__parameters"></a>
 
@@ -1015,7 +1015,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title25"></a>
 
-## onPreLoadEvent:songCode:percent:lyricUrl:state:reason:
+## onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:
 
 上报预加载音乐资源的事件。
 
@@ -1027,13 +1027,13 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__detailed_desc"></a>
 
-调用 [preloadWithSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
+调用 [preloadWithSongCode\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__timing"></a>
 
 ### 触发时机
 
-该回调在调用 [preloadWithSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后被触发。
+该回调在调用 [preloadWithSongCode\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后被触发。
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__parameters"></a>
 
@@ -1071,7 +1071,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="ariaid-title26"></a>
 
-## onSongSimpleInfoResult:songCode:simpleInfo:reason:
+## onSongSimpleInfoResult\:songCode\:simpleInfo\:reason:
 
 获取音乐资源详细信息的回调。
 

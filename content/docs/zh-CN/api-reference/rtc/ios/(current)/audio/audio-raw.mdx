@@ -49,7 +49,7 @@ _migration:
 
 ## getMixedAudioParams
 
-设置 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频格式。
+设置 [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频格式。
 
 <a id="api_iaudioframeobserver_getmixedaudioparams__prototype"></a>
 
@@ -62,7 +62,7 @@ _migration:
 你需要在调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 方法时注册该回调。在成功注册音频观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置音频格式。
 
 :::note
-注： SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel`）。确保采样间隔 ≥ 0.01 秒。
+注： SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel`）。确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserver_getmixedaudioparams__return_values"></a>
@@ -93,10 +93,10 @@ _migration:
 
 成功注册音频数据观察器后，SDK 会在每个特定的音频帧处理节点使用该回调，以判断是否触发以下回调：
 
-- [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)
-- [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)
-- [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
-- [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe)
+- [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)
+- [onPlaybackAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)
+- [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe)
 - [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe)
 
 你可以根据场景需求，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值设置需要观察的一个或多个位置。当你需要观察多个位置时，需使用 |（或运算符）。为节省系统资源，建议减少观察位置的数量。
@@ -108,9 +108,9 @@ _migration:
 返回一个位掩码，用于设置观察位置，具体取值如下，详见 `AgoraAudioFramePosition`：
 
 - `AgoraAudioFramePositionPlayback`（0x0001）：该位置可观察所有远端用户混音后的播放音频。对应 `onPlaybackAudioFrame:` 回调。
-- `AgoraAudioFramePositionRecord`（0x0002）：该位置可观察本地用户采集的音频。对应 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
-- `AgoraAudioFramePositionMixed`（0x0004）：该位置可观察本地用户与所有远端用户混音后的播放音频。对应 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
-- `AgoraAudioFramePositionBeforeMixing`（0x0008）：该位置可观察单个远端用户混音前的音频。对应 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+- `AgoraAudioFramePositionRecord`（0x0002）：该位置可观察本地用户采集的音频。对应 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
+- `AgoraAudioFramePositionMixed`（0x0004）：该位置可观察本地用户与所有远端用户混音后的播放音频。对应 [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
+- `AgoraAudioFramePositionBeforeMixing`（0x0008）：该位置可观察单个远端用户混音前的音频。对应 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
 - `AgoraAudioFramePositionEarMonitoring`（0x0010）：该位置可观察本地用户的耳返音频。对应 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 
 ### 所属接口类
@@ -123,7 +123,7 @@ _migration:
 
 ## getPlaybackAudioParams
 
-设置 [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的音频格式。
+设置 [onPlaybackAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的音频格式。
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams__prototype"></a>
 
@@ -136,7 +136,7 @@ _migration:
 你需要在调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 方法时注册回调。成功注册音频观察器后，SDK 会触发该回调，你可以在该回调的返回值中设置音频格式。
 
 :::note
-注： SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。采样间隔（秒）= `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
+注： SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。采样间隔（秒）= `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams__return_values"></a>
@@ -155,7 +155,7 @@ _migration:
 
 ## getRecordAudioParams
 
-设置 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频格式。
+设置 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频格式。
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__prototype"></a>
 
@@ -165,10 +165,10 @@ _migration:
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__detailed_desc"></a>
 
-调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 方法注册回调后，SDK 会触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。你可以在该回调的返回值中设置音频格式。
+调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 方法注册回调后，SDK 会触发 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。你可以在该回调的返回值中设置音频格式。
 
 :::note
-注： SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。采样间隔（秒） = `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
+注： SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。采样间隔（秒） = `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__return_values"></a>
@@ -211,7 +211,7 @@ _migration:
 
 ### delegate
 
-观察者实例。将该参数设为 nil 可释放该实例。声网建议在收到 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频观察者对象。详见 [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)。
+观察者实例。将该参数设为 nil 可释放该实例。声网建议在收到 [rtcEngine\:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频观察者对象。详见 [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)。
 
 <a id="api_irtcengine_registeraudioframeobserver__return_values"></a>
 
@@ -228,7 +228,7 @@ _migration:
 
 <a id="ariaid-title8"></a>
 
-## setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setEarMonitoringAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:
 
 设置耳返原始音频数据的格式。
 
@@ -290,7 +290,7 @@ _migration:
 
 <a id="ariaid-title9"></a>
 
-## setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall:
+## setMixedAudioFrameParametersWithSampleRate\:channel\:samplesPerCall:
 
 设置用于音频采集和播放的混音后原始音频数据格式。
 
@@ -304,7 +304,7 @@ _migration:
 
 <a id="api_irtcengine_setmixedaudioframeparameters__detailed_desc"></a>
 
-SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒） = `samplesPerCall` / (`sampleRate` × `channel`)，请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
+SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒） = `samplesPerCall` / (`sampleRate` × `channel`)，请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
 
 <a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
 
@@ -346,7 +346,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title10"></a>
 
-## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:
+## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate\:channel:
 
 设置混音前原始音频播放数据的格式。
 
@@ -359,7 +359,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__detailed_desc"></a>
 
-你可以在加入频道前调用该方法，设置混音前原始音频播放数据的采样率和声道数。SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+你可以在加入频道前调用该方法，设置混音前原始音频播放数据的采样率和声道数。SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__timing"></a>
 
@@ -397,9 +397,9 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title11"></a>
 
-## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:samplesPerCall:
+## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate\:channel\:samplesPerCall:
 
-设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中音频数据的格式。
+设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中音频数据的格式。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
@@ -411,7 +411,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__detailed_desc"></a>
 
-用于设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的采样率、声道数和每次回调的采样点数。
+用于设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的采样率、声道数和每次回调的采样点数。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__parameters"></a>
 
@@ -419,18 +419,18 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### sampleRate
 
-设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的采样率（Hz）。可设置为以下值：8000、16000、32000、44100 或 48000。
+设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的采样率（Hz）。可设置为以下值：8000、16000、32000、44100 或 48000。
 
 ### channel
 
-设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的声道数。
+设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的声道数。
 
 - 1：单声道。
 - 2：立体声。
 
 ### samplesPerCall
 
-设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的数据的每次回调采样点数。例如，在 RTMP 推流场景中，建议设置为 1024。
+设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的数据的每次回调采样点数。例如，在 RTMP 推流场景中，建议设置为 1024。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -447,7 +447,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title12"></a>
 
-## setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setPlaybackAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:
 
 设置原始音频播放数据的格式。
 
@@ -514,7 +514,7 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 <a id="ariaid-title13"></a>
 
-## setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setRecordingAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:
 
 设置采集的原始音频数据格式。
 
@@ -529,7 +529,7 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__detailed_desc"></a>
 
-SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒）= `samplesPerCall` / (`sampleRate` × `channel`)。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
+SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒）= `samplesPerCall` / (`sampleRate` × `channel`)。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
 
@@ -589,7 +589,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 为了确保你获取的耳返音频数据符合预期，声网建议你通过以下两种方式之一设置耳返音频数据格式：
 
-- 方法一：调用 [setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setEarMonitoringAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
 - 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::note
@@ -627,7 +627,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title15"></a>
 
-## onMixedAudioFrame:channelId:
+## onMixedAudioFrame\:channelId:
 
 获取混合后的采集和播放音频帧回调。
 
@@ -641,7 +641,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 为了确保混合后的采集和播放音频帧的数据格式符合预期，声网建议你通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 [setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setMixedAudioFrameParametersWithSampleRate\:channel\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
 - 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值中设置音频数据格式。SDK 会根据 [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams) 的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::note
@@ -683,7 +683,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title16"></a>
 
-## onPlaybackAudioFrame:channelId:
+## onPlaybackAudioFrame\:channelId:
 
 获取用于播放的原始音频帧回调。
 
@@ -697,11 +697,11 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 为了确保播放音频帧的数据格式符合预期，声网建议你通过以下两种方法之一设置音频数据格式：
 
-- 方法一：调用 [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setPlaybackAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
 - 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值中设置音频数据格式。SDK 会根据 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams) 的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::note
-注： [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)。如果使用方法一设置音频数据格式，则方法二的设置无效。
+注： [setPlaybackAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe__timing"></a>
@@ -737,7 +737,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title17"></a>
 
-## onPlaybackAudioFrameBeforeMixing:channelId:uid:
+## onPlaybackAudioFrameBeforeMixing\:channelId\:uid:
 
 获取已订阅远端用户在混音前的音频帧。
 
@@ -780,7 +780,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="ariaid-title18"></a>
 
-## onRecordAudioFrame:channelId:
+## onRecordAudioFrame\:channelId:
 
 采集到音频帧时触发的回调。
 
@@ -794,11 +794,11 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 你可以通过以下两种方式之一设置音频数据格式，以确保采集到的音频帧格式符合预期：
 
-- 方法一：调用 [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setRecordingAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
 - 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::note
-注： [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 的设置。如果使用方法一设置音频数据格式，则方法二的设置无效。
+注： [setRecordingAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 的设置。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe__timing"></a>

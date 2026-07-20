@@ -27,7 +27,7 @@ _migration:
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__detailed_desc"></a>
 
-调用 [enableLoopbackRecording:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 后，可以调用该方法调节声卡采集信号的音量。
+调用 [enableLoopbackRecording\:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 后，可以调用该方法调节声卡采集信号的音量。
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
 
@@ -151,7 +151,7 @@ _migration:
 
 <a id="ariaid-title5"></a>
 
-## enableInEarMonitoring:includeAudioFilters:
+## enableInEarMonitoring\:includeAudioFilters:
 
 启用或关闭耳返监听功能。
 
@@ -241,7 +241,7 @@ _migration:
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:localAudioStateChanged:reason:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped`（0）或 `AgoraAudioLocalStateRecording`（1）。
+成功调用该方法后，SDK 会触发 [rtcEngine\:localAudioStateChanged\:reason:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped`（0）或 `AgoraAudioLocalStateRecording`（1）。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
@@ -267,7 +267,7 @@ _migration:
 
 <a id="ariaid-title7"></a>
 
-## enableLoopbackRecording:deviceName:
+## enableLoopbackRecording\:deviceName:
 
 启用声卡回采功能。
 
@@ -286,7 +286,7 @@ _migration:
 
 - macOS 系统的默认声卡不支持录音功能。从 v4.5.0 起，当你首次调用该方法时，SDK 会自动安装由声网开发的内置虚拟声卡 `AgoraALD`。安装成功后，音频路由会自动切换到虚拟声卡，并使用其进行音频采集。
 - 你可以在加入频道前或加入频道后调用该方法。
-- 如果你调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用了音频模块，音频采集也会被禁用。如果你需要启用音频采集，请先调用 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio) 方法启用音频模块，然后再调用 [enableLoopbackRecording:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 方法。
+- 如果你调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用了音频模块，音频采集也会被禁用。如果你需要启用音频采集，请先调用 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio) 方法启用音频模块，然后再调用 [enableLoopbackRecording\:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 方法。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -319,7 +319,7 @@ _migration:
 
 <a id="ariaid-title8"></a>
 
-## enableLoopbackRecordingEx:deviceName:connection:
+## enableLoopbackRecordingEx\:deviceName\:connection:
 
 启用回环音频采集。
 

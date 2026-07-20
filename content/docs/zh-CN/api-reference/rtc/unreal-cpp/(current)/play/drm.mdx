@@ -231,7 +231,7 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| sceneType | <Slot name="api-center-table-0" /> | \\\{"sceneType":1\\\} |
+| sceneType | <Slot name="api-center-table-0" /> | \\\{"sceneType"\:1\\\} |
 | highPart | 副歌片段的索引。你可以从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取副歌片段的索引然后传值。索引序号从 0 开始。 | \\\{"format": \\\{"highpart": 0\\\}\\\} |
 
 <Slot for="api-center-table-0">
@@ -434,8 +434,8 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| pitchType | <Slot name="api-center-table-1" /> | \\\{"pitchType":1\\\} |
-| needHighPart | <Slot name="api-center-table-2" /> | \\\{"needHighPart":true\\\} |
+| pitchType | <Slot name="api-center-table-1" /> | \\\{"pitchType"\:1\\\} |
+| needHighPart | <Slot name="api-center-table-2" /> | \\\{"needHighPart"\:true\\\} |
 
 <Slot for="api-center-table-1">
 
@@ -715,7 +715,7 @@ virtual int preload(int64_t songCode, const char* jsonOption = nullptr) = 0;
 
 如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 sceneType 的值。
 
-示例：`\{"sceneType":1\}`
+示例：`\{"sceneType"\:1\}`
 
 <a id="api_imusicontentcenter_preload__return_values"></a>
 
@@ -964,8 +964,8 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| pitchType | <Slot name="api-center-table-3" /> | \\\{"pitchType":1\\\} |
-| needHighPart | <Slot name="api-center-table-4" /> | \\\{"needHighPart":true\\\} |
+| pitchType | <Slot name="api-center-table-3" /> | \\\{"pitchType"\:1\\\} |
+| needHighPart | <Slot name="api-center-table-4" /> | \\\{"needHighPart"\:true\\\} |
 
 <Slot for="api-center-table-3">
 

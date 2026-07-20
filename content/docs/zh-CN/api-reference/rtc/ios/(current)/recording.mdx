@@ -174,7 +174,7 @@ _migration:
 
 <a id="ariaid-title6"></a>
 
-## startAudioRecording:quality:
+## startAudioRecording\:quality:
 
 开始客户端录音。
 
@@ -303,7 +303,7 @@ _migration:
 - 通过麦克风采集的音频，编码格式为 AAC。
 - 通过摄像头采集的视频，编码格式为 H.264 或 H.265。
 
-录制开始后，如果录制过程中视频分辨率发生变化，SDK 会停止录制。如果音频采样率或声道数发生变化，SDK 会继续录制并生成一个 MP4 文件。仅当检测到可录制的音视频流时，才会生成录制文件。如果在录制过程中未检测到可录制的音视频流，或音视频流中断超过 5 秒，SDK 会停止录制并触发 [mediaRecorder:stateDidChanged:uid:state:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged) 回调（`AgoraMediaRecorderStateError`，`AgoraMediaRecorderReasonCodeNoStream`）。
+录制开始后，如果录制过程中视频分辨率发生变化，SDK 会停止录制。如果音频采样率或声道数发生变化，SDK 会继续录制并生成一个 MP4 文件。仅当检测到可录制的音视频流时，才会生成录制文件。如果在录制过程中未检测到可录制的音视频流，或音视频流中断超过 5 秒，SDK 会停止录制并触发 [mediaRecorder\:stateDidChanged\:uid\:state\:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged) 回调（`AgoraMediaRecorderStateError`，`AgoraMediaRecorderReasonCodeNoStream`）。
 
 :::note
 注：
@@ -407,7 +407,7 @@ _migration:
 
 <a id="ariaid-title11"></a>
 
-## mediaRecorder:informationDidUpdated:uid:info:
+## mediaRecorder\:informationDidUpdated\:uid\:info:
 
 录制信息更新回调。
 
@@ -459,7 +459,7 @@ _migration:
 
 <a id="ariaid-title12"></a>
 
-## mediaRecorder:stateDidChanged:uid:state:reason:
+## mediaRecorder\:stateDidChanged\:uid\:state\:reason:
 
 录制状态发生变化时的回调。
 

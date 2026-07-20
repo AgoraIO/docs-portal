@@ -200,7 +200,7 @@ _migration:
 :::
 
 首次成功调用该方法会开始将媒体流从源频道转发到目标频道。若需将媒体流转发到其他频道，或退出当前的某个媒体流转发，可再次调用该方法更新目标频道。该功能最多支持将媒体流转发到六个目标频道。
-调用该方法成功后，SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态。
+调用该方法成功后，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态。
 
 - 若该回调返回 `AgoraChannelMediaRelayStateRunning`（2）和 `AgoraChannelMediaRelayErrorNone`（0），表示媒体流转发已成功启动。
 - 若该回调返回 `AgoraChannelMediaRelayStateFailure`（3），表示媒体流转发过程中发生异常。
@@ -241,7 +241,7 @@ _migration:
 
 <a id="ariaid-title7"></a>
 
-## startOrUpdateChannelMediaRelayEx:connection:
+## startOrUpdateChannelMediaRelayEx\:connection:
 
 开始或更新跨频道媒体流转发。
 
@@ -278,7 +278,7 @@ _migration:
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告媒体流转发的状态。常见状态如下：
+成功调用该方法后，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告媒体流转发的状态。常见状态如下：
 
 - 若回调返回 `AgoraChannelMediaRelayStateRunning`（2）和 `AgoraChannelMediaRelayErrorNone`（0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
 - 若回调返回 `AgoraChannelMediaRelayStateFailure`（3），表示媒体流转发过程中发生异常。
@@ -326,10 +326,10 @@ _migration:
 
 <a id="api_irtcengine_stopchannelmediarelay__detailed_desc"></a>
 
-调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道。SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播成功停止转发。
+调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道。SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播成功停止转发。
 
 :::note
-注： 如果方法调用失败，SDK 会通过 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调返回 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 `leaveChannel` 方法离开频道，跨频道媒体流转发会自动停止。
+注： 如果方法调用失败，SDK 会通过 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调返回 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 `leaveChannel` 方法离开频道，跨频道媒体流转发会自动停止。
 :::
 
 <a id="api_irtcengine_stopchannelmediarelay__return_values"></a>
@@ -361,10 +361,10 @@ _migration:
 
 <a id="api_irtcengineex_stopchannelmediarelayex__detailed_desc"></a>
 
-调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道，SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播已成功停止转发。
+调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播已成功停止转发。
 
 :::note
-注： 如果方法调用失败，SDK 会通过 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 方法离开频道，媒体流转发会自动停止。
+注： 如果方法调用失败，SDK 会通过 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 [leaveChannel\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 方法离开频道，媒体流转发会自动停止。
 :::
 
 <a id="api_irtcengineex_stopchannelmediarelayex__scenario"></a>
@@ -398,7 +398,7 @@ _migration:
 
 <a id="ariaid-title10"></a>
 
-## rtcEngine:channelMediaRelayStateDidChange:error:
+## rtcEngine\:channelMediaRelayStateDidChange\:error:
 
 跨频道媒体流转发状态发生变化回调。
 

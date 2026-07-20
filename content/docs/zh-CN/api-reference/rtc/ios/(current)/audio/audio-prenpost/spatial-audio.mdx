@@ -56,7 +56,7 @@ _migration:
 
 <a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
 
-你可以在加入频道前或加入频道后调用该方法。启用空间音效后，可以调用 [setRemoteUserSpatialAudioParams:params:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
+你可以在加入频道前或加入频道后调用该方法。启用空间音效后，可以调用 [setRemoteUserSpatialAudioParams\:params:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
 
 :::note
 注：
@@ -206,7 +206,7 @@ _migration:
 
 ### 相关回调
 
-该方法成功调用后会触发远端的 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+该方法成功调用后会触发远端的 [rtcEngine\:didAudioMuted\:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine\:remoteAudioStateChangedOfUid\:state\:reason\:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
 
@@ -234,7 +234,7 @@ _migration:
 
 <a id="ariaid-title7"></a>
 
-## muteRemoteAudioStream:mute:
+## muteRemoteAudioStream\:mute:
 
 停止或恢复订阅指定用户的音频流。
 
@@ -247,7 +247,7 @@ _migration:
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__detailed_desc"></a>
 
 :::note
-注： 调用该方法需在 [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法之后进行。使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议使用此方法，而非 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
+注： 调用该方法需在 [joinChannelByToken\:channelId\:info\:uid\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法之后进行。使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议使用此方法，而非 [muteRemoteAudioStream\:mute:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
 :::
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
@@ -417,7 +417,7 @@ _migration:
 
 <a id="ariaid-title12"></a>
 
-## setHeadphoneEQParameters:highGain:
+## setHeadphoneEQParameters\:highGain:
 
 设置耳机均衡器的低频和高频参数。
 
@@ -540,7 +540,7 @@ _migration:
 
 <a id="ariaid-title15"></a>
 
-## setPlayerAttenuation:playerId:forceSet:
+## setPlayerAttenuation\:playerId\:forceSet:
 
 设置媒体播放器的声音衰减属性。
 
@@ -594,7 +594,7 @@ _migration:
 
 <a id="ariaid-title16"></a>
 
-## setRemoteAudioAttenuation:uid:forceSet:
+## setRemoteAudioAttenuation\:uid\:forceSet:
 
 设置指定用户的声音衰减效果。
 
@@ -648,7 +648,7 @@ _migration:
 
 <a id="ariaid-title17"></a>
 
-## setRemoteUserSpatialAudioParams:params:
+## setRemoteUserSpatialAudioParams\:params:
 
 设置远端用户的空间音效参数。
 
@@ -742,7 +742,7 @@ _migration:
 在虚拟互动场景中，你可以使用此方法设置隔音区域和声音衰减系数。
 
 - 当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外部时，声音的衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的声音衰减系数决定。
-- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation:playerId:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation:userId:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation\:playerId\:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation\:userId\:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
 - 如果声源和接收者分别处于两个不同的隔音区域内，接收者将无法听到声源的声音。
 
 :::note
@@ -772,7 +772,7 @@ _migration:
 
 <a id="ariaid-title20"></a>
 
-## updatePlayerPositionInfo:positionInfo:
+## updatePlayerPositionInfo\:positionInfo:
 
 更新媒体播放器的空间位置。
 
@@ -817,7 +817,7 @@ _migration:
 
 <a id="ariaid-title21"></a>
 
-## updateRemotePosition:positionInfo:
+## updateRemotePosition\:positionInfo:
 
 更新指定远端用户的空间位置。
 
@@ -862,7 +862,7 @@ _migration:
 
 <a id="ariaid-title22"></a>
 
-## updateSelfPosition:axisForward:axisRight:axisUp:
+## updateSelfPosition\:axisForward\:axisRight\:axisUp:
 
 更新本地用户的空间位置。
 
@@ -874,7 +874,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_updateselfposition__detailed_desc"></a>
 
-你需要将该方法与 [updateRemotePosition:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法配合使用。SDK 会根据这两个方法中的参数设置计算本地用户与远端用户之间的相对位置，并据此计算空间音效参数。
+你需要将该方法与 [updateRemotePosition\:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法配合使用。SDK 会根据这两个方法中的参数设置计算本地用户与远端用户之间的相对位置，并据此计算空间音效参数。
 
 <a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
 

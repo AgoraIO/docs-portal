@@ -15,7 +15,7 @@ _migration:
 
 <a id="ariaid-title2"></a>
 
-## enableContentInspect:config:
+## enableContentInspect\:config:
 
 启用或关闭本地截图上传功能。
 
@@ -72,7 +72,7 @@ _migration:
 
 <a id="ariaid-title3"></a>
 
-## enableContentInspectEx:config:connection:
+## enableContentInspectEx\:config\:connection:
 
 启用或关闭本地截图上传功能。
 
@@ -136,7 +136,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## takeSnapshot:filePath:
+## takeSnapshot\:filePath:
 
 截取视频流快照并保存为 JPG 图像。
 
@@ -168,7 +168,7 @@ _migration:
 
 ### 相关回调
 
-调用该方法成功后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告快照是否成功以及快照的详细信息。
+调用该方法成功后，SDK 会触发 [rtcEngine\:snapshotTaken\:filePath\:width\:height\:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告快照是否成功以及快照的详细信息。
 
 <a id="api_irtcengine_takesnapshot__parameters"></a>
 
@@ -204,7 +204,7 @@ _migration:
 
 <a id="ariaid-title5"></a>
 
-## takeSnapshotWithConfig:config:
+## takeSnapshotWithConfig\:config:
 
 截取指定用户视频的截图并保存为 JPG 文件。
 
@@ -235,7 +235,7 @@ _migration:
 
 ### 相关回调
 
-调用该方法成功后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+调用该方法成功后，SDK 会触发 [rtcEngine\:snapshotTaken\:filePath\:width\:height\:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengine_takesnapshot2__parameters"></a>
 
@@ -264,7 +264,7 @@ _migration:
 
 <a id="ariaid-title6"></a>
 
-## takeSnapshotEx:uid:filePath:
+## takeSnapshotEx\:uid\:filePath:
 
 使用连接 ID 对视频流进行截图。
 
@@ -292,13 +292,13 @@ _migration:
 
 ### 调用时机
 
-请在调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 之后调用该方法。
+请在调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 之后调用该方法。
 
 <a id="api_irtcengineex_takesnapshotex__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+成功调用该方法后，SDK 会触发 [rtcEngine\:snapshotTaken\:filePath\:width\:height\:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengineex_takesnapshotex__parameters"></a>
 
@@ -336,7 +336,7 @@ _migration:
 
 <a id="ariaid-title7"></a>
 
-## takeSnapshotExWithConfig:uid:config:
+## takeSnapshotExWithConfig\:uid\:config:
 
 获取指定用户视频流的截图。
 
@@ -399,7 +399,7 @@ _migration:
 
 <a id="ariaid-title8"></a>
 
-## rtcEngine:snapshotTaken:filePath:width:height:errCode:
+## rtcEngine\:snapshotTaken\:filePath\:width\:height\:errCode:
 
 报告视频截图的结果。
 
@@ -411,13 +411,13 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__detailed_desc"></a>
 
-调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法后，SDK 会触发该回调，报告截图是否成功以及截图的详细信息。
+调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法后，SDK 会触发该回调，报告截图是否成功以及截图的详细信息。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__timing"></a>
 
 ### 触发时机
 
-调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后触发。
+调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后触发。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__parameters"></a>
 
@@ -451,8 +451,8 @@ _migration:
 - &lt; 0：截图失败：
 
   - -1：SDK 无法将数据写入文件或编码 JPEG 图像失败。
-  - -2：在调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后的一秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
-  - -3：调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法过于频繁。
+  - -2：在调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后的一秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
+  - -3：调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法过于频繁。
 
 ### 所属接口类
 

@@ -15,7 +15,7 @@ _migration:
 
 <a id="ariaid-title2"></a>
 
-## enableVoiceAITuner:type:
+## enableVoiceAITuner\:type:
 
 启用或关闭语音 AI 调音器。
 
@@ -112,7 +112,7 @@ _migration:
 
 <a id="ariaid-title4"></a>
 
-## setAINSMode:mode:
+## setAINSMode\:mode:
 
 设置是否启用 AI 降噪功能并设置降噪模式。
 
@@ -183,7 +183,7 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/ios/enum-aud
 
 <a id="ariaid-title5"></a>
 
-## setAudioEffectParameters:param1:param2:
+## setAudioEffectParameters\:param1\:param2:
 
 设置 SDK 预设音效的参数。
 
@@ -211,14 +211,14 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/ios/enum-aud
 - 你可以在加入频道前或加入频道后调用该方法。
 - 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard`（1），否则该方法不生效。
 - 该方法在人声处理方面效果最佳，声网不建议使用该方法处理包含音乐的音频数据。
-- 调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+- 调用 [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
   - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
   - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
   - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
   - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于语音美声动态库 AgoraAudioBeautyExtension.xcframework（iOS）或 `AgoraAudioBeautyExtension.framework`（macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
@@ -301,14 +301,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 注：
 
 - 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard`（1），否则该方法不生效。
-- 如果调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置的枚举值不是 `AgoraAudioEffectPresetRoomAcous3DVoice` 或 `AgoraAudioEffectPresetPitchCorrection`，请不要调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 的设置会被覆盖。
+- 如果调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置的枚举值不是 `AgoraAudioEffectPresetRoomAcous3DVoice` 或 `AgoraAudioEffectPresetPitchCorrection`，请不要调用 [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 的设置会被覆盖。
 - 调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 后，声网不建议你再调用以下方法，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
 
   - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
   - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
   - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework（iOS）或 `AgoraAudioBeautyExtension.framework`（macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
@@ -342,7 +342,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 <a id="ariaid-title7"></a>
 
-## setLocalVoiceEqualizationOfBandFrequency:withGain:
+## setLocalVoiceEqualizationOfBandFrequency\:withGain:
 
 设置本地语音的均衡效果。
 
@@ -481,7 +481,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 <a id="ariaid-title10"></a>
 
-## setLocalVoiceReverbOfType:withValue:
+## setLocalVoiceReverbOfType\:withValue:
 
 设置本地语音的混响效果。
 
@@ -522,7 +522,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 <a id="ariaid-title11"></a>
 
-## setVoiceBeautifierParameters:param1:param2:
+## setVoiceBeautifierParameters\:param1\:param2:
 
 设置预设美声特效的参数。
 
@@ -545,14 +545,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 你可以在加入频道前或加入频道后调用该方法。
 - 请勿将 [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard`（1），否则该方法不生效。
 - 该方法对人声处理效果最佳，不建议用于处理包含音乐的音频数据。
-- 调用 [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+- 调用 [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
   - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
   - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
   - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
   - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework（iOS）或 `AgoraAudioBeautyExtension.framework`（macOS）。如果该动态库被删除，功能将无法正常启用。
 :::
@@ -619,11 +619,11 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 调用 [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
   - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
   - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
   - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 此方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework（iOS）或 `AgoraAudioBeautyExtension.framework`（macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
@@ -679,13 +679,13 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 调用 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，声网不建议你再调用以下方法，否则会覆盖 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果：
 
   - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
   - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
   - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
   - [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework（iOS）或 `AgoraAudioBeautyExtension.framework`（macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
