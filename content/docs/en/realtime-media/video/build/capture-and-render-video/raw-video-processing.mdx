@@ -62,7 +62,7 @@ To implement raw video data functionality in your project, refer to the followin
 private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver() {
   @Override
   public boolean onCaptureVideoFrame(VideoFrame videoFrame) {
-    Log.i(TAG, "OnEncodedVideoImageReceived" + \Thread.currentThread().getName());
+    Log.i(TAG, "OnEncodedVideoImageReceived" + Thread.currentThread().getName());
     if (isSnapshot) {
       isSnapshot = false;
 
@@ -138,7 +138,7 @@ private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver(
 ```kotlin
 private val iVideoFrameObserver = object : IVideoFrameObserver {
   override fun onCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
-    Log.i(TAG, "OnEncodedVideoImageReceived\${\Thread.currentThread().name\}")
+    Log.i(TAG, "OnEncodedVideoImageReceived${Thread.currentThread().name}")
     if (isSnapshot) {
       isSnapshot = false
 
@@ -646,7 +646,7 @@ The following figure shows the video data processing flow in the SDK video modul
 
 **Process raw video**
 
-![image](https://assets-docs.agora.io/images/video-sdk/video-module-data-processing.svg)
+![image](https://assets-docs.agora.io/images/video-sdk/process-raw-video-web.svg)
 
 ## Prerequisites
 
@@ -735,7 +735,7 @@ To implement raw video data functionality in your project, refer to the followin
         ctx.putImageData(frame, 0, 0);
 
         // Request the next frame to continue processing in a loop
-        requestAnimationFrame(processFrame);
+        requestAnimationFrame(() => processFrame(videoElement));
       }
       ```
 
