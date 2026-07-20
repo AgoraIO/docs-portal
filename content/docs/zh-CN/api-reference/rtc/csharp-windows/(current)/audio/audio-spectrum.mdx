@@ -202,6 +202,8 @@ public virtual bool OnLocalAudioSpectrum(AudioSpectrumData data)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__detailed_desc"></a>
 
+### 详情
+
 成功调用 [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver) 中的 OnLocalAudioSpectrum 回调并调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告编码前的本地音频数据的频谱。
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__parameters"></a>
@@ -243,6 +245,8 @@ public virtual bool OnRemoteAudioSpectrum(UserAudioSpectrumInfo[] spectrums, uin
 ```
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__detailed_desc"></a>
+
+### 详情
 
 成功调用 [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver) 中的 OnRemoteAudioSpectrum 回调并调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告接收到的远端音频数据的频谱。
 

@@ -602,6 +602,8 @@ virtual void onActiveSpeaker(uid_t userId) { (void)userId; }
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__detailed_desc"></a>
 
+### 详情
+
 成功调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 后，SDK 会持续监测音量最大的远端用户，并统计该用户被判断为音量最大者的次数。当前时间段内，该次数累积最多的远端用户为最活跃的用户。
 
 当频道内用户数量大于或等于 2 且有远端活跃用户时，SDK 会触发该回调并报告远端最活跃用户的 uid。
@@ -641,6 +643,8 @@ virtual void onAudioQuality(uid_t uid, int quality, unsigned short delay, unsign
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -693,6 +697,8 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers,
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__detailed_desc"></a>
+
+### 详情
 
 该回调默认禁用，你可以通过 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 enableAudioVolumeIndication 中设置的时间间隔触发 onAudioVolumeIndication 回调。每次会触发两个 onAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
@@ -748,6 +754,8 @@ virtual void onFirstLocalAudioFramePublished(int elapsed) {
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__detailed_desc"></a>
 
+### 详情
+
 SDK 会在以下时机触发该回调：
 
 - 开启本地音频的情况下，调用 joinChannel [2/2] 成功加入频道后。
@@ -786,6 +794,8 @@ virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) {
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -836,6 +846,8 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) AGORA_DEPRECATED_AT
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
+### 详情
+
 ### 弃用：
 
 请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
@@ -874,6 +886,8 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) AGORA_DEPRECATED_AT
 ```
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__desc"></a>
 
@@ -920,6 +934,8 @@ virtual void onLocalAudioStats(const LocalAudioStats& stats) {
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__desc"></a>
 
 SDK 每 2 秒触发该回调一次。
@@ -959,6 +975,8 @@ virtual void onRemoteAudioStateChanged(uid_t uid,
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__desc"></a>
 
@@ -1012,6 +1030,8 @@ virtual void onRemoteAudioStats(const RemoteAudioStats& stats) {
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__desc"></a>
 
 该回调针对每个发送音频流的远端用户/主播每 2 秒触发一次。如果远端有多个用户/主播发送音频流，该回调每 2 秒会被触发多次。
@@ -1051,6 +1071,8 @@ virtual void onRemoteAudioTransportStats(uid_t uid,
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -1102,6 +1124,8 @@ virtual void onUserMuteAudio(uid_t uid, bool muted) {
 ```
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__detailed_desc"></a>
+
+### 详情
 
 该回调是由远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法关闭或开启音频发送触发的。
 

@@ -27,6 +27,8 @@ virtual bool getMirrorApplied() { return false; }
 
 <a id="callback_ivideoframeobserver_getmirrorapplied__detailed_desc"></a>
 
+### 详情
+
 如果你希望获取的视频数据为原始视频的镜像，需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置是否对原始视频数据作镜像处理。
 
 :::caution
@@ -70,6 +72,8 @@ virtual uint32_t getObservedFramePosition() {
 
 <a id="callback_ivideoframeobserver_getobservedframeposition__detailed_desc"></a>
 
+### 详情
+
 成功注册视频数据观测器后，SDK 会在每个特定的视频帧处理节点通过该回调来判断是否触发 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)、 [onRenderVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调，供你观测本地采集视频数据、远端发送的视频数据以及编码前的视频数据。你可以根据场景需求，通过修改该方法的返回值，设置你需要观测的某个或多个位置：
 
 - POSITION_POST_CAPTURER(1 &lt;&lt; 0)，本地采集视频数据后的位置，对应 onCaptureVideoFrame 回调。
@@ -110,6 +114,8 @@ virtual bool getRotationApplied() { return false; }
 ```
 
 <a id="callback_ivideoframeobserver_getrotationapplied__detailed_desc"></a>
+
+### 详情
 
 如果你希望获取的视频数据已根据 VideoFrame 中的旋转信息 rotation 进行旋转，需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置是否对采集到的视频数据进行旋转。
 
@@ -153,6 +159,8 @@ virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAU
 
 <a id="callback_ivideoframeobserver_getvideoformatpreference__detailed_desc"></a>
 
+### 详情
+
 你需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置期望的视频数据格式。
 
 :::note
@@ -193,6 +201,8 @@ virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() {
 ```
 
 <a id="callback_ivideoframeobserver_getvideoframeprocessmode__detailed_desc"></a>
+
+### 详情
 
 成功注册视频观测器后，SDK 会触发一次该回调。你需要在该回调的返回值中设置期望的视频处理模式。
 
@@ -362,6 +372,8 @@ virtual void onFrame(const VideoFrame* frame) = 0;
 
 <a id="callback_ivideoframeobserver_onframe__detailed_desc"></a>
 
+### 详情
+
 注册视频数据观测器后，每次接收到一帧视频帧时，都会触发该回调，报告视频帧信息。
 
 <a id="callback_ivideoframeobserver_onframe__parameters"></a>
@@ -391,6 +403,8 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 ```
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__detailed_desc"></a>
+
+### 详情
 
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
 
@@ -458,6 +472,8 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 ```
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__detailed_desc"></a>
+
+### 详情
 
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
 

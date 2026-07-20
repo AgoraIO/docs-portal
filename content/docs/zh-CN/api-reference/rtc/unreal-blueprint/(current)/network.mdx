@@ -641,6 +641,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__detailed_desc"></a>
 
+### 详情
+
 当你调用了 [SetRemoteSubscribeFallbackOption](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_setremotesubscribefallbackoption) 并将 option 设置为 STREAM_FALLBACK_OPTION_AUDIO_ONLY 后，该回调会在下列情况时被触发：
 
 - 下行网络环境较差，订阅的音视频流回退为音频流
@@ -1194,6 +1196,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setparameters__detailed_desc"></a>
 
+### 详情
+
 请[联系技术支持](https://ticket.shengwang.cn/)获取 JSON 配置方式。
 
 <a id="api_irtcengine_setparameters__parameters"></a>
@@ -1451,6 +1455,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
 
+### 详情
+
 ### 弃用:
 
 请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
@@ -1475,6 +1481,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
+
+### 详情
 
 ### 弃用:
 
@@ -1508,6 +1516,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
 
+### 详情
+
 SDK 在调用 JoinChannelWithOptions 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
 
 ### 所属接口类
@@ -1530,6 +1540,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__desc"></a>
 
@@ -1570,6 +1582,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
 
+### 详情
+
 调用 [EnableEncryption](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_enableencryption) 开启加密后， 如果发流端、收流端出现加解密出错，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
@@ -1601,6 +1615,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
 
+### 详情
+
 在调用 [StartLastmileProbeTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startlastmileprobetest) 之后，SDK 会在约 30 秒内返回该回调。
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
@@ -1631,6 +1647,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+### 详情
 
 该回调描述本地用户在加入频道前的 last mile 网络探测的结果，其中 last mile 是指设备到声网边缘服务器的网络状态。
 
@@ -1673,6 +1691,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__desc1"></a>
 
@@ -1743,6 +1763,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__desc"></a>
 
 本地网络连接类型发生改变时，SDK 会触发该回调，并在回调中明确当前的网络连接类型。你可以通过该回调获取正在使用的网络类型；当连接中断时，该回调能辨别引起中断的原因是网络切换还是网络条件不好。
@@ -1776,6 +1798,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
 
+### 详情
+
 无法获取设备权限时，SDK 会触发该回调，报告哪个设备的权限无法获取。
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
@@ -1806,6 +1830,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__detailed_desc"></a>
+
+### 详情
 
 通过该回调你可以监听 SDK 连接代理的状态。例如，当用户调用 [SetCloudProxy](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_setcloudproxy) 设置代理并成功加入频道后，SDK 会触发该回调报告用户 ID、连接的代理类型和从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 到触发该回调经过的时间等。
 
@@ -1853,6 +1879,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__detailed_desc"></a>
+
+### 详情
 
 只有当上行网络信息发生变化时，SDK 才会触发该回调。
 

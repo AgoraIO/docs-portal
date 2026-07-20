@@ -406,6 +406,8 @@ onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:nu
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__desc"></a>
 
 本地视频首帧显示在本地视图上时，SDK 会触发此回调。
@@ -449,6 +451,8 @@ onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) 
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
+
+### 详情
 
 :::caution
 注意： 该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
@@ -556,6 +560,8 @@ onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) =
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onlocalvideostats__desc"></a>
 
 该回调描述本地设备发送视频流的统计信息，每 2 秒触发一次。
@@ -591,6 +597,8 @@ onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamSta
 ```
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__note"></a>
 
@@ -638,6 +646,8 @@ onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onremotevideostats__desc"></a>
 
 该回调描述远端用户在通话中端到端的视频流统计信息， 针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播， 该回调每 2 秒会被触发多次。
@@ -669,6 +679,8 @@ onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 ```
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__desc1"></a>
 
@@ -708,6 +720,8 @@ onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 ```
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__detailed_desc"></a>
+
+### 详情
 
 当远端用户调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
 

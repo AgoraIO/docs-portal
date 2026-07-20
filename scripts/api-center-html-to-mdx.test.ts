@@ -171,6 +171,43 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('# 音频基础功能');
   });
 
+  it('restores Oxygen detail headings unless the source explicitly suppresses the title', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<main><article role="article">
+        <article id="api_update">
+          <h2>updateRoomProperties</h2>
+          <div class="body refbody">
+            <section class="section" id="api_update__detailed_desc">
+              <p>Detailed guidance.</p>
+            </section>
+            <section class="section" data-deliveryTarget="details" data-otherprops="no-title" id="api_update__internal_details">
+              <p>Untitled implementation note.</p>
+            </section>
+          </div>
+        </article>
+      </article></main>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/android/API/class_roomcontext',
+      sourcePath:
+        'html-docs/flexible-classroom/Android/API/class_roomcontext.html',
+      rootSelector: 'main > article',
+      titleSelector: 'main > article > h1.title, main > article > h1',
+    });
+
+    expect(result.body).toContain(
+      '<a id="api_update__detailed_desc"></a>\n\n### 详情\n\nDetailed guidance.',
+    );
+    expect(result.body).toContain(
+      '<a id="api_update__internal_details"></a>\n\nUntitled implementation note.',
+    );
+    expect(result.body).not.toContain(
+      '### 详情\n\nUntitled implementation note.',
+    );
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'Detailed guidance.',
+    );
+  });
+
   it('preserves links in definition terms without nesting them in headings', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Types</h1><dl><dt><a href="class-video.html">VideoParameters</a></dt><dd>Video settings.</dd></dl></article>`,

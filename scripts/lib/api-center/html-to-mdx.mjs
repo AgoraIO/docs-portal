@@ -63,6 +63,26 @@ function containsTypeDocSinceDefinitionTerm($, element) {
     .some((term) => isSinceDefinitionTerm($(term).text()));
 }
 
+export function detailedDescriptionTitleMode(element) {
+  const id = String(element.attr('id') ?? element.attr('name') ?? '');
+  const deliveryTarget = String(
+    element.attr('data-deliveryTarget') ?? '',
+  ).toLowerCase();
+  const isDetailedDescription =
+    id.endsWith('__detailed_desc') || deliveryTarget === 'details';
+  if (!isDetailedDescription) return null;
+
+  const otherProperties = String(element.attr('data-otherprops') ?? '')
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (otherProperties.includes('no-title')) return 'suppressed';
+  if (element.children('h1, h2, h3, h4, h5, h6').length > 0) {
+    return 'explicit';
+  }
+  return cleanText(element.text()) ? 'implicit' : null;
+}
+
 function anchorFor(element) {
   const id = element.attr('id') ?? element.attr('name');
   return id ? renderStableAnchor(id) : '';
@@ -835,7 +855,15 @@ async function renderBlockNode($, node, state) {
       .filter(Boolean)
       .join('\n\n');
   }
-  return [anchor, await renderChildren($, element, state)]
+  const implicitDetailHeading =
+    name === 'section' && detailedDescriptionTitleMode(element) === 'implicit'
+      ? '### 详情'
+      : '';
+  return [
+    anchor,
+    implicitDetailHeading,
+    await renderChildren($, element, state),
+  ]
     .filter(Boolean)
     .join('\n\n');
 }

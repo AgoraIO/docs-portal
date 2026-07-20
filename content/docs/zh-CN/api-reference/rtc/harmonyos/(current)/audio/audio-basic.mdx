@@ -487,6 +487,8 @@ onAudioVolumeIndication?:( speakers:Array<AudioVolumeInfo>,  totalVolume:number)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__detailed_desc"></a>
 
+### 详情
+
 该回调默认禁用，你可以通过 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 enableAudioVolumeIndication 中设置的时间间隔触发 onAudioVolumeIndication 回调。每次会触发两个 onAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
 :::caution
@@ -532,6 +534,8 @@ onLocalAudioStateChanged?:(state:Constants.LocalAudioStreamState,error:Constants
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__desc"></a>
 
 本地音频的状态发生改变时（包括本地麦克风采集状态和音频编码状态），SDK 会触发该回调报告当前的本地音频状态。在本地音频出现故障时，该回调可以帮助你了解当前音频的状态以及出现故障的原因，方便你排查问题。
@@ -575,6 +579,8 @@ onLocalAudioStats?:( stats:LocalAudioStats) =>void;
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__desc"></a>
 
 SDK 每 2 秒触发该回调一次。
@@ -606,6 +612,8 @@ onRemoteAudioStateChanged ? : (uid:number, state: Constants.RemoteAudioStreamSta
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__desc"></a>
 
@@ -657,6 +665,8 @@ onRemoteAudioStats?:(stats:RemoteAudioStats) => void;
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__desc"></a>
 
 该回调针对每个发送音频流的远端用户/主播每 2 秒触发一次。如果远端有多个用户/主播发送音频流，该回调每 2 秒会被触发多次。
@@ -688,6 +698,8 @@ onUserMuteAudio?:(uid:number,muted:boolean) =>void;
 ```
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__detailed_desc"></a>
+
+### 详情
 
 该回调是由远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法关闭或开启音频发送触发的。
 

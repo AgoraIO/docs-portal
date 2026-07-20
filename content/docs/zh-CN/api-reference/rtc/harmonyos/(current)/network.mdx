@@ -440,6 +440,8 @@ onConnectionLost?:() => void;
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
 
+### 详情
+
 SDK 在调用 joinChannelWithOptions 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
 
 ### 所属接口类
@@ -461,6 +463,8 @@ onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constan
 ```
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__desc"></a>
 
@@ -500,6 +504,8 @@ onEncryptionError?:(errorType:Constants.EncryptionError) => void;
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
 
+### 详情
+
 调用 [enableEncryption](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_enableencryption) 开启加密后， 如果发流端、收流端出现加解密出错，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
@@ -530,6 +536,8 @@ onLastmileProbeResult? : (result:LastmileProbeResult) => void;
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
 
+### 详情
+
 在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_startlastmileprobetest) 之后，SDK 会在约 30 秒内返回该回调。
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
@@ -559,6 +567,8 @@ onLastmileQuality? : (quality:Constants.QualityType) => void;
 ```
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+### 详情
 
 该回调描述本地用户在加入频道前的 last mile 网络探测的结果，其中 last mile 是指设备到声网边缘服务器的网络状态。
 
@@ -591,6 +601,8 @@ onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality
 ```
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__desc1"></a>
 
@@ -641,6 +653,8 @@ onPermissionError?:(permission:Constants.PermissionType) => void;
 ```
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
+
+### 详情
 
 无法获取设备权限时，SDK 会触发该回调，报告哪个设备的权限无法获取。
 

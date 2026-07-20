@@ -293,6 +293,8 @@ virtual void onAudioVolumeIndication(int volume) = 0;
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__detailed_desc"></a>
 
+### 详情
+
 SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__parameters"></a>
@@ -323,6 +325,8 @@ virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 
 <a id="callback_iaudiopcmframesink_onframe__detailed_desc"></a>
 
+### 详情
+
 注册音频数据观测器后，每次接收到一帧音频帧时，都会触发该回调，报告音频帧信息。
 
 <a id="callback_iaudiopcmframesink_onframe__parameters"></a>
@@ -352,6 +356,8 @@ virtual void onMetaData(const void* data, int length) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+### 详情
 
 解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
 
@@ -387,6 +393,8 @@ virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
 
+### 详情
+
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
 - 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 PLAYER_EVENT_BUFFER_LOW (6)。
@@ -419,6 +427,8 @@ virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t el
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+### 详情
 
 - 调用 [seek](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
@@ -458,6 +468,8 @@ virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
 
+### 详情
+
 当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__parameters"></a>
@@ -488,6 +500,8 @@ virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state,
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+### 详情
 
 当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
 
@@ -553,6 +567,8 @@ virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
 
+### 详情
+
 播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__parameters"></a>
@@ -616,6 +632,8 @@ virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 ```
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__detailed_desc"></a>
+
+### 详情
 
 使用 [openWithMediaSource](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源时，SDK 会触发该回调向你请求传入媒体资源数据的 Buffer。
 

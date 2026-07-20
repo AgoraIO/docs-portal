@@ -415,6 +415,8 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__detailed_desc"></a>
 
+### 详情
+
 为保证耳返的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置耳返音频数据格式：
 
 - 方法一：调用 [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
@@ -502,6 +504,8 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__detailed_desc"></a>
 
+### 详情
+
 为保证播放的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
@@ -552,6 +556,8 @@ public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__detailed_desc"></a>
 
+### 详情
+
 为保证采集的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
@@ -601,6 +607,8 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 ```
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__detailed_desc"></a>
+
+### 详情
 
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 

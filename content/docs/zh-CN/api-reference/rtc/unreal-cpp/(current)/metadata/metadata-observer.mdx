@@ -27,6 +27,8 @@ virtual int getMaxMetadataSize() { return DEFAULT_METADATA_SIZE_IN_BYTE; }
 
 <a id="callback_imetadataobserver_getmaxmetadatasize__detailed_desc"></a>
 
+### 详情
+
 在成功调用 [registerMediaMetadataObserver](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 完成注册后，SDK 会在发送每一个视频帧时触发一次该回调；你需要在该方法的返回值中指定 metadata 的最大数据大小。
 
 <a id="callback_imetadataobserver_getmaxmetadatasize__return_values"></a>
@@ -166,6 +168,8 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 ```
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
+
+### 详情
 
 当 SDK 准备好发送 metadata 时，会触发该回调。
 

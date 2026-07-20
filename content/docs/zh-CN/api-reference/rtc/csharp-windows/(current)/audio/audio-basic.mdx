@@ -550,6 +550,8 @@ public virtual void OnActiveSpeaker(RtcConnection connection, uint uid) { }
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__detailed_desc"></a>
 
+### 详情
+
 成功调用 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 后，SDK 会持续监测音量最大的远端用户，并统计该用户被判断为音量最大者的次数。当前时间段内，该次数累积最多的远端用户为最活跃的用户。
 
 当频道内用户数量大于或等于 2 且有远端活跃用户时，SDK 会触发该回调并报告远端最活跃用户的 uid。
@@ -588,6 +590,8 @@ public virtual void OnAudioQuality(RtcConnection connection, uint remoteUid, int
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -638,6 +642,8 @@ public virtual void OnAudioVolumeIndication(RtcConnection connection, AudioVolum
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__detailed_desc"></a>
+
+### 详情
 
 该回调默认禁用，你可以通过 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 EnableAudioVolumeIndication 中设置的时间间隔触发 OnAudioVolumeIndication 回调。每次会触发两个 OnAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
@@ -695,6 +701,8 @@ public virtual void OnFirstLocalAudioFramePublished(RtcConnection connection, in
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__detailed_desc"></a>
 
+### 详情
+
 SDK 会在以下时机触发该回调：
 
 - 开启本地音频的情况下，调用 JoinChannel [2/2] 成功加入频道后。
@@ -733,6 +741,8 @@ public virtual void OnFirstRemoteAudioDecoded(RtcConnection connection, uint uid
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -784,6 +794,8 @@ public virtual void OnFirstRemoteAudioFrame(RtcConnection connection, uint userI
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
+### 详情
+
 ### 弃用：
 
 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
@@ -823,6 +835,8 @@ public virtual void OnLocalAudioStateChanged(RtcConnection connection, LOCAL_AUD
 ```
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__desc"></a>
 
@@ -871,6 +885,8 @@ public virtual void OnLocalAudioStats(RtcConnection connection, LocalAudioStats 
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__desc"></a>
 
 SDK 每 2 秒触发该回调一次。
@@ -906,6 +922,8 @@ public virtual void OnRemoteAudioStateChanged(RtcConnection connection, uint rem
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__detailed_desc"></a>
+
+### 详情
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__desc"></a>
 
@@ -961,6 +979,8 @@ public virtual void OnRemoteAudioStats(RtcConnection connection, RemoteAudioStat
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__detailed_desc"></a>
 
+### 详情
+
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__desc"></a>
 
 该回调针对每个发送音频流的远端用户/主播每 2 秒触发一次。如果远端有多个用户/主播发送音频流，该回调每 2 秒会被触发多次。
@@ -996,6 +1016,8 @@ public virtual void OnRemoteAudioTransportStats(RtcConnection connection, uint r
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
+
+### 详情
 
 ### 弃用：
 
@@ -1048,6 +1070,8 @@ public virtual void OnUserMuteAudio(RtcConnection connection, uint remoteUid, bo
 ```
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__detailed_desc"></a>
+
+### 详情
 
 该回调是由远端用户调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法关闭或开启音频发送触发的。
 

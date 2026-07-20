@@ -104,6 +104,8 @@ void OnAudioVolumeIndication(int volume);
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__detailed_desc"></a>
 
+### 详情
+
 SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__parameters"></a>
@@ -134,6 +136,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+### 详情
 
 解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
 
@@ -170,6 +174,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
 
+### 详情
+
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
 - 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 PLAYER_EVENT_BUFFER_LOW (6)。
@@ -203,6 +209,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+### 详情
 
 - 调用 [Seek](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
@@ -243,6 +251,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
 
+### 详情
+
 当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__parameters"></a>
@@ -273,6 +283,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+### 详情
 
 当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
 
@@ -339,6 +351,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 ```
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+### 详情
 
 播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
 

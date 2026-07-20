@@ -389,6 +389,8 @@ virtual AudioParams getEarMonitoringAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getearmonitoringaudioparams__detailed_desc"></a>
 
+### 详情
+
 :::info[自从]
 v4.0.1
 :::
@@ -429,6 +431,8 @@ virtual AudioParams getMixedAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getmixedaudioparams__detailed_desc"></a>
 
+### 详情
+
 你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集和播放音频混音后的数据格式。
 
 :::caution
@@ -464,6 +468,8 @@ virtual int getObservedAudioFramePosition() = 0;
 ```
 
 <a id="callback_iaudioframeobserverbase_getobservedaudioframeposition__detailed_desc"></a>
+
+### 详情
 
 成功注册音频数据观测器后，SDK 会在每个特定的音频帧处理节点通过该回调来判断是否触发如下回调：
 
@@ -509,6 +515,8 @@ virtual AudioParams getPlaybackAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getplaybackaudioparams__detailed_desc"></a>
 
+### 详情
+
 你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 播放的音频数据格式。
 
 :::caution
@@ -545,6 +553,8 @@ virtual AudioParams getRecordAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getrecordaudioparams__detailed_desc"></a>
 
+### 详情
+
 你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集的音频数据格式。
 
 :::caution
@@ -580,6 +590,8 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 ```
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__detailed_desc"></a>
+
+### 详情
 
 为保证耳返的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置耳返音频数据格式：
 
@@ -627,6 +639,8 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 ```
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__detailed_desc"></a>
+
+### 详情
 
 为保证播放的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
@@ -715,6 +729,8 @@ virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) =
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__detailed_desc"></a>
 
+### 详情
+
 为保证采集的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame 回调。
@@ -765,6 +781,8 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 ```
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__detailed_desc"></a>
+
+### 详情
 
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
