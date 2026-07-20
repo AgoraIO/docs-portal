@@ -47,7 +47,7 @@ public class AudioParams
 - ：设置 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调的数据格式。
 - ：设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的数据格式。
 
-:::note
+:::caution
 注意：
 
 - SDK 会通过 AudioParams 中的 samplesPerCall、sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame、OnPlaybackAudioFrame、OnMixedAudioFrame 和 OnEarMonitoringAudioFrame 回调。

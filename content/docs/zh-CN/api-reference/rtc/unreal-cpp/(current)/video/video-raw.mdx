@@ -29,7 +29,7 @@ virtual bool getMirrorApplied() { return false; }
 
 如果你希望获取的视频数据为原始视频的镜像，需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置是否对原始视频数据作镜像处理。
 
-:::note
+:::caution
 注意：
 
 - 在 Android 平台上，该回调支持的视频数据格式有：I420、RGBA 和 Texture。
@@ -76,7 +76,7 @@ virtual uint32_t getObservedFramePosition() {
 - POSITION_PRE_RENDERER(1 &lt;&lt; 1)，接收远端发送的视频在渲染前的位置，对应 onRenderVideoFrame 回调。
 - POSITION_PRE_ENCODER(1 &lt;&lt; 2)，本地视频编码前的位置，对应 onPreEncodeVideoFrame 回调。
 
-:::note
+:::caution
 注意：
 
 - 观测多个位置时，需要使用 '|' （或）运算符。
@@ -115,7 +115,7 @@ virtual bool getRotationApplied() { return false; }
 
 <a id="callback_ivideoframeobserver_getrotationapplied__note1"></a>
 
-:::note
+:::caution
 注意：
 
 - 在 Android 平台上，该回调支持的视频数据格式有：I420、RGBA 和 Texture。
@@ -396,7 +396,7 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
 完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
 
-:::note
+:::caution
 注意：
 
 - 如果你需要将处理后的数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) 方法，将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE）。
@@ -461,7 +461,7 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
 
-:::note
+:::caution
 注意：
 
 - 如果你需要将处理后的数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) 方法，将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE）。

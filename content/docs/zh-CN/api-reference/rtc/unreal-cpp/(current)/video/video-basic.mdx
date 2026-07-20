@@ -100,7 +100,7 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 成功禁用或启用本地视频采集后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用，但加入频道前调用的设置，在加入频道后才会生效。
@@ -313,7 +313,7 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
 
 成功调用该方法设置视频业务场景后，SDK 会基于指定场景启用最佳实践策略，自动调整关键性能指标，进而优化视频体验质量。
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。
 :::
 
@@ -736,7 +736,7 @@ virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int el
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
 
-:::note
+:::caution
 注意： 该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
 :::
 
@@ -898,7 +898,7 @@ virtual void onRemoteVideoStateChanged(uid_t uid,
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__note"></a>
 
-:::note
+:::caution
 注意： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
 :::
 
@@ -1132,7 +1132,7 @@ virtual void onUserMuteVideo(uid_t uid, bool muted) {
 
 当远端用户调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
 
-:::note
+:::caution
 注意： 当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
 :::
 

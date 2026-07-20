@@ -31,7 +31,7 @@ public abstract pauseAllChannelMediaRelay():number;
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::note
+:::caution
 注意： 该方法需要在调用 [startOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
 :::
 
@@ -68,7 +68,7 @@ public abstract resumeAllChannelMediaRelay():number;
 
 调用 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::note
+:::caution
 注意： 该方法需要在 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
 :::
 
@@ -110,7 +110,7 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 - 如果 onChannelMediaRelayStateChanged 回调报告 RUNNING (2) 和 OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 onChannelMediaRelayStateChanged 回调报告 FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::note
+:::caution
 注意：
 
 - 请在成功加入频道后调用该方法。
@@ -167,7 +167,7 @@ public abstract startOrUpdateChannelMediaRelayEx(channelMediaRelayConfiguration:
 - 如果 onChannelMediaRelayStateChanged 回调报告 RUNNING (2) 和 OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 onChannelMediaRelayStateChanged 回调报告 FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::note
+:::caution
 注意：
 
 - 请在成功加入频道后调用该方法。
@@ -223,7 +223,7 @@ public abstract stopChannelMediaRelay(): number;
 
 成功调用该方法后，SDK 会触发 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 IDLE (0) 和 OK (0)，则表示已停止转发媒体流。
 
-:::note
+:::caution
 注意：
        如果该方法调用不成功，SDK 会触发 onChannelMediaRelayStateChanged 回调，并报告状态码 SERVER_NO_RESPONSE (2) 或 SERVER_CONNECTION_LOST (8)。你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::

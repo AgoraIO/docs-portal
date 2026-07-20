@@ -93,7 +93,7 @@ virtual int setAdvancedAudioOptions(media::base::AdvancedAudioOptions &options) 
 
 如果你对音频处理有进阶需求，例如需要采集和发送立体声，可以调用该方法设置音频的高级选项。
 
-:::note
+:::caution
 注意： 你需要在 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2)、[enableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudio) 和 [enableLocalAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enablelocalaudio) 前调用该方法。
 :::
 
@@ -219,7 +219,7 @@ virtual int setAudioEffectParameters(AUDIO_EFFECT_PRESET preset, int param1, int
 - 调用 [setAudioScenario](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
 - 调用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后都能调用。
@@ -582,7 +582,7 @@ virtual int setVoiceBeautifierParameters(VOICE_BEAUTIFIER_PRESET preset, int par
 - 调用 [setAudioScenario](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
 - 调用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后都能调用。

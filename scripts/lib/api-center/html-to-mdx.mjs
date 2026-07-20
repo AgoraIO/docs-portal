@@ -81,21 +81,32 @@ function classNames(element) {
 }
 
 function calloutType(element) {
-  const classes = classNames(element);
+  const classes = new Set(
+    [...classNames(element)].map((className) => className.toLowerCase()),
+  );
+  const hasClass = (...names) => names.some((name) => classes.has(name));
   const hasCalloutClass = (...kinds) =>
     [...classes].some((name) => {
-      const normalized = name.toLowerCase();
       return kinds.some(
         (kind) =>
-          normalized === kind ||
-          normalized === `alert-${kind}` ||
-          normalized === `admonition-${kind}` ||
-          normalized === `callout-${kind}` ||
-          normalized === `${kind}-callout`,
+          name === kind ||
+          name === `alert-${kind}` ||
+          name === `admonition-${kind}` ||
+          name === `callout-${kind}` ||
+          name === `${kind}-callout`,
       );
     });
+  const isAlert =
+    hasClass('alert') || [...classes].some((name) => name.startsWith('alert-'));
+
   if (hasCalloutClass('danger', 'error')) return 'error';
-  if (hasCalloutClass('caution', 'warn', 'warning')) return 'warning';
+  if (
+    hasCalloutClass('attention', 'caution') ||
+    (isAlert && hasCalloutClass('warn', 'warning'))
+  ) {
+    return 'caution';
+  }
+  if (hasCalloutClass('warn', 'warning')) return 'warning';
   if (hasCalloutClass('tip', 'success')) return 'tip';
   if (hasCalloutClass('info', 'important')) return 'info';
   if (hasCalloutClass('note', 'admonition', 'alert')) {

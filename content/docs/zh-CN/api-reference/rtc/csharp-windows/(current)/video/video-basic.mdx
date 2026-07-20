@@ -157,7 +157,7 @@ public abstract int EnableLocalVideo(bool enabled);
 
 成功禁用或启用本地视频采集后，远端会触发 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用，但加入频道前调用的设置，在加入频道后才会生效。
@@ -355,7 +355,7 @@ public abstract int SetVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioTyp
 
 成功调用该方法设置视频业务场景后，SDK 会基于指定场景启用最佳实践策略，自动调整关键性能指标，进而优化视频体验质量。
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。
 :::
 
@@ -397,7 +397,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
 
-:::note
+:::caution
 注意： 该枚举值仅适用于主播 vs 主播场景。
 :::
 
@@ -747,7 +747,7 @@ public virtual void OnFirstRemoteVideoFrame(RtcConnection connection, uint remot
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
 
-:::note
+:::caution
 注意： 该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
 :::
 
@@ -896,7 +896,7 @@ public virtual void OnRemoteVideoStateChanged(RtcConnection connection, uint rem
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__note"></a>
 
-:::note
+:::caution
 注意： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
 :::
 
@@ -1131,7 +1131,7 @@ public virtual void OnUserMuteVideo(RtcConnection connection, uint remoteUid, bo
 
 当远端用户调用 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
 
-:::note
+:::caution
 注意： 当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
 :::
 

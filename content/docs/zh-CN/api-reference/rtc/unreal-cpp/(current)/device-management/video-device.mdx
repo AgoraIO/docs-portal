@@ -108,7 +108,7 @@ virtual IVideoDeviceCollection* enumerateVideoDevices() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -143,7 +143,7 @@ virtual float getCameraMaxZoomFactor() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -178,7 +178,7 @@ virtual int getCapability(const char* deviceIdUTF8, const uint32_t deviceCapabil
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -296,7 +296,7 @@ virtual int getDevice(char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -337,7 +337,7 @@ virtual bool isCameraAutoExposureFaceModeSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 iOS。
@@ -373,7 +373,7 @@ virtual bool isCameraAutoFocusFaceModeSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -409,7 +409,7 @@ virtual bool isCameraExposurePositionSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -445,7 +445,7 @@ virtual bool isCameraExposureSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -481,7 +481,7 @@ virtual bool isCameraFaceDetectSupported() = 0;
 
 <a id="api_irtcengine_iscamerafacedetectsupported__detailed_desc"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -517,7 +517,7 @@ virtual bool isCameraFocusSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -553,7 +553,7 @@ virtual bool isCameraTorchSupported() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -589,7 +589,7 @@ virtual bool isCameraZoomSupported() = 0;
 
 <a id="api_irtcengine_iscamerazoomsupported__detailed_desc"></a>
 
-:::note
+:::caution
 注意： 该方法仅适用于 Android 和 iOS。
 :::
 
@@ -634,7 +634,7 @@ virtual int numberOfCapabilities(const char* deviceIdUTF8) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -681,7 +681,7 @@ virtual int queryCameraFocalLengthCapability(agora::rtc::FocalLengthInfo* focalL
 
 如需开启摄像头广角、超广角拍摄模式，建议你先调用该方法查询设备是否具备相应的焦距能力，再根据查询结果调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 调整摄像头的焦距配置，以达到最佳的摄像头采集效果。
 
-:::note
+:::caution
 注意： 该方法仅适用于 Android 和 iOS。
 :::
 
@@ -797,7 +797,7 @@ virtual void release() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -823,7 +823,7 @@ virtual int setCameraAutoExposureFaceModeEnabled(bool enabled) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 iOS。
@@ -870,7 +870,7 @@ virtual int setCameraAutoFocusFaceModeEnabled(bool enabled) = 0;
 
 SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人脸自动对焦。如需自行设置人脸自动对焦，请调用该方法。
 
-:::note
+:::caution
 注意： 该方法仅适用于 Android 和 iOS。
 :::
 
@@ -946,7 +946,7 @@ virtual int setCameraCapturerConfiguration(const CameraCapturerConfiguration& co
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-cameracapturerconfiguration)。
 
-:::note
+:::caution
 注意： 在该方法中，不需要设置 deviceId 参数。
 :::
 
@@ -979,7 +979,7 @@ virtual int setCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORIENTATION
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Windows。
@@ -1032,7 +1032,7 @@ virtual int setCameraExposureFactor(float factor) = 0;
 
 当拍摄环境光线不足或过于明亮时，会影响视频采集的画质。为了获得更好的视频效果，你可以使用该方法调节摄像头的曝光系数。
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -1080,7 +1080,7 @@ virtual int setCameraExposurePosition(float positionXinView, float positionYinVi
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -1129,7 +1129,7 @@ virtual int setCameraFocusPositionInPreview(float positionX, float positionY) = 
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -1178,7 +1178,7 @@ virtual int setCameraTorchOn(bool isOn) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -1227,7 +1227,7 @@ virtual int setCameraZoomFactor(float factor) = 0;
 
 部分 iOS 设备的后置摄像头为多个摄像头组成的融合镜头，如双摄（广角和超广角）或三摄（广角、超广角和长焦），对于这种具备超广角能力的融合镜头，你可以调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 将 cameraFocalLengthType 设置为 CAMERA_FOCAL_LENGTH_DEFAULT (0)（标准镜头），然后调用该方法将摄像头缩放比例设置为小于 1.0 的数值，从而实现超广角的拍摄效果。
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 和 iOS。
@@ -1304,7 +1304,7 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 插拔设备不会改变设备 ID。
@@ -1352,7 +1352,7 @@ virtual int switchCamera() = 0;
 
 你可以调用该方法在 App 运行期间基于可用摄像头的实际情况来动态切换摄像头，而无需重启视频流或重新配置视频源。
 
-:::note
+:::caution
 注意： 该方法仅适用于 Android 和 iOS。
 :::
 
@@ -1402,7 +1402,7 @@ virtual void onCameraExposureAreaChanged(int x, int y, int width, int height) {
 
 该回调是由本地用户调用 [setCameraExposurePosition](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameraexposureposition) 方法改变曝光位置触发的。
 
-:::note
+:::caution
 注意： 该回调仅适用于 Android 和 iOS。
 :::
 
@@ -1451,7 +1451,7 @@ virtual void onCameraFocusAreaChanged(int x, int y, int width, int height) {
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__detailed_desc"></a>
 
-:::note
+:::caution
 注意： 该回调仅适用于 Android 和 iOS。
 :::
 

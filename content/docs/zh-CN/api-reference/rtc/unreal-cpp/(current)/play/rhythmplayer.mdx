@@ -160,7 +160,7 @@ virtual int stopRhythmPlayer() = 0;
 
 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
 
-:::note
+:::caution
 注意： 该方法仅适用于 Android 和 iOS。
 :::
 
@@ -196,7 +196,7 @@ virtual void onRhythmPlayerStateChanged(RHYTHM_PLAYER_STATE_TYPE state, RHYTHM_P
 
 虚拟节拍器状态发生改变时，SDK 会触发该回调报告当前的虚拟节拍器状态。在虚拟节拍器出现故障时，该回调可以帮助你了解当前虚拟节拍的状态以及出现故障的原因，方便你排查问题。
 
-:::note
+:::caution
 注意： 该回调仅适用于 Android 和 iOS。
 :::
 

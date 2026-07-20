@@ -82,6 +82,38 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('<img');
   });
 
+  it('maps source callout classes without collapsing caution into warning', async () => {
+    const cases = [
+      ['alert alert-warning', 'caution'],
+      ['alert warning', 'caution'],
+      ['note attention note_attention', 'caution'],
+      ['note caution note_caution', 'caution'],
+      ['admonition warning', 'warning'],
+      ['warning', 'warning'],
+      ['note danger note_danger', 'error'],
+      ['alert alert-danger', 'error'],
+      ['note tip note_tip', 'tip'],
+      ['alert alert-success', 'tip'],
+      ['alert info', 'info'],
+      ['alert alert-info', 'info'],
+      ['note note note_note', 'note'],
+      ['note', 'note'],
+      ['alert alert-note', 'note'],
+    ] as const;
+
+    for (const [classes, expectedType] of cases) {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>Callout</h1><div class="${classes}">Body for ${classes}.</div></article>`,
+        sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/callout',
+        sourcePath: 'html-docs/rtc/Web/callout.html',
+      });
+
+      expect(result.body).toContain(
+        `:::${expectedType}\nBody for ${classes}.\n:::`,
+      );
+    }
+  });
+
   it('records unsupported embeds and unresolved internal links as warnings', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>Page</h1><p><a href="/api-ref/missing">Missing</a></p><iframe src="old"></iframe></article>',

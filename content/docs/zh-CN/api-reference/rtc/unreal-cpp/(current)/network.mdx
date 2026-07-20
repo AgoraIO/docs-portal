@@ -678,7 +678,7 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 - 下行网络环境较差，订阅的音视频流回退为音频流
 - 下行网络环境改善，订阅音频流恢复为音视频流
 
-:::note
+:::caution
 注意： 订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
 :::
 
@@ -790,7 +790,7 @@ virtual int rate(const char* callId,
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法需要在用户离开频道后调用。
 :::
 
@@ -844,7 +844,7 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 该方法注册数据包观测器 (Packet Observer)。在 SDK 发送/接收（语音、视频）网络包时，会回调 [IPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ipacketobserver) 定义的接口，App 可用此接口对数据做处理，例如加解密。
 
-:::note
+:::caution
 注意：
 
 - 处理后发送到网络的包大小不应超过 1200 字节，否则有可能发送失败。
@@ -947,7 +947,7 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 同一用户可能使用两个设备分别发送音频流和视频流，为保证接收端听到和看到的音频和视频的时间同步性，你可以在视频发送端调用该方法，并传入音频发送端的频道名、用户 ID。 SDK 会以发送的音频流的时间戳为基准进行自动调节发送的视频流，以保证即使在两个发送端的上行网络情况不一致（如分别使用 Wi-Fi 和 4G 网络）的情况下，也能让接收到的音视频具有时间同步性。
 
-:::note
+:::caution
 注意： 建议你在加入频道前调用该方法。
 :::
 
@@ -1000,7 +1000,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 如果你想更改已设置的云代理类型，请先调用 setCloudProxy`(NONE_PROXY)`，再调用 setCloudProxy 并传入你期望的 proxyType 值。
 
-:::note
+:::caution
 注意：
 
 - 建议你在频道外调用该方法。
@@ -2115,7 +2115,7 @@ virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info) {
 
 只有当上行网络信息发生变化时，SDK 才会触发该回调。
 
-:::note
+:::caution
 注意： 该回调仅适用于向 SDK 推送 H.264 格式的外部编码视频数据的场景。
 :::
 

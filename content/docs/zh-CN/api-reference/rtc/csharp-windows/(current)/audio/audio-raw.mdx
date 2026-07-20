@@ -85,7 +85,7 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 该方法用于设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
-:::note
+:::caution
 注意：
 
 - 调用该方法前，你需要先调用 [EnableInEarMonitoring](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture)，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。

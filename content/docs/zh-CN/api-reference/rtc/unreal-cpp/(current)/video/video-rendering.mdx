@@ -150,11 +150,11 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_M
 
 <a id="api_irtcengine_setlocalrendermode2__mirror"></a>
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
-:::note
+:::caution
 注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
 
@@ -215,7 +215,7 @@ virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps)
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
-:::warning
+:::caution
 警告： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
 
@@ -262,7 +262,7 @@ virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
 
 本地视频镜像模式。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -297,7 +297,7 @@ virtual int setRemoteRenderMode(uid_t userId, RENDER_MODE_TYPE renderMode, VIDEO
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::note
+:::caution
 注意：
 
 - 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
@@ -320,7 +320,7 @@ virtual int setRemoteRenderMode(uid_t userId, RENDER_MODE_TYPE renderMode, VIDEO
 
 远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -358,7 +358,7 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 
 <a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
 
-:::note
+:::caution
 注意：
 
 <a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
@@ -383,7 +383,7 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 
 远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -444,7 +444,7 @@ virtual int setRemoteRenderTargetFps(int targetFps) = 0;
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
-:::warning
+:::caution
 警告： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
 
@@ -512,7 +512,7 @@ virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
@@ -583,7 +583,7 @@ virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
@@ -637,7 +637,7 @@ virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& c
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 之后调用。

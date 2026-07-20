@@ -446,7 +446,7 @@ public abstract int JoinChannelWithUserAccount(string token, string channelId, s
 
 用户成功加入频道后，默认订阅频道内所有其他用户的音频流和视频流，因此产生用量并影响计费。如果想取消订阅，可以通过调用相应的 mute 方法实现。
 
-:::note
+:::caution
 注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
 :::
 
@@ -550,7 +550,7 @@ public abstract int JoinChannelWithUserAccount(string token, string channelId, s
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__note"></a>
 
-:::note
+:::caution
 注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
 :::
 
@@ -657,7 +657,7 @@ public abstract int LeaveChannel();
 
 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -718,7 +718,7 @@ public abstract int LeaveChannel(LeaveChannelOptions options);
 
 成功加入频道后，必须调用本方法或者 LeaveChannel [1/2] 结束通话，否则无法开始下一次通话。如果你已调用 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
 
-:::note
+:::caution
 注意： 该方法是异步操作，调用返回时并没有真正退出频道。
 :::
 
@@ -784,7 +784,7 @@ public abstract int LeaveChannelEx(RtcConnection connection);
 
 调用 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法或 [LeaveChannelEx [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_leavechannelex2) 结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -853,7 +853,7 @@ public abstract int LeaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 调用 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法或 [LeaveChannelEx [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_leavechannelex) 结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -1132,7 +1132,7 @@ public abstract int RegisterLocalUserAccount(string appId, string userAccount);
 - 先调用 RegisterLocalUserAccount 方法注册 Account，再调用 [JoinChannelWithUserAccount [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannelwithuseraccount) 或 [JoinChannelWithUserAccount [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，可以缩短进入频道的时间。
 - 直接调用 [JoinChannelWithUserAccount [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannelwithuseraccount) 或 JoinChannelWithUserAccount [2/2] 方法加入频道。
 
-:::note
+:::caution
 注意：
 
 - 自 v4.6.0 起，SDK 不再自动将 Int UID 映射到注册 User Account 时使用的 String `userAccount`。如果你希望使用注册时的原始 String `userAccount` 加入频道，请调用 [JoinChannelWithUserAccount [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，不要调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 并传入通过该方法获取的 Int UID 加入频道。

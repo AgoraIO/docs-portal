@@ -35,7 +35,7 @@ public abstract startRtmpStreamWithoutTranscoding(url:string): number;
 
 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
 
-:::note
+:::caution
 注意：
 
 - 请在加入频道后调用该方法。
@@ -94,7 +94,7 @@ public abstract startRtmpStreamWithTranscoding(url: string, transcoding: LiveTra
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 请在加入频道后调用该方法。
@@ -301,7 +301,7 @@ onTranscodingUpdated? : () =>void;
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__note"></a>
 
-:::note
+:::caution
 注意： 首次调用 startRtmpStreamWithTranscoding 方法设置转码参数 LiveTranscoding 时，不会触发此回调。
 :::
 

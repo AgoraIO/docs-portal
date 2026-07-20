@@ -61,7 +61,7 @@ virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadata
 
 调用该方法成功后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_getmaxmetadatasize) 回调。
 
-:::note
+:::caution
 注意： 请在 joinChannel [2/2] 前调用该方法。
 :::
 
@@ -169,7 +169,7 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 
 当 SDK 准备好发送 metadata 时，会触发该回调。
 
-:::note
+:::caution
 注意： 请确保在该方法中传入的 metadata 大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_getmaxmetadatasize) 中设定的值。
 :::
 

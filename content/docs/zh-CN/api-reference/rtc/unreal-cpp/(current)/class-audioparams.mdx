@@ -32,7 +32,7 @@ struct AudioParams {
 - [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams)：设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调的数据格式。
 - [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的数据格式。
 
-:::note
+:::caution
 注意：
 
 - SDK 会通过 AudioParams 中的 samplesPerCall、sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame、onPlaybackAudioFrame、onMixedAudioFrame 和 onEarMonitoringAudioFrame 回调。

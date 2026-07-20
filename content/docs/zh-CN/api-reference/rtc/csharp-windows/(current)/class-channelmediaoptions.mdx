@@ -57,7 +57,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 
 <a id="class_channelmediaoptions__note"></a>
 
-:::note
+:::caution
 注意： 建议你根据业务场景自行设置成员参数值，否则 SDK 会自动对成员参数进行赋值。
 :::
 
@@ -130,7 +130,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 - `true`：发布第三个屏幕采集到的视频。
 - `false`：不发布第三个屏幕采集到的视频。
 
-:::note
+:::caution
 注意： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
@@ -141,7 +141,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 - `true`：发布第四个屏幕采集到的视频。
 - `false`：不发布第四个屏幕采集到的视频。
 
-:::note
+:::caution
 注意： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
@@ -267,7 +267,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 
 （可选）在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-:::note
+:::caution
 注意：
 
 - 该参数仅在调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_updatechannelmediaoptions) 或 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
@@ -288,7 +288,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 - `true`：开启互动观众模式。成功开启后，本地用户作为互动观众，收到低延时和流畅的远端用户视频。
 - `false`：不开启互动观众模式。本地用户作为普通观众，收到默认设置的远端用户视频。
 
-:::note
+:::caution
 注意：
 
 - 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 `true`。
@@ -306,6 +306,6 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/csha
 - `true`：参与音强选流。如未开启音强选流功能，该参数不会生效。
 - `false`：不参与音强选流。
 
-:::note
+:::caution
 注意： 如需启用该功能，请[联系销售](https://www.shengwang.cn/contact-sales/)。
 :::

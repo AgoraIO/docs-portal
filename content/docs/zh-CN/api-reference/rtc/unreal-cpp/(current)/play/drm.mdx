@@ -689,7 +689,7 @@ virtual int preload(int64_t songCode, const char* jsonOption = nullptr) = 0;
 
 <a id="api_imusicontentcenter_preload__note"></a>
 
-:::note
+:::caution
 注意： 如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调后，再调用 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法。
 :::
 
@@ -750,7 +750,7 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 
 在调用该方法来预加载音乐资源之前，你需要调用 [getMusicCollectionWithMusicChartId](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
-:::note
+:::caution
 注意： 如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调后，再调用 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法。
 :::
 
@@ -1018,7 +1018,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 你可以调用该方法来设置启用原唱、伴奏或导唱。如不调用该方法进行设置，则默认播放伴奏；如果音乐资源没有伴奏，则播放原唱。
 
-:::note
+:::caution
 注意： 你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 result 参数得知需播放的版权音乐所支持的播放类型。
 :::
 

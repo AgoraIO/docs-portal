@@ -36,7 +36,7 @@ virtual int addVideoWatermark(const RtcImage& watermark) = 0;
 
 该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户，旁路推流观众，甚至采集设备都能看到或采集到该水印图片。如果你仅仅希望在旁路直播推流中添加水印，请参考 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 中描述的用法。
 
-:::note
+:::caution
 注意：
 
 - 在本地直播和旁路推流中，URL 的定义不同。本地直播中，URL 指本地直播视频上图片的本地绝对/相对路径；旁路推流中，URL 指旁路推流视频上图片的地址。
@@ -91,7 +91,7 @@ virtual int addVideoWatermark(const char* watermarkUrl, const WatermarkOptions& 
 - 如果视频编码方向（ORIENTATION_MODE）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
 - 设置水印坐标时，水印的图像区域不能超出 setVideoEncoderConfiguration 方法中设置的视频尺寸，否则超出部分将被裁剪。
 
-:::note
+:::caution
 注意：
 
 - 你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。
@@ -152,7 +152,7 @@ virtual int addVideoWatermarkEx(const char* watermarkUrl,
 - 如果视频编码方向（ORIENTATION_MODE）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
 - 设置水印坐标时，水印的图像区域不能超出 setVideoEncoderConfigurationEx 方法中设置的视频尺寸，否则超出部分将被裁剪。
 
-:::note
+:::caution
 注意：
 
 - 你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用本方法。

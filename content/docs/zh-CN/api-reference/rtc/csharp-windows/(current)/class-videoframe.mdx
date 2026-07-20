@@ -91,7 +91,7 @@ public class VideoFrame
 
 对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -99,7 +99,7 @@ public class VideoFrame
 
 对 YUV 数据，表示 U 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -107,7 +107,7 @@ public class VideoFrame
 
 对 YUV 数据，表示 V 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -165,7 +165,7 @@ public class VideoFrame
 
 你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
 
-:::note
+:::caution
 注意：
 
 - 在自定义视频渲染场景下，需确保传入的视频帧和 alphaBuffer 均为 Full Range 类型；其他类型可能导致 Alpha 数据渲染不正常。

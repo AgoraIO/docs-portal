@@ -142,7 +142,7 @@ struct RtcStats {
 
 当前 App 的 CPU 使用率 (%)。
 
-:::note
+:::caution
 注意：
 
 - [onLeaveChannel](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuAppUsage 恒为 0。
@@ -155,7 +155,7 @@ struct RtcStats {
 
 对于 Windows 平台，在多核环境中，该成员指多核 CPU 的平均使用率。 计算方式为 (100 - 任务管理中显示的系统空闲进程 CPU)/100。
 
-:::note
+:::caution
 注意：
 
 - [onLeaveChannel](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuTotalUsage 恒为 0。
@@ -186,7 +186,7 @@ struct RtcStats {
 
 当前 App 的内存占比 (%)。
 
-:::note
+:::caution
 注意： 该值仅作参考。受系统限制可能无法获取。
 :::
 
@@ -194,7 +194,7 @@ struct RtcStats {
 
 当前系统的内存占比 (%)。
 
-:::note
+:::caution
 注意： 该值仅作参考。受系统限制可能无法获取。
 :::
 
@@ -202,6 +202,6 @@ struct RtcStats {
 
 当前 App 的内存大小 (KB)。
 
-:::note
+:::caution
 注意： 该值仅作参考。受系统限制可能无法获取。
 :::

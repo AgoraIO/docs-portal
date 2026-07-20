@@ -33,7 +33,7 @@ public abstract muteAllRemoteAudioStreams(muted: boolean): number;
 
 <a id="api_irtcengine_muteallremoteaudiostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
@@ -97,7 +97,7 @@ public abstract muteAllRemoteAudioStreamsEx(muted:boolean,connection:RtcConnecti
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在加入频道后调用。
@@ -152,7 +152,7 @@ public abstract muteAllRemoteVideoStreams(muted: boolean): number;
 
 <a id="api_irtcengine_muteallremotevideostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
@@ -314,7 +314,7 @@ public abstract muteLocalAudioStreamEx(muted:boolean,connection:RtcConnection):n
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
@@ -426,7 +426,7 @@ public abstract muteLocalVideoStreamEx(muted:boolean,connection:RtcConnection):n
 
 成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::note
+:::caution
 注意：
 
 - 该方法不影响视频采集状态，没有禁用摄像头。

@@ -163,7 +163,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 &lt;&lt;15)：
                     复用发送端已进行过音效处理的 Audio filter。通过复用 Audio filter 降低耳返对 CPU 的占用率，但会增加耳返延迟，适用于需要降低 CPU 消耗且对耳返延迟不敏感的场景。该枚举值仅支持单独使用，一旦指定了该选项，其他 Audio filter 配置将自动失效。
 
-:::note
+:::caution
 注意： 该参数仅在 enabled 设为 `true` 时生效。
 :::
 
@@ -271,7 +271,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enableloopbackrecording__note_v4j_tbx_jqb"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 macOS 和 Windows 平台。
@@ -331,7 +331,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_enableloopbackrecordingex__note_v4j_tbx_jqb"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 macOS 和 Windows 平台。

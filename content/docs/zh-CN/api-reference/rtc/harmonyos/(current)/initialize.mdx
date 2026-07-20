@@ -37,7 +37,7 @@ public static createEngine(context: Context, appID: string, handler: IRtcEngineE
 
 RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
 
-:::note
+:::caution
 注意：
 
 <a id="api_irtcengine_create__ul_uy4_mtq_4qb"></a>
@@ -87,7 +87,7 @@ public static create(config: RtcEngineConfig): RtcEngine {
 
 <a id="api_irtcengine_initialize__detailed_desc"></a>
 
-:::note
+:::caution
 注意： RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
 :::
 
@@ -139,7 +139,7 @@ public static destroy(): Promise<void> {
 
 该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。
 
-:::note
+:::caution
 注意：
 
 - 该方法为同步调用。需要等待 RtcEngine 资源释放后才能执行其他操作（例如：创建一个新的 RtcEngine 对象），因此建议在子线程中调用该方法，避免主线程阻塞。

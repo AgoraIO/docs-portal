@@ -235,7 +235,7 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 
 <a id="api_irtcengine_muteallremoteaudiostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
@@ -299,7 +299,7 @@ virtual int muteAllRemoteAudioStreamsEx(bool mute, const RtcConnection& connecti
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在加入频道后调用。
@@ -354,7 +354,7 @@ virtual int muteAllRemoteVideoStreams(bool mute) = 0;
 
 <a id="api_irtcengine_muteallremotevideostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
@@ -516,7 +516,7 @@ virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
@@ -628,7 +628,7 @@ virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) =
 
 成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::note
+:::caution
 注意：
 
 - 该方法不影响视频采集状态，没有禁用摄像头。
@@ -1156,7 +1156,7 @@ virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 
 
 <a id="api_irtcengine_setremotevideostreamtype__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后都能调用。
@@ -1214,7 +1214,7 @@ virtual int setRemoteVideoStreamTypeEx(uid_t uid, VIDEO_STREAM_TYPE streamType, 
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 setDualStreamModeEx 修改设置。
@@ -1478,7 +1478,7 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用。
@@ -1534,7 +1534,7 @@ virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__d128e49"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用。

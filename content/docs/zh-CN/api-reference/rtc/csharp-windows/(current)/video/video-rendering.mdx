@@ -139,11 +139,11 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 
 本地视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数仅对 SDK 自渲染生效，如果你想要设置视图镜像，可以将 GameObject 的 scaleX 设为 `-1` 或 `+1`。
 :::
 
-:::note
+:::caution
 注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
 
@@ -219,7 +219,7 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::note
+:::caution
 注意：
 
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
@@ -274,7 +274,7 @@ public abstract int SetRemoteRenderModeEx(uint uid, RENDER_MODE_TYPE renderMode,
 
 <a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
 
-:::note
+:::caution
 注意：
 
 <a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
@@ -361,7 +361,7 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::note
+:::caution
 注意：
 
 - 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
@@ -429,7 +429,7 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
@@ -480,7 +480,7 @@ public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connect
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 之后调用。

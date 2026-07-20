@@ -60,6 +60,13 @@ describe('API Center shared migration framework', () => {
         body: '停止后不可恢复。',
       }),
     ).toBe(':::error[注意]\n停止后不可恢复。\n:::');
+    expect(
+      renderCallout({
+        type: 'caution',
+        title: '注意',
+        body: '继续操作前请检查配置。',
+      }),
+    ).toBe(':::caution[注意]\n继续操作前请检查配置。\n:::');
     expect(renderCodeFence('const value = `x`;', 'typescript')).toContain(
       '```ts\n',
     );

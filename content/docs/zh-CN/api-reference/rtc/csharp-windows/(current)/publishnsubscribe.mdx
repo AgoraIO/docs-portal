@@ -33,7 +33,7 @@ public abstract int MuteAllRemoteAudioStreams(bool mute);
 
 <a id="api_irtcengine_muteallremoteaudiostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
@@ -97,7 +97,7 @@ public abstract int MuteAllRemoteAudioStreamsEx(bool mute, RtcConnection connect
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在加入频道后调用。
@@ -152,7 +152,7 @@ public abstract int MuteAllRemoteVideoStreams(bool mute);
 
 <a id="api_irtcengine_muteallremotevideostreams__note"></a>
 
-:::note
+:::caution
 注意：
 
 SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
@@ -314,7 +314,7 @@ public abstract int MuteLocalAudioStreamEx(bool mute, RtcConnection connection);
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
@@ -426,7 +426,7 @@ public abstract int MuteLocalVideoStreamEx(bool mute, RtcConnection connection);
 
 成功调用该方法后，远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::note
+:::caution
 注意：
 
 - 该方法不影响视频采集状态，没有禁用摄像头。
@@ -910,7 +910,7 @@ public abstract int SetSubscribeAudioBlocklist(uint[] uidList, int uidNumber);
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用。
@@ -966,7 +966,7 @@ public abstract int SetSubscribeAudioBlocklist(uint[] uidList, int uidNumber);
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 该方法在加入频道前后均可调用。

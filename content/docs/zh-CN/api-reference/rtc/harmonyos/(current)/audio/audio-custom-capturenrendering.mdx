@@ -29,7 +29,7 @@ public abstract createCustomAudioTrack(trackType: Constants.AudioTrackType, conf
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。
 :::
 
@@ -47,7 +47,7 @@ public abstract createCustomAudioTrack(trackType: Constants.AudioTrackType, conf
 
 自定义音频轨道类型。详见 [AudioTrackType](/zh-CN/api-reference/rtc/harmonyos/enum-audiotracktype)。
 
-:::note
+:::caution
 注意： 如指定 DIRECT，则必须在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2.
 :::
 

@@ -65,7 +65,7 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
 
-:::note
+:::caution
 注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
 
@@ -100,7 +100,7 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::note
+:::caution
 注意：
 
 - 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
@@ -163,7 +163,7 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 
 <a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
 
-:::note
+:::caution
 注意：
 
 <a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
@@ -261,7 +261,7 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
@@ -332,7 +332,7 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
@@ -385,7 +385,7 @@ public abstract setupRemoteVideoEx(remote:VideoCanvas, connection:RtcConnection)
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。

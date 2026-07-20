@@ -233,7 +233,7 @@ public abstract int GetAudioMixingCurrentPosition();
 
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
-:::note
+:::caution
 注意：
 
 - 你需要在调用 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
@@ -353,7 +353,7 @@ public abstract int GetAudioMixingPublishVolume();
 
 该接口可以方便开发者排查音量相关问题。
 
-:::note
+:::caution
 注意： 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
@@ -734,7 +734,7 @@ public abstract int SetAudioMixingPosition(int pos);
 
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
-:::note
+:::caution
 注意： 如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 filePath 相同。
 :::
 

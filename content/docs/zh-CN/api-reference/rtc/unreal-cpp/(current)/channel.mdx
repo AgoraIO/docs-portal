@@ -489,7 +489,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 用户成功加入频道后，默认订阅频道内所有其他用户的音频流和视频流，因此产生用量并影响计费。如果想取消订阅，可以通过调用相应的 mute 方法实现。
 
-:::note
+:::caution
 注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
 :::
 
@@ -599,7 +599,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__note"></a>
 
-:::note
+:::caution
 注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
 :::
 
@@ -712,7 +712,7 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__note"></a>
 
-:::note
+:::caution
 注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
 :::
 
@@ -823,7 +823,7 @@ virtual int leaveChannel() = 0;
 
 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -888,7 +888,7 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 
 成功加入频道后，必须调用本方法或者 leaveChannel [1/2] 结束通话，否则无法开始下一次通话。如果你已调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
 
-:::note
+:::caution
 注意： 该方法是异步操作，调用返回时并没有真正退出频道。
 :::
 
@@ -954,7 +954,7 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 
 调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法或 [leaveChannelEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_leavechannelex2) 结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -1027,7 +1027,7 @@ virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOp
 
 调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法或 [leaveChannelEx [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_leavechannelex) 结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
@@ -1306,7 +1306,7 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 - 先调用 registerLocalUserAccount 方法注册 Account，再调用 [joinChannelWithUserAccount [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannelwithuseraccount) 或 [joinChannelWithUserAccount [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，可以缩短进入频道的时间。
 - 直接调用 [joinChannelWithUserAccount [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannelwithuseraccount) 或 joinChannelWithUserAccount [2/2] 方法加入频道。
 
-:::note
+:::caution
 注意：
 
 - 请确保在该方法中设置的 userAccount 在频道中的唯一性。
@@ -1432,7 +1432,7 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 
 你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
 
-:::note
+:::caution
 注意：
 
 不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。

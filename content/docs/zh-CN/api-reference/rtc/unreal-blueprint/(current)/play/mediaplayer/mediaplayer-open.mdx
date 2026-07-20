@@ -30,7 +30,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 <a id="api_imediaplayer_open__note"></a>
 
-:::note
+:::caution
 注意：
 
 该方法为异步调用。
@@ -154,7 +154,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 预加载成功后，如果你想播放媒体资源，请调用 [PlayPreloadedSrc](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果你想清空播放列表，请调用 [Stop](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
 
-:::note
+:::caution
 注意：
 
 - 调用该方法前，请确保你已经调用 [Open](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [OpenWithMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 成功打开媒体资源。
@@ -210,7 +210,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 调用该方法后，如果你收到 [OnPlayerEvent](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 PLAYER_EVENT_SWITCH_COMPLETE，则媒体资源切换成功。如果资源切换失败，SDK 会自动重试 3 次。如果仍然失败，你会收到 [OnPlayerEvent](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告 PLAYER_EVENT_SWITCH_ERROR 事件，表示媒体资源切换时发生错误。
 
-:::note
+:::caution
 注意：
 
 - 请确保在 [Open](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 之后调用该方法。
@@ -266,7 +266,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 该方法不支持释放当前播放的媒体资源。

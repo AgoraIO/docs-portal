@@ -290,7 +290,8 @@ export function renderCodeFence(code, language = 'text', metadata = {}) {
 export function normalizeCalloutType(value) {
   const type = String(value ?? '').toLowerCase();
   if (['danger', 'error'].includes(type)) return 'error';
-  if (['caution', 'warn', 'warning'].includes(type)) return 'warning';
+  if (type === 'caution') return 'caution';
+  if (['warn', 'warning'].includes(type)) return 'warning';
   if (['important', 'info'].includes(type)) return 'info';
   if (['tip', 'success'].includes(type)) return 'tip';
   return 'note';

@@ -29,7 +29,7 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法需要在 playEffect 后调用。
 :::
 
@@ -70,7 +70,7 @@ virtual int getEffectDuration(const char* filePath) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法需要在加入频道后调用。
 :::
 
@@ -116,7 +116,7 @@ virtual int getEffectsVolume() = 0;
 
 音量范围为 0~100。100 （默认值）为原始文件音量。
 
-:::note
+:::caution
 注意： 该方法需要在 [playEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
@@ -343,7 +343,7 @@ virtual int playEffect(int soundId,
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
-:::note
+:::caution
 注意： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 soundId 相同。
 :::
 
@@ -351,7 +351,7 @@ virtual int playEffect(int soundId,
 
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
-:::note
+:::caution
 注意： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 filePath 相同。
 :::
 
@@ -554,7 +554,7 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 
 成功设置后，本地音效文件会在指定位置开始播放。
 
-:::note
+:::caution
 注意： 该方法需要在 playEffect 后调用。
 :::
 

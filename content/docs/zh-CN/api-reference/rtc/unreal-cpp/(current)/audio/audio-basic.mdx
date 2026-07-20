@@ -560,7 +560,7 @@ virtual int setAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICT
 
 该方法在加入频道前后都能调用。一旦调用该方法限制了 SDK 对 Audio Session 的操作权限，该限制会在 SDK 需要更改 Audio Session 时生效。
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 iOS 平台。
@@ -696,7 +696,7 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers,
 
 该回调默认禁用，你可以通过 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 enableAudioVolumeIndication 中设置的时间间隔触发 onAudioVolumeIndication 回调。每次会触发两个 onAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
-:::note
+:::caution
 注意：
 
 启用该功能后，如果有用户将自己静音（调用了 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream)），SDK 会继续报告本地用户的音量提示回调。
@@ -881,7 +881,7 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) AGORA_DEPRECATED_AT
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__note"></a>
 
-:::note
+:::caution
 注意：
                 当状态为 LOCAL_AUDIO_STREAM_STATE_FAILED (3) 时， 你可以在 error 参数中查看返回的错误信息。
 :::
@@ -966,7 +966,7 @@ virtual void onRemoteAudioStateChanged(uid_t uid,
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__note"></a>
 
-:::note
+:::caution
 注意： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
 :::
 
@@ -1105,7 +1105,7 @@ virtual void onUserMuteAudio(uid_t uid, bool muted) {
 
 该回调是由远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法关闭或开启音频发送触发的。
 
-:::note
+:::caution
 注意： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
 :::
 

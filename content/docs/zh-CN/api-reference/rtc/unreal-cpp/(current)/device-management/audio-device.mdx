@@ -30,7 +30,7 @@ virtual IAudioDeviceCollection* enumeratePlaybackDevices() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -65,7 +65,7 @@ virtual IAudioDeviceCollection* enumerateRecordingDevices() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -144,7 +144,7 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -190,7 +190,7 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -273,7 +273,7 @@ virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 
 调用该方法后，你可以获取音频设备是否支持极低延时采集和播放。
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Android 平台。
@@ -490,7 +490,7 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 你可以调用该方法获取指定音频设备的名称、设备类型及 ID。
 
-:::note
+:::caution
 注意： 该方法仅适用于 macOS 平台。
 :::
 
@@ -584,7 +584,7 @@ virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -625,7 +625,7 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -778,7 +778,7 @@ virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -819,7 +819,7 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -1221,7 +1221,7 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -1343,7 +1343,7 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
@@ -1465,7 +1465,7 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 
 该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（uid = 0）和音频播放设置（uid = 1）的音量信息。
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Windows 和 macOS。
@@ -1518,7 +1518,7 @@ virtual int startPlaybackDeviceTest(const char* testAudioFilePath) = 0;
 
 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
@@ -1609,7 +1609,7 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 - 该方法仅适用于 Windows 和 macOS。
@@ -1649,7 +1649,7 @@ virtual int stopPlaybackDeviceTest() = 0;
 
 该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。
 :::
 

@@ -27,7 +27,7 @@ virtual int setCameraStabilizationMode(CAMERA_STABILIZATION_MODE mode) = 0;
 
 <a id="api_irtcengine_setcamerastabilizationmode__detailed_desc"></a>
 
-:::note
+:::caution
 注意：
 
 该方法仅适用于 iOS。
@@ -156,7 +156,7 @@ virtual int stopCameraCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 注： 在 iOS 平台上，如果要关闭多路摄像头采集，需要在调用该方法之后调用 [enableMultiCamera](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_enablemulticamera) 并设置 enabled 为 `false`。
 :::
 
-:::note
+:::caution
 注意： 如果你正在使用本地合图功能，调用该方法停止通过第一个摄像头采集视频，会造成本地合图中断。
 :::
 

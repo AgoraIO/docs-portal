@@ -20,7 +20,7 @@ _migration:
 1. 前处理：调用 [SetAdvancedAudioOptions](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/csharp-windows/class-advancedaudiooptions) 中设置 audioProcessingChannels 为 AUDIO_PROCESSING_STEREO (2)。
 2. 后处理：调用   并将 profile 设为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO (3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
-:::note
+:::caution
 注意：
 
 - 立体声设置仅在媒体音量下生效。

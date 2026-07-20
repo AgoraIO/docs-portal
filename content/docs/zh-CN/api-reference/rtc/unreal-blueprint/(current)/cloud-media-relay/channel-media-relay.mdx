@@ -32,7 +32,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::note
+:::caution
 注意： 该方法需要在调用 [StartOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
 :::
 
@@ -70,7 +70,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::note
+:::caution
 注意： 该方法需要在调用 [StartOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) 开始跨频道媒体流转发后调用。
 :::
 
@@ -116,7 +116,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用 [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::note
+:::caution
 注意： 该方法需要在 [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
 :::
 
@@ -154,7 +154,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用 [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::note
+:::caution
 注意： 该方法需要在 [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 后调用。
 :::
 
@@ -205,7 +205,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::note
+:::caution
 注意：
 
 - 请在成功加入频道后调用该方法。
@@ -263,7 +263,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::note
+:::caution
 注意：
 
 - 请在成功加入频道后调用该方法。
@@ -320,7 +320,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 RELAY_STATE_IDLE (0) 和 RELAY_OK (0)，则表示已停止转发媒体流。
 
-:::note
+:::caution
 注意：
        如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::
@@ -359,7 +359,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 RELAY_STATE_IDLE (0) 和 RELAY_OK (0)，则表示已停止转发媒体流。
 
-:::note
+:::caution
 注意：
        如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::

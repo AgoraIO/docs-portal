@@ -37,7 +37,7 @@ public abstract open(url:string, startPos:number):number;
 
 <a id="api_imediaplayer_open__note"></a>
 
-:::note
+:::caution
 注意：
 
 该方法为异步调用。
@@ -217,7 +217,7 @@ public abstract switchSrc(src:string, syncPts:boolean):number;
 
 调用该方法后，如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 SWITCH_COMPLETE，则媒体资源切换成功；如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 SWITCH_ERROR，则媒体资源切换失败。
 
-:::note
+:::caution
 注意：
 
 - 请确保在 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 之后调用该方法。
@@ -274,7 +274,7 @@ public abstract unloadSrc(src:string):number;
 
 ### 详情
 
-:::note
+:::caution
 注意：
 
 该方法不支持释放当前播放的媒体资源。

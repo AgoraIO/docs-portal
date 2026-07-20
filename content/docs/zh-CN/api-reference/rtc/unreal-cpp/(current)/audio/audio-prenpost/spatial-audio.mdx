@@ -853,7 +853,7 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 
 隔声区域的设置。详见 [SpatialAudioZone](/zh-CN/api-reference/rtc/unreal-cpp/class-spatialaudiozone)。当你将该参数设置为 `NULL` 时，表示清除所有隔声区域。
 
-:::note
+:::caution
 注意： 在 Windows 平台上，需确保 zones 数组中的成员个数与 zoneCount 的值相等，否则会导致崩溃。
 :::
 

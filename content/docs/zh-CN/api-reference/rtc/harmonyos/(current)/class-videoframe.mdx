@@ -63,7 +63,7 @@ export class VideoFrame {
 
 对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -71,7 +71,7 @@ export class VideoFrame {
 
 对 YUV 数据，表示 U 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -79,7 +79,7 @@ export class VideoFrame {
 
 对 YUV 数据，表示 V 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
-:::note
+:::caution
 注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
@@ -97,7 +97,7 @@ export class VideoFrame {
 
 ### buffer
 
-:::note
+:::caution
 注意： 该参数不可为空，否则会发生异常。
 :::
 
@@ -137,7 +137,7 @@ export class VideoFrame {
 
 你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
 
-:::note
+:::caution
 注意：
 
 - 请务必确保  跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。

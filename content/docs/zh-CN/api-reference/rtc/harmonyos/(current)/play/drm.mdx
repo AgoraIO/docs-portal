@@ -489,7 +489,7 @@ public abstract preload(songCode:bigint):string
 
 在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
-:::note
+:::caution
 注意： 如需销毁 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调后，再调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法。
 :::
 
@@ -741,7 +741,7 @@ abstract setPlayMode(mode:Constants.MusicPlayMode):number
 
 你可以调用该方法来设置启用原唱、伴奏或导唱。如不调用该方法进行设置，则默认播放伴奏；如果音乐资源没有伴奏，则播放原唱。
 
-:::note
+:::caution
 注意： 你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的  参数得知需播放的版权音乐所支持的播放类型。
 :::
 

@@ -34,7 +34,7 @@ export class EncryptionConfig {
 
 内置加密密钥，字符串类型，长度无限制。建议使用 32 字节的密钥。
 
-:::note
+:::caution
 注意： 如果未指定该参数或将该参数设置为 `NULL`，则无法启用内置加密，且 SDK 会返回错误码 `-2`。
 :::
 
@@ -44,6 +44,6 @@ export class EncryptionConfig {
 
 如需在 App 中添加声网内置媒体流加密，详见媒体流加密。
 
-:::note
+:::caution
 注意： 只有在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下，该参数才生效。此时，需确保填入该参数的值不全为 `0`。
 :::

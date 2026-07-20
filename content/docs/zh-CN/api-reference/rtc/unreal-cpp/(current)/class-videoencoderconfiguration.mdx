@@ -108,7 +108,7 @@ struct VideoEncoderConfiguration {
 
 SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。
 
-:::note
+:::caution
 注意： 该参数仅适用于直播场景。
 :::
 
@@ -120,7 +120,7 @@ SDK 会根据网络状况自动调整视频编码码率。将参数设为高于�
 
 带宽受限时，视频编码降级偏好。详见 [DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc/unreal-cpp/enum-degradationpreference)。
 
-:::note
+:::caution
 注意： 当该参数设置为 MAINTAIN_FRAMERATE (1) 或者 MAINTAIN_BALANCED (2) 时，需要同时将 orientationMode 设置为 ORIENTATION_MODE_ADAPTIVE (0)，否则设置不生效。
 :::
 
@@ -128,11 +128,11 @@ SDK 会根据网络状况自动调整视频编码码率。将参数设为高于�
 
 发送编码视频时是否开启镜像模式，只影响远端用户看到的视频画面。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
-:::note
+:::caution
 注意： 默认关闭镜像模式。
 :::
 

@@ -36,7 +36,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
 
-:::note
+:::caution
 注意：
 
 - 请在加入频道后调用该方法。
@@ -92,7 +92,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
 
-:::note
+:::caution
 注意：
 
 - 请在加入频道后调用该方法。
@@ -156,7 +156,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 请在加入频道后调用该方法。
@@ -218,7 +218,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__note"></a>
 
-:::note
+:::caution
 注意：
 
 - 请确保已开通旁路推流服务。
@@ -525,7 +525,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__note"></a>
 
-:::note
+:::caution
 注意： 首次调用 StartRtmpStreamWithTranscoding 方法设置转码参数 FLiveTranscoding 时，不会触发此回调。
 :::
 

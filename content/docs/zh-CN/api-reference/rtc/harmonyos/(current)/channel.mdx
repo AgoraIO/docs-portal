@@ -327,7 +327,7 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 
 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。如果你已调用 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
 
-:::note
+:::caution
 注意： 该方法是异步操作，调用返回时并没有真正退出频道。
 :::
 
@@ -393,7 +393,7 @@ public abstract leaveChannelEx(connection: RtcConnection, options?:LeaveChannelO
 
 调用 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
 
-:::note
+:::caution
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。

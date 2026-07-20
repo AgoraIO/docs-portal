@@ -31,7 +31,7 @@ virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__seq"></a>
 
-:::note
+:::caution
 注意： 在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
@@ -78,7 +78,7 @@ virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
@@ -125,7 +125,7 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 
 ### 详情
 
-:::note
+:::caution
 注意： 该方法需要在加入频道前调用。
 :::
 
@@ -143,7 +143,7 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 
 自定义音频轨道类型。详见 [AUDIO_TRACK_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audiotracktype)。
 
-:::note
+:::caution
 注意： 如指定 AUDIO_TRACK_DIRECT，则必须在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2。
 :::
 
@@ -217,7 +217,7 @@ virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0
 
 ### 详情
 
-:::note
+:::caution
 注意： 在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 

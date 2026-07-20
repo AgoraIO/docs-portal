@@ -109,11 +109,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalrendermode2__mirror"></a>
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
-:::note
+:::caution
 注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
 
@@ -175,7 +175,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
-:::warning
+:::caution
 警告： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
 
@@ -223,7 +223,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 本地视频镜像模式。详见 [EUABT_VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -259,7 +259,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::note
+:::caution
 注意：
 
 - 请在调用 [SetupRemoteVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
@@ -282,7 +282,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 远端用户视图的镜像模式，详见 [EUABT_VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -320,7 +320,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
 
-:::note
+:::caution
 注意：
 
 <a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
@@ -345,7 +345,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 远端用户视图的镜像模式，详见 [EUABT_VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videomirrormodetype)。
 
-:::note
+:::caution
 注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
@@ -407,7 +407,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
-:::warning
+:::caution
 警告： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
 
@@ -477,7 +477,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
@@ -549,7 +549,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
@@ -604,7 +604,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::note
+:::caution
 注意：
 
 - 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 之后调用。

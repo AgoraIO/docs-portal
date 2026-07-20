@@ -149,7 +149,7 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 
 ### 详情
 
-:::note
+:::caution
 注意： 调用该方法时，默认的录音采样率为 32 kHz，不可修改。
 :::
 
@@ -170,7 +170,7 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 <a id="api_irtcengine_startaudiorecording__d112e51"></a>
 
-:::note
+:::caution
 注意：
 
 请确保你指定的路径存在并且可写。
@@ -212,7 +212,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - .wav: 文件大，音质保真度较高。
 - .aac: 文件小，音质保真度较低。
 
-:::note
+:::caution
 注意：
 
 - 请确保你在该方法中指定的路径存在并且可写。
@@ -230,7 +230,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_irtcengine_startaudiorecording2__d112e51"></a>
 
-:::note
+:::caution
 注意：
 
 请确保你指定的路径存在并且可写。
@@ -345,7 +345,7 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 onRecorderStateChanged(`RECORDER_STATE_ERROR, RECORDER_ERROR_NO_STREAM`) 回调。
 
-:::note
+:::caution
 注意：
 
 - 如果你需要录制的是本地的音视频流，请在开始录制前确保本地用户的角色设为主播。
@@ -424,7 +424,7 @@ virtual int stopRecording() = 0;
 
 ### 详情
 
-:::note
+:::caution
 注意： 调用 [startRecording](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
 :::
 
