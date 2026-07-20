@@ -142,6 +142,8 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 
 先完成组件集成，再使用 RTC 和 RTM 实例初始化客户端组件：
 
+<a id="组件结构"></a>
+
 <Tabs defaultValue="android" groupId="language" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
@@ -249,7 +251,7 @@ func onAssistantManualEosEvent(agentUserId: String, event: AssistantManualEosEve
 
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("订阅失败: \(error.message)")
+        print("订阅失败： \(error.message)")
     }
 }
 ```
@@ -309,7 +311,7 @@ api.manualSOS(
     requestId = "sos-req-20260612-001"
 ) { error ->
     if (error != null) {
-        Log.e("ManualSOS", "发送失败: ${error.errorMessage}")
+        Log.e("ManualSOS", "发送失败： ${error.errorMessage}")
     }
 }
 ```
@@ -320,7 +322,7 @@ convoAIAPI.manualSOS(
     requestId: "sos-req-20260612-001"
 ) { error in
     if let error = error {
-        print("发送失败: \(error.message)")
+        print("发送失败： \(error.message)")
     }
 }
 ```
@@ -347,7 +349,7 @@ api.manualEOS(
     requestId = "eos-req-20260612-001"
 ) { error ->
     if (error != null) {
-        Log.e("ManualEOS", "发送失败: ${error.errorMessage}")
+        Log.e("ManualEOS", "发送失败： ${error.errorMessage}")
     }
 }
 ```
@@ -358,7 +360,7 @@ convoAIAPI.manualEOS(
     requestId: "eos-req-20260612-001"
 ) { error in
     if let error = error {
-        print("发送失败: \(error.message)")
+        print("发送失败： \(error.message)")
     }
 }
 ```
