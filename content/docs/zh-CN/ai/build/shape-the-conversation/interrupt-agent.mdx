@@ -16,7 +16,7 @@ description: "了解如何在对话式 AI 引擎中打断智能体，包括适�
 声网对话式 AI 引擎支持开启优雅打断功能，开启后，用户与智能体互动时，支持基于语义判定用户当前是否结束发言，实现更自然的对话交互体验。
 
 :::info[信息]
-- 优雅打断为增值服务，开启后会收取费用，详见[计费说明](/zh-CN/ai/overview/billing)。
+- 优雅打断为增值服务，开启后会收取费用，详见[计费说明](/zh-CN/ai/reference/pricing)。
 - 当语义判定用户未结束发言时，会等待一段时间才最终判定对话结束，此时响应延时会有所增加。
 :::
 
@@ -348,7 +348,7 @@ api.interrupt("agentId") { error -> /* ... */ }
 ```swift tab="iOS" tabGroup="language"
 convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
     if let error = error {
-        print("打断失败: \(error.message)")
+        print("打断失败： \(error.message)")
     } else {
         print("打断成功")
     }
