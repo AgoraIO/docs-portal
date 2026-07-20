@@ -183,7 +183,7 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
             }
             else -> {
                 // 其他错误类型
-                showErrorMessage("系统错误: ${error.message}")
+                showErrorMessage("系统错误： ${error.message}")
             }
         }
     }
@@ -255,7 +255,7 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
                 self.showErrorMessage("多模态AI处理出错")
             case .unknown:
                 // 其他错误类型
-                self.showErrorMessage("系统错误: \(error.message)")
+                self.showErrorMessage("系统错误： \(error.message)")
             }
         }
     }
@@ -330,7 +330,7 @@ api.subscribeMessage("channelName") { error ->
 ```swift tab="iOS" tabGroup="language"
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("订阅失败: \(error.message)")
+        print("订阅失败： \(error.message)")
     } else {
         print("订阅成功")
     }
@@ -370,7 +370,7 @@ api.unsubscribeMessage("channelName") { error ->
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("取消订阅失败: \(error.message)")
+        print("取消订阅失败： \(error.message)")
     } else {
         print("取消订阅成功")
     }

@@ -18,14 +18,14 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 对话式 AI 引擎最佳音频体验需要使用到以下插件动态库，请确保在项目中集成并加载这些动态库：
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+  <TabsTrigger value="Web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 - AI 降噪插件：`libagora_ai_noise_suppression_extension.so`
 - AI 回声消除插件：`libagora_ai_echo_cancellation_extension.so`
@@ -34,7 +34,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 - AI 降噪插件：`AgoraAiNoiseSuppressionExtension.xcframework`
 - AI 回声消除插件：`AgoraAiEchoCancellationExtension.xcframework`
@@ -43,7 +43,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 </TabsContent>
 
-<TabsContent value="web">
+<TabsContent value="Web">
 
 - 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
 
@@ -78,14 +78,14 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 ##### 集成组件
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+  <TabsTrigger value="Web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
     <Cards>
@@ -94,7 +94,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
     <Cards>
@@ -103,7 +103,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 </TabsContent>
 
-<TabsContent value="web">
+<TabsContent value="Web">
 
 将 `conversational-ai-api` 文件拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
     <Cards>
@@ -117,7 +117,15 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-```kotlin tab="Android" tabGroup="language"
+<Tabs defaultValue="Android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="Android">
+
+```kotlin
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
     rtcEngine = rtcEngineInstance,
@@ -128,7 +136,11 @@ val config = ConversationalAIAPIConfig(
 val api = ConversationalAIAPIImpl(config)
 ```
 
-```swift tab="iOS" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="iOS">
+
+```swift
 /// 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine, 
@@ -139,15 +151,18 @@ let config = ConversationalAIAPIConfig(
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
 
+</TabsContent>
+</Tabs>
+
 ##### 设置最佳音频参数
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
 
@@ -158,7 +173,7 @@ rtcEngine.joinChannel(token, channelName, null, userId)
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
 
@@ -185,13 +200,28 @@ rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isInd
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-```kotlin tab="Android" tabGroup="language"
+<Tabs defaultValue="Android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="Android">
+
+```kotlin
 api.destroy()
 ```
 
-```swift tab="iOS" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="iOS">
+
+```swift
 convoAIAPI.destroy()
 ```
+
+</TabsContent>
+</Tabs>
 
 #### 方案二：调用实时互动 SDK API
 
@@ -204,14 +234,14 @@ convoAIAPI.destroy()
 - Web：适用于 v4.15.0 或以上版本的 Web SDK。
 :::
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+  <TabsTrigger value="Web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
 
@@ -314,7 +344,7 @@ fun joinChannel(rtcToken: String, channelName: String, uid: Int, isIndependent: 
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
 
@@ -409,7 +439,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 </TabsContent>
 
-<TabsContent value="web">
+<TabsContent value="Web">
 
 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
 
@@ -422,13 +452,13 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 声网提供开源的示例代码，你可以参考设置音频相关参数。
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 <Cards>
   <Card title="CovRtcManager.kt" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/blob/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/rtc/CovRtcManager.kt" />
@@ -436,7 +466,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 <Cards>
   <Card title="RTCManager.swift" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/blob/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/Manager/RTCManager.swift" />
@@ -453,14 +483,14 @@ extension RTCManager: AgoraRtcEngineDelegate {
 以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
 :::
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
+  <TabsTrigger value="Web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 - `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
 - `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
@@ -472,7 +502,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 - `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
 - `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
@@ -481,7 +511,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 </TabsContent>
 
-<TabsContent value="web">
+<TabsContent value="Web">
 
 - `index.ts` — API 类
 - `type.ts` — API 接口及相关数据结构和枚举
@@ -496,13 +526,13 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 #### RTC SDK API
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 - [`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)
 - [`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters)
@@ -510,7 +540,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 - [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)
 - [`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters)
@@ -521,20 +551,20 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 #### 客户端组件 API
 
-<Tabs defaultValue="android" groupId="language" persist>
+<Tabs defaultValue="Android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="Android">Android</TabsTrigger>
+  <TabsTrigger value="iOS">iOS</TabsTrigger>
 </TabsList>
 
-<TabsContent value="android">
+<TabsContent value="Android">
 
 - [`loadAudioSettings`](/api-ref/convoai/android/android-component/iconversationalaiapi#loadaudiosettings)
 - [`destroy`](/api-ref/convoai/android/android-component/iconversationalaiapi#destroy)
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="iOS">
 
 - [`loadAudioSettings [1/2]`](/api-ref/convoai/ios/ios-component/conversationalaiapi#loadaudiosettings[1/2])
 - [`loadAudioSettings [2/2]`](/api-ref/convoai/ios/ios-component/conversationalaiapi#loadaudiosettings[2/2])
