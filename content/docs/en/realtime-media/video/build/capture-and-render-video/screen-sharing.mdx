@@ -994,7 +994,9 @@ AgoraRTC.createScreenVideoTrack({
   encoderConfig: "1080p_1",
   // Set the video transmission optimization mode to prioritize quality ("detail"), or smoothness ("motion")
   optimizationMode: "detail"
-}).then(localScreenTrack => );
+}).then(localScreenTrack => {
+  /** ... **/
+});
 ```
 
 #### Share audio
@@ -1011,7 +1013,9 @@ The `createScreenVideoTrack` method returns a list containing the following:
 ``` javascript
 AgoraRTC.createScreenVideoTrack({
  encoderConfig: "1080p_1",
-}, "enable").then(([screenVideoTrack, screenAudioTrack])=> );
+}, "enable").then(([screenVideoTrack, screenAudioTrack]) => {
+  /** ... **/
+});
 ```
 
 :::note
@@ -1030,7 +1034,9 @@ To create a screen sharing track, call `createScreenVideoTrack` as follows:
 AgoraRTC.createScreenVideoTrack({
  // Configure the screen sharing encoding parameters here, refer to the API documentation for details
  encoderConfig: "1080p_1",
-}).then(localScreenTrack => );
+}).then(localScreenTrack => {
+  /** ... **/
+});
 ```
 
 ### Firefox browser
@@ -1046,7 +1052,9 @@ Choose one of the following values for `screenSourceType`:
 ``` javascript
 AgoraRTC.createScreenVideoTrack({
  screenSourceType: 'screen' // 'screen', 'application', 'window'
-}).then(localScreenTrack => );
+}).then(localScreenTrack => {
+  /** ... **/
+});
 ```
 
 ### Safari browser
@@ -1059,7 +1067,9 @@ To create a screen sharing track, call `createScreenVideoTrack` as follows:
 AgoraRTC.createScreenVideoTrack({
  // Configure the screen sharing encoding parameters here, refer to the API documentation for details
  encoderConfig: "1080p_1",
-}).then(localScreenTrack => );
+}).then(localScreenTrack => {
+  /** ... **/
+});
 ```
 
 #### Additional notes
@@ -1085,7 +1095,9 @@ If you choose to use the default interface, there is no difference between using
 ``` javascript
 AgoraRTC.createScreenVideoTrack({
  encoderConfig: "1080p_1",
-}).then(localScreenTrack => );
+}).then(localScreenTrack => {
+  /** ... **/
+});
 ```
 
 The SDK provides its own default interface for end users to select a screen or window to share, as shown in the following figure:
@@ -1122,7 +1134,9 @@ To customize the selection interface, refer to the following steps:
    AgoraRTC.createScreenVideoTrack({
     // Fill in the sourceId selected by the user
     electronScreenSourceId： sourceId,
-   }).then(localScreenTrack => );
+   }).then(localScreenTrack => {
+     /** ... **/
+   });
    ```
 
 ##### Additional notes
@@ -1155,7 +1169,7 @@ async function startVideoCall() {
  return videoClient;
 }
 
-Promise.all([startScreenCall(), startVideoCall()]).then(() => );
+Promise.all([startScreenCall(), startVideoCall()]).then(() => { /** ... **/ });
 ```
 
 Subscribing to your own track incurs additional charges, as illustrated in the following figure:

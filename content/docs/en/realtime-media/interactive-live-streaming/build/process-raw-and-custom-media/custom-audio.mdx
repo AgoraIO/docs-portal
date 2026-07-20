@@ -793,6 +793,74 @@ Agora provides an open-source [CustomAudioCapture](https://github.com/AgoraIO/AP
 * [`pullAudioFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_imediaengine.html#api_imediaengine_pullaudioframe)
 </PlatformStructured>
 
+<PlatformStructured platform="web">
+The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
+
+* Your app has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+### Custom audio capture
+
+The SDK provides the `createCustomAudioTrack` method, which enables you to create a local audio track by passing in a browser-native `MediaStreamTrack` object. This method allows you to achieve custom audio capture. To use multiple audio sources, you can call the `createCustomAudioTrack` method multiple times to create separate local audio track objects.
+
+The following example uses `getUserMedia` to obtain a [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) object and passes it to `createCustomAudioTrack` to create a local audio track object for use with the SDK.
+
+```javascript
+async function createAndPublishCustomAudioTrack(client) {
+  try {
+    // Get the audio media stream.
+    const mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: false,
+      audio: true,
+    });
+
+    // Extract the audio track from the media stream.
+    const audioMediaStreamTrack = mediaStream.getAudioTracks()[0];
+
+    // Create a custom audio track.
+    const customAudioTrack = await AgoraRTC.createCustomAudioTrack({
+      mediaStreamTrack: audioMediaStreamTrack,
+    });
+
+    // Store the custom audio track for later use in a shared object.
+    rtc.localAudioTrack = customAudioTrack;
+
+    // Publish the custom audio track to the RTC channel.
+    await rtc.client.publish([rtc.localAudioTrack]);
+
+    console.log('Custom audio track published successfully!');
+  } catch (error) {
+    console.error('Failed to create or publish custom audio track:', error);
+  }
+}
+```
+
+To implement custom audio processing, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) to obtain the `MediaStreamTrack`.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
+
+### API reference
+
+* [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomaudiotrack)
+* [`ILocalAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html)
+</PlatformStructured>
+
 <PlatformStructured platform="unreal">
 The default audio module of Video SDK meets the need of using basic audio functions in your game. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 

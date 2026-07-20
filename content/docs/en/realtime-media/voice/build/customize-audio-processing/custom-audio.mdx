@@ -635,19 +635,19 @@ Agora provides the following open-source sample projects for audio self-capture 
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-The default audio module of Voice SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Voice SDK supports using custom audio sources.
+The default audio module of Voice SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Voice SDK supports using custom audio sources and custom audio rendering modules.
 
-There are certain use-cases where you want to integrate a custom audio source into your app, such as:
+Voice SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
 
 * Your app has its own audio module.
 * You need to process the captured audio with a pre-processing library for audio enhancement.
 * You need flexible device resource allocation to avoid conflicts with other services.
 
-This page shows you how to capture audio from custom sources.
+This page shows you how to capture and render audio from custom sources.
 
 ## Understand the tech
 
-The SDK provides the `createCustomAudioTrack` method, which enables you to create a local audio track by passing in a browser-native `MediaStreamTrack` object. This method allows you to achieve custom audio capture. To use multiple audio sources, you can call the `createCustomAudioTrack` method multiple times to create separate local audio track objects.
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
@@ -655,6 +655,8 @@ Ensure that you have implemented the [SDK quickstart](../index.mdx) in your proj
 ## Implementation
 
 ### Custom audio capture
+
+The SDK provides the `createCustomAudioTrack` method, which enables you to create a local audio track by passing in a browser-native `MediaStreamTrack` object. This method allows you to achieve custom audio capture. To use multiple audio sources, you can call the `createCustomAudioTrack` method multiple times to create separate local audio track objects.
 
 The following example uses `getUserMedia` to obtain a [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) object and passes it to `createCustomAudioTrack` to create a local audio track object for use with the SDK.
 
