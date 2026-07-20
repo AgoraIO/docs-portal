@@ -57,6 +57,7 @@ const ALLOWED_TARGET_DECISIONS = new Set([
   'path-map',
   'path-map-alternate-extension',
   'existing-target-layout-over-stale-path-map',
+  'api-reference-over-section-path-map',
   'inferred-from-docs-api-reference/rtm2/enumv.android.ios.cpp.flutter.swift.harmonyos.mdx',
 ]);
 const execFileAsync = promisify(execFile);
@@ -1048,6 +1049,10 @@ export async function auditApiCenterProvenance({
         id: 'local-mdx-output',
         evidence:
           'Migrated HTML documentation must be substantive local MDX under zh-CN/api-reference.',
+      },
+      {
+        id: 'api-reference-canonical-ownership',
+        evidence: `${decisions.filter((value) => value === 'api-reference-over-section-path-map').length} legacy API source pages override stale section path-map targets so API documentation remains canonical under zh-CN/api-reference; superseded section routes are retained only as navigation and link-rewrite evidence.`,
       },
       {
         id: 'legacy-information-architecture',

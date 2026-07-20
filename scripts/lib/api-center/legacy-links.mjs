@@ -7,6 +7,20 @@ const HREF_ATTRIBUTE_PATTERN = /(\bhref\s*=\s*)(["'])([^"']+)\2/gi;
 const CODE_FENCE_PATTERN =
   /(^|\n)(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\2[^\n]*(?=\n|$)/g;
 
+function isRewritableHref(href, sourceUrl, routeMap) {
+  if (isLegacyDocsHref(href, sourceUrl)) return true;
+  try {
+    const url = new URL(href, sourceUrl);
+    return (
+      routeMap.has(url.href) ||
+      routeMap.has(`${url.pathname}${url.search}`) ||
+      routeMap.has(url.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function splitRawFrontmatter(source) {
   const match = String(source).match(/^---\r?\n[\s\S]*?\r?\n---\s*(?:\r?\n|$)/);
   return match
@@ -49,7 +63,7 @@ export function rewriteLegacyBodyLinks(
     let output = segment.replace(
       MARKDOWN_LINK_PATTERN,
       (raw, label, href, suffix) => {
-        if (!isLegacyDocsHref(href, sourceUrl)) return raw;
+        if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (result.href) {
           changes.push({
@@ -76,7 +90,7 @@ export function rewriteLegacyBodyLinks(
     output = output.replace(
       REFERENCE_LINK_PATTERN,
       (raw, prefixValue, href, suffix) => {
-        if (!isLegacyDocsHref(href, sourceUrl)) return raw;
+        if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (!result.href) {
           unresolved.push({
@@ -102,7 +116,7 @@ export function rewriteLegacyBodyLinks(
     output = output.replace(
       HREF_ATTRIBUTE_PATTERN,
       (raw, assignment, quote, href) => {
-        if (!isLegacyDocsHref(href, sourceUrl)) return raw;
+        if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (!result.href) {
           unresolved.push({

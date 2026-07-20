@@ -38,7 +38,7 @@ License 的类型：
     - 测试 License
     - 正式 License
 
-    声网推荐你在集成测试时选用测试 License，正式上线前改用正式 License。详见[测试 License 和正式 License](#licensetype)。
+    声网推荐你在集成测试时选用测试 License，正式上线前改用正式 License。详见[测试 License 和正式 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)。
 
 </Slot>
 
@@ -222,7 +222,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 在使用 `licenseValue` 或 `licenseKey` 时，请注意区分大小写。
 :::
 
-- `licenseValue` 是每个 License 的标识。用户申请续期时，要提供指定 License 的 `licenseValue`。你可以在[激活接口](#activate)的 `license` 响应参数获取 `licenseValue`。
+- `licenseValue` 是每个 License 的标识。用户申请续期时，要提供指定 License 的 `licenseValue`。你可以在[激活接口](/zh-CN/solutions/voip-call/build/setup-and-access/license)的 `license` 响应参数获取 `licenseValue`。
 
 - `licenseKey` 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。在调用微呼叫的相关接口时，声网服务端会比对该 `licenseKey` 和 `wechat.deviceId` 是否一致。如果一致则校验成功，否则校验失败。
 

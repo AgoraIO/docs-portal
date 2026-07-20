@@ -10,7 +10,7 @@ description: "了解如何在云端转码中检查转码服务状态，包括适
 
 ### 检查 Acquire 和 Create 的调用方式
 
-检查你是否在每次 [`Acquire`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens) 请求获取到 `builderToken` 后的 2 秒内都立即发起对应的 [`Create`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-tasks) 请求。
+检查你是否在每次 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 请求获取到 `builderToken` 后的 2 秒内都立即发起对应的 [`Create`](/zh-CN/api-reference/api-ref/cloud-transcoding/create) 请求。
 
 如果你批量获取 `builderToken`，再进行批量 `Create` 请求，可能会请求失败。
 
@@ -32,7 +32,7 @@ description: "了解如何在云端转码中检查转码服务状态，包括适
 
 ### 查询服务启动状态
 
-`Create` 请求成功后，你会获得 `taskId`。获得 `taskId` 之后的 5 秒后，使用退避策略调用 [`Query`](../cloud-transcoder/operations/get-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId) 方法查询服务启动状态。退避间隔建议小于 `Create` 请求中的 `idleTimeout`（最长空闲频道时间）。
+`Create` 请求成功后，你会获得 `taskId`。获得 `taskId` 之后的 5 秒后，使用退避策略调用 [`Query`](/zh-CN/api-reference/api-ref/cloud-transcoding/query) 方法查询服务启动状态。退避间隔建议小于 `Create` 请求中的 `idleTimeout`（最长空闲频道时间）。
 
 - 如果 `Query` 请求成功，且 `serverResponse` 中的 `status` 参数值为 `4` 或 `5`，则表示 transcoder 已成功启动。
 - 如果在获得 `taskId` 之后的 90 秒后，该字段仍未进入上述状态，则可以认为转码服务未成功启动或已超时退出。

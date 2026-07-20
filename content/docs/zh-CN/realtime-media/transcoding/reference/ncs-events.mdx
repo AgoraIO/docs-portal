@@ -51,7 +51,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 字段解释：
 
 - `taskId`：String 型字段。任务 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 cloud transcoder。
-- `instanceId`：String 型可选字段。调用 [`Acquire`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens) 时为本次云端转码指定的实例 ID。
+- `instanceId`：String 型可选字段。调用 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 时为本次云端转码指定的实例 ID。
 - `sequence`：Number 类型，消息序列号，从 0 开始计数。消息可能乱序到达或者丢失重发，可以通过该参数标识消息。
 - `sendts`：Number 类型， 事件发生的时间 （UTC 时间）。Unix 时间戳，精确到毫秒。
 - `serviceScene`：服务场景。对于云端转码服务，值为 `"rtsc/cloud-transcoder"`。
@@ -107,7 +107,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 
 ## 113 cloud_transcoder_updated
 
-当你调用 [`Update`](../cloud-transcoder/operations/patch-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId) 成功更新一个 cloud transcoder 配置时，消息通知服务器会向你的服务器通知配置更新事件。
+当你调用 [`Update`](/zh-CN/api-reference/api-ref/cloud-transcoding/update) 成功更新一个 cloud transcoder 配置时，消息通知服务器会向你的服务器通知配置更新事件。
 
 `eventType` 为 113(`cloud_transcoder_updated`)。
 
@@ -155,7 +155,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 字段解释：
 
 - `taskId`：String 型字段。任务 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 cloud transcoder。
-- `instanceId`：String 型可选字段。调用 [`Acquire`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens) 时为本次云端转码指定的实例 ID。
+- `instanceId`：String 型可选字段。调用 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 时为本次云端转码指定的实例 ID。
 - `sequence`：Number 类型，消息序列号，从 0 开始计数。消息可能乱序到达或者丢失重发，可以通过该参数标识消息。
 - `sendts`：Number 类型， 事件发生的时间 （UTC 时间）。Unix 时间戳，精确到毫秒。
 - `serviceScene`：服务场景。对于云端转码服务，值为 `"rtsc/cloud-transcoder"`。
@@ -236,7 +236,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 字段解释：
 
 - `taskId`：String 型字段。任务 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 cloud transcoder。
-- `instanceId`：String 型可选字段。调用 [`Acquire`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens) 时为本次云端转码指定的实例 ID。
+- `instanceId`：String 型可选字段。调用 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 时为本次云端转码指定的实例 ID。
 - `sequence`：Number 类型，消息序列号，从 0 开始计数。消息可能乱序到达或者丢失重发，可以通过该参数标识消息。
 - `sendts`：Number 类型， 事件发生的时间 （UTC 时间）。Unix 时间戳，精确到毫秒。
 - `serviceScene`：服务场景。对于云端转码服务，值为 `"rtsc/cloud-transcoder"`。
@@ -283,7 +283,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 字段解释：
 
 - `taskId`：String 型字段。任务 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 cloud transcoder。
-- `instanceId`：String 型可选字段。调用 [`Acquire`](../cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens) 时为本次云端转码指定的实例 ID。
+- `instanceId`：String 型可选字段。调用 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 时为本次云端转码指定的实例 ID。
 - `sequence`：Number 类型，消息序列号，从 0 开始计数。消息可能乱序到达或者丢失重发，可以通过该参数标识消息。
 - `sendts`：Number 类型， 事件发生的时间 （UTC 时间）。Unix 时间戳，精确到毫秒。
 - `serviceScene`：服务场景。对于云端转码服务，值为 `"rtsc/cloud-transcoder"`。
@@ -293,7 +293,7 @@ description: "查看云端转码的事件类型，了解关键概念、参数说
 
 - `event`：String 型字段。回调事件类型。在该事件中为 `"cloud_transcoder_stopped"`，表示成功销毁一个 cloud transcoder。
 
-- `stopReason`：String 型字段，云端转码停止的原因，可能是因为你调用 [`Delete`](../cloud-transcoder/operations/delete-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId)，也可能是其他异常原因。你可以根据该字段排查云端转码异常停止的原因。
+- `stopReason`：String 型字段，云端转码停止的原因，可能是因为你调用 [`Delete`](/zh-CN/api-reference/api-ref/cloud-transcoding/destroy)，也可能是其他异常原因。你可以根据该字段排查云端转码异常停止的原因。
 
 - `createTs`：Number 型字段。创建 cloud transcoder 时的 Unix 时间戳（秒）。
 

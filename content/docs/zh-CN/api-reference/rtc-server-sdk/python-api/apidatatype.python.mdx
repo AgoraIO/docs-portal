@@ -22,7 +22,7 @@ class AgoraServiceConfig:
     domain_limit: int = 0
 ```
 
-<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`initialize`](#initialize) 方法时设置。</span>
+<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`initialize`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python) 方法时设置。</span>
 
 | 参数 | 描述 |
 | --- | --- |
@@ -33,9 +33,9 @@ class AgoraServiceConfig:
 | `enable_video` | <Slot name="apidatatype-python-html-0-5-1" /> |
 | `context` | 上下文。 |
 | `appid` | 你的声网项目的 App ID。如果你的声网项目开启了 Token 鉴权，你也可以将此参数赋值为 RTC Token。详见[获取 App ID](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service#get-app-id)。 |
-| `area_code` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](#areacode)。 |
-| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](#channelprofiletype)。 |
-| `audio_scenario` | 音频编码属性。详见 [`AudioScenarioType`](#audioscenariotype)。 |
+| `area_code` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#areacode)。 |
+| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#channelprofiletype)。 |
+| `audio_scenario` | 音频编码属性。详见 [`AudioScenarioType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audioscenariotype)。 |
 | `use_string_uid` | <Slot name="apidatatype-python-html-0-11-1" /> |
 | `domain_limit` | <Slot name="apidatatype-python-html-0-12-1" /> |
 
@@ -99,7 +99,7 @@ class AudioEncoderConfiguration:
 
 | 参数 | 描述 |
 | --- | --- |
-| `audioProfile` | 音频场景。详见 [`AudioProfileType`](#audioprofiletype)。 |
+| `audioProfile` | 音频场景。详见 [`AudioProfileType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audioprofiletype)。 |
 
 <a id="audioframe"></a>
 ### AudioFrame
@@ -193,7 +193,7 @@ class EncodedAudioFrameInfo:
 | 参数 | 描述 |
 | --- | --- |
 | `capture_timems` | 音频帧的 Unix 时间戳（毫秒）。 |
-| `codec` | 音频编码类型音频编码类型。详见 [`AudioCodecType`](#audiocodectype)。 |
+| `codec` | 音频编码类型音频编码类型。详见 [`AudioCodecType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audiocodectype)。 |
 | `number_of_channels` | 音频帧的声道数。 |
 | `sample_rate` | 音频帧采样率（Hz）。 |
 | `samples_per_channel` | 每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。 |
@@ -241,7 +241,7 @@ class EncodedVideoFrameInfo:
 
 | 参数 | 描述 |
 | --- | --- |
-| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videocodectype)。 |
 | `width` | 视频帧宽度（像素）。 |
 | `height` | 视频帧高度（像素）。 |
 | `frames_per_second` | 每秒的视频帧数量。用于计算编码视频帧的时间戳。如果设为 0，SDK 会使用真实的时间戳。 |
@@ -505,9 +505,9 @@ class RTCConnConfig:
 | `max_send_bitrate` | 最大发送码率。 |
 | `min_port` | 最小端口。 |
 | `max_port` | 最大端口。 |
-| `audio_subs_options` | 音频订阅选项。详见 [`AudioSubscriptionOptions`](#audiosubscriptionoptions)。 |
-| `client_role_type` | 用户角色。详见 [`ClientRoleType`](#clientroletype)。 |
-| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](#channelprofiletype)。 |
+| `audio_subs_options` | 音频订阅选项。详见 [`AudioSubscriptionOptions`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audiosubscriptionoptions)。 |
+| `client_role_type` | 用户角色。详见 [`ClientRoleType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#clientroletype)。 |
+| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#channelprofiletype)。 |
 | `audio_recv_media_packet` | <Slot name="apidatatype-python-html-7-10-1" /> |
 | `video_recv_media_packet` | <Slot name="apidatatype-python-html-7-11-1" /> |
 
@@ -573,7 +573,7 @@ class RTCConnInfo():
 | 参数 | 描述 |
 | --- | --- |
 | `id` | RTC 连接的 ID。 |
-| `channel_id` | RTC 频道 ID。 如果你没有调用 [`connect`](#connect) 方法，该参数返回 `None`。 |
+| `channel_id` | RTC 频道 ID。 如果你没有调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python) 方法，该参数返回 `None`。 |
 | `state` | <Slot name="apidatatype-python-html-8-3-1" /> |
 | `local_user_id` | 本地用户 ID。 |
 
@@ -605,8 +605,8 @@ class SenderOptions:
 | 参数 | 描述 |
 | --- | --- |
 | `target_bitrate` | 当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。 |
-| `cc_mode` | 拥塞控制模式。详见 [`TCcMode`](#tccmode)。 |
-| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `cc_mode` | 拥塞控制模式。详见 [`TCcMode`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#tccmode)。 |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videocodectype)。 |
 
 <a id="videodimensions"></a>
 ### VideoDimensions
@@ -645,8 +645,8 @@ class VideoEncoderConfiguration:
 
 | 参数 | 描述 |
 | --- | --- |
-| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
-| `dimensions` | 视频编码的分辨率 (px)。该参数用于衡量编码质量，以长 × 宽表示，默认值为 640 × 360。用户可以自行设置分辨率。详见 [`VideoDimensions`](#videodimensions)。 |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videocodectype)。 |
+| `dimensions` | 视频编码的分辨率 (px)。该参数用于衡量编码质量，以长 × 宽表示，默认值为 640 × 360。用户可以自行设置分辨率。详见 [`VideoDimensions`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videodimensions)。 |
 | `frame_rate` | 视频编码的帧率(fps)，默认值为 15。 |
 | `bitrate` | <Slot name="apidatatype-python-html-11-4-1" /> |
 | `min_bitrate` | 最低编码码率，单位为 Kbps。SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。 注意: 该参数仅适用于直播场景。 |
@@ -755,7 +755,7 @@ class VideoSubscriptionOptions:
 
 | 参数 | 描述 |
 | --- | --- |
-| `type` | 订阅的视频类型。详见 [`VideoStreamType`](#videostreamtype)。 |
+| `type` | 订阅的视频类型。详见 [`VideoStreamType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videostreamtype)。 |
 | `encodedFrameOnly` | <Slot name="apidatatype-python-html-13-2-1" /> |
 
 <Slot for="apidatatype-python-html-13-2-1">

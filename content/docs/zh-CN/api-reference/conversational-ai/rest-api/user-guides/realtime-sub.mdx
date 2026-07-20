@@ -101,8 +101,6 @@ _migration:
 
 <TabsContent value="android">
 
-你可以通过 Maven 或源码拷贝集成组件。
-
 <Tabs defaultValue="maven" groupId="android-install-method" persist>
 <TabsList>
   <TabsTrigger value="maven">Maven</TabsTrigger>
@@ -121,7 +119,7 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
 
 <TabsContent value="source">
 
-将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解组件源码结构。
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
 
         <Cards>
   <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
@@ -133,8 +131,6 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
 </TabsContent>
 
 <TabsContent value="ios">
-
-你可以通过 CocoaPods、Swift Package Manager 或源码拷贝集成组件。
 
 <Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
 <TabsList>
@@ -165,7 +161,7 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 
 <TabsContent value="source">
 
-将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解组件源码结构。
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
 
         <Cards>
   <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
@@ -177,8 +173,6 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 </TabsContent>
 
 <TabsContent value="web">
-
-你可以通过Package Manager或源码拷贝集成组件。
 
 <Tabs defaultValue="package" groupId="web-install-method" persist>
 <TabsList>
@@ -206,7 +200,7 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 
 <TabsContent value="source">
 
-将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解组件源码结构。
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
 
         <Cards>
   <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
@@ -217,6 +211,10 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 
 </TabsContent>
 </Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
 
 ### 初始化组件
 
@@ -522,53 +520,6 @@ conversationalAIAPI.destroy()
 <Cards>
   <Card title="Conversational-AI-Demo" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/" />
 </Cards>
-
-### 组件结构
-
-客户端组件文件夹的结构和各文件作用如下：
-
-:::info[信息]
-以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
-:::
-
-<Tabs defaultValue="android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
-
-- `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
-- `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
-- `ConversationalAIUtils.kt` — 工具函数与事件回调管理
-- `subRender/`
-    - `v3/` — 字幕部分模块
-        - `TranscriptionController.kt` — 字幕控制器
-        - `MessageParser.kt` — 消息解析器
-
-</TabsContent>
-
-<TabsContent value="ios">
-
-- `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
-- `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
-- `Transcription/`
-    - `TranscriptionController.swift` — 字幕控制器
-
-</TabsContent>
-
-<TabsContent value="web">
-
-- `index.ts` — API 类
-- `type.ts` — API 接口及相关数据结构和枚举
-- `utils/index.ts` — API 工具函数
-- `utils/events.ts` — 事件管理类，可以拓展该类以轻松实现事件监听和播报
-- `utils/sub-render.ts` — 字幕部分模块
-
-</TabsContent>
-</Tabs>
 
 ### API 参考
 

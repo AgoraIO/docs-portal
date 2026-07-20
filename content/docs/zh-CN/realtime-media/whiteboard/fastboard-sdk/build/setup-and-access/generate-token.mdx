@@ -10,7 +10,7 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 你可以通过以下方式在业务服务端生成声网互动白板 Token：
 
-- 在 App 服务端用代码生成 Token，详见[在 App 服务端生成 Token](#在-app-服务端生成-token)（推荐）。
+- 在 App 服务端用代码生成 Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)（推荐）。
 
 - 在[声网控制台](https://console.shengwang.cn/)生成 SDK Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
@@ -1007,7 +1007,7 @@ Token 的数据格式错误。请检查 Token 数据格式是否有效：
 
 调用互动白板服务端 API 生成每种 Token 时，你可以设置 Token 的角色（`role`）和有效时长（`lifespan`）：
 
-- **角色**：包括 `admin`（管理员）、`writer`（读写）或 `reader`（只读）三种角色，每种角色的 Token 具有的权限详见[ Token 类型和权限](#token-的类型和权限)。
+- **角色**：包括 `admin`（管理员）、`writer`（读写）或 `reader`（只读）三种角色，每种角色的 Token 具有的权限详见[ Token 类型和权限](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)。
 - **有效时长**：取值为正整数，单位为毫秒。生成 Token 的 UTC 时间加上你设置的有效时长，即 Token 的过期时间。Token 过期后，用户将无法再使用该 Token 加入房间或访问互动白板服务。为确保业务可用性，你需要及时生成新的 Token。
 
     :::warning[注意]

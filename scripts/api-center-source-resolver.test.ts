@@ -710,6 +710,132 @@ describe('API Center source resolver', () => {
     });
   });
 
+  it('keeps legacy API source pages in the reference center even when the path map points to a solution', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-reference-ownership-'),
+    );
+    temporaryDirectories.push(root);
+    const legacyRoot = path.join(root, 'legacy');
+    const portalRoot = path.join(root, 'portal');
+    const sourceIndex = {
+      ...baseIndex(),
+      oldRoot: legacyRoot,
+      platforms: new Map([
+        ['doc/meeting/restful', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/meeting/restful/api/create-room',
+          [
+            {
+              sourcePath: 'docs/meeting/api/create-room.restful.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/meeting/restful/api/create-room.html',
+        source_path: 'docs/meeting/api/create-room.restful.mdx',
+        target_path:
+          'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+        new_url: '/zh-CN/solutions/meeting/reference/create-room',
+      },
+    ]);
+    await fs.mkdir(
+      path.join(portalRoot, 'content/docs/zh-CN/solutions/meeting/reference'),
+      { recursive: true },
+    );
+    await fs.writeFile(
+      path.join(
+        portalRoot,
+        'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+      ),
+      'legacy section target\n',
+    );
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/meeting/restful/api/create-room',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: portalRoot,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/meeting/restful/api/create-room.mdx',
+      targetRoute: '/zh-CN/api-reference/meeting/restful/api/create-room',
+      targetDecision: 'api-reference-over-section-path-map',
+      targetExists: false,
+      supersededTargetPath:
+        'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+      supersededTargetRoute: '/zh-CN/solutions/meeting/reference/create-room',
+    });
+  });
+
+  it('does not rehome a non-API solution guide merely because it links to APIs', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-solution-guide-'),
+    );
+    temporaryDirectories.push(root);
+    const targetPath =
+      'content/docs/zh-CN/solutions/meeting/reference/call-api.mdx';
+    await fs.mkdir(path.dirname(path.join(root, targetPath)), {
+      recursive: true,
+    });
+    await fs.writeFile(path.join(root, targetPath), 'guide\n');
+    const sourceIndex = {
+      ...baseIndex(),
+      platforms: new Map([
+        ['doc/meeting/restful', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/meeting/restful/get-started/call-api',
+          [
+            {
+              sourcePath: 'docs/meeting/get-started/call-api.restful.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/meeting/restful/get-started/call-api.html',
+        source_path: 'docs/meeting/get-started/call-api.restful.mdx',
+        target_path: targetPath,
+        new_url: '/zh-CN/solutions/meeting/reference/call-api',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/meeting/restful/get-started/call-api',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath,
+      targetRoute: '/zh-CN/solutions/meeting/reference/call-api',
+      targetDecision: 'path-map',
+      targetExists: true,
+    });
+    expect(result).not.toHaveProperty('supersededTargetPath');
+  });
+
   it('derives nested Oxygen target folders from the legacy platform TOC', async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'api-center-oxygen-'));
     temporaryDirectories.push(root);

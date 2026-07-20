@@ -98,7 +98,7 @@ override fun onConnected() {
 
 ### 4. 初始化 CallAPI 并绑定信令
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
 
 ```kotlin
 // 初始化配置
@@ -114,7 +114,7 @@ api.initialize(config)
 
 ### 5. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
 
 ```kotlin
 api.addListener(this)
@@ -144,7 +144,7 @@ signalClient?.login {
 
 ### 7. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将
@@ -152,7 +152,7 @@ signalClient?.login {
   Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 
   - 请确保用于生成 `rtcToken` 的 `uid` 和调用
-  [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化
+  [`initialize`](/zh-CN/api-reference/private-room) 方法初始化
   CallAPI 中传入的 `userId` 一致。
 :::
 
@@ -175,8 +175,8 @@ api.prepareForCall(prepareConfig: prepareConfig) { err ->
 
 :::warning[注意]
 为了保证通话安全性，建议每次呼叫前调用
-  [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新
-  `roomId`。详见 [13. 更新频道号](#13-更新频道号)。
+  [`prepareForCall`](/zh-CN/api-reference/private-room) 更新
+  `roomId`。详见 [13. 更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -239,14 +239,14 @@ private fun call(user: Pure1v1UserInfo) {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#cancelcall) 可避免呼叫等待过长。
+呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/api-reference/private-room) 可避免呼叫等待过长。
 :::
 
 ### 9. 监听到呼叫事件并处理
 
 主叫发起呼叫，主叫和被叫都需要监听呼叫状态，并根据当前的状态实现后续逻辑。具体实现步骤如下：
 
-1. 通过 `CallAPI` 的回调 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 接收当前的呼叫状态。
+1. 通过 `CallAPI` 的回调 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 接收当前的呼叫状态。
 2. 根据发起呼叫的用户 ID，判断当前用户是主叫还是被叫，然后引导用户选择接受、拒绝或取消呼叫操作。
     :::warning[注意]
     在收到 `Calling` 状态时，需要保证校验摄像头和麦克风权限成功才能调用 `accept`/`reject`，否则会出现呼叫异常。
@@ -328,7 +328,7 @@ override fun onCallStateChanged(
 
 ### 11. 主叫结束呼叫
 
-主叫通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#hangup) 方法来结束和对端的通话。
+主叫通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和对端的通话。
 
 ```kotlin
 private fun hangupAction() {
@@ -383,7 +383,7 @@ override fun onCallStateChanged(
 
 ### 13. 更新频道号
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新频道号。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 主叫发起呼叫后，被叫会获取到主叫在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果主叫不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -432,14 +432,14 @@ signalClient.logout()
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [13. 更新频道号](#13-更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [13. 更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [CallAPI 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api)
-- [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
+- [CallAPI 参考](/zh-CN/api-reference/private-room)
+- [RTC API 参考](/zh-CN/api-reference/private-room)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
@@ -543,7 +543,7 @@ extension EMPure1v1RoomViewController: ICallEasemobSignalClientListener {
 
 ### 4. 初始化 CallAPI 并绑定信令
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
 
 ```swift
 let config = CallConfig()
@@ -559,7 +559,7 @@ api.initialize(config: config)
 
 ### 5. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
 
 ```swift
 callApi.addListener(listener: self)
@@ -591,7 +591,7 @@ signalClient.login() {[weak self] err in
 
 ### 7. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将
@@ -599,7 +599,7 @@ signalClient.login() {[weak self] err in
   Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 
   - 请确保用于生成 `rtcToken` 的 `uid` 和调用
-  [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化
+  [`initialize`](/zh-CN/api-reference/private-room) 方法初始化
   CallAPI 中传入的 `userId` 一致。
 :::
 
@@ -624,8 +624,8 @@ callApi.prepareForCall(prepareConfig: prepareConfig) { err in
 
 :::warning[注意]
 为了保证通话安全性，建议每次呼叫前调用
-  [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新
-  `roomId`。详见 [13. 更新频道号](#13-更新频道号)。
+  [`prepareForCall`](/zh-CN/api-reference/private-room) 更新
+  `roomId`。详见 [13. 更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -688,7 +688,7 @@ private func _call(user: Pure1v1UserInfo) {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#cancelcall) 可避免呼叫等待过长。
+呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/api-reference/private-room) 可避免呼叫等待过长。
 :::
 
 ### 9. 监听到呼叫事件并处理
@@ -775,7 +775,7 @@ func onCallStateChanged(with state: CallStateType,
 
 ### 11. 主叫结束呼叫
 
-主叫通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#hangup) 方法来结束和对端的通话。
+主叫通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和对端的通话。
 
 ```swift
 func _hangupAction() {
@@ -829,7 +829,7 @@ func onCallStateChanged(with state: CallStateType,
 
 ### 13. 更新频道号
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新频道号。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 主叫发起呼叫后，被叫会获取到主叫在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果主叫不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -879,14 +879,14 @@ signalClient.logout()
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [13. 更新频道号](#13-更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [13. 更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [CallAPI 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api)
-- [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
+- [CallAPI 参考](/zh-CN/api-reference/private-room)
+- [RTC API 参考](/zh-CN/api-reference/private-room)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。

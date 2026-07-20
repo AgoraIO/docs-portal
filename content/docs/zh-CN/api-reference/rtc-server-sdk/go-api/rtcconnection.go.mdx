@@ -243,7 +243,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 v2.2.0 起新增。
 :::
 
-调用 [`createDataStream`](#createdatastream) 创建数据流后，你可以调用该方法向频道内所有用户发送数据流消息。
+调用 [`createDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 创建数据流后，你可以调用该方法向频道内所有用户发送数据流消息。
 
 :::warning[注意]
 SDK 对该方法的实现进行了如下限制：
@@ -258,7 +258,7 @@ SDK 对该方法的实现进行了如下限制：
 
 | 参数 | 描述 |
 | ---- | ---- |
-| `streamId` | 数据流 ID，可以通过 [`CreateDataStream`](#createdatastream) 获取。 |
+| `streamId` | 数据流 ID，可以通过 [`CreateDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 获取。 |
 | `msg` | 待发送的消息数据。 |
 
 #### 返回值
@@ -376,7 +376,7 @@ func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig
 
 开启加密功能。
 
-该方法需要在 [`Connect`](#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
+该方法需要在 [`Connect`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
 
 #### 参数
 
@@ -424,7 +424,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 成功调用该方法后，远端会触发 [`on_stream_message`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息。
 
 :::warning[注意]
-- 请确保在调用该方法前，已调用 [`create_data_stream`](#createdatastream) 创建了数据通道。
+- 请确保在调用该方法前，已调用 [`create_data_stream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
@@ -432,7 +432,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 
 | 参数        | 描述   |
 |-------------|------------|
-| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](#createdatastream) 获取。|
+| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 获取。|
 | `data`      | 待发送的数据。|
 
 #### 返回值

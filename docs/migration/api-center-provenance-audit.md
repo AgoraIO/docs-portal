@@ -13,8 +13,8 @@
 
 ## Source provenance
 
-- Owned MDX pages checked: 4956
-- Ownership source paths checked: 5146
+- Owned MDX pages checked: 4988
+- Ownership source paths checked: 5182
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Generated HTML descriptions checked: 4757
@@ -30,23 +30,24 @@
 - Logical legacy pages: 5600
 - Classified legacy pages: 5573
 - Existing local targets: 5573
-- Direct target routes: 5046
+- Direct target routes: 5074
 - Explicit existing-route projections: 54
 - OpenAPI-routed targets: 130
-- Preserved pre-existing targets outside API Reference: 343
-- Local links checked: 78016
+- Preserved pre-existing targets outside API Reference: 315
+- Local links checked: 78410
 - Reachable OpenAPI operations checked: 130
 
 ### Target decisions
 
+- `api-reference-over-section-path-map`: 50
 - `appledoc`: 50
 - `doxygen`: 297
-- `existing-target-layout-over-stale-path-map`: 184
+- `existing-target-layout-over-stale-path-map`: 162
 - `inferred-from-docs-api-reference/rtm2/enumv.android.ios.cpp.flutter.swift.harmonyos.mdx`: 5
 - `legacy-mdx`: 69
 - `openapi-lane`: 130
 - `oxygen`: 3451
-- `path-map`: 404
+- `path-map`: 376
 - `path-map-alternate-extension`: 23
 - `typedoc`: 960
 
@@ -54,6 +55,7 @@
 
 - `live-api-center-authority`: The deployed API Center product/platform/language entry set is authoritative.
 - `local-mdx-output`: Migrated HTML documentation must be substantive local MDX under zh-CN/api-reference.
+- `api-reference-canonical-ownership`: 50 legacy API source pages override stale section path-map targets so API documentation remains canonical under zh-CN/api-reference; superseded section routes are retained only as navigation and link-rewrite evidence.
 - `legacy-information-architecture`: Product order, platform order, page structure, and sidebar structure must match the legacy site.
 - `no-placeholder-or-old-site-redirect`: Placeholders, redirects, and old-site body-link substitutes are not accepted.
 - `script-owned-generation`: Migration output and audit reports must be generated and maintained by scripts.
@@ -61,8 +63,8 @@
 
 ### Technical decisions (not recorded as user requirements)
 
-- `target-path-map`: 427 pages use repository path-map decisions.
-- `preserve-existing-layout`: 184 pages preserve an existing API Reference layout over a stale mapped path; 343 already-migrated pages outside API Reference remain unowned and unchanged.
+- `target-path-map`: 399 pages use repository path-map decisions.
+- `preserve-existing-layout`: 162 pages preserve an existing API Reference layout over a stale mapped path; 315 already-migrated pages outside API Reference remain unowned and unchanged.
 - `explicit-route-projection`: 54 platform routes project to shared local MDX through explicit existing-target mappings.
 - `openapi-lanes`: 130 pages remain generated from maintained local OpenAPI sources; 5 changed short descriptions derive from legacy text and 0 preserve pre-existing target copy with formatting-only changes.
 - `runtime-source-labels`: 7 runtime product/platform labels are injected from the API Center source inventory instead of inferred from directory slugs.

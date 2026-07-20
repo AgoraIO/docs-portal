@@ -2,6 +2,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { OPENAPI_LANES } from '../../../src/lib/openapi/lanes.ts';
 import { auditDocsLinks } from '../../audit-doc-links.mjs';
+import {
+  buildApiReferenceRehomePlan,
+  reconcileApiReferenceRehome,
+} from './api-reference-ownership.mjs';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 import {
   ApiCenterMigrationRun,
@@ -998,6 +1002,7 @@ function countMetaLinks(pages) {
 }
 
 function navigationParityReport({
+  apiReferenceRehome,
   entries,
   metaByPath,
   overviewBody,
@@ -1112,6 +1117,10 @@ function navigationParityReport({
         supplementalNavigation.missingVisibleChildTargets.length,
       invalidSupplementalTargetLinks:
         supplementalNavigation.invalidSupplementalTargetLinks.length,
+      rehomedApiSourcePages: apiReferenceRehome.sourcePages.length,
+      rehomedApiPages: apiReferenceRehome.records.length,
+      referenceCenterLandingPages: apiReferenceRehome.landingPages.length,
+      sectionNavigationLinkFiles: apiReferenceRehome.metaPlans.length,
       missingNavigationTargets: missingNavigationTargets.length,
       warnings: issues.filter((issue) => issue.severity === 'warning').length,
       errors: issues.filter((issue) => issue.severity === 'error').length,
@@ -1150,6 +1159,10 @@ function navigationParityMarkdown(report) {
     `- Missing hidden targets: ${report.counts.missingHiddenTargets}`,
     `- Missing visible child targets: ${report.counts.missingVisibleChildTargets}`,
     `- Invalid supplemental target links: ${report.counts.invalidSupplementalTargetLinks}`,
+    `- Legacy API source pages rehomed from product sections: ${report.counts.rehomedApiSourcePages}`,
+    `- Superseded non-reference API targets: ${report.counts.rehomedApiPages}`,
+    `- Reference Center landing pages: ${report.counts.referenceCenterLandingPages}`,
+    `- Section navigation files converted to links: ${report.counts.sectionNavigationLinkFiles}`,
     `- Missing navigation targets: ${report.counts.missingNavigationTargets}`,
     `- Warnings: ${report.counts.warnings}`,
     `- Errors: ${report.counts.errors}`,
@@ -1211,6 +1224,7 @@ export async function runApiCenterNavigation({
   );
   const entries = manifest.entries ?? [];
   const routeMap = buildLegacyRouteMap(manifest);
+  const apiReferenceRehome = buildApiReferenceRehomePlan(manifest);
   const run = await ApiCenterMigrationRun.create({
     repoRoot,
     manifest,
@@ -1276,7 +1290,43 @@ export async function runApiCenterNavigation({
     metaByPath,
     repoRoot,
   });
+  for (const landing of apiReferenceRehome.landingPages) {
+    run.planFile({
+      targetPath: landing.targetPath,
+      contents: renderGeneratedMdx({
+        title: landing.title,
+        description: landing.description,
+        body: [
+          landing.description,
+          landing.description ? '' : null,
+          ...landing.links.map((link) => `- [${link.label}](${link.route})`),
+        ]
+          .filter((line) => line !== null)
+          .join('\n'),
+        migration: {
+          type: 'navigation',
+          sourceUrl: API_CENTER_URL,
+          sourcePath: manifestPath,
+          generator: 'api-center-navigation',
+          warnings: [],
+        },
+      }),
+      sourcePath: manifestPath,
+      sourceUrl: API_CENTER_URL,
+      type: 'navigation',
+      adoptExisting: run.ownsTarget(landing.targetPath),
+    });
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${path.posix.dirname(landing.targetPath)}/meta.json`,
+      rootRoute: landing.route,
+      title: landing.title,
+      pages: [],
+      includeIndex: true,
+      preserveExistingPages: true,
+    });
+  }
   const parity = navigationParityReport({
+    apiReferenceRehome,
     entries,
     metaByPath,
     overviewBody,
@@ -1371,6 +1421,11 @@ export async function runApiCenterNavigation({
   }
 
   const report = await run.finish();
+  const rehome = await reconcileApiReferenceRehome({
+    repoRoot,
+    mode,
+    plan: apiReferenceRehome,
+  });
   await writeOrCheckGenerated({
     repoRoot,
     mode,
@@ -1387,6 +1442,7 @@ export async function runApiCenterNavigation({
   });
   return {
     report,
+    rehome,
     parity,
     entries: entries.length,
     metaFiles: [...run.planned.values()].filter(

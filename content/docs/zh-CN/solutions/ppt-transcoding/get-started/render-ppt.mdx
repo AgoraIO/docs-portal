@@ -174,7 +174,7 @@ setMainSeqStep(index: number, status: "start" | "end"): void;
 `RtcAudio` 类提供管理 `RtcAudio` 对象的方法和属性。
 
 :::info[信息]
-PPT 里的音频和视频默认使用浏览器的 API 播放，如果有 RTC 混音需求可以提供自定义的播放器类来替换掉内置播放器。自定义的播放器需要实现 [`RtcAudioClazz`](#rtcaudioclazz) 接口，用于创建 `RtcAudio` 对象。
+PPT 里的音频和视频默认使用浏览器的 API 播放，如果有 RTC 混音需求可以提供自定义的播放器类来替换掉内置播放器。自定义的播放器需要实现 [`RtcAudioClazz`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt) 接口，用于创建 `RtcAudio` 对象。
 :::
 
 <a id="play"></a>
@@ -245,7 +245,7 @@ removeAllListeners(event: string): void;
 
 **参数**
 
-- `event`：欲移除的事件名称，详见 [`on`](#on)。传入空值时，将移除所有事件的监听器。
+- `event`：欲移除的事件名称，详见 [`on`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt)。传入空值时，将移除所有事件的监听器。
 
 <a id="currenttime"></a>
 ##### currentTime
@@ -282,7 +282,7 @@ new (url: string): RtcAudio;
 
 **返回**
 
-[`RtcAudio`](#rtcaudio) 对象。
+[`RtcAudio`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt) 对象。
 
 <a id="ilogger"></a>
 #### ILogger
@@ -379,13 +379,13 @@ Slide 对象的配置项。
   - `"interactive"`：交互模式，所有客户端都可以操作 PPT。
   - `"sync"`：同步模式，仅一个客户端可以操作 PPT。
   - `"local"`：单机模式，`Slide` 对象不会触发任意同步事件。
-- `renderOptions`：渲染选项，详见 [`ISlideRenderOptions`](#isliderenderoptions)。
+- `renderOptions`：渲染选项，详见 [`ISlideRenderOptions`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt)。
 - `controller`：Boolean。是否显示控制栏和统计信息。
 - `resize`：Boolean。是否自动调整分辨率根据窗口大小。
 - `timestamp`：() => Number。获取房间时间。
 - `enableGlobalClick`：Boolean。是否启用全局点击，默认为 `false`。
-- `rtcAudio`：配置 RTC 混音，详见 [`RtcAudioClazz`](#rtcaudioclazz)。
-- `logger`：日志记录对象，详见 [`ILogger`](#ilogger)。
+- `rtcAudio`：配置 RTC 混音，详见 [`RtcAudioClazz`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt)。
+- `logger`：日志记录对象，详见 [`ILogger`](/zh-CN/solutions/ppt-transcoding/get-started/render-ppt)。
 - `useLocalCache`：Boolean。是否启用本地缓存，默认为 `true`。
 - `resourceTimeout`：Number。资源加载超时，默认为 15 秒。
 - `fixedFrameSize`：为 PPT 设置固定的宽高，设置后 PPT 将不会自动随着父元素的大小而改变。如果需要缩放，需要调用 `updateFixedFrameSize` 方法。

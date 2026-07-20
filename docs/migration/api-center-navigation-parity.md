@@ -9,8 +9,8 @@
 - External entries: 10
 - Overview actions: 91
 - Root navigation actions: 65
-- Entry meta files: 96
-- Entry meta links: 1331
+- Entry meta files: 101
+- Entry meta links: 1345
 - Visible legacy navigation leaves: 1326
 - Visible supplemental entry pages: 2
 - Visible supplemental child pages: 22
@@ -19,6 +19,10 @@
 - Missing hidden targets: 0
 - Missing visible child targets: 0
 - Invalid supplemental target links: 0
+- Legacy API source pages rehomed from product sections: 50
+- Superseded non-reference API targets: 31
+- Reference Center landing pages: 4
+- Section navigation files converted to links: 18
 - Missing navigation targets: 0
 - Warnings: 0
 - Errors: 0
@@ -26,7 +30,7 @@
 ## Migration types
 
 - `overview-entry`: 91
-- `navigation-meta`: 96
+- `navigation-meta`: 101
 
 ## Warning explanations
 

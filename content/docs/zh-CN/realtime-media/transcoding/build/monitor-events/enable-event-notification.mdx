@@ -14,7 +14,7 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 
 ## 前提条件
 
-如果你的网络环境部署了防火墙，请将声网消息通知服务器的 IP 地址添加到白名单，以正常使用声网消息通知服务。详见[查询消息通知服务器的 IP 地址](../cloud-transcoder/operations/get-v1-ncs-ip )。
+如果你的网络环境部署了防火墙，请将声网消息通知服务器的 IP 地址添加到白名单，以正常使用声网消息通知服务。详见[查询消息通知服务器的 IP 地址](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-query-ip )。
 
 ## 用户配置
 
@@ -31,7 +31,7 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 配置消息通知服务后，你需要注意以下事项：
 
 - 5 分钟后，该服务即会生效。你的服务器需要尽快响应消息通知服务器，响应的 Body 格式必须为 JSON。
-- 声网系统将自动生成 `secret`。`secret` 是字符串类型的密钥，可以用来生成签名，你需要保存这个密钥以备后续验签，详见[验证签名](#验证签名)。
+- 声网系统将自动生成 `secret`。`secret` 是字符串类型的密钥，可以用来生成签名，你需要保存这个密钥以备后续验签，详见[验证签名](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)。
 
 ## 消息通知回调格式
 
@@ -42,8 +42,8 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 | 字段名            | 值                 |
 | ----------------- | ------------------ |
 | `Content-Type`    | `application/json` |
-| `Agora-Signature` |声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](#验证签名)。          |
-| `Agora-Signature-V2` |声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。 详见[验证签名](#验证签名)。            |
+| `Agora-Signature` |声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)。          |
+| `Agora-Signature-V2` |声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。 详见[验证签名](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)。            |
 
 消息通知回调的 Body 中包含以下字段：
 

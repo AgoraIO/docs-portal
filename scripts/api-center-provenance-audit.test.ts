@@ -103,6 +103,7 @@ _migration:
             sourcePath,
             targetPath,
             targetRoute: '/zh-CN/api-reference/example/page',
+            targetDecision: 'api-reference-over-section-path-map',
           },
         },
       ],
@@ -202,6 +203,12 @@ _migration:
     expect(report.liveEvidence.bundleMatchedEntries).toBe(1);
     expect(report.technicalDecisions).toContainEqual(
       expect.objectContaining({ id: 'current-directory-elision' }),
+    );
+    expect(report.explicitRequirements).toContainEqual(
+      expect.objectContaining({
+        id: 'api-reference-canonical-ownership',
+        evidence: expect.stringContaining('1 legacy API source pages'),
+      }),
     );
     expect(markdown).toContain(
       'Technical decisions (not recorded as user requirements)',

@@ -965,6 +965,20 @@ function selectPathMapTarget(route, sourcePath, pathMap) {
 async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
   const mapped = selectPathMapTarget(route, sourcePath, pathMap);
   const inferred = inferredManualTarget(route, sourcePath);
+  const isApiSource = sourcePath
+    .split('/')
+    .some((segment) => segment.toLowerCase() === 'api');
+  const mappedOutsideReferenceCenter =
+    mapped?.targetPath?.startsWith('content/docs/zh-CN/') &&
+    !mapped.targetPath.startsWith('content/docs/zh-CN/api-reference/');
+  if (isApiSource && mappedOutsideReferenceCenter) {
+    return {
+      ...inferred,
+      targetDecision: 'api-reference-over-section-path-map',
+      supersededTargetPath: mapped.targetPath,
+      supersededTargetRoute: mapped.targetRoute,
+    };
+  }
   const existingTarget = async (target) => {
     if (!target?.targetPath) return null;
     if (await fileExists(path.resolve(newRoot, target.targetPath)))

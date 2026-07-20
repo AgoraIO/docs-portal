@@ -12,14 +12,14 @@ description: "了解如何在灵动会议中 Token 鉴权，包括适用场景�
 
 | Token 使用场景           | Token 生成器函数                      | Token 作用域                                       |
 | ------------------ | ----------------------------------- | ------------------------------------------- |
-| 在客户端会议 SDK 启动会议时传入 Token 进行鉴权。 | 通过 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成。 | 指定房间中的指定用户。                 |
-| 在服务端 RESTful API 发起请求时传入 Token 进行鉴权。 | 通过 [`BuildAppToken`](#buildapptoken) 函数生成。       | 全局房间的操作，如创建房间，配置房间和查询房间等。 |
+| 在客户端会议 SDK 启动会议时传入 Token 进行鉴权。 | 通过 [`BuildRoomUserToken`](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token) 函数生成。 | 指定房间中的指定用户。                 |
+| 在服务端 RESTful API 发起请求时传入 Token 进行鉴权。 | 通过 [`BuildAppToken`](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token) 函数生成。       | 全局房间的操作，如创建房间，配置房间和查询房间等。 |
 
 ## 1. 服务端生成 Token
 
 本节以 Golang 语言为例，展示如何部署 Token 生成器。
 
-本节展示的 Token 为 `BuildRoomUserToken` 函数生成，你可按需替换成 `BuildAppToken` 函数。两者区别详见[灵动会议 Token 类型](#灵动会议-token-类型)。
+本节展示的 Token 为 `BuildRoomUserToken` 函数生成，你可按需替换成 `BuildAppToken` 函数。两者区别详见[灵动会议 Token 类型](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token)。
 
 :::warning[注意]
 Token 需要在你的服务端部署生成。不要在客户端生成 Token。
@@ -173,15 +173,15 @@ Token 需要在你的服务端部署生成。不要在客户端生成 Token。
 
 针对 Token 的类型，你可以将服务端生成的 Token 赋值给相应的参数，以实现鉴权：
 
-- 对于 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见启动灵动会议。
+- 对于 [`BuildRoomUserToken`](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见启动灵动会议。
 
-- 对于 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见[启动灵动会议](/zh-CN/solutions/meeting/get-started/integrate-meeting#启动灵动会议)。
+- 对于 [`BuildRoomUserToken`](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见[启动灵动会议](/zh-CN/solutions/meeting/get-started/integrate-meeting#启动灵动会议)。
 
-- 对于 [`BuildAppToken`](#buildapptoken) 函数生成的 Token，你需在使用服务端 RESTful API 发起请求时传入。详见[实现 HTTP Token 鉴权](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
+- 对于 [`BuildAppToken`](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token) 函数生成的 Token，你需在使用服务端 RESTful API 发起请求时传入。详见[实现 HTTP Token 鉴权](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
 
 ## 参考信息
 
-本节展示灵动会议使用的两种 Token 生成器函数：`BuildRoomUserToken` 和 `BuildAppToken`。两者区别详见[灵动会议 Token 类型](#灵动会议-token-类型)。同时，声网提供 GitHub 开源示例代码教你如何在服务端生成 Token。示例代码覆盖 Golang、Java、Node.js、PHP、Python 等语言。
+本节展示灵动会议使用的两种 Token 生成器函数：`BuildRoomUserToken` 和 `BuildAppToken`。两者区别详见[灵动会议 Token 类型](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token)。同时，声网提供 GitHub 开源示例代码教你如何在服务端生成 Token。示例代码覆盖 Golang、Java、Node.js、PHP、Python 等语言。
 
 ### BuildRoomUserToken
 
@@ -196,7 +196,7 @@ func BuildRoomUserToken(
 ) (string, error)
 ```
 
-`BuildRoomUserToken` 函数生成的 Token 作用域为指定房间中的指定用户，需在使用客户端会议 SDK 启动会议时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](#部署-token-服务器)。
+`BuildRoomUserToken` 函数生成的 Token 作用域为指定房间中的指定用户，需在使用客户端会议 SDK 启动会议时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token)。
 
 | 语言 | 算法 | 核心方法       | 示例代码 |
 | -------- | ----------- | --------------- | --------------- |
@@ -218,7 +218,7 @@ func BuildAppToken(
 ) (string, error)
 ```
 
-`BuildAppToken` 函数生成的 Token 作用域为全局房间的操作，如创建房间，配置房间和查询房间等，需在使用服务端 RESTful API 发起请求时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](#部署-token-服务器)。
+`BuildAppToken` 函数生成的 Token 作用域为全局房间的操作，如创建房间，配置房间和查询房间等，需在使用服务端 RESTful API 发起请求时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token)。
 
 | 语言 | 算法 | 核心方法       | 示例代码 |
 | -------- | ----------- |----------------| ---------------- |

@@ -118,4 +118,68 @@ _migration:
       }),
     ).resolves.toMatchObject({ changedFiles: [] });
   });
+
+  it('rewrites links from solution guides to API pages that moved into the Reference Center', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-rehomed-links-'),
+    );
+    roots.push(repoRoot);
+    const guide = 'content/docs/zh-CN/solutions/meeting/reference/call-api.mdx';
+    const target =
+      'content/docs/zh-CN/api-reference/meeting/restful/api/create-room.mdx';
+    for (const filePath of [guide, target]) {
+      await fs.mkdir(path.dirname(path.join(repoRoot, filePath)), {
+        recursive: true,
+      });
+    }
+    await fs.writeFile(
+      path.join(repoRoot, guide),
+      '[创建房间](/zh-CN/solutions/meeting/reference/create-room)\n',
+    );
+    await fs.writeFile(
+      path.join(repoRoot, target),
+      '---\ntitle: 创建房间\n---\n',
+    );
+    await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      'old_url,new_url\n',
+    );
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
+      JSON.stringify({
+        entries: [],
+        pageEvidence: [
+          {
+            requestedUrl:
+              'https://doc.shengwang.cn/doc/meeting/restful/api/create-room',
+            sourceResolution: {
+              sourcePath: 'docs/meeting/api/create-room.restful.mdx',
+              supersededTargetPath:
+                'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+              supersededTargetRoute:
+                '/zh-CN/solutions/meeting/reference/create-room',
+              targetExists: true,
+              targetPath: target,
+              targetRoute:
+                '/zh-CN/api-reference/meeting/restful/api/create-room',
+            },
+          },
+        ],
+      }),
+    );
+    const ownershipPaths = ['one.json', 'two.json', 'three.json'];
+    for (const ownershipPath of ownershipPaths) {
+      await fs.writeFile(
+        path.join(repoRoot, ownershipPath),
+        JSON.stringify({ files: [] }),
+      );
+    }
+
+    await normalizeExistingApiCenterLinks({ repoRoot, ownershipPaths });
+
+    expect(await fs.readFile(path.join(repoRoot, guide), 'utf8')).toBe(
+      '[创建房间](/zh-CN/api-reference/meeting/restful/api/create-room)\n',
+    );
+  });
 });

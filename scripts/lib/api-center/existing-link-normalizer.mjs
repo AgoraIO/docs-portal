@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import yaml from 'js-yaml';
 import { auditDocsLinks } from '../../audit-doc-links.mjs';
+import { buildApiReferenceRehomePlan } from './api-reference-ownership.mjs';
 import {
   findLegacyBodyLinks,
   reconcileMappedBodyLink,
@@ -79,6 +80,40 @@ function visibleMdxTargets(manifest) {
     grouped.set(targetPath, current);
   }
   return grouped;
+}
+
+async function findRehomeLinkedTargets(repoRoot, manifest) {
+  const routes = buildApiReferenceRehomePlan(manifest).records.map(
+    (record) => record.oldTargetRoute,
+  );
+  const targets = new Map();
+  if (routes.length === 0) return targets;
+  const root = path.resolve(repoRoot, 'content/docs/zh-CN');
+  async function walk(directory) {
+    const entries = await fs.readdir(directory, { withFileTypes: true });
+    for (const entry of entries) {
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        await walk(absolute);
+        continue;
+      }
+      if (!entry.isFile() || !/\.mdx?$/i.test(entry.name)) continue;
+      const source = await fs.readFile(absolute, 'utf8');
+      if (!routes.some((route) => source.includes(route))) continue;
+      const targetPath = path
+        .relative(repoRoot, absolute)
+        .split(path.sep)
+        .join('/');
+      targets.set(targetPath, [
+        {
+          sourcePath: targetPath,
+          sourceUrl: 'https://doc.shengwang.cn/api-center',
+        },
+      ]);
+    }
+  }
+  await walk(root);
+  return targets;
 }
 
 function normalizeEmptyCodeFences(source, evidence) {
@@ -295,6 +330,13 @@ export async function normalizeExistingApiCenterLinks({
     await loadFaqMappingRows(root),
   );
   const groupedTargets = visibleMdxTargets(manifest);
+  for (const [targetPath, evidence] of await findRehomeLinkedTargets(
+    root,
+    manifest,
+  )) {
+    if (!groupedTargets.has(targetPath))
+      groupedTargets.set(targetPath, evidence);
+  }
   const ownedTargets = await readOwnershipTargets(root, ownershipPaths);
   const selected = [...groupedTargets.entries()].filter(
     ([targetPath]) => !ownedTargets.has(targetPath),

@@ -26,10 +26,10 @@ description: "查看实时互动 RTC 的频道事件类型，了解关键概念�
 | :---------- | :---------- | :----------------------------------------------------------- |
 | `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。           |
 | `productId` | Number      | 业务 ID。值为 `1` 表示实时通信业务。                         |
-| `eventType` | Number      | 通知的事件类型。详见[频道事件类型](#eventtype)。 |
+| `eventType` | Number      | 通知的事件类型。详见[频道事件类型](/zh-CN/realtime-media/rtc/reference/events)。 |
 | `notifyMs`  | Number      | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。通知**重试**时该值会更新。 |
 | `sid`  | String    | 会话 ID。 |
-| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[频道事件类型](#eventtype)。 |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[频道事件类型](/zh-CN/realtime-media/rtc/reference/events)。 |
 
 消息通知回调的请求包体示例：
 
@@ -51,16 +51,16 @@ description: "查看实时互动 RTC 的频道事件类型，了解关键概念�
 
 | `eventType`                                                    | `event_name`                                 | 事件描述                           |
 | :----------------------------------------------------------- | :----------------------------------------- | :--------------------------------- |
-| [101](#101) | `channel create`                             | 创建频道。                         |
-| [102](#102)  | `channel destroy`                            | 销毁频道。                         |
-| [103](#103)  | `broadcaster join channel`                   | 直播场景下，主播加入频道。         |
-| [104](#104)  | `broadcaster leave channel`                  | 直播场景下，主播离开频道。         |
-| [105](#105)  | `audience join channel`                      | 直播场景下，观众加入频道。         |
-| [106](#106)  | `audience leave channel`                     | 直播场景下，观众离开频道。         |
-| [107](#107)  | `user join channel with communication mode` | 通信场景下，用户加入频道。 |
-| [108](#108)  | `user leave channel with communication mode` | 通信场景下，用户离开频道。 |
-| [111](#111)| `client role change to broadcaster`          | 观众将角色切换为主播。 |
-| [112](#112) | `client role change to audience`             | 主播将角色切换为观众。 |
+| [101](/zh-CN/realtime-media/rtc/reference/events) | `channel create`                             | 创建频道。                         |
+| [102](/zh-CN/realtime-media/rtc/reference/events)  | `channel destroy`                            | 销毁频道。                         |
+| [103](/zh-CN/realtime-media/rtc/reference/events)  | `broadcaster join channel`                   | 直播场景下，主播加入频道。         |
+| [104](/zh-CN/realtime-media/rtc/reference/events)  | `broadcaster leave channel`                  | 直播场景下，主播离开频道。         |
+| [105](/zh-CN/realtime-media/rtc/reference/events)  | `audience join channel`                      | 直播场景下，观众加入频道。         |
+| [106](/zh-CN/realtime-media/rtc/reference/events)  | `audience leave channel`                     | 直播场景下，观众离开频道。         |
+| [107](/zh-CN/realtime-media/rtc/reference/events)  | `user join channel with communication mode` | 通信场景下，用户加入频道。 |
+| [108](/zh-CN/realtime-media/rtc/reference/events)  | `user leave channel with communication mode` | 通信场景下，用户离开频道。 |
+| [111](/zh-CN/realtime-media/rtc/reference/events)| `client role change to broadcaster`          | 观众将角色切换为主播。 |
+| [112](/zh-CN/realtime-media/rtc/reference/events) | `client role change to audience`             | 主播将角色切换为观众。 |
 
 <a id="101"></a>
 ### 101 channel create

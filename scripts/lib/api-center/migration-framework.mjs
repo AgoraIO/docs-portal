@@ -2,6 +2,10 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import {
+  buildApiReferenceRehomePlan,
+  rehomeRouteAliases,
+} from './api-reference-ownership.mjs';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 
 export const API_CENTER_WARNING_DEFINITIONS = {
@@ -450,18 +454,17 @@ export function rewriteLegacyHref(
     normalizedUrl.hostname === 'doc.shengwang.cn'
       ? resolveExistingApiCenterTarget(normalizedUrl)?.targetRoute
       : null;
-  if (url.pathname.startsWith('/zh-CN/') && !existingTarget) {
+  const mappedTarget = legacyRouteCandidates(normalizedUrl).reduce(
+    (resolved, candidate) => resolved ?? routeMap.get(candidate),
+    null,
+  );
+  if (url.pathname.startsWith('/zh-CN/') && !existingTarget && !mappedTarget) {
     return {
       href: `${url.pathname}${url.search}${url.hash}`,
       warning: null,
     };
   }
-  const target =
-    existingTarget ??
-    legacyRouteCandidates(normalizedUrl).reduce(
-      (resolved, candidate) => resolved ?? routeMap.get(candidate),
-      null,
-    );
+  const target = existingTarget ?? mappedTarget;
   if (!target) {
     return {
       href: null,
@@ -777,6 +780,11 @@ export function buildLegacyRouteMap(
       : page.sourceResolution?.targetRoute;
     if (!targetRoute) continue;
     registerLegacyRoute(routeMap, page.requestedUrl, targetRoute);
+  }
+  for (const alias of rehomeRouteAliases(
+    buildApiReferenceRehomePlan(manifest),
+  )) {
+    registerLegacyRoute(routeMap, alias.from, alias.to);
   }
   for (const row of faqMappingRows) {
     const targetPath = row.targetPath;

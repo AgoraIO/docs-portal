@@ -6,7 +6,7 @@ description: "了解如何在内容审核中网易易盾音频审核，包括适
 
 本文介绍如何在你的项目中使用网易易盾音频审核服务。
 
-通过[声网云端录制](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
+通过[声网云端录制](/zh-CN/api-reference/cloud-recording/restful/api/reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
 
 ![语音审核流程](https://web-cdn.agora.io/docs-files/1669343507453)
 
@@ -183,7 +183,7 @@ curl --location --request POST  'https://api.agora.io/v1/apps/{appid}/cloud_reco
 </Tabs>
 
 :::info[信息]
-如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference)。
+如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/zh-CN/api-reference/cloud-recording/restful/api/reference)。
 
 开启录制音频流的功能后，你可以从 `/stop` 请求的响应包体中获取录制文件上传的状态和录制文件的信息。
 :::
@@ -610,8 +610,8 @@ GET https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resou
 `streamSubscribe` 包含以下成员：
 
 - `audioUidList`：（选填）JSON Object 类型。音频订阅名单。如果 `recordingConfig` 中的 `streamTypes` 为 `1` （只订阅视频），设置该参数会报错。
-  - `subscribeAudioUids`：（选填）JSONArray 类型，由 UID 组成的数组，指定订阅哪几个 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#订阅名单设置)。
-  - `unSubscribeAudioUids`: （选填）JSONArray 类型，由 UID 组成的数组，指定不订阅哪几个 UID 的音频流。审核服务会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#订阅名单设置)。
+  - `subscribeAudioUids`：（选填）JSONArray 类型，由 UID 组成的数组，指定订阅哪几个 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/api-reference/cloud-recording/restful/api/reference#订阅名单设置)。
+  - `unSubscribeAudioUids`: （选填）JSONArray 类型，由 UID 组成的数组，指定不订阅哪几个 UID 的音频流。审核服务会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/api-reference/cloud-recording/restful/api/reference#订阅名单设置)。
 
 #### 响应参数
 

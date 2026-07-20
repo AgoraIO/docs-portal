@@ -77,7 +77,7 @@ description: "查看输入在线媒体流的事件类型，了解关键概念、
   - `playTs`：Number 型字段，云端播放器开始播放在线媒体流时的 Unix 时间戳（秒）。
 - `lts`：Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（毫秒）。
 - `destroyReason`：String 型字段，描述该云端播放器销毁的原因：
-  - `Delete Request`：业务服务器收到你的 [`Delete`](../media-pull/operations/delete-region-v1-projects-appId-cloud-player-players-id) 请求。
+  - `Delete Request`：业务服务器收到你的 [`Delete`](/zh-CN/api-reference/api-ref/media-pull/delete) 请求。
   - `Internal Error`：声网频道相关的错误。常见错误为 Token 无效或 Token 超时。
   - `Idle Timeout`：在你设置的 `idleTimeout` 时间内，业务服务器无法连接你指定的媒体流地址或该媒体流无法播放。
   - `Stream Stopped`：媒体流播放结束。
