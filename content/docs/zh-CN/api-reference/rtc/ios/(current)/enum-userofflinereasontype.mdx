@@ -1,23 +1,31 @@
 ---
-title: "AgoraUserOfflineReason"
-description: "用户离线的原因。"
+title: AgoraUserOfflineReason
+description: 用户离线的原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_userofflinereasontype
+  sourcePath: html-docs/rtc/iOS/API/enum_userofflinereasontype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_userofflinereasontype__parameters"></a>
 
 ## 枚举值
 
-### `AgoraUserOfflineReasonQuit`
+### AgoraUserOfflineReasonQuit
 
 （0）：用户主动退出通话。
 
-### `AgoraUserOfflineReasonDropped`
+### AgoraUserOfflineReasonDropped
 
 （1）：在一定时间内未收到数据包，SDK 超时，用户掉线。
 
-:::info[注]
-如果用户退出通话但未将该消息传递给 SDK（由于信道不可靠），SDK 会认为该用户掉线。
+:::note
+注： 如果用户退出通话但未将该消息传递给 SDK（由于信道不可靠），SDK 会认为该用户掉线。
 :::
 
-### `AgoraUserOfflineReasonBecomeAudience`
+### AgoraUserOfflineReasonBecomeAudience
 
 （2）：用户将客户端角色从主播切换为观众。

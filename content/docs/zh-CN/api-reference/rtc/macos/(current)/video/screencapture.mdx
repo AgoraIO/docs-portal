@@ -1,10 +1,19 @@
 ---
-title: "屏幕采集"
-description: "屏幕采集 API reference."
+title: 屏幕采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_screencapture
+  sourcePath: html-docs/rtc/macOS/API/toc_screencapture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_screencapture"></a>
 
 <a id="api_irtcengine_getscreencapturesources"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getScreenCaptureSourcesWithThumbSize:iconSize:includeScreen:
 
@@ -12,7 +21,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```objectivec
+```text
 - (NSArray<AgoraScreenCaptureSourceInfo*>* _Nullable)getScreenCaptureSourcesWithThumbSize:(NSSize)thumbSize iconSize:(NSSize)iconSize includeScreen:(BOOL)includeScreen NS_SWIFT_NAME(getScreenCaptureSources(withThumbSize:iconSize:includeScreen:));
 ```
 
@@ -24,15 +33,15 @@ description: "屏幕采集 API reference."
 
 ### 参数
 
-#### `thumbSize`
+### thumbSize
 
-屏幕或窗口缩略图的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300， `thumbSize` 为 100 × 100，则缩略图的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则缩略图为原始图像，SDK 不进行缩放。
+屏幕或窗口缩略图的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`thumbSize` 为 100 × 100，则缩略图的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则缩略图为原始图像，SDK 不进行缩放。
 
-#### `iconSize`
+### iconSize
 
-应用程序图标的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300， `iconSize` 为 100 × 100，则图标的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则图标为原始图像，SDK 不进行缩放。
+应用程序图标的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`iconSize` 为 100 × 100，则图标的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则图标为原始图像，SDK 不进行缩放。
 
-#### `includeScreen`
+### includeScreen
 
 是否返回屏幕信息：
 
@@ -43,13 +52,12 @@ description: "屏幕采集 API reference."
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraScreenCaptureSourceInfo 对象数组，详见 AgoraScreenCaptureSourceInfo。
+- 方法调用成功，返回 [AgoraScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/macos/class-screencapturesourceinfo) 对象数组，详见 [AgoraScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/macos/class-screencapturesourceinfo)。
 - 方法调用失败，返回 nil。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setscreencapturescenario"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setScreenCaptureScenario:
 
@@ -57,7 +65,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```objectivec
+```text
 - (int)setScreenCaptureScenario:(AgoraScreenScenarioType)scenarioType  NS_SWIFT_NAME(setScreenCaptureScenario(_:));
 ```
 
@@ -65,15 +73,15 @@ description: "屏幕采集 API reference."
 
 调用该方法设置屏幕共享场景。SDK 会根据设置的场景优化共享的视频质量和用户体验。
 
-:::info[注]
-声网建议你在加入频道前调用此方法。
+:::note
+注： 声网建议你在加入频道前调用此方法。
 :::
 
 <a id="api_irtcengine_setscreencapturescenario__parameters"></a>
 
 ### 参数
 
-#### `scenarioType`
+### scenarioType
 
 屏幕共享场景。详见 [AgoraScreenScenarioType](/zh-CN/api-reference/rtc/macos/enum-screenscenariotype)。
 
@@ -82,12 +90,11 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapture2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## startScreenCapture:config:
 
@@ -95,7 +102,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```objectivec
+```text
 - (int)startScreenCapture:(AgoraVideoSourceType)sourceType config:(AgoraScreenCaptureConfiguration * _Nullable)config NS_SWIFT_NAME(startScreenCapture(_:config:));
 ```
 
@@ -111,11 +118,11 @@ description: "屏幕采集 API reference."
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 屏幕来源类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-#### `config`
+### config
 
 屏幕共享的配置，详见 [AgoraScreenCaptureConfiguration](/zh-CN/api-reference/rtc/macos/class-screencaptureconfiguration)。
 
@@ -124,12 +131,11 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
+
+<a id="ariaid-title5"></a>
 
 ## startScreenCaptureByDisplayId:regionRect:captureParams:
 
@@ -137,7 +143,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```objectivec
+```text
 - (int)startScreenCaptureByDisplayId:(UInt32)displayId
                           regionRect:(CGRect)regionRect
                        captureParams:(AgoraScreenCaptureParameters *_Nonnull)captureParams  NS_SWIFT_NAME(startScreenCapture(byDisplayId:regionRect:captureParams:));
@@ -159,29 +165,29 @@ description: "屏幕采集 API reference."
 
 你可以在加入频道前或加入频道后调用此方法，具体区别如下：
 
-- 在加入频道前调用此方法，然后调用 joinChannelByToken 加入频道，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 YES，以开始屏幕共享。
-- 在加入频道后调用此方法，然后调用 updateChannelWithMediaOptions: 并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 YES，以开始屏幕共享。
+- 在加入频道前调用此方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道后调用此方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
 ### 参数
 
-#### `displayId`
+### displayId
 
 要共享的屏幕的屏幕 ID。
 
-#### `regionRect`
+### regionRect
 
 （可选）相对于窗口的区域位置。如果未设置该参数，SDK 共享整个窗口。该参数包含以下字段：
 
-- x：距窗口左上角的水平偏移。
-- y：距窗口左上角的垂直偏移。
-- width：区域的宽度。
-- height：区域的高度。
+- `x`：距窗口左上角的水平偏移。
+- `y`：距窗口左上角的垂直偏移。
+- `width`：区域的宽度。
+- `height`：区域的高度。
 
 如果指定的区域超出窗口范围，SDK 仅共享窗口内的区域；如果设置 `width` 或 `height` 为 0，SDK 共享整个窗口。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享配置。默认视频分辨率为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。屏幕共享视频流的视频属性仅需通过该参数设置，与 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
 
@@ -190,14 +196,14 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始屏幕共享。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，然后重新开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
+
+<a id="ariaid-title6"></a>
 
 ## startScreenCaptureByWindowId:regionRect:captureParams:
 
@@ -205,7 +211,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```objectivec
+```text
 - (int)startScreenCaptureByWindowId:(UInt32)windowId
                          regionRect:(CGRect)regionRect
                       captureParams:(AgoraScreenCaptureParameters *_Nonnull)captureParams  NS_SWIFT_NAME(startScreenCapture(byWindowId:regionRect:captureParams:));
@@ -215,8 +221,8 @@ description: "屏幕采集 API reference."
 
 你需要指定要采集的窗口的 ID，可以采集整个窗口或窗口的部分区域。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_irtcengine_startscreencapturebywindowid__scenario"></a>
@@ -231,18 +237,18 @@ description: "屏幕采集 API reference."
 
 你可以在加入频道前或加入频道后调用该方法，具体如下：
 
-- 在加入频道前调用该方法，然后调用 joinChannelByToken 加入频道，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 YES，以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 updateChannelWithMediaOptions: 并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 YES，以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
 ### 参数
 
-#### `windowId`
+### windowId
 
 要共享的窗口的 ID。
 
-#### `regionRect`
+### regionRect
 
 （可选）相对于窗口的区域位置。如果未设置该参数，SDK 会共享整个窗口。该参数包含以下字段：
 
@@ -253,7 +259,7 @@ description: "屏幕采集 API reference."
 
 如果指定的区域超出窗口范围，SDK 只共享窗口内的区域；如果设置 width 或 height 为 0，SDK 会共享整个窗口。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享配置。默认视频分辨率为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
 
@@ -262,14 +268,14 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，然后重新开始共享屏幕。
 
 <a id="api_irtcengine_stopscreencapture"></a>
+
+<a id="ariaid-title7"></a>
 
 ## stopScreenCapture
 
@@ -277,7 +283,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```objectivec
+```text
 - (int)stopScreenCapture NS_SWIFT_NAME(stopScreenCapture());
 ```
 
@@ -289,8 +295,8 @@ description: "屏幕采集 API reference."
 
 适用于以下场景：
 
-- iOS：如果你通过调用 startScreenCapture: 开始屏幕采集，则需要调用此方法停止屏幕采集。
-- macOS：如果你通过调用 startScreenCaptureByWindowId:regionRect:captureParams: 或 startScreenCaptureByDisplayId:regionRect:captureParams: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- iOS：如果你通过调用 `startScreenCapture:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- macOS：如果你通过调用 `startScreenCaptureByWindowId:regionRect:captureParams:` 或 `startScreenCaptureByDisplayId:regionRect:captureParams:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -303,12 +309,11 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopscreencapture2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## stopScreenCapture:
 
@@ -316,7 +321,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```objectivec
+```text
 - (int)stopScreenCapture:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopScreenCapture(_:));
 ```
 
@@ -334,7 +339,7 @@ description: "屏幕采集 API reference."
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
@@ -343,12 +348,11 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
+
+<a id="ariaid-title9"></a>
 
 ## updateScreenCaptureParameters:
 
@@ -356,21 +360,21 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```objectivec
+```text
 - (int)updateScreenCaptureParameters:(AgoraScreenCaptureParameters * _Nonnull)captureParams  NS_SWIFT_NAME(updateScreenCaptureParameters(_:));
 ```
 
 <a id="api_irtcengine_updatescreencaptureparameters__detailed_desc"></a>
 
-:::info[注]
-请在开始屏幕共享或窗口共享后调用此方法。
+:::note
+注： 请在开始屏幕共享或窗口共享后调用此方法。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__parameters"></a>
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数。屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
 
@@ -379,14 +383,14 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，然后重新开始共享屏幕。
 
 <a id="api_irtcengine_updatescreencaptureregion2"></a>
+
+<a id="ariaid-title10"></a>
 
 ## updateScreenCaptureRegion:
 
@@ -394,7 +398,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_updatescreencaptureregion2__prototype"></a>
 
-```objectivec
+```text
 - (int)updateScreenCaptureRegion:(CGRect)rect  NS_SWIFT_NAME(updateScreenCaptureRegion(_:));
 ```
 
@@ -406,7 +410,7 @@ description: "屏幕采集 API reference."
 
 ### 参数
 
-#### `rect`
+### rect
 
 相对于屏幕或窗口的区域位置。
 
@@ -419,7 +423,4 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

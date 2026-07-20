@@ -1,10 +1,19 @@
 ---
-title: "数据流 Datastream"
-description: "数据流 Datastream API reference."
+title: 数据流 Datastream
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_datastream
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_datastream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream2"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createDataStream
 
@@ -12,7 +21,7 @@ description: "数据流 Datastream API reference."
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```arkts
+```text
 public abstract createDataStream(config: DataStreamConfig): number;
 ```
 
@@ -34,7 +43,7 @@ public abstract createDataStream(config: DataStreamConfig): number;
 
 ### 参数
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/harmonyos/class-datastreamconfig)。
 
@@ -43,12 +52,11 @@ public abstract createDataStream(config: DataStreamConfig): number;
 ### 返回值
 
 - 创建的数据流的 ID：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## createDataStreamEx
 
@@ -56,7 +64,7 @@ public abstract createDataStream(config: DataStreamConfig): number;
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```arkts
+```text
 public abstract createDataStreamEx(config:DataStreamConfig,connection:RtcConnection):number;
 ```
 
@@ -78,11 +86,11 @@ public abstract createDataStreamEx(config:DataStreamConfig,connection:RtcConnect
 
 ### 参数
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/harmonyos/class-datastreamconfig)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
 
@@ -91,12 +99,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 ### 返回值
 
 - 创建的数据流的 ID：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendstreammessage"></a>
+
+<a id="ariaid-title4"></a>
 
 ## sendStreamMessage
 
@@ -104,7 +111,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```arkts
+```text
 public abstract sendStreamMessage(streamId: number, message: ArrayBuffer): number;
 ```
 
@@ -114,16 +121,22 @@ public abstract sendStreamMessage(streamId: number, message: ArrayBuffer): numbe
 
 调用 [createDataStream](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 
+<a id="api_irtcengine_sendstreammessage__limit"></a>
+
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每人最多能同时有 5 个数据通道。
 - 每个数据通道每秒最多能发送 60 个包（每个包最大为 1 KB）。
 - 每个数据通道每秒最多能发送 30 KB 数据。
 
+<a id="api_irtcengine_sendstreammessage__error"></a>
+
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::warning[注意]
-- 该方法需要在加入频道后、且调用 createDataStream 创建数据通道之后调用。
+:::note
+注意：
+
+- 该方法需要在加入频道后、且调用 [createDataStream](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -131,11 +144,11 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 数据流 ID。可以通过 createDataStream 获取。
 
-#### `message`
+### message
 
 待发送的数据。
 
@@ -144,12 +157,11 @@ SDK 对该方法的实现进行了如下限制：
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onStreamMessage
 
@@ -157,7 +169,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```arkts
+```text
 onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 ```
 
@@ -169,22 +181,21 @@ onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 
 ### 参数
 
-#### `uid`
+### uid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `data`
+### data
 
 接收到的数据。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onStreamMessageError
 
@@ -192,7 +203,7 @@ onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```arkts
+```text
 onStreamMessageError? : (uid:number,streamId:number,error:number,missed:number,cached:number) => void;
 ```
 
@@ -204,25 +215,22 @@ onStreamMessageError? : (uid:number,streamId:number,error:number,missed:number,c
 
 ### 参数
 
-#### `uid`
+### uid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `error`
+### error
 
-错误码。详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code)。
+错误码。详见 [错误码](/zh-CN/api-reference/rtc/error-code)。
 
-#### `missed`
+### missed
 
 丢失的消息数量。
 
-#### `cached`
+### cached
 
 数据流中断时，后面缓存的消息数量。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

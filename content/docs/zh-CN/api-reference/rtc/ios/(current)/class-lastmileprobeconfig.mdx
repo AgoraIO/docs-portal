@@ -1,10 +1,18 @@
 ---
-title: "AgoraLastmileProbeConfig"
-description: "配置 Last-mile 网络测试。"
+title: AgoraLastmileProbeConfig
+description: 配置 Last-mile 网络测试。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_lastmileprobeconfig
+  sourcePath: html-docs/rtc/iOS/API/class_lastmileprobeconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_lastmileprobeconfig__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraLastmileProbeConfig : NSObject
 @property (assign, nonatomic) BOOL probeUplink;
 @property (assign, nonatomic) BOOL probeDownlink;
@@ -17,24 +25,24 @@ __attribute__((visibility("default"))) @interface AgoraLastmileProbeConfig : NSO
 
 ## 属性
 
-### `probeUplink`
+### probeUplink
 
 是否测试上行网络：
 
 - YES：测试上行网络。
-- NO：不测试上行网络。例如，在 LIVE_BROADCASTING 频道场景中，观众用户无需进行此测试。
+- NO：不测试上行网络。例如，在 `LIVE_BROADCASTING` 频道场景中，观众用户无需进行此测试。
 
-### `probeDownlink`
+### probeDownlink
 
 是否测试下行网络：
 
 - YES：测试下行网络。
 - NO：不测试下行网络。
 
-### `expectedUplinkBitrate`
+### expectedUplinkBitrate
 
 本地用户期望的最大上行码率（bps）。取值范围为 [100000, 5000000]。声网建议参考 `setVideoEncoderConfiguration` 设置该值。
 
-### `expectedDownlinkBitrate`
+### expectedDownlinkBitrate
 
 本地用户期望的最大下行码率（bps）。取值范围为 [100000, 5000000]。

@@ -1,10 +1,18 @@
 ---
-title: "RemoteVideoStats"
-description: "用于统计远端视频流的相关统计信息。"
+title: RemoteVideoStats
+description: 用于统计远端视频流的相关统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_remotevideostats
+  sourcePath: html-docs/rtc/Cpp/API/class_remotevideostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_remotevideostats__prototype"></a>
 
-```cpp
+```text
 struct RemoteVideoStats {
   uid_t uid;
   int delay __deprecated;
@@ -32,90 +40,90 @@ struct RemoteVideoStats {
 
 ## 属性
 
-### `uid`
+### uid
 
 发送视频流的远端用户 ID。
 
-### `delay`
+### delay
 
 视频延迟（毫秒）。
 
-:::info[注]
-@deprecated 在音视频同步场景中，可通过 [RemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remoteaudiostats) 中的 `networkTransportDelay` 和 `jitterBufferDelay` 获取视频延迟数据。
+:::note
+注： @deprecated 在音视频同步场景中，可通过 [RemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remoteaudiostats) 中的 `networkTransportDelay` 和 `jitterBufferDelay` 获取视频延迟数据。
 :::
 
-### `e2eDelay`
+### e2eDelay
 
 端到端视频延迟（毫秒），即从远端用户采集视频到本地用户接收并渲染视频所经历的时间。
 
-### `width`
+### width
 
 视频宽度（像素）。
 
-### `height`
+### height
 
 视频高度（像素）。
 
-### `receivedBitrate`
+### receivedBitrate
 
 自上次统计以来接收到的远端视频码率（Kbps）。
 
-### `decoderInputFrameRate`
+### decoderInputFrameRate
 
 远端视频的解码输入帧率（fps）。
 
-### `decoderOutputFrameRate`
+### decoderOutputFrameRate
 
 远端视频的解码输出帧率（fps）。
 
-### `rendererOutputFrameRate`
+### rendererOutputFrameRate
 
 远端视频的渲染输出帧率（fps）。
 
-### `frameLossRate`
+### frameLossRate
 
 远端视频的丢帧率（%）。
 
-### `packetLossRate`
+### packetLossRate
 
 使用抗丢包技术后远端视频的丢包率（%）。
 
-### `rxStreamType`
+### rxStreamType
 
 视频流类型。详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。
 
-### `totalFrozenTime`
+### totalFrozenTime
 
 远端用户加入频道后远端视频流的总卡顿时长（毫秒）。在帧率不低于 5 fps 的视频通话中，若相邻两帧可渲染视频帧的时间间隔超过 500 毫秒，则视为视频卡顿。
 
-### `frozenRate`
+### frozenRate
 
 视频卡顿时长占视频可用总时长的百分比（%）。只要远端用户在加入频道后未停止发送视频流或未关闭视频模块，视频即视为可用。
 
-### `avSyncTimeMs`
+### avSyncTimeMs
 
 音频领先视频的时间（毫秒）。
 
-:::info[注]
-如果该值为负数，表示音频落后于视频。
+:::note
+注： 如果该值为负数，表示音频落后于视频。
 :::
 
-### `totalActiveTime`
+### totalActiveTime
 
 视频的总活跃时长（毫秒）。只要远端用户或主播在加入频道后未停止发送视频流或未关闭视频模块，视频即视为可用。
 
-### `publishDuration`
+### publishDuration
 
 远端视频流的总发布时长（毫秒）。
 
-### `mosValue`
+### mosValue
 
 统计周期内远端视频流的质量评分。该评分由声网实时视频 MOS（Mean Opinion Score）算法计算得出，取值范围为 [0, 500]。将该值除以 100 可得 MOS 分数，范围为 0 到 5，分数越高表示视频质量越好。
 
-:::info[注]
-对于纹理视频数据，该参数始终返回 0。
+:::note
+注： 对于纹理视频数据，该参数始终返回 0。
 :::
 
-### `rxVideoBytes`
+### rxVideoBytes
 
 接收到的视频字节总数（字节），包括 FEC 字节，按聚合值统计。

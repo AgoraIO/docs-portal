@@ -1,10 +1,18 @@
 ---
-title: "MixedAudioStream"
-description: "在本地进行合流的音频源。"
+title: MixedAudioStream
+description: 在本地进行合流的音频源。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_mixedaudiostream
+  sourcePath: html-docs/rtc/Electron/API/class_mixedaudiostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mixedaudiostream__prototype"></a>
 
-```typescript
+```text
 export class MixedAudioStream {
   sourceType?: AudioSourceType;
   remoteUserUid?: number;
@@ -17,22 +25,22 @@ export class MixedAudioStream {
 
 ## 属性
 
-### `sourceType`
+### sourceType
 
 音频源的类型。详见 [AudioSourceType](/zh-CN/api-reference/rtc/electron/enum-audiosourcetype)。
 
-### `remoteUserUid`
+### remoteUserUid
 
 远端用户 ID。
 
-:::info[注]
-当参与本地音频合流的音频源类型为 AudioSourceRemoteUser 时，需要设置该参数。
+:::note
+注： 当参与本地音频合流的音频源类型为 AudioSourceRemoteUser 时，需要设置该参数。
 :::
 
-### `trackId`
+### trackId
 
 音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
-:::info[注]
-当参与本地本地音频合流的音频源类型为 AudioSourceCustom 时，需要设置该参数。
+:::note
+注： 当参与本地本地音频合流的音频源类型为 AudioSourceCustom 时，需要设置该参数。
 :::

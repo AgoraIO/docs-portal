@@ -1,35 +1,43 @@
 ---
-title: "DegradationPreference"
-description: "带宽受限时的视频编码降级偏好。"
+title: DegradationPreference
+description: 带宽受限时的视频编码降级偏好。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/enum_degradationpreference
+  sourcePath: html-docs/rtc/RN/API/enum_degradationpreference.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_degradationpreference__parameters"></a>
 
 ## 枚举值
 
-### `MaintainAuto`
+### MaintainAuto
 
 -1：（默认）自动模式。SDK 会根据你设置的视频场景，自动选择 MaintainFramerate、MaintainBalanced 或 MaintainResolution，以获得最优的综合质量体验 (QoE)。
 
-### `MaintainQuality`
+### MaintainQuality
 
 0：带宽受限时，视频编码时优先降低视频帧率，维持分辨率不变。该降级偏好适用于画质优先的场景。
 
-:::info[注]
-弃用：该枚举已废弃。请改用其他枚举。
+:::note
+注： 弃用：该枚举已废弃。请改用其他枚举。
 :::
 
-### `MaintainFramerate`
+### MaintainFramerate
 
 1：带宽受限时，视频编码时优先降低视频分辨率，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
 
-### `MaintainBalanced`
+### MaintainBalanced
 
 2：带宽受限时，视频编码时同时降低视频帧率和视频分辨率。MaintainBalanced 的降幅比 MaintainQuality 和 MaintainFramerate 降幅更低，适用于流畅性和画质均有限的场景。
 
-:::info[注]
-本地发送的视频分辨率可能改变，远端用户需能处理这种情况，详见 [onVideoSizeChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
+:::note
+注： 本地发送的视频分辨率可能改变，远端用户需能处理这种情况，详见 [onVideoSizeChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
 :::
 
-### `MaintainResolution`
+### MaintainResolution
 
 3: 带宽受限时，视频编码时优先降低视频帧率，维持分辨率保持不变。该降级偏好适用于画质优先的场景。

@@ -55,6 +55,7 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(
       '![Client diagram](/img/api-center-generated/client.png)',
     );
+    expect(result.body).not.toContain('Client summary.');
     expect(result.body).not.toContain('<table');
     expect(result.body).not.toContain('<img');
   });
@@ -72,6 +73,78 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain('Missing');
     expect(result.body).not.toContain('/api-ref/missing');
     expect(result.body).not.toContain('<iframe');
+  });
+
+  it('rewrites Markdown links embedded as text in legacy HTML', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Audio</h1><p>详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情。</p></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_basic',
+      sourcePath: 'html-docs/rtc/Android/API/toc_audio_basic.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/android/error-code',
+          '/zh-CN/api-reference/rtc/error-code',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain(
+      '[错误码](/zh-CN/api-reference/rtc/error-code)',
+    );
+    expect(result.body).not.toContain('https://doc.shengwang.cn');
+  });
+
+  it('does not mistake a nested Oxygen API summary for the page description', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<main><article role="article">
+        <article class="nested0"><h1>音频基础功能</h1><div class="body refbody"></div>
+          <article class="topic reference nested1">
+            <h2>adjustPlaybackSignalVolume</h2>
+            <div class="body refbody"><p class="shortdesc">调节所有远端用户的本地播放音量。</p></div>
+          </article>
+        </article>
+      </article></main>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_basic',
+      sourcePath: 'html-docs/rtc/Android/API/toc_audio_basic.html',
+      rootSelector: 'main > article',
+      titleSelector: 'main > article > h1.title, main > article > h1',
+    });
+
+    expect(result.description).toBe('');
+    expect(result.body).toContain('调节所有远端用户的本地播放音量。');
+    expect(result.body).not.toContain('# 音频基础功能');
+  });
+
+  it('preserves links in definition terms without nesting them in headings', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Types</h1><dl><dt><a href="class-video.html">VideoParameters</a></dt><dd>Video settings.</dd></dl></article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/types',
+      sourcePath: 'html-docs/rtc/Web/types.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/web/class-video.html',
+          '/zh-CN/api-reference/rtc/web/class-video',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain(
+      '**[VideoParameters](/zh-CN/api-reference/rtc/web/class-video)**',
+    );
+    expect(result.body).not.toContain('### [VideoParameters]');
+  });
+
+  it('removes self links from headings with bracketed overload labels', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Music</h1><h2><a href="#api_searchmusic2">searchMusic [2/2]</a></h2></article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/android/play/drm',
+      sourcePath: 'html-docs/rtc/Android/API/toc_drm.html',
+    });
+
+    expect(result.body).toContain('## searchMusic [2/2]');
+    expect(result.body).not.toContain('## [searchMusic');
   });
 
   it('omits source-empty code fences without inventing an API signature', async () => {

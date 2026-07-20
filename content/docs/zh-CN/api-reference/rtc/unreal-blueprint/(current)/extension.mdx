@@ -1,10 +1,19 @@
 ---
-title: "插件"
-description: "插件 API reference."
+title: 插件
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_extension
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_extension.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_extension"></a>
 
 <a id="api_irtcengine_enableextension"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableExtension
 
@@ -12,7 +21,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_enableextension__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableExtension(const FString& provider, const FString& extension, bool enable = true, EMEDIA_SOURCE_TYPE type = EMEDIA_SOURCE_TYPE::UNKNOWN_MEDIA_SOURCE);
 ```
@@ -42,22 +51,24 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `provider`
+### provider
 
 提供插件的服务商名称。
 
-#### `extension`
+### extension
 
 插件的名称。
 
-#### `enable`
+### enable
 
 是否启用插件：
 
-- true: 启用插件。
-- false: 禁用插件。
+<a id="api_irtcengine_enableextension__ul_c3b_d22_3qb"></a>
 
-#### `type`
+- `true`: 启用插件。
+- `false`: 禁用插件。
+
+### type
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
 
@@ -66,13 +77,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getextensionproperty2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## GetExtensionProperty
 
@@ -80,7 +91,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getextensionproperty2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetExtensionProperty(const FString& provider, const FString& extension,const FExtensionInfo & ExtensionInfo, const FString& key, FString& value);
 ```
@@ -103,27 +114,27 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `provider`
+### provider
 
 输出参数。提供插件的服务商名称。
 
-#### `extension`
+### extension
 
 输出参数。插件的名称。
 
-#### `key`
+### key
 
 输出参数。插件属性的 Key。
 
-#### `value`
+### value
 
 输出参数。插件属性 Key 对应的值。
 
-#### `type`
+### type
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
 
-#### `buf_len`
+### buf_len
 
 插件属性 JSON 字符串的最大长度。最大值为 512 字节。
 
@@ -132,12 +143,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_loadextensionprovider"></a>
+
+<a id="ariaid-title4"></a>
 
 ## LoadExtensionProvider
 
@@ -145,7 +155,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_loadextensionprovider__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int LoadExtensionProvider(const FString& path, bool unload_after_use);
 ```
@@ -166,36 +176,35 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 如果要加载多个插件，需要多次调用该方法。
 
-:::warning[注意]
-该方法仅适用于 Windows 和 Android。
+:::note
+注意： 该方法仅适用于 Windows 和 Android。
 :::
 
 <a id="api_irtcengine_loadextensionprovider__parameters"></a>
 
 ### 参数
 
-#### `path`
+### path
 
-插件的动态库路径和名称。例如： `/library/libagora_segmentation_extension.dll`。
+插件的动态库路径和名称。例如：`/library/libagora_segmentation_extension.dll`。
 
-#### `unload_after_use`
+### unload_after_use
 
 是否在插件使用完毕后自动卸载：
 
-- true: 当 IRtcEngine 销毁时自动卸载插件。
-- false: 不自动卸载插件，直到进程退出（推荐）。
+- `true`: 当 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
+- `false`: 不自动卸载插件，直到进程退出（推荐）。
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_registerextension"></a>
+
+<a id="ariaid-title5"></a>
 
 ## RegisterExtension
 
@@ -203,7 +212,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_registerextension__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int RegisterExtension(const FString& provider, const FString& extension, EMEDIA_SOURCE_TYPE type);
 ```
@@ -217,7 +226,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 调用时机
 
 - 建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) / [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo)/[EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo)）之前调用该方法。
 - 调用该方法前，需要先调用 [LoadExtensionProvider](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__restriction"></a>
@@ -231,15 +240,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `provider`
+### provider
 
 提供插件的服务商名称。
 
-#### `extension`
+### extension
 
 插件的名称。
 
-#### `type`
+### type
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
 
@@ -248,13 +257,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setextensionproperty"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SetExtensionProperty
 
@@ -262,7 +271,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setextensionproperty__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetExtensionProperty(const FString& provider, const FString& extension, const FString& key, const FString& value, EMEDIA_SOURCE_TYPE type = EMEDIA_SOURCE_TYPE::UNKNOWN_MEDIA_SOURCE);
 ```
@@ -293,23 +302,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `provider`
+### provider
 
 提供插件的服务商名称。
 
-#### `extension`
+### extension
 
 插件的名称。
 
-#### `key`
+### key
 
 插件属性的 Key。
 
-#### `value`
+### value
 
 插件属性 Key 对应的值。
 
-#### `type`
+### type
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
 
@@ -318,12 +327,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
+
+<a id="ariaid-title7"></a>
 
 ## SetExtensionProviderProperty
 
@@ -331,7 +339,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetExtensionProviderProperty(const FString& provider, const FString& key, const FString& value);
 ```
@@ -344,7 +352,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在调用 [RegisterExtension](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_registerextension) 之后、 [EnableExtension](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_enableextension) 之前调用该方法。
+请在调用 [RegisterExtension](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_registerextension) 之后、[EnableExtension](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_enableextension) 之前调用该方法。
 
 <a id="api_irtcengine_setextensionproviderproperty__restriction"></a>
 
@@ -356,15 +364,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `provider`
+### provider
 
 提供插件的服务商名称。
 
-#### `key`
+### key
 
 插件属性的 Key。
 
-#### `value`
+### value
 
 插件属性 Key 对应的值。
 
@@ -373,12 +381,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
+
+<a id="ariaid-title8"></a>
 
 ## OnExtensionErrorWithContext
 
@@ -386,7 +393,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnExtensionErrorWithContext(const FExtensionContext& context, int error, const FString& message);
 ```
@@ -399,22 +406,21 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `context`
+### context
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
 
-#### `error`
+### error
 
 错误码。详见插件服务商提供的插件文档。
 
-#### `message`
+### message
 
 错误原因。详见插件服务商提供的插件文档。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
+
+<a id="ariaid-title9"></a>
 
 ## OnExtensionEventWithContext
 
@@ -422,7 +428,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnExtensionEventWithContext(const FExtensionContext& context, const FString& key, const FString& value);
 ```
@@ -435,22 +441,21 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `context`
+### context
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
 
-#### `key`
+### key
 
 插件属性的 Key。
 
-#### `value`
+### value
 
 插件属性 Key 对应的值。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
+
+<a id="ariaid-title10"></a>
 
 ## OnExtensionStartedWithContext
 
@@ -458,7 +463,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnExtensionStartedWithContext(const FExtensionContext& context);
 ```
@@ -471,14 +476,13 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `context`
+### context
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
+
+<a id="ariaid-title11"></a>
 
 ## OnExtensionStoppedWithContext
 
@@ -486,7 +490,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnExtensionStoppedWithContext(const FExtensionContext& context);
 ```
@@ -499,9 +503,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `context`
+### context
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

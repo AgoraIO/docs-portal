@@ -1,12 +1,23 @@
 ---
-title: "视频设备管理"
-description: "介绍跟视频设备管理相关的方法和回调。"
+title: 视频设备管理
+description: 介绍跟视频设备管理相关的方法和回调。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_video_device
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_video_device.html
+  generator: oxygen
+  warnings:
+    - code: generated-fragment-normalized
+      severity: info
+      message: Normalized 1 legacy fragment link(s) to stable local anchors.
 ---
+
 <a id="toc_video_device"></a>
 
-介绍跟视频设备管理相关的方法和回调。
-
 <a id="api_irtcengine_getcameramaxzoomfactor"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getCameraMaxZoomFactor
 
@@ -14,7 +25,7 @@ description: "介绍跟视频设备管理相关的方法和回调。"
 
 <a id="api_irtcengine_getcameramaxzoomfactor__prototype"></a>
 
-```arkts
+```text
 public abstract getCameraMaxZoomFactor(): number;
 ```
 
@@ -22,8 +33,10 @@ public abstract getCameraMaxZoomFactor(): number;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+:::note
+注意：
+
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -32,10 +45,9 @@ public abstract getCameraMaxZoomFactor(): number;
 
 设备摄像头支持的最大缩放比例。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameraautofocusfacemodesupported"></a>
+
+<a id="ariaid-title3"></a>
 
 ## isCameraAutoFocusFaceModeSupported
 
@@ -43,7 +55,7 @@ public abstract getCameraMaxZoomFactor(): number;
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraAutoFocusFaceModeSupported(): boolean;
 ```
 
@@ -51,21 +63,22 @@ public abstract isCameraAutoFocusFaceModeSupported(): boolean;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+:::note
+注意：
+
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持人脸对焦功能。
-- false: 设备不支持人脸对焦功能。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`: 设备支持人脸对焦功能。
+- `false`: 设备不支持人脸对焦功能。
 
 <a id="api_irtcengine_iscameraexposurepositionsupported"></a>
+
+<a id="ariaid-title4"></a>
 
 ## isCameraExposurePositionSupported
 
@@ -73,7 +86,7 @@ public abstract isCameraAutoFocusFaceModeSupported(): boolean;
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraExposurePositionSupported(): boolean;
 ```
 
@@ -81,21 +94,22 @@ public abstract isCameraExposurePositionSupported(): boolean;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+:::note
+注意：
+
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动曝光功能。
-- false: 设备不支持手动曝光功能。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`: 设备支持手动曝光功能。
+- `false`: 设备不支持手动曝光功能。
 
 <a id="api_irtcengine_iscameraexposuresupported"></a>
+
+<a id="ariaid-title5"></a>
 
 ## isCameraExposureSupported
 
@@ -103,7 +117,7 @@ public abstract isCameraExposurePositionSupported(): boolean;
 
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraExposureSupported(): boolean;
 ```
 
@@ -111,23 +125,24 @@ public abstract isCameraExposureSupported(): boolean;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
-- 建议你在调用 setCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+:::note
+注意：
+
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 建议你在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#factor) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
 
 ### 返回值
 
-- true：方法调用成功。
-- false：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`：方法调用成功。
+- `false`：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_iscamerafacedetectsupported"></a>
+
+<a id="ariaid-title6"></a>
 
 ## isCameraFaceDetectSupported
 
@@ -135,7 +150,7 @@ public abstract isCameraExposureSupported(): boolean;
 
 <a id="api_irtcengine_iscamerafacedetectsupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraFaceDetectSupported(): boolean;
 ```
 
@@ -143,13 +158,12 @@ public abstract isCameraFaceDetectSupported(): boolean;
 
 ### 返回值
 
-- true: 设备摄像头支持人脸检测。
-- false: 设备摄像头不支持人脸检测。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`: 设备摄像头支持人脸检测。
+- `false`: 设备摄像头不支持人脸检测。
 
 <a id="api_irtcengine_iscamerafocussupported"></a>
+
+<a id="ariaid-title7"></a>
 
 ## isCameraFocusSupported
 
@@ -157,7 +171,7 @@ public abstract isCameraFaceDetectSupported(): boolean;
 
 <a id="api_irtcengine_iscamerafocussupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraFocusSupported(): boolean;
 ```
 
@@ -165,21 +179,22 @@ public abstract isCameraFocusSupported(): boolean;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+:::note
+注意：
+
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动对焦功能。
-- false: 设备不支持手动对焦功能。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`: 设备支持手动对焦功能。
+- `false`: 设备不支持手动对焦功能。
 
 <a id="api_irtcengine_iscamerazoomsupported"></a>
+
+<a id="ariaid-title8"></a>
 
 ## isCameraZoomSupported
 
@@ -187,7 +202,7 @@ public abstract isCameraFocusSupported(): boolean;
 
 <a id="api_irtcengine_iscamerazoomsupported__prototype"></a>
 
-```arkts
+```text
 public abstract isCameraZoomSupported(): boolean;
 ```
 
@@ -209,13 +224,12 @@ public abstract isCameraZoomSupported(): boolean;
 
 ### 返回值
 
-- true: 设备支持相机缩放功能。
-- false: 设备不支持相机缩放功能。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`: 设备支持相机缩放功能。
+- `false`: 设备不支持相机缩放功能。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setCameraAutoFocusFaceModeEnabled
 
@@ -223,7 +237,7 @@ public abstract isCameraZoomSupported(): boolean;
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__prototype"></a>
 
-```arkts
+```text
 public abstract setCameraAutoFocusFaceModeEnabled(enabled: boolean): number;
 ```
 
@@ -247,17 +261,16 @@ public abstract setCameraAutoFocusFaceModeEnabled(enabled: boolean): number;
 
 是否开启人脸对焦：
 
-- true: 开启人脸对焦功能。
-- false: 关闭人脸对焦功能。
+- `true`: 开启人脸对焦功能。
+- `false`: 关闭人脸对焦功能。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
 ### 返回值
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setcameracapturerconfiguration"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setCameraCapturerConfiguration
 
@@ -265,7 +278,7 @@ public abstract setCameraAutoFocusFaceModeEnabled(enabled: boolean): number;
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```arkts
+```text
 public abstract setCameraCapturerConfiguration(config: CameraCapturerConfiguration): number;
 ```
 
@@ -287,7 +300,7 @@ public abstract setCameraCapturerConfiguration(config: CameraCapturerConfigurati
 
 ### 参数
 
-#### `config`
+### config
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-cameracapturerconfiguration)。
 
@@ -296,12 +309,11 @@ public abstract setCameraCapturerConfiguration(config: CameraCapturerConfigurati
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameraexposureposition"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setCameraExposurePosition
 
@@ -309,7 +321,7 @@ public abstract setCameraCapturerConfiguration(config: CameraCapturerConfigurati
 
 <a id="api_irtcengine_setcameraexposureposition__prototype"></a>
 
-```arkts
+```text
 public abstract setCameraExposurePosition(positionXinView: number, positionYinView: number): number;
 ```
 
@@ -317,20 +329,22 @@ public abstract setCameraExposurePosition(positionXinView: number, positionYinVi
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 onCameraExposureAreaChanged 回调。
+:::note
+注意：
+
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
 
 ### 参数
 
-#### `positionXinView`
+### positionXinView
 
 触摸点相对于视图的横坐标。
 
-#### `positionYinView`
+### positionYinView
 
 触摸点相对于视图的纵坐标。
 
@@ -339,9 +353,11 @@ public abstract setCameraExposurePosition(positionXinView: number, positionYinVi
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setCameraFocusPositionInPreview
 
@@ -349,7 +365,7 @@ public abstract setCameraExposurePosition(positionXinView: number, positionYinVi
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__prototype"></a>
 
-```arkts
+```text
 public abstract setCameraFocusPositionInPreview(positionX: number, positionY: number): number;
 ```
 
@@ -357,20 +373,22 @@ public abstract setCameraFocusPositionInPreview(positionX: number, positionY: nu
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 onCameraFocusPointChanged 回调。
+:::note
+注意：
+
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraFocusPointChanged](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
 
 ### 参数
 
-#### `positionX`
+### positionX
 
 触摸点相对于视图的横坐标。
 
-#### `positionY`
+### positionY
 
 触摸点相对于视图的纵坐标。
 
@@ -379,9 +397,11 @@ public abstract setCameraFocusPositionInPreview(positionX: number, positionY: nu
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcamerazoomfactor"></a>
+
+<a id="ariaid-title13"></a>
 
 ## setCameraZoomFactor
 
@@ -389,7 +409,7 @@ public abstract setCameraFocusPositionInPreview(positionX: number, positionY: nu
 
 <a id="api_irtcengine_setcamerazoomfactor__prototype"></a>
 
-```arkts
+```text
 public abstract setCameraZoomFactor(factor: number): number;
 ```
 
@@ -397,15 +417,17 @@ public abstract setCameraZoomFactor(factor: number): number;
 
 ### 详情
 
-:::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
+:::note
+注意：
+
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
 
 ### 参数
 
-#### `factor`
+### factor
 
 摄像头缩放比例。对不支持超广角的设备，取值范围从 1.0 到最大缩放比例；对支持超广角的设备，取值范围从 0.5 到最大缩放比例。你可以通过 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大缩放比例。
 
@@ -418,17 +440,21 @@ public abstract setCameraZoomFactor(factor: number): number;
 
 <a id="api_irtcengine_switchcamera"></a>
 
+<a id="ariaid-title14"></a>
+
 ## switchCamera
 
 切换前置/后置摄像头。
 
 <a id="api_irtcengine_switchcamera__prototype"></a>
 
-```arkts
+```text
 public abstract switchCamera(): number;
 ```
 
 <a id="api_irtcengine_switchcamera__detailed_desc"></a>
+
+<a id="api_irtcengine_switchcamera__desc"></a>
 
 你可以调用该方法在 App 运行期间基于可用摄像头的实际情况来动态切换摄像头，而无需重启视频流或重新配置视频源。
 
@@ -449,12 +475,11 @@ public abstract switchCamera(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onCameraExposureAreaChanged
 
@@ -462,7 +487,7 @@ public abstract switchCamera(): number;
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__prototype"></a>
 
-```arkts
+```text
 onCameraExposureAreaChanged?:(rect:camera.Rect) => void;
 ```
 
@@ -470,14 +495,13 @@ onCameraExposureAreaChanged?:(rect:camera.Rect) => void;
 
 ### 参数
 
-#### `rect`
+### rect
 
 镜头内表示曝光的区域。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onCameraFocusPointChanged
 
@@ -485,7 +509,7 @@ onCameraExposureAreaChanged?:(rect:camera.Rect) => void;
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__prototype"></a>
 
-```arkts
+```text
 onCameraFocusPointChanged?:(point:camera.Point) => void;
 ```
 
@@ -495,9 +519,6 @@ onCameraFocusPointChanged?:(point:camera.Point) => void;
 
 ### 参数
 
-#### `point`
+### point
 
 镜头内表示对焦的点。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

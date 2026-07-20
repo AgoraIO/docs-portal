@@ -1,10 +1,19 @@
 ---
-title: "音频基础功能"
-description: "音频基础功能 API reference."
+title: 音频基础功能
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_audio_basic
+  sourcePath: html-docs/rtc/Cpp/API/toc_audio_basic.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustPlaybackSignalVolume
 
@@ -12,7 +21,7 @@ description: "音频基础功能 API reference."
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```cpp
+```text
 virtual int adjustPlaybackSignalVolume(int volume) = 0;
 ```
 
@@ -30,7 +39,7 @@ virtual int adjustPlaybackSignalVolume(int volume) = 0;
 
 ### 参数
 
-#### `volume`
+### volume
 
 用户的音量，取值范围为 [0,400]。
 
@@ -43,12 +52,11 @@ virtual int adjustPlaybackSignalVolume(int volume) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustUserPlaybackSignalVolume
 
@@ -56,7 +64,7 @@ virtual int adjustPlaybackSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```cpp
+```text
 virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 ```
 
@@ -74,11 +82,11 @@ virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的用户 ID。
 
-#### `volume`
+### volume
 
 用户的音量，取值范围为 [0, 400]。
 
@@ -91,12 +99,11 @@ virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## adjustUserPlaybackSignalVolumeEx
 
@@ -104,7 +111,7 @@ virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```cpp
+```text
 virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcConnection& connection) = 0;
 ```
 
@@ -128,11 +135,11 @@ virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcCon
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的用户 ID。
 
-#### `volume`
+### volume
 
 用户的音量，取值范围为 [0, 400]：
 
@@ -140,7 +147,7 @@ virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcCon
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
@@ -149,12 +156,11 @@ virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcCon
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_disableaudio"></a>
+
+<a id="ariaid-title5"></a>
 
 ## disableAudio
 
@@ -162,20 +168,20 @@ virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcCon
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```cpp
+```text
 virtual int disableAudio() = 0;
 ```
 
 <a id="api_irtcengine_disableaudio__detailed_desc"></a>
 
-:::info[注]
-该方法会重置内部引擎，并需要一定时间生效。声网建议使用以下 API 分别控制音频模块：
+:::note
+注： 该方法会重置内部引擎，并需要一定时间生效。声网建议使用以下 API 分别控制音频模块：
 
-- enableLocalAudio：是否启用麦克风以创建本地音频流。
-- enableLoopbackRecording：是否启用回环音频采集。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否订阅并播放远端音频流。
-- muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enableloopbackrecording)：是否启用回环音频采集。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
 :::
 
 <a id="api_irtcengine_disableaudio__timing"></a>
@@ -189,12 +195,11 @@ virtual int disableAudio() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enableaudio"></a>
+
+<a id="ariaid-title6"></a>
 
 ## enableAudio
 
@@ -202,7 +207,7 @@ virtual int disableAudio() = 0;
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```cpp
+```text
 virtual int enableAudio() = 0;
 ```
 
@@ -210,15 +215,15 @@ virtual int enableAudio() = 0;
 
 音频模块默认处于启用状态。调用 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用音频模块后，可以调用该方法重新启用音频模块。
 
-:::info[注]
-调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制音频模块的具体功能：
+:::note
+注： 调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制音频模块的具体功能：
 
-- enableLocalAudio：是否启用麦克风以创建本地音频流。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否订阅并播放远端音频流。
-- muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
 
-成功调用该方法会重置 [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enablelocalaudio)、 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，请谨慎使用。
+成功调用该方法会重置 [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enablelocalaudio)、[muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，请谨慎使用。
 :::
 
 <a id="api_irtcengine_enableaudio__timing"></a>
@@ -232,12 +237,11 @@ virtual int enableAudio() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
+
+<a id="ariaid-title7"></a>
 
 ## enableAudioVolumeIndication
 
@@ -245,7 +249,7 @@ virtual int enableAudio() = 0;
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```cpp
+```text
 virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad) = 0;
 ```
 
@@ -269,35 +273,34 @@ virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad
 
 ### 参数
 
-#### `interval`
+### interval
 
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示功能。
-- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-#### `smooth`
+### smooth
 
 设置音量提示的灵敏度平滑系数，取值范围为 0 到 10，推荐值为 3。值越大，提示越灵敏。
 
-#### `reportVad`
+### reportVad
 
 是否启用本地用户的语音活动检测（VAD）：
 
-- true：启用语音活动检测。启用后， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭语音活动检测。关闭后， onAudioVolumeIndication 回调中的 vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用语音活动检测。启用后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭语音活动检测。关闭后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
+
+<a id="ariaid-title8"></a>
 
 ## enableAudioVolumeIndicationEx
 
@@ -305,7 +308,7 @@ virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```cpp
+```text
 virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportVad, const RtcConnection& connection) = 0;
 ```
 
@@ -335,25 +338,25 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 
 ### 参数
 
-#### `interval`
+### interval
 
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示。
-- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-#### `smooth`
+### smooth
 
 设置音量提示的灵敏度平滑系数，取值范围为 0 到 10，推荐值为 3。值越大，提示越灵敏。
 
-#### `reportVad`
+### reportVad
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
-- true：启用语音活动检测。启用后， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭语音活动检测。关闭后， onAudioVolumeIndication 回调中的 vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用语音活动检测。启用后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭语音活动检测。关闭后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
@@ -362,12 +365,11 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudioprofile"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setAudioProfile [1/2]
 
@@ -375,35 +377,35 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scenario) __deprecated = 0;
 ```
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃。你可以改用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_setaudioprofile2) 方法。若需设置音频场景，请调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 方法，并在 [RtcEngineContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcengineconfig) 结构体中的 `audioScenario` 成员中传入值。
 
-:::info[注]
-由于 iOS 系统限制，在通话音量模式下部分音频路由无法识别。因此，如需使用外置声卡，建议将音频场景设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。在该场景下，SDK 会切换为媒体音量以规避该问题。
+:::note
+注： 由于 iOS 系统限制，在通话音量模式下部分音频路由无法识别。因此，如需使用外置声卡，建议将音频场景设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。在该场景下，SDK 会切换为媒体音量以规避该问题。
 :::
 
 <a id="api_irtcengine_setaudioprofile__scenario"></a>
 
 ### 适用场景
 
-该方法适用于多种音频场景，你可以根据实际需求进行选择。例如，在对音质要求较高的场景（如音乐教学）中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4），将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。你可以在加入频道前或加入频道后调用该方法。
+该方法适用于多种音频场景，你可以根据实际需求进行选择。例如，在对音质要求较高的场景（如音乐教学）中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`（4），将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。你可以在加入频道前或加入频道后调用该方法。
 
 <a id="api_irtcengine_setaudioprofile__parameters"></a>
 
 ### 参数
 
-#### `profile`
+### profile
 
 音频配置，包括采样率、码率、编码模式和声道数。详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioprofiletype)。
 
-#### `scenario`
+### scenario
 
 音频场景，在不同的音频场景下设备使用不同的音量类型。详见 [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioscenariotype)。
 
@@ -412,12 +414,11 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scen
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudioprofile2"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setAudioProfile [2/2]
 
@@ -425,7 +426,7 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scen
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 ```
 
@@ -435,7 +436,7 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 
 ### 适用场景
 
-你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）。如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 并在 [RtcEngineContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcengineconfig) 中设置 `audioScenario`。
+你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`（4）。如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 并在 [RtcEngineContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcengineconfig) 中设置 `audioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__timing"></a>
 
@@ -447,7 +448,7 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 
 ### 参数
 
-#### `profile`
+### profile
 
 音频配置文件，包括采样率、码率、编码模式和声道数。详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioprofiletype)。
 
@@ -456,12 +457,11 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudioscenario"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setAudioScenario
 
@@ -469,21 +469,21 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 ```
 
 <a id="api_irtcengine_setaudioscenario__detailed_desc"></a>
 
-:::info[注]
-由于 iOS 系统限制，在通话音量模式下，部分音频路由可能无法识别。如果你需要使用外置声卡，建议将音频场景设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。在该场景下，SDK 会切换为媒体音量，以避免该问题。
+:::note
+注： 由于 iOS 系统限制，在通话音量模式下，部分音频路由可能无法识别。如果你需要使用外置声卡，建议将音频场景设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。在该场景下，SDK 会切换为媒体音量，以避免该问题。
 :::
 
 <a id="api_irtcengine_setaudioscenario__scenario"></a>
 
 ### 适用场景
 
-该方法适用于多种音频场景。例如，在对音质要求较高的音乐教学场景中，建议将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+该方法适用于多种音频场景。例如，在对音质要求较高的音乐教学场景中，建议将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。
 
 <a id="api_irtcengine_setaudioscenario__timing"></a>
 
@@ -495,7 +495,7 @@ virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 
 ### 参数
 
-#### `scenario`
+### scenario
 
 音频场景。不同音频场景下，设备使用不同的音量类型。详见 [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioscenariotype)。
 
@@ -504,12 +504,11 @@ virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setAudioSessionOperationRestriction
 
@@ -517,7 +516,7 @@ virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICTION restriction) = 0;
 ```
 
@@ -525,7 +524,9 @@ virtual int setAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICT
 
 默认情况下，SDK 和 App 都可以配置音频会话。如果你只希望由 App 配置音频会话，可以通过该方法限制 SDK 的操作权限。你可以在加入频道前或后调用该方法。一旦调用该方法进行限制，当 SDK 需要更改音频会话时，该限制将生效。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 iOS。
 - 该方法不会限制 App 对音频会话的操作权限。
 :::
@@ -534,7 +535,7 @@ virtual int setAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICT
 
 ### 参数
 
-#### `restriction`
+### restriction
 
 SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对应一个权限。详见 [AUDIO_SESSION_OPERATION_RESTRICTION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiosessionoperationrestriction)。
 
@@ -543,12 +544,11 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onactivespeaker"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onActiveSpeaker
 
@@ -556,7 +556,7 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```cpp
+```text
 virtual void onActiveSpeaker(uid_t uid)
 ```
 
@@ -571,14 +571,13 @@ virtual void onActiveSpeaker(uid_t uid)
 
 ### 参数
 
-#### `uid`
+### uid
 
 最活跃远端说话人的用户 ID。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudioquality"></a>
+
+<a id="ariaid-title14"></a>
 
 ## onAudioQuality
 
@@ -586,13 +585,13 @@ virtual void onActiveSpeaker(uid_t uid)
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioQuality(uid_t uid, int quality, unsigned short delay, unsigned short lost) __deprecated
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该回调已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
 
@@ -602,34 +601,33 @@ SDK 每两秒触发一次该回调，用于报告每个正在发送音频流的�
 
 ### 参数
 
-#### `uid`
+### uid
 
 发送音频流的远端用户 ID。
 
-#### `quality`
+### quality
 
 该用户的音频质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
 
-#### `delay`
+### delay
 
 从发送端到接收端的网络延迟（毫秒），包括音频采样预处理、网络传输和网络抖动缓冲造成的延迟。
 
-#### `lost`
+### lost
 
 从远端用户到接收端的音频数据包丢包率（%）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onAudioVolumeIndication
 
-onAudioVolumeIndication 回调。
+[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned int speakerNumber, int totalVolume)
 ```
 
@@ -637,8 +635,8 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned i
 
 默认情况下，该回调处于关闭状态。你可以通过调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 方法开启该回调。开启后，当频道中有用户发送音频流时，SDK 会按照 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 中设置的时间间隔触发该回调。SDK 会同时触发两个独立的 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告发送音频流的本地用户和瞬时音量最高的最多三位远端用户的音量信息。
 
-:::info[注]
-开启该回调后，即使本地用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法将音频静音，SDK 仍会继续报告本地用户的音量信息。如果某位远端用户的音量为频道中前三高之一，但停止发布音频流超过 20 秒，该回调将不再包含该用户的信息；如果所有远端用户都停止发布音频流超过 20 秒，SDK 将不再触发远端用户的音量回调。
+:::note
+注： 开启该回调后，即使本地用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法将音频静音，SDK 仍会继续报告本地用户的音量信息。如果某位远端用户的音量为频道中前三高之一，但停止发布音频流超过 20 秒，该回调将不再包含该用户的信息；如果所有远端用户都停止发布音频流超过 20 秒，SDK 将不再触发远端用户的音量回调。
 :::
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__timing"></a>
@@ -651,28 +649,27 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned i
 
 ### 参数
 
-#### `speakers`
+### speakers
 
 用户的音量信息。详见 [AudioVolumeInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiovolumeinfo)。当该回调中的 `speakers` 数组为空时，表示频道中没有远端用户或没有用户发送音频流。
 
-#### `speakerNumber`
+### speakerNumber
 
 用户总数。
 
-- 本地用户的回调中，如果本地用户正在发送音频流， speakerNumber 的值为 1。
-- 远端用户的回调中， speakerNumber 的取值范围为 [0, 3]。如果发送音频流的远端用户数量大于或等于 3， speakerNumber 的值为 3。
+- 本地用户的回调中，如果本地用户正在发送音频流，`speakerNumber` 的值为 1。
+- 远端用户的回调中，`speakerNumber` 的取值范围为 [0, 3]。如果发送音频流的远端用户数量大于或等于 3，`speakerNumber` 的值为 3。
 
-#### `totalVolume`
+### totalVolume
 
 说话者的音量，取值范围为 [0, 255]。
 
-- 本地用户的回调中， totalVolume 表示本地用户的音量。
-- 远端用户的回调中， totalVolume 表示瞬时音量最高的最多三位远端用户的音量总和。如果调用了 startAudioMixing，则该值为混音后的音量。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+- 本地用户的回调中，`totalVolume` 表示本地用户的音量。
+- 远端用户的回调中，`totalVolume` 表示瞬时音量最高的最多三位远端用户的音量总和。如果调用了 `startAudioMixing`，则该值为混音后的音量。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onFirstLocalAudioFramePublished
 
@@ -680,7 +677,7 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned i
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```cpp
+```text
 virtual void onFirstLocalAudioFramePublished(int elapsed)
 ```
 
@@ -692,23 +689,22 @@ virtual void onFirstLocalAudioFramePublished(int elapsed)
 
 该回调在以下任一情况下由 SDK 触发：
 
-- 本地客户端启用音频模块并成功调用 joinChannel。
-- 本地客户端依次调用 muteLocalAudioStream(true) 和 muteLocalAudioStream(false)。
-- 本地客户端依次调用 disableAudio 和 enableAudio。
-- 本地客户端调用 pushAudioFrame 成功将音频帧推送至 SDK。
+- 本地客户端启用音频模块并成功调用 `joinChannel`。
+- 本地客户端依次调用 `muteLocalAudioStream(true)` 和 `muteLocalAudioStream(false)`。
+- 本地客户端依次调用 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_disableaudio) 和 [enableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_enableaudio)。
+- 本地客户端调用 [pushAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 成功将音频帧推送至 SDK。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__parameters"></a>
 
 ### 参数
 
-#### `elapsed`
+### elapsed
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded"></a>
+
+<a id="ariaid-title17"></a>
 
 ## onFirstRemoteAudioDecoded
 
@@ -716,13 +712,13 @@ virtual void onFirstLocalAudioFramePublished(int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```cpp
+```text
 virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
@@ -736,18 +732,17 @@ virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `elapsed`
+### elapsed
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间，单位为毫秒。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe"></a>
+
+<a id="ariaid-title18"></a>
 
 ## onFirstRemoteAudioFrame
 
@@ -755,13 +750,13 @@ virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```cpp
+```text
 virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
@@ -769,18 +764,17 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `elapsed`
+### elapsed
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间，单位为毫秒。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
+
+<a id="ariaid-title19"></a>
 
 ## onLocalAudioStateChanged
 
@@ -788,7 +782,7 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_REASON reason)
 ```
 
@@ -796,26 +790,25 @@ virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDI
 
 当本地音频流的状态（包括音频采集和编码状态）发生变化时，SDK 会触发该回调报告当前状态，帮助你排查音频异常问题。
 
-:::info[注]
-当状态为 `LOCAL_AUDIO_STREAM_STATE_FAILED` （3）时，可以在 `reason` 参数中查看错误信息。
+:::note
+注： 当状态为 `LOCAL_AUDIO_STREAM_STATE_FAILED`（3）时，可以在 `reason` 参数中查看错误信息。
 :::
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__parameters"></a>
 
 ### 参数
 
-#### `state`
+### state
 
 本地音频流的状态，详见 [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localaudiostreamstate)。
 
-#### `reason`
+### reason
 
 本地音频流状态变化的原因，详见 [LOCAL_AUDIO_STREAM_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localaudiostreamreason)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
+
+<a id="ariaid-title20"></a>
 
 ## onLocalAudioStats
 
@@ -823,7 +816,7 @@ virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDI
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```cpp
+```text
 virtual void onLocalAudioStats(const LocalAudioStats& stats)
 ```
 
@@ -839,14 +832,13 @@ SDK 每两秒触发一次该回调。
 
 ### 参数
 
-#### `stats`
+### stats
 
 本地音频统计信息。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localaudiostats)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
+
+<a id="ariaid-title21"></a>
 
 ## onRemoteAudioStateChanged
 
@@ -854,14 +846,14 @@ SDK 每两秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed)
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__detailed_desc"></a>
 
-:::info[注]
-当通信场景下的用户或直播场景下的主播数量超过 32 时，该回调无法正常工作。
+:::note
+注： 当通信场景下的用户或直播场景下的主播数量超过 32 时，该回调无法正常工作。
 :::
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__timing"></a>
@@ -874,26 +866,25 @@ virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMO
 
 ### 参数
 
-#### `uid`
+### uid
 
 音频状态发生变化的远端用户 ID。
 
-#### `state`
+### state
 
 远端音频状态。详见 [REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-remoteaudiostate)。
 
-#### `reason`
+### reason
 
 远端音频状态变化的原因。详见 [REMOTE_AUDIO_STATE_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-remoteaudiostatereason)。
 
-#### `elapsed`
+### elapsed
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
+
+<a id="ariaid-title22"></a>
 
 ## onRemoteAudioStats
 
@@ -901,7 +892,7 @@ virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMO
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```cpp
+```text
 virtual void onRemoteAudioStats(const RemoteAudioStats& stats)
 ```
 
@@ -913,14 +904,13 @@ virtual void onRemoteAudioStats(const RemoteAudioStats& stats)
 
 ### 参数
 
-#### `stats`
+### stats
 
 远端音频流的统计信息。详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remoteaudiostats)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats"></a>
+
+<a id="ariaid-title23"></a>
 
 ## onRemoteAudioTransportStats
 
@@ -928,13 +918,13 @@ virtual void onRemoteAudioStats(const RemoteAudioStats& stats)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```cpp
+```text
 virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsigned short lost, unsigned short rxKBitRate) __deprecated
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
 
@@ -950,26 +940,25 @@ virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsign
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID，即发送音频流的用户。
 
-#### `delay`
+### delay
 
 从远端用户到本地接收端的网络时延（毫秒）。
 
-#### `lost`
+### lost
 
 从远端用户到本地接收端的音频数据包丢失率（%）。
 
-#### `rxKBitRate`
+### rxKBitRate
 
 接收到的音频码率（Kbps）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
+
+<a id="ariaid-title24"></a>
 
 ## onUserMuteAudio
 
@@ -977,7 +966,7 @@ virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsign
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```cpp
+```text
 virtual void onUserMuteAudio(uid_t uid, bool muted)
 ```
 
@@ -985,24 +974,21 @@ virtual void onUserMuteAudio(uid_t uid, bool muted)
 
 当远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 停止或恢复发送音频流时，SDK 会触发该回调。
 
-:::info[注]
-当通信场景中的用户数量或直播场景中的主播数量超过 32 时，该回调可能无法正常工作。
+:::note
+注： 当通信场景中的用户数量或直播场景中的主播数量超过 32 时，该回调可能无法正常工作。
 :::
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `muted`
+### muted
 
 远端用户的音频流是否被静音：
 
 - true：音频流被静音。
 - false：音频流未被静音。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

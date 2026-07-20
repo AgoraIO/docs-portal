@@ -1,10 +1,18 @@
 ---
-title: "FLiveTranscoding"
-description: "旁路推流的转码属性。"
+title: FLiveTranscoding
+description: 旁路推流的转码属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_livetranscoding
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_livetranscoding.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_livetranscoding__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FLiveTranscoding
 {
@@ -71,7 +79,7 @@ public:
 		for(int i = 0; i< userCount; i++){
 			transcodingUsers.Add(FTranscodingUser((AgoraData.transcodingUsers[i])));
 		}
-	
+
 		transcodingExtraInfo = UTF8_TO_TCHAR(AgoraData.transcodingExtraInfo);
 		metadata = UTF8_TO_TCHAR(AgoraData.metadata);
 		for(unsigned int i =0; i< AgoraData.watermarkCount;i++)
@@ -103,14 +111,14 @@ public:
 		AgoraData.videoCodecProfile = static_cast<agora::rtc::VIDEO_CODEC_PROFILE_TYPE>(videoCodecProfile);
 		AgoraData.backgroundColor = static_cast<unsigned int>(backgroundColor);
 		AgoraData.videoCodecType = static_cast<agora::rtc::VIDEO_CODEC_TYPE_FOR_STREAM>(videoCodecType);
-		
+
 		AgoraData.userCount = userCount;
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMALLOC(AgoraData.transcodingUsers, agora::rtc::TranscodingUser, userCount, this->transcodingUsers)
 		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.transcodingExtraInfo,this->transcodingExtraInfo)
 		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.metadata,this->metadata)
 		AgoraData.watermarkCount = watermarkCount;
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMALLOC(AgoraData.watermark, agora::rtc::RtcImage, watermarkCount, this->watermark)
-		
+
 		AgoraData.backgroundImageCount = backgroundImageCount;
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMALLOC(AgoraData.backgroundImage, agora::rtc::RtcImage, backgroundImageCount, this->backgroundImage)
 		AgoraData.audioSampleRate = static_cast<agora::rtc::AUDIO_SAMPLE_RATE_TYPE>(audioSampleRate);
@@ -122,14 +130,14 @@ public:
 	}
 	void FreeAgoraData(agora::rtc::LiveTranscoding & AgoraData) const{
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMFREE(AgoraData.transcodingUsers,userCount, FTranscodingUser)
-		
+
 		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.transcodingExtraInfo)
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMFREE(AgoraData.watermark, watermarkCount, FRtcImage)
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMFREE(AgoraData.backgroundImage, backgroundImageCount, FRtcImage)
 		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMFREE(AgoraData.advancedFeatures, advancedFeatureCount, FLiveStreamAdvancedFeature)
-	
+
 	}
-		
+
 };
 ```
 
@@ -137,104 +145,104 @@ public:
 
 ## 属性
 
-### `width`
+### width
 
 推流视频的总宽度，默认值 360，单位为像素。
 
-- 如果推视频流， width 取值范围为 [64,1920]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1920，声网服务器会自动调整为 1920。
-- 如果推音频流，请将 width 和 height 设为 0。
+- 如果推视频流，`width` 取值范围为 [64,1920]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1920，声网服务器会自动调整为 1920。
+- 如果推音频流，请将 `width` 和 `height` 设为 0。
 
-### `height`
+### height
 
 推流视频的总高度，默认值 640，单位为像素。
 
-- 如果推视频流， height 取值范围为 [64,1080]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1080，声网服务器会自动调整为 1080。
-- 如果推音频流，请将 width 和 height 设为 0。
+- 如果推视频流，`height` 取值范围为 [64,1080]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1080，声网服务器会自动调整为 1080。
+- 如果推音频流，请将 `width` 和 `height` 设为 0。
 
-### `videoBitrate`
+### videoBitrate
 
-视频编码码率，单位为 Kbps。 该参数无需设置，保留默认值 STANDARD_BITRATE 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见 [视频属性](/zh-CN/realtime-media/rtc/build/video/video-profile)。
+视频编码码率，单位为 Kbps。该参数无需设置，保留默认值 STANDARD_BITRATE 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见[视频属性](/zh-CN/realtime-media/rtc/build/video/video-profile)。
 
-### `videoFrameRate`
+### videoFrameRate
 
 用于旁路直播的输出视频的帧率。取值范围是 (0,30]，单位为 fps。15 fps 为默认值。
 
-:::warning[注意]
-声网服务器会将高于 30 fps 的帧率统一调整为 30 fps。
+:::note
+注意： 声网服务器会将高于 30 fps 的帧率统一调整为 30 fps。
 :::
 
-### `lowLatency`
+### lowLatency
 
-##### `弃用`
+### 弃用
 
 不建议使用。
 
 低延时模式
 
-- true: 低延时，不保证画质。
-- false:（默认值）高延时，保证画质。
+- `true`: 低延时，不保证画质。
+- `false`:（默认值）高延时，保证画质。
 
-### `videoGop`
+### videoGop
 
 用于旁路直播的输出视频的 GOP (Group of Pictures)。单位为帧。默认值为 30。
 
-### `videoCodecProfile`
+### videoCodecProfile
 
 用于旁路直播的输出视频的编码规格。可以设置为 66、77 或 100，详见 [EVIDEO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodecprofiletype)。
 
-:::warning[注意]
-如果你把这个参数设为其他值，声网服务器会将其调整为默认值。
+:::note
+注意： 如果你把这个参数设为其他值，声网服务器会将其调整为默认值。
 :::
 
-### `videoCodecType`
+### videoCodecType
 
 用于旁路直播的输出视频的编解码类型。详见 [EVIDEO_CODEC_TYPE_FOR_STREAM](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodectypeforstream)。
 
-### `transcodingUsers`
+### transcodingUsers
 
 用于管理参与旁路直播的视频转码合图的用户。最多支持 17 人同时参与转码合图。详见 [FTranscodingUser](/zh-CN/api-reference/rtc/unreal-blueprint/class-transcodinguser)。
 
-### `transcodingExtraInfo`
+### transcodingExtraInfo
 
 预留参数：用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。长度限制：4096 字节。关于 SEI 的详细信息，详见 [SEI 帧相关问题](/zh-CN/api-reference/faq/quality/sei)。
 
-### `backgroundColor`
+### backgroundColor
 
 用于旁路直播的输出视频的背景色，格式为 RGB 定义下的十六进制整数，不要带 # 号，如 0xFFB6C1 表示浅粉色。默认0x000000，黑色。
 
-### `userCount`
+### userCount
 
 参与合图的用户数量，默认 0。取值范围为 [0,17]。
 
-### `metadata`
+### metadata
 
-##### `弃用`
+### 弃用
 
 已废弃，不建议使用。
 
 发送给 CDN 客户端的 metadata。
 
-### `watermark`
+### watermark
 
 直播视频上的水印。图片格式需为 PNG。详见 [FRtcImage](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcimage)。
 
-你可以添加一个水印，或使用数组的方式添加多个水印。 该参数与 watermarkCount 搭配使用。
+你可以添加一个水印，或使用数组的方式添加多个水印。该参数与 watermarkCount搭配使用。
 
-### `backgroundImage`
+### backgroundImage
 
 直播视频上的背景图。图片格式需为 PNG。详见 [FRtcImage](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcimage)。
 
 你可以添加一张背景图，或使用数组的方式添加多张背景图。该参数与 backgroundImageCount 搭配使用。
 
-### `audioSampleRate`
+### audioSampleRate
 
 用于旁路推流的输出媒体流的音频采样率 (Hz)，详见 [EAUDIO_SAMPLE_RATE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audiosampleratetype)。
 
-### `audioBitrate`
+### audioBitrate
 
 用于旁路直播的输出音频的码率。单位为 Kbps，默认值为 48，最大值为 128。
 
-### `audioChannels`
+### audioChannels
 
 用于旁路直播的输出音频的声道数，默认值为 1。取值范围为 [1,5] 中的整型，建议取 1 或 2。3、4、5 需要特殊播放器支持：
 
@@ -244,22 +252,22 @@ public:
 - 4: 四声道
 - 5: 五声道
 
-### `audioCodecProfile`
+### audioCodecProfile
 
 用于旁路直播输出音频的编码规格。详见 [EAUDIO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audiocodecprofiletype)。
 
-### `watermarkCount`
+### watermarkCount
 
 直播视频上的水印的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 watermark 搭配使用。
 
-### `backgroundImageCount`
+### backgroundImageCount
 
 直播视频上的背景图的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 backgroundImage 搭配使用。
 
-### `advancedFeatures`
+### advancedFeatures
 
 转码推流的高级功能。详见 [FLiveStreamAdvancedFeature](/zh-CN/api-reference/rtc/unreal-blueprint/class-livestreamadvancedfeature)。
 
-### `advancedFeatureCount`
+### advancedFeatureCount
 
 开启的高级功能数量。默认值为 0。

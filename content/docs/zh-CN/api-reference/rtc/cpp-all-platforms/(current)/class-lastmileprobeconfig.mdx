@@ -1,10 +1,18 @@
 ---
-title: "LastmileProbeConfig"
-description: "用于配置 Last-mile 网络测试。"
+title: LastmileProbeConfig
+description: 用于配置 Last-mile 网络测试。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_lastmileprobeconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_lastmileprobeconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_lastmileprobeconfig__prototype"></a>
 
-```cpp
+```text
 struct LastmileProbeConfig {
   bool probeUplink;
   bool probeDownlink;
@@ -17,24 +25,24 @@ struct LastmileProbeConfig {
 
 ## 属性
 
-### `probeUplink`
+### probeUplink
 
 设置是否测试上行网络：
 
-- true：测试上行网络。例如，在频道场景为 LIVE_BROADCASTING 时，观众用户不需要进行此测试。
+- true：测试上行网络。例如，在频道场景为 `LIVE_BROADCASTING` 时，观众用户不需要进行此测试。
 - false：不测试上行网络。
 
-### `probeDownlink`
+### probeDownlink
 
 设置是否测试下行网络：
 
 - true：测试下行网络。
 - false：不测试下行网络。
 
-### `expectedUplinkBitrate`
+### expectedUplinkBitrate
 
 本地用户期望的最大上行码率（bps），取值范围为 [100000, 5000000]。建议参考 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置该值。
 
-### `expectedDownlinkBitrate`
+### expectedDownlinkBitrate
 
 本地用户期望的最大下行码率（bps），取值范围为 [100000, 5000000]。

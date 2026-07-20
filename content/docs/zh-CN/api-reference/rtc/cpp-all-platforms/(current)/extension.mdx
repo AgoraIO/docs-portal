@@ -1,10 +1,19 @@
 ---
-title: "插件"
-description: "插件 API reference."
+title: 插件
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_extension
+  sourcePath: html-docs/rtc/Cpp/API/toc_extension.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_extension"></a>
 
 <a id="api_irtcengine_enableextension"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableExtension
 
@@ -12,7 +21,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_enableextension__prototype"></a>
 
-```cpp
+```text
 virtual int enableExtension(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, bool enable = true) = 0;
 ```
 
@@ -20,27 +29,27 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 
 通过调用该方法，你可以在不更改处理流程的情况下动态启用或禁用插件。例如，启用或禁用 `Extension_A` 表示数据将被 `Extension_A` 处理或绕过。
 
-:::info[注]
-出于兼容性考虑，如果你尚未调用 [registerExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_registerextension)， [enableExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_enableextension) 会自动注册指定的插件。建议你显式调用 [registerExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_registerextension)。
+:::note
+注： 出于兼容性考虑，如果你尚未调用 [registerExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_registerextension)，[enableExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_enableextension) 会自动注册指定的插件。建议你显式调用 [registerExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_registerextension)。
 :::
 
 <a id="api_irtcengine_enableextension__parameters"></a>
 
 ### 参数
 
-#### `provider`
+### provider
 
 插件提供方的名称，例如 `agora.io`。
 
-#### `extension`
+### extension
 
 插件名称，例如 `agora.beauty`。
 
-#### `extensionInfo`
+### extensionInfo
 
 `ExtensionInfo` 对象，表示插件的信息。
 
-#### `enable`
+### enable
 
 是否启用插件：
 
@@ -52,12 +61,11 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getextensionproperty2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getExtensionProperty
 
@@ -65,7 +73,7 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 
 <a id="api_irtcengine_getextensionproperty2__prototype"></a>
 
-```cpp
+```text
 virtual int getExtensionProperty(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, const char* key, char* value, int buf_len) = 0;
 ```
 
@@ -75,27 +83,27 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称，例如声网（agora.io）。
 
-#### `extension`
+### extension
 
 扩展的名称，例如 `agora.beauty`。
 
-#### `extensionInfo`
+### extensionInfo
 
 扩展信息。详见 `ExtensionInfo`。
 
-#### `key`
+### key
 
 扩展属性的键名。
 
-#### `value`
+### value
 
 输出参数，表示扩展属性键对应的值。
 
-#### `buf_len`
+### buf_len
 
 扩展属性值的最大长度（以 JSON 字符串形式表示）。
 
@@ -104,12 +112,11 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_loadextensionprovider"></a>
+
+<a id="ariaid-title4"></a>
 
 ## loadExtensionProvider
 
@@ -117,7 +124,7 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 
 <a id="api_irtcengine_loadextensionprovider__prototype"></a>
 
-```cpp
+```text
 virtual int loadExtensionProvider(const char* path, bool unload_after_use = false) = 0;
 ```
 
@@ -125,8 +132,8 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 该方法用于将 SDK 外部的扩展（例如来自云市场或 SDK 扩展）加载到 SDK 中。
 
-:::info[注]
-如果你需要加载多个扩展，需要多次调用该方法。仅适用于 Windows 和 Android 平台。
+:::note
+注： 如果你需要加载多个扩展，需要多次调用该方法。仅适用于 Windows 和 Android 平台。
 :::
 
 <a id="api_irtcengine_loadextensionprovider__timing"></a>
@@ -139,15 +146,15 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 ### 参数
 
-#### `path`
+### path
 
-扩展库的路径和名称。例如： `/library/libagora_segmentation_extension.dll`。
+扩展库的路径和名称。例如：`/library/libagora_segmentation_extension.dll`。
 
-#### `unload_after_use`
+### unload_after_use
 
 是否在不再使用当前扩展时卸载该扩展：
 
-- true：当 IRtcEngine 被销毁时卸载该扩展。
+- true：当 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 被销毁时卸载该扩展。
 - false：（推荐）直到进程终止前都不卸载该扩展。
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
@@ -155,12 +162,11 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_registerextension"></a>
+
+<a id="ariaid-title5"></a>
 
 ## registerExtension
 
@@ -168,7 +174,7 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 <a id="api_irtcengine_registerextension__prototype"></a>
 
-```cpp
+```text
 virtual int registerExtension(const char* provider, const char* extension, agora::media::MEDIA_SOURCE_TYPE type = agora::media::UNKNOWN_MEDIA_SOURCE) = 0;
 ```
 
@@ -176,7 +182,9 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
 对于 SDK 外部的扩展（例如来自云市场和 SDK 扩展），你需要在调用该方法前先加载它们。对于 SDK 内部的扩展（即包含在完整 SDK 包中的扩展），在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 后会自动加载并注册。
 
-:::info[注]
+:::note
+注：
+
 - 如果你想注册多个扩展，需要多次调用此方法。
 - SDK 中不同扩展的数据处理顺序由注册顺序决定，即先注册的扩展会优先处理数据。
 :::
@@ -187,22 +195,22 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
 声网建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 后、加入频道前调用此方法。
 
-- 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo 启用视频模块后再调用此方法。
-- 在调用此方法前，你需要先调用 loadExtensionProvider 加载扩展。
+- 对于视频扩展（如美颜特效扩展），你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 或 [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablelocalvideo) 启用视频模块后再调用此方法。
+- 在调用此方法前，你需要先调用 [loadExtensionProvider](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_loadextensionprovider) 加载扩展。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `extension`
+### extension
 
 扩展的名称。
 
-#### `type`
+### type
 
 扩展的数据源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -211,13 +219,13 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setextensionproperty"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setExtensionProperty
 
@@ -225,7 +233,7 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
 <a id="api_irtcengine_setextensionproperty__prototype"></a>
 
-```cpp
+```text
 virtual int setExtensionProperty(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, const char* key, const char* value) = 0;
 ```
 
@@ -235,23 +243,23 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 
 ### 参数
 
-#### `provider`
+### provider
 
 插件提供方的名称，例如 `agora.io`。
 
-#### `extension`
+### extension
 
 插件名称，例如 `agora.beauty`。
 
-#### `extensionInfo`
+### extensionInfo
 
 插件信息，详见 `ExtensionInfo`。
 
-#### `key`
+### key
 
 插件属性的键名。
 
-#### `value`
+### value
 
 插件属性键对应的值，采用 JSON 格式。
 
@@ -260,12 +268,11 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setExtensionProviderProperty
 
@@ -273,7 +280,7 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 
 <a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
 
-```cpp
+```text
 virtual int setExtensionProviderProperty(const char* provider, const char* key, const char* value) = 0;
 ```
 
@@ -281,8 +288,8 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 
 调用该方法可设置扩展提供方的属性，并根据提供方的类型初始化相关参数。
 
-:::info[注]
-如果你想为多个扩展设置扩展提供方的属性，需要多次调用该方法。
+:::note
+注： 如果你想为多个扩展设置扩展提供方的属性，需要多次调用该方法。
 :::
 
 <a id="api_irtcengine_setextensionproviderproperty__timing"></a>
@@ -295,15 +302,15 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `key`
+### key
 
 扩展属性的键名。
 
-#### `value`
+### value
 
 扩展属性键对应的值。
 
@@ -312,12 +319,11 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onExtensionErrorWithContext
 
@@ -325,7 +331,7 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
 
-```cpp
+```text
 virtual void onExtensionErrorWithContext(const ExtensionContext &context, int error, const char* message)
 ```
 
@@ -337,22 +343,21 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
 
-#### `error`
+### error
 
 错误码。详见扩展提供方的扩展文档。
 
-#### `message`
+### message
 
 错误原因。详见扩展提供方的扩展文档。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onExtensionEventWithContext
 
@@ -360,7 +365,7 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
 
-```cpp
+```text
 virtual void onExtensionEventWithContext(const ExtensionContext &context, const char* key, const char* value)
 ```
 
@@ -372,30 +377,29 @@ virtual void onExtensionEventWithContext(const ExtensionContext &context, const 
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
 
-#### `key`
+### key
 
 扩展事件的键。
 
-#### `value`
+### value
 
 扩展事件键对应的值。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onExtensionStartedWithContext
 
-onExtensionStartedWithContext 回调。当扩展启用成功时触发。
+[onExtensionStartedWithContext](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) 回调。当扩展启用成功时触发。
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
 
-```cpp
+```text
 virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 ```
 
@@ -405,22 +409,21 @@ virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onExtensionStoppedWithContext
 
-onExtensionStoppedWithContext 回调：扩展被禁用时触发。
+[onExtensionStoppedWithContext](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext) 回调：扩展被禁用时触发。
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
 
-```cpp
+```text
 virtual void onExtensionStoppedWithContext(const ExtensionContext &context)
 ```
 
@@ -436,9 +439,6 @@ virtual void onExtensionStoppedWithContext(const ExtensionContext &context)
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

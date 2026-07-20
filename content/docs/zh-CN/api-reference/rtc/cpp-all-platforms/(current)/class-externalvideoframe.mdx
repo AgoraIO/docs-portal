@@ -1,10 +1,18 @@
 ---
-title: "ExternalVideoFrame"
-description: "表示外部视频帧。"
+title: ExternalVideoFrame
+description: 表示外部视频帧。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_externalvideoframe
+  sourcePath: html-docs/rtc/Cpp/API/class_externalvideoframe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_externalvideoframe__prototype"></a>
 
-```cpp
+```text
 struct ExternalVideoFrame {
   VIDEO_BUFFER_TYPE type;
   VIDEO_PIXEL_FORMAT format;
@@ -37,92 +45,92 @@ struct ExternalVideoFrame {
 
 ## 属性
 
-### `type`
+### type
 
 视频类型。详见 [VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videobuffertype)。
 
-### `format`
+### format
 
 像素格式。详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videopixelformat)。
 
-### `buffer`
+### buffer
 
 视频帧缓冲区。
 
-### `stride`
+### stride
 
 输入视频帧的行间距，单位为像素而非字节。对于纹理数据，该值为纹理的宽度。
 
-### `height`
+### height
 
 输入视频帧的高度。
 
-### `cropLeft`
+### cropLeft
 
 从左侧裁剪的像素数。默认值为 0。
 
-### `cropTop`
+### cropTop
 
 从顶部裁剪的像素数。默认值为 0。
 
-### `cropRight`
+### cropRight
 
 从右侧裁剪的像素数。默认值为 0。
 
-### `cropBottom`
+### cropBottom
 
 从底部裁剪的像素数。默认值为 0。
 
-### `rotation`
+### rotation
 
 视频帧的顺时针旋转角度。可设置为 0、90、180 或 270。默认值为 0。
 
-### `timestamp`
+### timestamp
 
 输入视频帧的时间戳（毫秒）。时间戳错误会导致帧丢失或音视频不同步。
 
-### `eglContext`
+### eglContext
 
 仅适用于 Texture 格式的视频数据。
 
-- 使用 Khronos 定义的 OpenGL 接口（javax.microedition.khronos.egl.*）时，将该字段设置为 eglContext。
-- 使用 Android 定义的 OpenGL 接口（android.opengl.*）时，也将该字段设置为 eglContext。
+- 使用 Khronos 定义的 OpenGL 接口（javax.microedition.khronos.egl.*）时，将该字段设置为 `eglContext`。
+- 使用 Android 定义的 OpenGL 接口（android.opengl.*）时，也将该字段设置为 `eglContext`。
 
-### `eglType`
+### eglType
 
 仅适用于 Texture 格式的视频数据。纹理上下文类型。
 
-### `textureId`
+### textureId
 
 仅适用于 Texture 格式的视频数据。视频帧的纹理 ID。
 
-### `fenceObject`
+### fenceObject
 
 仅适用于 Texture 格式的视频数据。与 `textureId` 参数相关的 fence 对象，表示纹理数据的同步状态。默认值为 0。
 
-### `matrix`
+### matrix
 
 仅适用于 Texture 格式的视频数据。输入的 4×4 变换矩阵。典型值为单位矩阵。
 
-### `metadataBuffer`
+### metadataBuffer
 
 仅适用于 Texture 格式的视频数据。MetaData 缓冲区。默认值为 NULL。
 
-### `metadataSize`
+### metadataSize
 
 仅适用于 Texture 格式的视频数据。MetaData 大小。默认值为 0。
 
-### `alphaBuffer`
+### alphaBuffer
 
 输出参数，通过人像分割算法输出的 Alpha 通道数据。该数据与视频帧大小一致，每个像素值范围为 [0, 255]，其中 0 表示背景，255 表示前景（人像）。通过设置该参数，可以将视频背景渲染为透明、纯色、图像、视频等多种效果。
 
-### `fillAlphaBuffer`
+### fillAlphaBuffer
 
-:::info[注]
-对于 BGRA 或 RGBA 格式的视频数据，可以通过以下任一方式设置 Alpha 通道数据：
+:::note
+注： 对于 BGRA 或 RGBA 格式的视频数据，可以通过以下任一方式设置 Alpha 通道数据：
 
 - 将该参数设置为 true，自动提取。
-- 通过 alphaBuffer 参数手动设置。
+- 通过 `alphaBuffer` 参数手动设置。
 :::
 
 仅适用于 BGRA 或 RGBA 格式的视频数据。是否从视频帧中提取 Alpha 通道数据并自动填充到 `alphaBuffer`：
@@ -130,18 +138,18 @@ struct ExternalVideoFrame {
 - true：提取并填充 Alpha 通道数据。
 - false：不提取和填充 Alpha 通道数据。
 
-### `alphaStitchMode`
+### alphaStitchMode
 
 当视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置。详见 [ALPHA_STITCH_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-alphastitchmode)。
 
-### `d3d11Texture2d`
+### d3d11Texture2d
 
 仅适用于 Windows Texture 格式的视频数据。指向 `ID3D11Texture2D` 类型对象的指针，该对象由视频帧使用。
 
-### `textureSliceIndex`
+### textureSliceIndex
 
 仅适用于 Windows Texture 格式的视频数据。表示视频帧在 `ID3D11Texture2D` 数组中使用的纹理对象的索引。
 
-### `colorSpace`
+### colorSpace
 
 视频帧的色彩空间属性，默认采用 Full Range 和 BT.709 标准配置。详见 [`VideoColorSpace`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。

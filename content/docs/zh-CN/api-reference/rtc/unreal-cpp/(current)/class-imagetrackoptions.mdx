@@ -1,10 +1,18 @@
 ---
-title: "ImageTrackOptions"
-description: "垫片图片的设置选项。"
+title: ImageTrackOptions
+description: 垫片图片的设置选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_imagetrackoptions
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_imagetrackoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_imagetrackoptions__prototype"></a>
 
-```cpp
+```text
 struct ImageTrackOptions {
   const char* imageUrl;
   int fps;
@@ -16,14 +24,14 @@ struct ImageTrackOptions {
 
 ## 属性
 
-### `imageUrl`
+### imageUrl
 
 垫片图片的 URL，目前支持 JPEG、JPG、PNG、GIF 格式的图片。支持从本地绝对路径或相对路径添加垫片图片。
 
-:::info[注]
-在 Android 平台上，不支持从 `/assets/` 中添加垫片图片。
+:::note
+注： 在 Android 平台上，不支持从 `/assets/` 中添加垫片图片。
 :::
 
-### `fps`
+### fps
 
 视频帧率，取值范围为 [1,30]。默认值为 1。

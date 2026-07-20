@@ -1,10 +1,18 @@
 ---
-title: "AudioFrame"
-description: "原始音频数据。"
+title: AudioFrame
+description: 原始音频数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_audioframe
+  sourcePath: html-docs/rtc/Unity/API/class_audioframe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audioframe__prototype"></a>
 
-```csharp
+```text
 public class AudioFrame
     {
         public AudioFrame()
@@ -47,37 +55,39 @@ public class AudioFrame
 
 ## 属性
 
-### `type`
+### type
 
 音频帧类型，详见 [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc/unity/enum-audioframetype)。
 
-### `samplesPerChannel`
+### samplesPerChannel
 
 每个声道的采样点数。
 
-### `bytesPerSample`
+### bytesPerSample
 
 每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
 
-### `channels`
+### channels
 
 声道数量(如果是立体声，数据是交叉的)。
 
 - 1: 单声道
 - 2: 双声道
 
-### `samplesPerSec`
+### samplesPerSec
 
 每声道每秒的采样点数。
 
-### `RawBuffer`
+### RawBuffer
 
-声音数据缓存区（如果是立体声，数据是交叉存储的）。 缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
+声音数据缓存区（如果是立体声，数据是交叉存储的）。
+缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
 
-### `renderTimeMs`
+### renderTimeMs
 
-外部音频帧的渲染时间戳。 你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
+外部音频帧的渲染时间戳。
+你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
 
-### `avsync_type`
+### avsync_type
 
 保留参数。

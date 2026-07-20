@@ -1,10 +1,19 @@
 ---
-title: "发布和订阅"
-description: "发布和订阅 API reference."
+title: 发布和订阅
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_publishnsubscribe
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_publishnsubscribe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_publishnsubscribe"></a>
 
 <a id="api_irtcengine_enabledualstreammode3"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableDualStreamMode
 
@@ -12,7 +21,7 @@ description: "发布和订阅 API reference."
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableDualStreamMode(bool enabled, const FSimulcastStreamConfig& streamConfig);
 ```
@@ -21,20 +30,28 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-#### `弃用：`
+### 弃用：
 
 从 v4.2.0 起废弃，请改用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2)。
+
+<a id="api_irtcengine_enabledualstreammode3__d139e57"></a>
 
 你可以在发流端调用该方法开启或关闭双流模式。双流指视频大流和视频小流：
 
 - 视频大流：高分辨率、高帧率的视频流。
 - 视频小流：低分辨率、低帧率的视频流。
 
+<a id="api_irtcengine_enabledualstreammode3__d139e68"></a>
+
 开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
+<a id="api_irtcengine_enabledualstreammode3__d139e75"></a>
+
+:::note
+注：
+
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 EnableDualStreamModeEx 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -42,19 +59,21 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `enabled`
+<a id="api_irtcengine_enabledualstreammode3__parml_mfj_z3z_hqb"></a>
+
+### enabled
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [FSimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
@@ -62,12 +81,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## EnableDualStreamModeEx
 
@@ -75,7 +93,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableDualStreamModeEx(bool enabled, const FSimulcastStreamConfig& streamConfig, const FRtcConnection& connection);
 ```
@@ -84,7 +102,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-#### `弃用：`
+### 弃用：
 
 从 v4.2.0 起废弃，请改用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_setdualstreammodeex)。
 
@@ -95,30 +113,30 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
-该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
+:::note
+注： 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
 :::
 
 <a id="api_irtcengineex_enabledualstreammodeex__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [FSimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -127,12 +145,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
+
+<a id="ariaid-title4"></a>
 
 ## MuteAllRemoteAudioStreams
 
@@ -140,16 +157,22 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteAudioStreams(bool mute);
 ```
 
 <a id="api_irtcengine_muteallremoteaudiostreams__detailed_desc"></a>
 
+<a id="api_irtcengine_muteallremoteaudiostreams__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::warning[注意]
+<a id="api_irtcengine_muteallremoteaudiostreams__note"></a>
+
+:::note
+注意：
+
 SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
 :::
 
@@ -169,24 +192,23 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
+
+<a id="ariaid-title5"></a>
 
 ## MuteAllRemoteAudioStreamsEx
 
@@ -194,7 +216,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteAudioStreamsEx(bool mute, const FRtcConnection& connection);
 ```
@@ -203,25 +225,31 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::warning[注意]
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__note"></a>
+
+:::note
+注意：
+
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 JoinChannelWithOptions 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -230,12 +258,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteallremotevideostreams"></a>
+
+<a id="ariaid-title6"></a>
 
 ## MuteAllRemoteVideoStreams
 
@@ -243,16 +270,22 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteVideoStreams(bool mute);
 ```
 
 <a id="api_irtcengine_muteallremotevideostreams__detailed_desc"></a>
 
+<a id="api_irtcengine_muteallremotevideostreams__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
 
-:::warning[注意]
+<a id="api_irtcengine_muteallremotevideostreams__note"></a>
+
+:::note
+注意：
+
 SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
 :::
 
@@ -272,24 +305,23 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteallremotevideostreamsex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## MuteAllRemoteVideoStreamsEx
 
@@ -297,7 +329,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteVideoStreamsEx(bool mute, const FRtcConnection& connection);
 ```
@@ -312,14 +344,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -328,12 +360,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_mutelocalaudiostream"></a>
+
+<a id="ariaid-title8"></a>
 
 ## MuteLocalAudioStream
 
@@ -341,7 +372,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalAudioStream(bool mute);
 ```
@@ -372,24 +403,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_mutelocalaudiostreamex"></a>
+
+<a id="ariaid-title9"></a>
 
 ## MuteLocalAudioStreamEx
 
@@ -397,7 +427,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalAudioStreamEx(bool mute, const FRtcConnection& connection);
 ```
@@ -406,8 +436,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-:::warning[注意]
-该方法不影响音频采集状态，因为没有禁用音频采集设备。
+:::note
+注意： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
 成功调用该方法后，远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
@@ -416,14 +446,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -432,12 +462,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_mutelocalvideostream"></a>
+
+<a id="ariaid-title10"></a>
 
 ## MuteLocalVideoStream
 
@@ -445,7 +474,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalVideoStream(bool mute);
 ```
@@ -454,7 +483,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
 
-相比于调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+相比于调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo)(`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -478,24 +507,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_mutelocalvideostreamex"></a>
+
+<a id="ariaid-title11"></a>
 
 ## MuteLocalVideoStreamEx
 
@@ -503,7 +531,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalVideoStreamEx(bool mute, const FRtcConnection& connection);
 ```
@@ -514,7 +542,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 成功调用该方法后，远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::warning[注意]
+:::note
+注意：
+
 - 该方法不影响视频采集状态，没有禁用摄像头。
 :::
 
@@ -522,14 +552,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -538,12 +568,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteremoteaudiostream"></a>
+
+<a id="ariaid-title12"></a>
 
 ## MuteRemoteAudioStream
 
@@ -551,7 +580,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteAudioStream(int64 uid, bool mute);
 ```
@@ -580,28 +609,27 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uid`
+### uid
 
 指定用户的用户 ID。
 
-#### `mute`
+### mute
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流。
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteremoteaudiostreamex"></a>
+
+<a id="ariaid-title13"></a>
 
 ## MuteRemoteAudioStreamEx
 
@@ -609,7 +637,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteAudioStreamEx(int64 uid, bool mute, const FRtcConnection& connection);
 ```
@@ -624,18 +652,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uid`
+### uid
 
 指定用户的 ID。
 
-#### `mute`
+### mute
 
 是否停止接收指定音频流：
 
-- true: 停止接收指定音频流。
-- false:（默认）继续接收指定音频流。
+<a id="api_irtcengineex_muteremoteaudiostreamex__ul_pv3_2ft_3qb"></a>
 
-#### `connection`
+- `true`: 停止接收指定音频流。
+- `false`:（默认）继续接收指定音频流。
+
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -644,12 +674,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteremotevideostream"></a>
+
+<a id="ariaid-title14"></a>
 
 ## MuteRemoteVideoStream
 
@@ -657,7 +686,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteVideoStream(int64 uid, bool mute);
 ```
@@ -686,28 +715,27 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `userId`
+### userId
 
 指定用户的用户 ID。
 
-#### `mute`
+### mute
 
 是否取消订阅指定远端用户的视频流。
 
-- true: 取消订阅指定用户的视频流。
-- false: （默认）订阅指定用户的视频流。
+- `true`: 取消订阅指定用户的视频流。
+- `false`: （默认）订阅指定用户的视频流。
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteremotevideostreamex"></a>
+
+<a id="ariaid-title15"></a>
 
 ## MuteRemoteVideoStreamEx
 
@@ -715,7 +743,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteVideoStreamEx(int64 uid, bool mute, const FRtcConnection& connection);
 ```
@@ -730,18 +758,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `mute`
+### mute
 
 是否停止接收某个远端用户的视频：
 
-- true: 停止接收。
-- false: （默认）恢复接收。
+- `true`: 停止接收。
+- `false`: （默认）恢复接收。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -750,12 +778,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setdualstreammode2"></a>
+
+<a id="ariaid-title16"></a>
 
 ## SetDualStreamMode
 
@@ -763,7 +790,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetDualStreamMode(FENUMWRAP_SIMULCAST_STREAM_MODE mode, const FSimulcastStreamConfig& streamConfig);
 ```
@@ -772,16 +799,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流，**主播身份**的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
+- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM（始终不发送小流）或 ENABLE_SIMULCAST_STREAM（始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
-:::info[注]
-该方法和 [EnableDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+<a id="api_irtcengine_setdualstreammode2__note"></a>
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 false 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 true 的效果相同。
+:::note
+注： 该方法和 [EnableDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 `false` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 `true` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -789,29 +818,30 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-#### `mode`
+### mode
 
 发送视频流的模式。详见 [FENUMWRAP_SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-simulcaststreammode)。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [FSimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
 
 ### 返回值
 
-- 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+<a id="api_irtcengine_setdualstreammode2__ul_bpp_x2z_hqb"></a>
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
+
+<a id="ariaid-title17"></a>
 
 ## SetDualStreamModeEx
 
@@ -819,7 +849,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetDualStreamModeEx(FENUMWRAP_SIMULCAST_STREAM_MODE mode, const FSimulcastStreamConfig& streamConfig, const FRtcConnection& connection);
 ```
@@ -828,16 +858,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+<a id="api_irtcengineex_setdualstreammodeex__desc"></a>
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流，**主播身份**的接收端可以调用 [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+
+- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM（始终不发送小流）或 ENABLE_SIMULCAST_STREAM（始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
-:::info[注]
-该方法和 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+<a id="api_irtcengineex_setdualstreammodeex__note"></a>
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx (false) 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx (true) 的效果相同。
+:::note
+注： 该方法和 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx`(false)` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx`(true)` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -845,19 +879,19 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-#### `mode`
+### mode
 
 发送视频流的模式。详见 [FENUMWRAP_SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-simulcaststreammode)。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [FSimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -866,12 +900,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
+
+<a id="ariaid-title18"></a>
 
 ## SetRemoteDefaultVideoStreamType
 
@@ -879,7 +912,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteDefaultVideoStreamType(EVIDEO_STREAM_TYPE streamType);
 ```
@@ -888,9 +921,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
@@ -910,7 +943,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `streamType`
+### streamType
 
 默认订阅的视频流类型: [EVIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videostreamtype)。
 
@@ -919,12 +952,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
+
+<a id="ariaid-title19"></a>
 
 ## SetRemoteVideoStreamType
 
@@ -932,7 +964,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteVideoStreamType(int64 uid, EVIDEO_STREAM_TYPE streamType);
 ```
@@ -941,28 +973,36 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
+<a id="api_irtcengine_setremotevideostreamtype__desc1"></a>
+
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+
+<a id="api_irtcengine_setremotevideostreamtype__desc2"></a>
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::warning[注意]
+<a id="api_irtcengine_setremotevideostreamtype__note"></a>
+
+:::note
+注意：
+
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 SetRemoteDefaultVideoStreamType，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `streamType`
+### streamType
 
 视频流类型: [EVIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videostreamtype)。
 
@@ -971,12 +1011,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
+
+<a id="ariaid-title20"></a>
 
 ## SetRemoteVideoStreamTypeEx
 
@@ -984,7 +1023,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteVideoStreamTypeEx(int64 uid, EVIDEO_STREAM_TYPE streamType, const FRtcConnection& connection);
 ```
@@ -995,30 +1034,34 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::warning[注意]
-- 如果发送端已调用 SetDualStreamModeEx 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
-- 观众角色 的接收端调用该方法不生效。
+<a id="api_irtcengineex_setremotevideostreamtypeex__note"></a>
+
+:::note
+注意：
+
+- 如果发送端已调用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
+- **观众角色**的接收端调用该方法不生效。
 :::
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `streamType`
+### streamType
 
 视频流类型: [EVIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videostreamtype)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -1027,12 +1070,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribeaudioallowlist"></a>
+
+<a id="ariaid-title21"></a>
 
 ## SetSubscribeAudioAllowlist
 
@@ -1040,7 +1082,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioAllowlist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1051,9 +1093,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1062,13 +1106,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 音频订阅白名单的用户 ID 列表。
 
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
@@ -1077,12 +1121,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
+
+<a id="ariaid-title22"></a>
 
 ## SetSubscribeAudioAllowlistEx
 
@@ -1090,7 +1133,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioAllowlistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1101,9 +1144,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1112,17 +1157,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 音频订阅白名单的用户 ID 列表。
 
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -1131,12 +1176,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribeaudioblocklist"></a>
+
+<a id="ariaid-title23"></a>
 
 ## SetSubscribeAudioBlocklist
 
@@ -1144,7 +1188,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioBlocklist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1155,9 +1199,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定不订阅的音频流。
 
-:::warning[注意]
+<a id="api_irtcengine_setsubscribeaudioblocklist__note"></a>
+
+:::note
+注意：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1166,13 +1214,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
@@ -1181,12 +1229,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
+
+<a id="ariaid-title24"></a>
 
 ## SetSubscribeAudioBlocklistEx
 
@@ -1194,7 +1241,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioBlocklistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1205,9 +1252,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定不订阅的音频流。
 
-:::warning[注意]
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__d108e49"></a>
+
+:::note
+注意：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1216,17 +1267,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -1235,12 +1286,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribevideoallowlist"></a>
+
+<a id="ariaid-title25"></a>
 
 ## SetSubscribeVideoAllowlist
 
@@ -1248,7 +1298,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoAllowlist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1259,9 +1309,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、[MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1270,13 +1322,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 视频订阅白名单的用户 ID 列表。
 
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
@@ -1285,12 +1337,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
+
+<a id="ariaid-title26"></a>
 
 ## SetSubscribeVideoAllowlistEx
 
@@ -1298,7 +1349,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoAllowlistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1309,9 +1360,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、[MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1320,17 +1373,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 视频订阅白名单的用户 ID 列表。
 
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -1339,12 +1392,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribevideoblocklist"></a>
+
+<a id="ariaid-title27"></a>
 
 ## SetSubscribeVideoBlocklist
 
@@ -1352,7 +1404,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoBlocklist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1363,9 +1415,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、[MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1374,13 +1428,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 视频订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
@@ -1389,12 +1443,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
+
+<a id="ariaid-title28"></a>
 
 ## SetSubscribeVideoBlocklistEx
 
@@ -1402,7 +1455,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoBlocklistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1413,9 +1466,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、[MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1424,17 +1479,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `uidList`
+### uidList
 
 视频订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
@@ -1443,12 +1498,11 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
+
+<a id="ariaid-title29"></a>
 
 ## OnAudioPublishStateChanged
 
@@ -1456,7 +1510,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioPublishStateChanged(const FString& channel, ESTREAM_PUBLISH_STATE oldState, ESTREAM_PUBLISH_STATE newState, int elapseSinceLastState);
 ```
@@ -1465,26 +1519,25 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `oldState`
+### oldState
 
 之前的发布状态，详见 [ESTREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-streampublishstate)。
 
-#### `newState`
+### newState
 
 当前的发布状态，详见 ESTREAM_PUBLISH_STATE。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
+
+<a id="ariaid-title30"></a>
 
 ## OnAudioSubscribeStateChanged
 
@@ -1492,7 +1545,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioSubscribeStateChanged(const FString& channel, int64 uid, ESTREAM_SUBSCRIBE_STATE oldState, ESTREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState);
 ```
@@ -1501,30 +1554,29 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `oldState`
+### oldState
 
 之前的订阅状态，详见 [ESTREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-streamsubscribestate)。
 
-#### `newState`
+### newState
 
 当前的订阅状态，详见 ESTREAM_SUBSCRIBE_STATE。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
+
+<a id="ariaid-title31"></a>
 
 ## OnVideoSubscribeStateChanged
 
@@ -1532,7 +1584,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoSubscribeStateChanged(const FString& channel, int64 uid, ESTREAM_SUBSCRIBE_STATE oldState, ESTREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState);
 ```
@@ -1543,25 +1595,22 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `oldState`
+### oldState
 
 之前的订阅状态，详见 [ESTREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-streamsubscribestate)。
 
-#### `newState`
+### newState
 
 当前的订阅状态，详见 ESTREAM_SUBSCRIBE_STATE。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

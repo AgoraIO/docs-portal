@@ -1,15 +1,23 @@
 ---
-title: "SimulcastStreamConfig"
-description: "视频小流的配置。"
+title: SimulcastStreamConfig
+description: 视频小流的配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_simulcaststreamconfig
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_simulcaststreamconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_simulcaststreamconfig__prototype"></a>
 
-```arkts
+```text
 export class SimulcastStreamConfig {
   public dimensions: VideoDimensions;
-  
+
   public bitrate: number = -1;
-  
+
   public framerate: number = 5;
   constructor() {
     this.dimensions = new VideoDimensions(-1, -1);
@@ -19,14 +27,16 @@ export class SimulcastStreamConfig {
 
 <a id="class_simulcaststreamconfig__parameters"></a>
 
-### `dimensions`
+##
 
-视频尺寸。 默认值为视频大流的 50%。
+### dimensions
 
-### `bitrate`
+视频尺寸。默认值为视频大流的 50%。
+
+### bitrate
 
 视频码率 (Kbps)。该参数无需设置，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。
 
-### `framerate`
+### framerate
 
 视频帧率 (fps)。默认值为 5。

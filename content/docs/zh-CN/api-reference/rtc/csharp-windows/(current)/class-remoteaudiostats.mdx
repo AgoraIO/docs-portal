@@ -1,10 +1,18 @@
 ---
-title: "RemoteAudioStats"
-description: "远端用户的音频统计数据。"
+title: RemoteAudioStats
+description: 远端用户的音频统计数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_remoteaudiostats
+  sourcePath: html-docs/rtc/Csharp/API/class_remoteaudiostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_remoteaudiostats__prototype"></a>
 
-```csharp
+```text
 public class RemoteAudioStats
     {
         public RemoteAudioStats()
@@ -70,69 +78,69 @@ public class RemoteAudioStats
 
 ## 属性
 
-### `uid`
+### uid
 
 远端用户的用户 ID。
 
-### `quality`
+### quality
 
-远端用户发送的音频流质量。 详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-qualitytype)。
+远端用户发送的音频流质量。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-qualitytype)。
 
-### `networkTransportDelay`
+### networkTransportDelay
 
 音频发送端到接收端的网络延迟（毫秒）。
 
-### `jitterBufferDelay`
+### jitterBufferDelay
 
 音频接收端到网络抖动缓冲的网络延迟（毫秒）。
 
-:::warning[注意]
-当接收端为观众且 [ClientRoleOptions](/zh-CN/api-reference/rtc/csharp-windows/class-clientroleoptions) 的 audienceLatencyLevel 为 1 时，该参数不生效。
+:::note
+注意： 当接收端为观众且 [ClientRoleOptions](/zh-CN/api-reference/rtc/csharp-windows/class-clientroleoptions) 的 audienceLatencyLevel 为 1 时，该参数不生效。
 :::
 
-### `audioLossRate`
+### audioLossRate
 
 统计周期内的远端音频流的丢帧率 (%)。
 
-### `numChannels`
+### numChannels
 
 声道数。
 
-### `receivedSampleRate`
+### receivedSampleRate
 
 统计周期内接收到的远端音频流的采样率。
 
-### `receivedBitrate`
+### receivedBitrate
 
 接收到的远端音频流在统计周期内的平均码率（Kbps）。
 
-### `totalFrozenTime`
+### totalFrozenTime
 
 远端用户在加入频道后发生音频卡顿的累计时长（毫秒）。通话过程中，音频丢帧率达到 4% 即记为一次音频卡顿。
 
-### `frozenRate`
+### frozenRate
 
 音频卡顿的累计时长占音频总有效时长的百分比 (%)。音频有效时长是指远端用户加入频道后音频未被停止发送或禁用的时长。
 
-### `totalActiveTime`
+### totalActiveTime
 
 远端用户在音频通话开始到本次回调之间的有效时长（毫秒）。
 
 有效时长是指去除了远端用户进入静音状态的总时长。
 
-### `publishDuration`
+### publishDuration
 
 远端音频流的累计发布时长（毫秒）。
 
-### `qoeQuality`
+### qoeQuality
 
-接收远端音频时，本地用户的主观体验质量。 详见 [EXPERIENCE_QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-experiencequalitytype)。
+接收远端音频时，本地用户的主观体验质量。详见 [EXPERIENCE_QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-experiencequalitytype)。
 
-### `qualityChangedReason`
+### qualityChangedReason
 
-接收远端音频时，本地用户主观体验质量较差的原因。 详见 [EXPERIENCE_POOR_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-experiencepoorreason)。
+接收远端音频时，本地用户主观体验质量较差的原因。详见 [EXPERIENCE_POOR_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-experiencepoorreason)。
 
-### `mosValue`
+### mosValue
 
 统计周期内，声网实时音频 MOS（平均主观意见分）评估方法对接收到的远端音频流的质量评分。返回值范围为 [0,500]。返回值除以 100 即可得到 MOS 分数，范围为 [0,5] 分，分数越高，音频质量越好。
 
@@ -147,6 +155,6 @@ public class RemoteAudioStats
 | 2 - 2.5 分 | 音频质量很差，偶有杂音，部分语义丢失，难以交流。 |
 | 小于 2 分 | 音频质量非常差，杂音频现，大量语义丢失，完全无法交流。 |
 
-### `e2eDelay`
+### e2eDelay
 
 端到端音频延时（毫秒），即自远端用户音频采集起，至本地用户开始播放音频的总时长。

@@ -1,23 +1,31 @@
 ---
-title: "ChannelMediaRelayState"
-description: "跨频道媒体流转发状态码。"
+title: ChannelMediaRelayState
+description: 跨频道媒体流转发状态码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/enum_channelmediarelaystate
+  sourcePath: html-docs/rtc/RN/API/enum_channelmediarelaystate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_channelmediarelaystate__parameters"></a>
 
 ## 枚举值
 
-### `RelayStateIdle`
+### RelayStateIdle
 
-0: 初始状态。在成功调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) 停止跨频道媒体流转发后， [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 会回调该状态。
+0: 初始状态。在成功调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) 停止跨频道媒体流转发后，[onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 会回调该状态。
 
-### `RelayStateConnecting`
+### RelayStateConnecting
 
 1: SDK 尝试跨频道。
 
-### `RelayStateRunning`
+### RelayStateRunning
 
 2: 源频道主播成功加入目标频道。
 
-### `RelayStateFailure`
+### RelayStateFailure
 
 3: 发生异常，详见 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 的 `code` 参数提示的错误信息。

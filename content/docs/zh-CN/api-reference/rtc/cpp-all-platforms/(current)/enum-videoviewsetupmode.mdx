@@ -1,23 +1,31 @@
 ---
-title: "VIDEO_VIEW_SETUP_MODE"
-description: "视图的设置模式。"
+title: VIDEO_VIEW_SETUP_MODE
+description: 视图的设置模式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_videoviewsetupmode
+  sourcePath: html-docs/rtc/Cpp/API/enum_videoviewsetupmode.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_videoviewsetupmode__parameters"></a>
 
 ## 枚举值
 
-### `VIDEO_VIEW_SETUP_REPLACE`
+### VIDEO_VIEW_SETUP_REPLACE
 
 （0）：（默认）清除所有已添加的视图，并替换为新视图。
 
-### `VIDEO_VIEW_SETUP_ADD`
+### VIDEO_VIEW_SETUP_ADD
 
 （1）：添加一个视图。
 
-### `VIDEO_VIEW_SETUP_REMOVE`
+### VIDEO_VIEW_SETUP_REMOVE
 
 （2）：删除一个视图。
 
-:::info[注]
-当你不再需要使用某个视图时，建议通过将 `setupMode` 设置为 `VIDEO_VIEW_SETUP_REMOVE` 来删除该视图，否则可能会导致渲染资源泄漏。
+:::note
+注： 当你不再需要使用某个视图时，建议通过将 `setupMode` 设置为 `VIDEO_VIEW_SETUP_REMOVE` 来删除该视图，否则可能会导致渲染资源泄漏。
 :::

@@ -1,10 +1,18 @@
 ---
-title: "VirtualBackgroundSource"
-description: "用于设置自定义背景类型。"
+title: VirtualBackgroundSource
+description: 用于设置自定义背景类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_virtualbackgroundsource
+  sourcePath: html-docs/rtc/Android/API/class_virtualbackgroundsource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_virtualbackgroundsource__prototype"></a>
 
-```java
+```text
 public class VirtualBackgroundSource {
   public static final int BACKGROUND_NONE = 0;
   public static final int BACKGROUND_COLOR = 1;
@@ -25,43 +33,43 @@ public class VirtualBackgroundSource {
 
 ## 属性
 
-### `backgroundSourceType`
+### backgroundSourceType
 
 自定义背景类型。
 
-- BACKGROUND_NONE (0)：仅进行背景与人物分割处理，不替换背景图像。设置该值后，可调用 startLocalVideoTranscoder 实现画中画效果。
-- BACKGROUND_COLOR (1)：（默认）背景为纯色图像。
-- BACKGROUND_IMG (2)：背景为 PNG 或 JPG 格式的图像。
-- BACKGROUND_BLUR (3)：背景为原始背景图像的模糊版本。
-- BACKGROUND_VIDEO (4)：背景为本地视频文件，格式为 MP4、AVI、MKV、FLV 或其他支持格式。
+- `BACKGROUND_NONE` (0)：仅进行背景与人物分割处理，不替换背景图像。设置该值后，可调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 实现画中画效果。
+- `BACKGROUND_COLOR` (1)：（默认）背景为纯色图像。
+- `BACKGROUND_IMG` (2)：背景为 PNG 或 JPG 格式的图像。
+- `BACKGROUND_BLUR` (3)：背景为原始背景图像的模糊版本。
+- `BACKGROUND_VIDEO` (4)：背景为本地视频文件，格式为 MP4、AVI、MKV、FLV 或其他支持格式。
 
-### `color`
+### color
 
 自定义背景图像的颜色。格式为 RGB 定义的十六进制整数，不带 #，例如浅粉色为 0xFFB6C1，默认值为 0xFFFFFF（白色）。取值范围为 [0x000000, 0xFFFFFF]。若该值无效，SDK 会将原始背景图像替换为白色背景图像。
 
-:::info[注]
-该参数仅适用于以下类型的自定义背景：
+:::note
+注： 该参数仅适用于以下类型的自定义背景：
 
-- BACKGROUND_COLOR：背景为传入颜色的纯色图像。
-- BACKGROUND_IMG：若 source 中的图像具有透明背景，该透明区域将被本参数指定的颜色填充。
+- `BACKGROUND_COLOR`：背景为传入颜色的纯色图像。
+- `BACKGROUND_IMG`：若 `source` 中的图像具有透明背景，该透明区域将被本参数指定的颜色填充。
 :::
 
-### `source`
+### source
 
 自定义背景图像的本地绝对路径。支持的格式包括 PNG、JPG、MP4、AVI、MKV 和 FLV。若路径无效，SDK 将使用原始背景图像或由 `color` 指定的纯色图像。
 
-:::info[注]
-该参数仅在自定义背景类型为 `BACKGROUND_IMG` 或 `BACKGROUND_VIDEO` 时生效。
+:::note
+注： 该参数仅在自定义背景类型为 `BACKGROUND_IMG` 或 `BACKGROUND_VIDEO` 时生效。
 :::
 
-### `blurDegree`
+### blurDegree
 
-:::info[注]
-该参数仅在背景类型为 `BACKGROUND_BLUR` 时生效。
+:::note
+注： 该参数仅在背景类型为 `BACKGROUND_BLUR` 时生效。
 :::
 
 自定义背景图像的模糊程度。
 
-- BLUR_DEGREE_LOW (1)：模糊程度低，背景几乎可见。
-- BLUR_DEGREE_MEDIUM (2)：中等模糊，难以识别背景细节。
-- BLUR_DEGREE_HIGH (3)：高强度模糊，背景无法辨认。
+- `BLUR_DEGREE_LOW` (1)：模糊程度低，背景几乎可见。
+- `BLUR_DEGREE_MEDIUM` (2)：中等模糊，难以识别背景细节。
+- `BLUR_DEGREE_HIGH` (3)：高强度模糊，背景无法辨认。

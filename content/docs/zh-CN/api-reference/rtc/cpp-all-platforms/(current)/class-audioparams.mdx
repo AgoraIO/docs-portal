@@ -1,10 +1,18 @@
 ---
-title: "AudioParams"
-description: "用于设置音频数据格式。"
+title: AudioParams
+description: 用于设置音频数据格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_audioparams
+  sourcePath: html-docs/rtc/Cpp/API/class_audioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audioparams__prototype"></a>
 
-```cpp
+```text
 struct AudioParams {
   int sample_rate;
   int channels;
@@ -17,34 +25,36 @@ struct AudioParams {
 
 你可以在以下 API 中传入 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 对象，以设置对应回调的音频数据格式：
 
-- getRecordAudioParams：设置 onRecordAudioFrame 回调的音频数据格式。
-- getPlaybackAudioParams：设置 onPlaybackAudioFrame 回调的音频数据格式。
-- getMixedAudioParams：设置 onMixedAudioFrame 回调的音频数据格式。
-- getEarMonitoringAudioParams：设置 onEarMonitoringAudioFrame 回调的音频数据格式。
+- [getRecordAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase)：设置 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase) 回调的音频数据格式。
+- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase)：设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调的音频数据格式。
+- [getMixedAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase)：设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 回调的音频数据格式。
+- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase)：设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调的音频数据格式。
 
-:::info[注]
-SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并根据采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。 采样间隔（秒）= `samplesPerCall` / (`sampleRate` × `channel`)。 请确保采样间隔 ≥ 0.01 秒。
+:::note
+注： SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔，并根据采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)、[onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)、[onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。
+采样间隔（秒）= `samplesPerCall` / (`sampleRate` × `channel`)。
+请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="class_audioparams__parameters"></a>
 
 ## 属性
 
-### `sample_rate`
+### sample_rate
 
 音频采样率（Hz），可设置为以下值之一：8000、16000（默认）、32000、44100、48000。
 
-### `channels`
+### channels
 
 音频声道数，可设置为以下值之一：
 
 - 1：单声道（默认）。
 - 2：立体声。
 
-### `mode`
+### mode
 
 音频数据的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rawaudioframeopmodetype)。
 
-### `samples_per_call`
+### samples_per_call
 
 每次调用的采样点数量，例如媒体推流时为 1024。

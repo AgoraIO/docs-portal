@@ -1,10 +1,19 @@
 ---
-title: "人脸检测"
-description: "人脸检测 API reference."
+title: 人脸检测
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_face_detection
+  sourcePath: html-docs/rtc/Unity/API/toc_face_detection.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_face_detection"></a>
 
 <a id="api_irtcengine_enablefacedetection"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableFaceDetection
 
@@ -12,7 +21,7 @@ description: "人脸检测 API reference."
 
 <a id="api_irtcengine_enablefacedetection__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableFaceDetection(bool enabled);
 ```
 
@@ -38,7 +47,7 @@ public abstract int EnableFaceDetection(bool enabled);
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启人脸检测：
 
@@ -50,12 +59,11 @@ public abstract int EnableFaceDetection(bool enabled);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
+
+<a id="ariaid-title3"></a>
 
 ## OnFacePositionChanged
 
@@ -63,7 +71,7 @@ public abstract int EnableFaceDetection(bool enabled);
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnFacePositionChanged(int imageWidth, int imageHeight, Rectangle vecRectangle, int[] vecDistance, int numFaces) {}
 ```
 
@@ -77,7 +85,9 @@ public virtual void OnFacePositionChanged(int imageWidth, int imageHeight, Recta
 
 其中，人脸距设备屏幕的距离由 SDK 通过摄像头采集的画面大小和人脸在 view 中的位置拟合计算得出。
 
-:::info[注]
+:::note
+注：
+
 - 该回调仅适用于 Android 和 iOS 平台。
 - 当检测到摄像头前的人脸消失时，该回调会立刻触发；在无人脸的状态下，该回调触发频率会降低，以节省设备耗能。
 - 当人脸距离设备屏幕过近时，SDK 不会触发该回调。
@@ -87,25 +97,22 @@ public virtual void OnFacePositionChanged(int imageWidth, int imageHeight, Recta
 
 ### 参数
 
-#### `imageWidth`
+### imageWidth
 
 摄像头采集画面的宽度 (px)。
 
-#### `imageHeight`
+### imageHeight
 
 摄像头采集画面的高度 (px)。
 
-#### `vecRectangle`
+### vecRectangle
 
 检测到的人脸信息。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。
 
-#### `vecDistance`
+### vecDistance
 
 人脸和设备屏幕之间的距离 (cm)。
 
-#### `numFaces`
+### numFaces
 
 检测的人脸数量。如果为 0，则表示没有检测到人脸。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,19 @@
 ---
-title: "视频设备管理"
-description: "视频设备管理 API reference."
+title: 视频设备管理
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_video_device
+  sourcePath: html-docs/rtc/Unity/API/toc_video_device.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_device"></a>
 
 <a id="api_irtcengine_enablemulticamera"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableMultiCamera
 
@@ -12,7 +21,7 @@ description: "视频设备管理 API reference."
 
 <a id="api_irtcengine_enablemulticamera__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableMultiCamera(bool enabled, CameraCapturerConfiguration config);
 ```
 
@@ -21,41 +30,41 @@ public abstract int EnableMultiCamera(bool enabled, CameraCapturerConfiguration 
 在已有摄像头采集视频的场景下，声网推荐你采用以下步骤实现多路摄像头采集、发布视频：
 
 1. 调用该方法开启多路摄像头采集。
-2. 调用 StartPreview [2/2] 开启本地视频预览。
-3. 调用 StartCameraCapture 并设置 sourceType 指定第二个摄像头开始采集。
-4. 调用 JoinChannelEx 并设置 publishSecondaryCameraTrack 为 true，在频道内发布第二路摄像头采集的视频流。
+2. 调用 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 开启本地视频预览。
+3. 调用 [StartCameraCapture](/zh-CN/api-reference/rtc/unity/video/camera-capture#api_irtcengine_startcameracapture) 并设置 `sourceType` 指定第二个摄像头开始采集。
+4. 调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 并设置 `publishSecondaryCameraTrack` 为 true，在频道内发布第二路摄像头采集的视频流。
 
 如果要关闭多路摄像头采集，可参考以下步骤：
 
-1. 调用 StopCameraCapture。
-2. 调用该方法并将 enabled 设置为 false。
+1. 调用 [StopCameraCapture](/zh-CN/api-reference/rtc/unity/video/camera-capture#api_irtcengine_stopcameracapture)。
+2. 调用该方法并将 `enabled` 设置为 false。
 
-该方法仅适用于 iOS。 使用多路摄像头采集视频时，请确保系统版本为 13.0 及以上。 支持多路摄像头采集的最低 iOS 设备类型如下所示：
+该方法仅适用于 iOS。使用多路摄像头采集视频时，请确保系统版本为 13.0 及以上。支持多路摄像头采集的最低 iOS 设备类型如下所示：
 
 - iPhone XR
 - iPhone XS
 - iPhone XS Max
 - iPad Pro (第三代及以上)
 
-:::info[注]
-你可以在 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 前后调用该方法开启多摄像头采集：
+:::note
+注： 你可以在 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 前后调用该方法开启多摄像头采集：
 
-- 如果在 StartPreview [2/2] 之前开启，则本地视频预览会同时出现两个摄像头采集的画面。
-- 如果在 StartPreview [2/2] 之后开启，SDK 会先停止当前的摄像头采集，然后再开启原摄像头和第二个摄像头，本地视频预览会出现短暂黑屏、然后自动恢复正常。
+- 如果在 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 之前开启，则本地视频预览会同时出现两个摄像头采集的画面。
+- 如果在 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 之后开启，SDK 会先停止当前的摄像头采集，然后再开启原摄像头和第二个摄像头，本地视频预览会出现短暂黑屏、然后自动恢复正常。
 :::
 
 <a id="api_irtcengine_enablemulticamera__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启多摄像头视频采集模式：
 
 - true：开启多摄像头采集模式，SDK 使用多路摄像头采集视频。
 - false：关闭多摄像头采集模式，SDK 仅使用单路摄像头采集视频。
 
-#### `config`
+### config
 
 第二个摄像头的采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/class-cameracapturerconfiguration)。
 
@@ -64,12 +73,11 @@ public abstract int EnableMultiCamera(bool enabled, CameraCapturerConfiguration 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideodevicemanager_enumeratevideodevices"></a>
+
+<a id="ariaid-title3"></a>
 
 ## EnumerateVideoDevices
 
@@ -77,27 +85,26 @@ public abstract int EnableMultiCamera(bool enabled, CameraCapturerConfiguration 
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
 
-```csharp
+```text
 public abstract DeviceInfo[] EnumerateVideoDevices();
 ```
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__return_values"></a>
 
 ### 返回值
 
-- 方法调用成功：返回一个 DeviceInfo 数组，其中包含系统中所有视频设备。
+- 方法调用成功：返回一个 [DeviceInfo](/zh-CN/api-reference/rtc/unity/class-videodeviceinfo) 数组，其中包含系统中所有视频设备。
 - 方法调用失败: 返回空列表。
 
-### 所属接口类
-- [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager)
-
 <a id="api_irtcengine_getcameramaxzoomfactor"></a>
+
+<a id="ariaid-title4"></a>
 
 ## GetCameraMaxZoomFactor
 
@@ -105,15 +112,17 @@ public abstract DeviceInfo[] EnumerateVideoDevices();
 
 <a id="api_irtcengine_getcameramaxzoomfactor__prototype"></a>
 
-```csharp
+```text
 public abstract float GetCameraMaxZoomFactor();
 ```
 
 <a id="api_irtcengine_getcameramaxzoomfactor__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -122,10 +131,9 @@ public abstract float GetCameraMaxZoomFactor();
 
 设备摄像头支持的最大放大倍率。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_ivideodevicemanager_getcapability"></a>
+
+<a id="ariaid-title5"></a>
 
 ## GetCapability
 
@@ -133,7 +141,7 @@ public abstract float GetCameraMaxZoomFactor();
 
 <a id="api_ivideodevicemanager_getcapability__prototype"></a>
 
-```csharp
+```text
 public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumber, out VideoFormat capability);
 ```
 
@@ -141,23 +149,23 @@ public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumb
 
 在调用 [NumberOfCapabilities](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 获取视频采集设备支持的视频格式数量后，你可以调用该方法获取指定索引号支持的具体视频帧信息。
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_ivideodevicemanager_getcapability__parameters"></a>
 
 ### 参数
 
-#### `deviceIdUTF8`
+### deviceIdUTF8
 
 视频采集设备的 ID。
 
-#### `deviceCapabilityNumber`
+### deviceCapabilityNumber
 
 视频格式的索引号。如果 [NumberOfCapabilities](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 的返回值为 i，则该参数取值范围为[0,i)。
 
-#### `capability`
+### capability
 
 输出参数。表示指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/unity/class-videoformat)。
 
@@ -166,12 +174,11 @@ public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumb
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager"></a>
+
+<a id="ariaid-title6"></a>
 
 ## GetDevice
 
@@ -179,21 +186,21 @@ public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumb
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__prototype"></a>
 
-```csharp
+```text
 public abstract int GetDevice(ref string deviceIdUTF8);
 ```
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__parameters"></a>
 
 ### 参数
 
-#### `deviceIdUTF8`
+### deviceIdUTF8
 
 输出参数。设备 ID。
 
@@ -202,20 +209,19 @@ public abstract int GetDevice(ref string deviceIdUTF8);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getvideodevicemanager"></a>
 
+<a id="ariaid-title7"></a>
+
 ## GetVideoDeviceManager
 
-获取 IVideoDeviceManager 对象，以管理视频设备。
+获取 [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager) 对象，以管理视频设备。
 
 <a id="api_irtcengine_getvideodevicemanager__prototype"></a>
 
-```csharp
+```text
 public abstract IVideoDeviceManager GetVideoDeviceManager();
 ```
 
@@ -227,10 +233,9 @@ public abstract IVideoDeviceManager GetVideoDeviceManager();
 
 一个 [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager) 对象。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported"></a>
+
+<a id="ariaid-title8"></a>
 
 ## IsCameraAutoExposureFaceModeSupported
 
@@ -238,7 +243,7 @@ public abstract IVideoDeviceManager GetVideoDeviceManager();
 
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraAutoExposureFaceModeSupported();
 ```
 
@@ -251,10 +256,9 @@ public abstract bool IsCameraAutoExposureFaceModeSupported();
 - true: 设备支持自动曝光功能。
 - false: 设备不支持自动曝光功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameraautofocusfacemodesupported"></a>
+
+<a id="ariaid-title9"></a>
 
 ## IsCameraAutoFocusFaceModeSupported
 
@@ -262,15 +266,17 @@ public abstract bool IsCameraAutoExposureFaceModeSupported();
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraAutoFocusFaceModeSupported();
 ```
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
@@ -280,10 +286,9 @@ public abstract bool IsCameraAutoFocusFaceModeSupported();
 - true: 设备支持人脸对焦功能。
 - false: 设备不支持人脸对焦功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameraexposurepositionsupported"></a>
+
+<a id="ariaid-title10"></a>
 
 ## IsCameraExposurePositionSupported
 
@@ -291,15 +296,17 @@ public abstract bool IsCameraAutoFocusFaceModeSupported();
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraExposurePositionSupported();
 ```
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
@@ -309,10 +316,9 @@ public abstract bool IsCameraExposurePositionSupported();
 - true: 设备支持手动曝光功能。
 - false: 设备不支持手动曝光功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameraexposuresupported"></a>
+
+<a id="ariaid-title11"></a>
 
 ## IsCameraExposureSupported
 
@@ -320,17 +326,19 @@ public abstract bool IsCameraExposurePositionSupported();
 
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraExposureSupported();
 ```
 
 <a id="api_irtcengine_iscameraexposuresupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
-- 建议你在调用 SetCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 SetCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
+- 建议你在调用 [SetCameraExposureFactor](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameraexposurefactor) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
@@ -338,12 +346,11 @@ public abstract bool IsCameraExposureSupported();
 ### 返回值
 
 - true：方法调用成功。
-- false：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- false：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_iscamerafacedetectsupported"></a>
+
+<a id="ariaid-title12"></a>
 
 ## IsCameraFaceDetectSupported
 
@@ -351,15 +358,17 @@ public abstract bool IsCameraExposureSupported();
 
 <a id="api_irtcengine_iscamerafacedetectsupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraFaceDetectSupported();
 ```
 
 <a id="api_irtcengine_iscamerafacedetectsupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafacedetectsupported__return_values"></a>
@@ -369,10 +378,9 @@ public abstract bool IsCameraFaceDetectSupported();
 - true: 设备摄像头支持人脸检测。
 - false: 设备摄像头不支持人脸检测。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscamerafocussupported"></a>
+
+<a id="ariaid-title13"></a>
 
 ## IsCameraFocusSupported
 
@@ -380,15 +388,17 @@ public abstract bool IsCameraFaceDetectSupported();
 
 <a id="api_irtcengine_iscamerafocussupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraFocusSupported();
 ```
 
 <a id="api_irtcengine_iscamerafocussupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
@@ -398,10 +408,9 @@ public abstract bool IsCameraFocusSupported();
 - true: 设备支持手动对焦功能。
 - false: 设备不支持手动对焦功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameratorchsupported"></a>
+
+<a id="ariaid-title14"></a>
 
 ## IsCameraTorchSupported
 
@@ -409,17 +418,19 @@ public abstract bool IsCameraFocusSupported();
 
 <a id="api_irtcengine_iscameratorchsupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraTorchSupported();
 ```
 
 <a id="api_irtcengine_iscameratorchsupported__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
-- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 false。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 SwitchCamera 切换摄像头，再使用该方法。
-- 在系统版本 15 的 iPad 上，即使 IsCameraTorchSupported 返回 true，也可能因系统问题导致你无法通过 SetCameraTorchOn 成功开启闪光灯。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 之后调用。
+- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 `false`。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 [SwitchCamera](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_switchcamera) 切换摄像头，再使用该方法。
+- 在系统版本 15 的 iPad 上，即使 [IsCameraTorchSupported](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_iscameratorchsupported) 返回 true，也可能因系统问题导致你无法通过 [SetCameraTorchOn](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameratorchon) 成功开启闪光灯。
 :::
 
 <a id="api_irtcengine_iscameratorchsupported__return_values"></a>
@@ -429,10 +440,9 @@ public abstract bool IsCameraTorchSupported();
 - true: 设备支持闪光灯常开。
 - false: 设备不支持闪光灯常开。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscamerazoomsupported"></a>
+
+<a id="ariaid-title15"></a>
 
 ## IsCameraZoomSupported
 
@@ -440,14 +450,14 @@ public abstract bool IsCameraTorchSupported();
 
 <a id="api_irtcengine_iscamerazoomsupported__prototype"></a>
 
-```csharp
+```text
 public abstract bool IsCameraZoomSupported();
 ```
 
 <a id="api_irtcengine_iscamerazoomsupported__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 Android 和 iOS。
+:::note
+注： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_iscamerazoomsupported__timing"></a>
@@ -463,10 +473,9 @@ public abstract bool IsCameraZoomSupported();
 - true: 设备支持相机缩放功能。
 - false: 设备不支持相机缩放功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_ivideodevicemanager_numberofcapabilities"></a>
+
+<a id="ariaid-title16"></a>
 
 ## NumberOfCapabilities
 
@@ -474,23 +483,24 @@ public abstract bool IsCameraZoomSupported();
 
 <a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
 
-```csharp
+```text
 public abstract int NumberOfCapabilities(string deviceIdUTF8);
 ```
 
 <a id="api_ivideodevicemanager_numberofcapabilities__detailed_desc"></a>
 
-视频采集设备可能支持多种视频格式，每一种格式都支持不同的视频帧宽度、视频帧高度、帧率组合。 你可以通过调用该方法，获取指定的视频采集设备可支持多少种视频格式，然后调用 [GetCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_getcapability) 获取指定视频格式下的具体视频帧信息。
+视频采集设备可能支持多种视频格式，每一种格式都支持不同的视频帧宽度、视频帧高度、帧率组合。
+你可以通过调用该方法，获取指定的视频采集设备可支持多少种视频格式，然后调用 [GetCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_getcapability) 获取指定视频格式下的具体视频帧信息。
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_ivideodevicemanager_numberofcapabilities__parameters"></a>
 
 ### 参数
 
-#### `deviceIdUTF8`
+### deviceIdUTF8
 
 视频采集设备的 ID。
 
@@ -499,12 +509,11 @@ public abstract int NumberOfCapabilities(string deviceIdUTF8);
 ### 返回值
 
 - &gt; 0: 方法调用成功。返回该设备支持的视频格式数量。例如：如果指定的摄像头支持 10 种不同的视频格式，则返回值为 10。
-- ≤ 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager)
+- ≤ 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_querycamerafocallengthcapability"></a>
+
+<a id="ariaid-title17"></a>
 
 ## QueryCameraFocalLengthCapability
 
@@ -512,7 +521,7 @@ public abstract int NumberOfCapabilities(string deviceIdUTF8);
 
 <a id="api_irtcengine_querycamerafocallengthcapability__prototype"></a>
 
-```csharp
+```text
 public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focalLengthInfos, ref int size);
 ```
 
@@ -520,19 +529,19 @@ public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focal
 
 如需开启摄像头广角、超广角拍摄模式，建议你先调用该方法查询设备是否具备相应的焦距能力，再根据查询结果调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 调整摄像头的焦距配置，以达到最佳的摄像头采集效果。
 
-:::info[注]
-该方法仅适用于 Android 和 iOS。
+:::note
+注： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_querycamerafocallengthcapability__parameters"></a>
 
 ### 参数
 
-#### `focalLengthInfos`
+### focalLengthInfos
 
 输出参数。方法执行后，输出包含摄像头焦距信息的 [FocalLengthInfo](/zh-CN/api-reference/rtc/unity/class-focallengthinfo) 对象数组。
 
-#### `size`
+### size
 
 输出参数。方法执行后，输出查询到的焦距信息数量。
 
@@ -541,12 +550,11 @@ public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focal
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_querycodeccapability"></a>
+
+<a id="ariaid-title18"></a>
 
 ## QueryCodecCapability
 
@@ -554,7 +562,7 @@ public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focal
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```csharp
+```text
 public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int size);
 ```
 
@@ -564,31 +572,30 @@ public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int s
 
 ### 参数
 
-#### `codecInfo`
+### codecInfo
 
 输入和输出参数，表示 SDK 的视频编码能力数组。详见 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo)。
 
-- 输入值：用户执行该方法时定义的 CodecCapInfo，表示待查询的视频编解码能力。
-- 输出值：方法执行完毕后输出的 CodecCapInfo，表示 SDK 实际支持的视频编解码能力。
+- 输入值：用户执行该方法时定义的 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo)，表示待查询的视频编解码能力。
+- 输出值：方法执行完毕后输出的 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo)，表示 SDK 实际支持的视频编解码能力。
 
-#### `size`
+### size
 
 输入和输出参数，表示 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo) 数组的大小。
 
-- 输入值：用户执行该方法时定义的 CodecCapInfo 的大小。
-- 输出值：方法执行完毕后输出的 CodecCapInfo 的大小。
+- 输入值：用户执行该方法时定义的 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo) 的大小。
+- 输出值：方法执行完毕后输出的 [CodecCapInfo](/zh-CN/api-reference/rtc/unity/class-codeccapinfo) 的大小。
 
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled"></a>
+
+<a id="ariaid-title19"></a>
 
 ## SetCameraAutoExposureFaceModeEnabled
 
@@ -596,7 +603,7 @@ public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int s
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraAutoExposureFaceModeEnabled(bool enabled);
 ```
 
@@ -606,7 +613,7 @@ public abstract int SetCameraAutoExposureFaceModeEnabled(bool enabled);
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启自动曝光：
 
@@ -618,12 +625,11 @@ public abstract int SetCameraAutoExposureFaceModeEnabled(bool enabled);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled"></a>
+
+<a id="ariaid-title20"></a>
 
 ## SetCameraAutoFocusFaceModeEnabled
 
@@ -631,7 +637,7 @@ public abstract int SetCameraAutoExposureFaceModeEnabled(bool enabled);
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraAutoFocusFaceModeEnabled(bool enabled);
 ```
 
@@ -639,8 +645,8 @@ public abstract int SetCameraAutoFocusFaceModeEnabled(bool enabled);
 
 SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人脸自动对焦。如需自行设置人脸自动对焦，请调用该方法。
 
-:::info[注]
-该方法仅适用于 Android 和 iOS。
+:::note
+注： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__timing"></a>
@@ -653,7 +659,7 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启人脸对焦：
 
@@ -665,12 +671,11 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameracapturerconfiguration"></a>
+
+<a id="ariaid-title21"></a>
 
 ## SetCameraCapturerConfiguration
 
@@ -678,14 +683,15 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraCapturerConfiguration(CameraCapturerConfiguration config);
 ```
 
 <a id="api_irtcengine_setcameracapturerconfiguration__detailed_desc"></a>
 
-:::info[注]
-在调整摄像头的焦距配置前，建议先调用 [QueryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 查询设备支持的焦距能力，再根据查询结果进行配置。 由于部分 Android 设备的限制，即使根据 [QueryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 的查询结果设置焦距类型，设置结果也可能不生效。
+:::note
+注： 在调整摄像头的焦距配置前，建议先调用 [QueryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 查询设备支持的焦距能力，再根据查询结果进行配置。
+由于部分 Android 设备的限制，即使根据 [QueryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 的查询结果设置焦距类型，设置结果也可能不生效。
 :::
 
 <a id="api_irtcengine_setcameracapturerconfiguration__timing"></a>
@@ -698,12 +704,12 @@ public abstract int SetCameraCapturerConfiguration(CameraCapturerConfiguration c
 
 ### 参数
 
-#### `config`
+### config
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/class-cameracapturerconfiguration)。
 
-:::info[注]
-在该方法中，不需要设置 `deviceId` 参数。
+:::note
+注： 在该方法中，不需要设置 `deviceId` 参数。
 :::
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
@@ -711,12 +717,11 @@ public abstract int SetCameraCapturerConfiguration(CameraCapturerConfiguration c
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameradeviceorientation"></a>
+
+<a id="ariaid-title22"></a>
 
 ## SetCameraDeviceOrientation
 
@@ -724,15 +729,17 @@ public abstract int SetCameraCapturerConfiguration(CameraCapturerConfiguration c
 
 <a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORIENTATION orientation);
 ```
 
 <a id="api_irtcengine_setcameradeviceorientation__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Windows。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
 - 当视频采集设备不带重力感应功能时，你可以调用该方法手动调整采集到的视频画面的旋转角度。
 :::
 
@@ -740,7 +747,7 @@ public abstract int SetCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORI
 
 ### 参数
 
-#### `type`
+### type
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
@@ -749,12 +756,11 @@ public abstract int SetCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORI
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameraexposurefactor"></a>
+
+<a id="ariaid-title23"></a>
 
 ## SetCameraExposureFactor
 
@@ -762,7 +768,7 @@ public abstract int SetCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORI
 
 <a id="api_irtcengine_setcameraexposurefactor__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraExposureFactor(float factor);
 ```
 
@@ -770,32 +776,34 @@ public abstract int SetCameraExposureFactor(float factor);
 
 当拍摄环境光线不足或过于明亮时，会影响视频采集的画质。为了获得更好的视频效果，你可以使用该方法调节摄像头的曝光系数。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 建议你在调用该方法前，先调用 IsCameraExposureSupported 查询当前摄像头是否支持调节曝光系数。
-- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 SetCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
+- 建议你在调用该方法前，先调用 [IsCameraExposureSupported](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_iscameraexposuresupported) 查询当前摄像头是否支持调节曝光系数。
+- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
 
 ### 参数
 
-#### `factor`
+### factor
 
-摄像头的曝光系数。默认值为 0，表示使用摄像头的默认曝光量。取值越大，曝光量越大。视频图像过曝时，你可以降低曝光系数；视频图像欠曝且暗部细节丢失时，你可以增加曝光系数。如果你指定的曝光系数超出设备支持的范围，SDK 会自动调节为设备实际支持的范围。 在 Android 平台上，取值范围为 [-20.0,20.0]；在 iOS 平台上，取值范围为 [-8.0,8.0]。
+摄像头的曝光系数。默认值为 0，表示使用摄像头的默认曝光量。取值越大，曝光量越大。视频图像过曝时，你可以降低曝光系数；视频图像欠曝且暗部细节丢失时，你可以增加曝光系数。如果你指定的曝光系数超出设备支持的范围，SDK 会自动调节为设备实际支持的范围。
+在 Android 平台上，取值范围为 [-20.0,20.0]；在 iOS 平台上，取值范围为 [-8.0,8.0]。
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameraexposureposition"></a>
+
+<a id="ariaid-title24"></a>
 
 ## SetCameraExposurePosition
 
@@ -803,27 +811,29 @@ public abstract int SetCameraExposureFactor(float factor);
 
 <a id="api_irtcengine_setcameraexposureposition__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraExposurePosition(float positionXinView, float positionYinView);
 ```
 
 <a id="api_irtcengine_setcameraexposureposition__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 OnCameraExposureAreaChanged 回调。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
+- 成功调用该方法后，本地会触发 [OnCameraExposureAreaChanged](/zh-CN/api-reference/rtc/unity/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
 
 ### 参数
 
-#### `positionXinView`
+### positionXinView
 
 触摸点相对于视图的横坐标。
 
-#### `positionYinView`
+### positionYinView
 
 触摸点相对于视图的纵坐标。
 
@@ -832,12 +842,11 @@ public abstract int SetCameraExposurePosition(float positionXinView, float posit
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview"></a>
+
+<a id="ariaid-title25"></a>
 
 ## SetCameraFocusPositionInPreview
 
@@ -845,27 +854,29 @@ public abstract int SetCameraExposurePosition(float positionXinView, float posit
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraFocusPositionInPreview(float positionX, float positionY);
 ```
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 OnCameraFocusAreaChanged 回调。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
+- 成功调用该方法后，本地会触发 [OnCameraFocusAreaChanged](/zh-CN/api-reference/rtc/unity/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
 
 ### 参数
 
-#### `positionX`
+### positionX
 
 触摸点相对于视图的横坐标。
 
-#### `positionY`
+### positionY
 
 触摸点相对于视图的纵坐标。
 
@@ -874,12 +885,11 @@ public abstract int SetCameraFocusPositionInPreview(float positionX, float posit
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcameratorchon"></a>
+
+<a id="ariaid-title26"></a>
 
 ## SetCameraTorchOn
 
@@ -887,22 +897,24 @@ public abstract int SetCameraFocusPositionInPreview(float positionX, float posit
 
 <a id="api_irtcengine_setcameratorchon__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraTorchOn(bool isOn);
 ```
 
 <a id="api_irtcengine_setcameratorchon__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
 :::
 
 <a id="api_irtcengine_setcameratorchon__parameters"></a>
 
 ### 参数
 
-#### `isOn`
+### isOn
 
 是否打开闪光灯：
 
@@ -914,12 +926,11 @@ public abstract int SetCameraTorchOn(bool isOn);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcamerazoomfactor"></a>
+
+<a id="ariaid-title27"></a>
 
 ## SetCameraZoomFactor
 
@@ -927,7 +938,7 @@ public abstract int SetCameraTorchOn(bool isOn);
 
 <a id="api_irtcengine_setcamerazoomfactor__prototype"></a>
 
-```csharp
+```text
 public abstract int SetCameraZoomFactor(float factor);
 ```
 
@@ -935,16 +946,18 @@ public abstract int SetCameraZoomFactor(float factor);
 
 部分 iOS 设备的后置摄像头为多个摄像头组成的融合镜头，如双摄（广角和超广角）或三摄（广角、超广角和长焦），对于这种具备超广角能力的融合镜头，你可以调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 将 `cameraFocalLengthType` 设置为 `CAMERA_FOCAL_LENGTH_DEFAULT` (0)（标准镜头），然后调用该方法将摄像头缩放比例设置为小于 1.0 的数值，从而实现超广角的拍摄效果。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1) 后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
 
 ### 参数
 
-#### `factor`
+### factor
 
 摄像头放大比例。对不支持超广角的设备，取值范围从 1.0 到最大放大比例；对支持超广角的设备，取值范围从 0.5 到最大放大比例。你可以通过 [GetCameraMaxZoomFactor](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大放大比例。
 
@@ -952,13 +965,12 @@ public abstract int SetCameraZoomFactor(float factor);
 
 ### 返回值
 
-- 方法调用成功: 返回设置的 factor 值。
+- 方法调用成功: 返回设置的 `factor` 值。
 - 方法调用失败: 返回值 &lt; 0。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager"></a>
+
+<a id="ariaid-title28"></a>
 
 ## SetDevice
 
@@ -966,13 +978,15 @@ public abstract int SetCameraZoomFactor(float factor);
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__prototype"></a>
 
-```csharp
+```text
 public abstract int SetDevice(string deviceIdUTF8);
 ```
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 插拔设备不会改变设备 ID。
 - 该方法仅适用于 Windows 和 macOS。
 :::
@@ -981,7 +995,7 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 ### 参数
 
-#### `deviceIdUTF8`
+### deviceIdUTF8
 
 设备 ID。可通过调用 [EnumerateVideoDevices](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 方法获取。
 
@@ -990,12 +1004,11 @@ public abstract int SetDevice(string deviceIdUTF8);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_switchcamera"></a>
+
+<a id="ariaid-title29"></a>
 
 ## SwitchCamera
 
@@ -1003,7 +1016,7 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 <a id="api_irtcengine_switchcamera__prototype"></a>
 
-```csharp
+```text
 public abstract int SwitchCamera();
 ```
 
@@ -1011,8 +1024,9 @@ public abstract int SwitchCamera();
 
 你可以调用该方法在 App 运行期间基于可用摄像头的实际情况来动态切换摄像头，而无需重启视频流或重新配置视频源。
 
-:::info[注]
-该方法仅适用于 Android 和 iOS。 该方法仅会对第一路摄像头采集的视频流进行摄像头切换操作，即调用 [StartCameraCapture](/zh-CN/api-reference/rtc/unity/video/camera-capture#api_irtcengine_startcameracapture) 时设置为 `VIDEO_SOURCE_CAMERA` (0) 的视频源。
+:::note
+注： 该方法仅适用于 Android 和 iOS。
+该方法仅会对第一路摄像头采集的视频流进行摄像头切换操作，即调用 [StartCameraCapture](/zh-CN/api-reference/rtc/unity/video/camera-capture#api_irtcengine_startcameracapture) 时设置为 `VIDEO_SOURCE_CAMERA` (0) 的视频源。
 :::
 
 <a id="api_irtcengine_switchcamera__timing"></a>
@@ -1026,12 +1040,11 @@ public abstract int SwitchCamera();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged"></a>
+
+<a id="ariaid-title30"></a>
 
 ## OnCameraExposureAreaChanged
 
@@ -1039,7 +1052,7 @@ public abstract int SwitchCamera();
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnCameraExposureAreaChanged(int x, int y, int width, int height)
 ```
 
@@ -1049,26 +1062,25 @@ public virtual void OnCameraExposureAreaChanged(int x, int y, int width, int hei
 
 ### 参数
 
-#### `x`
+### x
 
 发生改变的曝光区域的 x 坐标。
 
-#### `y`
+### y
 
 发生改变的曝光区域的 y 坐标。
 
-#### `width`
+### width
 
 发生改变的曝光区域的宽度。
 
-#### `height`
+### height
 
 发生改变的曝光区域的高度。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged"></a>
+
+<a id="ariaid-title31"></a>
 
 ## OnCameraFocusAreaChanged
 
@@ -1076,7 +1088,7 @@ public virtual void OnCameraExposureAreaChanged(int x, int y, int width, int hei
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnCameraFocusAreaChanged(int x, int y, int width, int height)
 ```
 
@@ -1084,34 +1096,33 @@ public virtual void OnCameraFocusAreaChanged(int x, int y, int width, int height
 
 该回调是由本地用户调用 [SetCameraFocusPositionInPreview](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) 方法改变对焦位置触发的。
 
-:::info[注]
-该回调仅适用于 Android 和 iOS。
+:::note
+注： 该回调仅适用于 Android 和 iOS。
 :::
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__parameters"></a>
 
 ### 参数
 
-#### `x`
+### x
 
 发生改变的对焦区域的 x 坐标。
 
-#### `y`
+### y
 
 发生改变的对焦区域的 y 坐标。
 
-#### `width`
+### width
 
 发生改变的对焦区域的宽度。
 
-#### `height`
+### height
 
 发生改变的对焦区域的高度。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_oncameraready"></a>
+
+<a id="ariaid-title32"></a>
 
 ## OnCameraReady
 
@@ -1119,22 +1130,21 @@ public virtual void OnCameraFocusAreaChanged(int x, int y, int width, int height
 
 <a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
 
-```csharp
+```text
 public virtual void OnCameraReady()
 ```
 
 <a id="callback_irtcengineeventhandler_oncameraready__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 弃用: 请改用 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 中的 LOCAL_VIDEO_STREAM_STATE_CAPTURING(1)。
 
 该回调提示已成功打开摄像头，可以开始捕获视频。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged"></a>
+
+<a id="ariaid-title33"></a>
 
 ## OnVideoDeviceStateChanged
 
@@ -1142,7 +1152,7 @@ public virtual void OnCameraReady()
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, int deviceState)
 ```
 
@@ -1150,25 +1160,22 @@ public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, i
 
 该回调提示系统视频设备状态发生改变，比如被拔出或移除。如果设备已使用外接摄像头采集，外接摄像头被拔开后，视频会中断。
 
-:::info[注]
-该回调仅适用于 Windows 和 macOS。
+:::note
+注： 该回调仅适用于 Windows 和 macOS。
 :::
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__parameters"></a>
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 设备 ID。
 
-#### `deviceType`
+### deviceType
 
 设备类型。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediadevicetype)。
 
-#### `deviceState`
+### deviceState
 
-设备状态。详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediadevicestatetype)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+设备状态。详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediadevicestatetype) 。

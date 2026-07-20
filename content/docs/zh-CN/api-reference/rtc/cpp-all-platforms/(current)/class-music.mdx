@@ -1,10 +1,18 @@
 ---
-title: "Music"
-description: "描述音乐资源的详细信息。"
+title: Music
+description: 描述音乐资源的详细信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_music
+  sourcePath: html-docs/rtc/Cpp/API/class_music.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_music__prototype"></a>
 
-```cpp
+```text
 struct Music {
     int64_t songCode;
     const char* name;
@@ -27,31 +35,31 @@ struct Music {
 
 ## 属性
 
-### `songCode`
+### songCode
 
 音乐资源的 ID，用于标识一个音乐条目。
 
-### `name`
+### name
 
 音乐资源的名称。
 
-### `singer`
+### singer
 
 歌手名称。
 
-### `poster`
+### poster
 
 音乐海报的下载链接。
 
-### `releaseTime`
+### releaseTime
 
 音乐资源的发布时间。
 
-### `durationS`
+### durationS
 
 音乐资源的总时长（单位为秒）。
 
-### `type`
+### type
 
 音乐资源的类型：
 
@@ -60,36 +68,36 @@ struct Music {
 - 3：单轨道，仅包含原唱。
 - 4：多轨音频。
 
-### `pitchType`
+### pitchType
 
 歌曲是否支持音高评分：
 
 - 1：支持音高评分。
 - 2：不支持音高评分。
 
-### `lyricCount`
+### lyricCount
 
 该歌曲可用的歌词数量。
 
-### `lyricList`
+### lyricList
 
 支持的歌词格式：
 
 - 0：XML 格式。
 - 1：LRC 格式。
 
-### `climaxSegmentCount`
+### climaxSegmentCount
 
 高潮片段的数量。
 
-### `climaxSegmentList`
+### climaxSegmentList
 
 高潮片段列表。详见 [ClimaxSegment](/zh-CN/api-reference/rtc/cpp-all-platforms/class-climaxsegment)。
 
-### `mvPropertyCount`
+### mvPropertyCount
 
 MV 的数量。如果该值大于 0，表示当前音乐存在 MV 资源。
 
-### `mvPropertyList`
+### mvPropertyList
 
 MV 属性列表。

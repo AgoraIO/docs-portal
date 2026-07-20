@@ -34,6 +34,16 @@ export const API_CENTER_WARNING_DEFINITIONS = {
     explanation:
       'Two distinct generated pages attempted to write different content to one target.',
   },
+  'generated-fragment-alias': {
+    severity: 'info',
+    explanation:
+      'A stable alias was added so a legacy generated-page fragment remains reachable.',
+  },
+  'generated-fragment-normalized': {
+    severity: 'info',
+    explanation:
+      'A generated-page fragment was rewritten to the unique stable anchor exposed by its local target.',
+  },
   'lossy-table': {
     severity: 'warning',
     explanation:

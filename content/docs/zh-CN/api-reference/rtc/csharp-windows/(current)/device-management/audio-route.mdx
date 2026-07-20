@@ -1,10 +1,24 @@
 ---
-title: "音频路由"
-description: "音频路由 API reference."
+title: 音频路由
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_audio_route
+  sourcePath: html-docs/rtc/Csharp/API/toc_audio_route.html
+  generator: oxygen
+  warnings:
+    - code: unresolved-fragment
+      severity: warning
+      message: >-
+        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
+        links.
 ---
+
 <a id="toc_audio_route"></a>
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
+
+<a id="ariaid-title2"></a>
 
 ## SetRouteInCommunicationMode
 
@@ -12,13 +26,13 @@ description: "音频路由 API reference."
 
 <a id="api_irtcengine_setrouteincommunicationmode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRouteInCommunicationMode(int route);
 ```
 
 <a id="api_irtcengine_setrouteincommunicationmode__detailed_desc"></a>
 
-该方法用于在通话音量模式（[MODE_IN_COMMUNICATION](https://developer.android.google.cn/reference/kotlin/android/media/AudioManager?hl=en#mode_in_communication) ）下，将音频路由从蓝牙耳机切换为听筒、有线耳机或扬声器。
+该方法用于在通话音量模式（[MODE_IN_COMMUNICATION](https://developer.android.google.cn/reference/kotlin/android/media/AudioManager?hl=en#mode_in_communication)）下，将音频路由从蓝牙耳机切换为听筒、有线耳机或扬声器。
 
 <a id="api_irtcengine_setrouteincommunicationmode__timing"></a>
 
@@ -34,13 +48,13 @@ public abstract int SetRouteInCommunicationMode(int route);
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [OnAudioRoutingChanged](/zh-CN/api-reference/rtc/csharp-windows/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) 回调，报告当前的音频路由。
+成功调用该方法后，SDK 会触发 [OnAudioRoutingChanged](/zh-CN/api-reference/rtc/csharp-windows/device-management/audio-route) 回调，报告当前的音频路由。
 
 <a id="api_irtcengine_setrouteincommunicationmode__parameters"></a>
 
 ### 参数
 
-#### `route`
+### route
 
 期望使用的音频路由:
 

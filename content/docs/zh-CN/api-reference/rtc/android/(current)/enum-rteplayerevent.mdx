@@ -1,10 +1,18 @@
 ---
-title: "PlayerEvent"
-description: "媒体播放器事件类型。"
+title: PlayerEvent
+description: 媒体播放器事件类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_rteplayerevent
+  sourcePath: html-docs/rtc/Android/API/enum_rteplayerevent.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerevent__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -12,86 +20,86 @@ description: "媒体播放器事件类型。"
 
 ## 枚举值
 
-### `SEEK_BEGIN`
+### SEEK_BEGIN
 
 （0）：开始跳转到指定播放位置。
 
-### `SEEK_COMPLETE`
+### SEEK_COMPLETE
 
 （1）：跳转到指定播放位置完成。
 
-### `SEEK_ERROR`
+### SEEK_ERROR
 
 （2）：跳转到指定播放位置时发生错误。
 
-### `BUFFER_LOW`
+### BUFFER_LOW
 
 （3）：当前缓冲数据不足，无法支持播放。
 
-### `BUFFER_RECOVER`
+### BUFFER_RECOVER
 
 （4）：当前缓冲数据刚好足以支持播放。
 
-### `FREEZE_START`
+### FREEZE_START
 
 （5）：音频或视频发生卡顿。
 
-### `FREEZE_STOP`
+### FREEZE_STOP
 
 （6）：音频或视频卡顿结束。
 
-### `ONE_LOOP_PLAYBACK_COMPLETED`
+### ONE_LOOP_PLAYBACK_COMPLETED
 
 （7）：单次循环播放完成。
 
-### `AUTHENTICATION_WILL_EXPIRE`
+### AUTHENTICATION_WILL_EXPIRE
 
 （8）：Token 即将过期。收到该事件后，需要重新生成新的 Token，并通过 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 更新 URL。
 
-### `ABR_FALLBACK_TO_AUDIO_ONLY_LAYER`
+### ABR_FALLBACK_TO_AUDIO_ONLY_LAYER
 
 （9）：由于网络问题，从接收音视频流降级为仅接收远端音频流。
 
-### `ABR_RECOVER_FROM_AUDIO_ONLY_LAYER`
+### ABR_RECOVER_FROM_AUDIO_ONLY_LAYER
 
 （10）：网络恢复后，从仅接收远端音频流恢复为接收音视频流。
 
-### `SWITCH_BEGIN`
+### SWITCH_BEGIN
 
 （11）：开始切换到新 URL。
 
-### `SWITCH_COMPLETE`
+### SWITCH_COMPLETE
 
 （12）：切换到新 URL 完成。
 
-### `SWITCH_ERROR`
+### SWITCH_ERROR
 
 （13）：切换到新 URL 时发生错误。
 
-### `FIRST_DISPLAYED`
+### FIRST_DISPLAYED
 
 （14）：首帧视频已显示。
 
-### `REACH_CACHE_FILE_MAX_COUNT`
+### REACH_CACHE_FILE_MAX_COUNT
 
 （15）：缓存文件数量达到上限。
 
-### `REACH_CACHE_FILE_MAX_SIZE`
+### REACH_CACHE_FILE_MAX_SIZE
 
 （16）：缓存文件大小达到上限。
 
-### `TRY_OPEN_START`
+### TRY_OPEN_START
 
 （17）：开始尝试打开新 URL。
 
-### `TRY_OPEN_SUCCEED`
+### TRY_OPEN_SUCCEED
 
 （18）：成功打开新 URL。
 
-### `TRY_OPEN_FAILED`
+### TRY_OPEN_FAILED
 
 （19）：打开新 URL 失败。
 
-### `AUDIO_TRACK_CHANGED`
+### AUDIO_TRACK_CHANGED
 
 （20）：当前音轨发生变化。

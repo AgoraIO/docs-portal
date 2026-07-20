@@ -1,10 +1,18 @@
 ---
-title: "AgoraSegmentationProperty"
-description: "背景图像处理属性。"
+title: AgoraSegmentationProperty
+description: 背景图像处理属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_segmentationproperty
+  sourcePath: html-docs/rtc/macOS/API/class_segmentationproperty.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_segmentationproperty__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraSegmentationProperty: NSObject
 @property(nonatomic, assign) SegModelType modelType;
 @property(nonatomic, assign) float greenCapacity;
@@ -16,18 +24,18 @@ __attribute__((visibility("default"))) @interface AgoraSegmentationProperty: NSO
 
 ## 属性
 
-### `modelType`
+### modelType
 
 用于背景处理的算法类型。详见 [SegModelType](/zh-CN/api-reference/rtc/macos/enum-segmodeltype)。
 
-### `greenCapacity`
+### greenCapacity
 
 识别图像中背景纯色的精度范围。取值范围为 [0,1]，默认值为 0.5。值越大，可识别的纯色色阶范围越广。当该值过大时，可能会将人物边缘或人物区域内的纯色误识别为背景。声网建议你根据实际效果动态调整该参数的值。
 
-:::info[注]
-仅当 `modelType` 设置为 `SegModelAgoraGreen` 时该参数才生效。
+:::note
+注： 仅当 `modelType` 设置为 `SegModelAgoraGreen` 时该参数才生效。
 :::
 
-### `screenColorType`
+### screenColorType
 
 屏幕颜色类型。详见 [ScreenColorType](/zh-CN/api-reference/rtc/macos/enum-screencolortype)。

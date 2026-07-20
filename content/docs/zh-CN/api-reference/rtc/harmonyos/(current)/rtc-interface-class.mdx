@@ -1,12 +1,20 @@
 ---
-title: "API 列表"
-description: "本页列出 HarmonyOS 所有的接口类以及其中包含的 API。"
+title: API 列表
+description: 本页列出 HarmonyOS 所有的接口类以及其中包含的 API。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/rtc_interface_class
+  sourcePath: html-docs/rtc/HarmonyOS/API/rtc_interface_class.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="rtc_interface_class"></a>
 
-本页列出 HarmonyOS 所有的接口类以及其中包含的 API。
-
 <a id="class_irtcengine"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RtcEngine
 
@@ -16,109 +24,9 @@ RTC SDK 的基础接口类，实现实时音视频的主要功能。
 
 RtcEngine 提供了 App 调用的主要方法。
 
-### 相关参考
-- [adjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
-- [adjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume)
-- [adjustAudioMixingVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume)
-- [adjustPlaybackSignalVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustplaybacksignalvolume)
-- [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume)
-- [adjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)
-- [createCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
-- [createDataStream](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengine_createdatastream2)
-- [createMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-initialize#api_irtcengine_createmediaplayer)
-- [createMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/recording#api_irtcengine_createmediarecorder)
-- [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
-- [disableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_disableaudio)
-- [disableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_disablevideo)
-- [enableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudio)
-- [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudiovolumeindication)
-- [enableContentInspect](/zh-CN/api-reference/rtc/harmonyos/video/video-prenpro/snapshot#api_irtcengine_enablecontentinspect)
-- [enableEncryption](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_enableencryption)
-- [enableInEarMonitoring](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enableinearmonitoring2)
-- [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio)
-- [enableLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablelocalvideo)
-- [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablevideo)
-- [enableVirtualBackground](/zh-CN/api-reference/rtc/harmonyos/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2)
-- [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)
-- [getAudioMixingDuration](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_getaudiomixingduration)
-- [getAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume)
-- [getAudioMixingPublishVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_getaudiomixingpublishvolume)
-- [getCallId](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_getcallid)
-- [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_getcameramaxzoomfactor)
-- [getCurrentMonotonicTimeInMs](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_getcurrentmonotonictimeinms)
-- [getErrorDescription](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_geterrordescription)
-- [getNativeHandle](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_getnativehandle)
-- [getSdkVersion](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_getversion)
-- [isCameraAutoFocusFaceModeSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscameraautofocusfacemodesupported)
-- [isCameraExposurePositionSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscameraexposurepositionsupported)
-- [isCameraExposureSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscameraexposuresupported)
-- [isCameraFaceDetectSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscamerafacedetectsupported)
-- [isCameraFocusSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscamerafocussupported)
-- [isCameraZoomSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscamerazoomsupported)
-- [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-route#api_irtcengine_isspeakerphoneenabled)
-- [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel)
-- [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2)
-- [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2)
-- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)
-- [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremotevideostreams)
-- [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)
-- [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream)
-- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)
-- [muteRemoteVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremotevideostream)
-- [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
-- [pauseAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_pauseaudiomixing)
-- [pushExternalVideoFrameById](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe3)
-- [pushExternalVideoFrame](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe4)
-- [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release)
-- [renewToken](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken)
-- [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
-- [resumeAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_resumeaudiomixing)
-- [sendStreamMessage](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengine_sendstreammessage)
-- [setAudioMixingPosition](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_setaudiomixingposition)
-- [setAudioMixingPlaybackSpeed](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed)
-- [setAudioProfile](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioprofile2)
-- [setAudioScenario](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioscenario)
-- [setCameraAutoFocusFaceModeEnabled](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcameraautofocusfacemodeenabled)
-- [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcameracapturerconfiguration)
-- [setChannelProfile](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_setchannelprofile)
-- [setClientRole](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_setclientrole2)
-- [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)
-- [setEnableSpeakerphone](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-route#api_irtcengine_setenablespeakerphone)
-- [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource)
-- [setInEarMonitoringVolume](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_setinearmonitoringvolume)
-- [setLocalRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setlocalrendermode2)
-- [setParameters](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_setparameters)
-- [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setremotedefaultvideostreamtype)
-- [setRemoteRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setremoterendermode2)
-- [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype)
-- [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setuplocalvideo)
-- [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo)
-- [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_setvideoencoderconfiguration)
-- [startAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_startaudiomixing2)
-- [startAudioRecordingWithConfiguration](/zh-CN/api-reference/rtc/harmonyos/recording#api_irtcengine_startaudiorecording3)
-- [startLastmileProbeTest](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_startlastmileprobetest)
-- [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder)
-- [startOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay)
-- [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2)
-- [startCameraCapture](/zh-CN/api-reference/rtc/harmonyos/video/camera-capture#api_irtcengine_startcameracapture)
-- [startRtmpStreamWithoutTranscoding](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding)
-- [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding)
-- [startScreenCapture](/zh-CN/api-reference/rtc/harmonyos/video/screencapture#api_irtcengine_startscreencapture)
-- [stopAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_stopaudiomixing)
-- [stopAudioRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_irtcengine_stopaudiorecording)
-- [stopChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
-- [stopLastmileProbeTest](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_stoplastmileprobetest)
-- [stopPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_stoppreview2)
-- [stopCameraCapture](/zh-CN/api-reference/rtc/harmonyos/video/camera-capture#api_irtcengine_stopcameracapture)
-- [stopRtmpStream](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream)
-- [stopScreenCapture](/zh-CN/api-reference/rtc/harmonyos/video/screencapture#api_irtcengine_stopscreencapture)
-- [switchCamera](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_switchcamera)
-- [takeSnapshot](/zh-CN/api-reference/rtc/harmonyos/video/video-prenpro/snapshot#api_irtcengine_takesnapshot)
-- [updateChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_updatechannelmediaoptions)
-- [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration)
-- [updateRtmpTranscoding](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding)
-
 <a id="class_irtcengineex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## RtcEngineEx
 
@@ -128,28 +36,9 @@ RtcEngine 提供了 App 调用的主要方法。
 
 继承自 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)。
 
-### 相关参考
-- [createDataStreamEx](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengineex_createdatastreamex2)
-- [enableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex)
-- [getCallIdEx](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengineex_getcallidex)
-- [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex)
-- [leaveChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_leavechannelex2)
-- [muteAllRemoteAudioStreamsEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex)
-- [muteAllRemoteVideoStreamsEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex)
-- [muteLocalAudioStreamEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex)
-- [muteLocalVideoStreamEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_mutelocalvideostreamex)
-- [muteRemoteAudioStreamEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_muteremoteaudiostreamex)
-- [muteRemoteVideoStreamEx](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengineex_muteremotevideostreamex)
-- [setDualStreamModeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengineex_setdualstreammodeex)
-- [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengineex_setremotevideostreamtypeex)
-- [setRemoteVoicePositionEx](/zh-CN/api-reference/rtc/harmonyos/api-irtcengineex-setremotevoicepositionex)
-- [setupRemoteVideoEx](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengineex_setupremotevideoex)
-- [setVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex)
-- [startOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex)
-- [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_updatechannelmediaoptionsex)
-- [adjustUserPlaybackSignalVolumeEx](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex)
-
 <a id="class_irtcengineeventhandler"></a>
+
+<a id="ariaid-title4"></a>
 
 ## IRtcEngineEventHandler
 
@@ -159,168 +48,65 @@ RtcEngine 提供了 App 调用的主要方法。
 
 该接口类的所有方法都有缺省（空）实现， App 可以根据需要只继承关心的事件。
 
-:::warning[注意]
-- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 sendMessage ），否则可能影响 SDK 的运行。
+:::note
+注意：
+
+- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 `sendMessage`），否则可能影响 SDK 的运行。
 - SDK 不再捕获开发者在 IRtcEngineEventHandler 类回调中自行实现的代码逻辑中的异常。你需要自行处理该异常，否则异常出现时可能引起 App 崩溃。
 :::
 
-### 相关参考
-- [onAudioEffectFinished](/zh-CN/api-reference/rtc/harmonyos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished)
-- [onAudioMixingPositionChanged](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged)
-- [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)
-- [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)
-- [onAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged)
-- [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication)
-- [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged)
-- [onCameraFocusPointChanged](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged)
-- [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [onClientRoleChanged](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onclientrolechanged)
-- [onClientRoleChangeFailed](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onclientrolechangefailed)
-- [onConnectionLost](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionlost)
-- [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged)
-- [onEncryptionError](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onencryptionerror)
-- [onError](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onerror)
-- [onFirstLocalVideoFrame](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe)
-- [onFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe)
-- [onJoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)
-- [onLastmileProbeResult](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onlastmileproberesult)
-- [onLastmileQuality](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onlastmilequality)
-- [onLeaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onleavechannel)
-- [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
-- [onLocalAudioStats](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats)
-- [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
-- [onLocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats)
-- [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror)
-- [onNetworkQuality](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onnetworkquality)
-- [onPermissionError](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onpermissionerror)
-- [onRejoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess)
-- [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
-- [onRemoteAudioStats](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)
-- [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)
-- [onRemoteVideoStats](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)
-- [onRequestToken](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrequesttoken)
-- [onRtcStats](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrtcstats)
-- [onRtmpStreamingEvent](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent)
-- [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged)
-- [onSnapshotTaken](/zh-CN/api-reference/rtc/harmonyos/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken)
-- [onStreamMessage](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#callback_irtcengineeventhandler_onstreammessage)
-- [onStreamMessageError](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror)
-- [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
-- [onTranscodingUpdated](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated)
-- [onUserEnableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo)
-- [onUserJoined](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserjoined)
-- [onUserMuteAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio)
-- [onUserMuteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onusermutevideo)
-- [onUserOffline](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuseroffline)
-- [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged)
-- [onVideoSizeChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)
-- [onVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged)
-
 <a id="class_imediaplayer"></a>
+
+<a id="ariaid-title5"></a>
 
 ## IMediaPlayer
 
-### 相关参考
-- [adjustPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
-- [adjustPublishSignalVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
-- [getDuration](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
-- [getMediaPlayerId](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid)
-- [getMute](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmute)
-- [getPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayoutvolume)
-- [getPlayPosition](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayposition)
-- [getPlaySrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplaysrc)
-- [getPublishSignalVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getpublishsignalvolume)
-- [getState](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstate)
-- [getStreamCount](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount)
-- [getStreamInfo](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo)
-- [mute](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_mute)
-- [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open)
-- [openWithMediaSource](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource)
-- [pause](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_pause)
-- [play](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)
-- [playPreloadedSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)
-- [preloadSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc)
-- [resume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume)
-- [seek](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)
-- [selectAudioTrack](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack)
-- [selectMultiAudioTrack](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack)
-- [setAudioPitch](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiopitch)
-- [setAudioDualMonoMode](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiodualmonomode)
-- [setLoopCount](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setloopcount)
-- [setPlaybackSpeed](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplaybackspeed)
-- [setPlayerOption](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption)
-- [setPlayerOptionString](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2)
-- [setRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_imediaplayer_setrendermode)
-- [setView](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview)
-- [stop](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)
-- [switchSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc)
-- [unloadSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc)
+提供媒体播放器功能的类，支持多实例。
 
 <a id="class_imediaplayersourceobserver"></a>
 
+<a id="ariaid-title6"></a>
+
 ## IMediaPlayerObserver
 
-### 相关参考
-- [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication)
-- [onMetaData](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
-- [onPlayBufferUpdated](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
-- [onPlayerCacheStats](/zh-CN/api-reference/rtc/harmonyos/callback-imediaplayersourceobserver-onplayercachestats)
-- [onPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent)
-- [onPlayerInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated)
-- [onPlayerPlaybackStats](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats)
-- [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)
-- [onPlayerSrcInfoChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersrcinfochanged)
-- [onPositionChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged)
-- [onPreloadEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent)
+提供媒体播放器的回调。
 
 <a id="class_imediarecorder"></a>
 
+<a id="ariaid-title7"></a>
+
 ## AgoraMediaRecorder
 
-### 相关参考
-- [setMediaRecorderObserver](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_setmediarecorderobserver)
-- [startRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_startrecording)
-- [stopRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_stoprecording)
+提供本地及远端音视频录制功能的类。
 
 <a id="class_imediarecorderobserver"></a>
 
+<a id="ariaid-title8"></a>
+
 ## IMediaRecorderCallback
 
-### 相关参考
-- [onRecorderStateChanged](/zh-CN/api-reference/rtc/harmonyos/recording#callback_imediarecorderobserver_onrecorderstatechanged)
-- [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/recording#callback_imediarecorderobserver_onrecorderinfoupdated)
+包含音视频录制的事件。
 
 <a id="class_imusiccontentcentereventhandler"></a>
 
+<a id="ariaid-title9"></a>
+
 ## IMusicContentCenterEventHandler
+
+[IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcentereventhandler) 接口类，用于 SDK 向客户端发送音乐内容中心事件通知。
 
 <a id="class_imusicplayer"></a>
 
+<a id="ariaid-title10"></a>
+
 ## IAgoraMusicPlayer
 
-### 相关参考
-- [setPlayMode](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicplayer_setplaymode)
+继承自 [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer) 类，提供音乐播放器的相关方法。
 
 <a id="class_imusiccontentcenter"></a>
 
+<a id="ariaid-title11"></a>
+
 ## IAgoraMusicContentCenter
 
-### 相关参考
-- [initialize](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_initialize)
-- [renewToken](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_renewtoken)
-- [release](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_release)
-- [removeCache](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_removecache)
-- [registerEventHandler](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_registereventhandler)
-- [unregisterEventHandler](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_unregistereventhandler)
-- [createMusicPlayer](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_createmusicplayer)
-- [getCaches](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getcaches)
-- [getInternalSongCode](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getinternalsongcode)
-- [getMusicCharts](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccharts)
-- [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2)
-- [getSongSimpleInfo](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getsongsimpleinfo)
-- [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2)
-- [preload](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicontentcenter_preload2)
-- [isPreloaded](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_ispreloaded)
-- [getLyric](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getlyric)
-- [destroy](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_destroy)
-- [destroyMusicPlayer](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_destroymusicplayer)
+[IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter) 接口类提供音乐内容中心的相关方法。

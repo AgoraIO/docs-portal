@@ -1,129 +1,140 @@
 ---
-title: "AudioEffectPreset"
-description: "预设的音效选项。"
+title: AudioEffectPreset
+description: 预设的音效选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/enum_audioeffectpreset
+  sourcePath: html-docs/rtc/Flutter/API/enum_audioeffectpreset.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audioeffectpreset__detailed_desc"></a>
 
-[setAudioProfile](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#api_irtcengine_setaudioprofile) `profile` 预设音效 `profile`
+[setAudioProfile](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#api_irtcengine_setaudioprofile)
+`profile`
+预设音效
+`profile`
 
 - roomAcousticsVirtualStereo
 - roomAcoustics3dVoice
 - roomAcousticsVirtualSurroundSound
 
-`audioProfileMusicHighQualityStereo` 或 `audioProfileMusicStandardStereo` 其他预设音效（除 `audioEffectOff` 以外） `audioProfileMusicHighQuality` 或 `audioProfileMusicHighQualityStereo`
+`audioProfileMusicHighQualityStereo` 或 `audioProfileMusicStandardStereo`其他预设音效（除 `audioEffectOff` 以外）`audioProfileMusicHighQuality` 或 `audioProfileMusicHighQualityStereo`
 
 <a id="enum_audioeffectpreset__parameters"></a>
 
 ## 枚举值
 
-### `audioEffectOff`
+### audioEffectOff
 
 原声，即关闭人声音效。
 
-### `roomAcousticsKtv`
+### roomAcousticsKtv
 
 KTV。
 
-### `roomAcousticsVocalConcert`
+### roomAcousticsVocalConcert
 
 演唱会。
 
-### `roomAcousticsStudio`
+### roomAcousticsStudio
 
 录音棚。
 
-### `roomAcousticsPhonograph`
+### roomAcousticsPhonograph
 
 留声机。
 
-### `roomAcousticsVirtualStereo`
+### roomAcousticsVirtualStereo
 
 虚拟立体声，即 SDK 将单声道的音频渲染出双声道的音效。
 
-### `roomAcousticsSpacial`
+### roomAcousticsSpacial
 
 空旷。
 
-### `roomAcousticsEthereal`
+### roomAcousticsEthereal
 
 空灵。
 
-### `roomAcousticsVirtualSurroundSound`
+### roomAcousticsVirtualSurroundSound
 
 虚拟环绕声，即 SDK 在双声道的基础上产生仿真的环绕声场，从而营造出具有环绕感的音效。
 
-:::info[注]
-启用虚拟环绕声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::note
+注： 启用虚拟环绕声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 :::
 
-### `roomAcousticsChorus`
+### roomAcousticsChorus
 
 合唱。声网推荐你在合唱场景下使用，使人声更具空间立体感。
 
-### `roomAcoustics3dVoice`
+### roomAcoustics3dVoice
 
 3D 人声，即 SDK 将音频渲染出在用户周围环绕的效果。环绕周期默认为 10 秒。设置该音效后，你还可以调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改环绕周期。
 
-:::info[注]
-启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::note
+注： 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 :::
 
-### `voiceChangerEffectUncle`
+### voiceChangerEffectUncle
 
 大叔。
 
-:::info[注]
-建议用于处理男声，否则无法达到预期效果。
+:::note
+注： 建议用于处理男声，否则无法达到预期效果。
 :::
 
-### `voiceChangerEffectOldman`
+### voiceChangerEffectOldman
 
 老年男性。
 
-:::info[注]
-建议用于处理男声，否则无法达到预期效果。
+:::note
+注： 建议用于处理男声，否则无法达到预期效果。
 :::
 
-### `voiceChangerEffectBoy`
+### voiceChangerEffectBoy
 
 男孩。
 
-:::info[注]
-建议用于处理男声，否则无法达到预期效果。
+:::note
+注： 建议用于处理男声，否则无法达到预期效果。
 :::
 
-### `voiceChangerEffectSister`
+### voiceChangerEffectSister
 
 少女。
 
-:::info[注]
-建议用于处理女声，否则无法达到预期效果。
+:::note
+注： 建议用于处理女声，否则无法达到预期效果。
 :::
 
-### `voiceChangerEffectGirl`
+### voiceChangerEffectGirl
 
 女孩。
 
-:::info[注]
-建议用于处理女声，否则无法达到预期效果。
+:::note
+注： 建议用于处理女声，否则无法达到预期效果。
 :::
 
-### `voiceChangerEffectPigking`
+### voiceChangerEffectPigking
 
 猪八戒。
 
-### `voiceChangerEffectHulk`
+### voiceChangerEffectHulk
 
 绿巨人。
 
-### `styleTransformationRnb`
+### styleTransformationRnb
 
 R&B。
 
-### `styleTransformationPopular`
+### styleTransformationPopular
 
 流行。
 
-### `pitchCorrection`
+### pitchCorrection
 
 电音，即 SDK 以主音音高为 C 的自然大调为基础修正音频的实际音高。设置该音效后，你还可以调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整修音的基础调式和主音音高。

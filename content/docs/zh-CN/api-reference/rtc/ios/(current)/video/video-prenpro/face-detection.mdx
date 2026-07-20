@@ -1,10 +1,19 @@
 ---
-title: "人脸检测"
-description: "人脸检测 API reference."
+title: 人脸检测
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_face_detection
+  sourcePath: html-docs/rtc/iOS/API/toc_face_detection.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_face_detection"></a>
 
 <a id="api_irtcengine_enablefacedetection"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableFaceDetection:
 
@@ -12,7 +21,7 @@ description: "人脸检测 API reference."
 
 <a id="api_irtcengine_enablefacedetection__prototype"></a>
 
-```objectivec
+```text
 - (int)enableFaceDetection:(BOOL)enable  NS_SWIFT_NAME(enableFaceDetection(_:));
 ```
 
@@ -34,7 +43,7 @@ description: "人脸检测 API reference."
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否启用本地用户的人脸检测功能：
 
@@ -46,12 +55,11 @@ description: "人脸检测 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
+
+<a id="ariaid-title3"></a>
 
 ## rtcEngine:facePositionDidChangeWidth:previewHeight:faces:
 
@@ -59,13 +67,13 @@ description: "人脸检测 API reference."
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine facePositionDidChangeWidth:(int)width previewHeight:(int)height faces:(NSArray<AgoraFacePositionInfo*>* _Nullable)faces  NS_SWIFT_NAME(rtcEngine(_:facePositionDidChangeWidth:previewHeight:faces:));
 ```
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v3.0.1 版本新增。
 
@@ -77,7 +85,9 @@ description: "人脸检测 API reference."
 
 该距离值是基于本地视频尺寸和人脸位置的拟合计算结果。
 
-:::info[注]
+:::note
+注：
+
 - 当检测到摄像头前的人脸消失时，会立即触发该回调。当未检测到人脸时，为降低本地设备的功耗，该回调的触发频率会降低。
 - 当人脸靠近屏幕时，SDK 会停止触发该回调。
 :::
@@ -92,21 +102,18 @@ description: "人脸检测 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-#### `width`
+### width
 
 本地摄像头采集的视频图像的宽度（像素）。
 
-#### `height`
+### height
 
 本地摄像头采集的视频图像的高度（像素）。
 
-#### `faces`
+### faces
 
 检测到的人脸信息，详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo)。该回调中返回的 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo) 数组数量取决于检测到的人脸数量。数组长度可能为 0，表示摄像头前未检测到人脸。
-
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

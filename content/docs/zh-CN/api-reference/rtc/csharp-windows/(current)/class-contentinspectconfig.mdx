@@ -1,10 +1,18 @@
 ---
-title: "ContentInspectConfig"
-description: "本地截图上传配置。"
+title: ContentInspectConfig
+description: 本地截图上传配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_contentinspectconfig
+  sourcePath: html-docs/rtc/Csharp/API/class_contentinspectconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_contentinspectconfig__prototype"></a>
 
-```csharp
+```text
 public class ContentInspectConfig
                 {
                     public string extraInfo;
@@ -26,22 +34,22 @@ public class ContentInspectConfig
 
 ## 参数
 
-### `extraInfo`
+### extraInfo
 
 附加信息，最大长度为 1024 字节。
 
 SDK 会将附加信息和截图一起上传至声网服务器；截图完成后，声网服务器会将附加信息随回调通知一起发送给你的服务器。
 
-### `modules`
+### modules
 
 功能模块。详见 [ContentInspectModule](/zh-CN/api-reference/rtc/csharp-windows/class-contentinspectmodule)。
 
-最多支持配置 32 个 ContentInspectModule 实例， MAX_CONTENT_INSPECT_MODULE_COUNT 的取值范围为 [1,32] 中的整数。
+最多支持配置 32 个 ContentInspectModule 实例，MAX_CONTENT_INSPECT_MODULE_COUNT 的取值范围为 [1,32] 中的整数。
 
-:::warning[注意]
-一个功能模块最多只能配置一个实例。目前仅支持截图上传功能。
+:::note
+注意： 一个功能模块最多只能配置一个实例。目前仅支持截图上传功能。
 :::
 
-### `moduleCount`
+### moduleCount
 
 功能模块数，即配置的 ContentInspectModule 实例的数量，必须与 modules 中配置的实例个数一致。最大值为 32。

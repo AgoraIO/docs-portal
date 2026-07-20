@@ -1,10 +1,19 @@
 ---
-title: "媒体资源打开"
-description: "媒体资源打开 API reference."
+title: 媒体资源打开
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_mediaplayer_open
+  sourcePath: html-docs/rtc/Cpp/API/toc_mediaplayer_open.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_open"></a>
 
 <a id="api_imediaplayer_open"></a>
+
+<a id="ariaid-title2"></a>
 
 ## open
 
@@ -12,14 +21,14 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_open__prototype"></a>
 
-```cpp
+```text
 virtual int open(const char* url, int64_t startPos) = 0;
 ```
 
 <a id="api_imediaplayer_open__detailed_desc"></a>
 
-:::info[注]
-[open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 为异步调用。
+:::note
+注： [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 为异步调用。
 :::
 
 <a id="api_imediaplayer_open__timing"></a>
@@ -38,11 +47,11 @@ virtual int open(const char* url, int64_t startPos) = 0;
 
 ### 参数
 
-#### `url`
+### url
 
 媒体文件路径，支持本地路径和在线路径。
 
-#### `startPos`
+### startPos
 
 播放起始位置，单位为毫秒。默认值为 0。
 
@@ -51,12 +60,11 @@ virtual int open(const char* url, int64_t startPos) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_openwithmediasource"></a>
+
+<a id="ariaid-title3"></a>
 
 ## openWithMediaSource
 
@@ -64,7 +72,7 @@ virtual int open(const char* url, int64_t startPos) = 0;
 
 <a id="api_imediaplayer_openwithmediasource__prototype"></a>
 
-```cpp
+```text
 virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 ```
 
@@ -72,8 +80,8 @@ virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 
 该方法支持打开来自不同来源的媒体文件，包括自定义媒体源，并允许你配置播放场景。
 
-:::info[注]
-[openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法前，已收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `PLAYER_STATE_OPEN_COMPLETED`。
+:::note
+注： [openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法前，已收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `PLAYER_STATE_OPEN_COMPLETED`。
 :::
 
 <a id="api_imediaplayer_openwithmediasource__timing"></a>
@@ -86,7 +94,7 @@ virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 
 ### 参数
 
-#### `source`
+### source
 
 媒体资源。详见 [MediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediasource)。
 
@@ -95,12 +103,11 @@ virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_preloadsrc"></a>
+
+<a id="ariaid-title4"></a>
 
 ## preloadSrc
 
@@ -108,7 +115,7 @@ virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 
 <a id="api_imediaplayer_preloadsrc__prototype"></a>
 
-```cpp
+```text
 virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 ```
 
@@ -116,8 +123,10 @@ virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 
 你可以调用该方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用该方法。调用该方法后，如果在 [onPreloadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调中收到 `PLAYER_PRELOAD_EVENT_COMPLETE` 事件，表示预加载成功；如果收到 `PLAYER_PRELOAD_EVENT_ERROR` 事件，表示预加载失败。预加载成功后，如果你希望播放该媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
 
-:::info[注]
-- 在调用该方法之前，请确保已成功调用 open 或 openWithMediaSource 打开媒体资源。
+:::note
+注：
+
+- 在调用该方法之前，请确保已成功调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 声网不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -125,16 +134,16 @@ virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL。
 
-#### `startPos`
+### startPos
 
 媒体资源预加载到播放列表后开始播放的位置（单位：毫秒）。
 
-:::info[注]
-预加载直播流时，请将该参数设为 0。
+:::note
+注： 预加载直播流时，请将该参数设为 0。
 :::
 
 <a id="api_imediaplayer_preloadsrc__return_values"></a>
@@ -142,12 +151,11 @@ virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_switchsrc"></a>
+
+<a id="ariaid-title5"></a>
 
 ## switchSrc
 
@@ -155,7 +163,7 @@ virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 
 <a id="api_imediaplayer_switchsrc__prototype"></a>
 
-```cpp
+```text
 virtual int switchSrc(const char* src, bool syncPts = true) = 0;
 ```
 
@@ -168,11 +176,14 @@ virtual int switchSrc(const char* src, bool syncPts = true) = 0;
 
 调用该方法后，如果收到 [onPlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_COMPLETE` 事件，表示切换成功；如果切换失败，SDK 会自动重试 3 次，若仍失败，将通过 [onPlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_ERROR` 事件，表示切换失败。
 
-:::info[注]
-- 请确保在调用 open 方法之后再调用该方法。
+:::note
+注：
+
+- 请确保在调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法之后再调用该方法。
 - 为确保正常播放，调用该方法时请注意以下事项：
+
   - 播放暂停时不要调用该方法；
-  - 切换过程中不要调用 seek 方法；
+  - 切换过程中不要调用 [seek](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法；
   - 切换前请确保当前播放位置未超过目标媒体资源的总时长。
 :::
 
@@ -180,11 +191,11 @@ virtual int switchSrc(const char* src, bool syncPts = true) = 0;
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL 地址。
 
-#### `syncPts`
+### syncPts
 
 是否在切换前后同步播放位置（毫秒）：
 
@@ -196,12 +207,11 @@ virtual int switchSrc(const char* src, bool syncPts = true) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unloadsrc"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unloadSrc
 
@@ -209,21 +219,21 @@ virtual int switchSrc(const char* src, bool syncPts = true) = 0;
 
 <a id="api_imediaplayer_unloadsrc__prototype"></a>
 
-```cpp
+```text
 virtual int unloadSrc(const char* src) = 0;
 ```
 
 <a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
 
-:::info[注]
-[unloadSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
+:::note
+注： [unloadSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
 :::
 
 <a id="api_imediaplayer_unloadsrc__parameters"></a>
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL。
 
@@ -232,7 +242,4 @@ virtual int unloadSrc(const char* src) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

@@ -1,10 +1,19 @@
 ---
-title: "视频渲染"
-description: "视频渲染 API reference."
+title: 视频渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_video_rendering
+  sourcePath: html-docs/rtc/Csharp/API/toc_video_rendering.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableInstantMediaRendering
 
@@ -12,7 +21,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableInstantMediaRendering();
 ```
 
@@ -45,13 +54,13 @@ public abstract int EnableInstantMediaRendering();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 <a id="api_irtcengine_setlocalrendermode"></a>
+
+<a id="ariaid-title3"></a>
 
 ## SetLocalRenderMode [1/2]
 
@@ -59,7 +68,7 @@ public abstract int EnableInstantMediaRendering();
 
 <a id="api_irtcengine_setlocalrendermode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 ```
 
@@ -67,7 +76,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 
 ### 详情
 
-#### `弃用：`
+### 弃用：
 
 该方法已废弃，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setlocalrendermode2) 作为替代。
 
@@ -77,7 +86,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 
 ### 参数
 
-#### `renderMode`
+### renderMode
 
 本地视图显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rendermodetype)。
 
@@ -86,9 +95,11 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## SetLocalRenderMode [2/2]
 
@@ -96,7 +107,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```csharp
+```text
 public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -116,20 +127,20 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 
 ### 参数
 
-#### `renderMode`
+### renderMode
 
 本地视图显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rendermodetype)。
 
-#### `mirrorMode`
+### mirrorMode
 
 本地视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videomirrormodetype)。
 
-:::warning[注意]
-该参数仅对 SDK 自渲染生效，如果你想要设置视图镜像，可以将 GameObject 的 scaleX 设为 `-1` 或 `+1`。
+:::note
+注意： 该参数仅对 SDK 自渲染生效，如果你想要设置视图镜像，可以将 GameObject 的 scaleX 设为 `-1` 或 `+1`。
 :::
 
-:::warning[注意]
-如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+:::note
+注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
@@ -137,12 +148,11 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
+
+<a id="ariaid-title5"></a>
 
 ## SetLocalVideoMirrorMode
 
@@ -150,7 +160,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -158,7 +168,7 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 
 ### 详情
 
-#### `弃用:`
+### 弃用:
 
 该方法已废弃。
 
@@ -166,7 +176,7 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 
 ### 参数
 
-#### `mirrorMode`
+### mirrorMode
 
 本地视频镜像模式。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videomirrormodetype)。
 
@@ -175,12 +185,11 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremoterendermode2"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SetRemoteRenderMode
 
@@ -188,7 +197,7 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -198,7 +207,9 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::warning[注意]
+:::note
+注意：
+
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -206,15 +217,15 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `renderMode`
+### renderMode
 
 远端用户视图的渲染模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rendermodetype)。
 
-#### `mirrorMode`
+### mirrorMode
 
 远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videomirrormodetype)。
 
@@ -223,12 +234,11 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## SetRemoteRenderModeEx
 
@@ -236,7 +246,7 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRemoteRenderModeEx(uint uid, RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode, RtcConnection connection);
 ```
 
@@ -246,7 +256,13 @@ public abstract int SetRemoteRenderModeEx(uint uid, RENDER_MODE_TYPE renderMode,
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::warning[注意]
+<a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
+
+:::note
+注意：
+
+<a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
+
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -254,19 +270,19 @@ public abstract int SetRemoteRenderModeEx(uint uid, RENDER_MODE_TYPE renderMode,
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `renderMode`
+### renderMode
 
 远端视图显示模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rendermodetype)。
 
-#### `mirrorMode`
+### mirrorMode
 
 远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videomirrormodetype)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -274,9 +290,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 ### 返回值
 
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setrendermode"></a>
+
+<a id="ariaid-title8"></a>
 
 ## SetRenderMode
 
@@ -284,7 +302,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 ```
 
@@ -292,7 +310,7 @@ public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 
 ### 参数
 
-#### `renderMode`
+### renderMode
 
 播放器视图的渲染模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rendermodetype)。
 
@@ -301,12 +319,11 @@ public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setuplocalvideo"></a>
+
+<a id="ariaid-title9"></a>
 
 ## SetupLocalVideo
 
@@ -314,7 +331,7 @@ public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```csharp
+```text
 public abstract int SetupLocalVideo(VideoCanvas canvas);
 ```
 
@@ -324,9 +341,11 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::warning[注意]
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 SetLocalRenderMode [2/2] 方法。
+:::note
+注意：
+
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -353,7 +372,7 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 ### 参数
 
-#### `canvas`
+### canvas
 
 本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/csharp-windows/class-videocanvas)。
 
@@ -362,9 +381,11 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setupremotevideo"></a>
+
+<a id="ariaid-title10"></a>
 
 ## SetupRemoteVideo
 
@@ -372,7 +393,7 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```csharp
+```text
 public abstract int SetupRemoteVideo(VideoCanvas canvas);
 ```
 
@@ -388,17 +409,19 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::warning[注意]
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderMode 方法。
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 OnFirstRemoteVideoDecoded 回调时再绑定远端用户视图。
+:::note
+注意：
+
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
 
 ### 参数
 
-#### `canvas`
+### canvas
 
 远端视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/csharp-windows/class-videocanvas)。
 
@@ -407,9 +430,11 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
+
+<a id="ariaid-title11"></a>
 
 ## SetupRemoteVideoEx
 
@@ -417,7 +442,7 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```csharp
+```text
 public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connection);
 ```
 
@@ -435,20 +460,22 @@ public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connect
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::warning[注意]
-- 该方法需要在 JoinChannelEx 之后调用。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderModeEx 方法。
+:::note
+注意：
+
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 之后调用。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
 
 ### 参数
 
-#### `canvas`
+### canvas
 
 视频画布信息。详见 [VideoCanvas](/zh-CN/api-reference/rtc/csharp-windows/class-videocanvas)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -457,9 +484,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
+
+<a id="ariaid-title12"></a>
 
 ## StartMediaRenderingTracing
 
@@ -467,7 +496,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```csharp
+```text
 public abstract int StartMediaRenderingTracing();
 ```
 
@@ -475,10 +504,16 @@ public abstract int StartMediaRenderingTracing();
 
 ### 详情
 
+<a id="api_irtcengine_startmediarenderingtracing__desc"></a>
+
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
-:::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+<a id="api_irtcengine_startmediarenderingtracing__note"></a>
+
+:::note
+注：
+
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 
@@ -493,13 +528,13 @@ public abstract int StartMediaRenderingTracing();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
+
+<a id="ariaid-title13"></a>
 
 ## StartMediaRenderingTracingEx
 
@@ -507,7 +542,7 @@ public abstract int StartMediaRenderingTracing();
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```csharp
+```text
 public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 ```
 
@@ -517,8 +552,10 @@ public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
-:::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+:::note
+注：
+
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 
@@ -532,7 +569,7 @@ public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -541,12 +578,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
+
+<a id="ariaid-title14"></a>
 
 ## OnVideoRenderingTracingResult
 
@@ -554,7 +590,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```csharp
+```text
 public virtual void OnVideoRenderingTracingResult(RtcConnection connection, uint uid, MEDIA_TRACE_EVENT currentEvent, VideoRenderingTracingInfo tracingInfo) { }
 ```
 
@@ -566,21 +602,18 @@ public virtual void OnVideoRenderingTracingResult(RtcConnection connection, uint
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `currentEvent`
+### currentEvent
 
 当前视频帧渲染事件。详见 [MEDIA_TRACE_EVENT](/zh-CN/api-reference/rtc/csharp-windows/enum-mediatraceevent)。
 
-#### `tracingInfo`
+### tracingInfo
 
 视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/csharp-windows/class-videorenderingtracinginfo)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

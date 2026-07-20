@@ -1,10 +1,19 @@
 ---
-title: "URL 拉流播放"
-description: "URL 拉流播放 API reference."
+title: URL 拉流播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_rte_player
+  sourcePath: html-docs/rtc/Cpp/API/toc_rte_player.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_rte_player"></a>
 
 <a id="api_rteplayerinfo_abrsubscriptionlayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AbrSubscriptionLayer
 
@@ -12,18 +21,18 @@ description: "URL 拉流播放 API reference."
 
 <a id="api_rteplayerinfo_abrsubscriptionlayer__prototype"></a>
 
-```cpp
+```text
 AbrSubscriptionLayer AbrSubscriptionLayer() const
 ```
 
 <a id="api_rteplayerinfo_abrsubscriptionlayer__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-仅当你打开 RTE URL 时，该字段才有效。
+:::note
+注： 仅当你打开 RTE URL 时，该字段才有效。
 :::
 
 <a id="api_rteplayerinfo_abrsubscriptionlayer__return_values"></a>
@@ -32,10 +41,9 @@ AbrSubscriptionLayer AbrSubscriptionLayer() const
 
 方法调用成功，返回当前订阅的视频层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer)。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_canvas_addview"></a>
+
+<a id="ariaid-title3"></a>
 
 ## AddView
 
@@ -43,20 +51,20 @@ AbrSubscriptionLayer AbrSubscriptionLayer() const
 
 <a id="api_canvas_addview__prototype"></a>
 
-```cpp
+```text
 bool AddView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 ```
 
 <a id="api_canvas_addview__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
 当你需要使用播放器播放视频时，可以调用该方法向视频渲染器添加一个视图，以显示视频内容。
 
-:::info[注]
-当前仅支持一个视图。
+:::note
+注： 当前仅支持一个视图。
 :::
 
 <a id="api_canvas_addview__scenario"></a>
@@ -75,15 +83,15 @@ bool AddView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 
 ### 参数
 
-#### `view`
+### view
 
 `HWND` 窗口句柄。
 
-#### `config`
+### config
 
 `View` 对象的设置，当前传入 NULL。
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -96,10 +104,9 @@ bool AddView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 - true：视图添加成功。
 - false：添加视图失败。
 
-### 所属接口类
-- [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)
-
 <a id="api_rteplayerinfo_audiobitspersample"></a>
+
+<a id="ariaid-title4"></a>
 
 ## AudioBitsPerSample
 
@@ -107,18 +114,18 @@ bool AddView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 
 <a id="api_rteplayerinfo_audiobitspersample__prototype"></a>
 
-```cpp
+```text
 int AudioBitsPerSample() const
 ```
 
 <a id="api_rteplayerinfo_audiobitspersample__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-仅在打开非 `RTE` URL 时该字段有效。
+:::note
+注： 仅在打开非 `RTE` URL 时该字段有效。
 :::
 
 <a id="api_rteplayerinfo_audiobitspersample__return_values"></a>
@@ -127,10 +134,9 @@ int AudioBitsPerSample() const
 
 方法调用成功，返回每个音频采样的位数，单位为 bit。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rteplayerinfo_audiochannels"></a>
+
+<a id="ariaid-title5"></a>
 
 ## AudioChannels
 
@@ -138,13 +144,13 @@ int AudioBitsPerSample() const
 
 <a id="api_rteplayerinfo_audiochannels__prototype"></a>
 
-```cpp
+```text
 int AudioChannels() const
 ```
 
 <a id="api_rteplayerinfo_audiochannels__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -154,10 +160,9 @@ int AudioChannels() const
 
 方法调用成功，返回音频的声道数。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rteplayerinfo_audiosamplerate"></a>
+
+<a id="ariaid-title6"></a>
 
 ## AudioSampleRate
 
@@ -165,13 +170,13 @@ int AudioChannels() const
 
 <a id="api_rteplayerinfo_audiosamplerate__prototype"></a>
 
-```cpp
+```text
 int AudioSampleRate() const
 ```
 
 <a id="api_rteplayerinfo_audiosamplerate__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -181,18 +186,17 @@ int AudioSampleRate() const
 
 方法调用成功，返回音频采样率，单位为 Hz。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_canvas_canvas_canvas"></a>
+
+<a id="ariaid-title7"></a>
 
 ## Canvas
 
-构造一个 Canvas 对象。
+构造一个 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 对象。
 
 <a id="api_canvas_canvas_canvas__prototype"></a>
 
-```cpp
+```text
 Canvas(Rte *rte, CanvasInitialConfig *initial_config = nullptr)
 ```
 
@@ -208,18 +212,17 @@ Canvas(Rte *rte, CanvasInitialConfig *initial_config = nullptr)
 
 ### 参数
 
-#### `rte`
+### rte
 
 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)。
 
-#### `initial_config`
+### initial_config
 
 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 的配置对象。该参数可传入 NULL。
 
-### 所属接口类
-- [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)
-
 <a id="api_error_code"></a>
+
+<a id="ariaid-title8"></a>
 
 ## Code
 
@@ -227,13 +230,13 @@ Canvas(Rte *rte, CanvasInitialConfig *initial_config = nullptr)
 
 <a id="api_error_code__prototype"></a>
 
-```cpp
+```text
 ErrorCode Code() const
 ```
 
 <a id="api_error_code__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -249,10 +252,9 @@ ErrorCode Code() const
 
 方法调用成功，返回错误码，详见 [RteErrorCode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteerrorcode)。
 
-### 所属接口类
-- [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)
-
 <a id="api_rteplayerinfo_currenturl"></a>
+
+<a id="ariaid-title9"></a>
 
 ## CurrentUrl
 
@@ -260,13 +262,13 @@ ErrorCode Code() const
 
 <a id="api_rteplayerinfo_currenturl__prototype"></a>
 
-```cpp
+```text
 std::string CurrentUrl() const
 ```
 
 <a id="api_rteplayerinfo_currenturl__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -277,24 +279,23 @@ std::string CurrentUrl() const
 - 方法调用成功时，返回当前正在播放的 URL。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rte_destroy_rte"></a>
+
+<a id="ariaid-title10"></a>
 
 ## Destroy
 
-销毁 RTE 对象。
+销毁 `RTE` 对象。
 
 <a id="api_rte_destroy_rte__prototype"></a>
 
-```cpp
+```text
 bool Destroy(Error *err = nullptr)
 ```
 
 <a id="api_rte_destroy_rte__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -302,7 +303,7 @@ bool Destroy(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -313,10 +314,9 @@ bool Destroy(Error *err = nullptr)
 - true：销毁成功。
 - false：销毁失败。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_rteplayerinfo_duration"></a>
+
+<a id="ariaid-title11"></a>
 
 ## Duration
 
@@ -324,18 +324,18 @@ bool Destroy(Error *err = nullptr)
 
 <a id="api_rteplayerinfo_duration__prototype"></a>
 
-```cpp
+```text
 size_t Duration() const
 ```
 
 <a id="api_rteplayerinfo_duration__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-仅在播放本地媒体文件或点播流时有效。
+:::note
+注： 仅在播放本地媒体文件或点播流时有效。
 :::
 
 <a id="api_rteplayerinfo_duration__return_values"></a>
@@ -344,10 +344,9 @@ size_t Duration() const
 
 方法调用成功，返回当前媒体资源的时长，单位为毫秒。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_playerconfig_getabrfallbacklayer"></a>
+
+<a id="ariaid-title12"></a>
 
 ## GetAbrFallbackLayer
 
@@ -355,13 +354,13 @@ size_t Duration() const
 
 <a id="api_playerconfig_getabrfallbacklayer__prototype"></a>
 
-```cpp
+```text
 AbrFallbackLayer GetAbrFallbackLayer(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getabrfallbacklayer__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -375,7 +374,7 @@ AbrFallbackLayer GetAbrFallbackLayer(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -385,10 +384,9 @@ AbrFallbackLayer GetAbrFallbackLayer(Error *err = nullptr)
 
 方法调用成功时，返回已配置的视频流回退选项，详见 [RteAbrFallbackLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrfallbacklayer)。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_playerconfig_getabrsubscriptionlayer"></a>
+
+<a id="ariaid-title13"></a>
 
 ## GetAbrSubscriptionLayer
 
@@ -396,13 +394,13 @@ AbrFallbackLayer GetAbrFallbackLayer(Error *err = nullptr)
 
 <a id="api_playerconfig_getabrsubscriptionlayer__prototype"></a>
 
-```cpp
+```text
 AbrSubscriptionLayer GetAbrSubscriptionLayer(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getabrsubscriptionlayer__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -416,7 +414,7 @@ AbrSubscriptionLayer GetAbrSubscriptionLayer(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -426,10 +424,9 @@ AbrSubscriptionLayer GetAbrSubscriptionLayer(Error *err = nullptr)
 
 方法调用成功，返回当前设置的视频质量层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer)。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_config_getappid"></a>
+
+<a id="ariaid-title14"></a>
 
 ## GetAppId
 
@@ -437,13 +434,13 @@ AbrSubscriptionLayer GetAbrSubscriptionLayer(Error *err = nullptr)
 
 <a id="api_config_getappid__prototype"></a>
 
-```cpp
+```text
 std::string GetAppId(Error *err = nullptr)
 ```
 
 <a id="api_config_getappid__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -451,7 +448,7 @@ std::string GetAppId(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -462,10 +459,9 @@ std::string GetAppId(Error *err = nullptr)
 - 方法调用成功时，返回已配置的声网 App ID。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)
-
 <a id="api_playerconfig_getautoplay"></a>
+
+<a id="ariaid-title15"></a>
 
 ## GetAutoPlay
 
@@ -473,13 +469,13 @@ std::string GetAppId(Error *err = nullptr)
 
 <a id="api_playerconfig_getautoplay__prototype"></a>
 
-```cpp
+```text
 bool GetAutoPlay(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getautoplay__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -493,7 +489,7 @@ bool GetAutoPlay(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -506,10 +502,9 @@ bool GetAutoPlay(Error *err = nullptr)
 - true：获取成功。
 - false：获取失败。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_canvas_getconfigs_canvas"></a>
+
+<a id="ariaid-title16"></a>
 
 ## GetConfigs [3/3]
 
@@ -517,13 +512,13 @@ bool GetAutoPlay(Error *err = nullptr)
 
 <a id="api_canvas_getconfigs_canvas__prototype"></a>
 
-```cpp
+```text
 bool GetConfigs(CanvasConfig *config, Error *err = nullptr)
 ```
 
 <a id="api_canvas_getconfigs_canvas__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -537,11 +532,11 @@ bool GetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 输出参数，表示 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 对象的设置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -552,10 +547,9 @@ bool GetConfigs(CanvasConfig *config, Error *err = nullptr)
 - true：获取成功。
 - false：获取失败。
 
-### 所属接口类
-- [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)
-
 <a id="api_player_getconfigs_player"></a>
+
+<a id="ariaid-title17"></a>
 
 ## GetConfigs [2/3]
 
@@ -563,13 +557,13 @@ bool GetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 <a id="api_player_getconfigs_player__prototype"></a>
 
-```cpp
+```text
 bool GetConfigs(PlayerConfig* config, Error *err = nullptr)
 ```
 
 <a id="api_player_getconfigs_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -583,11 +577,11 @@ bool GetConfigs(PlayerConfig* config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 输出参数，播放器配置对象。详见 [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -598,24 +592,23 @@ bool GetConfigs(PlayerConfig* config, Error *err = nullptr)
 - true：获取成功。
 - false：获取失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_rte_getconfigs_rte"></a>
+
+<a id="ariaid-title18"></a>
 
 ## GetConfigs [1/3]
 
-获取 RTE 对象的配置信息。
+获取 `RTE` 对象的配置信息。
 
 <a id="api_rte_getconfigs_rte__prototype"></a>
 
-```cpp
+```text
 bool GetConfigs(Config *config, Error *err = nullptr)
 ```
 
 <a id="api_rte_getconfigs_rte__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -629,11 +622,11 @@ bool GetConfigs(Config *config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 输出参数，表示 `RTE` 对象的配置信息。详见 [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -644,24 +637,23 @@ bool GetConfigs(Config *config, Error *err = nullptr)
 - true：获取成功。
 - false：获取失败。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_rte_getfrombridge"></a>
+
+<a id="ariaid-title19"></a>
 
 ## GetFromBridge
 
-从 IRtcEngine 中桥接一个 RTE 对象。
+从 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 中桥接一个 `RTE` 对象。
 
 <a id="api_rte_getfrombridge__prototype"></a>
 
-```cpp
+```text
 static Rte GetFromBridge(Error* err = nullptr)
 ```
 
 <a id="api_rte_getfrombridge__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -677,7 +669,7 @@ static Rte GetFromBridge(Error* err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，用于接收状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -685,13 +677,12 @@ static Rte GetFromBridge(Error* err = nullptr)
 
 ### 返回值
 
-- 方法调用成功，返回一个 RTE 对象，详见 RTE。
+- 方法调用成功，返回一个 `RTE` 对象，详见 `RTE`。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_player_getinfo"></a>
+
+<a id="ariaid-title20"></a>
 
 ## GetInfo
 
@@ -699,13 +690,13 @@ static Rte GetFromBridge(Error* err = nullptr)
 
 <a id="api_player_getinfo__prototype"></a>
 
-```cpp
+```text
 bool GetInfo(PlayerInfo *info, Error *err = nullptr)
 ```
 
 <a id="api_player_getinfo__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -721,11 +712,11 @@ bool GetInfo(PlayerInfo *info, Error *err = nullptr)
 
 ### 参数
 
-#### `info`
+### info
 
 输出参数，表示播放器和媒体流的信息。详见 [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -736,10 +727,9 @@ bool GetInfo(PlayerInfo *info, Error *err = nullptr)
 - true：获取成功。
 - false：获取失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_config_getjsonparameter_config"></a>
+
+<a id="ariaid-title21"></a>
 
 ## GetJsonParameter
 
@@ -747,13 +737,13 @@ bool GetInfo(PlayerInfo *info, Error *err = nullptr)
 
 <a id="api_config_getjsonparameter_config__prototype"></a>
 
-```cpp
+```text
 std::string GetJsonParameter(Error *err = nullptr)
 ```
 
 <a id="api_config_getjsonparameter_config__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -769,7 +759,7 @@ std::string GetJsonParameter(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -780,10 +770,9 @@ std::string GetJsonParameter(Error *err = nullptr)
 - 方法调用成功时，返回已配置的 JSON 信息。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)
-
 <a id="api_playerconfig_getloopcount"></a>
+
+<a id="ariaid-title22"></a>
 
 ## GetLoopCount
 
@@ -791,13 +780,13 @@ std::string GetJsonParameter(Error *err = nullptr)
 
 <a id="api_playerconfig_getloopcount__prototype"></a>
 
-```cpp
+```text
 int32_t GetLoopCount(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getloopcount__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -805,7 +794,7 @@ int32_t GetLoopCount(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -815,10 +804,9 @@ int32_t GetLoopCount(Error *err = nullptr)
 
 方法调用成功，返回媒体文件的循环次数。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_canvasconfig_getmirrormode"></a>
+
+<a id="ariaid-title23"></a>
 
 ## GetMirrorMode
 
@@ -826,13 +814,13 @@ int32_t GetLoopCount(Error *err = nullptr)
 
 <a id="api_canvasconfig_getmirrormode__prototype"></a>
 
-```cpp
+```text
 VideoMirrorMode GetMirrorMode(Error *err = nullptr)
 ```
 
 <a id="api_canvasconfig_getmirrormode__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -846,7 +834,7 @@ VideoMirrorMode GetMirrorMode(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -856,10 +844,9 @@ VideoMirrorMode GetMirrorMode(Error *err = nullptr)
 
 方法调用成功，返回当前设置的镜像模式，详见 [RteVideoMirrorMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideomirrormode)。
 
-### 所属接口类
-- [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)
-
 <a id="api_playerconfig_getplaybackspeed"></a>
+
+<a id="ariaid-title24"></a>
 
 ## GetPlaybackSpeed
 
@@ -867,13 +854,13 @@ VideoMirrorMode GetMirrorMode(Error *err = nullptr)
 
 <a id="api_playerconfig_getplaybackspeed__prototype"></a>
 
-```cpp
+```text
 int32_t GetPlaybackSpeed(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getplaybackspeed__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -881,7 +868,7 @@ int32_t GetPlaybackSpeed(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -891,10 +878,9 @@ int32_t GetPlaybackSpeed(Error *err = nullptr)
 
 方法调用成功，返回播放速度值。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_playerconfig_getplayoutvolume"></a>
+
+<a id="ariaid-title25"></a>
 
 ## GetPlayoutVolume
 
@@ -902,13 +888,13 @@ int32_t GetPlaybackSpeed(Error *err = nullptr)
 
 <a id="api_playerconfig_getplayoutvolume__prototype"></a>
 
-```cpp
+```text
 int32_t GetPlayoutVolume(Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_getplayoutvolume__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -916,7 +902,7 @@ int32_t GetPlayoutVolume(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -926,10 +912,9 @@ int32_t GetPlayoutVolume(Error *err = nullptr)
 
 方法调用成功，返回播放器的音量值。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_player_getposition"></a>
+
+<a id="ariaid-title26"></a>
 
 ## GetPosition
 
@@ -937,13 +922,13 @@ int32_t GetPlayoutVolume(Error *err = nullptr)
 
 <a id="api_player_getposition__prototype"></a>
 
-```cpp
+```text
 uint64_t GetPosition(Error *err = nullptr)
 ```
 
 <a id="api_player_getposition__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -951,14 +936,15 @@ uint64_t GetPosition(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-- kRteOk：调用成功。
-- kRteErrorInvalidOperation：
-  - 对应的内部 Player 对象已被销毁或无效。
-  - 打开的 URL 是 RTE URL，不支持调用 GetPosition。
+- `kRteOk`：调用成功。
+- `kRteErrorInvalidOperation`：
+
+  - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
+  - 打开的 URL 是 RTE URL，不支持调用 [GetPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_getposition)。
 
 <a id="api_player_getposition__return_values"></a>
 
@@ -966,10 +952,9 @@ uint64_t GetPosition(Error *err = nullptr)
 
 方法调用成功，返回当前播放位置，单位为毫秒。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_canvasconfig_getrendermode"></a>
+
+<a id="ariaid-title27"></a>
 
 ## GetRenderMode
 
@@ -977,13 +962,13 @@ uint64_t GetPosition(Error *err = nullptr)
 
 <a id="api_canvasconfig_getrendermode__prototype"></a>
 
-```cpp
+```text
 VideoRenderMode GetRenderMode(Error *err = nullptr)
 ```
 
 <a id="api_canvasconfig_getrendermode__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -997,7 +982,7 @@ VideoRenderMode GetRenderMode(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1007,10 +992,9 @@ VideoRenderMode GetRenderMode(Error *err = nullptr)
 
 当前设置的视频渲染模式，详见 [RteVideoRenderMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideorendermode)。
 
-### 所属接口类
-- [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)
-
 <a id="api_player_getstats"></a>
+
+<a id="ariaid-title28"></a>
 
 ## GetStats
 
@@ -1018,13 +1002,13 @@ VideoRenderMode GetRenderMode(Error *err = nullptr)
 
 <a id="api_player_getstats__prototype"></a>
 
-```cpp
+```text
 void GetStats(std::function<void(rte::PlayerStats *stats, rte::Error *err)> cb)
 ```
 
 <a id="api_player_getstats__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1040,17 +1024,16 @@ void GetStats(std::function<void(rte::PlayerStats *stats, rte::Error *err)> cb)
 
 ### 参数
 
-#### `cb`
+### cb
 
 异步通知获取播放器媒体资源统计信息结果的回调。你可以通过该回调的参数获取以下信息：
 
-- stats：播放器当前播放媒体资源的统计数据，详见 RtePlayerStats。
-- err：状态或错误信息，详见 Error。
-
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
+- `stats`：播放器当前播放媒体资源的统计数据，详见 [RtePlayerStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rteplayerstats)。
+- `err`：状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
 <a id="api_rteplayerinfo_hasaudio"></a>
+
+<a id="ariaid-title29"></a>
 
 ## HasAudio
 
@@ -1058,13 +1041,13 @@ void GetStats(std::function<void(rte::PlayerStats *stats, rte::Error *err)> cb)
 
 <a id="api_rteplayerinfo_hasaudio__prototype"></a>
 
-```cpp
+```text
 bool HasAudio() const
 ```
 
 <a id="api_rteplayerinfo_hasaudio__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -1075,10 +1058,9 @@ bool HasAudio() const
 - true：媒体资源中包含音频流。
 - false：媒体资源中不包含音频流。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rteplayerinfo_hasvideo"></a>
+
+<a id="ariaid-title30"></a>
 
 ## HasVideo
 
@@ -1086,13 +1068,13 @@ bool HasAudio() const
 
 <a id="api_rteplayerinfo_hasvideo__prototype"></a>
 
-```cpp
+```text
 bool HasVideo() const
 ```
 
 <a id="api_rteplayerinfo_hasvideo__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -1103,25 +1085,24 @@ bool HasVideo() const
 - true：URL 源包含视频流。
 - false：URL 源不包含视频流。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rte_initmediaengine"></a>
+
+<a id="ariaid-title31"></a>
 
 ## InitMediaEngine
 
-初始化 RTE 引擎。
+初始化 `RTE` 引擎。
 
 <a id="api_rte_initmediaengine__prototype"></a>
 
-```cpp
+```text
 bool InitMediaEngine(std::function<void(rte::Error *err)> cb, Error *err = nullptr)
 ```
 
 <a id="api_rte_initmediaengine__detailed_desc"></a>
 
-:::info[注]
-[InitMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_initmediaengine) 的返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化本身是否成功。
+:::note
+注： [InitMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_initmediaengine) 的返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化本身是否成功。
 :::
 
 <a id="api_rte_initmediaengine__timing"></a>
@@ -1134,11 +1115,11 @@ bool InitMediaEngine(std::function<void(rte::Error *err)> cb, Error *err = nullp
 
 ### 参数
 
-#### `cb`
+### cb
 
 异步通知初始化结果的回调。你可以通过该回调的 `err` 参数获取初始化结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-#### `err`
+### err
 
 输出参数，表示初始化过程中产生的状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。调用 [InitMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_initmediaengine) 时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。
 
@@ -1151,10 +1132,9 @@ bool InitMediaEngine(std::function<void(rte::Error *err)> cb, Error *err = nullp
 
 该返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化本身是否成功。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_rteplayerinfo_isaudiomuted"></a>
+
+<a id="ariaid-title32"></a>
 
 ## IsAudioMuted
 
@@ -1162,13 +1142,13 @@ bool InitMediaEngine(std::function<void(rte::Error *err)> cb, Error *err = nullp
 
 <a id="api_rteplayerinfo_isaudiomuted__prototype"></a>
 
-```cpp
+```text
 bool IsAudioMuted() const
 ```
 
 <a id="api_rteplayerinfo_isaudiomuted__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -1179,10 +1159,9 @@ bool IsAudioMuted() const
 - true：播放器已停止接收音频流。
 - false：播放器仍在接收音频流。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rteplayerinfo_isvideomuted"></a>
+
+<a id="ariaid-title33"></a>
 
 ## IsVideoMuted
 
@@ -1190,18 +1169,18 @@ bool IsAudioMuted() const
 
 <a id="api_rteplayerinfo_isvideomuted__prototype"></a>
 
-```cpp
+```text
 bool IsVideoMuted() const
 ```
 
 <a id="api_rteplayerinfo_isvideomuted__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-[IsVideoMuted](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rteplayerinfo_isvideomuted) 仅在打开 RTE URL 时有效。
+:::note
+注： [IsVideoMuted](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rteplayerinfo_isvideomuted) 仅在打开 RTE URL 时有效。
 :::
 
 <a id="api_rteplayerinfo_isvideomuted__return_values"></a>
@@ -1211,10 +1190,9 @@ bool IsVideoMuted() const
 - true：播放器已停止接收视频流。
 - false：播放器仍在接收视频流。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_error_message"></a>
+
+<a id="ariaid-title34"></a>
 
 ## Message
 
@@ -1222,13 +1200,13 @@ bool IsVideoMuted() const
 
 <a id="api_error_message__prototype"></a>
 
-```cpp
+```text
 const char *Message() const
 ```
 
 <a id="api_error_message__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1245,10 +1223,9 @@ const char *Message() const
 - 方法调用成功时，返回错误信息字符串。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)
-
 <a id="api_player_muteaudio"></a>
+
+<a id="ariaid-title35"></a>
 
 ## MuteAudio
 
@@ -1256,13 +1233,13 @@ const char *Message() const
 
 <a id="api_player_muteaudio__prototype"></a>
 
-```cpp
+```text
 bool MuteAudio(bool mute, Error *err = nullptr)
 ```
 
 <a id="api_player_muteaudio__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1282,14 +1259,14 @@ bool MuteAudio(bool mute, Error *err = nullptr)
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否接收音频流：
 
 - true：不接收音频流。
 - false：接收音频流。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1297,12 +1274,11 @@ bool MuteAudio(bool mute, Error *err = nullptr)
 
 ### 返回值
 
-true 表示操作成功， false 表示操作失败。
-
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
+true 表示操作成功，false 表示操作失败。
 
 <a id="api_player_mutevideo"></a>
+
+<a id="ariaid-title36"></a>
 
 ## MuteVideo
 
@@ -1310,13 +1286,13 @@ true 表示操作成功， false 表示操作失败。
 
 <a id="api_player_mutevideo__prototype"></a>
 
-```cpp
+```text
 bool MuteVideo(bool mute, Error *err = nullptr)
 ```
 
 <a id="api_player_mutevideo__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1336,14 +1312,14 @@ bool MuteVideo(bool mute, Error *err = nullptr)
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否接收视频流：
 
 - true：不接收视频流。
 - false：接收视频流。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1351,12 +1327,11 @@ bool MuteVideo(bool mute, Error *err = nullptr)
 
 ### 返回值
 
-true 表示操作成功， false 表示操作失败。
-
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
+true 表示操作成功，false 表示操作失败。
 
 <a id="api_player_openwithurl"></a>
+
+<a id="ariaid-title37"></a>
 
 ## OpenWithUrl
 
@@ -1364,20 +1339,20 @@ true 表示操作成功， false 表示操作失败。
 
 <a id="api_player_openwithurl__prototype"></a>
 
-```cpp
+```text
 void OpenWithUrl(const char* url, uint64_t start_time, std::function<void(rte::Error* err)> cb)
 ```
 
 <a id="api_player_openwithurl__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
 该方法支持通过 URL 打开实时流媒体资源。如果你希望加快 URL 的打开速度，可以在调用该方法前调用 [PreloadWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_preloadwithurl) 预加载资源。如果资源打开失败，你将收到 [onStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#callback_playerobserver_onstatechanged) 回调，状态为 `kRtePlayerStateFailed`。此时，你需要先调用 [Stop](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_stop_player)，然后再次调用 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 重新打开 URL 资源。如果你已关闭自动播放功能，可以在资源打开后调用 [Play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_play_player) 开始播放。
 
-:::info[注]
-该方法目前仅支持以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
+:::note
+注： 该方法目前仅支持以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
 :::
 
 <a id="api_player_openwithurl__timing"></a>
@@ -1396,22 +1371,21 @@ void OpenWithUrl(const char* url, uint64_t start_time, std::function<void(rte::E
 
 ### 参数
 
-#### `url`
+### url
 
 要打开的 URL，可以是 CDN 推流 URL、本地媒体文件，或以 `rte://` 开头的 URL。
 
-#### `start_time`
+### start_time
 
 开始播放的位置，单位为毫秒。
 
-#### `cb`
+### cb
 
 异步通知 URL 资源打开结果的回调。你可以通过该回调的 `err` 参数获取操作结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_player_pause_player"></a>
+
+<a id="ariaid-title38"></a>
 
 ## Pause
 
@@ -1419,13 +1393,13 @@ void OpenWithUrl(const char* url, uint64_t start_time, std::function<void(rte::E
 
 <a id="api_player_pause_player__prototype"></a>
 
-```cpp
+```text
 bool Pause(Error *err = nullptr)
 ```
 
 <a id="api_player_pause_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1447,7 +1421,7 @@ bool Pause(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1458,10 +1432,9 @@ bool Pause(Error *err = nullptr)
 - true：暂停播放成功。
 - false：暂停播放失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_player_play_player"></a>
+
+<a id="ariaid-title39"></a>
 
 ## Play
 
@@ -1469,18 +1442,18 @@ bool Pause(Error *err = nullptr)
 
 <a id="api_player_play_player__prototype"></a>
 
-```cpp
+```text
 bool Play(Error *err = nullptr)
 ```
 
 <a id="api_player_play_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
-:::info[注]
-该方法当前仅支持以 `rte://` 开头的 URL。
+:::note
+注： 该方法当前仅支持以 `rte://` 开头的 URL。
 :::
 
 <a id="api_player_play_player__timing"></a>
@@ -1493,7 +1466,7 @@ bool Play(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1506,24 +1479,23 @@ bool Play(Error *err = nullptr)
 - true：播放成功。
 - false：播放失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_player_player_player"></a>
+
+<a id="ariaid-title40"></a>
 
 ## Player
 
-构造一个 Player 播放器对象。
+构造一个 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 播放器对象。
 
 <a id="api_player_player_player__prototype"></a>
 
-```cpp
+```text
 explicit Player(Rte *self, PlayerInitialConfig *config = nullptr)
 ```
 
 <a id="api_player_player_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1537,18 +1509,17 @@ explicit Player(Rte *self, PlayerInitialConfig *config = nullptr)
 
 ### 参数
 
-#### `self`
+### self
 
 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)。
 
-#### `config`
+### config
 
 播放器的初始配置。你可以传入 NULL。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_player_preloadwithurl"></a>
+
+<a id="ariaid-title41"></a>
 
 ## PreloadWithUrl
 
@@ -1556,20 +1527,20 @@ explicit Player(Rte *self, PlayerInitialConfig *config = nullptr)
 
 <a id="api_player_preloadwithurl__prototype"></a>
 
-```cpp
+```text
 static bool PreloadWithUrl(const char* url, Error *err = nullptr)
 ```
 
 <a id="api_player_preloadwithurl__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
 预加载成功后，通过 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 打开该 URL 资源的速度可以提升，从而减少等待时间，提升视听体验。
 
-:::info[注]
-该方法目前仅支持以 `rte://` 开头的 URL。最多可预加载 20 个 URL，若超过限制，最早预加载的 URL 会被新预加载的 URL 替换。
+:::note
+注： 该方法目前仅支持以 `rte://` 开头的 URL。最多可预加载 20 个 URL，若超过限制，最早预加载的 URL 会被新预加载的 URL 替换。
 :::
 
 <a id="api_player_preloadwithurl__scenario"></a>
@@ -1588,11 +1559,11 @@ static bool PreloadWithUrl(const char* url, Error *err = nullptr)
 
 ### 参数
 
-#### `url`
+### url
 
 以 `rte://` 开头的 URL。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1605,24 +1576,23 @@ static bool PreloadWithUrl(const char* url, Error *err = nullptr)
 - true：预加载成功。
 - false：预加载失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_player_registerobserver_player"></a>
+
+<a id="ariaid-title42"></a>
 
 ## RegisterObserver
 
-注册一个 PlayerObserver 播放器观察者对象。
+注册一个 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver) 播放器观察者对象。
 
 <a id="api_player_registerobserver_player__prototype"></a>
 
-```cpp
+```text
 bool RegisterObserver(PlayerObserver *observer, Error *err = nullptr)
 ```
 
 <a id="api_player_registerobserver_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1638,11 +1608,11 @@ bool RegisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 ### 参数
 
-#### `observer`
+### observer
 
 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver) 接口对象的实例。详见 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1655,10 +1625,9 @@ bool RegisterObserver(PlayerObserver *observer, Error *err = nullptr)
 - true：注册成功。
 - false：注册失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_canvas_removeview"></a>
+
+<a id="ariaid-title43"></a>
 
 ## RemoveView
 
@@ -1666,20 +1635,20 @@ bool RegisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 <a id="api_canvas_removeview__prototype"></a>
 
-```cpp
+```text
 bool RemoveView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 ```
 
 <a id="api_canvas_removeview__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
 调用 [AddView](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_addview) 添加视图后，如有需要，可以调用该方法移除该视图。
 
-:::info[注]
-每次只能移除一个视图。
+:::note
+注： 每次只能移除一个视图。
 :::
 
 <a id="api_canvas_removeview__timing"></a>
@@ -1692,15 +1661,15 @@ bool RemoveView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 
 ### 参数
 
-#### `view`
+### view
 
 要移除的视图对象。
 
-#### `config`
+### config
 
 视图对象的设置，目前传入 NULL。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1711,24 +1680,23 @@ bool RemoveView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 - true：视图移除成功。
 - false：视图移除失败。
 
-### 所属接口类
-- [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)
-
 <a id="api_rte_rte_rte"></a>
+
+<a id="ariaid-title44"></a>
 
 ## Rte
 
-构造一个 Rte 对象。
+构造一个 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_rte_rte) 对象。
 
 <a id="api_rte_rte_rte__prototype"></a>
 
-```cpp
+```text
 explicit Rte(InitialConfig *config = nullptr)
 ```
 
 <a id="api_rte_rte_rte__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1742,14 +1710,13 @@ explicit Rte(InitialConfig *config = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 初始化设置。你可以传入 NULL。详见 `InitialConfig`。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_player_seek"></a>
+
+<a id="ariaid-title45"></a>
 
 ## Seek
 
@@ -1757,13 +1724,13 @@ explicit Rte(InitialConfig *config = nullptr)
 
 <a id="api_player_seek__prototype"></a>
 
-```cpp
+```text
 bool Seek(uint64_t new_time, Error *err = nullptr)
 ```
 
 <a id="api_player_seek__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -1771,17 +1738,18 @@ bool Seek(uint64_t new_time, Error *err = nullptr)
 
 ### 参数
 
-#### `new_time`
+### new_time
 
 要跳转到的新播放位置。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-- kRteOk：成功。
-- kRteErrorInvalidOperation：
-  - 对应的内部 Player 对象已被销毁或无效。
+- `kRteOk`：成功。
+- `kRteErrorInvalidOperation`：
+
+  - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
   - 打开的 URL 是 RTE URL，不支持跳转。
 
 <a id="api_player_seek__return_values"></a>
@@ -1791,10 +1759,9 @@ bool Seek(uint64_t new_time, Error *err = nullptr)
 - true：成功跳转到播放位置。
 - false：跳转失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_playerconfig_setabrfallbacklayer"></a>
+
+<a id="ariaid-title46"></a>
 
 ## SetAbrFallbackLayer
 
@@ -1802,27 +1769,29 @@ bool Seek(uint64_t new_time, Error *err = nullptr)
 
 <a id="api_playerconfig_setabrfallbacklayer__prototype"></a>
 
-```cpp
+```text
 void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setabrfallbacklayer__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
-在网络状况较差时，SDK 会将视频流的分辨率降级为指定的回退质量层，以保证播放的连续性。不同的质量层对应不同的分辨率和码率。SDK 会持续监测网络状况，在网络恢复后自动将视频流恢复为订阅的质量层。 默认情况下，仅支持回退到 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。如需更灵活的视频体验，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能，开启后可回退到所有质量层，并自定义每一层的分辨率。
+在网络状况较差时，SDK 会将视频流的分辨率降级为指定的回退质量层，以保证播放的连续性。不同的质量层对应不同的分辨率和码率。SDK 会持续监测网络状况，在网络恢复后自动将视频流恢复为订阅的质量层。
+默认情况下，仅支持回退到 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。如需更灵活的视频体验，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能，开启后可回退到所有质量层，并自定义每一层的分辨率。
 
-:::info[注]
-如果在调用该方法时未开启 ABR 功能，视频流的回退质量层只能为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。
+:::note
+注： 如果在调用该方法时未开启 ABR 功能，视频流的回退质量层只能为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。
 :::
 
 <a id="api_playerconfig_setabrfallbacklayer__scenario"></a>
 
 ### 适用场景
 
-一般场景下，可调用该方法并将回退质量层设置为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。当网络较差时，SDK 会回退为视频小流或仅接收音频流。 如果对回退视频流的分辨率有更高要求，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可自定义每一层的分辨率。SDK 会以你指定的最低质量层的分辨率为下限，并根据网络状况在该范围内动态调整分辨率。
+一般场景下，可调用该方法并将回退质量层设置为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。当网络较差时，SDK 会回退为视频小流或仅接收音频流。
+如果对回退视频流的分辨率有更高要求，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可自定义每一层的分辨率。SDK 会以你指定的最低质量层的分辨率为下限，并根据网络状况在该范围内动态调整分辨率。
 
 <a id="api_playerconfig_setabrfallbacklayer__timing"></a>
 
@@ -1834,12 +1803,12 @@ void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullp
 
 ### 参数
 
-#### `abr_fallback_layer`
+### abr_fallback_layer
 
 视频流的回退质量层，详见 [RteAbrFallbackLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrfallbacklayer)。当自定义 `kRteAbrFallbackLayer1` 到 `kRteAbrFallbackLayer6` 的分辨率时，可参考下表：
 
-:::info[注]
-自定义分辨率时，务必将视频质量层按分辨率从高到低排序；当分辨率相同时，按帧率从高到低排序。
+:::note
+注： 自定义分辨率时，务必将视频质量层按分辨率从高到低排序；当分辨率相同时，按帧率从高到低排序。
 :::
 
 | 视频质量层 | 分辨率 |
@@ -1851,14 +1820,13 @@ void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullp
 | `kRteAbrSubscriptionLayer5` | 540p (SD) |
 | `kRteAbrSubscriptionLayer6` | 480p (SD) |
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_playerconfig_setabrsubscriptionlayer"></a>
+
+<a id="ariaid-title47"></a>
 
 ## SetAbrSubscriptionLayer
 
@@ -1866,20 +1834,20 @@ void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullp
 
 <a id="api_playerconfig_setabrsubscriptionlayer__prototype"></a>
 
-```cpp
+```text
 void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setabrsubscriptionlayer__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
 你可以根据实际网络状况在不同的视频流质量层级之间切换，每个层级对应不同的分辨率。默认情况下，调用该方法后，订阅端只能在高低画质之间切换，即 `kRteAbrSubscriptionHigh` 和 `kRteAbrSubscriptionLow`。如果你对视频分辨率切换有更高要求，可以[联系技术支持](https://ticket.shengwang.cn/)开启 ABR（自适应码率）功能。开启后，你可以自定义每个视频质量层级的分辨率，订阅端可根据需要在所有视频质量层级之间切换。
 
-:::info[注]
-如果在调用该方法时未开启 ABR 功能，订阅的视频质量层级只能为 `kRteAbrSubscriptionHigh` 或 `kRteAbrSubscriptionLow`。
+:::note
+注： 如果在调用该方法时未开启 ABR 功能，订阅的视频质量层级只能为 `kRteAbrSubscriptionHigh` 或 `kRteAbrSubscriptionLow`。
 :::
 
 <a id="api_playerconfig_setabrsubscriptionlayer__scenario"></a>
@@ -1898,9 +1866,11 @@ void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error 
 
 ### 参数
 
-#### `abr_subscription_layer`
+### abr_subscription_layer
 
-要订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer)。当自定义 `kRteAbrSubscriptionLayer1` 到 `kRteAbrSubscriptionLayer6` 的分辨率时，可参考下表或根据实际需求设置： 注意：自定义分辨率时，需确保视频质量层级按分辨率从高到低排序；当分辨率相同时，按帧率从高到低排序。
+要订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer)。当自定义 `kRteAbrSubscriptionLayer1` 到 `kRteAbrSubscriptionLayer6` 的分辨率时，可参考下表或根据实际需求设置：
+
+注意：自定义分辨率时，需确保视频质量层级按分辨率从高到低排序；当分辨率相同时，按帧率从高到低排序。
 
 | 视频质量层级 | 分辨率 |
 | --- | --- |
@@ -1911,14 +1881,13 @@ void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error 
 | `kRteAbrSubscriptionLayer5` | 540p (SD) |
 | `kRteAbrSubscriptionLayer6` | 480p (SD) |
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_config_setappid"></a>
+
+<a id="ariaid-title48"></a>
 
 ## SetAppId
 
@@ -1926,13 +1895,13 @@ void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error 
 
 <a id="api_config_setappid__prototype"></a>
 
-```cpp
+```text
 void SetAppId(const char *app_id, Error *err = nullptr)
 ```
 
 <a id="api_config_setappid__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1946,18 +1915,17 @@ void SetAppId(const char *app_id, Error *err = nullptr)
 
 ### 参数
 
-#### `app_id`
+### app_id
 
 你的项目的声网 App ID，可从声网控制台获取。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)
-
 <a id="api_playerconfig_setautoplay"></a>
+
+<a id="ariaid-title49"></a>
 
 ## SetAutoPlay
 
@@ -1965,13 +1933,13 @@ void SetAppId(const char *app_id, Error *err = nullptr)
 
 <a id="api_playerconfig_setautoplay__prototype"></a>
 
-```cpp
+```text
 void SetAutoPlay(bool auto_play, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setautoplay__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -1987,21 +1955,20 @@ void SetAutoPlay(bool auto_play, Error *err = nullptr)
 
 ### 参数
 
-#### `auto_play`
+### auto_play
 
 是否启用自动播放：
 
 - true：（默认）启用自动播放。
 - false：不启用自动播放。
 
-#### `err`
+### err
 
 输出参数，表示状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
-
 <a id="api_player_setcanvas"></a>
+
+<a id="ariaid-title50"></a>
 
 ## SetCanvas
 
@@ -2009,13 +1976,13 @@ void SetAutoPlay(bool auto_play, Error *err = nullptr)
 
 <a id="api_player_setcanvas__prototype"></a>
 
-```cpp
+```text
 bool SetCanvas(Canvas *canvas, Error *err = nullptr)
 ```
 
 <a id="api_player_setcanvas__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2031,11 +1998,11 @@ bool SetCanvas(Canvas *canvas, Error *err = nullptr)
 
 ### 参数
 
-#### `canvas`
+### canvas
 
 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas) 对象，用于渲染视频帧，详见 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2044,12 +2011,11 @@ bool SetCanvas(Canvas *canvas, Error *err = nullptr)
 ### 返回值
 
 - true：设置成功。
-- false：设置失败。你可以通过 err 参数返回的错误码查看详细信息。
-
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
+- false：设置失败。你可以通过 `err` 参数返回的错误码查看详细信息。
 
 <a id="api_canvas_setconfigs_canvas"></a>
+
+<a id="ariaid-title51"></a>
 
 ## SetConfigs [3/3]
 
@@ -2057,13 +2023,13 @@ bool SetCanvas(Canvas *canvas, Error *err = nullptr)
 
 <a id="api_canvas_setconfigs_canvas__prototype"></a>
 
-```cpp
+```text
 bool SetConfigs(CanvasConfig *config, Error *err = nullptr)
 ```
 
 <a id="api_canvas_setconfigs_canvas__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2077,11 +2043,11 @@ bool SetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 用于设置 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 对象的配置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)。
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2094,10 +2060,9 @@ bool SetConfigs(CanvasConfig *config, Error *err = nullptr)
 - true：配置成功。
 - false：配置失败。
 
-### 所属接口类
-- [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)
-
 <a id="api_player_setconfigs_player"></a>
+
+<a id="ariaid-title52"></a>
 
 ## SetConfigs [2/3]
 
@@ -2105,13 +2070,13 @@ bool SetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 <a id="api_player_setconfigs_player__prototype"></a>
 
-```cpp
+```text
 bool SetConfigs(PlayerConfig* config, Error *err = nullptr)
 ```
 
 <a id="api_player_setconfigs_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2127,11 +2092,11 @@ bool SetConfigs(PlayerConfig* config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2144,24 +2109,23 @@ bool SetConfigs(PlayerConfig* config, Error *err = nullptr)
 - true：配置成功。
 - false：配置失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_rte_setconfigs_rte"></a>
+
+<a id="ariaid-title53"></a>
 
 ## SetConfigs [1/3]
 
-配置 RTE 对象的信息。
+配置 `RTE` 对象的信息。
 
 <a id="api_rte_setconfigs_rte__prototype"></a>
 
-```cpp
+```text
 bool SetConfigs(Config *config, Error *err = nullptr)
 ```
 
 <a id="api_rte_setconfigs_rte__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2177,11 +2141,11 @@ bool SetConfigs(Config *config, Error *err = nullptr)
 
 ### 参数
 
-#### `config`
+### config
 
 `RTE` 对象的设置信息，详见 [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2192,10 +2156,9 @@ bool SetConfigs(Config *config, Error *err = nullptr)
 - true：配置成功。
 - false：配置失败。
 
-### 所属接口类
-- [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)
-
 <a id="api_config_setjsonparameter_config"></a>
+
+<a id="ariaid-title54"></a>
 
 ## SetJsonParameter
 
@@ -2203,13 +2166,13 @@ bool SetConfigs(Config *config, Error *err = nullptr)
 
 <a id="api_config_setjsonparameter_config__prototype"></a>
 
-```cpp
+```text
 void SetJsonParameter(const char *json_parameter, Error *err = nullptr)
 ```
 
 <a id="api_config_setjsonparameter_config__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2231,18 +2194,17 @@ void SetJsonParameter(const char *json_parameter, Error *err = nullptr)
 
 ### 参数
 
-#### `json_parameter`
+### json_parameter
 
 JSON 字符串格式的参数。
 
-#### `err`
+### err
 
 输出参数，表示状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)
-
 <a id="api_playerconfig_setloopcount"></a>
+
+<a id="ariaid-title55"></a>
 
 ## SetLoopCount
 
@@ -2250,13 +2212,13 @@ JSON 字符串格式的参数。
 
 <a id="api_playerconfig_setloopcount__prototype"></a>
 
-```cpp
+```text
 void SetLoopCount(int32_t count, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setloopcount__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -2264,25 +2226,24 @@ void SetLoopCount(int32_t count, Error *err = nullptr)
 
 ### 参数
 
-#### `count`
+### count
 
 媒体文件的循环播放次数。
 
-- 1：播放一次。
-- 2：播放两次。
-- -1：无限循环播放，直到调用 Stop。
+- `1`：播放一次。
+- `2`：播放两次。
+- `-1`：无限循环播放，直到调用 [Stop](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_stop_player)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-- kRteOk：调用成功。
-- kRteErrorInvalidArgument： count 参数设置为无效值。
-
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
+- `kRteOk`：调用成功。
+- `kRteErrorInvalidArgument`：`count` 参数设置为无效值。
 
 <a id="api_canvasconfig_setmirrormode"></a>
+
+<a id="ariaid-title56"></a>
 
 ## SetMirrorMode
 
@@ -2290,13 +2251,13 @@ void SetLoopCount(int32_t count, Error *err = nullptr)
 
 <a id="api_canvasconfig_setmirrormode__prototype"></a>
 
-```cpp
+```text
 void SetMirrorMode(VideoMirrorMode mode, Error *err = nullptr)
 ```
 
 <a id="api_canvasconfig_setmirrormode__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2310,21 +2271,20 @@ void SetMirrorMode(VideoMirrorMode mode, Error *err = nullptr)
 
 ### 参数
 
-#### `mode`
+### mode
 
 镜像模式，详见 [RteVideoMirrorMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideomirrormode)。
 
-- 默认值为 kRteVideoMirrorModeAuto，由 SDK 自动决定镜像模式。
+- 默认值为 `kRteVideoMirrorModeAuto`，由 SDK 自动决定镜像模式。
 - 默认情况下，远端用户的镜像模式为关闭状态。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)
-
 <a id="api_playerconfig_setplaybackspeed"></a>
+
+<a id="ariaid-title57"></a>
 
 ## SetPlaybackSpeed
 
@@ -2332,39 +2292,38 @@ void SetMirrorMode(VideoMirrorMode mode, Error *err = nullptr)
 
 <a id="api_playerconfig_setplaybackspeed__prototype"></a>
 
-```cpp
+```text
 void SetPlaybackSpeed(int32_t speed, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setplaybackspeed__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-你可以在调用 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
+:::note
+注： 你可以在调用 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
 :::
 
 <a id="api_playerconfig_setplaybackspeed__parameters"></a>
 
 ### 参数
 
-#### `speed`
+### speed
 
 播放速度。有效范围为 [50, 400]。
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-- kRteOk：调用成功。
-- kRteErrorInvalidArgument： speed 参数设置为无效值。
-
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
+- `kRteOk`：调用成功。
+- `kRteErrorInvalidArgument`：`speed` 参数设置为无效值。
 
 <a id="api_playerconfig_setplayoutvolume"></a>
+
+<a id="ariaid-title58"></a>
 
 ## SetPlayoutVolume
 
@@ -2372,13 +2331,13 @@ void SetPlaybackSpeed(int32_t speed, Error *err = nullptr)
 
 <a id="api_playerconfig_setplayoutvolume__prototype"></a>
 
-```cpp
+```text
 void SetPlayoutVolume(int32_t volume, Error *err = nullptr)
 ```
 
 <a id="api_playerconfig_setplayoutvolume__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -2386,21 +2345,20 @@ void SetPlayoutVolume(int32_t volume, Error *err = nullptr)
 
 ### 参数
 
-#### `volume`
+### volume
 
 要设置的播放音量，取值范围为 [0, 400]。
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-- kRteOk：设置成功。
-- kRteErrorInvalidArgument：音量参数设置为无效值。
-
-### 所属接口类
-- [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)
+- `kRteOk`：设置成功。
+- `kRteErrorInvalidArgument`：音量参数设置为无效值。
 
 <a id="api_canvasconfig_setrendermode_canvasconfig"></a>
+
+<a id="ariaid-title59"></a>
 
 ## SetRenderMode
 
@@ -2408,13 +2366,13 @@ void SetPlayoutVolume(int32_t volume, Error *err = nullptr)
 
 <a id="api_canvasconfig_setrendermode_canvasconfig__prototype"></a>
 
-```cpp
+```text
 void SetRenderMode(VideoRenderMode mode, Error *err = nullptr)
 ```
 
 <a id="api_canvasconfig_setrendermode_canvasconfig__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2428,18 +2386,17 @@ void SetRenderMode(VideoRenderMode mode, Error *err = nullptr)
 
 ### 参数
 
-#### `mode`
+### mode
 
 渲染模式，详见 [RteVideoRenderMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideorendermode)。默认值为 `kRteVideoRenderModeHidden`，该模式按比例缩放视频并优先填满视图窗口。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### 所属接口类
-- [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)
-
 <a id="api_rteplayerinfo_state"></a>
+
+<a id="ariaid-title60"></a>
 
 ## State
 
@@ -2447,13 +2404,13 @@ void SetRenderMode(VideoRenderMode mode, Error *err = nullptr)
 
 <a id="api_rteplayerinfo_state__prototype"></a>
 
-```cpp
+```text
 RtePlayerState State() const
 ```
 
 <a id="api_rteplayerinfo_state__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -2463,10 +2420,9 @@ RtePlayerState State() const
 
 方法调用成功时，返回当前播放器状态，详见 [RtePlayerState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerstate)。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_player_stop_player"></a>
+
+<a id="ariaid-title61"></a>
 
 ## Stop
 
@@ -2474,13 +2430,13 @@ RtePlayerState State() const
 
 <a id="api_player_stop_player__prototype"></a>
 
-```cpp
+```text
 bool Stop(Error *err = nullptr)
 ```
 
 <a id="api_player_stop_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2502,7 +2458,7 @@ bool Stop(Error *err = nullptr)
 
 ### 参数
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2513,10 +2469,9 @@ bool Stop(Error *err = nullptr)
 - true：成功停止播放。
 - false：停止播放失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_rteplayerinfo_streamcount"></a>
+
+<a id="ariaid-title62"></a>
 
 ## StreamCount
 
@@ -2524,18 +2479,18 @@ bool Stop(Error *err = nullptr)
 
 <a id="api_rteplayerinfo_streamcount__prototype"></a>
 
-```cpp
+```text
 size_t StreamCount() const
 ```
 
 <a id="api_rteplayerinfo_streamcount__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-[StreamCount](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rteplayerinfo_streamcount) 方法在打开非 `RTE` URL 时有效。
+:::note
+注： [StreamCount](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rteplayerinfo_streamcount) 方法在打开非 `RTE` URL 时有效。
 :::
 
 <a id="api_rteplayerinfo_streamcount__return_values"></a>
@@ -2544,10 +2499,9 @@ size_t StreamCount() const
 
 方法调用成功，返回当前播放源中的流数量。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_player_switchwithurl"></a>
+
+<a id="ariaid-title63"></a>
 
 ## SwitchWithUrl
 
@@ -2555,50 +2509,51 @@ size_t StreamCount() const
 
 <a id="api_player_switchwithurl__prototype"></a>
 
-```cpp
+```text
 void SwitchWithUrl(const char* url, bool sync_pts, std::function<void(rte::Error* err)> cb)
 ```
 
 <a id="api_player_switchwithurl__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
-:::info[注]
-该方法仅在播放器已打开非 `RTE` URL 时有效。请在 SDK 报告播放器状态为 `kRtePlayerStateOpenCompleted` 时调用该方法。
+:::note
+注： 该方法仅在播放器已打开非 `RTE` URL 时有效。请在 SDK 报告播放器状态为 `kRtePlayerStateOpenCompleted` 时调用该方法。
 :::
 
 <a id="api_player_switchwithurl__parameters"></a>
 
 ### 参数
 
-#### `url`
+### url
 
 要切换到的新 URL。
 
-#### `sync_pts`
+### sync_pts
 
 是否同步播放位置：
 
 - true：同步播放位置。
 - false：（默认）不同步播放位置。
 
-#### `cb`
+### cb
 
-异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。 `err` 的可能取值包括：
+异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+`err` 的可能取值包括：
 
-- kRteOk：切换成功。
-- kRteErrorDefault：切换失败。
-- kRteErrorInvalidArgument：提供的 URL 为空或格式无效。
-- kRteErrorInvalidOperation：
-  - 对应的内部 Player 对象已被销毁或无效。
-  - 当前打开的 URL 是 RTE URL，不支持切换。
+- `kRteOk`：切换成功。
+- `kRteErrorDefault`：切换失败。
+- `kRteErrorInvalidArgument`：提供的 URL 为空或格式无效。
+- `kRteErrorInvalidOperation`：
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
+  - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
+  - 当前打开的 URL 是 `RTE` URL，不支持切换。
 
 <a id="api_player_unregisterobserver_player"></a>
+
+<a id="ariaid-title64"></a>
 
 ## UnregisterObserver
 
@@ -2606,13 +2561,13 @@ void SwitchWithUrl(const char* url, bool sync_pts, std::function<void(rte::Error
 
 <a id="api_player_unregisterobserver_player__prototype"></a>
 
-```cpp
+```text
 bool UnregisterObserver(PlayerObserver *observer, Error *err = nullptr)
 ```
 
 <a id="api_player_unregisterobserver_player__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2628,11 +2583,11 @@ bool UnregisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 ### 参数
 
-#### `observer`
+### observer
 
 播放器事件观察者对象实例，详见 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)。
 
-#### `err`
+### err
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -2643,10 +2598,9 @@ bool UnregisterObserver(PlayerObserver *observer, Error *err = nullptr)
 - true：取消注册成功。
 - false：取消注册失败。
 
-### 所属接口类
-- [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_player)
-
 <a id="api_rteplayerinfo_videoheight"></a>
+
+<a id="ariaid-title65"></a>
 
 ## VideoHeight
 
@@ -2654,13 +2608,13 @@ bool UnregisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 <a id="api_rteplayerinfo_videoheight__prototype"></a>
 
-```cpp
+```text
 int VideoHeight() const
 ```
 
 <a id="api_rteplayerinfo_videoheight__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -2670,10 +2624,9 @@ int VideoHeight() const
 
 方法调用成功，返回视频分辨率的高度，单位为像素。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="api_rteplayerinfo_videowidth"></a>
+
+<a id="ariaid-title66"></a>
 
 ## VideoWidth
 
@@ -2681,13 +2634,13 @@ int VideoHeight() const
 
 <a id="api_rteplayerinfo_videowidth__prototype"></a>
 
-```cpp
+```text
 int VideoWidth() const
 ```
 
 <a id="api_rteplayerinfo_videowidth__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.5.1 版本新增。
 
@@ -2697,24 +2650,23 @@ int VideoWidth() const
 
 方法调用成功，返回视频分辨率的宽度，单位为像素。
 
-### 所属接口类
-- [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)
-
 <a id="callback_playerobserver_onaudiovolumeindication_playerobserver"></a>
+
+<a id="ariaid-title67"></a>
 
 ## onAudioVolumeIndication
 
-onAudioVolumeIndication 回调。播放器音量变化时触发。
+[onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#callback_playerobserver_onaudiovolumeindication_playerobserver) 回调。播放器音量变化时触发。
 
 <a id="callback_playerobserver_onaudiovolumeindication_playerobserver__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioVolumeIndication(int32_t volume) {}
 ```
 
 <a id="callback_playerobserver_onaudiovolumeindication_playerobserver__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2728,14 +2680,13 @@ virtual void onAudioVolumeIndication(int32_t volume) {}
 
 ### 参数
 
-#### `volume`
+### volume
 
 播放器当前的音量，取值范围为 [0, 225]。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onevent"></a>
+
+<a id="ariaid-title68"></a>
 
 ## onEvent
 
@@ -2743,13 +2694,13 @@ virtual void onAudioVolumeIndication(int32_t volume) {}
 
 <a id="callback_playerobserver_onevent__prototype"></a>
 
-```cpp
+```text
 virtual void onEvent(PlayerEvent event) {}
 ```
 
 <a id="callback_playerobserver_onevent__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2765,14 +2716,13 @@ virtual void onEvent(PlayerEvent event) {}
 
 ### 参数
 
-#### `event`
+### event
 
 播放器事件，详见 [RtePlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerevent)。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onmetadata_playerobserver"></a>
+
+<a id="ariaid-title69"></a>
 
 ## onMetadata [2/2]
 
@@ -2780,13 +2730,13 @@ virtual void onEvent(PlayerEvent event) {}
 
 <a id="callback_playerobserver_onmetadata_playerobserver__prototype"></a>
 
-```cpp
+```text
 virtual void onMetadata(PlayerMetadataType type, const uint8_t *data, size_t length) {}
 ```
 
 <a id="callback_playerobserver_onmetadata_playerobserver__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2802,22 +2752,21 @@ virtual void onMetadata(PlayerMetadataType type, const uint8_t *data, size_t len
 
 ### 参数
 
-#### `type`
+### type
 
 元数据类型，详见 [RtePlayerMetadataType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayermetadatatype)。
 
-#### `data`
+### data
 
 解析后的元数据内容。
 
-#### `length`
+### length
 
 数据的字节大小。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onplayerinfoupdated_playerobserver"></a>
+
+<a id="ariaid-title70"></a>
 
 ## onPlayerInfoUpdated [2/2]
 
@@ -2825,13 +2774,13 @@ virtual void onMetadata(PlayerMetadataType type, const uint8_t *data, size_t len
 
 <a id="callback_playerobserver_onplayerinfoupdated_playerobserver__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerInfoUpdated(const PlayerInfo *info) {}
 ```
 
 <a id="callback_playerobserver_onplayerinfoupdated_playerobserver__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2847,14 +2796,13 @@ virtual void onPlayerInfoUpdated(const PlayerInfo *info) {}
 
 ### 参数
 
-#### `info`
+### info
 
 播放器和媒体流的信息。详见 [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onpositionchanged_playerobserver"></a>
+
+<a id="ariaid-title71"></a>
 
 ## onPositionChanged
 
@@ -2862,13 +2810,13 @@ virtual void onPlayerInfoUpdated(const PlayerInfo *info) {}
 
 <a id="callback_playerobserver_onpositionchanged_playerobserver__prototype"></a>
 
-```cpp
+```text
 virtual void onPositionChanged(uint64_t curr_time, uint64_t utc_time) {}
 ```
 
 <a id="callback_playerobserver_onpositionchanged_playerobserver__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2882,18 +2830,17 @@ virtual void onPositionChanged(uint64_t curr_time, uint64_t utc_time) {}
 
 ### 参数
 
-#### `curr_time`
+### curr_time
 
 当前播放进度，单位为毫秒。
 
-#### `utc_time`
+### utc_time
 
 当前 NTP（网络时间协议）时间，单位为毫秒。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onresolutionchanged"></a>
+
+<a id="ariaid-title72"></a>
 
 ## onResolutionChanged
 
@@ -2901,13 +2848,13 @@ virtual void onPositionChanged(uint64_t curr_time, uint64_t utc_time) {}
 
 <a id="callback_playerobserver_onresolutionchanged__prototype"></a>
 
-```cpp
+```text
 virtual void onResolutionChanged(int width, int height) {}
 ```
 
 <a id="callback_playerobserver_onresolutionchanged__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2923,18 +2870,17 @@ virtual void onResolutionChanged(int width, int height) {}
 
 ### 参数
 
-#### `width`
+### width
 
 视频帧的宽度（像素）。
 
-#### `height`
+### height
 
 视频帧的高度（像素）。
 
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)
-
 <a id="callback_playerobserver_onstatechanged"></a>
+
+<a id="ariaid-title73"></a>
 
 ## onStateChanged
 
@@ -2942,13 +2888,13 @@ virtual void onResolutionChanged(int width, int height) {}
 
 <a id="callback_playerobserver_onstatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onStateChanged(PlayerState old_state, PlayerState new_state, rte::Error *err) {}
 ```
 
 <a id="callback_playerobserver_onstatechanged__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -2964,17 +2910,14 @@ virtual void onStateChanged(PlayerState old_state, PlayerState new_state, rte::E
 
 ### 参数
 
-#### `old_state`
+### old_state
 
 播放器之前的状态，详见 [RtePlayerState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerstate)。
 
-#### `new_state`
+### new_state
 
 播放器当前的状态，详见 [RtePlayerState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerstate)。如果当前状态为 `kRtePlayerStateFailed`，你可以通过 `err` 参数获取详细的错误信息。
 
-#### `err`
+### err
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
-
-### 所属接口类
-- [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)

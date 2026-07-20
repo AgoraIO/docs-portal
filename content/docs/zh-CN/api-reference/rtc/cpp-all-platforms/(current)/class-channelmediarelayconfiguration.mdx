@@ -1,10 +1,18 @@
 ---
-title: "ChannelMediaRelayConfiguration"
-description: "用于配置跨频道媒体流转发。"
+title: ChannelMediaRelayConfiguration
+description: 用于配置跨频道媒体流转发。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_channelmediarelayconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_channelmediarelayconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_channelmediarelayconfiguration__prototype"></a>
 
-```cpp
+```text
 struct ChannelMediaRelayConfiguration {
   ChannelMediaInfo* srcInfo;
   ChannelMediaInfo* destInfos;
@@ -16,30 +24,32 @@ struct ChannelMediaRelayConfiguration {
 
 ## 属性
 
-### `srcInfo`
+### srcInfo
 
 源频道的信息，详见 [ChannelMediaInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediainfo)。该结构体包含以下成员：
 
-- channelName：源频道的名称。默认值为 NULL，表示 SDK 使用当前频道的名称。
-- token：用于加入源频道的 Token，由 channelName 和 uid 生成。
+- `channelName`：源频道的名称。默认值为 NULL，表示 SDK 使用当前频道的名称。
+- `token`：用于加入源频道的 Token，由 `channelName` 和 `uid` 生成。
+
   - 如果你未启用 App Certificate，请将该参数设置为默认值 NULL，表示 SDK 使用 App ID。
-  - 如果你已启用 App Certificate，必须使用由 channelName 和 uid 生成的 Token，且 uid 必须设置为 0。
-- uid：用于标识源频道中转发流的唯一用户 ID。建议保持默认值 0 不变。
+  - 如果你已启用 App Certificate，必须使用由 `channelName` 和 `uid` 生成的 Token，且 `uid` 必须设置为 0。
+- `uid`：用于标识源频道中转发流的唯一用户 ID。建议保持默认值 0 不变。
 
-### `destInfos`
+### destInfos
 
-:::info[注]
-如果任一目标频道的 Token 过期，整个媒体流转发将停止。建议你为所有目标频道设置相同的 Token 过期时间。
+:::note
+注： 如果任一目标频道的 Token 过期，整个媒体流转发将停止。建议你为所有目标频道设置相同的 Token 过期时间。
 :::
 
 目标频道的信息，详见 [ChannelMediaInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediainfo)。该结构体包含以下成员：
 
-- channelName：目标频道的名称。
-- token：用于加入目标频道的 Token，由 channelName 和 uid 生成。
-  - 如果你未启用 App Certificate，请将该参数设置为默认值 NULL，表示 SDK 使用 App ID。
-  - 如果你已启用 App Certificate，必须使用由 channelName 和 uid 生成的 Token。
-- uid：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32 - 1)。为避免用户 ID 冲突，该 ID 必须不同于目标频道中其他用户的 ID。默认值为 0，表示 SDK 会生成一个随机 UID。详见 ChannelMediaInfo。
+- `channelName`：目标频道的名称。
+- `token`：用于加入目标频道的 Token，由 `channelName` 和 `uid` 生成。
 
-### `destCount`
+  - 如果你未启用 App Certificate，请将该参数设置为默认值 NULL，表示 SDK 使用 App ID。
+  - 如果你已启用 App Certificate，必须使用由 `channelName` 和 `uid` 生成的 Token。
+- `uid`：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32 - 1)。为避免用户 ID 冲突，该 ID 必须不同于目标频道中其他用户的 ID。默认值为 0，表示 SDK 会生成一个随机 UID。详见 [ChannelMediaInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediainfo)。
+
+### destCount
 
 目标频道的数量。默认值为 0，取值范围为 0 到 6。请确保该参数的值与 `destInfos` 中定义的 [ChannelMediaInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediainfo) 结构体数量一致。

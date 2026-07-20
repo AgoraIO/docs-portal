@@ -2,37 +2,43 @@
 title: AudioFrame
 description: 原始音频数据。
 _migration:
-  type: existing-mdx-normalized
+  type: generated-html
+  status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_audioframe
   sourcePath: html-docs/rtc/HarmonyOS/API/class_audioframe.html
-  generator: api-center-existing-normalizer
-  status: warning
+  generator: oxygen
   warnings:
     - code: empty-source-code
       severity: info
-      message: 1 empty code block was omitted because the authoritative legacy source provides no signature.
-      count: 1
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
+
 <a id="class_audioframe__prototype"></a>
 
 <a id="class_audioframe__parameters"></a>
 
-### `samplesPerChannel`
+##
+
+### samplesPerChannel
 
 每个声道的采样点数。
 
-### `bytesPerSample`
+### bytesPerSample
 
 每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
 
-### `channelNums`
+### channelNums
 
 声道数量(如果是立体声，数据是交叉的)。
+
+<a id="class_audioframe__ul_zxz_2wt_r4b"></a>
 
 - 1: 单声道
 - 2: 双声道
 
-### `sampleRataHz`
+### sampleRataHz
 
 每声道每秒的采样点数。
 
@@ -40,6 +46,6 @@ _migration:
 
 缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
 
-### `timestamp`
+### timestamp
 
 音频帧的时间戳。

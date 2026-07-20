@@ -1,10 +1,18 @@
 ---
-title: "MediaRecorderConfiguration"
-description: "用于配置音视频流的录制参数。"
+title: MediaRecorderConfiguration
+description: 用于配置音视频流的录制参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mediarecorderconfiguration__prototype"></a>
 
-```cpp
+```text
 struct MediaRecorderConfiguration {
   const char* storagePath;
   MediaRecorderContainerFormat containerFormat;
@@ -22,7 +30,7 @@ struct MediaRecorderConfiguration {
 
 <a id="class_mediarecorderconfiguration__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v3.5.2 版本新增。
 
@@ -30,52 +38,52 @@ struct MediaRecorderConfiguration {
 
 ## 属性
 
-### `storagePath`
+### storagePath
 
-:::info[注]
-请确保指定路径存在且可写。
+:::note
+注： 请确保指定路径存在且可写。
 :::
 
 本地保存录制文件的绝对路径，包括文件名和格式。例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.mp4
-- iOS: /App Sandbox/Library/Caches/example.mp4
-- macOS: /Library/Logs/example.mp4
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.mp4
+- Windows: `C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.mp4`
+- iOS: `/App Sandbox/Library/Caches/example.mp4`
+- macOS: `/Library/Logs/example.mp4`
+- Android: `/storage/emulated/0/Android/data/&lt;package name&gt;/files/example.mp4`
 
-### `containerFormat`
+### containerFormat
 
 录制文件的格式。详见 [MediaRecorderContainerFormat](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediarecordercontainerformat)。
 
-### `streamType`
+### streamType
 
 录制的内容类型。详见 [MediaRecorderStreamType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediarecorderstreamtype)。
 
-### `maxDurationMs`
+### maxDurationMs
 
 最大录制时长，单位为毫秒。默认值为 120000。
 
-### `recorderInfoUpdateInterval`
+### recorderInfoUpdateInterval
 
 录制信息更新的时间间隔，单位为毫秒。有效范围为 [1000, 10000]。SDK 会根据该值触发 [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调以报告录制信息更新。
 
-### `width`
+### width
 
 录制视频的宽度（像素）。宽度 × 高度的最大值不能超过 3840 × 2160。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
 
-### `height`
+### height
 
 录制视频的高度（像素）。宽度 × 高度的最大值不能超过 3840 × 2160。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
 
-### `fps`
+### fps
 
 录制视频的帧率。最大值为 30，例如：5、10、15、24、30。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
 
-### `sample_rate`
+### sample_rate
 
 录制音频的采样率（Hz）。支持的值包括：16000、32000、44100 或 48000。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
 
-### `channel_num`
+### channel_num
 
 录制音频的声道数：
 
@@ -84,6 +92,6 @@ struct MediaRecorderConfiguration {
 
 仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
 
-### `videoSourceType`
+### videoSourceType
 
 录制的视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。

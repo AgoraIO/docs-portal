@@ -1,10 +1,19 @@
 ---
-title: "媒体资源打开"
-description: "媒体资源打开 API reference."
+title: 媒体资源打开
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_mediaplayer_open
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_mediaplayer_open.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_open"></a>
 
 <a id="api_imediaplayer_open"></a>
+
+<a id="ariaid-title2"></a>
 
 ## open
 
@@ -12,17 +21,25 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_open__prototype"></a>
 
-```arkts
+```text
 public abstract open(url:string, startPos:number):number;
 ```
 
 <a id="api_imediaplayer_open__detailed_desc"></a>
 
+<a id="api_imediaplayer_open__uri"></a>
+
 该方法支持打开以 `content://` 开头的 URI 文件。
 
-媒体播放器支持的格式详见 媒体播放器。
+<a id="api_imediaplayer_open__format"></a>
 
-:::warning[注意]
+媒体播放器支持的格式详见媒体播放器。
+
+<a id="api_imediaplayer_open__note"></a>
+
+:::note
+注意：
+
 该方法为异步调用。
 :::
 
@@ -42,17 +59,19 @@ public abstract open(url:string, startPos:number):number;
 
 ### 相关回调
 
+<a id="api_imediaplayer_open__open"></a>
+
 调用该方法后会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 OPEN_COMPLETED 后，你可以调用 [play](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
 <a id="api_imediaplayer_open__parameters"></a>
 
 ### 参数
 
-#### `url`
+### url
 
 设置媒体文件的路径，支持本地和在线文件。
 
-#### `startPos`
+### startPos
 
 设置起始播放位置（毫秒），默认值为 0。
 
@@ -61,12 +80,11 @@ public abstract open(url:string, startPos:number):number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_openwithmediasource"></a>
+
+<a id="ariaid-title3"></a>
 
 ## openWithMediaSource
 
@@ -74,15 +92,17 @@ public abstract open(url:string, startPos:number):number;
 
 <a id="api_imediaplayer_openwithmediasource__prototype"></a>
 
-```arkts
+```text
 public abstract openWithMediaSource(source: MediaPlayerSource) :number ;
 ```
 
 <a id="api_imediaplayer_openwithmediasource__detailed_desc"></a>
 
-该方法支持你打开不同类型的媒体资源，包括以 `content://` 开头的 URI 文件、 `assets` 文件夹中的媒体文件、以及其他自定义的媒体资源文件，并可进行播放设置。
+该方法支持你打开不同类型的媒体资源，包括以 `content://` 开头的 URI 文件、`assets` 文件夹中的媒体文件、以及其他自定义的媒体资源文件，并可进行播放设置。
 
-媒体播放器支持的格式详见 媒体播放器。
+<a id="api_imediaplayer_openwithmediasource__format"></a>
+
+媒体播放器支持的格式详见媒体播放器。
 
 <a id="api_imediaplayer_openwithmediasource__timing"></a>
 
@@ -100,7 +120,7 @@ public abstract openWithMediaSource(source: MediaPlayerSource) :number ;
 
 ### 参数
 
-#### `source`
+### source
 
 媒体资源，详见 [MediaPlayerSource](/zh-CN/api-reference/rtc/harmonyos/class-mediasource)。
 
@@ -109,12 +129,11 @@ public abstract openWithMediaSource(source: MediaPlayerSource) :number ;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_preloadsrc"></a>
+
+<a id="ariaid-title4"></a>
 
 ## preloadSrc
 
@@ -122,7 +141,7 @@ public abstract openWithMediaSource(source: MediaPlayerSource) :number ;
 
 <a id="api_imediaplayer_preloadsrc__prototype"></a>
 
-```arkts
+```text
 public abstract preloadSrc(src:string, startPos:number):number;
 ```
 
@@ -136,7 +155,9 @@ public abstract preloadSrc(src:string, startPos:number):number;
 
 预加载成功后，如果你想播放媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
 
-:::info[注]
+:::note
+注：
+
 SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将正在播放的媒体资源再次预加载到播放列表。
 :::
 
@@ -144,11 +165,11 @@ SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将�
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的网络路径。
 
-#### `startPos`
+### startPos
 
 预加载到播放列表后，开始播放时的起始位置（毫秒）。预加载直播流时，将该参数设置为 0。
 
@@ -157,12 +178,11 @@ SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_switchsrc"></a>
+
+<a id="ariaid-title5"></a>
 
 ## switchSrc
 
@@ -170,7 +190,7 @@ SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将�
 
 <a id="api_imediaplayer_switchsrc__prototype"></a>
 
-```arkts
+```text
 public abstract switchSrc(src:string, syncPts:boolean):number;
 ```
 
@@ -185,11 +205,14 @@ public abstract switchSrc(src:string, syncPts:boolean):number;
 
 调用该方法后，如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 SWITCH_COMPLETE，则媒体资源切换成功；如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 SWITCH_ERROR，则媒体资源切换失败。
 
-:::warning[注意]
-- 请确保在 open 之后调用该方法。
+:::note
+注意：
+
+- 请确保在 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 之后调用该方法。
 - 为保证播放正常，请在调用该方法时注意如下：
+
   - 不要在播放暂停时调用该方法。
-  - 不要在切换码率过程中调用 seek。
+  - 不要在切换码率过程中调用 [seek](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)。
   - 确保切换码率前的播放位置不大于待切换的媒体资源总时长。
 :::
 
@@ -197,16 +220,16 @@ public abstract switchSrc(src:string, syncPts:boolean):number;
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的网络路径。
 
-#### `syncPts`
+### syncPts
 
 是否同步切换前后的起始播放位置:
 
-- true：同步。
-- false：(默认) 不同步。
+- `true`：同步。
+- `false`：(默认) 不同步。
 
 如果媒体资源为直播流，你只能将该参数设置为 `false`，否则 SDK 切换媒体资源会失败。如果媒体资源为点播流，你可以根据场景需求对该参数赋值。
 
@@ -215,12 +238,11 @@ public abstract switchSrc(src:string, syncPts:boolean):number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unloadsrc"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unloadSrc
 
@@ -228,7 +250,7 @@ public abstract switchSrc(src:string, syncPts:boolean):number;
 
 <a id="api_imediaplayer_unloadsrc__prototype"></a>
 
-```arkts
+```text
 public abstract unloadSrc(src:string):number;
 ```
 
@@ -236,7 +258,9 @@ public abstract unloadSrc(src:string):number;
 
 ### 详情
 
-:::warning[注意]
+:::note
+注意：
+
 该方法不支持释放当前播放的媒体资源。
 :::
 
@@ -244,7 +268,7 @@ public abstract unloadSrc(src:string):number;
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的网络路径。
 
@@ -253,7 +277,4 @@ public abstract unloadSrc(src:string):number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

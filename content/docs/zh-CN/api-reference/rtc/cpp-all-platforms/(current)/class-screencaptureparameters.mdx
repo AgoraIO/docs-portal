@@ -1,10 +1,18 @@
 ---
-title: "ScreenCaptureParameters"
-description: "用于配置屏幕共享的参数。"
+title: ScreenCaptureParameters
+description: 用于配置屏幕共享的参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_screencaptureparameters
+  sourcePath: html-docs/rtc/Cpp/API/class_screencaptureparameters.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screencaptureparameters__prototype"></a>
 
-```cpp
+```text
 struct ScreenCaptureParameters {
   bool captureAudio;
   ScreenAudioParameters audioParams;
@@ -25,31 +33,31 @@ struct ScreenCaptureParameters {
 
 ## 属性
 
-### `dimensions`
+### dimensions
 
-:::info[注]
-在文档共享场景中设置编码分辨率时，请参考建议设置方式。
+:::note
+注： 在文档共享场景中设置编码分辨率时，请参考建议设置方式。
 :::
 
 屏幕共享视频流的编码分辨率。默认值为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。如果屏幕尺寸与该参数值不同，SDK 会采用以下编码策略。假设 `dimensions` 设置为 1920 × 1080：
 
-- 如果屏幕尺寸小于 dimensions，例如 1000 × 1000 像素，SDK 使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
-- 如果屏幕尺寸大于 dimensions，例如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4:3）的前提下，使用不超过 dimensions 的最大值进行编码，即 1440 × 1080。
+- 如果屏幕尺寸小于 `dimensions`，例如 1000 × 1000 像素，SDK 使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
+- 如果屏幕尺寸大于 `dimensions`，例如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4:3）的前提下，使用不超过 `dimensions` 的最大值进行编码，即 1440 × 1080。
 
 详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
 
-### `frameRate`
+### frameRate
 
 在 Windows 和 macOS 上，表示屏幕共享视频流的编码帧率（fps）。默认值为 5。声网不建议设置超过 15 的值。
 
-### `bitrate`
+### bitrate
 
 在 Windows 和 macOS 上，表示屏幕共享视频流的编码码率（Kbps）。默认值为 0，表示 SDK 会根据当前屏幕的分辨率自动计算码率。
 
-### `captureMouseCursor`
+### captureMouseCursor
 
-:::info[注]
-由于 macOS 系统限制，在屏幕共享时设置为 false 无效（共享窗口时不受影响）。
+:::note
+注： 由于 macOS 系统限制，在屏幕共享时设置为 false 无效（共享窗口时不受影响）。
 :::
 
 是否在屏幕共享中捕获鼠标：
@@ -57,10 +65,10 @@ struct ScreenCaptureParameters {
 - true：（默认）捕获鼠标。
 - false：不捕获鼠标。
 
-### `windowFocus`
+### windowFocus
 
-:::info[注]
-由于 macOS 系统限制，当设置该参数将窗口置于前台时，如果当前应用有多个窗口，只有主窗口会被置于前台。
+:::note
+注： 由于 macOS 系统限制，当设置该参数将窗口置于前台时，如果当前应用有多个窗口，只有主窗口会被置于前台。
 :::
 
 调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口置于前台：
@@ -68,37 +76,37 @@ struct ScreenCaptureParameters {
 - true：将窗口置于前台。
 - false：（默认）不将窗口置于前台。
 
-### `excludeWindowList`
+### excludeWindowList
 
 要屏蔽的窗口 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕共享时，可使用该参数屏蔽指定窗口。调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享配置时，也可使用该参数动态屏蔽指定窗口。
 
-### `excludeWindowCount`
+### excludeWindowCount
 
 要排除的窗口数量。
 
-:::info[注]
-在 Windows 平台上，该参数的最大值为 24；若超过此值，窗口排除将失败。
+:::note
+注： 在 Windows 平台上，该参数的最大值为 24；若超过此值，窗口排除将失败。
 :::
 
-### `highLightWidth`
+### highLightWidth
 
 （仅适用于 macOS 和 Windows）边框的宽度（像素）。默认值为 5，取值范围为 (0, 50]。
 
-:::info[注]
-仅当 `highLighted` 设置为 true 时该参数才生效。
+:::note
+注： 仅当 `highLighted` 设置为 true 时该参数才生效。
 :::
 
-### `highLightColor`
+### highLightColor
 
 （仅适用于 macOS 和 Windows）
 
 - 在 Windows 平台上，边框颜色为 ARGB 格式。默认值为 0xFF8CBF26。
-- 在 macOS 上， COLOR_CLASS 表示 NSColor。
+- 在 macOS 上，`COLOR_CLASS` 表示 `NSColor`。
 
-### `enableHighLight`
+### enableHighLight
 
-:::info[注]
-当共享窗口或屏幕的部分区域时，若设置该参数为 true，SDK 会在整个窗口或屏幕周围显示边框。
+:::note
+注： 当共享窗口或屏幕的部分区域时，若设置该参数为 true，SDK 会在整个窗口或屏幕周围显示边框。
 :::
 
 （仅适用于 macOS 和 Windows）是否在共享的窗口或屏幕周围显示边框：

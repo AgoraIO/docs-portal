@@ -1,10 +1,19 @@
 ---
-title: "屏幕采集"
-description: "屏幕采集 API reference."
+title: 屏幕采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_screencapture
+  sourcePath: html-docs/rtc/Cpp/API/toc_screencapture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_screencapture"></a>
 
 <a id="api_iscreencapturesourcelist_getcount_iscreencapturesourcelist"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getCount
 
@@ -12,14 +21,14 @@ description: "屏幕采集 API reference."
 
 <a id="api_iscreencapturesourcelist_getcount_iscreencapturesourcelist__prototype"></a>
 
-```cpp
+```text
 virtual unsigned int getCount() = 0;
 ```
 
 <a id="api_iscreencapturesourcelist_getcount_iscreencapturesourcelist__detailed_desc"></a>
 
-:::info[注]
-[getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_iscreencapturesourcelist_getcount_iscreencapturesourcelist) 方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_iscreencapturesourcelist_getcount_iscreencapturesourcelist) 方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_iscreencapturesourcelist_getcount_iscreencapturesourcelist__return_values"></a>
@@ -28,10 +37,9 @@ virtual unsigned int getCount() = 0;
 
 方法调用成功，返回可共享窗口和屏幕的数量。
 
-### 所属接口类
-- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
-
 <a id="api_irtcengine_getscreencapturesources"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getScreenCaptureSources
 
@@ -39,7 +47,7 @@ virtual unsigned int getCount() = 0;
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```cpp
+```text
 virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize, const SIZE& iconSize, const bool includeScreen) = 0;
 ```
 
@@ -47,23 +55,23 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 你可以在共享屏幕或窗口前调用该方法，获取可共享的屏幕和窗口列表。用户可通过列表中的缩略图轻松选择要共享的屏幕或窗口。该列表还包含窗口 ID 和屏幕 ID 等信息，你可以使用这些信息调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始共享。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_irtcengine_getscreencapturesources__parameters"></a>
 
 ### 参数
 
-#### `thumbSize`
+### thumbSize
 
-屏幕或窗口缩略图的目标尺寸（宽度和高度，单位为像素）。SDK 会缩放原始图像，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300， `thumbSize` 为 100 × 100，则缩略图的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则缩略图为原始图像，SDK 不进行缩放。详见 [`SIZE`](https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-size)。
+屏幕或窗口缩略图的目标尺寸（宽度和高度，单位为像素）。SDK 会缩放原始图像，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`thumbSize` 为 100 × 100，则缩略图的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则缩略图为原始图像，SDK 不进行缩放。详见 [`SIZE`](https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-size)。
 
-#### `iconSize`
+### iconSize
 
-应用程序图标的目标尺寸（宽度和高度，单位为像素）。SDK 会缩放原始图像，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300， `iconSize` 为 100 × 100，则图标的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则图标为原始图像，SDK 不进行缩放。详见 [`SIZE`](https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-size)。
+应用程序图标的目标尺寸（宽度和高度，单位为像素）。SDK 会缩放原始图像，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`iconSize` 为 100 × 100，则图标的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则图标为原始图像，SDK 不进行缩放。详见 [`SIZE`](https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-size)。
 
-#### `includeScreen`
+### includeScreen
 
 是否返回屏幕信息：
 
@@ -74,13 +82,12 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 ### 返回值
 
-- 方法调用成功，返回 IScreenCaptureSourceList 实例，详见 IScreenCaptureSourceList。
+- 方法调用成功，返回 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist) 实例，详见 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getSourceInfo
 
@@ -88,7 +95,7 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist__prototype"></a>
 
-```cpp
+```text
 virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 ```
 
@@ -96,17 +103,17 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 在获取 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist) 后，传入指定窗口或屏幕的索引值，从 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo) 中获取该窗口或屏幕的信息。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist__parameters"></a>
 
 ### 参数
 
-#### `index`
+### index
 
-指定可共享窗口或屏幕的索引。取值范围为 [0, [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_iscreencapturesourcelist_getcount_iscreencapturesourcelist) ())。
+指定可共享窗口或屏幕的索引。取值范围为 [0, [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_iscreencapturesourcelist_getcount_iscreencapturesourcelist)() )。
 
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist__return_values"></a>
 
@@ -114,10 +121,9 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 方法调用成功，返回 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo) 对象，详见 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo)。
 
-### 所属接口类
-- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
-
 <a id="api_irtcengine_queryscreencapturecapability"></a>
+
+<a id="ariaid-title5"></a>
 
 ## queryScreenCaptureCapability
 
@@ -125,20 +131,20 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 <a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
 
-```cpp
+```text
 virtual int queryScreenCaptureCapability() = 0;
 ```
 
 <a id="api_irtcengine_queryscreencapturecapability__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.2.0 版本新增。
 
 为了确保屏幕共享的最佳性能，特别是在启用如 60 fps 的高帧率时，建议你在共享前调用该方法，查询设备支持的最高帧率。如果设备不支持高帧率，你可以相应地降低屏幕共享流的帧率，以避免影响共享质量。
 
-:::info[注]
-该方法仅适用于 Android 和 iOS 平台。
+:::note
+注： 该方法仅适用于 Android 和 iOS 平台。
 :::
 
 <a id="api_irtcengine_queryscreencapturecapability__scenario"></a>
@@ -151,21 +157,20 @@ virtual int queryScreenCaptureCapability() = 0;
 
 ### 返回值
 
-- 方法调用成功，返回设备支持的最高帧率，详见 SCREEN_CAPTURE_FRAMERATE_CAPABILITY。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- 方法调用成功，返回设备支持的最高帧率，详见 [SCREEN_CAPTURE_FRAMERATE_CAPABILITY](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screencaptureframeratecapability)。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iscreencapturesourcelist_release_iscreencapturesourcelist"></a>
 
+<a id="ariaid-title6"></a>
+
 ## release
 
-释放 IScreenCaptureSourceList。
+释放 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)。
 
 <a id="api_iscreencapturesourcelist_release_iscreencapturesourcelist__prototype"></a>
 
-```cpp
+```text
 virtual void release() = 0;
 ```
 
@@ -173,22 +178,21 @@ virtual void release() = 0;
 
 获取可共享窗口和屏幕列表后，为避免内存泄漏，请调用该方法释放 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)，而不是直接删除该对象。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
-
-### 所属接口类
-- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
 
+<a id="ariaid-title7"></a>
+
 ## setExternalMediaProjection
 
-配置 SDK 外部的 MediaProjection 以采集屏幕视频流。
+配置 SDK 外部的 `MediaProjection` 以采集屏幕视频流。
 
 <a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
 
-```cpp
+```text
 virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 ```
 
@@ -196,8 +200,8 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 
 调用该方法后，你设置的外部 `MediaProjection` 将替代 SDK 申请的 `MediaProjection` 用于采集屏幕视频流。当屏幕共享停止或 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 被销毁时，SDK 会自动释放该 `MediaProjection`。
 
-:::info[注]
-调用该方法前，你必须先申请 [`MediaProjection`](https://developer.android.com/reference/android/media/projection/MediaProjection) 权限。该方法仅适用于 Android 平台。
+:::note
+注： 调用该方法前，你必须先申请 [`MediaProjection`](https://developer.android.com/reference/android/media/projection/MediaProjection) 权限。该方法仅适用于 Android 平台。
 :::
 
 <a id="api_irtcengine_setexternalmediaprojection__scenario"></a>
@@ -221,7 +225,7 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 
 ### 参数
 
-#### `mediaProjection`
+### mediaProjection
 
 用于采集屏幕视频流的 `MediaProjection` 对象。
 
@@ -230,12 +234,11 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setScreenCaptureContentHint
 
@@ -243,7 +246,7 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 
 <a id="api_irtcengine_setscreencapturecontenthint__prototype"></a>
 
-```cpp
+```text
 virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 ```
 
@@ -251,15 +254,15 @@ virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 
 该方法用于设置屏幕共享的内容类型提示，以便 SDK 针对不同类型的内容应用相应的优化算法。如果你未调用该方法，默认内容提示为 `CONTENT_HINT_NONE`。
 
-:::info[注]
-你可以在开始或停止屏幕共享之前或之后调用此方法。
+:::note
+注： 你可以在开始或停止屏幕共享之前或之后调用此方法。
 :::
 
 <a id="api_irtcengine_setscreencapturecontenthint__parameters"></a>
 
 ### 参数
 
-#### `contentHint`
+### contentHint
 
 屏幕共享的内容提示，详见 [VIDEO_CONTENT_HINT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocontenthint)。
 
@@ -268,14 +271,14 @@ virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效，可能是因为你已共享了其他屏幕或窗口。请调用 stopScreenCapture 停止当前共享后重新开始。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效，可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setScreenCaptureScenario
 
@@ -283,7 +286,7 @@ virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```cpp
+```text
 virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 ```
 
@@ -291,15 +294,15 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 
 调用该方法设置屏幕共享场景，SDK 会根据场景自动优化共享的视频质量和用户体验。
 
-:::info[注]
-建议在加入频道前调用此方法。
+:::note
+注： 建议在加入频道前调用此方法。
 :::
 
 <a id="api_irtcengine_setscreencapturescenario__parameters"></a>
 
 ### 参数
 
-#### `screenScenario`
+### screenScenario
 
 屏幕共享场景。详见 [SCREEN_SCENARIO_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screenscenariotype)。
 
@@ -308,12 +311,11 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapture"></a>
+
+<a id="ariaid-title10"></a>
 
 ## startScreenCapture [1/2]
 
@@ -321,7 +323,7 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 
 <a id="api_irtcengine_startscreencapture__prototype"></a>
 
-```cpp
+```text
 virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 0;
 ```
 
@@ -329,22 +331,25 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
 
 你可以在加入频道前或后调用该方法，具体如下：
 
-- 先调用该方法，再调用 joinChannel 加入频道，并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
-- 加入频道后调用该方法，再调用 updateChannelMediaOptions 并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
+- 先调用该方法，再调用 `joinChannel` 加入频道，并将 `publishScreenCaptureVideo` 设置为 true，以开始屏幕共享。
+- 加入频道后调用该方法，再调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenCaptureVideo` 设置为 true，以开始屏幕共享。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS 平台。
 - 在 iOS 平台，屏幕共享仅支持 iOS 12.0 及以上版本。
 - 如果你使用自定义音频源而非 SDK 采集音频，声网建议你在应用中添加保活处理逻辑，以避免应用进入后台后屏幕共享中断。
 - 该功能对设备性能要求较高，声网建议你在 iPhone X 及以上机型上使用。
-- 该方法依赖 iOS 屏幕共享动态库 AgoraReplayKitExtension.xcframework。如果该动态库被删除，屏幕共享将无法正常启用。
-- 在 Android 平台，如果用户未授予应用屏幕采集权限，SDK 会触发 onPermissionError (2) 回调。
-- 在 Android 9 及以上版本，为避免应用进入后台后被系统杀死，声网建议你在 /app/Manifests/AndroidManifest.xml 文件中添加前台服务权限 android.permission.FOREGROUND_SERVICE。
+- 该方法依赖 iOS 屏幕共享动态库 `AgoraReplayKitExtension.xcframework`。如果该动态库被删除，屏幕共享将无法正常启用。
+- 在 Android 平台，如果用户未授予应用屏幕采集权限，SDK 会触发 [onPermissionError](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onpermissionerror) `(2)` 回调。
+- 在 Android 9 及以上版本，为避免应用进入后台后被系统杀死，声网建议你在 `/app/Manifests/AndroidManifest.xml` 文件中添加前台服务权限 `android.permission.FOREGROUND_SERVICE`。
 - 由于性能限制，Android TV 不支持屏幕共享。
 - 由于系统限制，使用华为手机时，请勿在屏幕共享过程中调整屏幕共享流的视频编码分辨率，否则可能导致崩溃。
 - 由于系统限制，部分小米设备在屏幕共享时不支持采集系统音频。
-- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 setAudioScenario 方法将音频应用场景设置为 AUDIO_SCENARIO_GAME_STREAMING。
-- 屏幕共享流的计费基于 ScreenVideoParameters 中的 dimensions：
+- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频应用场景设置为 `AUDIO_SCENARIO_GAME_STREAMING`。
+- 屏幕共享流的计费基于 [ScreenVideoParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screenvideoparameters) 中的 `dimensions`：
+
   - 如果你未传入该值，声网按 1280 × 720 计费。
   - 如果你传入该值，声网按该值计费。
 :::
@@ -359,7 +364,7 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数，详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters2)。
 
@@ -368,15 +373,15 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2（iOS 平台）：参数为 NULL。
   - -2（Android 平台）：系统版本过低。请确保 Android API 级别不低于 21。
   - -3（Android 平台）：无法采集系统音频。请确保 Android API 级别不低于 29。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_startscreencapture2"></a>
+
+<a id="ariaid-title11"></a>
 
 ## startScreenCapture [2/2]
 
@@ -384,7 +389,7 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```cpp
+```text
 virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCaptureConfiguration& config) = 0;
 ```
 
@@ -392,11 +397,13 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 
 该方法支持从指定的视频源开始屏幕采集，适用于多频道或本地合图等场景。声网 SDK 提供多种屏幕采集方法，请根据实际需求选择：
 
-- startScreenCapture [1/2] / startScreenCaptureByDisplayId / startScreenCaptureByWindowId：仅支持采集单个屏幕或窗口，适用于只共享一个屏幕的场景。
-- startScreenCapture [2/2]：支持指定多个视频源采集多个屏幕共享流，适用于本地合图或多频道场景。
+- [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapture) / [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) / [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适用于只共享一个屏幕的场景。
+- [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源采集多个屏幕共享流，适用于本地合图或多频道场景。
 
-:::info[注]
-- 如果通过该方法开始屏幕采集，你需要调用 stopScreenCapture 停止屏幕采集。
+:::note
+注：
+
+- 如果通过该方法开始屏幕采集，你需要调用 `stopScreenCapture` 停止屏幕采集。
 - 在 Windows 平台上，最多支持四路屏幕采集视频流。
 - 在 macOS 平台上，仅支持一路屏幕采集视频流。
 - 该方法仅适用于 macOS 和 Windows 平台。
@@ -414,22 +421,22 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 
 你可以在加入频道前或后调用该方法，具体如下：
 
-- 先调用该方法，再调用 joinChannel 加入频道，并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
-- 加入频道后调用该方法，再调用 updateChannelMediaOptions 并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
+- 先调用该方法，再调用 `joinChannel` 加入频道，并将 `publishScreenCaptureVideo` 设置为 true，以开始屏幕共享。
+- 加入频道后调用该方法，再调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenCaptureVideo` 设置为 true，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture2__parameters"></a>
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-:::info[注]
-在 macOS 平台上，该参数只能设置为 `VIDEO_SOURCE_SCREEN` （2）。
+:::note
+注： 在 macOS 平台上，该参数只能设置为 `VIDEO_SOURCE_SCREEN`（2）。
 :::
 
-#### `config`
+### config
 
 屏幕采集的配置，详见 [ScreenCaptureConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureconfiguration)。
 
@@ -438,12 +445,11 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
+
+<a id="ariaid-title12"></a>
 
 ## startScreenCaptureByDisplayId
 
@@ -451,14 +457,14 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```cpp
+```text
 virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) = 0;
 ```
 
 <a id="api_irtcengine_startscreencapturebydisplayid__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS 平台。
+:::note
+注： 该方法仅适用于 Windows 和 macOS 平台。
 :::
 
 <a id="api_irtcengine_startscreencapturebydisplayid__scenario"></a>
@@ -473,26 +479,26 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 
 你可以在加入频道前或加入频道后调用该方法，具体区别如下：
 
-- 在加入频道前调用该方法，然后调用 joinChannel 加入频道，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true，以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 updateChannelMediaOptions 并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true，以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
 ### 参数
 
-#### `displayId`
+### displayId
 
 要共享的屏幕的屏幕 ID。
 
-:::info[注]
-在 Windows 平台，如果需要同时共享两个屏幕（主屏幕和副屏幕），可以在调用该方法时将 `displayId` 设置为 `-1`。
+:::note
+注： 在 Windows 平台，如果需要同时共享两个屏幕（主屏幕和副屏幕），可以在调用该方法时将 `displayId` 设置为 `-1`。
 :::
 
-#### `regionRect`
+### regionRect
 
 （可选）设置相对于屏幕的区域位置。传入 NULL 表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享配置。默认视频尺寸为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。屏幕共享视频流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
 
@@ -501,14 +507,14 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 stopScreenCapture 停止当前共享后重新开始。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
+
+<a id="ariaid-title13"></a>
 
 ## startScreenCaptureByScreenRect
 
@@ -516,38 +522,38 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__prototype"></a>
 
-```cpp
+```text
 virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) __deprecated = 0;
 ```
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.5.0 版本废弃，请改用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid)。
 
 你可以通过该方法共享整个屏幕或部分屏幕，需要指定要共享的屏幕区域。你可以在加入频道前或加入频道后调用该方法：
 
-- 加入频道前调用该方法，然后调用 joinChannel 加入频道，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true，以开始屏幕共享。
-- 加入频道后调用该方法，然后调用 updateChannelMediaOptions，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true，以开始屏幕共享。
+- 加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
+- 加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
 
-:::info[注]
-该方法仅适用于 Windows 平台。
+:::note
+注： 该方法仅适用于 Windows 平台。
 :::
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__parameters"></a>
 
 ### 参数
 
-#### `screenRect`
+### screenRect
 
 屏幕相对于虚拟屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
 
-#### `regionRect`
+### regionRect
 
 （可选）区域相对于屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。如果未设置该参数，SDK 会共享整个屏幕。如果指定的区域超出屏幕范围，SDK 仅共享屏幕内的部分；如果设置的宽或高为 0，SDK 会共享整个屏幕。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数。默认视频分辨率为 1920 × 1080（即 2,073,600 像素）。声网会根据该参数的值计算费用。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
 
@@ -556,14 +562,14 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Re
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 stopScreenCapture 停止当前共享后重新开始。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
+
+<a id="ariaid-title14"></a>
 
 ## startScreenCaptureByWindowId
 
@@ -571,13 +577,15 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Re
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```cpp
+```text
 virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) = 0;
 ```
 
 <a id="api_irtcengine_startscreencapturebywindowid__detailed_desc"></a>
 
-该方法支持通过指定窗口 ID 采集整个或部分窗口，支持 UWP（通用 Windows 平台）应用的窗口共享。 声网使用最新 SDK 对主流 UWP 应用进行了测试，详情如下：
+该方法支持通过指定窗口 ID 采集整个或部分窗口，支持 UWP（通用 Windows 平台）应用的窗口共享。
+
+声网使用最新 SDK 对主流 UWP 应用进行了测试，详情如下：
 
 | 系统版本 | 软件名称 | 兼容版本 | 是否支持 |
 | --- | --- | --- | --- |
@@ -606,8 +614,9 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 |  | WPS PPT | 11.1.0.9098 | 是 |
 |  | 系统自带的 Media Player | 所有版本 | 否 |
 
-:::info[注]
-[startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 依赖于 WGC（Windows 图形采集）或 GDI（图形设备接口）进行窗口共享。在 Windows 10 2004 之前的系统中，WGC 无法禁用鼠标采集。因此，在系统版本低于 Windows 10 2004 的设备上调用 `captureMouseCursor(false)` 可能无效。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。 该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 依赖于 WGC（Windows 图形采集）或 GDI（图形设备接口）进行窗口共享。在 Windows 10 2004 之前的系统中，WGC 无法禁用鼠标采集。因此，在系统版本低于 Windows 10 2004 的设备上调用 `captureMouseCursor(false)` 可能无效。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
+该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_irtcengine_startscreencapturebywindowid__scenario"></a>
@@ -622,18 +631,18 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 
 你可以在加入频道前或加入频道后调用该方法，具体如下：
 
-- 在加入频道前调用该方法，然后调用 joinChannel 加入频道，并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true 以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 updateChannelMediaOptions 并将 publishScreenTrack 或 publishSecondaryScreenTrack 设置为 true 以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true 以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true 以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
 ### 参数
 
-#### `windowId`
+### windowId
 
 要共享的窗口的 ID。
 
-#### `regionRect`
+### regionRect
 
 （可选）设置共享区域相对于屏幕的位置。
 
@@ -643,7 +652,7 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 
 详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享配置。默认视频分辨率为 1920 × 1080，即 2,073,600 像素。声网使用该参数的值计算费用。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
 
@@ -652,14 +661,14 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 stopScreenCapture 停止当前共享后重新开始。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请调用 `stopScreenCapture` 停止当前共享后重新开始。
 
 <a id="api_irtcengine_stopscreencapture"></a>
+
+<a id="ariaid-title15"></a>
 
 ## stopScreenCapture [1/2]
 
@@ -667,13 +676,13 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```cpp
+```text
 virtual int stopScreenCapture() = 0;
 ```
 
 <a id="api_irtcengine_stopscreencapture__detailed_desc"></a>
 
-如果你通过调用 `startScreenCapture`、 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕采集，则需要调用该方法停止屏幕采集。
+如果你通过调用 `startScreenCapture`、[startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕采集，则需要调用该方法停止屏幕采集。
 
 <a id="api_irtcengine_stopscreencapture__scenario"></a>
 
@@ -681,8 +690,8 @@ virtual int stopScreenCapture() = 0;
 
 适用于以下场景：
 
-- iOS：如果你通过调用 startScreenCapture: 开始屏幕采集，则需要调用此方法停止屏幕采集。
-- macOS：如果你通过调用 startScreenCaptureByWindowId:regionRect:captureParams: 或 startScreenCaptureByDisplayId:regionRect:captureParams: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- iOS：如果你通过调用 `startScreenCapture:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- macOS：如果你通过调用 `startScreenCaptureByWindowId:regionRect:captureParams:` 或 `startScreenCaptureByDisplayId:regionRect:captureParams:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -695,12 +704,11 @@ virtual int stopScreenCapture() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopscreencapture2"></a>
+
+<a id="ariaid-title16"></a>
 
 ## stopScreenCapture [2/2]
 
@@ -708,7 +716,7 @@ virtual int stopScreenCapture() = 0;
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```cpp
+```text
 virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 ```
 
@@ -716,8 +724,8 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 如果你通过调用 `startScreenCapture` 开始了一个或多个屏幕的采集，则需要调用该方法停止屏幕采集，并通过 `sourceType` 参数指定要停止采集的屏幕。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_irtcengine_stopscreencapture2__timing"></a>
@@ -730,7 +738,7 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
@@ -739,12 +747,11 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_updatescreencapture"></a>
+
+<a id="ariaid-title17"></a>
 
 ## updateScreenCapture
 
@@ -752,7 +759,7 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 <a id="api_irtcengine_updatescreencapture__prototype"></a>
 
-```cpp
+```text
 virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) = 0;
 ```
 
@@ -760,10 +767,12 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 
 如果在开启屏幕共享时未采集系统音频，之后希望更新参数并发布系统音频，可参考以下步骤：
 
-1. 调用该方法，并将 captureAudio 设置为 true。
-2. 调用 updateChannelMediaOptions，并将 publishScreenCaptureAudio 设置为 true，以发布通过屏幕采集的音频。
+1. 调用该方法，并将 `captureAudio` 设置为 true。
+2. 调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)，并将 `publishScreenCaptureAudio` 设置为 true，以发布通过屏幕采集的音频。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS 平台。
 - 在 iOS 平台上，屏幕共享仅支持 iOS 12.0 及以上版本。
 :::
@@ -772,7 +781,7 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters2)。
 
@@ -781,14 +790,14 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
+
+<a id="ariaid-title18"></a>
 
 ## updateScreenCaptureParameters
 
@@ -796,21 +805,21 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```cpp
+```text
 virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& captureParams) = 0;
 ```
 
 <a id="api_irtcengine_updatescreencaptureparameters__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS 平台。请在开始屏幕共享或窗口共享后调用该方法。
+:::note
+注： 该方法仅适用于 Windows 和 macOS 平台。请在开始屏幕共享或窗口共享后调用该方法。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__parameters"></a>
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数。屏幕共享流的视频属性仅需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
 
@@ -819,14 +828,14 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。
 
 <a id="api_irtcengine_updatescreencaptureregion1"></a>
+
+<a id="ariaid-title19"></a>
 
 ## updateScreenCaptureRegion
 
@@ -834,7 +843,7 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 
 <a id="api_irtcengine_updatescreencaptureregion1__prototype"></a>
 
-```cpp
+```text
 virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 ```
 
@@ -850,7 +859,7 @@ virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 
 ### 参数
 
-#### `regionRect`
+### regionRect
 
 屏幕共享区域相对于屏幕或窗口的位置。
 
@@ -865,9 +874,7 @@ virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数无效。
-  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 `stopScreenCapture` 停止当前共享，然后重新开始共享屏幕。

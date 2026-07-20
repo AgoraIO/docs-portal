@@ -1,10 +1,19 @@
 ---
-title: "SetHeadphoneEQParameters"
-description: "设置耳机均衡器的低频和高频参数。"
+title: SetHeadphoneEQParameters
+description: 设置耳机均衡器的低频和高频参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/api_irtcengine_setheadphoneeqparameters
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/api_irtcengine_setheadphoneeqparameters.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetHeadphoneEQParameters(int lowGain, int highGain);
 ```
@@ -19,11 +28,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ## 参数
 
-### `lowGain`
+### lowGain
 
 耳机均衡器的低频参数。取值范围为 [-10,10]，取值越大，声音越低沉。
 
-### `highGain`
+### highGain
 
 耳机均衡器的高频参数。取值范围为 [-10,10]，取值越大，声音越尖锐。
 
@@ -33,4 +42,5 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -1：一般性的错误（未明确归类）。

@@ -1,10 +1,18 @@
 ---
-title: "EncodedAudioFrameInfo"
-description: "编码后音频帧的信息。"
+title: EncodedAudioFrameInfo
+description: 编码后音频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_encodedaudioframeinfo
+  sourcePath: html-docs/rtc/Cpp/API/class_encodedaudioframeinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_encodedaudioframeinfo__prototype"></a>
 
-```cpp
+```text
 struct EncodedAudioFrameInfo {
   AUDIO_CODEC_TYPE codec;
   int sampleRateHz;
@@ -19,26 +27,26 @@ struct EncodedAudioFrameInfo {
 
 ## 属性
 
-### `codec`
+### codec
 
 音频编解码器类型。详见 [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiocodectype)。
 
-### `sampleRateHz`
+### sampleRateHz
 
 音频采样率，单位为 Hz。
 
-### `samplesPerChannel`
+### samplesPerChannel
 
 每个声道的音频采样点数量。
 
-### `numberOfChannels`
+### numberOfChannels
 
 音频的声道数。
 
-### `advancedSettings`
+### advancedSettings
 
 高级设置，当前暂不支持。详见 `EncodedAudioFrameAdvancedSettings`。
 
-### `captureTimeMs`
+### captureTimeMs
 
 采集音频帧的时间戳，单位为毫秒。

@@ -1,10 +1,54 @@
 ---
-title: "数据流 Datastream"
-description: "数据流 Datastream API reference."
+title: 数据流 Datastream
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_datastream
+  sourcePath: html-docs/rtc/Unity/API/toc_datastream.html
+  generator: oxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        https://doc.shengwang.cn/doc/rtm2/unity/landing-page as local text.
 ---
+
 <a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream1"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateDataStream [1/2]
 
@@ -12,7 +56,7 @@ description: "数据流 Datastream API reference."
 
 <a id="api_irtcengine_createdatastream1__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStream(ref int streamId, bool reliable, bool ordered);
 ```
 
@@ -20,8 +64,9 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 你可以调用该方法创建数据流并提高数据传输的可靠性和有序性。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
+在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengine_createdatastream1__timing"></a>
@@ -40,22 +85,22 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `reliable`
+### reliable
 
-:::info[注]
-请确保将 `reliable` 和 `ordered` 同时设为 true 或同时设为 false。
+:::note
+注： 请确保将 `reliable` 和 `ordered` 同时设为 true 或同时设为 false。
 :::
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 - false: 接收方不保证收到，就算数据丢失也不会报错。
 
-#### `ordered`
+### ordered
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
@@ -67,12 +112,11 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_createdatastream2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## CreateDataStream [2/2]
 
@@ -80,7 +124,7 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 ```
 
@@ -88,8 +132,9 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 相比 [CreateDataStream [1/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream1)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
+在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengine_createdatastream2__timing"></a>
@@ -102,11 +147,11 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/unity/class-datastreamconfig)。
 
@@ -115,12 +160,11 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_createdatastreamex1"></a>
+
+<a id="ariaid-title4"></a>
 
 ## CreateDataStreamEx [1/2]
 
@@ -128,20 +172,20 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 <a id="api_irtcengineex_createdatastreamex1__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ordered, RtcConnection connection);
 ```
 
 <a id="api_irtcengineex_createdatastreamex1__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 弃用： 该方法已废弃。请改用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex2)。
 
 你可以调用该方法创建数据流并提高数据传输的可靠性和有序性。
 
-:::info[注]
-在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+:::note
+注： 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengineex_createdatastreamex1__timing"></a>
@@ -160,29 +204,29 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `reliable`
+### reliable
 
-:::info[注]
-请确保将 `reliable` 和 `ordered` 同时设为 true 或同时设为 false。
+:::note
+注： 请确保将 `reliable` 和 `ordered` 同时设为 true 或同时设为 false。
 :::
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 - false: 接收方不保证收到，就算数据丢失也不会报错。
 
-#### `ordered`
+### ordered
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
 - true: 接收方会按照发送方发送的顺序收到数据包。
 - false: 接收方不保证按照发送方发送的顺序收到数据包。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
@@ -191,12 +235,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
+
+<a id="ariaid-title5"></a>
 
 ## CreateDataStreamEx [2/2]
 
@@ -204,7 +247,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config, RtcConnection connection);
 ```
 
@@ -212,8 +255,9 @@ public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config
 
 相比 [CreateDataStreamEx [1/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex1)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。 在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
+在 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 生命周期内，每个用户最多只能创建 5 个数据流。离开频道时数据流会被销毁，如需使用需要重新创建数据流。
 :::
 
 <a id="api_irtcengineex_createdatastreamex2__timing"></a>
@@ -226,15 +270,15 @@ public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/unity/class-datastreamconfig)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
@@ -243,12 +287,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendstreammessage"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SendStreamMessage
 
@@ -256,23 +299,24 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```csharp
+```text
 public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 ```
 
 <a id="api_irtcengine_sendstreammessage__detailed_desc"></a>
 
-调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
+调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
+SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
 
-- 该方法需要在加入频道后、且调用 CreateDataStream [2/2] 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -280,15 +324,15 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 数据流 ID。可以通过 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_createdatastream2) 获取。
 
-#### `data`
+### data
 
 待发送的数据。
 
-#### `length`
+### length
 
 数据长度。
 
@@ -297,12 +341,11 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## SendStreamMessageEx
 
@@ -310,42 +353,45 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```csharp
+```text
 public abstract int SendStreamMessageEx(int streamId, byte[] data, uint length, RtcConnection connection);
 ```
 
 <a id="api_irtcengineex_sendstreammessageex__detailed_desc"></a>
 
-调用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
+调用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。
+SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::info[注]
-- 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
-- 该方法需要在 JoinChannelEx 后调用。
-- 请确保在调用该方法前，已调用 CreateDataStreamEx [2/2] 创建了数据通道。
+:::note
+注：
+
+- 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 后调用。
+- 请确保在调用该方法前，已调用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex2) 创建了数据通道。
 :::
 
 <a id="api_irtcengineex_sendstreammessageex__parameters"></a>
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 数据流 ID。可以通过 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengineex_createdatastreamex2) 获取。
 
-#### `data`
+### data
 
 待发送的数据。
 
-#### `length`
+### length
 
 数据长度。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
@@ -354,12 +400,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
+
+<a id="ariaid-title8"></a>
 
 ## OnStreamMessage
 
@@ -367,7 +412,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```csharp
+```text
 public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, int streamId, byte[] data, ulong length, ulong sentTs) { }
 ```
 
@@ -375,42 +420,41 @@ public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, in
 
 该回调表示本地用户收到了远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
-#### `remoteUid`
+### remoteUid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `data`
+### data
 
 接收到的数据。
 
-#### `length`
+### length
 
 数据长度，单位为字节。
 
-#### `sentTs`
+### sentTs
 
 数据流发出的时间。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
+
+<a id="ariaid-title9"></a>
 
 ## OnStreamMessageError
 
@@ -418,7 +462,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```csharp
+```text
 public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUid, int streamId, int code, int missed, int cached) {}
 ```
 
@@ -426,37 +470,34 @@ public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUi
 
 该回调表示本地用户未收到远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
-:::info[注]
-如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](/zh-CN/realtime-media/rtm)。
+:::note
+注： 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用实时消息。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
-#### `remoteUid`
+### remoteUid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `code`
+### code
 
-错误码。详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code)。
+错误码。详见 [错误码](/zh-CN/api-reference/rtc/error-code)。
 
-#### `missed`
+### missed
 
 丢失的消息数量。
 
-#### `cached`
+### cached
 
 数据流中断时，后面缓存的消息数量。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

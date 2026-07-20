@@ -1,10 +1,18 @@
 ---
-title: "MediaSource"
-description: "需播放的媒体文件的相关信息及播放设置。"
+title: MediaSource
+description: 需播放的媒体文件的相关信息及播放设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_mediasource
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_mediasource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mediasource__prototype"></a>
 
-```cpp
+```text
 struct MediaSource {
   const char* url;
   const char* uri;
@@ -26,83 +34,95 @@ struct MediaSource {
 
 ## 属性
 
-### `url`
+### url
 
 需要播放的媒体资源的 URL。
 
-:::info[注]
+:::note
+注：
+
 如果你打开的为普通媒体资源，请向 url 传值；如果你打开媒体资源为自定义媒体资源，请向 provider 传值，同时传值会导致方法调用失败。
 :::
 
-### `uri`
+### uri
 
 媒体文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
 
-### `startPos`
+### startPos
 
 设置起始播放位置 (毫秒)，默认值为 0。
 
-### `autoPlay`
+### autoPlay
 
 打开媒体文件后，是否开启自动播放：
 
-- true：（默认）开启自动播放。
-- false：关闭自动播放。
+- `true`：（默认）开启自动播放。
+- `false`：关闭自动播放。
 
-:::info[注]
+:::note
+注：
+
 如果你设置关闭自动播放，打开媒体文件后，请调用 [play](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法来播放媒体文件。
 :::
 
-### `enableCache`
+### enableCache
 
 此次播放是否开启实时缓存功能：
 
-- true：开启实时缓存。
-- false：（默认）关闭实时缓存。
+- `true`：开启实时缓存。
+- `false`：（默认）关闭实时缓存。
 
-:::info[注]
+:::note
+注：
+
 - SDK 目前仅支持缓存点播流，但不支持缓存通过 HLS 协议传输的点播流。
 - 缓存前，请向 uri 传值，否则播放器会以媒体文件的 url 作为缓存索引。
-- 开启实时缓存后，播放器会预先缓存当前正在播放的媒体文件的部分数据到本地，当你下次播放该文件时播放器会直接从缓存中加载数据，可节省网络流量。当前缓存的媒体文件的相关统计数据会在媒体文件开始播放后每秒更新一次，详见 CacheStatistics。
+- 开启实时缓存后，播放器会预先缓存当前正在播放的媒体文件的部分数据到本地，当你下次播放该文件时播放器会直接从缓存中加载数据，可节省网络流量。当前缓存的媒体文件的相关统计数据会在媒体文件开始播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/unreal-cpp/class-cachestatistics)。
 :::
 
-### `enableMultiAudioTrack`
+### enableMultiAudioTrack
 
 此次播放是否允许选择不同音轨：
 
-- true：允许选择不同音轨。
-- false：（默认）不允许选择不同音轨。
+- `true`：允许选择不同音轨。
+- `false`：（默认）不允许选择不同音轨。
 
 如果你在本地播放和发布音频至远端时，需要设置不同的音轨，你需要将该参数设为 `true`，然后再调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法来设置音轨。
 
-### `isAgoraSource`
+### isAgoraSource
 
 打开的媒体资源是否为通过声网融合 CDN 分发的直播或点播流：
 
-- true：打开的媒体资源是声网融合 CDN 分发的直播或点播流。
-- false：（默认）打开的媒体资源不是声网融合 CDN 分发的直播或点播流。
+- `true`：打开的媒体资源是声网融合 CDN 分发的直播或点播流。
+- `false`：（默认）打开的媒体资源不是声网融合 CDN 分发的直播或点播流。
 
-:::info[注]
+:::note
+注：
+
 如果你需要打开的媒体资源为声网融合 CDN 分发的直播流或点播流，请向 url 传入直播或点播流的 URL 并将 isAgoraSource 设置为 `true`，否则无需设置 isAgoraSource。
 :::
 
-### `isLiveSource`
+### isLiveSource
 
 打开的媒体资源是否为直播流：
 
-- true：直播流。
-- false：（默认）非直播流。
+- `true`：直播流。
+- `false`：（默认）非直播流。
 
 如果你打开的媒体资源为直播流，建议你将该参数设置为 `true`，可加快打开直播流的速度。
 
-:::info[注]
+:::note
+注：
+
 仅当打开的媒体资源为直播流时，将 isLiveSource 设置为 `true` 后才可加快媒体资源的打开速度。
 :::
 
-### `provider`
+### provider
 
 自定义媒体资源文件的回调。详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercustomdataprovider)。
 
-:::info[注]
+:::note
+注：
+
 如果你打开媒体资源为自定义媒体资源，请仅向 provider 传值，如果你打开的为普通媒体资源，请向 url 传值。同时向 url 和 provider 传值会导致方法调用会失败。
 :::

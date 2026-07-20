@@ -1,10 +1,19 @@
 ---
-title: "数据流 Datastream"
-description: "数据流 Datastream API reference."
+title: 数据流 Datastream
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_datastream
+  sourcePath: html-docs/rtc/Csharp/API/toc_datastream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateDataStream [1/2]
 
@@ -12,11 +21,13 @@ description: "数据流 Datastream API reference."
 
 <a id="api_irtcengine_createdatastream__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStream(ref int streamId, bool reliable, bool ordered);
 ```
 
 <a id="api_irtcengine_createdatastream__detailed_desc"></a>
+
+<a id="api_irtcengine_createdatastream__desc"></a>
 
 你可以调用该方法创建数据流并提高数据传输的可靠性和有序性。
 
@@ -42,36 +53,38 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `reliable`
+### reliable
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
-:::warning[注意]
-请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
+:::note
+注意： 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
 :::
 
-#### `ordered`
+### ordered
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
 <a id="api_irtcengine_createdatastream__return_values"></a>
 
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_createdatastreamex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## CreateDataStreamEx [1/2]
 
@@ -79,13 +92,13 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 <a id="api_irtcengineex_createdatastreamex__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ordered, RtcConnection connection);
 ```
 
 <a id="api_irtcengineex_createdatastreamex__detailed_desc"></a>
 
-#### `弃用：`
+### 弃用：
 
 该方法已废弃。请改用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengineex_createdatastreamex2)。
 
@@ -113,29 +126,29 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `reliable`
+### reliable
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
-:::warning[注意]
-请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
+:::note
+注意： 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
 :::
 
-#### `ordered`
+### ordered
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -144,9 +157,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_createdatastream2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## CreateDataStream [2/2]
 
@@ -154,7 +169,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 ```
 
@@ -178,11 +193,11 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-datastreamconfig)。
 
@@ -191,12 +206,11 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
+
+<a id="ariaid-title5"></a>
 
 ## CreateDataStreamEx [2/2]
 
@@ -204,7 +218,7 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```csharp
+```text
 public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config, RtcConnection connection);
 ```
 
@@ -228,15 +242,15 @@ public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+### config
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-datastreamconfig)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -245,12 +259,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendmetadata"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SendMetadata
 
@@ -258,7 +271,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_sendmetadata__prototype"></a>
 
-```csharp
+```text
 public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_type);
 ```
 
@@ -272,7 +285,7 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 ### 参数
 
-#### `metadata`
+### metadata
 
 媒体附属信息。详见 [Metadata](/zh-CN/api-reference/rtc/csharp-windows/class-metadata)。
 
@@ -283,9 +296,11 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setmaxmetadatasize"></a>
+
+<a id="ariaid-title7"></a>
 
 ## SetMaxMetadataSize
 
@@ -293,7 +308,7 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 <a id="api_irtcengine_setmaxmetadatasize__prototype"></a>
 
-```csharp
+```text
 public abstract int SetMaxMetadataSize(int size);
 ```
 
@@ -307,7 +322,7 @@ public abstract int SetMaxMetadataSize(int size);
 
 ### 参数
 
-#### `size`
+### size
 
 媒体附属信息的最大大小。
 
@@ -316,9 +331,11 @@ public abstract int SetMaxMetadataSize(int size);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendstreammessage"></a>
+
+<a id="ariaid-title8"></a>
 
 ## SendStreamMessage
 
@@ -326,7 +343,7 @@ public abstract int SetMaxMetadataSize(int size);
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```csharp
+```text
 public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 ```
 
@@ -336,15 +353,21 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 
 调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 
+<a id="api_irtcengine_sendstreammessage__limit"></a>
+
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
+<a id="api_irtcengine_sendstreammessage__error"></a>
+
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::warning[注意]
-- 该方法需要在加入频道后、且调用 CreateDataStream [2/2] 创建数据通道之后调用。
+:::note
+注意：
+
+- 该方法需要在加入频道后、且调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -352,15 +375,15 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 数据流 ID。可以通过 CreateDataStream [2/2] 获取。
 
-#### `data`
+### data
 
 待发送的数据。
 
-#### `length`
+### length
 
 数据长度。
 
@@ -369,12 +392,11 @@ SDK 对该方法的实现进行了如下限制：
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
+
+<a id="ariaid-title9"></a>
 
 ## SendStreamMessageEx
 
@@ -382,7 +404,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```csharp
+```text
 public abstract int SendStreamMessageEx(int streamId, byte[] data, uint length, RtcConnection connection);
 ```
 
@@ -399,8 +421,10 @@ SDK 对该方法的实现进行了如下限制：
 
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::warning[注意]
-- 该方法需要在 JoinChannelEx 后调用。
+:::note
+注意：
+
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 后调用。
 - 请确保在调用该方法前，已调用 CreateDataStreamEx [2/2] 创建了数据通道。
 :::
 
@@ -408,19 +432,19 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-#### `streamId`
+### streamId
 
 数据流 ID。可以通过 CreateDataStreamEx [2/2] 获取。
 
-#### `data`
+### data
 
 待发送的数据。
 
-#### `length`
+### length
 
 数据长度。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -429,12 +453,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
+
+<a id="ariaid-title10"></a>
 
 ## OnStreamMessage
 
@@ -442,7 +465,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```csharp
+```text
 public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, int streamId, byte[] data, ulong length, ulong sentTs) { }
 ```
 
@@ -454,34 +477,33 @@ public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, in
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-#### `remoteUid`
+### remoteUid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `data`
+### data
 
 接收到的数据。
 
-#### `length`
+### length
 
 数据长度，单位为字节。
 
-#### `sentTs`
+### sentTs
 
 数据流发出的时间。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
+
+<a id="ariaid-title11"></a>
 
 ## OnStreamMessageError
 
@@ -489,7 +511,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```csharp
+```text
 public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUid, int streamId, int code, int missed, int cached) {}
 ```
 
@@ -501,29 +523,26 @@ public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUi
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-#### `remoteUid`
+### remoteUid
 
 发送消息的用户 ID。
 
-#### `streamId`
+### streamId
 
 接收到的消息的 Stream ID。
 
-#### `code`
+### code
 
-错误码。详见。
+错误码。详见 。
 
-#### `missed`
+### missed
 
 丢失的消息数量。
 
-#### `cached`
+### cached
 
 数据流中断时，后面缓存的消息数量。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

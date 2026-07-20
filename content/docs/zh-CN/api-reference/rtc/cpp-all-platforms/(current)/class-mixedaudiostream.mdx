@@ -1,10 +1,18 @@
 ---
-title: "MixedAudioStream"
-description: "用于设置本地混音音频流的来源。"
+title: MixedAudioStream
+description: 用于设置本地混音音频流的来源。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_mixedaudiostream
+  sourcePath: html-docs/rtc/Cpp/API/class_mixedaudiostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mixedaudiostream__prototype"></a>
 
-```cpp
+```text
 struct MixedAudioStream {
   AUDIO_SOURCE_TYPE sourceType;
   uid_t remoteUserUid;
@@ -17,22 +25,22 @@ struct MixedAudioStream {
 
 ## 属性
 
-### `sourceType`
+### sourceType
 
 音频源类型。详见 [AUDIO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiosourcetype)。
 
-### `remoteUserUid`
+### remoteUserUid
 
 远端用户 ID。
 
-:::info[注]
-当本地混音音频流的来源类型为 `AUDIO_SOURCE_REMOTE_USER` 时，需设置该参数。
+:::note
+注： 当本地混音音频流的来源类型为 `AUDIO_SOURCE_REMOTE_USER` 时，需设置该参数。
 :::
 
-### `channelId`
+### channelId
 
-:::info[注]
-当本地混音音频流的来源类型为 `AUDIO_SOURCE_REMOTE_CHANNEL` 或 `AUDIO_SOURCE_REMOTE_USER` 时，需设置该参数。
+:::note
+注： 当本地混音音频流的来源类型为 `AUDIO_SOURCE_REMOTE_CHANNEL` 或 `AUDIO_SOURCE_REMOTE_USER` 时，需设置该参数。
 :::
 
 频道名。该参数表示用户进行实时音视频互动的频道。在相同 App ID 下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度不得超过 64 字节。支持的字符（共 89 个）：
@@ -42,10 +50,10 @@ struct MixedAudioStream {
 - 所有数字字符：0 到 9。
 - 特殊字符："!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### `trackId`
+### trackId
 
 音频轨道 ID。设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
 
-:::info[注]
-当本地混音音频流的来源类型为 `AUDIO_SOURCE_CUSTOM` 时，需设置该参数。
+:::note
+注： 当本地混音音频流的来源类型为 `AUDIO_SOURCE_CUSTOM` 时，需设置该参数。
 :::

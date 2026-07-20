@@ -1,10 +1,18 @@
 ---
-title: "FVideoCanvas"
-description: "视频画布对象的属性。"
+title: FVideoCanvas
+description: 视频画布对象的属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_videocanvas
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_videocanvas.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videocanvas__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FVideoCanvas
 {
@@ -78,71 +86,75 @@ public:
 
 ## 属性
 
-### `uid`
+### uid
 
 发布视频源的用户 ID。
 
-### `subviewUid`
+### subviewUid
 
 发布某一路合图子视频流的用户 ID。
 
-### `view`
+### view
 
 视频图像。你需要定义 UImage 类型的指针，并传入该参数，示例代码如下：
 
-```cpp
+```text
 agora::rtc::VideoCanvas videoCanvas;
     UImage* LocalVideo;
     videoCanvas.view = LocalVideo;
 ```
 
-### `renderMode`
+### renderMode
 
 视频渲染模式，详见 [ERENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-rendermodetype)。
 
-### `mirrorMode`
+### mirrorMode
 
 视图镜像模式，详见 [EUABT_VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videomirrormodetype)。
 
-:::warning[注意]
-该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
+:::note
+注意： 该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
 :::
 
-:::warning[注意]
+:::note
+注意：
+
 - 本地视图镜像模式：如果你使用前置摄像头，默认启动本地视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 - 远端用户视图镜像模式：默认关闭远端用户的镜像模式。
 :::
 
-### `sourceType`
+### sourceType
 
 视频源的类型，详见 [EUABT_VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videosourcetype)。
 
-### `setupMode`
+### setupMode
 
 视图设置模式。详见 [EVIDEO_VIEW_SETUP_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videoviewsetupmode)。
 
-### `cropArea`
+### cropArea
 
-（可选）视频帧的展示区域，详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。其中， width 和 height 表示该区域的视频像素宽度和高度。默认值为空值 (宽或高为 0)，表示展示实际分辨率的视频帧。
+（可选）视频帧的展示区域，详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。其中，width 和 height 表示该区域的视频像素宽度和高度。默认值为空值 (宽或高为 0)，表示展示实际分辨率的视频帧。
 
-### `backgroundColor`
+### backgroundColor
 
 视频画布的背景颜色，格式为 RGBA。默认值为 0x00000000，代表完全透明的黑色。
 
-### `enableAlphaMask`
+### enableAlphaMask
 
 （可选）是否开启 Alpha 遮罩渲染：
 
-- true：开启 Alpha 遮罩渲染。
-- false：（默认）关闭 Alpha 遮罩渲染。
+- `true`：开启 Alpha 遮罩渲染。
+- `false`：（默认）关闭 Alpha 遮罩渲染。
 
 Alpha 遮罩渲染可以创建具有透明效果的图像，还可以提取视频中的人像。与其他方法结合使用时，可以实现人像画中画、添加水印等效果。
 
-:::warning[注意]
+:::note
+注意：
+
 - 仅当发送端开启 Alpha 传输功能时，接收端才能渲染 Alpha 通道的信息。
-- 如需开启 Alpha 传输功能，请 联系技术支持。
+- 如需开启 Alpha 传输功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
 
-### `position`
+### position
 
 视频帧在视频链路中的位置。详见 [EUABT_VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videomoduleposition)。

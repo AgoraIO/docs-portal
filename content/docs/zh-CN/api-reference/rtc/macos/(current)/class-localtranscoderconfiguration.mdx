@@ -1,10 +1,18 @@
 ---
-title: "AgoraLocalTranscoderConfiguration"
-description: "本地视频合图配置。"
+title: AgoraLocalTranscoderConfiguration
+description: 本地视频合图配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_localtranscoderconfiguration
+  sourcePath: html-docs/rtc/macOS/API/class_localtranscoderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localtranscoderconfiguration__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraLocalTranscoderConfiguration: NSObject
 @property(copy, nonatomic) NSArray<AgoraTranscodingVideoStream *> *_Nullable videoInputStreams;
 @property (strong, nonatomic) AgoraVideoEncoderConfiguration *_Nonnull videoOutputConfiguration;
@@ -20,15 +28,15 @@ __attribute__((visibility("default"))) @interface AgoraLocalTranscoderConfigurat
 
 ## 属性
 
-### `videoInputStreams`
+### videoInputStreams
 
 用于本地合图的视频流。详见 [AgoraTranscodingVideoStream](/zh-CN/api-reference/rtc/macos/class-transcodingvideostream)。
 
-### `videoOutputConfiguration`
+### videoOutputConfiguration
 
 本地合图后合图视频的编码配置。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
 
-### `syncWithPrimaryCamera`
+### syncWithPrimaryCamera
 
 是否使用主摄像头采集的视频帧的时间戳作为合图视频的时间戳。
 

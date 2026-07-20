@@ -1,10 +1,18 @@
 ---
-title: "EnableCustomAudioLocalPlayback"
-description: "设置是否在本地播放外部音频源。"
+title: EnableCustomAudioLocalPlayback
+description: 设置是否在本地播放外部音频源。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengine_enablecustomaudiolocalplayback
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_enablecustomaudiolocalplayback.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableCustomAudioLocalPlayback(uint trackId, bool enabled);
 ```
 
@@ -12,8 +20,8 @@ public abstract int EnableCustomAudioLocalPlayback(uint trackId, bool enabled);
 
 ## 详情
 
-:::warning[注意]
-在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+:::note
+注意： 在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 调用该方法设置在本地播放外部采集的音频源后，如需停止本地播放，可以再次调用该方法并设置 enabled 为 `false`。
@@ -24,20 +32,20 @@ public abstract int EnableCustomAudioLocalPlayback(uint trackId, bool enabled);
 
 ## 参数
 
-### `trackId`
+### trackId
 
 音频轨道 ID。将该参数设置为调用 CreateCustomAudioTrack 方法返回的自定义音频轨道 ID。
 
-### `enabled`
+### enabled
 
 是否在本地播放外部音频源：
 
-- true：在本地播放。
-- false：（默认）不在本地播放。
+- `true`：在本地播放。
+- `false`：（默认）不在本地播放。
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
 
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

@@ -1,10 +1,18 @@
 ---
-title: "VideoSubscriptionOptions"
-description: "用于配置视频订阅选项。"
+title: VideoSubscriptionOptions
+description: 用于配置视频订阅选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_videosubscriptionoptions
+  sourcePath: html-docs/rtc/Cpp/API/class_videosubscriptionoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videosubscriptionoptions__prototype"></a>
 
-```cpp
+```text
 struct VideoSubscriptionOptions {
   Optional<VIDEO_STREAM_TYPE> type;
   Optional<bool> encodedFrameOnly;
@@ -15,11 +23,11 @@ struct VideoSubscriptionOptions {
 
 ## 属性
 
-### `type`
+### type
 
 你希望订阅的视频流类型，详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。默认值为 `VIDEO_STREAM_HIGH`，表示订阅高质量的视频流。
 
-### `encodedFrameOnly`
+### encodedFrameOnly
 
 是否仅订阅编码后的视频帧：
 

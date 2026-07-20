@@ -1,19 +1,27 @@
 ---
-title: "COMPRESSION_PREFERENCE"
-description: "视频编码的压缩偏好。"
+title: COMPRESSION_PREFERENCE
+description: 视频编码的压缩偏好。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_compressionpreference
+  sourcePath: html-docs/rtc/Cpp/API/enum_compressionpreference.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_compressionpreference__parameters"></a>
 
 ## 枚举值
 
-### `PREFER_COMPRESSION_AUTO`
+### PREFER_COMPRESSION_AUTO
 
 （-1）：（默认）自动模式。SDK 会根据设置的视频场景自动选择 PREFER_LOW_LATENCY 或 PREFER_QUALITY，以实现最佳用户体验。
 
-### `PREFER_LOW_LATENCY`
+### PREFER_LOW_LATENCY
 
 （0）：低延迟优先。SDK 会压缩视频帧以降低延迟，适用于对流畅性要求较高且可接受画质降低的场景。
 
-### `PREFER_QUALITY`
+### PREFER_QUALITY
 
 （1）：高质量优先。SDK 会在保持视频质量的同时压缩视频帧，适用于对画质要求较高的场景。

@@ -1,10 +1,18 @@
 ---
-title: "LocalAudioStats"
-description: "本地音频统计信息结构体。"
+title: LocalAudioStats
+description: 本地音频统计信息结构体。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_localaudiostats
+  sourcePath: html-docs/rtc/Cpp/API/class_localaudiostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localaudiostats__prototype"></a>
 
-```cpp
+```text
 struct LocalAudioStats {
   int numChannels;
   int sentSampleRate;
@@ -22,38 +30,38 @@ struct LocalAudioStats {
 
 ## 属性
 
-### `numChannels`
+### numChannels
 
 音频通道数。
 
-### `sentSampleRate`
+### sentSampleRate
 
 本地用户音频流的发送采样率，单位为 Hz。
 
-### `sentBitrate`
+### sentBitrate
 
 本地用户音频流的平均发送码率，单位为 Kbps。
 
-### `internalCodec`
+### internalCodec
 
 内部使用的负载编解码器。
 
-### `txPacketLossRate`
+### txPacketLossRate
 
 应用抗丢包策略前，从本地客户端到声网服务器的音频丢包率，单位为百分比（%）。
 
-### `audioDeviceDelay`
+### audioDeviceDelay
 
 播放或录制音频时，音频设备模块的延迟，单位为毫秒。
 
-### `audioPlayoutDelay`
+### audioPlayoutDelay
 
 设备的播放延迟，单位为毫秒。
 
-### `earMonitorDelay`
+### earMonitorDelay
 
 耳返延迟，单位为毫秒，即从麦克风输入到耳机输出的延迟。
 
-### `aecEstimatedDelay`
+### aecEstimatedDelay
 
 声学回声消除（AEC）模块估算的延迟，单位为毫秒，即本地播放音频到本地采集之间的信号延迟。

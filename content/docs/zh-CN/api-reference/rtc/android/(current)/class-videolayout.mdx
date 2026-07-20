@@ -1,10 +1,18 @@
 ---
-title: "VideoLayout"
-description: "描述子视频流在视频合流布局中的位置和状态。"
+title: VideoLayout
+description: 描述子视频流在视频合流布局中的位置和状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_videolayout
+  sourcePath: html-docs/rtc/Android/API/class_videolayout.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videolayout__prototype"></a>
 
-```java
+```text
 public static class VideoLayout {
   public String channelId;
   public int uid;
@@ -21,19 +29,19 @@ public static class VideoLayout {
 
 ## 属性
 
-### `channelId`
+### channelId
 
 该子视频流所属的频道名。
 
-### `uid`
+### uid
 
 发布该子视频流的用户 ID。
 
-### `strUid`
+### strUid
 
 预留字段，供未来使用。
 
-### `videoState`
+### videoState
 
 子视频流在视频合流画布上的状态：
 
@@ -41,18 +49,18 @@ public static class VideoLayout {
 - 1：占位图像，子视频流无视频帧，将以占位图显示在混流画布上。
 - 2：黑色图像，子视频流将被黑色图像替代。
 
-### `x`
+### x
 
 子视频流在混流画布上的 X 坐标（单位为 px），即视频左上角相对于画布左上角的水平偏移。
 
-### `y`
+### y
 
 子视频流在混流画布上的 Y 坐标（单位为 px），即视频左上角相对于画布左上角的垂直偏移。
 
-### `width`
+### width
 
 子视频流的宽度（单位为 px）。
 
-### `height`
+### height
 
 子视频流的高度（单位为 px）。

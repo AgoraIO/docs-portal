@@ -1,10 +1,18 @@
 ---
-title: "AgoraChannelStats"
-description: "通话会话的统计信息。"
+title: AgoraChannelStats
+description: 通话会话的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_rtcstats
+  sourcePath: html-docs/rtc/macOS/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcstats__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraChannelStats : NSObject
 @property(assign, nonatomic) NSUInteger duration;
 @property(assign, nonatomic) NSUInteger txBytes;
@@ -42,138 +50,138 @@ __attribute__((visibility("default"))) @interface AgoraChannelStats : NSObject
 
 ## 属性
 
-### `duration`
+### duration
 
 本地用户通话时长，单位为秒，表示为累计值。
 
-### `txBytes`
+### txBytes
 
 发送的字节数。
 
-### `rxBytes`
+### rxBytes
 
 接收的字节数。
 
-### `txAudioKBitrate`
+### txAudioKBitrate
 
 音频发送码率，单位为 Kbps。
 
-### `rxAudioKBitrate`
+### rxAudioKBitrate
 
 音频接收码率，单位为 Kbps。
 
-### `txVideoKBitrate`
+### txVideoKBitrate
 
 视频发送码率，单位为 Kbps。
 
-### `rxVideoKBitrate`
+### rxVideoKBitrate
 
 视频接收码率，单位为 Kbps。
 
-### `txAudioBytes`
+### txAudioBytes
 
 发送的音频字节总数，表示为累计值。
 
-### `txVideoBytes`
+### txVideoBytes
 
 发送的视频字节总数，表示为累计值。
 
-### `rxAudioBytes`
+### rxAudioBytes
 
 接收的音频字节总数，表示为累计值。
 
-### `rxVideoBytes`
+### rxVideoBytes
 
 接收的视频字节总数，表示为累计值。
 
-### `lastmileDelay`
+### lastmileDelay
 
 客户端到服务器的延迟，单位为毫秒。
 
-### `userCount`
+### userCount
 
 频道中的用户数。
 
-### `cpuAppUsage`
+### cpuAppUsage
 
 应用程序的 CPU 使用率（%）。
 
-:::info[注]
-在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::note
+注： 在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 :::
 
-### `cpuTotalUsage`
+### cpuTotalUsage
 
 系统的 CPU 使用率（%）。
 
-:::info[注]
-在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::note
+注： 在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 :::
 
-### `gatewayRtt`
+### gatewayRtt
 
 客户端到本地路由器的往返时延，单位为毫秒。
 
-:::info[注]
-该属性在运行 iOS 14 或更高版本的设备上默认禁用，在运行早期版本的设备上默认启用。要在 iOS 14 或更高版本的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::note
+注： 该属性在运行 iOS 14 或更高版本的设备上默认禁用，在运行早期版本的设备上默认启用。要在 iOS 14 或更高版本的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
 
-### `memoryAppUsageRatio`
+### memoryAppUsageRatio
 
 应用程序占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `memoryTotalUsageRatio`
+### memoryTotalUsageRatio
 
 系统占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `memoryAppUsageInKbytes`
+### memoryAppUsageInKbytes
 
 应用程序占用的内存大小，单位为 KB。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `connectTimeMs`
+### connectTimeMs
 
 从 SDK 开始连接到连接建立之间的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `txKBitrate`
+### txKBitrate
 
 本地视频流发送时的实际码率，单位为 Kbps。
 
-### `rxKBitrate`
+### rxKBitrate
 
 接收码率，单位为 Kbps。
 
-### `firstAudioPacketDuration`
+### firstAudioPacketDuration
 
 从连接开始到接收到首个音频包的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `firstVideoPacketDuration`
+### firstVideoPacketDuration
 
 从连接开始到接收到首个视频包的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `firstVideoKeyFramePacketDuration`
+### firstVideoKeyFramePacketDuration
 
 从连接开始到接收到首个视频关键帧的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `packetsBeforeFirstKeyFramePacket`
+### packetsBeforeFirstKeyFramePacket
 
 在接收到首个视频关键帧前接收到的视频包数量。若值为 0，表示无效。
 
-### `txPacketLossRate`
+### txPacketLossRate
 
 应用抗丢包算法前，客户端到声网服务器的丢包率（%）。
 
-### `rxPacketLossRate`
+### rxPacketLossRate
 
 使用抗丢包方法前，声网服务器到客户端的丢包率（%）。

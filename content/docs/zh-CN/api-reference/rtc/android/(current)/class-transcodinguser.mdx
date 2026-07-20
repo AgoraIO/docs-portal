@@ -1,10 +1,18 @@
 ---
-title: "TranscodingUser"
-description: "用于设置每位主播的转码参数。"
+title: TranscodingUser
+description: 用于设置每位主播的转码参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_transcodinguser
+  sourcePath: html-docs/rtc/Android/API/class_transcodinguser.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_transcodinguser__prototype"></a>
 
-```java
+```text
 public static class TranscodingUser {
     public int uid;
     public String userId;
@@ -22,31 +30,33 @@ public static class TranscodingUser {
 
 ## 属性
 
-### `uid`
+### uid
 
 主播的用户 ID。
 
-### `x`
+### x
 
 主播视频在合成画面中的 x 坐标（以画面左上角为原点，单位为像素）。取值范围为 [0, width]，其中 width 为 [LiveTranscoding](/zh-CN/api-reference/rtc/android/class-livetranscoding) 中设置的画面宽度。
 
-### `y`
+### y
 
 主播视频在合成画面中的 y 坐标（以画面左上角为原点，单位为像素）。取值范围为 [0, height]，其中 height 为 [LiveTranscoding](/zh-CN/api-reference/rtc/android/class-livetranscoding) 中设置的画面高度。
 
-### `width`
+### width
 
 主播视频的宽度（单位为像素）。
 
-### `height`
+### height
 
 主播视频的高度（单位为像素）。
 
-### `zOrder`
+### zOrder
 
-:::info[注]
-- 如果该值小于 0 或大于 100，会返回 ERR_INVALID_ARGUMENT 错误。
-- 支持将 zOrder 设置为 0。
+:::note
+注：
+
+- 如果该值小于 0 或大于 100，会返回 `ERR_INVALID_ARGUMENT` 错误。
+- 支持将 `zOrder` 设置为 0。
 :::
 
 主播视频的图层顺序索引，取值范围为 [0, 100]。
@@ -54,17 +64,17 @@ public static class TranscodingUser {
 - 0：（默认值）视频位于最底层。
 - 100：视频位于最顶层。
 
-### `alpha`
+### alpha
 
 主播视频的透明度，取值范围为 [0.0, 1.0]。
 
 - 0.0：完全透明。
 - 1.0：（默认值）完全不透明。
 
-### `audioChannel`
+### audioChannel
 
-:::info[注]
-若该值不为 0，则需要专用播放器进行播放。
+:::note
+注： 若该值不为 0，则需要专用播放器进行播放。
 :::
 
 主播音频在输出音频中的声道，默认值为 0，取值范围为 [0, 5]。

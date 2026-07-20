@@ -1,71 +1,79 @@
 ---
-title: "ERTMP_STREAM_PUBLISH_REASON"
-description: "推流状态改变的原因。"
+title: ERTMP_STREAM_PUBLISH_REASON
+description: 推流状态改变的原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_rtmpstreampublishreason
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_rtmpstreampublishreason.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rtmpstreampublishreason__parameters"></a>
 
 ## 枚举值
 
-### `RTMP_STREAM_PUBLISH_REASON_OK`
+### RTMP_STREAM_PUBLISH_REASON_OK
 
 0：推流成功。
 
-### `RTMP_STREAM_PUBLISH_REASON_INVALID_ARGUMENT`
+### RTMP_STREAM_PUBLISH_REASON_INVALID_ARGUMENT
 
 1：参数无效。请检查输入参数是否正确。
 
-### `RTMP_STREAM_PUBLISH_REASON_ENCRYPTED_STREAM_NOT_ALLOWED`
+### RTMP_STREAM_PUBLISH_REASON_ENCRYPTED_STREAM_NOT_ALLOWED
 
 2：推流已加密，不能推流。
 
-### `RTMP_STREAM_PUBLISH_REASON_CONNECTION_TIMEOUT`
+### RTMP_STREAM_PUBLISH_REASON_CONNECTION_TIMEOUT
 
 3：推流超时未成功。
 
-### `RTMP_STREAM_PUBLISH_REASON_INTERNAL_SERVER_ERROR`
+### RTMP_STREAM_PUBLISH_REASON_INTERNAL_SERVER_ERROR
 
 4：推流服务器出现错误。
 
-### `RTMP_STREAM_PUBLISH_REASON_RTMP_SERVER_ERROR`
+### RTMP_STREAM_PUBLISH_REASON_RTMP_SERVER_ERROR
 
 5：CDN 服务器出现错误。
 
-### `RTMP_STREAM_PUBLISH_REASON_TOO_OFTEN`
+### RTMP_STREAM_PUBLISH_REASON_TOO_OFTEN
 
 6：推流请求过于频繁。
 
-### `RTMP_STREAM_PUBLISH_REASON_REACH_LIMIT`
+### RTMP_STREAM_PUBLISH_REASON_REACH_LIMIT
 
 7：单个主播的推流地址数目达到上限 10。请删掉一些不用的推流地址再增加推流地址。
 
-### `RTMP_STREAM_PUBLISH_REASON_NOT_AUTHORIZED`
+### RTMP_STREAM_PUBLISH_REASON_NOT_AUTHORIZED
 
 8：主播操作不属于自己的流。例如更新其他主播的流参数、停止其他主播的流。请检查 App 逻辑。
 
-### `RTMP_STREAM_PUBLISH_REASON_STREAM_NOT_FOUND`
+### RTMP_STREAM_PUBLISH_REASON_STREAM_NOT_FOUND
 
 9：服务器未找到这个流。
 
-### `RTMP_STREAM_PUBLISH_REASON_FORMAT_NOT_SUPPORTED`
+### RTMP_STREAM_PUBLISH_REASON_FORMAT_NOT_SUPPORTED
 
 10：推流地址格式有错误。请检查推流地址格式是否正确。
 
-### `RTMP_STREAM_PUBLISH_REASON_NOT_BROADCASTER`
+### RTMP_STREAM_PUBLISH_REASON_NOT_BROADCASTER
 
 11：用户角色不是主播，该用户无法使用推流功能。请检查你的应用代码逻辑。
 
-### `RTMP_STREAM_PUBLISH_REASON_TRANSCODING_NO_MIX_STREAM`
+### RTMP_STREAM_PUBLISH_REASON_TRANSCODING_NO_MIX_STREAM
 
 13：非转码推流情况下，调用了 [UpdateRtmpTranscoding](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) 方法更新转码属性。请检查你的应用代码逻辑。
 
-### `RTMP_STREAM_PUBLISH_REASON_NET_DOWN`
+### RTMP_STREAM_PUBLISH_REASON_NET_DOWN
 
 14：主播的网络出错。
 
-### `RTMP_STREAM_PUBLISH_REASON_INVALID_PRIVILEGE`
+### RTMP_STREAM_PUBLISH_REASON_INVALID_PRIVILEGE
 
 16：你的项目没有使用推流服务的权限。
 
-### `RTMP_STREAM_UNPUBLISH_REASON_OK`
+### RTMP_STREAM_UNPUBLISH_REASON_OK
 
 100：推流已正常结束。当你结束推流后，SDK 会返回该值。

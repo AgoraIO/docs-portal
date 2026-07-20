@@ -1,10 +1,19 @@
 ---
-title: "视频增强"
-description: "视频增强 API reference."
+title: 视频增强
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_video_enhance_option
+  sourcePath: html-docs/rtc/Unity/API/toc_video_enhance_option.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_enhance_option"></a>
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AddOrUpdateVideoEffect
 
@@ -12,18 +21,18 @@ description: "视频增强 API reference."
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__prototype"></a>
 
-```csharp
+```text
 public abstract int AddOrUpdateVideoEffect(uint nodeId, string templateName);
 ```
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
-:::info[注]
-优先级规则：
+:::note
+注： 优先级规则：
 
 - 风格妆节点优先于滤镜特效节点。
 - 若要应用滤镜特效，必须先移除风格妆特效节点。
@@ -33,11 +42,11 @@ public abstract int AddOrUpdateVideoEffect(uint nodeId, string templateName);
 
 ### 参数
 
-#### `nodeId`
+### nodeId
 
 视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/unity/enum-videoeffectnodeid)。
 
-#### `templateName`
+### templateName
 
 特效模板名称。如果设置为 `NULL` 或空字符串，SDK 会从资源包中加载默认配置。
 
@@ -46,26 +55,25 @@ public abstract int AddOrUpdateVideoEffect(uint nodeId, string templateName);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_createvideoeffectobject"></a>
 
+<a id="ariaid-title3"></a>
+
 ## CreateVideoEffectObject
 
-创建一个 IVideoEffectObject 视频特效对象。
+创建一个 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject) 视频特效对象。
 
 <a id="api_irtcengine_createvideoeffectobject__prototype"></a>
 
-```csharp
+```text
 public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
 <a id="api_irtcengine_createvideoeffectobject__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -73,11 +81,11 @@ public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, ME
 
 ### 参数
 
-#### `bundlePath`
+### bundlePath
 
 视频特效资源包的路径。
 
-#### `type`
+### type
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -85,13 +93,12 @@ public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, ME
 
 ### 返回值
 
-- 方法调用成功，返回 IVideoEffectObject 对象指针，详见 IVideoEffectObject。
-- 方法调用失败，返回 NULL。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- 方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject) 对象指针，详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)。
+- 方法调用失败，返回 `NULL`。
 
 <a id="api_irtcengine_destroyvideoeffectobject"></a>
+
+<a id="ariaid-title4"></a>
 
 ## DestroyVideoEffectObject
 
@@ -99,13 +106,13 @@ public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, ME
 
 <a id="api_irtcengine_destroyvideoeffectobject__prototype"></a>
 
-```csharp
+```text
 public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObject);
 ```
 
 <a id="api_irtcengine_destroyvideoeffectobject__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -113,7 +120,7 @@ public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 
 ### 参数
 
-#### `videoEffectObject`
+### videoEffectObject
 
 要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)。
 
@@ -122,12 +129,11 @@ public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
+
+<a id="ariaid-title5"></a>
 
 ## GetFaceShapeAreaOptions
 
@@ -135,7 +141,7 @@ public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 
 <a id="api_irtcengine_getfaceshapeareaoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceShapeAreaOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -159,23 +165,23 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 
 ### 参数
 
-#### `shapeArea`
+### shapeArea
 
 美型部位。详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unity/enum-faceshapearea)。
 
-#### `options`
+### options
 
 美型部位选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/unity/class-faceshapeareaoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
@@ -183,12 +189,11 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
+
+<a id="ariaid-title6"></a>
 
 ## GetFaceShapeBeautyOptions
 
@@ -196,7 +201,7 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -220,19 +225,19 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 
 ### 参数
 
-#### `options`
+### options
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unity/class-faceshapebeautyoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
@@ -240,12 +245,11 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
+
+<a id="ariaid-title7"></a>
 
 ## GetVideoEffectBoolParam
 
@@ -253,13 +257,13 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__prototype"></a>
 
-```csharp
+```text
 public abstract bool GetVideoEffectBoolParam(string option, string key);
 ```
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -267,11 +271,11 @@ public abstract bool GetVideoEffectBoolParam(string option, string key);
 
 ### 参数
 
-#### `option`
+### option
 
 参数所属的选项类别。
 
-#### `key`
+### key
 
 参数的键名。
 
@@ -282,24 +286,23 @@ public abstract bool GetVideoEffectBoolParam(string option, string key);
 - true：参数已启用。
 - false：参数未启用或不存在。
 
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
-
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
+
+<a id="ariaid-title8"></a>
 
 ## GetVideoEffectFloatParam
 
-获取视频特效中指定 float 类型参数的值。
+获取视频特效中指定 `float` 类型参数的值。
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__prototype"></a>
 
-```csharp
+```text
 public abstract float GetVideoEffectFloatParam(string option, string key);
 ```
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -307,11 +310,11 @@ public abstract float GetVideoEffectFloatParam(string option, string key);
 
 ### 参数
 
-#### `option`
+### option
 
 参数所属选项的类别。
 
-#### `key`
+### key
 
 参数的键名。
 
@@ -319,13 +322,12 @@ public abstract float GetVideoEffectFloatParam(string option, string key);
 
 ### 返回值
 
-- 如果参数存在，返回对应的 float 值。
+- 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
-
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
+
+<a id="ariaid-title9"></a>
 
 ## GetVideoEffectIntParam
 
@@ -333,13 +335,13 @@ public abstract float GetVideoEffectFloatParam(string option, string key);
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__prototype"></a>
 
-```csharp
+```text
 public abstract int GetVideoEffectIntParam(string option, string key);
 ```
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -347,11 +349,11 @@ public abstract int GetVideoEffectIntParam(string option, string key);
 
 ### 参数
 
-#### `option`
+### option
 
 参数选项的类别。
 
-#### `key`
+### key
 
 参数的键名。
 
@@ -362,10 +364,9 @@ public abstract int GetVideoEffectIntParam(string option, string key);
 - 如果参数存在，返回对应的整数值。
 - 如果参数不存在或发生错误，返回 0。
 
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
-
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
+
+<a id="ariaid-title10"></a>
 
 ## PerformVideoEffectAction
 
@@ -373,13 +374,13 @@ public abstract int GetVideoEffectIntParam(string option, string key);
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__prototype"></a>
 
-```csharp
+```text
 public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION actionId);
 ```
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -387,11 +388,11 @@ public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION ac
 
 ### 参数
 
-#### `nodeId`
+### nodeId
 
 视频特效节点的唯一标识符。
 
-#### `actionId`
+### actionId
 
 要执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/unity/enum-videoeffectaction)。
 
@@ -400,12 +401,11 @@ public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION ac
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
+
+<a id="ariaid-title11"></a>
 
 ## RemoveVideoEffect
 
@@ -413,13 +413,13 @@ public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION ac
 
 <a id="api_ivideoeffectobject_removevideoeffect__prototype"></a>
 
-```csharp
+```text
 public abstract int RemoveVideoEffect(uint nodeId);
 ```
 
 <a id="api_ivideoeffectobject_removevideoeffect__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -427,7 +427,7 @@ public abstract int RemoveVideoEffect(uint nodeId);
 
 ### 参数
 
-#### `nodeId`
+### nodeId
 
 要移除的视频特效节点的唯一标识符，详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/unity/enum-videoeffectnodeid)。
 
@@ -436,12 +436,11 @@ public abstract int RemoveVideoEffect(uint nodeId);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
+
+<a id="ariaid-title12"></a>
 
 ## SetBeautyEffectOptions
 
@@ -449,7 +448,7 @@ public abstract int RemoveVideoEffect(uint nodeId);
 
 <a id="api_irtcengine_setbeautyeffectoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -457,8 +456,10 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 
 开启本地美颜功能，并设置美颜效果选项。
 
-:::info[注]
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+:::note
+注：
+
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 :::
 
@@ -472,26 +473,26 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启美颜功能：
 
 - true: 开启美颜功能。
 - false:（默认）关闭美颜功能。
 
-#### `options`
+### options
 
 美颜选项，详细定义见 [BeautyOptions](/zh-CN/api-reference/rtc/unity/class-beautyoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
@@ -499,15 +500,16 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 5.0，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
+
+<a id="ariaid-title13"></a>
 
 ## SetColorEnhanceOptions
 
@@ -515,44 +517,47 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 
 <a id="api_irtcengine_setcolorenhanceoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
 <a id="api_irtcengine_setcolorenhanceoptions__detailed_desc"></a>
 
-摄像头采集到的视频画面可能存在色彩失真的现象。色彩增强功能可以通过智能调节饱和度和对比度等视频特性，提升视频色彩丰富度和色彩还原度，最终使视频画面更生动。 你可以调用该方法开启色彩增强功能并设置色彩增强的效果。
+摄像头采集到的视频画面可能存在色彩失真的现象。色彩增强功能可以通过智能调节饱和度和对比度等视频特性，提升视频色彩丰富度和色彩还原度，最终使视频画面更生动。
+你可以调用该方法开启色彩增强功能并设置色彩增强的效果。
 
-:::info[注]
-- 请在 EnableVideo 后调用该方法。
+:::note
+注：
+
+- 请在 [EnableVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 - 色彩增强对设备性能有一定要求。开启色彩增强后，如果设备出现严重发烫等问题，建议你将色彩增强等级修改为消耗性能较少的等级或关闭色彩增强功能。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setcolorenhanceoptions__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启色彩增强功能：
 
 - true：开启色彩增强功能。
 - false：（默认）关闭色彩增强功能。
 
-#### `options`
+### options
 
 色彩增强选项，用于设置色彩增强的效果。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/unity/class-colorenhanceoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
@@ -560,12 +565,11 @@ public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions opt
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
+
+<a id="ariaid-title14"></a>
 
 ## SetFaceShapeAreaOptions
 
@@ -573,7 +577,7 @@ public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions opt
 
 <a id="api_irtcengine_setfaceshapeareaoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -581,11 +585,11 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 
 如果在 [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unity/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 方法中实现的预设美型效果达不到预期，你可以通过该方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
 
-:::info[注]
-美型属于增值服务，计费方式详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+:::note
+注： 美型属于增值服务，计费方式详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 :::
 
@@ -599,19 +603,19 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 
 ### 参数
 
-#### `options`
+### options
 
 美型部位选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/unity/class-faceshapeareaoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
@@ -619,15 +623,16 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
+
+<a id="ariaid-title15"></a>
 
 ## SetFaceShapeBeautyOptions
 
@@ -635,7 +640,7 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -643,11 +648,11 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 
 调用该方法可对人脸各部位进行修饰，使用预设的参数一次性实现瘦脸、大眼、瘦鼻等微整形效果，支持微调整体的修饰力度。
 
-:::info[注]
-美型属于增值服务，计费方式详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+:::note
+注： 美型属于增值服务，计费方式详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 :::
 
@@ -661,26 +666,26 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启美型效果：
 
 - true: 开启美型功能。
 - false:（默认）关闭美型功能。
 
-#### `options`
+### options
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unity/class-faceshapebeautyoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
@@ -688,15 +693,16 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setfiltereffectoptions"></a>
+
+<a id="ariaid-title16"></a>
 
 ## SetFilterEffectOptions
 
@@ -704,14 +710,16 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 
 <a id="api_irtcengine_setfiltereffectoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
 <a id="api_irtcengine_setfiltereffectoptions__detailed_desc"></a>
 
-:::info[注]
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+:::note
+注：
+
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 :::
 
@@ -725,26 +733,26 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启滤镜效果：
 
 - true: 开启滤镜功能。
 - false:（默认）关闭滤镜功能。
 
-#### `options`
+### options
 
 滤镜选项，详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/unity/class-filtereffectoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
@@ -752,12 +760,11 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
+
+<a id="ariaid-title17"></a>
 
 ## SetLowlightEnhanceOptions
 
@@ -765,7 +772,7 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 
 <a id="api_irtcengine_setlowlightenhanceoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -773,10 +780,13 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 
 你可以调用该方法开启暗光增强功能并设置暗光增强的效果。
 
-:::info[注]
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+:::note
+注：
+
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 暗光增强对设备性能有一定要求。开启暗光增强后，如果设备出现严重发烫等问题，建议你将暗光增强等级修改为消耗性能较少的等级或关闭暗光增强功能。
-- 如果要实现优先画质 (LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY) 的暗光增强，需要先调用 SetVideoDenoiserOptions 实现视频降噪，具体对应关系如下：
+- 如果要实现优先画质 (LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY) 的暗光增强，需要先调用 [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/unity/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
+
   - 暗光增强为自动模式 (LOW_LIGHT_ENHANCE_AUTO) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、自动模式 (VIDEO_DENOISER_AUTO)。
   - 暗光增强为手动模式 (LOW_LIGHT_ENHANCE_MANUAL) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、手动模式 (VIDEO_DENOISER_MANUAL)。
 :::
@@ -797,26 +807,26 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启暗光增强功能：
 
 - true: 开启暗光增强功能。
 - false:（默认）关闭暗光增强功能。
 
-#### `options`
+### options
 
 暗光增强选项，用于设置暗光增强的效果。详见 [LowlightEnhanceOptions](/zh-CN/api-reference/rtc/unity/class-lowlightenhanceoptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
@@ -824,12 +834,11 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
+
+<a id="ariaid-title18"></a>
 
 ## SetVideoDenoiserOptions
 
@@ -837,7 +846,7 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 
 <a id="api_irtcengine_setvideodenoiseroptions__prototype"></a>
 
-```csharp
+```text
 public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -845,15 +854,15 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 
 你可以调用该方法开启视频降噪功能并设置视频降噪的效果。
 
-:::info[注]
-如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/unity/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/unity/class-beautyoptions) 推荐设置如下：
+:::note
+注： 如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/unity/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/unity/class-beautyoptions) 推荐设置如下：
 
-- lighteningContrastLevel：LIGHTENING_CONTRAST_NORMAL
-- lighteningLevel：0.0
-- smoothnessLevel：0.5
-- rednessLevel：0.0
-- sharpnessLevel：0.1
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- `lighteningContrastLevel`：LIGHTENING_CONTRAST_NORMAL
+- `lighteningLevel`：0.0
+- `smoothnessLevel`：0.5
+- `rednessLevel`：0.0
+- `sharpnessLevel`：0.1
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 视频降噪对设备性能有一定要求。开启视频降噪后，如果设备出现严重发烫等问题，建议你将视频降噪等级修改为消耗性能较少的等级或关闭视频降噪功能。
 :::
 
@@ -873,26 +882,26 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启视频降噪功能：
 
 - true: 开启视频降噪功能。
 - false:（默认）关闭视频降噪功能。
 
-#### `options`
+### options
 
 视频降噪选项，用于设置视频降噪的效果。详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/unity/class-videodenoiseroptions)。
 
-#### `type`
+### type
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
-:::info[注]
-在该方法中，该参数仅支持以下两种设置：
+:::note
+注： 在该方法中，该参数仅支持以下两种设置：
 
-- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
-- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
@@ -900,12 +909,11 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
+
+<a id="ariaid-title19"></a>
 
 ## SetVideoEffectBoolParam
 
@@ -913,13 +921,13 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__prototype"></a>
 
-```csharp
+```text
 public abstract int SetVideoEffectBoolParam(string option, string key, bool param);
 ```
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -927,15 +935,15 @@ public abstract int SetVideoEffectBoolParam(string option, string key, bool para
 
 ### 参数
 
-#### `option`
+### option
 
 参数选项的类别。
 
-#### `key`
+### key
 
 参数的键名。
 
-#### `param`
+### param
 
 要设置的布尔值：
 
@@ -947,12 +955,11 @@ public abstract int SetVideoEffectBoolParam(string option, string key, bool para
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
+
+<a id="ariaid-title20"></a>
 
 ## SetVideoEffectFloatParam
 
@@ -960,13 +967,13 @@ public abstract int SetVideoEffectBoolParam(string option, string key, bool para
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__prototype"></a>
 
-```csharp
+```text
 public abstract int SetVideoEffectFloatParam(string option, string key, float param);
 ```
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -974,15 +981,15 @@ public abstract int SetVideoEffectFloatParam(string option, string key, float pa
 
 ### 参数
 
-#### `option`
+### option
 
 参数选项的类别。
 
-#### `key`
+### key
 
 参数的键名。
 
-#### `param`
+### param
 
 要设置的浮点值。
 
@@ -991,26 +998,25 @@ public abstract int SetVideoEffectFloatParam(string option, string key, float pa
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
 
+<a id="ariaid-title21"></a>
+
 ## SetVideoEffectIntParam
 
-setVideoEffectIntParam：设置视频特效的整数参数。
+`setVideoEffectIntParam`：设置视频特效的整数参数。
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__prototype"></a>
 
-```csharp
+```text
 public abstract int SetVideoEffectIntParam(string option, string key, int param);
 ```
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.2 版本新增。
 
@@ -1018,15 +1024,15 @@ public abstract int SetVideoEffectIntParam(string option, string key, int param)
 
 ### 参数
 
-#### `option`
+### option
 
 参数所属选项的类别。
 
-#### `key`
+### key
 
 参数的键名。
 
-#### `param`
+### param
 
 要设置的整数参数值。
 
@@ -1035,7 +1041,4 @@ public abstract int SetVideoEffectIntParam(string option, string key, int param)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

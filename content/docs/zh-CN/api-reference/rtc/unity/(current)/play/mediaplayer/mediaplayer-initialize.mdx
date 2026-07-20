@@ -1,10 +1,19 @@
 ---
-title: "初始化"
-description: "初始化 API reference."
+title: 初始化
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_mediaplayer_initialize
+  sourcePath: html-docs/rtc/Unity/API/toc_mediaplayer_initialize.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_initialize"></a>
 
 <a id="api_irtcengine_createmediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateMediaPlayer
 
@@ -12,7 +21,7 @@ description: "初始化 API reference."
 
 <a id="api_irtcengine_createmediaplayer__prototype"></a>
 
-```csharp
+```text
 public abstract IMediaPlayer CreateMediaPlayer();
 ```
 
@@ -30,7 +39,7 @@ public abstract IMediaPlayer CreateMediaPlayer();
 
 ### 参数
 
-#### `delegate`
+### delegate
 
 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)。
 
@@ -38,13 +47,12 @@ public abstract IMediaPlayer CreateMediaPlayer();
 
 ### 返回值
 
-- 方法调用成功：返回 IMediaPlayer 对象。
+- 方法调用成功：返回 [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_destroymediaplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## DestroyMediaPlayer
 
@@ -52,7 +60,7 @@ public abstract IMediaPlayer CreateMediaPlayer();
 
 <a id="api_irtcengine_destroymediaplayer__prototype"></a>
 
-```csharp
+```text
 public abstract int DestroyMediaPlayer(IMediaPlayer mediaPlayer);
 ```
 
@@ -62,7 +70,7 @@ public abstract int DestroyMediaPlayer(IMediaPlayer mediaPlayer);
 
 ### 参数
 
-#### `mediaPlayer`
+### mediaPlayer
 
 [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer) 对象。
 
@@ -71,12 +79,11 @@ public abstract int DestroyMediaPlayer(IMediaPlayer mediaPlayer);
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回媒体播放器 ID
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_dispose_imediaplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## Dispose
 
@@ -84,24 +91,23 @@ public abstract int DestroyMediaPlayer(IMediaPlayer mediaPlayer);
 
 <a id="api_imediaplayer_dispose_imediaplayer__prototype"></a>
 
-```csharp
+```text
 public abstract void Dispose();
 ```
 
 <a id="api_imediaplayer_dispose_imediaplayer__detailed_desc"></a>
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager"></a>
+
+<a id="ariaid-title5"></a>
 
 ## GetMediaPlayerCacheManager
 
-获取 IMediaPlayerCacheManager 实例。
+获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__prototype"></a>
 
-```csharp
+```text
 public abstract IMediaPlayerCacheManager GetMediaPlayerCacheManager();
 ```
 
@@ -109,8 +115,8 @@ public abstract IMediaPlayerCacheManager GetMediaPlayerCacheManager();
 
 在调用 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayercachemanager) 类下的其他 API 前，你需要先调用该方法获取一个媒体播放器缓存管理器的实例。
 
-:::info[注]
-由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
+:::note
+注： 由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
 :::
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__timing"></a>
@@ -125,10 +131,9 @@ public abstract IMediaPlayerCacheManager GetMediaPlayerCacheManager();
 
 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayer_initeventhandler_imediaplayer"></a>
+
+<a id="ariaid-title6"></a>
 
 ## InitEventHandler
 
@@ -136,7 +141,7 @@ public abstract IMediaPlayerCacheManager GetMediaPlayerCacheManager();
 
 <a id="api_imediaplayer_initeventhandler_imediaplayer__prototype"></a>
 
-```csharp
+```text
 public abstract int InitEventHandler(IMediaPlayerSourceObserver engineEventHandler);
 ```
 
@@ -146,7 +151,7 @@ public abstract int InitEventHandler(IMediaPlayerSourceObserver engineEventHandl
 
 ### 参数
 
-#### `engineEventHandler`
+### engineEventHandler
 
 待添加的回调事件，详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayersourceobserver)。
 
@@ -155,7 +160,4 @@ public abstract int InitEventHandler(IMediaPlayerSourceObserver engineEventHandl
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

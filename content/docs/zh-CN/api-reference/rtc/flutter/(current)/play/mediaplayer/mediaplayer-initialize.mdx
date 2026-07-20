@@ -1,10 +1,19 @@
 ---
-title: "初始化"
-description: "初始化 API reference."
+title: 初始化
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_mediaplayer_initialize
+  sourcePath: html-docs/rtc/Flutter/API/toc_mediaplayer_initialize.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_initialize"></a>
 
 <a id="api_irtcengine_createmediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMediaPlayer
 
@@ -12,7 +21,7 @@ description: "初始化 API reference."
 
 <a id="api_irtcengine_createmediaplayer__prototype"></a>
 
-```dart
+```text
 Future<MediaPlayer> createMediaPlayer();
 ```
 
@@ -30,7 +39,7 @@ Future<MediaPlayer> createMediaPlayer();
 
 ### 参数
 
-#### `delegate`
+### delegate
 
 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)。
 
@@ -38,13 +47,12 @@ Future<MediaPlayer> createMediaPlayer();
 
 ### 返回值
 
-- 方法调用成功：返回 MediaPlayer 对象。
+- 方法调用成功：返回 [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_destroymediaplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMediaPlayer
 
@@ -52,7 +60,7 @@ Future<MediaPlayer> createMediaPlayer();
 
 <a id="api_irtcengine_destroymediaplayer__prototype"></a>
 
-```dart
+```text
 Future<void> destroyMediaPlayer(MediaPlayer mediaPlayer);
 ```
 
@@ -62,22 +70,21 @@ Future<void> destroyMediaPlayer(MediaPlayer mediaPlayer);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager"></a>
 
+<a id="ariaid-title4"></a>
+
 ## getMediaPlayerCacheManager
 
-获取 MediaPlayerCacheManager 实例。
+获取 [MediaPlayerCacheManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__prototype"></a>
 
-```dart
+```text
 MediaPlayerCacheManager getMediaPlayerCacheManager()
 ```
 
@@ -85,8 +92,8 @@ MediaPlayerCacheManager getMediaPlayerCacheManager()
 
 在调用 [MediaPlayerCacheManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayercachemanager) 类下的其他 API 前，你需要先调用该方法获取一个媒体播放器缓存管理器的实例。
 
-:::info[注]
-由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
+:::note
+注： 由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
 :::
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__timing"></a>
@@ -100,6 +107,3 @@ MediaPlayerCacheManager getMediaPlayerCacheManager()
 ### 返回值
 
 [MediaPlayerCacheManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayercachemanager) 实例。
-
-### 所属接口类
-- [MediaPlayerCacheManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayercachemanager)

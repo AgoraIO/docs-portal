@@ -1,10 +1,18 @@
 ---
-title: "AgoraSpatialAudioParams"
-description: "用于设置空间音频参数。"
+title: AgoraSpatialAudioParams
+description: 用于设置空间音频参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_spatialaudioparams
+  sourcePath: html-docs/rtc/iOS/API/class_spatialaudioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_spatialaudioparams__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSObject
 @property(assign, nonatomic) double speaker_azimuth;
 @property(assign, nonatomic) double speaker_elevation;
@@ -25,7 +33,7 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSOb
 
 ## 属性
 
-### `speaker_azimuth`
+### speaker_azimuth
 
 远端用户或媒体播放器相对于本地用户的方位角，单位为度，取值范围为 [0, 360]。具体取值如下：
 
@@ -35,7 +43,7 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSOb
 - 270：表示正右方。
 - 360：表示正前方。
 
-### `speaker_elevation`
+### speaker_elevation
 
 远端用户或媒体播放器相对于本地用户的仰角，单位为度，取值范围为 [-90, 90]。具体取值如下：
 
@@ -43,28 +51,28 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSOb
 - -90：表示水平面向下旋转 90 度。
 - 90：表示水平面向上旋转 90 度。
 
-### `speaker_distance`
+### speaker_distance
 
 远端用户或媒体播放器相对于本地用户的距离，单位为米，取值范围为 [1, 50]。默认值为 1 米。
 
-### `speaker_orientation`
+### speaker_orientation
 
 远端用户或媒体播放器相对于本地用户的朝向角，单位为度，取值范围为 [0, 180]。具体取值如下：
 
 - 0：（默认）表示声源与听者朝向一致。
 - 180：表示声源与听者相对而立。
 
-### `enable_blur`
+### enable_blur
 
 是否开启音频模糊效果：
 
 - YES：开启音频模糊。
 - NO：（默认）关闭音频模糊。
 
-### `enable_air_absorb`
+### enable_air_absorb
 
-:::info[注]
-请确保 `speaker_attenuation` 的值不为 0，否则该设置不生效。
+:::note
+注： 请确保 `speaker_attenuation` 的值不为 0，否则该设置不生效。
 :::
 
 是否开启空气吸收效果，即模拟声音在空气中传播时的衰减效果。在一定传播距离下，高频声音衰减较快，低频声音衰减较慢：
@@ -72,24 +80,26 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSOb
 - YES：（默认）开启空气吸收。
 - NO：关闭空气吸收。
 
-### `speaker_attenuation`
+### speaker_attenuation
 
-:::info[注]
-需同时开启 `enable_air_absorb`。
+:::note
+注： 需同时开启 `enable_air_absorb`。
 :::
 
 远端用户或媒体播放器的声音衰减系数，取值范围为 [0, 1]。具体取值如下：
 
 - 0：广播模式，音量和音色不随距离衰减。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
-### `enable_doppler`
+### enable_doppler
 
-:::info[注]
+:::note
+注：
+
 - 该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常规音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。
-- 启用该参数后，建议设置固定周期（如 30 毫秒），并持续调用 updatePlayerPositionInfo、 updateSelfPosition 和 updateRemotePosition 方法更新声源与接收者之间的相对距离。
+- 启用该参数后，建议设置固定周期（如 30 毫秒），并持续调用 `updatePlayerPositionInfo`、`updateSelfPosition` 和 `updateRemotePosition` 方法更新声源与接收者之间的相对距离。
 - 以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
 :::
 

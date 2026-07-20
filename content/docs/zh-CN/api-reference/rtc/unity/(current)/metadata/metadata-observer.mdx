@@ -1,10 +1,19 @@
 ---
-title: "媒体流附属信息分发"
-description: "媒体流附属信息分发 API reference."
+title: 媒体流附属信息分发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_metadata_observer
+  sourcePath: html-docs/rtc/Unity/API/toc_metadata_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_metadata_observer"></a>
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RegisterMediaMetadataObserver
 
@@ -12,7 +21,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterMediaMetadataObserver(IMetadataObserver observer, METADATA_TYPE type);
 ```
 
@@ -20,19 +29,19 @@ public abstract int RegisterMediaMetadataObserver(IMetadataObserver observer, ME
 
 你需要自行实现 [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver) 类并在本方法中指定 metadata 类型。本方法允许你为视频流添加同步的 metadata，用于多样化的直播互动，如发送购物链接、电子优惠券和在线测试。
 
-:::info[注]
-请在 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 前调用该方法。
+:::note
+注： 请在 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 前调用该方法。
 :::
 
 <a id="api_irtcengine_registermediametadataobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+### observer
 
 metadata 观测器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver)。
 
-#### `type`
+### type
 
 metadata 类型。目前仅支持 `VIDEO_METADATA`。详见 [METADATA_TYPE](/zh-CN/api-reference/rtc/unity/enum-metadatatype)。
 
@@ -41,12 +50,11 @@ metadata 类型。目前仅支持 `VIDEO_METADATA`。详见 [METADATA_TYPE](/zh-
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendmetadata"></a>
+
+<a id="ariaid-title3"></a>
 
 ## SendMetadata
 
@@ -54,7 +62,7 @@ metadata 类型。目前仅支持 `VIDEO_METADATA`。详见 [METADATA_TYPE](/zh-
 
 <a id="api_irtcengine_sendmetadata__prototype"></a>
 
-```csharp
+```text
 public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_type);
 ```
 
@@ -66,11 +74,11 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 ### 参数
 
-#### `metadata`
+### metadata
 
 媒体附属信息。详见 [Metadata](/zh-CN/api-reference/rtc/unity/class-metadata)。
 
-#### `source_type`
+### source_type
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
@@ -79,12 +87,11 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setmaxmetadatasize"></a>
+
+<a id="ariaid-title4"></a>
 
 ## SetMaxMetadataSize
 
@@ -92,7 +99,7 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 <a id="api_irtcengine_setmaxmetadatasize__prototype"></a>
 
-```csharp
+```text
 public abstract int SetMaxMetadataSize(int size);
 ```
 
@@ -104,7 +111,7 @@ public abstract int SetMaxMetadataSize(int size);
 
 ### 参数
 
-#### `size`
+### size
 
 媒体附属信息的最大大小。
 
@@ -113,12 +120,11 @@ public abstract int SetMaxMetadataSize(int size);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## UnregisterMediaMetadataObserver
 
@@ -126,7 +132,7 @@ public abstract int SetMaxMetadataSize(int size);
 
 <a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int UnregisterMediaMetadataObserver();
 ```
 
@@ -137,12 +143,11 @@ public abstract int UnregisterMediaMetadataObserver();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnMetadataReceived
 
@@ -150,7 +155,7 @@ public abstract int UnregisterMediaMetadataObserver();
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```csharp
+```text
 public virtual void OnMetadataReceived(Metadata metadata)
         {
 
@@ -163,14 +168,13 @@ public virtual void OnMetadataReceived(Metadata metadata)
 
 ### 参数
 
-#### `metadata`
+### metadata
 
 接收到的 metadata，详见 [Metadata](/zh-CN/api-reference/rtc/unity/class-metadata)。
 
-### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver)
-
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
+
+<a id="ariaid-title7"></a>
 
 ## OnReadyToSendMetadata
 
@@ -178,7 +182,7 @@ public virtual void OnMetadataReceived(Metadata metadata)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TYPE source_type)
         {
             return false;
@@ -193,11 +197,11 @@ public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TY
 
 ### 参数
 
-#### `source_Type`
+### source_Type
 
 视频数据类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
-#### `metadata`
+### metadata
 
 用户想要发送的 metadata。详见 [Metadata](/zh-CN/api-reference/rtc/unity/class-metadata)。
 
@@ -207,6 +211,3 @@ public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TY
 
 - true: 发送
 - false: 不发送
-
-### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver)

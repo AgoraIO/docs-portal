@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
   escapeMdxText,
@@ -26,7 +27,7 @@ function normalizeBlocks(value) {
 
 function stripHeadingLinks(value) {
   return String(value).replace(
-    /\[([^\]\n]+)\]\((?:<[^>\n]+>|[^)\n]+)\)/g,
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\((?:<[^>\n]+>|[^)\n]+)\)/g,
     '$1',
   );
 }
@@ -376,16 +377,23 @@ async function renderTable($, table, state) {
 async function renderDefinitionList($, list, state) {
   const blocks = [];
   let term = null;
+  let termHasLink = false;
   for (const child of list.children('dt, dd').toArray()) {
     if (elementName(child) === 'dt') {
-      term = cleanText(
+      const renderedTerm = cleanText(
         await renderInlineNodes($, $(child).contents().toArray(), state),
       );
+      termHasLink = /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
+      term = termHasLink ? renderedTerm : stripHeadingLinks(renderedTerm);
     } else {
       const body = await renderChildren($, $(child), state);
-      if (term) blocks.push(`### ${term}\n\n${body}`);
-      else if (body) blocks.push(body);
+      if (term) {
+        blocks.push(
+          `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
+        );
+      } else if (body) blocks.push(body);
       term = null;
+      termHasLink = false;
     }
   }
   return blocks.join('\n\n');
@@ -615,16 +623,25 @@ export async function convertHtmlToMdx({
     fragmentMap,
     onAsset,
   });
-  const titleNode = titleSelector
-    ? $(titleSelector).first()
-    : article.find('h1').first();
+  const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
+  const titleNode =
+    selectedTitleNode?.length > 0
+      ? selectedTitleNode
+      : article.find('h1').first();
   const title = cleanText(
     preferredTitle || titleNode.text() || $('title').first().text(),
   );
   state.pageTitle = title;
-  const description = cleanText(
-    article.find('.shortdesc, .lead, .tsd-comment-shortform').first().text(),
-  );
+  const titleArticle = titleNode.closest('article').get(0);
+  const articleNode = article.get(0);
+  const descriptionNode = article
+    .find('.shortdesc, .lead, .tsd-comment-shortform')
+    .filter((_, node) => {
+      const nodeArticle = $(node).closest('article').get(0);
+      return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
+    })
+    .first();
+  const description = cleanText(descriptionNode.text());
   const fragments = [];
   article.find('[id], a[name]').each((_, node) => {
     const element = $(node);
@@ -637,11 +654,36 @@ export async function convertHtmlToMdx({
     (article.get(0) === titleElement ||
       article.find('*').toArray().includes(titleElement));
   if (titleIsInsideArticle) titleNode.remove();
-  const body = await renderChildren($, article, state);
+  if (description) descriptionNode.remove();
+  const renderedBody = await renderChildren($, article, state);
+  const normalizedLinks = rewriteLegacyBodyLinks(renderedBody, {
+    routeMap,
+    sourcePath,
+    sourceUrl,
+  });
+  for (const change of normalizedLinks.changes) {
+    if (change.action !== 'rendered-as-text') continue;
+    state.warnings.push(
+      createWarning(
+        'unresolved-link',
+        `No local API Center target was found for ${change.href}.`,
+        { href: change.href },
+      ),
+    );
+  }
+  for (const unresolved of normalizedLinks.unresolved) {
+    state.warnings.push(
+      createWarning(
+        'unresolved-link',
+        `No local API Center target was found for ${unresolved.href}.`,
+        { href: unresolved.href },
+      ),
+    );
+  }
   return {
     title,
     description,
-    body,
+    body: normalizedLinks.source,
     fragments,
     assets: state.assets,
     warnings: state.warnings,

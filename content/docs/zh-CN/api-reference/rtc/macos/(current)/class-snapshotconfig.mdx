@@ -1,10 +1,18 @@
 ---
-title: "AgoraSnapshotConfig"
-description: "截图配置。"
+title: AgoraSnapshotConfig
+description: 截图配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_snapshotconfig
+  sourcePath: html-docs/rtc/macOS/API/class_snapshotconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_snapshotconfig__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraSnapshotConfig: NSObject
 @property (copy, nonatomic) NSString * _Nullable filePath;
 @property(assign, nonatomic) AgoraVideoModulePosition position;
@@ -15,14 +23,14 @@ __attribute__((visibility("default"))) @interface AgoraSnapshotConfig: NSObject
 
 ## 属性
 
-### `filePath`
+### filePath
 
-截图的本地路径（包含文件扩展名）。例如：iOS： `/App Sandbox/Library/Caches/example.jpg`。
+截图的本地路径（包含文件扩展名）。例如：iOS：`/App Sandbox/Library/Caches/example.jpg`。
 
-:::info[注]
-请确保指定的路径存在且可写。
+:::note
+注： 请确保指定的路径存在且可写。
 :::
 
-### `position`
+### position
 
 截图视频帧在视频处理流程中的位置，详见 [AgoraVideoModulePosition](/zh-CN/api-reference/rtc/macos/enum-videomoduleposition)。

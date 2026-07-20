@@ -1,27 +1,35 @@
 ---
-title: "AUDIO_SESSION_OPERATION_RESTRICTION"
-description: "SDK 对音频会话的操作权限。"
+title: AUDIO_SESSION_OPERATION_RESTRICTION
+description: SDK 对音频会话的操作权限。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_audiosessionoperationrestriction
+  sourcePath: html-docs/rtc/Cpp/API/enum_audiosessionoperationrestriction.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audiosessionoperationrestriction__parameters"></a>
 
 ## 枚举值
 
-### `AUDIO_SESSION_OPERATION_RESTRICTION_NONE`
+### AUDIO_SESSION_OPERATION_RESTRICTION_NONE
 
 （0）：无任何限制，SDK 可更改音频会话。
 
-### `AUDIO_SESSION_OPERATION_RESTRICTION_SET_CATEGORY`
+### AUDIO_SESSION_OPERATION_RESTRICTION_SET_CATEGORY
 
 （1）：SDK 不可更改音频会话的类别。
 
-### `AUDIO_SESSION_OPERATION_RESTRICTION_CONFIGURE_SESSION`
+### AUDIO_SESSION_OPERATION_RESTRICTION_CONFIGURE_SESSION
 
 （2）：SDK 不可更改音频会话的类别、模式或 categoryOptions。
 
-### `AUDIO_SESSION_OPERATION_RESTRICTION_DEACTIVATE_SESSION`
+### AUDIO_SESSION_OPERATION_RESTRICTION_DEACTIVATE_SESSION
 
 （4）：用户离开频道时，SDK 仍保持音频会话处于激活状态，例如用于后台播放音频文件。
 
-### `AUDIO_SESSION_OPERATION_RESTRICTION_ALL`
+### AUDIO_SESSION_OPERATION_RESTRICTION_ALL
 
 （128）：完全限制 SDK 对音频会话的操作权限，SDK 不可更改音频会话。

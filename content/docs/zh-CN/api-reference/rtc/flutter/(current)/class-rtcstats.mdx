@@ -1,10 +1,18 @@
 ---
-title: "RtcStats"
-description: "通话相关的统计信息。"
+title: RtcStats
+description: 通话相关的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_rtcstats
+  sourcePath: html-docs/rtc/Flutter/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcstats__prototype"></a>
 
-```dart
+```text
 class RtcStats {
   const RtcStats(
       {this.duration,
@@ -117,123 +125,131 @@ class RtcStats {
 
 ## 属性
 
-### `duration`
+### duration
 
 本地用户通话时长（秒），累计值。
 
-### `txBytes`
+### txBytes
 
 发送字节数 (bytes)。
 
-### `rxBytes`
+### rxBytes
 
 接收字节数 (bytes)。
 
-### `txAudioBytes`
+### txAudioBytes
 
 发送音频字节数 (bytes)，累计值。
 
-### `txVideoBytes`
+### txVideoBytes
 
 发送视频字节数 (bytes)，累计值。
 
-### `rxAudioBytes`
+### rxAudioBytes
 
 接收音频字节数 (bytes)，累计值。
 
-### `rxVideoBytes`
+### rxVideoBytes
 
 接收视频字节数 (bytes)，累计值。
 
-### `txKBitRate`
+### txKBitRate
 
 发送码率 (Kbps)。
 
-### `rxKBitRate`
+### rxKBitRate
 
 接收码率 (Kbps)。
 
-### `rxAudioKBitRate`
+### rxAudioKBitRate
 
 音频接收码率 (Kbps)。
 
-### `txAudioKBitRate`
+### txAudioKBitRate
 
 音频包的发送码率 (Kbps)。
 
-### `rxVideoKBitRate`
+### rxVideoKBitRate
 
 视频接收码率 (Kbps)。
 
-### `txVideoKBitRate`
+### txVideoKBitRate
 
 视频发送码率 (Kbps)。
 
-### `lastmileDelay`
+### lastmileDelay
 
 客户端-接入服务器延时 (毫秒)。
 
-### `txPacketLossRate`
+### txPacketLossRate
 
 使用抗丢包技术前，客户端上行发送到服务器丢包率 (%)。
 
-### `rxPacketLossRate`
+### rxPacketLossRate
 
 使用抗丢包技术前，服务器下行发送到客户端丢包率 (%)。
 
-### `userCount`
+### userCount
 
 当前频道内的用户人数。
 
-### `cpuAppUsage`
+### cpuAppUsage
 
 当前 App 的 CPU 使用率 (%)。
 
-:::info[注]
-- onLeaveChannel 回调中报告的 cpuAppUsage 恒为 0。
+:::note
+注：
+
+- [onLeaveChannel](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 `cpuAppUsage` 恒为 0。
 - 自 Android 8.1 起，因系统限制，你可能无法通过该属性获取 CPU 使用率。
 :::
 
-### `cpuTotalUsage`
+### cpuTotalUsage
 
-当前系统的 CPU 使用率 (%)。 对于 Windows 平台，在多核环境中，该成员指多核 CPU 的平均使用率。 计算方式为 (100 - 任务管理中显示的系统空闲进程 CPU)/100。
+当前系统的 CPU 使用率 (%)。
+对于 Windows 平台，在多核环境中，该成员指多核 CPU 的平均使用率。 计算方式为 (100 - 任务管理中显示的系统空闲进程 CPU)/100。
 
-:::info[注]
-- onLeaveChannel 回调中报告的 cpuTotalUsage 恒为 0。
+:::note
+注：
+
+- [onLeaveChannel](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 `cpuTotalUsage` 恒为 0。
 :::
 
-### `connectTimeMs`
+### connectTimeMs
 
 从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。
 
-### `gatewayRtt`
+### gatewayRtt
 
 客户端到本地路由器的往返时延 (ms)。
 
-:::info[注]
-该属性默认在 iOS 14 之前的设备上开启，在 iOS 14 及之后的设备上关闭。 如需在 iOS 14 及之后的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。 在 Android 平台上，如需获取 `gatewayRtt`，请确保已在项目 `AndroidManifest.xml` 文件的 `</application>` 后面添加 `android.permission.ACCESS_WIFI_STATE` 权限。
+:::note
+注： 该属性默认在 iOS 14 之前的设备上开启，在 iOS 14 及之后的设备上关闭。
+
+                        如需在 iOS 14 及之后的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
+在 Android 平台上，如需获取 `gatewayRtt`，请确保已在项目 `AndroidManifest.xml` 文件的 `&lt;/application&gt;` 后面添加 `android.permission.ACCESS_WIFI_STATE` 权限。
 :::
 
-### `memoryAppUsageRatio`
+### memoryAppUsageRatio
 
 当前 App 的内存占比 (%)。
 
-:::info[注]
-该值仅作参考。受系统限制可能无法获取。
+:::note
+注： 该值仅作参考。受系统限制可能无法获取。
 :::
 
-### `memoryTotalUsageRatio`
+### memoryTotalUsageRatio
 
 当前系统的内存占比 (%)。
 
-:::info[注]
-该值仅作参考。受系统限制可能无法获取。
+:::note
+注： 该值仅作参考。受系统限制可能无法获取。
 :::
 
-### `memoryAppUsageInKbytes`
+### memoryAppUsageInKbytes
 
 当前 App 的内存大小 (KB)。
 
-:::info[注]
-该值仅作参考。受系统限制可能无法获取。
+:::note
+注： 该值仅作参考。受系统限制可能无法获取。
 :::

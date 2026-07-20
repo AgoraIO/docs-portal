@@ -1,10 +1,18 @@
 ---
-title: "EncodedVideoFrameInfo"
-description: "外部编码视频帧的信息。"
+title: EncodedVideoFrameInfo
+description: 外部编码视频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_encodedvideoframeinfo
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_encodedvideoframeinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_encodedvideoframeinfo__prototype"></a>
 
-```cpp
+```text
 struct EncodedVideoFrameInfo {
   EncodedVideoFrameInfo()
     : codecType(VIDEO_CODEC_H264),
@@ -53,50 +61,50 @@ struct EncodedVideoFrameInfo {
 
 ## 属性
 
-### `codecType`
+### codecType
 
 视频编码类型，详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videocodectype)。默认值为 `VIDEO_CODEC_H264 (2)`。
 
-### `width`
+### width
 
 视频帧的宽度 (px)。
 
-### `height`
+### height
 
 视频帧的高度 (px)。
 
-### `framesPerSecond`
+### framesPerSecond
 
 每秒的视频帧数。
 
 当该参数不为 `0` 时，你可以用它计算外部编码视频帧的 Unix 时间戳。
 
-### `frameType`
+### frameType
 
 视频帧的类型，详见 [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoframetype)。
 
-### `rotation`
+### rotation
 
 视频帧的旋转信息，详见 [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoorientation)。
 
-### `trackId`
+### trackId
 
 预留参数。
 
 轨道 ID。适用于频道中有多个视频轨道的场景。
 
-### `captureTimeMs`
+### captureTimeMs
 
 采集外部编码视频帧的 Unix 时间戳 (ms)。
 
-### `decodeTimeMs`
+### decodeTimeMs
 
 将外部编码视频帧进行解码的时间戳 (ms)。
 
-### `uid`
+### uid
 
 推送外部编码视频帧的用户 ID。
 
-### `streamType`
+### streamType
 
-视频流类型。 详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。
+视频流类型。详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。

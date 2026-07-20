@@ -1,10 +1,19 @@
 ---
-title: "音频频谱"
-description: "音频频谱 API reference."
+title: 音频频谱
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_audio_spectrum
+  sourcePath: html-docs/rtc/Electron/API/toc_audio_spectrum.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_spectrum"></a>
 
 <a id="api_irtcengine_disableaudiospectrummonitor"></a>
+
+<a id="ariaid-title2"></a>
 
 ## disableAudioSpectrumMonitor
 
@@ -12,7 +21,7 @@ description: "音频频谱 API reference."
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```typescript
+```text
 abstract disableAudioSpectrumMonitor(): number;
 ```
 
@@ -20,8 +29,8 @@ abstract disableAudioSpectrumMonitor(): number;
 
 调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/electron/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 后，如果你想关闭音频频谱监测，请调用该方法。
 
-:::info[注]
-该方法在加入频道前后均可调用。
+:::note
+注： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_disableaudiospectrummonitor__return_values"></a>
@@ -29,12 +38,11 @@ abstract disableAudioSpectrumMonitor(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableAudioSpectrumMonitor
 
@@ -42,7 +50,7 @@ abstract disableAudioSpectrumMonitor(): number;
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```typescript
+```text
 abstract enableAudioSpectrumMonitor(intervalInMS?: number): number;
 ```
 
@@ -50,15 +58,15 @@ abstract enableAudioSpectrumMonitor(intervalInMS?: number): number;
 
 如果你想获取本地或远端用户的音频频谱数据，请注册音频频谱观测器并开启音频频谱监测。
 
-:::info[注]
-该方法在加入频道前后均可调用。
+:::note
+注： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_enableaudiospectrummonitor__parameters"></a>
 
 ### 参数
 
-#### `intervalInMS`
+### intervalInMS
 
 SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/electron/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/electron/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（毫秒）。 默认值为 100 毫秒。取值不得少于 10 毫秒，否则该方法会调用失败。
 
@@ -67,13 +75,13 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/electron/audio/audio-
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## registerAudioSpectrumObserver
 
@@ -81,7 +89,7 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/electron/audio/audio-
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```typescript
+```text
 abstract registerAudioSpectrumObserver(
     observer: IAudioSpectrumObserver
   ): number;
@@ -91,15 +99,15 @@ abstract registerAudioSpectrumObserver(
 
 成功注册音频频谱观测器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/electron/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔报告你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiospectrumobserver) 类中实现的回调。
 
-:::info[注]
-该方法在加入频道前后均可调用。
+:::note
+注： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_registeraudiospectrumobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+### observer
 
 音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiospectrumobserver)。
 
@@ -109,10 +117,9 @@ abstract registerAudioSpectrumObserver(
 
 一个 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiospectrumobserver) 对象。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## unregisterAudioSpectrumObserver
 
@@ -120,7 +127,7 @@ abstract registerAudioSpectrumObserver(
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```typescript
+```text
 abstract unregisterAudioSpectrumObserver(
     observer: IAudioSpectrumObserver
   ): number;
@@ -130,8 +137,8 @@ abstract unregisterAudioSpectrumObserver(
 
 调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 后，如果你想取消注册音频频谱观测器，请调用该方法。
 
-:::info[注]
-该方法在加入频道前后均可调用。
+:::note
+注： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
@@ -139,12 +146,11 @@ abstract unregisterAudioSpectrumObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onLocalAudioSpectrum
 
@@ -152,7 +158,7 @@ abstract unregisterAudioSpectrumObserver(
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```typescript
+```text
 onLocalAudioSpectrum?(data: AudioSpectrumData): void;
 ```
 
@@ -164,14 +170,13 @@ onLocalAudioSpectrum?(data: AudioSpectrumData): void;
 
 ### 参数
 
-#### `data`
+### data
 
 本地用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/electron/class-audiospectrumdata)。
 
-### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiospectrumobserver)
-
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onRemoteAudioSpectrum
 
@@ -179,7 +184,7 @@ onLocalAudioSpectrum?(data: AudioSpectrumData): void;
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```typescript
+```text
 onRemoteAudioSpectrum?(
     spectrums: UserAudioSpectrumInfo[],
     spectrumNumber: number
@@ -194,13 +199,10 @@ onRemoteAudioSpectrum?(
 
 ### 参数
 
-#### `spectrums`
+### spectrums
 
 远端用户的音频频谱信息，详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/electron/class-useraudiospectruminfo)。 数组数量等于 SDK 监测到的远端用户数量，数组为空表示没有监测到远端用户的音频频谱。
 
-#### `spectrumNumber`
+### spectrumNumber
 
 远端用户的数量。
-
-### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiospectrumobserver)

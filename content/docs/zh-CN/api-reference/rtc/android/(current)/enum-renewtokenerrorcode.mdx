@@ -1,10 +1,18 @@
 ---
-title: "RenewTokenErrorCode"
-description: "调用 renewToken 后的错误码。"
+title: RenewTokenErrorCode
+description: 调用 renewToken 后的错误码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_renewtokenerrorcode
+  sourcePath: html-docs/rtc/Android/API/enum_renewtokenerrorcode.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_renewtokenerrorcode__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v4.6.0 版本新增。
 
@@ -12,30 +20,30 @@ description: "调用 renewToken 后的错误码。"
 
 ## 枚举值
 
-### `RENEW_TOKEN_SUCCESS`
+### RENEW_TOKEN_SUCCESS
 
 （0）：Token 更新成功。
 
-### `RENEW_TOKEN_FAILURE`
+### RENEW_TOKEN_FAILURE
 
 （1）：Token 更新失败。建议生成新的 Token 并重试调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken)。
 
-### `RENEW_TOKEN_TOKEN_EXPIRED`
+### RENEW_TOKEN_TOKEN_EXPIRED
 
 （2）：Token 更新失败，原因是传入的 Token 已过期。建议生成一个过期时间更长的 Token 并重试调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken)。
 
-### `RENEW_TOKEN_INVALID_TOKEN`
+### RENEW_TOKEN_INVALID_TOKEN
 
 （3）：Token 更新失败，原因是传入的 Token 无效。常见原因包括：项目在声网控制台启用了 App 证书但加入频道时未使用 Token；调用 `joinChannel` 时指定的 uid 与生成 Token 时使用的 uid 不一致；调用 `joinChannel` 时指定的频道名与生成 Token 时使用的频道名不一致。建议检查 Token 的生成流程，生成新的 Token 并重试调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken)。
 
-### `RENEW_TOKEN_INVALID_CHANNEL_NAME`
+### RENEW_TOKEN_INVALID_CHANNEL_NAME
 
 （4）：Token 更新失败，原因是 Token 中的频道名与当前频道不一致。建议检查频道名，生成新的 Token 并重试调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken)。
 
-### `RENEW_TOKEN_INCONSISTENT_APPID`
+### RENEW_TOKEN_INCONSISTENT_APPID
 
 （5）：Token 更新失败，原因是 Token 中的 App ID 与当前 App ID 不一致。建议检查 App ID，生成新的 Token 并重试调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken)。
 
-### `RENEW_TOKEN_CANCELED_BY_NEW_REQUEST`
+### RENEW_TOKEN_CANCELED_BY_NEW_REQUEST
 
 （6）：Token 更新被取消，原因是发起了新的请求，前一个请求被取消。

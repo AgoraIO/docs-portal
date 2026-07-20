@@ -1,10 +1,19 @@
 ---
-title: "音视频录制"
-description: "音视频录制 API reference."
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_recording
+  sourcePath: html-docs/rtc/Unity/API/toc_recording.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateMediaRecorder
 
@@ -12,19 +21,20 @@ description: "音视频录制 API reference."
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```csharp
+```text
 public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 ```
 
 <a id="api_irtcengine_createmediarecorder__detailed_desc"></a>
 
-在开始音视频流录制前，你需要调用该方法创建一个音视频录制对象。SDK 支持录制本地或远端用户的多个音视频流，你可以多次调用该方法创建录制对象，并通过 `info` 参数指定需要录制的频道名称和发流的用户 ID。 成功创建后，你需要调用 [SetMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象的观测器来监听录制的相关回调，然后再调用 [StartRecording](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_startrecording) 开始录制。
+在开始音视频流录制前，你需要调用该方法创建一个音视频录制对象。SDK 支持录制本地或远端用户的多个音视频流，你可以多次调用该方法创建录制对象，并通过 `info` 参数指定需要录制的频道名称和发流的用户 ID。
+成功创建后，你需要调用 [SetMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象的观测器来监听录制的相关回调，然后再调用 [StartRecording](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_startrecording) 开始录制。
 
 <a id="api_irtcengine_createmediarecorder__parameters"></a>
 
 ### 参数
 
-#### `info`
+### info
 
 需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/unity/class-recorderstreaminfo)。
 
@@ -32,13 +42,12 @@ public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 
 ### 返回值
 
-- 方法调用成功：返回一个 IMediaRecorder 对象。
+- 方法调用成功：返回一个 [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_destroymediarecorder"></a>
+
+<a id="ariaid-title3"></a>
 
 ## DestroyMediaRecorder
 
@@ -46,7 +55,7 @@ public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```csharp
+```text
 public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 ```
 
@@ -58,7 +67,7 @@ public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 
 ### 参数
 
-#### `mediaRecorder`
+### mediaRecorder
 
 待销毁的 [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder) 对象。
 
@@ -67,35 +76,35 @@ public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
 
+<a id="ariaid-title4"></a>
+
 ## SetMediaRecorderObserver
 
-注册 IMediaRecorderObserver 观测器。
+注册 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorderobserver) 观测器。
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 ```
 
 <a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
 
-该方法用于设置音视频录制的回调，以便在录制过程中向 App 通知音视频流的录制状态和信息。 调用该方法前请确保：
+该方法用于设置音视频录制的回调，以便在录制过程中向 App 通知音视频流的录制状态和信息。
+调用该方法前请确保：
 
-- 已创建并初始化 IRtcEngine 对象。
-- 已通过 CreateMediaRecorder 创建音视频录制对象。
+- 已创建并初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
+- 已通过 [CreateMediaRecorder](/zh-CN/api-reference/rtc/unity/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
 
 <a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
 
 ### 参数
 
-#### `callback`
+### callback
 
 音视频流录制回调，详见 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorderobserver)。
 
@@ -104,12 +113,11 @@ public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startaudiorecording1"></a>
+
+<a id="ariaid-title5"></a>
 
 ## StartAudioRecording [1/3]
 
@@ -117,7 +125,7 @@ public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```csharp
+```text
 public abstract int StartAudioRecording(string filePath, AUDIO_RECORDING_QUALITY_TYPE quality);
 ```
 
@@ -125,28 +133,28 @@ public abstract int StartAudioRecording(string filePath, AUDIO_RECORDING_QUALITY
 
 SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件仅支持下列格式：
 
-- .wav: 文件大，音质保真度高；
-- .aac: 文件小，有一定的音质保真度损失。
+- `.wav`: 文件大，音质保真度高；
+- `.aac`: 文件小，有一定的音质保真度损失。
 
 请确保指定的目录存在且可写。该接口需在 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 之后调用。如果调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 时还在录音，录音会自动停止。
 
-:::info[注]
-调用该方法时，默认的录音采样率为 32 kHz，不可修改。
+:::note
+注： 调用该方法时，默认的录音采样率为 32 kHz，不可修改。
 :::
 
 <a id="api_irtcengine_startaudiorecording1__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+### filePath
 
-录音文件在本地保存的绝对路径，需精确到文件名及格式。例如： `C:\music\audio.aac`。
+录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\\music\\audio.aac`。
 
-:::info[注]
-请确保你指定的路径存在并且可写。
+:::note
+注： 请确保你指定的路径存在并且可写。
 :::
 
-#### `quality`
+### quality
 
 录音质量。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/unity/enum-audiorecordingqualitytype)。
 
@@ -155,12 +163,11 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startaudiorecording2"></a>
+
+<a id="ariaid-title6"></a>
 
 ## StartAudioRecording [2/3]
 
@@ -168,7 +175,7 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 <a id="api_irtcengine_startaudiorecording2__prototype"></a>
 
-```csharp
+```text
 public abstract int StartAudioRecording(string filePath, int sampleRate, AUDIO_RECORDING_QUALITY_TYPE quality);
 ```
 
@@ -179,25 +186,27 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - .wav: 文件大，音质保真度较高。
 - .aac: 文件小，音质保真度较低。
 
-:::info[注]
+:::note
+注：
+
 - 请确保你在该方法中指定的路径存在并且可写。
-- 该接口需在 JoinChannel [2/2] 之后调用。如果调用 LeaveChannel [2/2] 时还在录音，录音会自动停止。
-- 为保证录音效果，当 sampleRate 设为 44.1 kHz 或 48 kHz 时，建议将 quality 设为 AUDIO_RECORDING_QUALITY_MEDIUM 或 AUDIO_RECORDING_QUALITY_HIGH。
+- 该接口需在 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 之后调用。如果调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 时还在录音，录音会自动停止。
+- 为保证录音效果，当 `sampleRate` 设为 44.1 kHz 或 48 kHz 时，建议将 `quality` 设为 `AUDIO_RECORDING_QUALITY_MEDIUM` 或 `AUDIO_RECORDING_QUALITY_HIGH` 。
 :::
 
 <a id="api_irtcengine_startaudiorecording2__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+### filePath
 
-录音文件在本地保存的绝对路径，需精确到文件名及格式。例如： `C:\music\audio.aac`。
+录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\\music\\audio.aac`。
 
-:::info[注]
-请确保你指定的路径存在并且可写。
+:::note
+注： 请确保你指定的路径存在并且可写。
 :::
 
-#### `sampleRate`
+### sampleRate
 
 录音采样率（Hz），可以设为以下值：
 
@@ -206,21 +215,20 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - 44100
 - 48000
 
-#### `quality`
+### quality
 
-录音音质。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/unity/enum-audiorecordingqualitytype)。
+录音音质。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/unity/enum-audiorecordingqualitytype) 。
 
 <a id="api_irtcengine_startaudiorecording2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title7"></a>
 
 ## StartAudioRecording [3/3]
 
@@ -228,7 +236,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```csharp
+```text
 public abstract int StartAudioRecording(AudioRecordingConfiguration config);
 ```
 
@@ -251,7 +259,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-#### `config`
+### config
 
 录音配置。详见 [AudioFileRecordingConfig](/zh-CN/api-reference/rtc/unity/class-audiorecordingconfiguration)。
 
@@ -260,12 +268,11 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediarecorder_startrecording"></a>
+
+<a id="ariaid-title8"></a>
 
 ## StartRecording
 
@@ -273,16 +280,17 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```csharp
+```text
 public abstract int StartRecording(MediaRecorderConfiguration config);
 ```
 
 <a id="api_imediarecorder_startrecording__detailed_desc"></a>
 
-该方法用于开启音视频流录制。声网 SDK 支持同时录制本地及远端用户的音视频流。 在开始录制前请确保：
+该方法用于开启音视频流录制。声网 SDK 支持同时录制本地及远端用户的音视频流。
+在开始录制前请确保：
 
-- 已通过 CreateMediaRecorder 创建音视频录制对象。
-- 已调用 SetMediaRecorderObserver 注册录制对象观测器来监听录制的相关回调。
+- 已通过 [CreateMediaRecorder](/zh-CN/api-reference/rtc/unity/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
+- 已调用 [SetMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象观测器来监听录制的相关回调。
 - 已加入频道。
 
 该方法支持录制如下数据：
@@ -290,9 +298,11 @@ public abstract int StartRecording(MediaRecorderConfiguration config);
 - 麦克风采集的、AAC 编码格式的音频。
 - 摄像头采集的、H.264 或 H.265 编码格式的视频。
 
-开启音视频流录制后，当视频分辨率在录制过程中发生变化时，SDK 会停止录制；当音频采样率和声道数发生变化时，SDK 会持续录制并生成单个 MP4 录制文件。 仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 [OnRecorderStateChanged](/zh-CN/api-reference/rtc/unity/recording#callback_imediarecorderobserver_onrecorderstatechanged) (`RECORDER_STATE_ERROR, RECORDER_REASON_NO_STREAM`) 回调。
+开启音视频流录制后，当视频分辨率在录制过程中发生变化时，SDK 会停止录制；当音频采样率和声道数发生变化时，SDK 会持续录制并生成单个 MP4 录制文件。仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 [OnRecorderStateChanged](/zh-CN/api-reference/rtc/unity/recording#callback_imediarecorderobserver_onrecorderstatechanged)(`RECORDER_STATE_ERROR, RECORDER_REASON_NO_STREAM`) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 如果你需要录制的是本地的音视频流，请在开始录制前确保本地用户的角色设为主播。
 - 如果你需要录制的是远端用户的音视频流，请在开始录制前确保已经订阅了该用户的音视频流。
 :::
@@ -301,7 +311,7 @@ public abstract int StartRecording(MediaRecorderConfiguration config);
 
 ### 参数
 
-#### `config`
+### config
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/unity/class-mediarecorderconfiguration)。
 
@@ -310,18 +320,19 @@ public abstract int StartRecording(MediaRecorderConfiguration config);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数无效。请确保：
+
     - 指定的录制文件保存路径正确且可写。
     - 指定的录制文件格式正确。
     - 设置的最大录制时长正确。
-  - -4: IRtcEngine 当前状态不支持该操作。可能因为录制正在进行中或录制出错停止。
-  - -7: IRtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 IMediaRecorder 对象。
-
-### 所属接口类
-- [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder)
+  - -4: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 当前状态不支持该操作。可能因为录制正在进行中或录制出错停止。
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder) 对象。
 
 <a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title9"></a>
 
 ## StopAudioRecording
 
@@ -329,7 +340,7 @@ public abstract int StartRecording(MediaRecorderConfiguration config);
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```csharp
+```text
 public abstract int StopAudioRecording();
 ```
 
@@ -340,12 +351,11 @@ public abstract int StopAudioRecording();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediarecorder_stoprecording"></a>
+
+<a id="ariaid-title10"></a>
 
 ## StopRecording
 
@@ -353,14 +363,14 @@ public abstract int StopAudioRecording();
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```csharp
+```text
 public abstract int StopRecording();
 ```
 
 <a id="api_imediarecorder_stoprecording__detailed_desc"></a>
 
-:::info[注]
-调用 [StartRecording](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
+:::note
+注： 调用 [StartRecording](/zh-CN/api-reference/rtc/unity/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
 :::
 
 <a id="api_imediarecorder_stoprecording__return_values"></a>
@@ -369,12 +379,12 @@ public abstract int StopRecording();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
-  - -7: IRtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 IMediaRecorder 对象。
 
-### 所属接口类
-- [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder)
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [IMediaRecorder](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorder) 对象。
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+<a id="ariaid-title11"></a>
 
 ## OnRecorderInfoUpdated
 
@@ -382,7 +392,7 @@ public abstract int StopRecording();
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```csharp
+```text
 public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderInfo info) {}
 ```
 
@@ -394,22 +404,21 @@ public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderIn
 
 ### 参数
 
-#### `channelId`
+### channelId
 
 频道名称。
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `info`
+### info
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/unity/class-recorderinfo)。
 
-### 所属接口类
-- [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorderobserver)
-
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+<a id="ariaid-title12"></a>
 
 ## OnRecorderStateChanged
 
@@ -417,7 +426,7 @@ public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderIn
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnRecorderStateChanged(string channelId, uint uid, RecorderState state, RecorderReasonCode reason)
 ```
 
@@ -429,21 +438,18 @@ public virtual void OnRecorderStateChanged(string channelId, uint uid, RecorderS
 
 ### 参数
 
-#### `channelId`
+### channelId
 
 频道名称。
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `state`
+### state
 
 当前的录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/unity/enum-recorderstate)。
 
-#### `reason`
+### reason
 
 录制状态出错的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/unity/enum-recorderreasoncode)。
-
-### 所属接口类
-- [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediarecorderobserver)

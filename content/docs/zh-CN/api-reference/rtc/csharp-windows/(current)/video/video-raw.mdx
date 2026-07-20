@@ -1,10 +1,19 @@
 ---
-title: "原始视频数据"
-description: "原始视频数据 API reference."
+title: 原始视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_video_raw
+  sourcePath: html-docs/rtc/Csharp/API/toc_video_raw.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_raw"></a>
 
 <a id="api_imediaengine_registervideoframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RegisterVideoFrameObserver
 
@@ -12,7 +21,7 @@ description: "原始视频数据 API reference."
 
 <a id="api_imediaengine_registervideoframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObserver, VIDEO_OBSERVER_FRAME_TYPE formatPreference, VIDEO_OBSERVER_POSITION position, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
 ```
 
@@ -47,11 +56,11 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 
 ### 参数
 
-#### `videoFrameObserver`
+### videoFrameObserver
 
-接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)。 如果传入 NULL，则取消注册。
+接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
 
-#### `mode`
+### mode
 
 视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-observermode)。
 
@@ -60,9 +69,11 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_unregistervideoencodedframeobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## UnregisterVideoEncodedFrameObserver
 
@@ -70,7 +81,7 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 
 <a id="api_imediaengine_unregistervideoencodedframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int UnRegisterVideoEncodedFrameObserver();
 ```
 
@@ -78,13 +89,14 @@ public abstract int UnRegisterVideoEncodedFrameObserver();
 
 ### 返回值
 
-- 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+<a id="api_imediaengine_unregistervideoencodedframeobserver__ul_uns_l2y_hqb"></a>
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_unregistervideoframeobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## UnregisterVideoFrameObserver
 
@@ -92,7 +104,7 @@ public abstract int UnRegisterVideoEncodedFrameObserver();
 
 <a id="api_imediaengine_unregistervideoframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int UnRegisterVideoFrameObserver();
 ```
 
@@ -100,10 +112,14 @@ public abstract int UnRegisterVideoFrameObserver();
 
 ### 返回值
 
+<a id="api_imediaengine_unregistervideoframeobserver__ul_uns_l2y_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
+
+<a id="ariaid-title5"></a>
 
 ## OnCaptureVideoFrame
 
@@ -111,7 +127,7 @@ public abstract int UnRegisterVideoFrameObserver();
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame)
 ```
 
@@ -143,16 +159,16 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-#### `videoFrame`
+### videoFrame
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - Windows：YUV420
 :::
@@ -161,13 +177,14 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 ### 返回值
 
-- true：设置 SDK 接收视频帧。
-- false：设置 SDK 丢弃视频帧。
+<a id="callback_ivideoframeobserver_oncapturevideoframe__return"></a>
 
-### 所属接口类
-- [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)
+- `true`：设置 SDK 接收视频帧。
+- `false`：设置 SDK 丢弃视频帧。
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnPreEncodeVideoFrame
 
@@ -175,7 +192,7 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame)
 ```
 
@@ -185,8 +202,10 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
 
-:::warning[注意]
-- 你需要通过 设置观测 POSITION_PRE_ENCODER (1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+:::note
+注意：
+
+- 你需要通过  设置观测 POSITION_PRE_ENCODER(1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
 - 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
@@ -195,16 +214,16 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-#### `videoFrame`
+### videoFrame
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - Windows：YUV420
 :::
@@ -213,13 +232,12 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 ### 返回值
 
-- true：设置 SDK 接收视频帧。
-- false：设置 SDK 丢弃视频帧。
-
-### 所属接口类
-- [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)
+- `true`：设置 SDK 接收视频帧。
+- `false`：设置 SDK 丢弃视频帧。
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
+
+<a id="ariaid-title7"></a>
 
 ## OnRenderVideoFrame
 
@@ -227,7 +245,7 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame)
 ```
 
@@ -235,29 +253,29 @@ public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFr
 
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
 
-:::info[注]
-Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频帧观测器时，将 mode 设置为 `INTPTR`。
+:::note
+注： Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频帧观测器时，将 mode 设置为 `INTPTR`。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
 
 ### 参数
 
-#### `remoteUid`
+### remoteUid
 
 发送该帧视频的远端用户 ID。
 
-#### `videoFrame`
+### videoFrame
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - Windows：YUV420
 :::
 
-#### `channelId`
+### channelId
 
 频道 ID。
 
@@ -265,8 +283,5 @@ Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [Regist
 
 ### 返回值
 
-- true：设置 SDK 接收视频帧。
-- false：设置 SDK 丢弃视频帧。
-
-### 所属接口类
-- [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)
+- `true`：设置 SDK 接收视频帧。
+- `false`：设置 SDK 丢弃视频帧。

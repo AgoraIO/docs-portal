@@ -1,10 +1,18 @@
 ---
-title: "AgoraContentInspectConfig"
-description: "截图和上传配置。"
+title: AgoraContentInspectConfig
+description: 截图和上传配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_contentinspectconfig
+  sourcePath: html-docs/rtc/iOS/API/class_contentinspectconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_contentinspectconfig__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraContentInspectConfig: NSObject
 @property (nonatomic, copy) NSString* _Nullable extraInfo;
 @property (nonatomic, copy) NSString* _Nullable serverConfig;
@@ -20,18 +28,18 @@ __attribute__((visibility("default"))) @interface AgoraContentInspectConfig: NSO
 
 ## 属性
 
-### `extraInfo`
+### extraInfo
 
 视频内容的附加信息（最大长度为 1024 字节）。SDK 会将截图和视频内容的附加信息上传至声网服务器。上传完成后，声网服务器会将附加信息和回调通知发送至你的服务器。
 
-### `serverConfig`
+### serverConfig
 
 通过声网 Extensions Marketplace 上传视频截图的扩展相关的服务器配置。仅当 [AgoraContentInspectModule](/zh-CN/api-reference/rtc/ios/class-contentinspectmodule) 中的 `type` 设置为 `AgoraContentInspectTypeImageModeration` 时该参数才生效。如需使用该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 
-### `modules`
+### modules
 
-功能模块。最多可配置 32 个 [AgoraContentInspectModule](/zh-CN/api-reference/rtc/ios/class-contentinspectmodule) 实例， `MAX_CONTENT_INSPECT_MODULE_COUNT` 的取值范围为 [1, 32] 的整数。详见 [AgoraContentInspectModule](/zh-CN/api-reference/rtc/ios/class-contentinspectmodule)。
+功能模块。最多可配置 32 个 [AgoraContentInspectModule](/zh-CN/api-reference/rtc/ios/class-contentinspectmodule) 实例，`MAX_CONTENT_INSPECT_MODULE_COUNT` 的取值范围为 [1, 32] 的整数。详见 [AgoraContentInspectModule](/zh-CN/api-reference/rtc/ios/class-contentinspectmodule)。
 
-:::info[注]
-每个功能模块最多只能配置一个实例。目前仅支持本地截图上传功能。
+:::note
+注： 每个功能模块最多只能配置一个实例。目前仅支持本地截图上传功能。
 :::

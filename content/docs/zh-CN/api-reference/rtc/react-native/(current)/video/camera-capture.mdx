@@ -1,10 +1,19 @@
 ---
-title: "摄像头采集"
-description: "摄像头采集 API reference."
+title: 摄像头采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_camera_capture
+  sourcePath: html-docs/rtc/RN/API/toc_camera_capture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_camera_capture"></a>
 
 <a id="api_irtcengine_setcamerastabilizationmode"></a>
+
+<a id="ariaid-title2"></a>
 
 ## setCameraStabilizationMode
 
@@ -12,7 +21,7 @@ description: "摄像头采集 API reference."
 
 <a id="api_irtcengine_setcamerastabilizationmode__prototype"></a>
 
-```typescript
+```text
 abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 ```
 
@@ -20,11 +29,11 @@ abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 
 摄像头防抖模式默认关闭，你需要调用该方法开启并设置合适的防抖模式。
 
-:::info[注]
-该方法仅适用于 iOS。
+:::note
+注： 该方法仅适用于 iOS。
 
 - 摄像头防抖只对视频分辨率大于 1280 × 720 以上的场景生效。
-- 开启摄像头防抖后，摄像头防抖等级越高，相机的视角就越小、相机时延就越大。为保障用户体验，建议你将 mode 参数设置为 CameraStabilizationModeLevel1。
+- 开启摄像头防抖后，摄像头防抖等级越高，相机的视角就越小、相机时延就越大。为保障用户体验，建议你将 `mode` 参数设置为 `CameraStabilizationModeLevel1`。
 :::
 
 <a id="api_irtcengine_setcamerastabilizationmode__scenario"></a>
@@ -43,7 +52,7 @@ abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 
 ### 参数
 
-#### `mode`
+### mode
 
 摄像头的防抖模式。详见 [CameraStabilizationMode](/zh-CN/api-reference/rtc/react-native/enum-camerastabilizationmode)。
 
@@ -52,12 +61,11 @@ abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startcameracapture"></a>
+
+<a id="ariaid-title3"></a>
 
 ## startCameraCapture
 
@@ -65,7 +73,7 @@ abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 
 <a id="api_irtcengine_startcameracapture__prototype"></a>
 
-```typescript
+```text
 abstract startCameraCapture(
     sourceType: VideoSourceType,
     config: CameraCapturerConfiguration
@@ -76,29 +84,31 @@ abstract startCameraCapture(
 
 调用该方法可以通过指定 `sourceType` 同时开启多路摄像头采集。
 
-:::info[注]
-在 iOS 平台上调用该方法前，如果要开启多路摄像头采集，需要在调用该方法前，先调用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 并设置 `enabled` 为 true。
+:::note
+注： 在 iOS 平台上调用该方法前，如果要开启多路摄像头采集，需要在调用该方法前，先调用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 并设置 `enabled` 为 true。
 :::
 
 <a id="api_irtcengine_startcameracapture__parameters"></a>
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-:::info[注]
+:::note
+注：
+
 - iOS 设备最多支持 2 路摄像头采集的视频流（要求设备配备多摄像头或支持外接摄像头）。
 - Android 设备最多支持 4 路摄像头采集的视频流（要求设备配备多摄像头或支持外接摄像头）。
 :::
 
-#### `config`
+### config
 
 视频采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/class-cameracapturerconfiguration)。
 
-:::info[注]
-在 iOS 平台上，该参数无实际作用。请使用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数设置视频采集配置。
+:::note
+注： 在 iOS 平台上，该参数无实际作用。请使用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数设置视频采集配置。
 :::
 
 <a id="api_irtcengine_startcameracapture__return_values"></a>
@@ -106,12 +116,11 @@ abstract startCameraCapture(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopcameracapture"></a>
+
+<a id="ariaid-title4"></a>
 
 ## stopCameraCapture
 
@@ -119,7 +128,7 @@ abstract startCameraCapture(
 
 <a id="api_irtcengine_stopcameracapture__prototype"></a>
 
-```typescript
+```text
 abstract stopCameraCapture(sourceType: VideoSourceType): number;
 ```
 
@@ -127,15 +136,16 @@ abstract stopCameraCapture(sourceType: VideoSourceType): number;
 
 调用 [startCameraCapture](/zh-CN/api-reference/rtc/react-native/video/camera-capture#api_irtcengine_startcameracapture) 开启一路或多路摄像头采集的视频流后，你可以调用该方法，通过设置 `sourceType` 停止一路或多路摄像头的视频采集。
 
-:::info[注]
-在 iOS 平台上，如果要关闭多路摄像头采集，需要在调用该方法之后调用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 并设置 `enabled` 为 false。 如果你正在使用本地合图功能，调用该方法停止通过第一个摄像头采集视频，会造成本地合图中断。
+:::note
+注： 在 iOS 平台上，如果要关闭多路摄像头采集，需要在调用该方法之后调用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 并设置 `enabled` 为 false。
+如果你正在使用本地合图功能，调用该方法停止通过第一个摄像头采集视频，会造成本地合图中断。
 :::
 
 <a id="api_irtcengine_stopcameracapture__parameters"></a>
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
@@ -144,7 +154,4 @@ abstract stopCameraCapture(sourceType: VideoSourceType): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

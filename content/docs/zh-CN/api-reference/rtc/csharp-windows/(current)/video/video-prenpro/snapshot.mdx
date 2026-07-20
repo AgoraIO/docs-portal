@@ -1,10 +1,19 @@
 ---
-title: "本地截图上传"
-description: "本地截图上传 API reference."
+title: 本地截图上传
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_snapshot
+  sourcePath: html-docs/rtc/Csharp/API/toc_snapshot.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableContentInspect
 
@@ -12,7 +21,7 @@ description: "本地截图上传 API reference."
 
 <a id="api_irtcengine_enablecontentinspect__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableContentInspect(bool enabled, ContentInspectConfig config);
 ```
 
@@ -31,20 +40,20 @@ public abstract int EnableContentInspect(bool enabled, ContentInspectConfig conf
 ### 调用限制
 
 - 调用该方法前，请确保已在声网控制台开通本地截图上传服务。
-- 视频审核模块选择声网自研插件截图上传（CONTENT_INSPECT_SUPERVISION ）时需集成本地截图上传动态库 libagora_content_inspect_extension.dll，如果删除该动态库会导致无法正常开启本地截图上传功能。
+- 视频审核模块选择声网自研插件截图上传（CONTENT_INSPECT_SUPERVISION）时需集成本地截图上传动态库 `libagora_content_inspect_extension.dll`，如果删除该动态库会导致无法正常开启本地截图上传功能。
 
 <a id="api_irtcengine_enablecontentinspect__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 设置是否开启本地截图上传：
 
-- true：开启本地截图上传。
-- false：关闭本地截图上传。
+- `true`：开启本地截图上传。
+- `false`：关闭本地截图上传。
 
-#### `config`
+### config
 
 本地截图上传配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/csharp-windows/class-contentinspectconfig)。
 
@@ -53,12 +62,11 @@ public abstract int EnableContentInspect(bool enabled, ContentInspectConfig conf
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_takesnapshot"></a>
+
+<a id="ariaid-title3"></a>
 
 ## TakeSnapshot [1/2]
 
@@ -66,7 +74,7 @@ public abstract int EnableContentInspect(bool enabled, ContentInspectConfig conf
 
 <a id="api_irtcengine_takesnapshot__prototype"></a>
 
-```csharp
+```text
 public abstract int TakeSnapshot(uint uid, string filePath);
 ```
 
@@ -98,18 +106,18 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `filePath`
+### filePath
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- Windows: `C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg`
 
-:::warning[注意]
-请确保目录存在且可写。
+:::note
+注意： 请确保目录存在且可写。
 :::
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
@@ -117,12 +125,11 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_takesnapshotex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## TakeSnapshotEx [1/2]
 
@@ -130,7 +137,7 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 
 <a id="api_irtcengineex_takesnapshotex__prototype"></a>
 
-```csharp
+```text
 public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, string filePath);
 ```
 
@@ -162,22 +169,22 @@ public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, string fi
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `filePath`
+### filePath
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- Windows: `C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg`
 
-:::warning[注意]
-请确保目录存在且可写。
+:::note
+注意： 请确保目录存在且可写。
 :::
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
@@ -185,12 +192,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
+
+<a id="ariaid-title5"></a>
 
 ## OnSnapshotTaken
 
@@ -198,7 +204,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__prototype"></a>
 
-```csharp
+```text
 public virtual void OnSnapshotTaken(RtcConnection connection, uint uid, string filePath, int width, int height, int errCode) { }
 ```
 
@@ -210,35 +216,33 @@ public virtual void OnSnapshotTaken(RtcConnection connection, uint uid, string f
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果 uid 为 0，表示本地用户。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-#### `filePath`
+### filePath
 
 截图的本地保存路径。
 
-#### `width`
+### width
 
 图片宽度（px）。
 
-#### `height`
+### height
 
 图片高度（px）。
 
-#### `errCode`
+### errCode
 
 截图成功的提示或失败的原因。
 
 - 0：截图成功。
 - &lt; 0: 截图失败。
-  - -1：写入文件失败或 JPEG 编码失败。
-  - -2： TakeSnapshot [1/2] 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
-  - -3： TakeSnapshot [1/2] 方法调用过于频繁。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+  - -1：写入文件失败或 JPEG 编码失败。
+  - -2：TakeSnapshot [1/2] 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
+  - -3：TakeSnapshot [1/2] 方法调用过于频繁。

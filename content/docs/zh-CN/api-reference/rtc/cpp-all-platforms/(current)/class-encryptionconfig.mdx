@@ -1,10 +1,18 @@
 ---
-title: "EncryptionConfig"
-description: "用于配置内置加密参数。"
+title: EncryptionConfig
+description: 用于配置内置加密参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_encryptionconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_encryptionconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_encryptionconfig__prototype"></a>
 
-```cpp
+```text
 struct EncryptionConfig {
   ENCRYPTION_MODE encryptionMode;
   const char* encryptionKey;
@@ -18,27 +26,27 @@ struct EncryptionConfig {
 
 ## 属性
 
-### `encryptionMode`
+### encryptionMode
 
 内置加密模式，详见 [ENCRYPTION_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-encryptionmode)。声网建议使用 `AES_128_GCM2` 或 `AES_256_GCM2` 模式，这两种模式支持使用加密盐以提升安全性。
 
-### `encryptionKey`
+### encryptionKey
 
 字符串类型的加密密钥，长度不受限制。声网建议使用 32 字节的密钥。
 
-:::info[注]
-如果未设置加密密钥或将其设置为 NULL，则无法使用内置加密，SDK 会返回 `-2`。
+:::note
+注： 如果未设置加密密钥或将其设置为 NULL，则无法使用内置加密，SDK 会返回 `-2`。
 :::
 
-### `encryptionKdfSalt`
+### encryptionKdfSalt
 
 用于加密的盐值，长度为 32 字节。
 
-:::info[注]
-该参数仅在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下生效。在此情况下，请确保该参数不为 `0`。
+:::note
+注： 该参数仅在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下生效。在此情况下，请确保该参数不为 `0`。
 :::
 
-### `datastreamEncryptionEnabled`
+### datastreamEncryptionEnabled
 
 是否启用数据流加密：
 

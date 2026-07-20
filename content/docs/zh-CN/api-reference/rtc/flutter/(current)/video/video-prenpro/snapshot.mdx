@@ -1,10 +1,19 @@
 ---
-title: "本地截图上传"
-description: "本地截图上传 API reference."
+title: 本地截图上传
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_snapshot
+  sourcePath: html-docs/rtc/Flutter/API/toc_snapshot.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableContentInspect
 
@@ -12,7 +21,7 @@ description: "本地截图上传 API reference."
 
 <a id="api_irtcengine_enablecontentinspect__prototype"></a>
 
-```dart
+```text
 Future<void> enableContentInspect(
       {required bool enabled, required ContentInspectConfig config});
 ```
@@ -21,9 +30,11 @@ Future<void> enableContentInspect(
 
 开启本地截图上传后，SDK 会根据你在 [ContentInspectConfig](/zh-CN/api-reference/rtc/flutter/class-contentinspectconfig) 中设置的模块类型和频率对本地用户发送的视频进行截图和上传。截图完成后，声网服务器会以 HTTPS 请求的形式，向你的服务器发送回调通知，并将所有截图发送至你指定的第三方云存储。
 
-:::info[注]
+:::note
+注：
+
 - 调用该方法前，请确保已在声网控制台开通本地截图上传服务。
-- 视频审核模块选择声网自研插件截图上传（contentInspectSupervision ）时需集成本地截图上传动态库 libagora_content_inspect_extension.dll，如果删除该动态库会导致无法正常开启本地截图上传功能。
+- 视频审核模块选择声网自研插件截图上传（`contentInspectSupervision`）时需集成本地截图上传动态库 `libagora_content_inspect_extension.dll`，如果删除该动态库会导致无法正常开启本地截图上传功能。
 :::
 
 <a id="api_irtcengine_enablecontentinspect__timing"></a>
@@ -36,14 +47,14 @@ Future<void> enableContentInspect(
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 设置是否开启本地截图上传：
 
 - true：开启本地截图上传。
 - false：关闭本地截图上传。
 
-#### `config`
+### config
 
 本地截图上传配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/flutter/class-contentinspectconfig)。
 
@@ -51,12 +62,11 @@ Future<void> enableContentInspect(
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_enablecontentinspectex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableContentInspectEx
 
@@ -64,7 +74,7 @@ Future<void> enableContentInspect(
 
 <a id="api_irtcengineex_enablecontentinspectex__prototype"></a>
 
-```dart
+```text
 Future<void> enableContentInspectEx(
     {required bool enabled,
     required ContentInspectConfig config,
@@ -75,8 +85,8 @@ Future<void> enableContentInspectEx(
 
 该方法可以对多条视频流截图并上传。开启本地截图上传后，SDK 会根据你在 [ContentInspectConfig](/zh-CN/api-reference/rtc/flutter/class-contentinspectconfig) 中设置的模块类型和频率对本地用户发送的视频进行截图和上传。截图完成后，声网服务器会以 HTTPS 请求的形式，向你的服务器发送回调通知，并将所有截图发送至你指定的第三方云存储。
 
-:::info[注]
-调用该方法前，请确保已[联系技术支持](https://ticket.shengwang.cn/)开通本地截图上传服务。
+:::note
+注： 调用该方法前，请确保已[联系技术支持](https://ticket.shengwang.cn/)开通本地截图上传服务。
 :::
 
 <a id="api_irtcengineex_enablecontentinspectex__timing"></a>
@@ -89,18 +99,18 @@ Future<void> enableContentInspectEx(
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 设置是否开启本地截图上传：
 
 - true：开启本地截图上传。
 - false：关闭本地截图上传。
 
-#### `config`
+### config
 
 本地截图上传配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/flutter/class-contentinspectconfig)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
@@ -108,12 +118,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_takesnapshot"></a>
+
+<a id="ariaid-title4"></a>
 
 ## takeSnapshot
 
@@ -121,7 +130,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_takesnapshot__prototype"></a>
 
-```dart
+```text
 Future<void> takeSnapshot({required int uid, required String filePath});
 ```
 
@@ -129,9 +138,11 @@ Future<void> takeSnapshot({required int uid, required String filePath});
 
 该方法用于对指定用户的视频流进行截图，生成一张 JPG 格式的图片，并保存至指定的路径。
 
-:::info[注]
+:::note
+注：
+
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -151,33 +162,32 @@ Future<void> takeSnapshot({required int uid, required String filePath});
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `filePath`
+### filePath
 
-:::info[注]
-请确保目录存在且可写。
+:::note
+注： 请确保目录存在且可写。
 :::
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg`
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_takesnapshot2"></a>
+
+<a id="ariaid-title5"></a>
 
 ## takeSnapshotWithConfig
 
@@ -185,7 +195,7 @@ Future<void> takeSnapshot({required int uid, required String filePath});
 
 <a id="api_irtcengine_takesnapshot2__prototype"></a>
 
-```dart
+```text
 Future<void> takeSnapshotWithConfig(
       {required int uid, required SnapshotConfig config});
 ```
@@ -194,9 +204,11 @@ Future<void> takeSnapshotWithConfig(
 
 该方法用于对指定用户的视频流进行截图，生成一张 JPG 格式的图片，并保存至指定的路径。
 
-:::info[注]
+:::note
+注：
+
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 :::
 
 <a id="api_irtcengine_takesnapshot2__timing"></a>
@@ -215,11 +227,11 @@ Future<void> takeSnapshotWithConfig(
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `config`
+### config
 
 截图设置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/flutter/class-snapshotconfig)。
 
@@ -227,12 +239,11 @@ Future<void> takeSnapshotWithConfig(
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_takesnapshotex"></a>
+
+<a id="ariaid-title6"></a>
 
 ## takeSnapshotEx
 
@@ -240,7 +251,7 @@ Future<void> takeSnapshotWithConfig(
 
 <a id="api_irtcengineex_takesnapshotex__prototype"></a>
 
-```dart
+```text
 Future<void> takeSnapshotEx(
       {required RtcConnection connection,
       required int uid,
@@ -251,9 +262,11 @@ Future<void> takeSnapshotEx(
 
 该方法用于对指定用户的视频流进行截图，生成一张 JPG 格式的图片，并保存至指定的路径。
 
-:::info[注]
+:::note
+注：
+
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -273,37 +286,36 @@ Future<void> takeSnapshotEx(
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `filePath`
+### filePath
 
-:::info[注]
-请确保目录存在且可写。
+:::note
+注： 请确保目录存在且可写。
 :::
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg`
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
+
+<a id="ariaid-title7"></a>
 
 ## takeSnapshotWithConfigEx
 
@@ -311,7 +323,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengineex_takesnapshotex2__prototype"></a>
 
-```dart
+```text
 Future<void> takeSnapshotWithConfigEx(
       {required RtcConnection connection,
       required int uid,
@@ -322,9 +334,11 @@ Future<void> takeSnapshotWithConfigEx(
 
 该方法用于对指定用户的视频流进行截图，生成一张 JPG 格式的图片，并保存至指定的路径。
 
-:::info[注]
+:::note
+注：
+
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -344,15 +358,15 @@ Future<void> takeSnapshotWithConfigEx(
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-#### `config`
+### config
 
 截图设置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/flutter/class-snapshotconfig)。
 
@@ -360,12 +374,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onSnapshotTaken
 
@@ -373,7 +386,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__prototype"></a>
 
-```dart
+```text
 final void Function(RtcConnection connection, int uid, String filePath,
       int width, int height, int errCode)? onSnapshotTaken;
 ```
@@ -386,35 +399,33 @@ final void Function(RtcConnection connection, int uid, String filePath,
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果 `uid` 为 0，表示本地用户。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-#### `filePath`
+### filePath
 
 截图的本地保存路径。
 
-#### `width`
+### width
 
 图片宽度（px）。
 
-#### `height`
+### height
 
 图片高度（px）。
 
-#### `errCode`
+### errCode
 
 截图成功的提示或失败的原因。
 
 - 0：截图成功。
 - &lt; 0: 截图失败。
-  - -1：写入文件失败或 JPEG 编码失败。
-  - -2： takeSnapshot 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
-  - -3： takeSnapshot 方法调用过于频繁。
 
-### 所属接口类
-- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+  - -1：写入文件失败或 JPEG 编码失败。
+  - -2：[takeSnapshot](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
+  - -3：[takeSnapshot](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用过于频繁。

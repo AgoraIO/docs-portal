@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/Csharp/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_imediaplayer_registeraudioframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RegisterAudioFrameObserver [1/2]
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_imediaplayer_registeraudioframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 ```
 
@@ -26,7 +35,7 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 
 ### 参数
 
-#### `observer`
+### observer
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/csharp-windows/class-iaudiopcmframesink)。
 
@@ -34,13 +43,14 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 
 ### 返回值
 
-- 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+<a id="api_imediaplayer_registeraudioframeobserver__ul_uns_l2y_hqb"></a>
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer)
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_registeraudioframeobserver2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## RegisterAudioFrameObserver [2/2]
 
@@ -48,7 +58,7 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 
 <a id="api_imediaplayer_registeraudioframeobserver2__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_AUDIO_FRAME_OP_MODE_TYPE mode);
 ```
 
@@ -56,11 +66,11 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_
 
 ### 参数
 
-#### `observer`
+### observer
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/csharp-windows/class-iaudiopcmframesink)。
 
-#### `mode`
+### mode
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rawaudioframeopmodetype)。
 
@@ -68,13 +78,14 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_
 
 ### 返回值
 
-- 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+<a id="api_imediaplayer_registeraudioframeobserver2__ul_uns_l2y_hqb"></a>
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer)
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unregisteraudioframeobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## UnregisterAudioFrameObserver
 
@@ -82,7 +93,7 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_
 
 <a id="api_imediaplayer_unregisteraudioframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int UnregisterAudioFrameObserver();
 ```
 
@@ -91,12 +102,11 @@ public abstract int UnregisterAudioFrameObserver();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication"></a>
+
+<a id="ariaid-title5"></a>
 
 ## OnAudioVolumeIndication
 
@@ -104,7 +114,7 @@ public abstract int UnregisterAudioFrameObserver();
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioVolumeIndication(int volume) {}
 ```
 
@@ -116,14 +126,13 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-#### `volume`
+### volume
 
 播放器的当前音量，取值范围为 [0,255]。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_iaudiopcmframesink_onframe"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnFrame
 
@@ -131,7 +140,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_iaudiopcmframesink_onframe__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnFrame(AudioPcmFrame frame)
         {
             return true;
@@ -146,9 +155,9 @@ public virtual bool OnFrame(AudioPcmFrame frame)
 
 ### 参数
 
-#### `frame`
+### frame
 
-音频帧信息。 详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audiopcmframe)。
+音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audiopcmframe)。
 
 <a id="callback_iaudiopcmframesink_onframe__return_values"></a>
 
@@ -156,10 +165,9 @@ public virtual bool OnFrame(AudioPcmFrame frame)
 
 无实际含义。
 
-### 所属接口类
-- [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/csharp-windows/class-iaudiopcmframesink)
-
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title7"></a>
 
 ## OnMetaData
 
@@ -167,7 +175,7 @@ public virtual bool OnFrame(AudioPcmFrame frame)
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```csharp
+```text
 public virtual void OnMetaData(byte[] data, int length) { }
 ```
 
@@ -179,18 +187,17 @@ public virtual void OnMetaData(byte[] data, int length) { }
 
 ### 参数
 
-#### `data`
+### data
 
 具体数据，用户自定义格式的数据。
 
-#### `length`
+### length
 
 数据长度，单位为 byte。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title8"></a>
 
 ## OnPlayBufferUpdated
 
@@ -198,7 +205,7 @@ public virtual void OnMetaData(byte[] data, int length) { }
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPlayBufferUpdated(Int64 playCachedBuffer) { }
 ```
 
@@ -213,14 +220,13 @@ public virtual void OnPlayBufferUpdated(Int64 playCachedBuffer) { }
 
 ### 参数
 
-#### `playCachedBuffer`
+### playCachedBuffer
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title9"></a>
 
 ## OnPlayerEvent
 
@@ -228,7 +234,7 @@ public virtual void OnPlayBufferUpdated(Int64 playCachedBuffer) { }
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPlayerEvent(MEDIA_PLAYER_EVENT eventCode, Int64 elapsedTime, string message) { }
 ```
 
@@ -240,22 +246,21 @@ public virtual void OnPlayerEvent(MEDIA_PLAYER_EVENT eventCode, Int64 elapsedTim
 
 ### 参数
 
-#### `eventCode`
+### eventCode
 
 播放器事件，详见 [MEDIA_PLAYER_EVENT](/zh-CN/api-reference/rtc/csharp-windows/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+### elapsedTime
 
 发生事件的时间 (毫秒)。
 
-#### `message`
+### message
 
 事件的信息。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title10"></a>
 
 ## OnPlayerInfoUpdated
 
@@ -263,7 +268,7 @@ public virtual void OnPlayerEvent(MEDIA_PLAYER_EVENT eventCode, Int64 elapsedTim
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPlayerInfoUpdated(PlayerUpdatedInfo info) { }
 ```
 
@@ -275,14 +280,13 @@ public virtual void OnPlayerInfoUpdated(PlayerUpdatedInfo info) { }
 
 ### 参数
 
-#### `info`
+### info
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/csharp-windows/class-playerupdatedinfo)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## OnPlayerSourceStateChanged
 
@@ -290,7 +294,7 @@ public virtual void OnPlayerInfoUpdated(PlayerUpdatedInfo info) { }
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPlayerSourceStateChanged(MEDIA_PLAYER_STATE state, MEDIA_PLAYER_REASON reason)
 ```
 
@@ -302,18 +306,17 @@ public virtual void OnPlayerSourceStateChanged(MEDIA_PLAYER_STATE state, MEDIA_P
 
 ### 参数
 
-#### `state`
+### state
 
 新的播放状态，详见 [MEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediaplayerstate)。
 
-#### `reason`
+### reason
 
 播放器状态改变的原因，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title12"></a>
 
 ## OnPlayerSrcInfoChanged
 
@@ -321,7 +324,7 @@ public virtual void OnPlayerSourceStateChanged(MEDIA_PLAYER_STATE state, MEDIA_P
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPlayerSrcInfoChanged(SrcInfo from, SrcInfo to) {}
 ```
 
@@ -329,18 +332,17 @@ public virtual void OnPlayerSrcInfoChanged(SrcInfo from, SrcInfo to) {}
 
 ### 参数
 
-#### `from`
+### from
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/csharp-windows/class-srcinfo)。
 
-#### `to`
+### to
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/csharp-windows/class-srcinfo)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title13"></a>
 
 ## OnPositionChanged
 
@@ -348,7 +350,7 @@ public virtual void OnPlayerSrcInfoChanged(SrcInfo from, SrcInfo to) {}
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPositionChanged(Int64 position_ms) { }
 ```
 
@@ -360,18 +362,17 @@ public virtual void OnPositionChanged(Int64 position_ms) { }
 
 ### 参数
 
-#### `position_ms`
+### position_ms
 
 当前播放进度，单位为 ms。
 
-#### `timestampMs`
+### timestampMs
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title14"></a>
 
 ## OnPreloadEvent
 
@@ -379,7 +380,7 @@ public virtual void OnPositionChanged(Int64 position_ms) { }
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```csharp
+```text
 public virtual void OnPreloadEvent(string src, PLAYER_PRELOAD_EVENT @event) { }
 ```
 
@@ -387,18 +388,17 @@ public virtual void OnPreloadEvent(string src, PLAYER_PRELOAD_EVENT @event) { }
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的路径。
 
-#### `@event`
+### @event
 
 预加载媒体资源时发生的事件。详见 [PLAYER_PRELOAD_EVENT](/zh-CN/api-reference/rtc/csharp-windows/enum-playerpreloadevent)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayercustomdataprovider_onreaddata"></a>
+
+<a id="ariaid-title15"></a>
 
 ## OnReadData
 
@@ -406,7 +406,7 @@ public virtual void OnPreloadEvent(string src, PLAYER_PRELOAD_EVENT @event) { }
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__prototype"></a>
 
-```csharp
+```text
 public virtual int OnReadData(IntPtr bufferPtr, int bufferSize)
         {
             return 0;
@@ -421,11 +421,11 @@ public virtual int OnReadData(IntPtr bufferPtr, int bufferSize)
 
 ### 参数
 
-#### `bufferPtr`
+### bufferPtr
 
 输入参数，数据 Buffer，单位为字节。请将 SDK 报告的 bufferSize 数据写入到此参数中。
 
-#### `bufferSize`
+### bufferSize
 
 数据 Buffer 的长度，单位为字节。
 

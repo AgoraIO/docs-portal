@@ -1,10 +1,19 @@
 ---
-title: "屏幕采集"
-description: "屏幕采集 API reference."
+title: 屏幕采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_screencapture
+  sourcePath: html-docs/rtc/Flutter/API/toc_screencapture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_screencapture"></a>
 
 <a id="api_irtcengine_getscreencapturesources"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getScreenCaptureSources
 
@@ -12,7 +21,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```dart
+```text
 Future<List<ScreenCaptureSourceInfo>> getScreenCaptureSources(
     {required Size thumbSize,
     required Size iconSize,
@@ -23,23 +32,23 @@ Future<List<ScreenCaptureSourceInfo>> getScreenCaptureSources(
 
 屏幕共享或窗口共享前，你可以调用该方法获取可共享的屏幕和窗口的对象列表，方便用户通过列表中的缩略图选择共享某个显示器的屏幕或某个窗口。列表中包含窗口 ID 和屏幕 ID 等重要信息，你可以获取到 ID 后再调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启共享。
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows。
+:::note
+注： 该方法仅适用于 macOS 和 Windows。
 :::
 
 <a id="api_irtcengine_getscreencapturesources__parameters"></a>
 
 ### 参数
 
-#### `thumbSize`
+### thumbSize
 
-屏幕或窗口的缩略图的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300， `thumbSize` 为 100 x 100，缩略图实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，缩略图即为原图，SDK 不进行缩放操作。
+屏幕或窗口的缩略图的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300，`thumbSize` 为 100 x 100，缩略图实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，缩略图即为原图，SDK 不进行缩放操作。
 
-#### `iconSize`
+### iconSize
 
-程序所对应的图标的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300， `iconSize` 为 100 × 100，图标实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，图标即为原图，SDK 不进行缩放操作。
+程序所对应的图标的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300，`iconSize` 为 100 × 100，图标实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，图标即为原图，SDK 不进行缩放操作。
 
-#### `includeScreen`
+### includeScreen
 
 除了窗口信息外，SDK 是否返回屏幕信息：
 
@@ -52,10 +61,9 @@ Future<List<ScreenCaptureSourceInfo>> getScreenCaptureSources(
 
 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/flutter/class-screencapturesourceinfo) 数组。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_queryscreencapturecapability"></a>
+
+<a id="ariaid-title3"></a>
 
 ## queryScreenCaptureCapability
 
@@ -63,7 +71,7 @@ Future<List<ScreenCaptureSourceInfo>> getScreenCaptureSources(
 
 <a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
 
-```dart
+```text
 Future<int> queryScreenCaptureCapability();
 ```
 
@@ -79,37 +87,38 @@ Future<int> queryScreenCaptureCapability();
 
 ### 返回值
 
-- 方法调用成功时，返回设备支持的最高帧率。详见 ScreenCaptureFramerateCapability。
-- &lt;0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+- 方法调用成功时，返回设备支持的最高帧率。详见 [ScreenCaptureFramerateCapability](/zh-CN/api-reference/rtc/flutter/enum-screencaptureframeratecapability)。
+- &lt;0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
 
+<a id="ariaid-title4"></a>
+
 ## setExternalMediaProjection
 
-设置 SDK 外部的 MediaProjection 采集屏幕视频流。
+设置 SDK 外部的 `MediaProjection` 采集屏幕视频流。
 
 <a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
 
-```dart
+```text
 Future<void> setExternalMediaProjection(int mediaProjection);
 ```
 
 <a id="api_irtcengine_setexternalmediaprojection__detailed_desc"></a>
 
-成功调用该方法后，你设置的外部 `MediaProjection` 会替换掉 SDK 申请的 `MediaProjection` 采集屏幕视频流。 当停止屏幕共享或销毁 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 时，SDK 会自动释放 MediaProjection。
+成功调用该方法后，你设置的外部 `MediaProjection` 会替换掉 SDK 申请的 `MediaProjection` 采集屏幕视频流。
+当停止屏幕共享或销毁 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 时，SDK 会自动释放 MediaProjection。
 
-:::info[注]
-该方法仅适用于 Android。 在调用该方法前，必须先申请 `MediaProjection` 权限。
+:::note
+注： 该方法仅适用于 Android。
+在调用该方法前，必须先申请 `MediaProjection` 权限。
 :::
 
 <a id="api_irtcengine_setexternalmediaprojection__scenario"></a>
 
 ### 适用场景
 
-如果你具备自行申请 `MediaProjection` 的开发能力，可以直接使用该 `MediaProjection` 取代 SDK 申请的 `MediaProjection`。以下列出两种使用场景：
+如果你具备自行申请 `MediaProjection` 的开发能力，可以直接使用该 `MediaProjection` 取代 SDK 申请的 `MediaProjection` 。以下列出两种使用场景：
 
 - 在定制系统的设备上，可避免系统弹窗（即需要用户授予屏幕采集权限），直接开始采集屏幕视频流。
 - 一个屏幕共享进程中存在一个或多个子进程，避免在子进程中自行创建对象的过程出错而导致采集失败。
@@ -124,7 +133,7 @@ Future<void> setExternalMediaProjection(int mediaProjection);
 
 ### 参数
 
-#### `mediaProjection`
+### mediaProjection
 
 一个 [MediaProjection](https://developer.android.com/reference/android/media/projection/MediaProjection) 对象，用于采集屏幕视频流。
 
@@ -132,12 +141,11 @@ Future<void> setExternalMediaProjection(int mediaProjection);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setScreenCaptureContentHint
 
@@ -145,7 +153,7 @@ Future<void> setExternalMediaProjection(int mediaProjection);
 
 <a id="api_irtcengine_setscreencapturecontenthint__prototype"></a>
 
-```dart
+```text
 Future<void> setScreenCaptureContentHint(VideoContentHint contentHint);
 ```
 
@@ -153,15 +161,15 @@ Future<void> setScreenCaptureContentHint(VideoContentHint contentHint);
 
 SDK 会根据不同的内容类型，使用不同的算法对共享效果进行优化。如果不调用该方法，SDK 会将屏幕共享的内容默认为 contentHintNone，即无指定的内容类型。
 
-:::info[注]
-该方法在开始屏幕共享前后都能调用。
+:::note
+注： 该方法在开始屏幕共享前后都能调用。
 :::
 
 <a id="api_irtcengine_setscreencapturecontenthint__parameters"></a>
 
 ### 参数
 
-#### `contentHint`
+### contentHint
 
 屏幕共享的内容类型。详见 [VideoContentHint](/zh-CN/api-reference/rtc/flutter/enum-videocontenthint)。
 
@@ -169,12 +177,11 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setScreenCaptureScenario
 
@@ -182,7 +189,7 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```dart
+```text
 Future<void> setScreenCaptureScenario(ScreenScenarioType screenScenario);
 ```
 
@@ -190,15 +197,15 @@ Future<void> setScreenCaptureScenario(ScreenScenarioType screenScenario);
 
 开启屏幕共享或窗口共享时，你可以调用该方法设置屏幕共享的场景，SDK 会根据你设置的场景调整共享画面的画质。
 
-:::info[注]
-声网建议你在加入频道前调用该方法。
+:::note
+注： 声网建议你在加入频道前调用该方法。
 :::
 
 <a id="api_irtcengine_setscreencapturescenario__parameters"></a>
 
 ### 参数
 
-#### `screenScenario`
+### screenScenario
 
 屏幕共享的场景，详见 [ScreenScenarioType](/zh-CN/api-reference/rtc/flutter/enum-screenscenariotype)。
 
@@ -206,12 +213,11 @@ Future<void> setScreenCaptureScenario(ScreenScenarioType screenScenario);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapture"></a>
+
+<a id="ariaid-title7"></a>
 
 ## startScreenCapture
 
@@ -219,27 +225,30 @@ Future<void> setScreenCaptureScenario(ScreenScenarioType screenScenario);
 
 <a id="api_irtcengine_startscreencapture__prototype"></a>
 
-```dart
+```text
 Future<void> startScreenCapture(ScreenCaptureParameters2 captureParams);
 ```
 
 <a id="api_irtcengine_startscreencapture__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS 平台。
-- 屏幕共享流的计费标准以 ScreenVideoParameters 中的 dimensions 值为准：
+- 屏幕共享流的计费标准以 [ScreenVideoParameters](/zh-CN/api-reference/rtc/flutter/class-screenvideoparameters) 中的 `dimensions` 值为准：
+
   - 当你未传值时，以 1280 × 720 计费。
   - 当你传值时，以你传入的值计费。
 - 在 iOS 平台上，屏幕共享仅适用于 iOS 12.0 及以上。
 - 在 iOS 平台上，如果你使用音频自采集而非 SDK 采集音频，为避免应用退后台后屏幕共享停止，建议你对应用添加保活处理逻辑。
 - 在 iOS 平台上，该功能对设备性能要求较高，建议你在 iPhone X 及之后机型上使用。
-- 在 iOS 平台上，该方法依赖于屏幕共享动态库 AgoraReplayKitExtension.xcframework，如果删除该动态库会导致无法正常开启屏幕共享。
-- 在 Android 平台上，如果用户未授予 App 屏幕采集权限，SDK 会上报 onPermissionError(2) 回调。
-- 在 Android 9 及之后版本上，为避免应用退后台后被系统杀死，建议你在 /app/Manifests/AndroidManifest.xml 文件中添加前台服务权限： android.permission.FOREGROUND_SERVICE。
+- 在 iOS 平台上，该方法依赖于屏幕共享动态库 `AgoraReplayKitExtension.xcframework`，如果删除该动态库会导致无法正常开启屏幕共享。
+- 在 Android 平台上，如果用户未授予 App 屏幕采集权限，SDK 会上报 `onPermissionError(2)` 回调。
+- 在 Android 9 及之后版本上，为避免应用退后台后被系统杀死，建议你在 `/app/Manifests/AndroidManifest.xml` 文件中添加前台服务权限：`android.permission.FOREGROUND_SERVICE`。
 - 因 Android 性能限制，屏幕共享不支持 Android TV。
 - 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
 - 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
-- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 setAudioScenario 方法设置音频场景为 audioScenarioGameStreaming。
+- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 `audioScenarioGameStreaming`。
 :::
 
 <a id="api_irtcengine_startscreencapture__scenario"></a>
@@ -254,14 +263,14 @@ Future<void> startScreenCapture(ScreenCaptureParameters2 captureParams);
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__parameters"></a>
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters2)。
 
@@ -269,12 +278,11 @@ Future<void> startScreenCapture(ScreenCaptureParameters2 captureParams);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapture2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## startScreenCaptureBySourceType
 
@@ -282,7 +290,7 @@ Future<void> startScreenCapture(ScreenCaptureParameters2 captureParams);
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```dart
+```text
 Future<void> startScreenCaptureBySourceType(
       {required VideoSourceType sourceType,
       required ScreenCaptureConfiguration config});
@@ -290,10 +298,10 @@ Future<void> startScreenCaptureBySourceType(
 
 <a id="api_irtcengine_startscreencapture2__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 stopScreenCaptureBySourceType。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [stopScreenCaptureBySourceType](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_stopscreencapture2) 。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 - 在 macOS 平台上，最多支持 1 路屏幕采集的视频流。
 :::
@@ -302,10 +310,11 @@ Future<void> startScreenCaptureBySourceType(
 
 ### 适用场景
 
-在屏幕共享场景下，你需要调用该方法开始采集屏幕视频流。 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
+在屏幕共享场景下，你需要调用该方法开始采集屏幕视频流。
+SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- startScreenCaptureByDisplayId / startScreenCaptureByWindowId：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- startScreenCaptureBySourceType：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- `startScreenCaptureByDisplayId`/`startScreenCaptureByWindowId`：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- `startScreenCaptureBySourceType`：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -313,22 +322,22 @@ Future<void> startScreenCaptureBySourceType(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture2__parameters"></a>
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
 
-:::info[注]
-在 macOS 平台上，仅支持将该参数设置为 videoSourceScreen (2)。
+:::note
+注： 在 macOS 平台上，仅支持将该参数设置为 videoSourceScreen (2)。
 :::
 
-#### `config`
+### config
 
 屏幕采集配置。详见 [ScreenCaptureConfiguration](/zh-CN/api-reference/rtc/flutter/class-screencaptureconfiguration)。
 
@@ -336,12 +345,11 @@ Future<void> startScreenCaptureBySourceType(
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
+
+<a id="ariaid-title9"></a>
 
 ## startScreenCaptureByDisplayId
 
@@ -349,7 +357,7 @@ Future<void> startScreenCaptureBySourceType(
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```dart
+```text
 Future<void> startScreenCaptureByDisplayId(
     {required int displayId,
     required Rectangle regionRect,
@@ -360,8 +368,8 @@ Future<void> startScreenCaptureByDisplayId(
 
 采集一个屏幕或该屏幕部分区域的视频流。
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_irtcengine_startscreencapturebydisplayid__scenario"></a>
@@ -376,43 +384,43 @@ Future<void> startScreenCaptureByDisplayId(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
 ### 参数
 
-#### `displayId`
+### displayId
 
 指定待共享的屏幕 ID。
 
-:::info[注]
-对于 Windows 平台，如果你需要同时共享两个屏幕（主屏 + 副屏），可以在调用该方法时，将 `displayId` 设置为 `-1`。
+:::note
+注： 对于 Windows 平台，如果你需要同时共享两个屏幕（主屏 + 副屏），可以在调用该方法时，将 `displayId` 设置为 `-1`。
 :::
 
-#### `regionRect`
+### regionRect
 
-（可选）指定待共享区域相对于整个屏幕的位置。如需共享整个屏幕，则填 `nil`。 详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
+（可选）指定待共享区域相对于整个屏幕的位置。如需共享整个屏幕，则填 `nil`。
+详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的参数配置。默认的视频编码分辨率为 1920 × 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
 
-:::info[注]
-屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+:::note
+注： 屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_startscreencapturebydisplayid__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
+
+<a id="ariaid-title10"></a>
 
 ## startScreenCaptureByScreenRect
 
@@ -420,7 +428,7 @@ Future<void> startScreenCaptureByDisplayId(
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__prototype"></a>
 
-```dart
+```text
 Future<void> startScreenCaptureByScreenRect(
     {required Rectangle screenRect,
     required Rectangle regionRect,
@@ -429,32 +437,33 @@ Future<void> startScreenCaptureByScreenRect(
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 弃用： 该方法已废弃。请改用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebydisplayid)。如果你需要在设备外接其他显示屏的情况下开启屏幕共享，强烈建议你使用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebydisplayid)。
 
-共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。 该方法在加入频道前后均可调用，区别如下：
+共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。
+该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
-:::info[注]
-该方法仅适用于 Windows 平台。
+:::note
+注： 该方法仅适用于 Windows 平台。
 :::
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__parameters"></a>
 
 ### 参数
 
-#### `screenRect`
+### screenRect
 
 指定待共享的屏幕相对于虚拟屏的位置。
 
-#### `regionRect`
+### regionRect
 
-指定待共享区域相对于整个屏幕的位置。如不填，则表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容；如果将 width 或 height 设为 0，则共享整个屏幕。
+指定待共享区域相对于整个屏幕的位置。如不填，则表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容；如果将 width 或 height 设为 0 ，则共享整个屏幕。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数配置。默认的分辨率为 1920 x 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
 
@@ -462,12 +471,11 @@ Future<void> startScreenCaptureByScreenRect(
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
+
+<a id="ariaid-title11"></a>
 
 ## startScreenCaptureByWindowId
 
@@ -475,7 +483,7 @@ Future<void> startScreenCaptureByScreenRect(
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```dart
+```text
 Future<void> startScreenCaptureByWindowId(
     {required int windowId,
     required Rectangle regionRect,
@@ -484,7 +492,8 @@ Future<void> startScreenCaptureByWindowId(
 
 <a id="api_irtcengine_startscreencapturebywindowid__detailed_desc"></a>
 
-共享一个窗口或该窗口的部分区域。用户需要在该方法中指定想要共享的窗口 ID。 该方法支持共享通用 Windows 平台（UWP）应用窗口。声网使用最新版 SDK 对主流的 UWP 应用进行了测试，结果如下：
+共享一个窗口或该窗口的部分区域。用户需要在该方法中指定想要共享的窗口 ID。
+该方法支持共享通用 Windows 平台（UWP）应用窗口。声网使用最新版 SDK 对主流的 UWP 应用进行了测试，结果如下：
 
 | 系统版本 | 软件名称 | 兼容版本 | 是否支持 |
 | --- | --- | --- | --- |
@@ -513,8 +522,9 @@ Future<void> startScreenCaptureByWindowId(
 |  | WPS PPT | 11.1.0.9098 | 是 |
 |  | 系统自带的 Media Player | 所有版本 | 否 |
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。 SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Graphics Device Interface）采集，WGC 在早于 Windows 10 2004 的系统上无法设置关闭鼠标采集，因此，当你在搭载早于 Windows 10 2004 系统的设备上进行窗口共享时，可能出现 `captureMouseCursor(false)` 不生效的现象。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
+SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Graphics Device Interface）采集，WGC 在早于 Windows 10 2004 的系统上无法设置关闭鼠标采集，因此，当你在搭载早于 Windows 10 2004 系统的设备上进行窗口共享时，可能出现 `captureMouseCursor(false)` 不生效的现象。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
 :::
 
 <a id="api_irtcengine_startscreencapturebywindowid__scenario"></a>
@@ -529,22 +539,22 @@ Future<void> startScreenCaptureByWindowId(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
 ### 参数
 
-#### `windowId`
+### windowId
 
 指定待共享的窗口 ID。
 
-#### `regionRect`
+### regionRect
 
 （可选）指定待共享区域相对于整个屏幕的位置。如不填，则表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。如果设置的共享区域超出了窗口的边界，则只共享窗口内的内容；如果宽或高为 0，则共享整个窗口。
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的参数配置。默认的分辨率为 1920 x 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
 
@@ -552,12 +562,11 @@ Future<void> startScreenCaptureByWindowId(
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopscreencapture"></a>
+
+<a id="ariaid-title12"></a>
 
 ## stopScreenCapture
 
@@ -565,7 +574,7 @@ Future<void> startScreenCaptureByWindowId(
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```dart
+```text
 Future<void> stopScreenCapture();
 ```
 
@@ -575,7 +584,7 @@ Future<void> stopScreenCapture();
 
 ### 适用场景
 
-如果你调用了 `startScreenCaptureBySourceType`、 `startScreenCaptureByWindowId` 或 `startScreenCaptureByDisplayId` 开启屏幕采集，则停止屏幕采集时需要调用该方法。
+如果你调用了 `startScreenCaptureBySourceType`、`startScreenCaptureByWindowId` 或 `startScreenCaptureByDisplayId` 开启屏幕采集，则停止屏幕采集时需要调用该方法。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -587,12 +596,11 @@ Future<void> stopScreenCapture();
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopscreencapture2"></a>
+
+<a id="ariaid-title13"></a>
 
 ## stopScreenCaptureBySourceType
 
@@ -600,14 +608,14 @@ Future<void> stopScreenCapture();
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```dart
+```text
 Future<void> stopScreenCaptureBySourceType(VideoSourceType sourceType);
 ```
 
 <a id="api_irtcengine_stopscreencapture2__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 macOS 和 Windows 平台。
+:::note
+注： 该方法仅适用于 macOS 和 Windows 平台。
 :::
 
 <a id="api_irtcengine_stopscreencapture2__scenario"></a>
@@ -626,7 +634,7 @@ Future<void> stopScreenCaptureBySourceType(VideoSourceType sourceType);
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
 
@@ -634,12 +642,11 @@ Future<void> stopScreenCaptureBySourceType(VideoSourceType sourceType);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_updatescreencapture"></a>
+
+<a id="ariaid-title14"></a>
 
 ## updateScreenCapture
 
@@ -647,7 +654,7 @@ Future<void> stopScreenCaptureBySourceType(VideoSourceType sourceType);
 
 <a id="api_irtcengine_updatescreencapture__prototype"></a>
 
-```dart
+```text
 Future<void> updateScreenCapture(ScreenCaptureParameters2 captureParams);
 ```
 
@@ -655,10 +662,12 @@ Future<void> updateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 如果在开启屏幕共享时未采集系统音频、然后想要更新参数配置、发布系统音频，可参考以下步骤：
 
-1. 调用该方法并设置 captureAudio 为 true。
-2. 调用 updateChannelMediaOptions 设置 publishScreenCaptureAudio 为 true，即可发布屏幕采集的音频。
+1. 调用该方法并设置 `captureAudio` 为 true。
+2. 调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 设置 `publishScreenCaptureAudio` 为 true，即可发布屏幕采集的音频。
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Android 和 iOS 平台。
 - 在 iOS 平台上，屏幕共享仅适用于 iOS 12.0 及以上。
 :::
@@ -667,7 +676,7 @@ Future<void> updateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters2)。
 
@@ -675,12 +684,11 @@ Future<void> updateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
+
+<a id="ariaid-title15"></a>
 
 ## updateScreenCaptureParameters
 
@@ -688,14 +696,16 @@ Future<void> updateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```dart
+```text
 Future<void> updateScreenCaptureParameters(
       ScreenCaptureParameters captureParams);
 ```
 
 <a id="api_irtcengine_updatescreencaptureparameters__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法仅适用于 Windows 和 macOS 平台。
 - 请在开启屏幕共享或窗口共享后调用该方法。
 :::
@@ -704,24 +714,23 @@ Future<void> updateScreenCaptureParameters(
 
 ### 参数
 
-#### `captureParams`
+### captureParams
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/class-screencaptureparameters)。
 
-:::info[注]
-屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+:::note
+注： 屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_updatescreencaptureregion1"></a>
+
+<a id="ariaid-title16"></a>
 
 ## updateScreenCaptureRegion
 
@@ -729,21 +738,21 @@ Future<void> updateScreenCaptureParameters(
 
 <a id="api_irtcengine_updatescreencaptureregion1__prototype"></a>
 
-```dart
+```text
 Future<void> updateScreenCaptureRegion(Rectangle regionRect);
 ```
 
 <a id="api_irtcengine_updatescreencaptureregion1__detailed_desc"></a>
 
-:::info[注]
-请在开启屏幕共享或窗口共享后调用该方法。
+:::note
+注： 请在开启屏幕共享或窗口共享后调用该方法。
 :::
 
 <a id="api_irtcengine_updatescreencaptureregion1__parameters"></a>
 
 ### 参数
 
-#### `regionRect`
+### regionRect
 
 待共享区域相对于整个屏幕或窗口的位置，如不填，则表示共享整个屏幕或窗口。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。如果设置的共享区域超出了屏幕或窗口的边界，则只共享屏幕或窗口内的内容；如果将 width 或 height 设为 0，则共享整个屏幕或窗口。
 
@@ -751,7 +760,4 @@ Future<void> updateScreenCaptureRegion(Rectangle regionRect);
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

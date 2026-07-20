@@ -1,10 +1,18 @@
 ---
-title: "RtcStats"
-description: "用于统计通话会话相关数据。"
+title: RtcStats
+description: 用于统计通话会话相关数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_rtcstats
+  sourcePath: html-docs/rtc/Cpp/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcstats__prototype"></a>
 
-```cpp
+```text
 struct RtcStats {
   unsigned int duration;
   unsigned int txBytes;
@@ -47,160 +55,164 @@ struct RtcStats {
 
 ## 属性
 
-### `duration`
+### duration
 
 本地用户的通话时长（秒），为聚合值。
 
-### `txBytes`
+### txBytes
 
 发送的字节总数。
 
-### `rxBytes`
+### rxBytes
 
 接收的字节总数。
 
-### `txAudioBytes`
+### txAudioBytes
 
 发送的音频字节总数，为聚合值。
 
-### `txVideoBytes`
+### txVideoBytes
 
 发送的视频字节总数，为聚合值。
 
-### `rxAudioBytes`
+### rxAudioBytes
 
 接收的音频字节总数，为聚合值。
 
-### `rxVideoBytes`
+### rxVideoBytes
 
 接收的视频字节总数，为聚合值。
 
-### `txKBitRate`
+### txKBitRate
 
 发送本地视频流的实际码率（Kbps）。
 
-### `rxKBitRate`
+### rxKBitRate
 
 接收的总码率（Kbps）。
 
-### `rxAudioKBitRate`
+### rxAudioKBitRate
 
 接收音频的码率（Kbps）。
 
-### `txAudioKBitRate`
+### txAudioKBitRate
 
 发送音频的码率（Kbps）。
 
-### `rxVideoKBitRate`
+### rxVideoKBitRate
 
 接收视频的码率（Kbps）。
 
-### `txVideoKBitRate`
+### txVideoKBitRate
 
 发送视频的码率（Kbps）。
 
-### `lastmileDelay`
+### lastmileDelay
 
 客户端到服务器的网络延迟（毫秒）。
 
-### `userCount`
+### userCount
 
 频道内的用户数量。
 
-### `cpuAppUsage`
+### cpuAppUsage
 
 应用的 CPU 使用率（%）。
 
-:::info[注]
-- 在 onLeaveChannel 回调中，该值始终为 0。
+:::note
+注：
+
+- 在 [onLeaveChannel](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 - 自 Android 8.1 起，受系统限制无法获取该值。
 :::
 
-### `cpuTotalUsage`
+### cpuTotalUsage
 
 系统的 CPU 使用率（%）。在 Windows 多核环境下，该值为平均 CPU 使用率，计算方式为：(100 - 任务管理器中的系统空闲进度)/100。
 
-:::info[注]
-- 在 onLeaveChannel 回调中，该值始终为 0。
+:::note
+注：
+
+- 在 [onLeaveChannel](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 - 自 Android 8.1 起，受系统限制无法获取该值。
 :::
 
-### `gatewayRtt`
+### gatewayRtt
 
 客户端到本地路由器的往返时延（毫秒）。
 
-:::info[注]
-该属性在 iOS 14 及以上版本默认禁用，iOS 14 以下版本默认启用。如需在 iOS 14 及以上版本启用，请[联系技术支持](https://ticket.shengwang.cn/)。在 Android 上，需在 `AndroidManifest.xml` 文件中 `</application>` 后添加 `android.permission.ACCESS_WIFI_STATE` 权限。
+:::note
+注： 该属性在 iOS 14 及以上版本默认禁用，iOS 14 以下版本默认启用。如需在 iOS 14 及以上版本启用，请[联系技术支持](https://ticket.shengwang.cn/)。在 Android 上，需在 `AndroidManifest.xml` 文件中 `&lt;/application&gt;` 后添加 `android.permission.ACCESS_WIFI_STATE` 权限。
 :::
 
-### `memoryAppUsageRatio`
+### memoryAppUsageRatio
 
 应用占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考，受系统限制可能无法获取。
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
 :::
 
-### `memoryTotalUsageRatio`
+### memoryTotalUsageRatio
 
 系统占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考，受系统限制可能无法获取。
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
 :::
 
-### `memoryAppUsageInKbytes`
+### memoryAppUsageInKbytes
 
 应用占用的内存大小（KB）。
 
-:::info[注]
-该值仅供参考，受系统限制可能无法获取。
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
 :::
 
-### `connectTimeMs`
+### connectTimeMs
 
 从 SDK 开始连接到连接建立之间的时长（毫秒）。值为 0 表示无效。
 
-### `firstAudioPacketDuration`
+### firstAudioPacketDuration
 
 应用开始连接到频道到接收到首个音频包之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoPacketDuration`
+### firstVideoPacketDuration
 
 应用开始连接到频道到接收到首个视频包之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoKeyFramePacketDuration`
+### firstVideoKeyFramePacketDuration
 
 应用开始连接到频道到接收到首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
 
-### `packetsBeforeFirstKeyFramePacket`
+### packetsBeforeFirstKeyFramePacket
 
 接收到首个视频关键帧前的视频包数量。0 表示该字段不适用。
 
-### `firstAudioPacketDurationAfterUnmute`
+### firstAudioPacketDurationAfterUnmute
 
 上次取消音频静音到接收到首个音频包之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoPacketDurationAfterUnmute`
+### firstVideoPacketDurationAfterUnmute
 
 上次取消视频静音到接收到首个视频包之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoKeyFramePacketDurationAfterUnmute`
+### firstVideoKeyFramePacketDurationAfterUnmute
 
 上次取消视频静音到接收到首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoKeyFrameDecodedDurationAfterUnmute`
+### firstVideoKeyFrameDecodedDurationAfterUnmute
 
 上次取消视频静音到解码首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
 
-### `firstVideoKeyFrameRenderedDurationAfterUnmute`
+### firstVideoKeyFrameRenderedDurationAfterUnmute
 
 上次取消视频静音到渲染首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
 
-### `txPacketLossRate`
+### txPacketLossRate
 
 应用抗丢包算法前，客户端到声网服务器的丢包率（%）。
 
-### `rxPacketLossRate`
+### rxPacketLossRate
 
 使用抗丢包方法前，声网服务器到客户端的丢包率（%）。

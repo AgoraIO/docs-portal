@@ -1,10 +1,18 @@
 ---
-title: "VideoLayout"
-description: "用于描述混流中某个子视频流的布局信息。"
+title: VideoLayout
+description: 用于描述混流中某个子视频流的布局信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_videolayout
+  sourcePath: html-docs/rtc/Cpp/API/class_videolayout.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videolayout__prototype"></a>
 
-```cpp
+```text
 struct VideoLayout {
   const char* channelId;
   rtc::uid_t uid;
@@ -25,38 +33,38 @@ struct VideoLayout {
 
 ## 属性
 
-### `channelId`
+### channelId
 
 子视频流所属的频道名。
 
-### `uid`
+### uid
 
 发布该子视频流的用户 ID。
 
-### `strUid`
+### strUid
 
 预留参数。
 
-### `x`
+### x
 
 子视频流在合流画布上的 X 坐标（像素），表示视频左上角相对于画布左上角的水平偏移。
 
-### `y`
+### y
 
 子视频流在合流画布上的 Y 坐标（像素），表示视频左上角相对于画布左上角的垂直偏移。
 
-### `width`
+### width
 
 子视频流的宽度（像素）。
 
-### `height`
+### height
 
 子视频流的高度（像素）。
 
-### `videoState`
+### videoState
 
 子视频流在合流画布上的显示状态：
 
-- 0：正常，子视频流已渲染到画布上。
-- 1：占位图像，子视频流无视频帧，在画布上显示为占位图。
-- 2：黑色图像，子视频流被黑色图像替代。
+- `0`：正常，子视频流已渲染到画布上。
+- `1`：占位图像，子视频流无视频帧，在画布上显示为占位图。
+- `2`：黑色图像，子视频流被黑色图像替代。

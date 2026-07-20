@@ -1,53 +1,61 @@
 ---
-title: "AgoraRteAbrFallbackLayer"
-description: "设置视频流回退时的质量层级。"
+title: AgoraRteAbrFallbackLayer
+description: 设置视频流回退时的质量层级。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_rteabrfallbacklayer
+  sourcePath: html-docs/rtc/iOS/API/enum_rteabrfallbacklayer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteabrfallbacklayer__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
-:::info[注]
-要使用 `AgoraRteAbrFallbackLayer1` 到 `AgoraRteAbrFallbackLayer6`，需[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，你可以自定义每一层的分辨率，并选择任意一层作为视频流回退的最低分辨率。当网络状况较差时，SDK 会以该分辨率为下限，并根据网络状况在该范围内动态调整分辨率。自定义分辨率时，请确保按分辨率从高到低的顺序排列视频质量层；若分辨率相同，则按帧率从高到低排序。
+:::note
+注： 要使用 `AgoraRteAbrFallbackLayer1` 到 `AgoraRteAbrFallbackLayer6`，需[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，你可以自定义每一层的分辨率，并选择任意一层作为视频流回退的最低分辨率。当网络状况较差时，SDK 会以该分辨率为下限，并根据网络状况在该范围内动态调整分辨率。自定义分辨率时，请确保按分辨率从高到低的顺序排列视频质量层；若分辨率相同，则按帧率从高到低排序。
 :::
 
 <a id="enum_rteabrfallbacklayer__parameters"></a>
 
 ## 枚举值
 
-### `AgoraRteAbrFallbackDisabled`
+### AgoraRteAbrFallbackDisabled
 
 （0）：不对音视频流进行回退处理，但无法保证音视频流质量。
 
-### `AgoraRteAbrFallbackLow`
+### AgoraRteAbrFallbackLow
 
 （1）：（默认）回退至视频小流。该层具有最低分辨率。
 
-### `AgoraRteAbrFallbackAudioOnly`
+### AgoraRteAbrFallbackAudioOnly
 
 （2）：优先接收视频小流；若因网络状况差无法显示视频，则回退为仅接收已订阅的远端音频流。
 
-### `AgoraRteAbrFallbackLayer1`
+### AgoraRteAbrFallbackLayer1
 
 （3）：回退至视频质量层级 1。该层的分辨率和码率仅低于所订阅的最高质量多层视频流。
 
-### `AgoraRteAbrFallbackLayer2`
+### AgoraRteAbrFallbackLayer2
 
 （4）：回退至视频质量层级 2。该层的分辨率仅低于层级 1。
 
-### `AgoraRteAbrFallbackLayer3`
+### AgoraRteAbrFallbackLayer3
 
 （5）：回退至视频质量层级 3。该层的分辨率仅低于层级 2。
 
-### `AgoraRteAbrFallbackLayer4`
+### AgoraRteAbrFallbackLayer4
 
 （6）：回退至视频质量层级 4。该层的分辨率仅低于层级 3。
 
-### `AgoraRteAbrFallbackLayer5`
+### AgoraRteAbrFallbackLayer5
 
 （7）：回退至视频质量层级 5。该层的分辨率仅低于层级 4。
 
-### `AgoraRteAbrFallbackLayer6`
+### AgoraRteAbrFallbackLayer6
 
 （8）：回退至视频质量层级 6。该层的分辨率仅低于层级 5。

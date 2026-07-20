@@ -1,10 +1,19 @@
 ---
-title: "初始化相关"
-description: "初始化相关 API reference."
+title: 初始化相关
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_initialize
+  sourcePath: html-docs/rtc/Unity/API/toc_initialize.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_initialize"></a>
 
 <a id="api_irtcengine_addhandler"></a>
+
+<a id="ariaid-title2"></a>
 
 ## InitEventHandler
 
@@ -12,19 +21,21 @@ description: "初始化相关 API reference."
 
 <a id="api_irtcengine_addhandler__prototype"></a>
 
-```csharp
+```text
 public abstract int InitEventHandler(IRtcEngineEventHandler engineEventHandler);
 ```
 
 <a id="api_irtcengine_addhandler__detailed_desc"></a>
 
-接口类 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler) 用于 SDK 向 App 发送回调事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。 接口类的所有方法都有缺省（空）实现，App 可以根据需要只继承关心的事件。在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage) ）， 否则可能影响 SDK 的运行。
+接口类 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler) 用于 SDK 向 App 发送回调事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
+接口类的所有方法都有缺省（空）实现，App 可以根据需要只继承关心的事件。在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 [SendStreamMessage](/zh-CN/api-reference/rtc/unity/metadata/datastream#api_irtcengine_sendstreammessage)），
+否则可能影响 SDK 的运行。
 
 <a id="api_irtcengine_addhandler__parameters"></a>
 
 ### 参数
 
-#### `engineEventHandler`
+### engineEventHandler
 
 待添加的回调事件，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)。
 
@@ -33,20 +44,19 @@ public abstract int InitEventHandler(IRtcEngineEventHandler engineEventHandler);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_createagorartcengine"></a>
 
+<a id="ariaid-title3"></a>
+
 ## CreateAgoraRtcEngine
 
-创建 IRtcEngine 对象。
+创建 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
 
 <a id="api_irtcengine_createagorartcengine__prototype"></a>
 
-```csharp
+```text
 public static IRtcEngine CreateAgoraRtcEngine()
         {
             return instance ?? (instance = new RtcEngine(IntPtr.Zero));
@@ -63,18 +73,17 @@ public static IRtcEngine CreateAgoraRtcEngine()
 
 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_createagorartcengineex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## CreateAgoraRtcEngineEx
 
-创建 IRtcEngineEx 对象。
+创建 [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex) 对象。
 
 <a id="api_irtcengineex_createagorartcengineex__prototype"></a>
 
-```csharp
+```text
 public static IRtcEngineEx CreateAgoraRtcEngineEx()
         {
             return (IRtcEngineEx)(instance ?? (instance = new RtcEngine(IntPtr.Zero)));
@@ -91,32 +100,32 @@ public static IRtcEngineEx CreateAgoraRtcEngineEx()
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex) 对象。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
-
 <a id="api_irtcengine_initialize"></a>
+
+<a id="ariaid-title5"></a>
 
 ## Initialize
 
-初始化 IRtcEngine。
+初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)。
 
 <a id="api_irtcengine_initialize__prototype"></a>
 
-```csharp
+```text
 public abstract int Initialize(RtcEngineContext context);
 ```
 
 <a id="api_irtcengine_initialize__detailed_desc"></a>
 
-:::info[注]
-[IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。 SDK 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 实例。
+:::note
+注： [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
+SDK 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 实例。
 :::
 
 <a id="api_irtcengine_initialize__parameters"></a>
 
 ### 参数
 
-#### `context`
+### context
 
 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 实例的配置。详见 [RtcEngineContext](/zh-CN/api-reference/rtc/unity/class-rtcengineconfig)。
 
@@ -125,47 +134,47 @@ public abstract int Initialize(RtcEngineContext context);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 设置了无效的参数。
   - -7: SDK 初始化失败。
   - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
   - -101: App ID 无效。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_release"></a>
+
+<a id="ariaid-title6"></a>
 
 ## Dispose
 
-销毁 IRtcEngine 对象。
+销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
 
 <a id="api_irtcengine_release__prototype"></a>
 
-```csharp
+```text
 public abstract void Dispose(bool sync = false);
 ```
 
 <a id="api_irtcengine_release__detailed_desc"></a>
 
-该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。 调用该方法后，你将无法再使用 SDK 的其它方法和回调。如需再次使用实时音视频通信功能， 你必须依次重新调用 [CreateAgoraRtcEngine](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_createagorartcengine) 和 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 方法创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
+该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。
+调用该方法后，你将无法再使用 SDK 的其它方法和回调。如需再次使用实时音视频通信功能， 你必须依次重新调用 [CreateAgoraRtcEngine](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_createagorartcengine) 和 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 方法创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
 
-:::info[注]
-- 该方法为同步调用。需要等待 IRtcEngine 资源释放后才能执行其他操作（例如：创建一个新的 IRtcEngine 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
-- 不建议在 SDK 的回调中调用 Dispose，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
+:::note
+注：
+
+- 该方法为同步调用。需要等待 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 资源释放后才能执行其他操作（例如：创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
+- 不建议在 SDK 的回调中调用 [Dispose](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_release)，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
 :::
 
 <a id="api_irtcengine_release__parameters"></a>
 
 ### 参数
 
-#### `sync`
+### sync
 
 该方法是否为同步调用：
 
 - true:该方法为同步调用。
 - false:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)

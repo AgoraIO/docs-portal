@@ -1,10 +1,18 @@
 ---
-title: "AgoraVideoEncoderConfiguration"
-description: "视频编码器配置。"
+title: AgoraVideoEncoderConfiguration
+description: 视频编码器配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_videoencoderconfiguration
+  sourcePath: html-docs/rtc/iOS/API/class_videoencoderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videoencoderconfiguration__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration : NSObject
 @property(assign, nonatomic) CGSize dimensions;
 @property(assign, nonatomic) AgoraVideoCodecType codecType;
@@ -22,79 +30,81 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 
 ## 属性
 
-### `dimensions`
+### dimensions
 
-:::info[注]
+:::note
+注：
+
 - 是否支持 720p 或更高分辨率取决于设备性能。如果设备不支持 720p，帧率将低于设置值。
 - 默认值为 960 × 540。
 :::
 
 你可以自行设置分辨率，或从以下列表中选择：
 
-- AgoraVideoDimension120x120：120 × 120。
-- AgoraVideoDimension160x120：160 × 120。
-- AgoraVideoDimension180x180：180 × 180。
-- AgoraVideoDimension240x180：240 × 180。
-- AgoraVideoDimension320x180：320 × 180。
-- AgoraVideoDimension240x240：240 × 240。
-- AgoraVideoDimension320x240：320 × 240。
-- AgoraVideoDimension424x240：424 × 240。
-- AgoraVideoDimension360x360：360 × 360。
-- AgoraVideoDimension480x360：480 × 360。
-- AgoraVideoDimension640x360：640 × 360。
-- AgoraVideoDimension480x480：480 × 480。
-- AgoraVideoDimension640x480：640 × 480。
-- AgoraVideoDimension840x480：840 × 480。
-- AgoraVideoDimension960x540：960 × 540。
-- AgoraVideoDimension960x720：960 × 720。
-- AgoraVideoDimension1280x720：1280 × 720。
-- AgoraVideoDimension1920x1080：1920 × 1080。
-- AgoraVideoDimension2540x1440：2540 × 1440。
-- AgoraVideoDimension3840x2160：3840 × 2160。
+- `AgoraVideoDimension120x120`：120 × 120。
+- `AgoraVideoDimension160x120`：160 × 120。
+- `AgoraVideoDimension180x180`：180 × 180。
+- `AgoraVideoDimension240x180`：240 × 180。
+- `AgoraVideoDimension320x180`：320 × 180。
+- `AgoraVideoDimension240x240`：240 × 240。
+- `AgoraVideoDimension320x240`：320 × 240。
+- `AgoraVideoDimension424x240`：424 × 240。
+- `AgoraVideoDimension360x360`：360 × 360。
+- `AgoraVideoDimension480x360`：480 × 360。
+- `AgoraVideoDimension640x360`：640 × 360。
+- `AgoraVideoDimension480x480`：480 × 480。
+- `AgoraVideoDimension640x480`：640 × 480。
+- `AgoraVideoDimension840x480`：840 × 480。
+- `AgoraVideoDimension960x540`：960 × 540。
+- `AgoraVideoDimension960x720`：960 × 720。
+- `AgoraVideoDimension1280x720`：1280 × 720。
+- `AgoraVideoDimension1920x1080`：1920 × 1080。
+- `AgoraVideoDimension2540x1440`：2540 × 1440。
+- `AgoraVideoDimension3840x2160`：3840 × 2160。
 
-### `codecType`
+### codecType
 
 本地视频流的首选编码器类型。详见 [AgoraVideoCodecType](/zh-CN/api-reference/rtc/ios/enum-videocodectype)。
 
-### `frameRate`
+### frameRate
 
 编码视频帧的帧率（fps）。默认值为 15。详见 [AgoraVideoFrameRate](/zh-CN/api-reference/rtc/ios/enum-framerate)。
 
-### `bitrate`
+### bitrate
 
 视频的编码码率（Kbps）。无需手动设置该参数，保持默认值 AgoraVideoBitrateStandard 即可。SDK 会根据设置的视频分辨率和帧率自动匹配最合适的码率。
 
-- AgoraVideoBitrateStandard （0）：（推荐）标准码率模式。
-- AgoraVideoBitrateCompatible （-1）：自适应码率模式，一般不建议使用该值。
+- AgoraVideoBitrateStandard（0）：（推荐）标准码率模式。
+- AgoraVideoBitrateCompatible（-1）：自适应码率模式，一般不建议使用该值。
 
-### `minBitrate`
+### minBitrate
 
 视频的最小编码码率（Kbps）。SDK 会自动调整编码码率以适应网络状况。设置高于默认值会强制编码器输出高质量图像，但可能导致更多丢包，影响视频流畅性。
 
-:::info[注]
-该参数仅适用于互动直播场景。
+:::note
+注： 该参数仅适用于互动直播场景。
 :::
 
-### `orientationMode`
+### orientationMode
 
 编码视频的方向模式。详见 [AgoraVideoOutputOrientationMode](/zh-CN/api-reference/rtc/ios/enum-orientationmode)。
 
-### `mirrorMode`
+### mirrorMode
 
 设置本地视频流发布时的镜像模式，仅影响远端用户看到的视频。详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
-:::info[注]
-默认情况下，视频不镜像。
+:::note
+注： 默认情况下，视频不镜像。
 :::
 
-### `degradationPreference`
+### degradationPreference
 
 在带宽受限的情况下的视频降级偏好。详见 [AgoraDegradationPreference](/zh-CN/api-reference/rtc/ios/enum-degradationpreference)。
 
-:::info[注]
-当该参数设置为 `AgoraDegradationMaintainFramerate` （1）或 `AgoraDegradationBalanced` （2）时， `orientationMode` 需同时设置为 `AgoraVideoOutputOrientationModeAdaptative` （0），否则设置不生效。
+:::note
+注： 当该参数设置为 `AgoraDegradationMaintainFramerate`（1）或 `AgoraDegradationBalanced`（2）时，`orientationMode` 需同时设置为 `AgoraVideoOutputOrientationModeAdaptative`（0），否则设置不生效。
 :::
 
-### `advancedVideoOptions`
+### advancedVideoOptions
 
 视频编码的高级选项。详见 [AgoraAdvancedVideoOptions](/zh-CN/api-reference/rtc/ios/class-advanceoptions)。

@@ -1,12 +1,20 @@
 ---
-title: "音频设备管理"
-description: "介绍跟音频设备管理相关的方法和回调。"
+title: 音频设备管理
+description: 介绍跟音频设备管理相关的方法和回调。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_audio_device
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_audio_device.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_device"></a>
 
-介绍跟音频设备管理相关的方法和回调。
-
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnumeratePlaybackDevices
 
@@ -14,7 +22,7 @@ description: "介绍跟音频设备管理相关的方法和回调。"
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	UAudioDeviceCollection* EnumeratePlaybackDevices();
 ```
@@ -23,8 +31,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection) 对象，包含系统中所有的播放设备。通过 IAudioDeviceCollection 对象，App 可以枚举播放设备。在使用结束后，App 需调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicecollection_release) 方法销毁返回的对象。
@@ -36,10 +44,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 - 方法调用成功：返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection) 对象，包含所有的音频播放设备。
 - 方法调用失败: NULL。
 
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
-
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
+
+<a id="ariaid-title3"></a>
 
 ## EnumerateRecordingDevices
 
@@ -47,7 +54,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	UAudioDeviceCollection* EnumerateRecordingDevices();
 ```
@@ -56,8 +63,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection) 对象，包含系统中所有的音频采集设备。通过 IAudioDeviceCollection 对象，App 可以枚举音频采集设备。在使用结束后，App 需调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicecollection_release) 方法销毁返回的对象。
@@ -69,10 +76,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 - 方法调用成功：返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection) 对象，包含所有的音频采集设备。
 - 方法调用失败: NULL。
 
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
-
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
+
+<a id="ariaid-title4"></a>
 
 ## FollowSystemLoopbackDevice
 
@@ -80,7 +86,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemLoopbackDevice(bool enable);
 ```
@@ -95,21 +101,25 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否跟随系统默认的播放设备：
 
-- true：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
-- false：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+<a id="api_iaudiodevicemanager_followsystemloopbackdevice__ul_l4n_jf3_5sb"></a>
+
+- `true`：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
+- `false`：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
+
+<a id="ariaid-title5"></a>
 
 ## FollowSystemPlaybackDevice
 
@@ -117,7 +127,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemPlaybackDevice(bool enable);
 ```
@@ -126,32 +136,33 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__parameters"></a>
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否跟随系统默认的音频播放设备：
 
-- true：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
-- false：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+<a id="api_iaudiodevicemanager_followsystemplaybackdevice__ul_l4n_jf3_5sb"></a>
+
+- `true`：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
+- `false`：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
+
+<a id="ariaid-title6"></a>
 
 ## FollowSystemRecordingDevice
 
@@ -159,7 +170,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemRecordingDevice(bool enable);
 ```
@@ -168,32 +179,35 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__parameters"></a>
 
 ### 参数
 
-#### `enable`
+<a id="api_iaudiodevicemanager_followsystemrecordingdevice__parml_ywj_tf3_5sb"></a>
+
+### enable
 
 是否跟随系统默认的音频采集设备：
 
-- true：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
-- false：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+<a id="api_iaudiodevicemanager_followsystemrecordingdevice__ul_zwj_tf3_5sb"></a>
+
+- `true`：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
+- `false`：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_getapplicationvolume"></a>
+
+<a id="ariaid-title7"></a>
 
 ## GetApplicationVolume
 
@@ -201,7 +215,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_getapplicationvolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int GetApplicationVolume(int & volume);
 ```
@@ -210,7 +224,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 ### 参数
 
-#### `volume`
+### volume
 
 App 当前的音量，取值范围为 [0,255]。
 
@@ -219,12 +233,11 @@ App 当前的音量，取值范围为 [0,255]。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiodeviceinfo"></a>
+
+<a id="ariaid-title8"></a>
 
 ## GetAudioDeviceInfo
 
@@ -232,7 +245,7 @@ App 当前的音量，取值范围为 [0,255]。
 
 <a id="api_irtcengine_getaudiodeviceinfo__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetAudioDeviceInfo(FDeviceInfo& deviceInfo);
 ```
@@ -243,7 +256,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用该方法后，你可以获取音频设备是否支持极低延时采集和播放。
 
-:::warning[注意]
+:::note
+注意：
+
 - 该方法仅适用于 Android 平台。
 - 该方法在加入频道前后均可调用。
 :::
@@ -252,7 +267,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `deviceInfo`
+### deviceInfo
 
 输入和输出参数。标识音频设备信息的 [FDeviceInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-deviceinfo) 对象。
 
@@ -264,20 +279,19 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiodevicemanager"></a>
 
+<a id="ariaid-title9"></a>
+
 ## GetAgoraAudioDeviceManager
 
-获取 IAudioDeviceManager 对象，以管理音频设备。
+获取 [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager) 对象，以管理音频设备。
 
 <a id="api_irtcengine_getaudiodevicemanager__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceManager")
 	static UAgoraBPuAudioDeviceManager* GetAgoraAudioDeviceManager();
 ```
@@ -290,13 +304,15 @@ UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_getcount"></a>
 
+<a id="ariaid-title10"></a>
+
 ## GetCount
 
 获取播放或音频采集设备数量。
 
 <a id="api_iaudiodevicecollection_getcount__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceCollection")
 int GetCount();
 ```
@@ -313,10 +329,9 @@ int GetCount();
 
 语音设备数目。
 
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
-
 <a id="api_iaudiodevicecollection_getdefaultdevice"></a>
+
+<a id="ariaid-title11"></a>
 
 ## GetDefaultDevice
 
@@ -324,7 +339,7 @@ int GetCount();
 
 <a id="api_iaudiodevicecollection_getdefaultdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int GetDefaultDevice(FString& deviceName, FString& deviceId);
 ```
@@ -338,11 +353,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 ### 参数
 
-#### `deviceName`
+### deviceName
 
 输出参数，系统默认的音频设备名称。
 
-#### `deviceId`
+### deviceId
 
 输出参数，系统默认的音频设备 ID。
 
@@ -351,12 +366,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见 [错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_getdevice"></a>
+
+<a id="ariaid-title12"></a>
 
 ## GetDevice
 
@@ -364,12 +378,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 <a id="api_iaudiodevicecollection_getdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 int GetDevice(int index, FString& deviceName, FString& deviceId);
 ```
 
 <a id="api_iaudiodevicecollection_getdevice__detailed_desc"></a>
+
+<a id="api_iaudiodevicecollection_getdevice__note"></a>
 
 该方法仅适用于 Windows 和 macOS。
 
@@ -377,15 +393,15 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 
 ### 参数
 
-#### `index`
+### index
 
 输入参数，指定想查询的设备信息。
 
-#### `deviceName`
+### deviceName
 
 输出参数，设备名称。
 
-#### `deviceId`
+### deviceId
 
 输出参数，设备 ID。
 
@@ -394,12 +410,11 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
+
+<a id="ariaid-title13"></a>
 
 ## GetLoopbackDevice
 
@@ -407,7 +422,7 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetLoopbackDevice(FString & deviceId);
 ```
@@ -422,7 +437,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 输出参数，当前声卡采集设备的 ID。
 
@@ -431,9 +446,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
+
+<a id="ariaid-title14"></a>
 
 ## GetPlaybackDevice
 
@@ -441,7 +458,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDevice(FString& deviceId);
 ```
@@ -450,15 +467,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__parameters"></a>
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 输出参数，当前音频播放设备的设备 ID。
 
@@ -467,12 +484,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2"></a>
+
+<a id="ariaid-title15"></a>
 
 ## GetPlaybackDeviceInfo
 
@@ -480,7 +496,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceInfo(FString& deviceId, FString& deviceName, FString& deviceTypeName);
 ```
@@ -495,15 +511,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 输出参数，播放设备的设备 ID。
 
-#### `deviceName`
+### deviceName
 
 输出参数，播放设备的设备名称。
 
-#### `deviceTypeName`
+### deviceTypeName
 
 输出参数，音频播放设备类型，如：built-in、USB、HDMI 等。
 
@@ -512,12 +528,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute"></a>
+
+<a id="ariaid-title16"></a>
 
 ## GetPlaybackDeviceMute
 
@@ -525,7 +540,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceMute(bool& mute);
 ```
@@ -534,24 +549,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `mute`
+### mute
 
 播放设备静音状态：
 
-- true: 播放设备为静音状态。
-- false: 播放设备为非静音状态。
+- `true`: 播放设备为静音状态。
+- `false`: 播放设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
+
+<a id="ariaid-title17"></a>
 
 ## GetPlaybackDeviceVolume
 
@@ -559,7 +573,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceVolume(int& volume);
 ```
@@ -568,7 +582,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `volume`
+### volume
 
 输出参数。播放设备音量。取值范围 [0,255]。
 
@@ -577,9 +591,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
+
+<a id="ariaid-title18"></a>
 
 ## GetRecordingDevice
 
@@ -587,7 +603,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDevice(FString& deviceId);
 ```
@@ -596,15 +612,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__parameters"></a>
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 输出参数。当前采集设备的设备 ID。
 
@@ -613,12 +629,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2"></a>
+
+<a id="ariaid-title19"></a>
 
 ## GetRecordingDeviceInfo
 
@@ -626,7 +641,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceInfo(FString& deviceId, FString& deviceName, FString& deviceTypeName);
 ```
@@ -641,15 +656,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 输出参数，播放设备的设备 ID。
 
-#### `deviceName`
+### deviceName
 
 输出参数，播放设备的设备名称。
 
-#### `deviceTypeName`
+### deviceTypeName
 
 输出参数，音频采集设备类型，如：built-in、USB、HDMI 等。
 
@@ -658,12 +673,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
+
+<a id="ariaid-title20"></a>
 
 ## GetRecordingDeviceMute
 
@@ -671,7 +685,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceMute(bool& mute);
 ```
@@ -680,24 +694,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `mute`
+### mute
 
 音频采集设备静音状态：
 
-- true: 采集设备为静音状态。
-- false: 采集设备为非静音状态。
+- `true`: 采集设备为静音状态。
+- `false`: 采集设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
+
+<a id="ariaid-title21"></a>
 
 ## GetRecordingDeviceVolume
 
@@ -705,7 +718,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceVolume(int& volume);
 ```
@@ -714,15 +727,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::info[注]
-该方法仅适用于 Windows 平台。
+:::note
+注： 该方法仅适用于 Windows 平台。
 :::
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__parameters"></a>
 
 ### 参数
 
-#### `volume`
+### volume
 
 输出参数，音频采集设备音量，取值范围 [0,255]。
 
@@ -731,12 +744,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_isapplicationmute"></a>
+
+<a id="ariaid-title22"></a>
 
 ## IsApplicationMute
 
@@ -744,7 +756,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_isapplicationmute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int IsApplicationMute(bool mute);
 ```
@@ -753,56 +765,53 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 ### 参数
 
-#### `mute`
+### mute
 
 App 当前是否静音：
 
-- true: App 为静音状态。
-- false: App 为非静音状态。
+- `true`: App 为静音状态。
+- `false`: App 为非静音状态。
 
 <a id="api_iaudiodevicecollection_isapplicationmute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_release"></a>
 
+<a id="ariaid-title23"></a>
+
 ## Release
 
-释放 IAudioDeviceCollection 对象占用的所有资源。
+释放 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection) 对象占用的所有资源。
 
 <a id="api_iaudiodevicecollection_release__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 void Release();
 ```
 
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
-
 <a id="api_iaudiodevicemanager_release"></a>
+
+<a id="ariaid-title24"></a>
 
 ## Release
 
-释放 IAudioDeviceManager 对象占用的所有资源。
+释放 [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager) 对象占用的所有资源。
 
 <a id="api_iaudiodevicemanager_release__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 void Release();
 ```
 
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
-
 <a id="api_iaudiodevicecollection_setapplicationmute"></a>
+
+<a id="ariaid-title25"></a>
 
 ## SetApplicationMute
 
@@ -810,7 +819,7 @@ void Release();
 
 <a id="api_iaudiodevicecollection_setapplicationmute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int SetApplicationMute(bool mute);
 ```
@@ -819,24 +828,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否将 App 设置为静音。
 
-- true: 将 App 静音。
-- false: 将 App 解除静音。
+- `true`: 将 App 静音。
+- `false`: 将 App 解除静音。
 
 <a id="api_iaudiodevicecollection_setapplicationmute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_setapplicationvolume"></a>
+
+<a id="ariaid-title26"></a>
 
 ## SetApplicationVolume
 
@@ -844,7 +852,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 <a id="api_iaudiodevicecollection_setapplicationvolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int SetApplicationVolume(int volume);
 ```
@@ -853,7 +861,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 ### 参数
 
-#### `volume`
+### volume
 
 App 的音量，取值范围为 [0,255]。
 
@@ -862,12 +870,11 @@ App 的音量，取值范围为 [0,255]。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicecollection_setdevice"></a>
+
+<a id="ariaid-title27"></a>
 
 ## SetDevice
 
@@ -875,7 +882,7 @@ App 的音量，取值范围为 [0,255]。
 
 <a id="api_iaudiodevicecollection_setdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 int SetDevice(const FString & deviceId);
 ```
@@ -890,7 +897,7 @@ int SetDevice(const FString & deviceId);
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 设备 ID。
 
@@ -899,12 +906,11 @@ int SetDevice(const FString & deviceId);
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicecollection)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
+
+<a id="ariaid-title28"></a>
 
 ## SetLoopbackDevice
 
@@ -912,7 +918,7 @@ int SetDevice(const FString & deviceId);
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetLoopbackDevice(const FString & deviceId);
 ```
@@ -925,7 +931,9 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 该方法可以更改当前的音频采集设备，但不改变系统默认的音频采集设备。假设系统默认的音频采集设备是麦克风 1，你在加入频道前调用该方法设置当前的音频路由为声卡 1，如果在此时进行设备检测，SDK 会对声卡 1 做设备检测。检测结束后，当你加入频道时 SDK 依然会选择使用系统默认的音频采集设备，即麦克风 1。
 
-:::info[注]
+:::note
+注：
+
 该方法仅适用于 Windows 和 macOS。
 
 该方法适用的场景如下：
@@ -941,7 +949,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
@@ -950,9 +958,11 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
+
+<a id="ariaid-title29"></a>
 
 ## SetPlaybackDevice
 
@@ -960,7 +970,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDevice(const FString & deviceId);
 ```
@@ -969,8 +979,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 该方法可以更改当前的音频路由，但不会改变系统默认的音频路由。假设系统默认的音频路由是扬声器 1，你在加入频道前调用该方法设置当前的音频路由为扬声器 2，如果在此时进行设备检测，SDK 会对扬声器 2 进行检测。检测结束后，当你加入频道时 SDK 依然会选择使用系统默认的音频路由，即扬声器 1。
@@ -979,7 +989,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
@@ -988,12 +998,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
+
+<a id="ariaid-title30"></a>
 
 ## SetPlaybackDeviceMute
 
@@ -1001,7 +1010,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDeviceMute(bool mute);
 ```
@@ -1010,24 +1019,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否设置播放设备为静音：
 
-- true: 播放设备设为静音。
-- false: 播放设备不设为静音。
+- `true`: 播放设备设为静音。
+- `false`: 播放设备不设为静音。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
+
+<a id="ariaid-title31"></a>
 
 ## SetPlaybackDeviceVolume
 
@@ -1035,7 +1043,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDeviceVolume(int volume);
 ```
@@ -1044,15 +1052,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::info[注]
-该方法仅适用于 Windows 平台。
+:::note
+注： 该方法仅适用于 Windows 平台。
 :::
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__parameters"></a>
 
 ### 参数
 
-#### `volume`
+### volume
 
 播放设备音量。取值范围为 [0,255]。
 
@@ -1061,12 +1069,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
+
+<a id="ariaid-title32"></a>
 
 ## SetRecordingDevice
 
@@ -1074,7 +1081,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDevice(const FString & deviceId);
 ```
@@ -1083,8 +1090,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注意： 该方法仅适用于 Windows 和 macOS。
 :::
 
 该方法可以更改当前的音频采集设备，但不改变系统默认的音频采集设备。假设系统默认的音频采集设备是麦克风 1，你在加入频道前调用该方法设置当前的音频路由为蓝牙耳机 1，如果在此时进行设备检测，SDK 会对蓝牙耳机 1 进行检测。检测结束后，当你加入频道时 SDK 依然会选择使用系统默认的音频采集设备，即麦克风 1。
@@ -1093,7 +1100,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 deviceId。
 
@@ -1102,12 +1109,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
+
+<a id="ariaid-title33"></a>
 
 ## SetRecordingDeviceMute
 
@@ -1115,7 +1121,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDeviceMute(bool mute);
 ```
@@ -1124,24 +1130,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否设置音频采集设备静音：
 
-- true: 采集设备静音。
-- false: 采集设备为非静音。
+- `true`: 采集设备静音。
+- `false`: 采集设备为非静音。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
+
+<a id="ariaid-title34"></a>
 
 ## SetRecordingDeviceVolume
 
@@ -1149,7 +1154,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDeviceVolume(int volume);
 ```
@@ -1164,7 +1169,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 参数
 
-#### `volume`
+### volume
 
 音频采集设备音量。取值范围 [0,255]。0 代表无声，255 代表最大音量。
 
@@ -1173,12 +1178,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
+
+<a id="ariaid-title35"></a>
 
 ## StartAudioDeviceLoopbackTest
 
@@ -1186,7 +1190,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartAudioDeviceLoopbackTest(int indicationInterval);
 ```
@@ -1197,19 +1201,21 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（uid = 0）和音频播放设置（uid = 1）的音量信息。
 
-:::warning[注意]
+:::note
+注意：
+
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 StopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
 
 ### 参数
 
-#### `indicationInterval`
+### indicationInterval
 
 SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 OnAudioVolumeIndication 回调。
 
@@ -1218,12 +1224,11 @@ SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
+
+<a id="ariaid-title36"></a>
 
 ## StartPlaybackDeviceTest
 
@@ -1231,7 +1236,7 @@ SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartPlaybackDeviceTest(const FString & testAudioFilePath);
 ```
@@ -1246,15 +1251,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
-:::warning[注意]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+:::note
+注意： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
 
 ### 参数
 
-#### `testAudioFilePath`
+### testAudioFilePath
 
 音频文件的绝对路径，路径字符串使用 UTF-8 编码格式。
 
@@ -1266,12 +1271,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
+
+<a id="ariaid-title37"></a>
 
 ## StartRecordingDeviceTest
 
@@ -1279,7 +1283,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartRecordingDeviceTest(int indicationInterval);
 ```
@@ -1292,15 +1296,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
-:::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+:::note
+注： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
 
 ### 参数
 
-#### `indicationInterval`
+### indicationInterval
 
 SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 OnAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
 
@@ -1309,13 +1313,13 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/a
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
-
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
+
+<a id="ariaid-title38"></a>
 
 ## StopAudioDeviceLoopbackTest
 
@@ -1323,7 +1327,7 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/a
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopAudioDeviceLoopbackTest();
 ```
@@ -1332,11 +1336,13 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 ### 详情
 
-:::warning[注意]
+:::note
+注意：
+
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 StartAudioDeviceLoopbackTest 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -1344,12 +1350,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
+
+<a id="ariaid-title39"></a>
 
 ## StopPlaybackDeviceTest
 
@@ -1357,7 +1362,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopPlaybackDeviceTest();
 ```
@@ -1368,8 +1373,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
-:::warning[注意]
-该方法需要在加入频道前调用。
+:::note
+注意： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__return_values"></a>
@@ -1377,12 +1382,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
+
+<a id="ariaid-title40"></a>
 
 ## StopRecordingDeviceTest
 
@@ -1390,7 +1394,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopRecordingDeviceTest();
 ```
@@ -1401,8 +1405,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
-:::info[注]
-该方法需要在加入频道前调用。
+:::note
+注： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__return_values"></a>
@@ -1410,12 +1414,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iaudiodevicemanager)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
+
+<a id="ariaid-title41"></a>
 
 ## OnAudioDeviceStateChanged
 
@@ -1423,39 +1426,40 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioDeviceStateChanged(const FString& deviceId, int deviceType, int deviceState);
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__detailed_desc"></a>
 
+<a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__desc"></a>
+
 提示系统音频设备状态发生改变，比如耳机被拔出。
 
-:::info[注]
-该方法仅适用于 Windows 和 macOS。
+:::note
+注： 该方法仅适用于 Windows 和 macOS。
 :::
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__parameters"></a>
 
 ### 参数
 
-#### `deviceId`
+### deviceId
 
 设备 ID。
 
-#### `deviceType`
+### deviceType
 
 设备类型定义。详见 [FENUMWRAP_MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediadevicetype)。
 
-#### `deviceState`
+### deviceState
 
 设备状态，详见 [EMEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediadevicestatetype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
+
+<a id="ariaid-title42"></a>
 
 ## OnAudioDeviceVolumeChanged
 
@@ -1463,7 +1467,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioDeviceVolumeChanged(FENUMWRAP_MEDIA_DEVICE_TYPE deviceType, int volume, bool muted);
 ```
@@ -1472,28 +1476,25 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 当音频播放、采集设备或 App 的音量发生改变时，会触发该回调。
 
-:::info[注]
-该回调仅适用于 Windows 和 macOS。
+:::note
+注： 该回调仅适用于 Windows 和 macOS。
 :::
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__parameters"></a>
 
 ### 参数
 
-#### `deviceType`
+### deviceType
 
 设备类型定义。详见 [FENUMWRAP_MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediadevicetype)。
 
-#### `volume`
+### volume
 
 音量。范围为 [0,255]。
 
-#### `muted`
+### muted
 
 音频设备是否为静音状态：
 
-- true: 音频设备已静音。
-- false: 音频设备未被静音。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+- `true`: 音频设备已静音。
+- `false`: 音频设备未被静音。

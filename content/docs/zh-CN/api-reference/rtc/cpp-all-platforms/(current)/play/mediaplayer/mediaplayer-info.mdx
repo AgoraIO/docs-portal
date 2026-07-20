@@ -1,10 +1,19 @@
 ---
-title: "播放信息获取"
-description: "播放信息获取 API reference."
+title: 播放信息获取
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_mediaplayer_info
+  sourcePath: html-docs/rtc/Cpp/API/toc_mediaplayer_info.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 <a id="api_imediaplayer_getaudiobufferdelay"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getAudioBufferDelay
 
@@ -12,7 +21,7 @@ description: "播放信息获取 API reference."
 
 <a id="api_imediaplayer_getaudiobufferdelay__prototype"></a>
 
-```cpp
+```text
 virtual int getAudioBufferDelay(int32_t& delayMs) = 0;
 ```
 
@@ -22,7 +31,7 @@ virtual int getAudioBufferDelay(int32_t& delayMs) = 0;
 
 ### 参数
 
-#### `delayMs`
+### delayMs
 
 输出参数，表示播放媒体文件时的音频缓冲延迟，单位为毫秒。
 
@@ -31,12 +40,11 @@ virtual int getAudioBufferDelay(int32_t& delayMs) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getduration"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getDuration
 
@@ -44,7 +52,7 @@ virtual int getAudioBufferDelay(int32_t& delayMs) = 0;
 
 <a id="api_imediaplayer_getduration__prototype"></a>
 
-```cpp
+```text
 virtual int getDuration(int64_t& duration) = 0;
 ```
 
@@ -54,7 +62,7 @@ virtual int getDuration(int64_t& duration) = 0;
 
 ### 参数
 
-#### `duration`
+### duration
 
 输出参数，媒体文件的总时长（毫秒）。
 
@@ -63,12 +71,11 @@ virtual int getDuration(int64_t& duration) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getMediaPlayerId
 
@@ -76,7 +83,7 @@ virtual int getDuration(int64_t& duration) = 0;
 
 <a id="api_imediaplayer_getmediaplayerid__prototype"></a>
 
-```cpp
+```text
 virtual int getMediaPlayerId() const = 0;
 ```
 
@@ -87,12 +94,11 @@ virtual int getMediaPlayerId() const = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getmute"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMute
 
@@ -100,7 +106,7 @@ virtual int getMediaPlayerId() const = 0;
 
 <a id="api_imediaplayer_getmute__prototype"></a>
 
-```cpp
+```text
 virtual int getMute(bool& muted) = 0;
 ```
 
@@ -110,7 +116,7 @@ virtual int getMute(bool& muted) = 0;
 
 ### 参数
 
-#### `muted`
+### muted
 
 输出参数。媒体资源是否处于静音状态：
 
@@ -122,12 +128,11 @@ virtual int getMute(bool& muted) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getPlayoutVolume
 
@@ -135,7 +140,7 @@ virtual int getMute(bool& muted) = 0;
 
 <a id="api_imediaplayer_getplayoutvolume__prototype"></a>
 
-```cpp
+```text
 virtual int getPlayoutVolume(int& volume) = 0;
 ```
 
@@ -145,7 +150,7 @@ virtual int getPlayoutVolume(int& volume) = 0;
 
 ### 参数
 
-#### `volume`
+### volume
 
 输出参数，本地播放音量，取值范围为 0 到 100：
 
@@ -157,12 +162,11 @@ virtual int getPlayoutVolume(int& volume) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getplayposition"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getPlayPosition
 
@@ -170,7 +174,7 @@ virtual int getPlayoutVolume(int& volume) = 0;
 
 <a id="api_imediaplayer_getplayposition__prototype"></a>
 
-```cpp
+```text
 virtual int getPlayPosition(int64_t& pos) = 0;
 ```
 
@@ -180,7 +184,7 @@ virtual int getPlayPosition(int64_t& pos) = 0;
 
 ### 参数
 
-#### `pos`
+### pos
 
 输出参数，音效文件的播放位置（单位：毫秒）。
 
@@ -189,12 +193,11 @@ virtual int getPlayPosition(int64_t& pos) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getPlaySrc
 
@@ -202,7 +205,7 @@ virtual int getPlayPosition(int64_t& pos) = 0;
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer__prototype"></a>
 
-```cpp
+```text
 virtual const char* getPlaySrc() = 0;
 ```
 
@@ -215,10 +218,9 @@ virtual const char* getPlaySrc() = 0;
 - 方法调用成功时，返回当前正在播放的媒体资源路径。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getPublishSignalVolume
 
@@ -226,7 +228,7 @@ virtual const char* getPlaySrc() = 0;
 
 <a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
 
-```cpp
+```text
 virtual int getPublishSignalVolume(int& volume) = 0;
 ```
 
@@ -236,7 +238,7 @@ virtual int getPublishSignalVolume(int& volume) = 0;
 
 ### 参数
 
-#### `volume`
+### volume
 
 输出参数，用于获取远端播放的音量。
 
@@ -245,12 +247,11 @@ virtual int getPublishSignalVolume(int& volume) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getstate"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getState
 
@@ -258,7 +259,7 @@ virtual int getPublishSignalVolume(int& volume) = 0;
 
 <a id="api_imediaplayer_getstate__prototype"></a>
 
-```cpp
+```text
 virtual media::base::MEDIA_PLAYER_STATE getState() = 0;
 ```
 
@@ -270,10 +271,9 @@ virtual media::base::MEDIA_PLAYER_STATE getState() = 0;
 
 方法调用成功，返回当前播放状态，详见 [MEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerstate)。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getstreamcount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## getStreamCount
 
@@ -281,21 +281,21 @@ virtual media::base::MEDIA_PLAYER_STATE getState() = 0;
 
 <a id="api_imediaplayer_getstreamcount__prototype"></a>
 
-```cpp
+```text
 virtual int getStreamCount(int64_t& count) = 0;
 ```
 
 <a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
 
-:::info[注]
-在调用该方法前，请先调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法，并等待 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `PLAYER_STATE_OPEN_COMPLETED`。
+:::note
+注： 在调用该方法前，请先调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法，并等待 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `PLAYER_STATE_OPEN_COMPLETED`。
 :::
 
 <a id="api_imediaplayer_getstreamcount__parameters"></a>
 
 ### 参数
 
-#### `count`
+### count
 
 输出参数，媒体资源中的媒体流数量。详见 `int64_t`
 
@@ -304,12 +304,11 @@ virtual int getStreamCount(int64_t& count) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 <a id="api_imediaplayer_getstreaminfo"></a>
+
+<a id="ariaid-title12"></a>
 
 ## getStreamInfo
 
@@ -317,7 +316,7 @@ virtual int getStreamCount(int64_t& count) = 0;
 
 <a id="api_imediaplayer_getstreaminfo__prototype"></a>
 
-```cpp
+```text
 virtual int getStreamInfo(int64_t index, media::base::PlayerStreamInfo* info) = 0;
 ```
 
@@ -333,11 +332,11 @@ virtual int getStreamInfo(int64_t index, media::base::PlayerStreamInfo* info) = 
 
 ### 参数
 
-#### `index`
+### index
 
 媒体流的索引。该参数需小于 [getStreamCount](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 返回的 `count` 值。
 
-#### `info`
+### info
 
 输出参数，媒体流的详细信息。详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-playerstreaminfo)。
 
@@ -346,12 +345,11 @@ virtual int getStreamInfo(int64_t index, media::base::PlayerStreamInfo* info) = 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerPlaybackStats
 
@@ -359,7 +357,7 @@ virtual int getStreamInfo(int64_t index, media::base::PlayerStreamInfo* info) = 
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerPlaybackStats(const media::base::PlayerPlaybackStats& stats)
 ```
 
@@ -371,9 +369,6 @@ virtual void onPlayerPlaybackStats(const media::base::PlayerPlaybackStats& stats
 
 ### 参数
 
-#### `stats`
+### stats
 
 媒体文件的统计信息。详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-playerplaybackstats)。
-
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayersourceobserver)

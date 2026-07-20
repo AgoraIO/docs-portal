@@ -13,8 +13,8 @@
 
 ## Source provenance
 
-- Owned MDX pages checked: 1506
-- Ownership source paths checked: 1690
+- Owned MDX pages checked: 4956
+- Ownership source paths checked: 5140
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Runtime label substitutions checked: 7
@@ -31,7 +31,7 @@
 - Explicit existing-route projections: 54
 - OpenAPI-routed targets: 130
 - Preserved pre-existing targets outside API Reference: 343
-- Local links checked: 33419
+- Local links checked: 70017
 - Reachable OpenAPI operations checked: 130
 
 ### Target decisions

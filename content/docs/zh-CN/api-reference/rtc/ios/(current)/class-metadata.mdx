@@ -1,10 +1,18 @@
 ---
-title: "AgoraMetadata"
-description: "AgoraMetadata 表示媒体元数据。"
+title: AgoraMetadata
+description: AgoraMetadata 表示媒体元数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_metadata
+  sourcePath: html-docs/rtc/iOS/API/class_metadata.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_metadata__prototype"></a>
 
-```objectivec
+```text
 NS_SWIFT_NAME(AgoraMetadata) __attribute__((visibility("default"))) @interface AgoraMetadata : NSObject
 @property (copy, nonatomic) NSString* _Nonnull channelId NS_SWIFT_NAME(channelId);
 @property (assign, nonatomic) NSInteger uid NS_SWIFT_NAME(uid);
@@ -17,21 +25,21 @@ NS_SWIFT_NAME(AgoraMetadata) __attribute__((visibility("default"))) @interface A
 
 ## 属性
 
-### `channelId`
+### channelId
 
 频道名。
 
-### `uid`
+### uid
 
 用户 ID。
 
-- 对于接收方：发送该 AgoraMetadata 的远端用户 ID。
+- 对于接收方：发送该 [AgoraMetadata](/zh-CN/api-reference/rtc/ios/class-metadata) 的远端用户 ID。
 - 对于发送方：忽略该字段。
 
-### `data`
+### data
 
 接收到的元数据。
 
-### `timestamp`
+### timestamp
 
 发送该 [AgoraMetadata](/zh-CN/api-reference/rtc/ios/class-metadata) 时的时间戳（毫秒）。

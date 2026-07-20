@@ -1,9 +1,17 @@
 ---
-title: "Lite SDK API 列表"
-description: "本页列出 Lite SDK 支持的 API 列表。"
+title: Lite SDK API 列表
+description: 本页列出 Lite SDK 支持的 API 列表。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/rtc_lite_api
+  sourcePath: html-docs/rtc/iOS/API/rtc_lite_api.html
+  generator: oxygen
+  warnings: []
 ---
-:::warning[注意]
-如果在本页中无法查询到你要使用的 API，则代表 Lite SDK 不支持该 API，调用该 API 时会返回错误码 -2。
+
+:::note
+注意： 如果在本页中无法查询到你要使用的 API，则代表 Lite SDK 不支持该 API，调用该 API 时会返回错误码 -2。
 :::
 
 ## AgoraRtcEngineKit
@@ -88,11 +96,17 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_isspeakerphoneenabled)
 - [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported)
 - [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1)
-- 在 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+                    [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [joinChannelByToken:channelId:userAccount:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount1)
-- 在 [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount2) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+                    [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount2) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [leaveChannel:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel)
@@ -125,7 +139,13 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [queryCodecCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycodeccapability)
 - [queryDeviceScore](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_querydevicescore)
 - [rate:rating:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate)
-- 在 [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 中， config 中的 encodingType 仅支持 OPUS 编码格式。
+- 在
+
+                    [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 中，
+
+                    config 中的
+
+                    encodingType 仅支持 OPUS 编码格式。
 - [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver)
 - [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver)
 - [registerExtensionWithVendor:extension:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_registerextension)
@@ -250,7 +270,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [switchCamera](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_switchcamera)
 - [unloadEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_unloadeffect)
 - [unregisterAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver)
-- 在 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+                    [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [updateLocalTranscoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration)
@@ -293,7 +316,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [startMediaRenderingTracingEx:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_startmediarenderingtracingex)
 - [startOrUpdateChannelMediaRelayEx:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex)
 - [stopChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex)
-- 在 [updateChannelExWithMediaOptions:connection:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_updatechannelmediaoptionsex) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+                    [updateChannelExWithMediaOptions:connection:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_updatechannelmediaoptionsex) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [setRemoteVideoSubscriptionOptionsEx:options:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex)
@@ -383,6 +409,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 
 ## AgoraRtcMediaPlayerProtocol
 
+:::note
+注意： 媒体播放器中的 API 仅支持处理音频媒体文件、不支持处理视频媒体文件。
+:::
+
 - [adjustPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [adjustPublishSignalVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [getDuration](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
@@ -424,6 +454,14 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [onEncodedVideoFrameReceived:length:info:channelId:uid:](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
 
 ## AgoraVideoFrameDelegate
+
+:::note
+注意： 通过
+
+                [onCaptureVideoFrame:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)、[onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 和 [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调返回的视频数据中，
+
+                alphabuffer 为 `nil`。
+:::
 
 - [getMirrorApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getmirrorapplied)
 - [getObservedFramePosition](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getobservedframeposition)

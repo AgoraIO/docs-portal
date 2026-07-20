@@ -1,26 +1,34 @@
 ---
-title: "VIDEO_MODULE_POSITION"
-description: "视频观察器中视频帧的位置。"
+title: VIDEO_MODULE_POSITION
+description: 视频观察器中视频帧的位置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_videomoduleposition
+  sourcePath: html-docs/rtc/Cpp/API/enum_videomoduleposition.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_videomoduleposition__parameters"></a>
 
 ## 枚举值
 
-### `POSITION_POST_CAPTURER`
+### POSITION_POST_CAPTURER
 
 （1）：本地采集的视频数据在预处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用视频前处理效果，可通过启用美颜特效、虚拟背景或水印进行验证。
 
-### `POSITION_PRE_RENDERER`
+### POSITION_PRE_RENDERER
 
 （2）：渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调中的视频数据。
 
-### `POSITION_PRE_ENCODER`
+### POSITION_PRE_ENCODER
 
 （4）：编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中的视频数据。此位置的视频已应用视频前处理和编码前处理效果。
 
 - 若需验证视频前处理效果，可启用美颜特效、虚拟背景或水印。
 - 若需验证编码前处理效果，可设置较低的帧率（例如 5 fps）。
 
-### `POSITION_POST_CAPTURER_ORIGIN`
+### POSITION_POST_CAPTURER_ORIGIN
 
 （8）：本地视频采集之后、预处理之前的位置。此位置的视频未应用前处理效果，可通过启用美颜特效、虚拟背景或水印进行验证。

@@ -84,7 +84,7 @@ describe('API Center generated HTML runner', () => {
     expect(output).not.toContain('<header');
   });
 
-  it('skips a migrated unowned MDX target instead of overwriting it', async () => {
+  it('overwrites an existing zh-CN MDX target from its authoritative HTML source', async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-generator-existing-'),
     );
@@ -98,7 +98,12 @@ describe('API Center generated HTML runner', () => {
     });
     await fs.writeFile(
       path.join(oldRoot, sourcePath),
-      '<div class="col-content"><p>Legacy generated body.</p></div>',
+      `<div class="tsd-page-title"><h1>Existing API</h1></div>
+       <div class="col-content">
+         <p>Legacy generated body.</p>
+         <div class="note"><ul><li><a href="#enable-local-audio">enableLocalAudio</a> controls capture.</li></ul></div>
+         <h2 id="enable-local-audio">enableLocalAudio</h2>
+       </div>`,
     );
     await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
       recursive: true,
@@ -139,13 +144,106 @@ describe('API Center generated HTML runner', () => {
       mode: 'write',
     });
 
-    expect(await fs.readFile(path.join(repoRoot, targetPath), 'utf8')).toBe(
-      'Existing migrated body.\n',
+    const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
+    expect(output).toContain('title: Existing API');
+    expect(output).toContain('Legacy generated body.');
+    expect(output).toContain(
+      '[enableLocalAudio](/zh-CN/api-reference/rtc/web/interfaces/existing#enable-local-audio)',
     );
+    expect(output).not.toContain('Existing migrated body.');
     expect(result.report.counts).toMatchObject({
-      generatedFiles: 0,
-      preservedExistingFiles: 1,
+      generatedFiles: 1,
+      preservedExistingFiles: 0,
     });
+  });
+
+  it('normalizes fragments referenced across generated HTML pages', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-generator-fragments-'),
+    );
+    temporaryDirectories.push(repoRoot);
+    const oldRoot = path.join(repoRoot, 'legacy');
+    const fixtures = [
+      {
+        generator: 'typedoc',
+        sourcePath: 'html-docs/rtc/Web/overview.html',
+        targetPath: 'content/docs/zh-CN/api-reference/rtc/web/overview.mdx',
+        targetRoute: '/zh-CN/api-reference/rtc/web/overview',
+        url: 'https://doc.shengwang.cn/api-ref/rtc/javascript/overview',
+        html: `<div class="tsd-page-title"><h1>Overview</h1></div>
+          <div class="col-content"><p>See <a href="capture.html#api_enableLocalAudio">enableLocalAudio</a> and <a href="capture.html#class_enable_local_audio_method">the legacy anchor</a>.</p></div>`,
+      },
+      {
+        generator: 'doxygen',
+        sourcePath: 'html-docs/rtc/Web/capture.html',
+        targetPath: 'content/docs/zh-CN/api-reference/rtc/web/capture.mdx',
+        targetRoute: '/zh-CN/api-reference/rtc/web/capture',
+        url: 'https://doc.shengwang.cn/api-ref/rtc/javascript/capture',
+        html: `<div class="headertitle"><div class="title">Capture</div></div>
+          <div class="contents"><h2>enableLocalAudio</h2><p>Controls capture.</p></div>`,
+      },
+    ];
+    for (const fixture of fixtures) {
+      await fs.mkdir(path.dirname(path.join(oldRoot, fixture.sourcePath)), {
+        recursive: true,
+      });
+      await fs.writeFile(path.join(oldRoot, fixture.sourcePath), fixture.html);
+    }
+    const manifestPath = path.join(
+      repoRoot,
+      'docs/migration/api-center-html-manifest.json',
+    );
+    await fs.mkdir(path.dirname(manifestPath), { recursive: true });
+    await fs.writeFile(
+      manifestPath,
+      JSON.stringify({
+        pageEvidence: fixtures.map((fixture) => ({
+          requestedUrl: fixture.url,
+          sourceResolution: {
+            status: 'resolved',
+            type: 'generated-html',
+            generator: fixture.generator,
+            sourcePath: fixture.sourcePath,
+            targetPath: fixture.targetPath,
+            targetRoute: fixture.targetRoute,
+            targetExists: false,
+            route: { scopeKey: 'api-ref/rtc/javascript' },
+          },
+        })),
+      }),
+    );
+
+    await runHtmlGenerators({
+      repoRoot,
+      oldRoot,
+      generators: ['typedoc', 'doxygen'],
+      mode: 'write',
+    });
+
+    const overview = await fs.readFile(
+      path.join(repoRoot, fixtures[0].targetPath),
+      'utf8',
+    );
+    const capture = await fs.readFile(
+      path.join(repoRoot, fixtures[1].targetPath),
+      'utf8',
+    );
+    expect(overview).toContain(
+      '[enableLocalAudio](/zh-CN/api-reference/rtc/web/capture#enablelocalaudio)',
+    );
+    expect(overview).toContain('code: generated-fragment-normalized');
+    expect(capture).toContain('<a id="class_enable_local_audio_method"></a>');
+    expect(capture).toContain('## enableLocalAudio');
+
+    await runHtmlGenerators({
+      repoRoot,
+      oldRoot,
+      generators: ['doxygen'],
+      mode: 'write',
+    });
+    expect(
+      await fs.readFile(path.join(repoRoot, fixtures[1].targetPath), 'utf8'),
+    ).toContain('<a id="class_enable_local_audio_method"></a>');
   });
 
   it('collapses query variants onto one canonical generated target', async () => {

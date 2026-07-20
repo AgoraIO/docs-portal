@@ -1,10 +1,18 @@
 ---
-title: "SegmentationProperty"
-description: "用于设置背景图像处理相关的属性。"
+title: SegmentationProperty
+description: 用于设置背景图像处理相关的属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_segmentationproperty
+  sourcePath: html-docs/rtc/Android/API/class_segmentationproperty.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_segmentationproperty__prototype"></a>
 
-```java
+```text
 public class SegmentationProperty {
   public static final int SEG_MODEL_AI = 1;
   public static final int SEG_MODEL_GREEN = 2;
@@ -21,45 +29,45 @@ public class SegmentationProperty {
 
 ## 属性
 
-### `SEG_MODEL_AI`
+### SEG_MODEL_AI
 
 （1）：（默认）AI 分割算法。
 
-### `SEG_MODEL_GREEN`
+### SEG_MODEL_GREEN
 
 （2）：绿幕分割算法。
 
-### `SCREEN_COLOR_AUTO`
+### SCREEN_COLOR_AUTO
 
 （0）：（默认）自动识别屏幕颜色。
 
-### `SCREEN_COLOR_GREEN`
+### SCREEN_COLOR_GREEN
 
 （1）：绿色。
 
-### `SCREEN_COLOR_BLUE`
+### SCREEN_COLOR_BLUE
 
 （2）：蓝色。
 
-### `modelType`
+### modelType
 
 用于背景处理的算法类型。
 
-- SEG_MODEL_AI （1）：（默认）使用适用于所有场景的算法。
-- SEG_MODEL_GREEN （2）：使用专为绿幕背景场景设计的算法。
+- `SEG_MODEL_AI`（1）：（默认）使用适用于所有场景的算法。
+- `SEG_MODEL_GREEN`（2）：使用专为绿幕背景场景设计的算法。
 
-### `greenCapacity`
+### greenCapacity
 
 识别图像中背景颜色的准确度范围。取值范围为 [0, 1]，默认值为 0.5。值越大，可识别的纯色色阶范围越宽。当该值过大时，人物边缘和人物区域中的纯色部分也可能被识别为背景。
 
-:::info[注]
-仅当 `modelType` 设为 `SEG_MODEL_GREEN` 时该参数生效。声网建议你根据实际效果动态调整该参数值。
+:::note
+注： 仅当 `modelType` 设为 `SEG_MODEL_GREEN` 时该参数生效。声网建议你根据实际效果动态调整该参数值。
 :::
 
-### `screenColorType`
+### screenColorType
 
 屏幕颜色类型：
 
-- SCREEN_COLOR_AUTO （0）：SDK 自动选择屏幕颜色。
-- SCREEN_COLOR_GREEN （1）：绿色。
-- SCREEN_COLOR_BLUE （2）：蓝色。
+- `SCREEN_COLOR_AUTO`（0）：SDK 自动选择屏幕颜色。
+- `SCREEN_COLOR_GREEN`（1）：绿色。
+- `SCREEN_COLOR_BLUE`（2）：蓝色。

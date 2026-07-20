@@ -1,10 +1,18 @@
 ---
-title: "AgoraScreenCaptureSourceInfo"
-description: "用于描述指定可共享窗口或屏幕的信息。"
+title: AgoraScreenCaptureSourceInfo
+description: 用于描述指定可共享窗口或屏幕的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_screencapturesourceinfo
+  sourcePath: html-docs/rtc/macOS/API/class_screencapturesourceinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screencapturesourceinfo__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraScreenCaptureSourceInfo : NSObject
 @property(assign, nonatomic) AgoraScreenCaptureSourceType type;
 @property(assign, nonatomic) CGWindowID sourceId;
@@ -22,39 +30,39 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureSourceInfo :
 
 ## 属性
 
-### `type`
+### type
 
 共享目标的类型，详见 [AgoraScreenCaptureSourceType](/zh-CN/api-reference/rtc/macos/enum-screencapturesourcetype)。
 
-### `sourceId`
+### sourceId
 
 窗口的 ID 或屏幕的显示 ID。
 
-### `sourceName`
+### sourceName
 
 窗口或屏幕的名称，采用 UTF-8 编码。
 
-### `thumbImage`
+### thumbImage
 
 缩略图的图像内容。详见 `NSImage`。
 
-### `iconImage`
+### iconImage
 
 图标的图像内容。详见 `NSImage`。
 
-### `processPath`
+### processPath
 
 窗口所属进程的路径，采用 UTF-8 编码。
 
-### `sourceTitle`
+### sourceTitle
 
 窗口的标题，采用 UTF-8 编码。
 
-### `position`
+### position
 
 窗口相对于整个屏幕空间（包括所有可共享屏幕）的位置。
 
-### `primaryMonitor`
+### primaryMonitor
 
 是否为主显示屏：
 

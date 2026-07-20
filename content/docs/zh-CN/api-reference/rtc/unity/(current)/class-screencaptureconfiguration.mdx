@@ -1,10 +1,18 @@
 ---
-title: "ScreenCaptureConfiguration"
-description: "屏幕采集配置。"
+title: ScreenCaptureConfiguration
+description: 屏幕采集配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_screencaptureconfiguration
+  sourcePath: html-docs/rtc/Unity/API/class_screencaptureconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screencaptureconfiguration__prototype"></a>
 
-```csharp
+```text
 public class ScreenCaptureConfiguration
     {
         public bool isCaptureWindow;
@@ -38,41 +46,41 @@ public class ScreenCaptureConfiguration
 
 ## 属性
 
-### `isCaptureWindow`
+### isCaptureWindow
 
 是否采集屏幕上的窗口：
 
 - true：采集窗口。
 - false：（默认）采集屏幕，不采集窗口。
 
-### `displayId`
+### displayId
 
 （仅适用于 macOS 平台）屏幕的 display ID。
 
-:::info[注]
-请仅在 Mac 设备上采集屏幕时使用该参数。
+:::note
+注： 请仅在 Mac 设备上采集屏幕时使用该参数。
 :::
 
-### `screenRect`
+### screenRect
 
 （仅适用于 Windows 平台）待共享的屏幕相对于虚拟屏的位置。
 
-:::info[注]
-请仅在 Windows 设备上采集屏幕时使用该参数。
+:::note
+注： 请仅在 Windows 设备上采集屏幕时使用该参数。
 :::
 
-### `windowId`
+### windowId
 
 （仅适用于 Windows 和 macOS 平台）窗口 ID。
 
-:::info[注]
-请仅在采集窗口时使用该参数。
+:::note
+注： 请仅在采集窗口时使用该参数。
 :::
 
-### `parameters`
+### parameters
 
 （仅适用于 Windows 和 macOS 平台）屏幕共享流的编码参数配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters)。
 
-### `regionRect`
+### regionRect
 
-（仅适用于 Windows 和 macOS 平台）待共享区域相对于整个屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。如不填，则表示共享整个屏幕。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容。 如果将 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle) 中的 width 或 height 设为 0，则共享整个屏幕。
+（仅适用于 Windows 和 macOS 平台）待共享区域相对于整个屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。如不填，则表示共享整个屏幕。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容。 如果将 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle) 中的 width 或 height 设为 0 ，则共享整个屏幕。

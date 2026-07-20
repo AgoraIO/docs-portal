@@ -1,27 +1,35 @@
 ---
-title: "AudioSessionOperationRestriction"
-description: "SDK 对 Audio Session 的操作权限。"
+title: AudioSessionOperationRestriction
+description: SDK 对 Audio Session 的操作权限。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_audiosessionoperationrestriction
+  sourcePath: html-docs/rtc/Electron/API/enum_audiosessionoperationrestriction.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audiosessionoperationrestriction__parameters"></a>
 
 ## 枚举值
 
-### `AudioSessionOperationRestrictionNone`
+### AudioSessionOperationRestrictionNone
 
 0: 没有限制，SDK 可以对 Audio Session 进行更改。
 
-### `AudioSessionOperationRestrictionSetCategory`
+### AudioSessionOperationRestrictionSetCategory
 
 1: SDK 不能更改 Audio Session 的 category。
 
-### `AudioSessionOperationRestrictionConfigureSession`
+### AudioSessionOperationRestrictionConfigureSession
 
 2: SDK 不能更改 Audio Session 的 category、mode 或 categoryOptions。
 
-### `AudioSessionOperationRestrictionDeactivateSession`
+### AudioSessionOperationRestrictionDeactivateSession
 
 4: 离开频道时，SDK 会保持 Audio Session 处于活动状态，例如在后台播放音频。
 
-### `AudioSessionOperationRestrictionAll`
+### AudioSessionOperationRestrictionAll
 
 128: 完全限制 SDK 对 Audio Session 的操作权限，SDK 不能再对 Audio Session 进行任何更改。

@@ -2,11 +2,18 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { convertHtmlToMdx } from './html-to-mdx.mjs';
 import {
+  buildLocalFragmentIndex,
+  insertFragmentAliases,
+  rewriteLocalFragmentLinks,
+  targetPathToRoute,
+} from './local-fragment-index.mjs';
+import {
   ApiCenterMigrationRun,
   assetTargetPath,
   buildLegacyRouteMap,
   createWarning,
   loadFaqMappingRows,
+  rewriteLegacyHref,
 } from './migration-framework.mjs';
 import { parseCsv } from './source-resolver.mjs';
 
@@ -16,6 +23,8 @@ const SUPPORTED_GENERATORS = new Set([
   'oxygen',
   'typedoc',
 ]);
+
+const ZH_CN_API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference/';
 
 const GENERATOR_CONVERSION_OPTIONS = {
   appledoc: {
@@ -40,6 +49,7 @@ function pageMatches(page, { generators, scope, urls }) {
   const resolution = page.sourceResolution;
   return (
     resolution.type === 'generated-html' &&
+    resolution.targetPath.startsWith(ZH_CN_API_REFERENCE_ROOT) &&
     generators.has(resolution.generator) &&
     (!scope || resolution.route.scopeKey === scope) &&
     (urls.size === 0 || urls.has(page.requestedUrl))
@@ -97,6 +107,69 @@ function selectCanonicalPages(pages) {
     }
   }
   return { selected, aliases };
+}
+
+const HTML_HREF_WITH_FRAGMENT_PATTERN =
+  /\bhref\s*=\s*(?:"([^"]*#[^"]+)"|'([^']*#[^']+)')/gi;
+const MARKDOWN_HREF_WITH_FRAGMENT_PATTERN =
+  /(?<!!)\[(?:[^[\]\n]|\[[^\]\n]*])*]\(([^)\s]*#[^)\s]+)(?:\s+"[^"]*")?\s*\)/g;
+
+async function collectGeneratedFragmentRequests({
+  manifest,
+  oldRoot,
+  routeMap,
+}) {
+  const candidates = manifest.pageEvidence.filter(
+    (page) =>
+      !page.aliasOf &&
+      page.sourceResolution.status === 'resolved' &&
+      page.sourceResolution.type === 'generated-html' &&
+      page.sourceResolution.targetPath.startsWith(ZH_CN_API_REFERENCE_ROOT),
+  );
+  const canonical = selectCanonicalPages(candidates);
+  const pagesByUrl = new Map(
+    candidates.map((page) => [page.requestedUrl, page]),
+  );
+  const generatedRoutes = new Set(
+    candidates.map((page) =>
+      targetPathToRoute(page.sourceResolution.targetPath),
+    ),
+  );
+  const requestedByRoute = new Map();
+  for (const requestedUrl of canonical.selected) {
+    const page = pagesByUrl.get(requestedUrl);
+    const html = await fs.readFile(
+      path.resolve(oldRoot, page.sourceResolution.sourcePath),
+      'utf8',
+    );
+    const hrefs = [
+      ...[...html.matchAll(HTML_HREF_WITH_FRAGMENT_PATTERN)].map(
+        (match) => match[1] ?? match[2],
+      ),
+      ...[...html.matchAll(MARKDOWN_HREF_WITH_FRAGMENT_PATTERN)].map(
+        (match) => match[1],
+      ),
+    ];
+    for (const href of hrefs) {
+      const rewritten = rewriteLegacyHref(href, {
+        routeMap,
+        sourceUrl: page.requestedUrl,
+      }).href;
+      if (
+        !rewritten?.startsWith('/zh-CN/api-reference/') ||
+        !rewritten.includes('#')
+      ) {
+        continue;
+      }
+      const hashIndex = rewritten.indexOf('#');
+      const route = rewritten.slice(0, hashIndex).replace(/\/$/, '');
+      if (!generatedRoutes.has(route)) continue;
+      const fragments = requestedByRoute.get(route) ?? new Set();
+      fragments.add(decodeURIComponent(rewritten.slice(hashIndex + 1)));
+      requestedByRoute.set(route, fragments);
+    }
+  }
+  return requestedByRoute;
 }
 
 async function exists(filePath) {
@@ -212,6 +285,7 @@ export async function runHtmlGenerators({
     limit > 0 ? matched.slice(0, limit) : matched,
   );
   const selected = canonicalSelection.selected;
+  const drafts = [];
 
   for (const page of manifest.pageEvidence.filter((page) => !page.aliasOf)) {
     const resolution = page.sourceResolution;
@@ -235,14 +309,6 @@ export async function runHtmlGenerators({
     if (!selected.has(page.requestedUrl)) {
       if (resolution.targetExists) run.preserveExisting({ page });
       else run.recordPageResult({ page, status: 'pending' });
-      continue;
-    }
-    if (
-      resolution.targetExists &&
-      !run.ownsTarget(resolution.targetPath) &&
-      page.adoptExisting !== true
-    ) {
-      run.preserveExisting({ page });
       continue;
     }
     const sourceAbsolutePath = path.resolve(oldRoot, resolution.sourcePath);
@@ -289,13 +355,82 @@ export async function runHtmlGenerators({
         `Missing source-derived title for ${page.requestedUrl}; request source copy instead of synthesizing a filename title.`,
       );
     }
-    run.planMdx({
+    drafts.push({
       page,
       title,
       description: converted.description || undefined,
       body: converted.body,
       warnings,
-      adoptExisting: page.adoptExisting === true,
+    });
+  }
+
+  const draftsByRoute = new Map(
+    drafts.map((draft) => [
+      targetPathToRoute(draft.page.sourceResolution.targetPath),
+      draft,
+    ]),
+  );
+  const requestedByRoute = await collectGeneratedFragmentRequests({
+    manifest,
+    oldRoot,
+    routeMap,
+  });
+  for (const [route, fragments] of requestedByRoute) {
+    const draft = draftsByRoute.get(route);
+    if (!draft) continue;
+    const aliases = insertFragmentAliases(draft.body, fragments);
+    draft.body = aliases.body;
+    if (aliases.inserted.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'generated-fragment-alias',
+          `Added ${aliases.inserted.length} stable legacy fragment alias(es).`,
+          { aliases: aliases.inserted },
+        ),
+      );
+    }
+  }
+
+  const fragmentIndex = await buildLocalFragmentIndex({
+    repoRoot,
+    virtualPages: drafts.map((draft) => ({
+      body: draft.body,
+      targetPath: draft.page.sourceResolution.targetPath,
+    })),
+  });
+  for (const draft of drafts) {
+    const normalized = await rewriteLocalFragmentLinks(draft.body, {
+      fragmentIndex,
+      sourceRoute: targetPathToRoute(draft.page.sourceResolution.targetPath),
+    });
+    draft.body = normalized.body;
+    const resolved = normalized.warnings.filter(
+      (warning) => !warning.unresolved,
+    );
+    const unresolved = normalized.warnings.filter(
+      (warning) => warning.unresolved,
+    );
+    if (resolved.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'generated-fragment-normalized',
+          `Normalized ${resolved.length} legacy fragment link(s) to stable local anchors.`,
+          { mappings: resolved },
+        ),
+      );
+    }
+    if (unresolved.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'unresolved-fragment',
+          `Removed ${unresolved.length} fragment(s) that could not be mapped uniquely while preserving their local page links.`,
+          { mappings: unresolved },
+        ),
+      );
+    }
+    run.planMdx({
+      ...draft,
+      adoptExisting: true,
     });
   }
   const report = await run.finish();

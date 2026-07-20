@@ -1,10 +1,18 @@
 ---
-title: "LastmileProbeResult"
-description: "表示上下行 Last-mile 网络探测的结果。"
+title: LastmileProbeResult
+description: 表示上下行 Last-mile 网络探测的结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_lastmileproberesult
+  sourcePath: html-docs/rtc/Android/API/class_lastmileproberesult.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_lastmileproberesult__prototype"></a>
 
-```java
+```text
 public static class LastmileProbeResult {
   public static class LastmileProbeOneWayResult {
     public int packetLossRate;
@@ -22,22 +30,22 @@ public static class LastmileProbeResult {
 
 ## 属性
 
-### `state`
+### state
 
 Last-mile 网络探测的状态，包括：
 
-- LASTMILE_PROBE_RESULT_COMPLETE (1)：探测完成。
-- LASTMILE_PROBE_RESULT_INCOMPLETE_NO_BWE (2)：探测未完成，因未进行带宽预测，可能是测试资源暂时受限。
-- LASTMILE_PROBE_RESULT_UNAVAILABLE (3)：未进行探测，可能由于网络状况较差。
+- `LASTMILE_PROBE_RESULT_COMPLETE` (1)：探测完成。
+- `LASTMILE_PROBE_RESULT_INCOMPLETE_NO_BWE` (2)：探测未完成，因未进行带宽预测，可能是测试资源暂时受限。
+- `LASTMILE_PROBE_RESULT_UNAVAILABLE` (3)：未进行探测，可能由于网络状况较差。
 
-### `rtt`
+### rtt
 
 往返时延，单位为毫秒。
 
-### `uplinkReport`
+### uplinkReport
 
 上行 Last-mile 网络探测结果，详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/android/class-lastmileprobeonewayresult)。
 
-### `downlinkReport`
+### downlinkReport
 
 下行 Last-mile 网络探测结果，详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/android/class-lastmileprobeonewayresult)。

@@ -1,10 +1,19 @@
 ---
-title: "媒体资源播放和渲染"
-description: "媒体资源播放和渲染 API reference."
+title: 媒体资源播放和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_mediaplayer_playnrender
+  sourcePath: html-docs/rtc/Cpp/API/toc_mediaplayer_playnrender.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_playnrender"></a>
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## selectAudioTrack [2/2]
 
@@ -12,7 +21,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__prototype"></a>
 
-```cpp
+```text
 virtual int selectAudioTrack(int index) = 0;
 ```
 
@@ -20,15 +29,15 @@ virtual int selectAudioTrack(int index) = 0;
 
 获取音频文件的音轨索引后，可以调用该方法指定要播放的音轨。例如，如果一个多音轨文件的不同音轨存储了不同语言的歌曲，可以调用该方法设置播放语言。
 
-:::info[注]
-你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用该方法。
+:::note
+注： 你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用该方法。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
 
 ### 参数
 
-#### `index`
+### index
 
 音轨的索引。
 
@@ -37,12 +46,11 @@ virtual int selectAudioTrack(int index) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setAudioDualMonoMode
 
@@ -50,7 +58,7 @@ virtual int selectAudioTrack(int index) = 0;
 
 <a id="api_imediaplayer_setaudiodualmonomode__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioDualMonoMode(agora::media::base::AUDIO_DUAL_MONO_MODE mode) = 0;
 ```
 
@@ -58,8 +66,10 @@ virtual int setAudioDualMonoMode(agora::media::base::AUDIO_DUAL_MONO_MODE mode) 
 
 在立体声音乐文件中，左声道和右声道可以存储不同的音频数据。你可以根据需要将声道模式设置为原始模式、左声道模式、右声道模式或混合声道模式。例如，在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储人声。如果你只需要听伴奏，可以调用该方法将声道模式设置为左声道模式；如果你需要同时听到伴奏和人声，可以将声道模式设置为混合声道模式。
 
-:::info[注]
-- 调用该方法前需先调用 open 方法。
+:::note
+注：
+
+- 调用该方法前需先调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法。
 - 此方法仅适用于立体声音频文件。
 :::
 
@@ -67,7 +77,7 @@ virtual int setAudioDualMonoMode(agora::media::base::AUDIO_DUAL_MONO_MODE mode) 
 
 ### 参数
 
-#### `mode`
+### mode
 
 声道模式，详见 [AUDIO_DUAL_MONO_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiodualmonomode)。
 
@@ -76,12 +86,11 @@ virtual int setAudioDualMonoMode(agora::media::base::AUDIO_DUAL_MONO_MODE mode) 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiopitch"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setAudioPitch
 
@@ -89,21 +98,21 @@ virtual int setAudioDualMonoMode(agora::media::base::AUDIO_DUAL_MONO_MODE mode) 
 
 <a id="api_imediaplayer_setaudiopitch__prototype"></a>
 
-```cpp
+```text
 virtual int setAudioPitch(int pitch) = 0;
 ```
 
 <a id="api_imediaplayer_setaudiopitch__detailed_desc"></a>
 
-:::info[注]
-请在调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法后调用此方法。
+:::note
+注： 请在调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法后调用此方法。
 :::
 
 <a id="api_imediaplayer_setaudiopitch__parameters"></a>
 
 ### 参数
 
-#### `pitch`
+### pitch
 
 按半音阶设置本地音乐文件的音调（默认值为 0，表示保持原始音调）。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，音调变化越明显。
 
@@ -112,12 +121,11 @@ virtual int setAudioPitch(int pitch) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setloopcount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setLoopCount
 
@@ -125,7 +133,7 @@ virtual int setAudioPitch(int pitch) = 0;
 
 <a id="api_imediaplayer_setloopcount__prototype"></a>
 
-```cpp
+```text
 virtual int setLoopCount(int loopCount) = 0;
 ```
 
@@ -137,7 +145,7 @@ virtual int setLoopCount(int loopCount) = 0;
 
 ### 参数
 
-#### `loopCount`
+### loopCount
 
 音效的循环播放次数：
 
@@ -149,12 +157,11 @@ virtual int setLoopCount(int loopCount) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setPlaybackSpeed
 
@@ -162,7 +169,7 @@ virtual int setLoopCount(int loopCount) = 0;
 
 <a id="api_imediaplayer_setplaybackspeed__prototype"></a>
 
-```cpp
+```text
 virtual int setPlaybackSpeed(int speed) = 0;
 ```
 
@@ -174,7 +181,7 @@ virtual int setPlaybackSpeed(int speed) = 0;
 
 ### 参数
 
-#### `speed`
+### speed
 
 播放速度。建议设置为 30 到 400 之间的值，定义如下：
 
@@ -187,12 +194,11 @@ virtual int setPlaybackSpeed(int speed) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setPlayerOption [1/2]
 
@@ -200,7 +206,7 @@ virtual int setPlaybackSpeed(int speed) = 0;
 
 <a id="api_imediaplayer_setplayeroption__prototype"></a>
 
-```cpp
+```text
 virtual int setPlayerOption(const char* key, int value) = 0;
 ```
 
@@ -224,11 +230,11 @@ virtual int setPlayerOption(const char* key, int value) = 0;
 
 ### 参数
 
-#### `key`
+### key
 
 选项的键。
 
-#### `value`
+### value
 
 选项的值。
 
@@ -237,12 +243,11 @@ virtual int setPlayerOption(const char* key, int value) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setPlayerOption [2/2]
 
@@ -250,7 +255,7 @@ virtual int setPlayerOption(const char* key, int value) = 0;
 
 <a id="api_imediaplayer_setplayeroption2__prototype"></a>
 
-```cpp
+```text
 virtual int setPlayerOption(const char* key, const char* value) = 0;
 ```
 
@@ -274,11 +279,11 @@ virtual int setPlayerOption(const char* key, const char* value) = 0;
 
 ### 参数
 
-#### `key`
+### key
 
 参数选项的键。
 
-#### `value`
+### value
 
 参数选项的值。
 
@@ -287,12 +292,11 @@ virtual int setPlayerOption(const char* key, const char* value) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setview"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setView
 
@@ -300,7 +304,7 @@ virtual int setPlayerOption(const char* key, const char* value) = 0;
 
 <a id="api_imediaplayer_setview__prototype"></a>
 
-```cpp
+```text
 virtual int setView(media::base::view_t view) = 0;
 ```
 
@@ -316,16 +320,13 @@ virtual int setView(media::base::view_t view) = 0;
 
 ### 参数
 
-#### `view`
+### view
 
-渲染视图。在 Windows 上，该参数用于设置窗口句柄（`HWND` ）。
+渲染视图。在 Windows 上，该参数用于设置窗口句柄（`HWND`）。
 
 <a id="api_imediaplayer_setview__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

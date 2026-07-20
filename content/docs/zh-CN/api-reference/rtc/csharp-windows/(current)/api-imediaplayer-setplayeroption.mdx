@@ -1,18 +1,28 @@
 ---
-title: "SetPlayerOption [1/2]"
-description: "设置媒体播放器选项。"
+title: SetPlayerOption [1/2]
+description: 设置媒体播放器选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_imediaplayer_setplayeroption
+  sourcePath: html-docs/rtc/Csharp/API/api_imediaplayer_setplayeroption.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_imediaplayer_setplayeroption__prototype"></a>
 
-```csharp
+```text
 public abstract int SetPlayerOption(string key, int value);
 ```
 
 <a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
 
+<a id="api_imediaplayer_setplayeroption__desc1"></a>
+
 媒体播放器支持通过 key 和 value 来设置选项。
 
-该方法和 [setPlayerOption [2/2]](/zh-CN/api-reference/rtc/csharp-windows/api-imediaplayer-setplayeroption2) 的区别在于，该方法的 value 是 Int 型， setPlayerOption [2/2] 的 value 是 String 型。二者不可混用。
+该方法和 [setPlayerOption [2/2]](/zh-CN/api-reference/rtc/csharp-windows/api-imediaplayer-setplayeroption2) 的区别在于，该方法的 value 是 Int 型，setPlayerOption [2/2] 的 value 是 String 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption__scenario"></a>
 
@@ -36,11 +46,11 @@ public abstract int SetPlayerOption(string key, int value);
 
 ## 参数
 
-### `key`
+### key
 
 key 值。
 
-### `value`
+### value
 
 value 值。
 
@@ -49,4 +59,4 @@ value 值。
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

@@ -1,10 +1,18 @@
 ---
-title: "ChannelMediaOptions"
-description: "频道媒体设置选项。"
+title: ChannelMediaOptions
+description: 频道媒体设置选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_channelmediaoptions
+  sourcePath: html-docs/rtc/Unity/API/class_channelmediaoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_channelmediaoptions__prototype"></a>
 
-```csharp
+```text
 public class ChannelMediaOptions : OptionalJsonParse
     {
         public Optional<bool> publishCameraTrack = new Optional<bool>();
@@ -49,41 +57,51 @@ public class ChannelMediaOptions : OptionalJsonParse
 
 <a id="class_channelmediaoptions__detailed_desc"></a>
 
-[RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection) `publishMicrophoneTrack` `publishCustomAudioTrack` `publishMediaPlayerAudioTrack` true `publishCameraTrack` `publishScreenCaptureVideo`、 `publishScreenTrack`、 `publishCustomVideoTrack` `publishEncodedVideoTrack` true
+[RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)
+`publishMicrophoneTrack`
+`publishCustomAudioTrack`
+`publishMediaPlayerAudioTrack`
+true
+`publishCameraTrack`
+`publishScreenCaptureVideo`、
+`publishScreenTrack`、
+`publishCustomVideoTrack`
+`publishEncodedVideoTrack`
+true
 
-:::info[注]
-建议你根据业务场景自行设置成员参数值，否则 SDK 会自动对成员参数进行赋值。
+:::note
+注： 建议你根据业务场景自行设置成员参数值，否则 SDK 会自动对成员参数进行赋值。
 :::
 
 <a id="class_channelmediaoptions__parameters"></a>
 
 ## 属性
 
-### `publishCameraTrack`
+### publishCameraTrack
 
 设置是否发布摄像头采集的视频：
 
 - true：发布摄像头采集的视频。
 - false：不发布摄像头采集的视频。
 
-### `publishSecondaryCameraTrack`
+### publishSecondaryCameraTrack
 
 设置是否发布第二个摄像头采集的视频：
 
 - true：发布第二个摄像头采集的视频。
 - false：不发布第二个摄像头采集的视频。
 
-### `publishMicrophoneTrack`
+### publishMicrophoneTrack
 
 设置是否发布麦克风采集到的音频：
 
 - true：发布麦克风采集到的音频。
 - false：不发布麦克风采集到的音频。
 
-### `publishThirdCameraTrack`
+### publishThirdCameraTrack
 
-:::info[注]
-该参数仅适用于 Android、Windows 和 macOS 平台。
+:::note
+注： 该参数仅适用于 Android、Windows 和 macOS 平台。
 :::
 
 设置是否发布第三个摄像头采集的视频：
@@ -91,10 +109,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布第三个摄像头采集的视频。
 - false：不发布第三个摄像头采集的视频。
 
-### `publishFourthCameraTrack`
+### publishFourthCameraTrack
 
-:::info[注]
-该参数仅适用于 Android、Windows 和 macOS 平台。
+:::note
+注： 该参数仅适用于 Android、Windows 和 macOS 平台。
 :::
 
 设置是否发布第四个摄像头采集的视频：
@@ -102,10 +120,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布第四个摄像头采集的视频。
 - false：不发布第四个摄像头采集的视频。
 
-### `publishScreenTrack`
+### publishScreenTrack
 
-:::info[注]
-该参数仅适用于 Windows 和 macOS 平台。
+:::note
+注： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
 设置是否发布屏幕采集的视频：
@@ -113,10 +131,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布屏幕采集到的视频。
 - false：不发布屏幕采集到的视频。
 
-### `publishScreenCaptureVideo`
+### publishScreenCaptureVideo
 
-:::info[注]
-该参数仅适用于 Android 和 iOS 平台。
+:::note
+注： 该参数仅适用于 Android 和 iOS 平台。
 :::
 
 设置是否发布屏幕采集的视频：
@@ -124,10 +142,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布屏幕采集到的视频。
 - false：不发布屏幕采集到的视频。
 
-### `publishScreenCaptureAudio`
+### publishScreenCaptureAudio
 
-:::info[注]
-该参数仅适用于 Android 和 iOS 平台。
+:::note
+注： 该参数仅适用于 Android 和 iOS 平台。
 :::
 
 设置是否发布屏幕采集的音频：
@@ -135,17 +153,17 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布屏幕采集到的音频。
 - false：不发布屏幕采集到的音频。
 
-### `publishSecondaryScreenTrack`
+### publishSecondaryScreenTrack
 
 设置是否发布第二个屏幕采集的视频：
 
 - true：发布第二个屏幕采集到的视频。
 - false：不发布第二个屏幕采集到的视频。
 
-### `publishThirdScreenTrack`
+### publishThirdScreenTrack
 
-:::info[注]
-该参数仅适用于 Windows 和 macOS 平台。
+:::note
+注： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
 设置是否发布第三个屏幕采集的视频：
@@ -153,10 +171,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布第三个屏幕采集到的视频。
 - false：不发布第三个屏幕采集到的视频。
 
-### `publishFourthScreenTrack`
+### publishFourthScreenTrack
 
-:::info[注]
-该参数仅适用于 Windows 和 macOS 平台。
+:::note
+注： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
 设置是否发布第四个屏幕采集的视频：
@@ -164,84 +182,84 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：发布第四个屏幕采集到的视频。
 - false：不发布第四个屏幕采集到的视频。
 
-### `publishTranscodedVideoTrack`
+### publishTranscodedVideoTrack
 
 设置是否发布本地的转码视频：
 
 - true：发布本地的转码视频。
 - false：不发布本地的转码视频。
 
-### `publishMixedAudioTrack`
+### publishMixedAudioTrack
 
 设置是否发布本地混音音频：
 
 - true：发布本地混音音频。
 - false：不发布本地混音音频。
 
-### `publishLipSyncTrack`
+### publishLipSyncTrack
 
 设置是否发布语音驱动插件处理后的视频：
 
 - true：发布语音驱动插件处理后的视频。
 - false：（默认）不发布语音驱动插件处理后的视频。
 
-### `publishCustomAudioTrack`
+### publishCustomAudioTrack
 
 设置是否发布自定义采集的音频：
 
 - true：发布自定义采集到的音频。
 - false：不发布自定义采集到的音频。
 
-### `publishCustomAudioTrackId`
+### publishCustomAudioTrackId
 
 待发布的自定义音频轨道的 ID，默认值为 0。你可以通过 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/unity/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法来获取自定义音频轨道 ID。
 
-### `publishCustomVideoTrack`
+### publishCustomVideoTrack
 
 设置是否发布自定义采集的视频：
 
 - true：发布自定义采集的视频。
 - false：不发布自定义采集到的视频。
 
-### `publishEncodedVideoTrack`
+### publishEncodedVideoTrack
 
 设置是否发布编码后的视频：
 
-- true：发布编码后的视频。
+- true：发布编码后的视频 。
 - false：不发布编码后的视频。
 
-### `publishMediaPlayerAudioTrack`
+### publishMediaPlayerAudioTrack
 
 设置是否发布媒体播放器的音频：
 
 - true：发布媒体播放器的音频。
 - false：不发布媒体播放器的音频。
 
-### `publishMediaPlayerVideoTrack`
+### publishMediaPlayerVideoTrack
 
 设置是否发布媒体播放器的视频：
 
 - true：发布媒体播放器的视频。
 - false：不发布媒体播放器的视频。
 
-### `autoSubscribeAudio`
+### autoSubscribeAudio
 
 设置是否自动订阅所有音频流：
 
 - true：自动订阅所有音频流。
 - false：不自动订阅任何音频流。
 
-### `autoSubscribeVideo`
+### autoSubscribeVideo
 
 设置是否自动订阅所有视频流：
 
 - true：自动订阅所有视频流。
 - false：不自动订阅任何视频流。
 
-### `enableAudioRecordingOrPlayout`
+### enableAudioRecordingOrPlayout
 
-:::info[注]
-如果那你需要发布麦克风采集的音频流，请确保该参数设为 true。
+:::note
+注： 如果那你需要发布麦克风采集的音频流，请确保该参数设为 true。
 :::
 
 设置是否开启音频录制或播放：
@@ -249,55 +267,60 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：开启音频录制或播放。
 - false：不开启音频录制或播放。
 
-### `publishMediaPlayerId`
+### publishMediaPlayerId
 
 待发布的媒体播放器的 ID。默认值为 0。
 
-### `clientRoleType`
+### clientRoleType
 
 用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unity/enum-clientroletype)。
 
-:::info[注]
-角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
+:::note
+注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
 :::
 
-### `audienceLatencyLevel`
+### audienceLatencyLevel
 
 观众端延时级别。详见 [AUDIENCE_LATENCY_LEVEL_TYPE](/zh-CN/api-reference/rtc/unity/enum-audiencelatencyleveltype)。
 
-### `defaultVideoStreamType`
+### defaultVideoStreamType
 
 默认订阅的视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unity/enum-videostreamtype)。
 
-### `channelProfile`
+### channelProfile
 
 频道使用场景。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc/unity/enum-channelprofiletype)。
 
-### `audioDelayMs`
+### audioDelayMs
 
-发送音频帧的延时（毫秒）。你可以通过该参数来设置需要发送的音频帧的延时，以确保音画同步。 如果要关闭延时，将此参数值设置为 0。
+发送音频帧的延时（毫秒）。你可以通过该参数来设置需要发送的音频帧的延时，以确保音画同步。
+如果要关闭延时，将此参数值设置为 0。
 
-### `token`
+### token
 
 （可选）在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-:::info[注]
-- 该参数仅在调用 UpdateChannelMediaOptions 或 UpdateChannelMediaOptionsEx 时生效。
-- 请确保用于生成 token 的 App ID、频道名和用户名和 Initialize 方法初始化引擎时用的 App ID，以及 JoinChannel [2/2] 或 JoinChannelEx 方法加入频道时设置的频道名和用户名是一致的。
+:::note
+注：
+
+- 该参数仅在调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 或 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
+- 请确保用于生成 token 的 App ID、频道名和用户名和 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 或 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
 :::
 
-### `publishRhythmPlayerTrack`
+### publishRhythmPlayerTrack
 
 设置是否发布虚拟节拍器声音至远端：
 
 - true：发布。本地用户和远端用户都能听到节拍器。
 - false：不发布。只有本地用户能听到节拍器。
 
-### `isInteractiveAudience`
+### isInteractiveAudience
 
-:::info[注]
-- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 JoinChannelEx 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 true。
-- 仅当用户角色为 CLIENT_ROLE_AUDIENCE 时，该参数生效。
+:::note
+注：
+
+- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 `isInteractiveAudience` 设置为 true。
+- 仅当用户角色为 `CLIENT_ROLE_AUDIENCE` 时，该参数生效。
 :::
 
 是否开启互动观众模式：
@@ -305,14 +328,14 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：开启互动观众模式。成功开启后，本地用户作为互动观众，收到低延时和流畅的远端用户视频。
 - false：不开启互动观众模式。本地用户作为普通观众，收到默认设置的远端用户视频。
 
-### `customVideoTrackId`
+### customVideoTrackId
 
 调用 [CreateCustomVideoTrack](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。
 
-### `isAudioFilterable`
+### isAudioFilterable
 
-:::info[注]
-如需启用该功能，请[联系销售](https://www.shengwang.cn/contact-sales/)。
+:::note
+注： 如需启用该功能，请[联系销售](https://www.shengwang.cn/contact-sales/)。
 :::
 
 设置是否让当前音频流根据音强算法参与选流。
@@ -320,10 +343,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：参与音强选流。如未开启音强选流功能，该参数不会生效。
 - false：不参与音强选流。
 
-### `enableMultipath`
+### enableMultipath
 
-:::info[注]
-权限和系统要求：
+:::note
+注： 权限和系统要求：
 
 - Android：Android 7.0 或更高版本（API 级别 24 或更高），需要 ACCESS_NETWORK_STATE 和 CHANGE_NETWORK_STATE 权限。
 - iOS：iOS 12.0 或更高版本。
@@ -336,10 +359,10 @@ public class ChannelMediaOptions : OptionalJsonParse
 - true：启用多路径传输。
 - false：禁用多路径传输。
 
-### `preferMultipathType`
+### preferMultipathType
 
 首选的传输路径类型。详见 [MultipathType](/zh-CN/api-reference/rtc/unity/enum-multipathtype)。
 
-:::info[注]
-使用该参数时，请确保已将 `enableMultipath` 设置为 true。
+:::note
+注： 使用该参数时，请确保已将 `enableMultipath` 设置为 true。
 :::

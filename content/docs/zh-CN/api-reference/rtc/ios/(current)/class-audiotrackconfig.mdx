@@ -1,10 +1,18 @@
 ---
-title: "AgoraAudioTrackConfig"
-description: "用于配置自定义音频轨道。"
+title: AgoraAudioTrackConfig
+description: 用于配置自定义音频轨道。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_audiotrackconfig
+  sourcePath: html-docs/rtc/iOS/API/class_audiotrackconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audiotrackconfig__prototype"></a>
 
-```objectivec
+```text
 NS_SWIFT_NAME(AgoraAudioTrackConfig) __attribute__((visibility("default"))) @interface AgoraAudioTrackConfig : NSObject
 @property (assign, nonatomic) BOOL enableLocalPlayback NS_SWIFT_NAME(enableLocalPlayback);
 @property (assign, nonatomic) BOOL enableAudioProcessing NS_SWIFT_NAME(enableAudioProcessing);
@@ -15,17 +23,17 @@ NS_SWIFT_NAME(AgoraAudioTrackConfig) __attribute__((visibility("default"))) @int
 
 ## 属性
 
-### `enableLocalPlayback`
+### enableLocalPlayback
 
 是否启用本地音频播放设备：
 
 - YES：（默认）启用本地音频播放设备。
 - NO：不启用本地音频播放设备。
 
-### `enableAudioProcessing`
+### enableAudioProcessing
 
-:::info[注]
-该参数仅在自定义音频采集中使用 `AgoraAudioTrackTypeDirect` 时生效。
+:::note
+注： 该参数仅在自定义音频采集中使用 `AgoraAudioTrackTypeDirect` 时生效。
 :::
 
 是否启用音频处理模块：

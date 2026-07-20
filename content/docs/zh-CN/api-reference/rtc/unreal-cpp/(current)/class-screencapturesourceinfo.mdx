@@ -1,10 +1,18 @@
 ---
-title: "ScreenCaptureSourceInfo"
-description: "可共享窗口或屏幕的信息。在 IScreenCaptureSourceList 中返回。"
+title: ScreenCaptureSourceInfo
+description: 可共享窗口或屏幕的信息。在 IScreenCaptureSourceList 中返回。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_screencapturesourceinfo
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_screencapturesourceinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screencapturesourceinfo__prototype"></a>
 
-```cpp
+```text
 struct ScreenCaptureSourceInfo {
   ScreenCaptureSourceType type;
   int64_t sourceId;
@@ -31,52 +39,52 @@ struct ScreenCaptureSourceInfo {
 
 ## 属性
 
-### `type`
+### type
 
 共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/unreal-cpp/enum-screencapturesourcetype)。
 
-### `sourceId`
+### sourceId
 
 对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
 
-### `sourceName`
+### sourceName
 
 窗口或屏幕的名称。UTF-8 编码。
 
-### `thumbImage`
+### thumbImage
 
-缩略图的图像内容。 详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
+缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
 
-### `iconImage`
+### iconImage
 
-图标的图像内容。 详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
+图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
 
-### `processPath`
+### processPath
 
 窗口所属的进程。UTF-8 编码。
 
-### `sourceTitle`
+### sourceTitle
 
 窗口标题。UTF-8 编码。
 
-### `primaryMonitor`
+### primaryMonitor
 
 屏幕是否为主显示屏：
 
-- true: 屏幕为主显示屏。
-- false: 屏幕不是主显示屏。
+- `true`: 屏幕为主显示屏。
+- `false`: 屏幕不是主显示屏。
 
-### `position`
+### position
 
-窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。 详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
+窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
 
-### `minimizeWindow`
+### minimizeWindow
 
-(仅适用于 Windows) 窗口是否已最小化：
+(仅适用于 Windows)  窗口是否已最小化：
 
-- true: 窗口已最小化。
-- false: 窗口未最小化。
+- `true`: 窗口已最小化。
+- `false`: 窗口未最小化。
 
-### `sourceDisplayId`
+### sourceDisplayId
 
 (仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。

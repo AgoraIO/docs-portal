@@ -1,10 +1,19 @@
 ---
-title: "媒体资源播放和渲染"
-description: "媒体资源播放和渲染 API reference."
+title: 媒体资源播放和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_mediaplayer_playnrender
+  sourcePath: html-docs/rtc/iOS/API/toc_mediaplayer_playnrender.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_playnrender"></a>
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## selectAudioTrack:
 
@@ -12,7 +21,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__prototype"></a>
 
-```objectivec
+```text
 - (int)selectAudioTrack:(int)index NS_SWIFT_NAME(selectAudioTrack(_:));
 ```
 
@@ -20,15 +29,15 @@ description: "媒体资源播放和渲染 API reference."
 
 获取音频文件的音轨索引后，可以调用该方法指定任意音轨进行播放。例如，如果一个多音轨文件的不同音轨存储了不同语言的歌曲，可以调用该方法设置播放语言。
 
-:::info[注]
-需要在调用 [getStreamByIndex:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用该方法。
+:::note
+注： 需要在调用 [getStreamByIndex:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用该方法。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
 
 ### 参数
 
-#### `index`
+### index
 
 音轨的索引。
 
@@ -37,12 +46,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setAudioDualMonoMode:
 
@@ -50,7 +58,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setaudiodualmonomode__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioDualMonoMode:(AgoraAudioDualMonoMode)mode NS_SWIFT_NAME(setAudioDualMonoMode(_:));
 ```
 
@@ -58,8 +66,10 @@ description: "媒体资源播放和渲染 API reference."
 
 你可以使用该方法设置当前音频文件的声道模式，包括原始模式、左声道模式、右声道模式或混合声道模式。例如，在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储人声。如果你只需要听伴奏，可以调用该方法将声道模式设置为左声道模式；如果你需要同时听到伴奏和人声，可以将声道模式设置为混合声道模式。
 
-:::info[注]
-- 请在调用 open:startPos: 方法之后调用此方法。
+:::note
+注：
+
+- 请在调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法之后调用此方法。
 - 此方法仅适用于立体声音频文件。
 :::
 
@@ -67,7 +77,7 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `mode`
+### mode
 
 声道模式。详见 [AgoraAudioDualMonoMode](/zh-CN/api-reference/rtc/ios/enum-audiodualmonomode)。
 
@@ -76,12 +86,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiopitch"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setAudioPitch:
 
@@ -89,21 +98,21 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setaudiopitch__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioPitch:(NSInteger)pitch NS_SWIFT_NAME(setAudioPitch(_:));
 ```
 
 <a id="api_imediaplayer_setaudiopitch__detailed_desc"></a>
 
-:::info[注]
-请在调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法之后调用此方法。
+:::note
+注： 请在调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法之后调用此方法。
 :::
 
 <a id="api_imediaplayer_setaudiopitch__parameters"></a>
 
 ### 参数
 
-#### `pitch`
+### pitch
 
 按半音阶设置本地音乐文件的音调（默认值为 0，表示保持原始音调）。该值的范围是 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，设置的本地音乐文件音调越高或越低。
 
@@ -112,12 +121,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setloopcount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setLoopCount:
 
@@ -125,7 +133,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setloopcount__prototype"></a>
 
-```objectivec
+```text
 - (int)setLoopCount:(int)loopCount NS_SWIFT_NAME(setLoopCount(_:));
 ```
 
@@ -137,7 +145,7 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `loopCount`
+### loopCount
 
 音频效果的循环播放次数：
 
@@ -149,12 +157,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setPlaybackSpeed:
 
@@ -162,7 +169,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setplaybackspeed__prototype"></a>
 
-```objectivec
+```text
 - (int)setPlaybackSpeed:(int)speed NS_SWIFT_NAME(setPlaybackSpeed(_:));
 ```
 
@@ -174,7 +181,7 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `speed`
+### speed
 
 播放速度。声网建议将该参数设置为 30 到 400 之间的整数，具体含义如下：
 
@@ -187,12 +194,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setPlayerOption:value:
 
@@ -200,7 +206,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setplayeroption__prototype"></a>
 
-```objectivec
+```text
 - (int)setPlayerOption:(NSString *)key value:(NSInteger)value NS_SWIFT_NAME(setPlayerOption(_:value:));
 ```
 
@@ -224,11 +230,11 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `key`
+### key
 
 选项的键。
 
-#### `value`
+### value
 
 选项的值。
 
@@ -237,12 +243,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setPlayerOptionString:value:
 
@@ -250,7 +255,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setplayeroption2__prototype"></a>
 
-```objectivec
+```text
 - (int)setPlayerOptionString:(NSString *)key value:(NSString *)value NS_SWIFT_NAME(setPlayerOptionString(_:value:));
 ```
 
@@ -274,11 +279,11 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `key`
+### key
 
 选项的键。
 
-#### `value`
+### value
 
 选项的值。
 
@@ -287,12 +292,11 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setview"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setView:
 
@@ -300,7 +304,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_setview__prototype"></a>
 
-```objectivec
+```text
 - (int)setView:(View *_Nullable)view NS_SWIFT_NAME(setView(_:));
 ```
 
@@ -316,7 +320,7 @@ description: "媒体资源播放和渲染 API reference."
 
 ### 参数
 
-#### `view`
+### view
 
 渲染视图。详见 `View`。
 
@@ -325,7 +329,4 @@ description: "媒体资源播放和渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

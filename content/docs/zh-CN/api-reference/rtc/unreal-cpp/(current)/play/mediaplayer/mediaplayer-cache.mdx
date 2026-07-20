@@ -1,10 +1,19 @@
 ---
-title: "媒体播放器缓存"
-description: "媒体播放器缓存 API reference."
+title: 媒体播放器缓存
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_mediaplayer_cache
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_mediaplayer_cache.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_cache"></a>
 
 <a id="api_imediaplayercachemanager_enableautoremovecache"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableAutoRemoveCache
 
@@ -12,7 +21,7 @@ description: "媒体播放器缓存 API reference."
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__prototype"></a>
 
-```cpp
+```text
 virtual int enableAutoRemoveCache(bool enable) = 0;
 ```
 
@@ -26,12 +35,12 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否自动清除缓存文件：
 
-- true：开启自动清除缓存文件功能。
-- false：（默认）关闭自动清除缓存文件功能。
+- `true`：开启自动清除缓存文件功能。
+- `false`：（默认）关闭自动清除缓存文件功能。
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
 
@@ -40,10 +49,9 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_getcachedir"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getCacheDir
 
@@ -51,7 +59,7 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 
 <a id="api_imediaplayercachemanager_getcachedir__prototype"></a>
 
-```cpp
+```text
 virtual int getCacheDir(char* path, int length) = 0;
 ```
 
@@ -65,13 +73,13 @@ virtual int getCacheDir(char* path, int length) = 0;
 
 ### 参数
 
-#### `path`
+### path
 
 输出参数，缓存文件的储存路径。
 
-#### `length`
+### length
 
-输入参数，缓存文件储存路径字符串的最大长度。 根据你在 path 中获得的缓存文件储存路径字符串来填写。
+输入参数，缓存文件储存路径字符串的最大长度。根据你在 path 中获得的缓存文件储存路径字符串来填写。
 
 <a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
 
@@ -80,10 +88,9 @@ virtual int getCacheDir(char* path, int length) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_getcachefilecount"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getCacheFileCount
 
@@ -91,7 +98,7 @@ virtual int getCacheDir(char* path, int length) = 0;
 
 <a id="api_imediaplayercachemanager_getcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int getCacheFileCount() = 0;
 ```
 
@@ -102,10 +109,9 @@ virtual int getCacheFileCount() = 0;
 - ≥ 0：方法调用成功，返回当前已缓存的媒体文件的总数量。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMaxCacheFileCount
 
@@ -113,7 +119,7 @@ virtual int getCacheFileCount() = 0;
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int getMaxCacheFileCount() = 0;
 ```
 
@@ -130,10 +136,9 @@ SDK 默认的缓存文件数量上限为 1000。
 - &gt; 0：方法调用成功，返回缓存文件数量的上限。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getMaxCacheFileSize
 
@@ -141,7 +146,7 @@ SDK 默认的缓存文件数量上限为 1000。
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize__prototype"></a>
 
-```cpp
+```text
 virtual int64_t getMaxCacheFileSize() = 0;
 ```
 
@@ -158,10 +163,9 @@ SDK 默认的缓存文件总缓存上限为 1GB。你可以调用 [setMaxCacheFi
 - &gt; 0：方法调用成功，返回缓存文件的总缓存上限，单位为字节。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_removeallcaches"></a>
+
+<a id="ariaid-title7"></a>
 
 ## removeAllCaches
 
@@ -169,7 +173,7 @@ SDK 默认的缓存文件总缓存上限为 1GB。你可以调用 [setMaxCacheFi
 
 <a id="api_imediaplayercachemanager_removeallcaches__prototype"></a>
 
-```cpp
+```text
 virtual int removeAllCaches() = 0;
 ```
 
@@ -177,7 +181,11 @@ virtual int removeAllCaches() = 0;
 
 ### 详情
 
-:::info[注]
+<a id="api_imediaplayercachemanager_removeallcaches__removenote"></a>
+
+:::note
+注：
+
 该方法不会删除正在播放中的已缓存媒体文件。
 :::
 
@@ -188,10 +196,9 @@ virtual int removeAllCaches() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_removecachebyuri"></a>
+
+<a id="ariaid-title8"></a>
 
 ## removeCacheByUri
 
@@ -199,7 +206,7 @@ virtual int removeAllCaches() = 0;
 
 <a id="api_imediaplayercachemanager_removecachebyuri__prototype"></a>
 
-```cpp
+```text
 virtual int removeCacheByUri(const char *uri) = 0;
 ```
 
@@ -207,7 +214,9 @@ virtual int removeCacheByUri(const char *uri) = 0;
 
 ### 详情
 
-:::info[注]
+:::note
+注：
+
 该方法不会删除正在播放中的已缓存媒体文件。
 :::
 
@@ -215,7 +224,7 @@ virtual int removeCacheByUri(const char *uri) = 0;
 
 ### 参数
 
-#### `uri`
+### uri
 
 待删除的缓存文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
 
@@ -226,10 +235,9 @@ virtual int removeCacheByUri(const char *uri) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_removeoldcache"></a>
+
+<a id="ariaid-title9"></a>
 
 ## removeOldCache
 
@@ -237,7 +245,7 @@ virtual int removeCacheByUri(const char *uri) = 0;
 
 <a id="api_imediaplayercachemanager_removeoldcache__prototype"></a>
 
-```cpp
+```text
 virtual int removeOldCache() = 0;
 ```
 
@@ -247,7 +255,9 @@ virtual int removeOldCache() = 0;
 
 缓存媒体文件占用过多空间时，你可以调用该方法清理缓存文件。调用该方法后，SDK 会删除最少使用的一个缓存媒体文件。
 
-:::info[注]
+:::note
+注：
+
 当你调用此方法删除缓存媒体文件时，当前正在播放的已缓存媒体文件不会被删除。
 :::
 
@@ -258,10 +268,9 @@ virtual int removeOldCache() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_setcachedir"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setCacheDir
 
@@ -269,7 +278,7 @@ virtual int removeOldCache() = 0;
 
 <a id="api_imediaplayercachemanager_setcachedir__prototype"></a>
 
-```cpp
+```text
 virtual int setCacheDir(const char *path) = 0;
 ```
 
@@ -277,7 +286,9 @@ virtual int setCacheDir(const char *path) = 0;
 
 ### 详情
 
-:::info[注]
+:::note
+注：
+
 该方法需在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 之后调用。
 :::
 
@@ -285,7 +296,7 @@ virtual int setCacheDir(const char *path) = 0;
 
 ### 参数
 
-#### `path`
+### path
 
 缓存文件储存的绝对路径。请确保指定的目录存在且可写。
 
@@ -296,10 +307,9 @@ virtual int setCacheDir(const char *path) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setMaxCacheFileCount
 
@@ -307,7 +317,7 @@ virtual int setCacheDir(const char *path) = 0;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int setMaxCacheFileCount(int count) = 0;
 ```
 
@@ -315,7 +325,7 @@ virtual int setMaxCacheFileCount(int count) = 0;
 
 ### 参数
 
-#### `count`
+### count
 
 可缓存的媒体文件数量的上限，默认值为 1000。
 
@@ -326,10 +336,9 @@ virtual int setMaxCacheFileCount(int count) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setMaxCacheFileSize
 
@@ -337,7 +346,7 @@ virtual int setMaxCacheFileCount(int count) = 0;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__prototype"></a>
 
-```cpp
+```text
 virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 ```
 
@@ -345,7 +354,7 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 
 ### 参数
 
-#### `cacheSize`
+### cacheSize
 
 缓存媒体文件的总缓存上限，单位为字节。默认为 1 GB。
 
@@ -356,10 +365,9 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager)
-
 <a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerCacheStats
 
@@ -367,7 +375,7 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerCacheStats(const media::base::CacheStatistics& stats) {
     (void)stats;
   }
@@ -383,9 +391,6 @@ virtual void onPlayerCacheStats(const media::base::CacheStatistics& stats) {
 
 ### 参数
 
-#### `stats`
+### stats
 
 缓存中的媒体资源的相关信息，详见 [CacheStatistics](/zh-CN/api-reference/rtc/unreal-cpp/class-cachestatistics)。
-
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)

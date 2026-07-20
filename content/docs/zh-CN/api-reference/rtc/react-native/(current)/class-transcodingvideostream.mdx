@@ -1,10 +1,18 @@
 ---
-title: "TranscodingVideoStream"
-description: "参与本地合图的视频流。"
+title: TranscodingVideoStream
+description: 参与本地合图的视频流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_transcodingvideostream
+  sourcePath: html-docs/rtc/RN/API/class_transcodingvideostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_transcodingvideostream__prototype"></a>
 
-```typescript
+```text
 export class TranscodingVideoStream {
 
   sourceType?: VideoSourceType;
@@ -35,64 +43,64 @@ export class TranscodingVideoStream {
 
 ## 属性
 
-### `sourceType`
+### sourceType
 
 参与本地合图的视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### `remoteUserUid`
+### remoteUserUid
 
 远端用户 ID。
 
-:::info[注]
-请仅在参与本地合图的视频源类型为 `VideoSourceRemote` 时，使用该参数。
+:::note
+注： 请仅在参与本地合图的视频源类型为 `VideoSourceRemote` 时，使用该参数。
 :::
 
-### `imageUrl`
+### imageUrl
 
-:::info[注]
-请仅在参与本地合图的视频源类型为图片时，使用该参数。
+:::note
+注： 请仅在参与本地合图的视频源类型为图片时，使用该参数。
 :::
 
-本地图片的路径。 示例路径：
+本地图片的路径。示例路径：
 
-- Android: /storage/emulated/0/Pictures/image.png
-- iOS: /var/mobile/Containers/Data/Application/&lt;APP-UUID&gt;/Documents/image.png
+- Android: `/storage/emulated/0/Pictures/image.png`
+- iOS: `/var/mobile/Containers/Data/Application/&lt;APP-UUID&gt;/Documents/image.png`
 
-### `mediaPlayerId`
+### mediaPlayerId
 
 （可选）媒体播放器 ID。当你将 `sourceType` 设置为 `VideoSourceMediaPlayer` 时，需要设置该参数。
 
-### `x`
+### x
 
 参与本地合图的视频的左上角相对于合图画布左上角（原点）的横向位移。
 
-### `y`
+### y
 
 参与本地合图的视频的左上角相对于合图画布左上角（原点）的纵向位移。
 
-### `width`
+### width
 
 参与本地合图的视频的宽度 (px)。
 
-### `height`
+### height
 
 参与本地合图的视频的高度 (px)。
 
-### `zOrder`
+### zOrder
 
 参与本地合图的视频所属的图层的编号。取值范围为 [0,100]。
 
 - 0:（默认值）图层在最下层。
 - 100: 图层在最上层。
 
-### `alpha`
+### alpha
 
 参与本地合图的视频的透明度。取值范围为 [0.0,1.0]。 0.0 表示透明度为完全透明，1.0 表示透明度为完全不透明。
 
-### `mirror`
+### mirror
 
-:::info[注]
-该参数仅对视频源类型为摄像头的视频生效。
+:::note
+注： 该参数仅对视频源类型为摄像头的视频生效。
 :::
 
 是否对参与本地合图的的视频进行镜像：

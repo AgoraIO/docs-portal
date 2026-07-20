@@ -1,10 +1,18 @@
 ---
-title: "VirtualBackgroundSource"
-description: "自定义的背景。"
+title: VirtualBackgroundSource
+description: 自定义的背景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_virtualbackgroundsource
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_virtualbackgroundsource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_virtualbackgroundsource__prototype"></a>
 
-```cpp
+```text
 struct VirtualBackgroundSource {
     enum BACKGROUND_SOURCE_TYPE {
     BACKGROUND_NONE = 0,
@@ -30,33 +38,33 @@ struct VirtualBackgroundSource {
 
 ## 属性
 
-### `background_source_type`
+### background_source_type
 
-自定义的背景。 详见 [BACKGROUND_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-backgroundsourcetype)。
+自定义的背景。详见 [BACKGROUND_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-backgroundsourcetype)。
 
-### `color`
+### color
 
 自定义的背景图颜色。格式为 RGB 定义下的十六进制整数，不带 # 号，如 0xFFB6C1 表示浅粉色。 默认值为 0xFFFFFF，表示白色。 取值范围为 [0x000000，0xffffff]。如果取值非法，SDK 会用白色背景图替换原背景图。
 
-:::warning[注意]
-该参数仅在自定义背景为以下类型时生效，具体效果如下：
+:::note
+注意： 该参数仅在自定义背景为以下类型时生效，具体效果如下：
 
 - BACKGROUND_COLOR：背景图为该参数传入颜色的纯色图片。
 - BACKGROUND_IMG：如果 source 中的图片使用了透明背景，则会使用该参数传入的颜色填充透明背景。
 :::
 
-### `source`
+### source
 
 自定义背景的本地绝对路径。支持 PNG、JPG、MP4、 AVI、 MKV 和 FLV 格式。如果路径无效，SDK 会使用原背景图或 color 指定的纯色背景。
 
-:::warning[注意]
-该参数仅在自定义背景图类型为 BACKGROUND_IMG 或 BACKGROUND_VIDEO 时生效。
+:::note
+注意： 该参数仅在自定义背景图类型为 BACKGROUND_IMG 或 BACKGROUND_VIDEO 时生效。
 :::
 
-### `blur_degree`
+### blur_degree
 
-自定义背景图的模糊程度。 详见 [BACKGROUND_BLUR_DEGREE](/zh-CN/api-reference/rtc/unreal-cpp/enum-backgroundblurdegree)。
+自定义背景图的模糊程度。详见 [BACKGROUND_BLUR_DEGREE](/zh-CN/api-reference/rtc/unreal-cpp/enum-backgroundblurdegree)。
 
-:::warning[注意]
-该参数仅在自定义背景图类型为 BACKGROUND_BLUR 时生效。
+:::note
+注意： 该参数仅在自定义背景图类型为 BACKGROUND_BLUR 时生效。
 :::

@@ -1,10 +1,18 @@
 ---
-title: "MusicContentCenterConfiguration"
-description: "用于配置音乐内容中心。"
+title: MusicContentCenterConfiguration
+description: 用于配置音乐内容中心。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_musiccontentcenterconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_musiccontentcenterconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_musiccontentcenterconfiguration__prototype"></a>
 
-```cpp
+```text
 struct MusicContentCenterConfiguration {
     const char *appId;
     const char *token;
@@ -19,26 +27,26 @@ struct MusicContentCenterConfiguration {
 
 ## 属性
 
-### `appId`
+### appId
 
 启用音乐内容中心的项目的 App ID。
 
-### `token`
+### token
 
 用于音乐内容中心鉴权的 Token。
 
-:::info[注]
-声网推荐使用 AccessToken2 进行鉴权。详见 `Deploy Token Server`。生成 Token 时，将 `String` 类型的 `mccUid` 传入 `uid`。当 Token 即将过期时，可以调用 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 传入新的 Token。
+:::note
+注： 声网推荐使用 AccessToken2 进行鉴权。详见 `Deploy Token Server`。生成 Token 时，将 `String` 类型的 `mccUid` 传入 `uid`。当 Token 即将过期时，可以调用 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 传入新的 Token。
 :::
 
-### `mccUid`
+### mccUid
 
 用于音乐内容中心的用户 ID。该 ID 可与加入 RTC 频道时使用的 `uid` 相同，但不能为 0。
 
-### `maxCacheSize`
+### maxCacheSize
 
 可缓存的音乐资源数量，最大值为 50。
 
-### `eventHandler`
+### eventHandler
 
 用于接收回调的事件处理器。详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)。

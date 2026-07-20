@@ -1,10 +1,18 @@
 ---
-title: "Packet"
-description: "Packet 定义。"
+title: Packet
+description: Packet 定义。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_packet
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_packet.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_packet__prototype"></a>
 
-```cpp
+```text
 struct Packet {
                     const unsigned char* buffer;
                     unsigned int size;
@@ -17,14 +25,14 @@ struct Packet {
 
 ## 属性
 
-### `buffer`
+### buffer
 
 需要发送或接收的数据的缓存地址。
 
-:::warning[注意]
-建议 buffer 值不要小于 2048 字节，否则有可能会出现未定义行为（例如崩溃）。
+:::note
+注意： 建议 buffer 值不要小于 2048 字节，否则有可能会出现未定义行为（例如崩溃）。
 :::
 
-### `size`
+### size
 
 将要发送或接收的数据的缓存大小。

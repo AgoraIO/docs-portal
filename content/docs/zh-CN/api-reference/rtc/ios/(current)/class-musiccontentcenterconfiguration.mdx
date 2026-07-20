@@ -1,10 +1,18 @@
 ---
-title: "AgoraMusicContentCenterConfig"
-description: "配置版权音乐内容中心。"
+title: AgoraMusicContentCenterConfig
+description: 配置版权音乐内容中心。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_musiccontentcenterconfiguration
+  sourcePath: html-docs/rtc/iOS/API/class_musiccontentcenterconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_musiccontentcenterconfiguration__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraMusicContentCenterConfig : NSObject
 @property(assign, nonatomic) AgoraRtcEngineKit* _Nullable rtcEngine;
 @property (nonatomic, copy) NSString *appId;
@@ -20,30 +28,30 @@ __attribute__((visibility("default"))) @interface AgoraMusicContentCenterConfig 
 
 ## 属性
 
-### `rtcEngine`
+### rtcEngine
 
 声网 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### `appId`
+### appId
 
 启用内容中心的项目的 App ID。
 
-### `token`
+### token
 
 用于在使用版权音乐内容中心时进行鉴权的 Token。
 
-:::info[注]
-声网建议使用 AccessToken2 进行鉴权。详见 `Deploy Token Server`。生成 Token 时，将 `NSString` 类型的 `mccUid` 传入 `uid` 参数。当 Token 即将过期时，可调用 [renewToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 传入新的 Token。
+:::note
+注： 声网建议使用 AccessToken2 进行鉴权。详见 `Deploy Token Server`。生成 Token 时，将 `NSString` 类型的 `mccUid` 传入 `uid` 参数。当 Token 即将过期时，可调用 [renewToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 传入新的 Token。
 :::
 
-### `mccUid`
+### mccUid
 
 用于版权音乐内容中心的用户 ID。该 ID 可以与加入 RTC 频道时使用的 `uid` 相同，但不能为 0。
 
-### `maxCacheSize`
+### maxCacheSize
 
 可缓存的音乐资源数量不能超过 50 个。
 
-### `eventDelegate`
+### eventDelegate
 
 事件回调处理器。详见 [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)。

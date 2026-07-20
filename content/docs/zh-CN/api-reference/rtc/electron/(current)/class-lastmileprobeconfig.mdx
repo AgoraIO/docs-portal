@@ -1,18 +1,26 @@
 ---
-title: "LastmileProbeConfig"
-description: "Last mile 网络探测配置。"
+title: LastmileProbeConfig
+description: Last mile 网络探测配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_lastmileprobeconfig
+  sourcePath: html-docs/rtc/Electron/API/class_lastmileprobeconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_lastmileprobeconfig__prototype"></a>
 
-```typescript
+```text
 export class LastmileProbeConfig {
-  
+
   probeUplink?: boolean;
-  
+
   probeDownlink?: boolean;
-  
+
   expectedUplinkBitrate?: number;
-  
+
   expectedDownlinkBitrate?: number;
 }
 ```
@@ -21,24 +29,24 @@ export class LastmileProbeConfig {
 
 ## 属性
 
-### `probeUplink`
+### probeUplink
 
 是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测:
 
 - true: 探测上行网络。
 - false: 不探测上行网络。
 
-### `probeDownlink`
+### probeDownlink
 
 是否探测下行网络：
 
 - true: 探测下行网络。
 - false: 不探测下行网络。
 
-### `expectedUplinkBitrate`
+### expectedUplinkBitrate
 
 用户期望的最高发送码率，单位为 bps，范围为 [100000,5000000]。建议参考 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中的码率值设置该参数的值。
 
-### `expectedDownlinkBitrate`
+### expectedDownlinkBitrate
 
 用户期望的最高接收码率，单位为 bps，范围为 [100000,5000000]。

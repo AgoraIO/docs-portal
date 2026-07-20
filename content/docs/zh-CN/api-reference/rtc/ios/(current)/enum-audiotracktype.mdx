@@ -1,19 +1,27 @@
 ---
-title: "AgoraAudioTrackType"
-description: "音频轨道类型。"
+title: AgoraAudioTrackType
+description: 音频轨道类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_audiotracktype
+  sourcePath: html-docs/rtc/iOS/API/enum_audiotracktype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audiotracktype__parameters"></a>
 
 ## 枚举值
 
-### `AgoraAudioTrackTypeMixable`
+### AgoraAudioTrackTypeMixable
 
 （0）：可混音音频轨道。该类型音频轨道支持与其他音频流（如麦克风采集的音频流）混音，并在混音后本地播放或发布到频道。其延迟高于直通音频轨道。
 
-### `AgoraAudioTrackTypeDirect`
+### AgoraAudioTrackTypeDirect
 
 （1）：直通音频轨道。该类型音频轨道将替代麦克风采集的音频流，不支持与其他音频流混音。其延迟低于可混音音频轨道。
 
-:::info[注]
-如果该参数设置为 `AgoraAudioTrackTypeDirect`，则在调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道时，必须在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中将 `publishMicrophoneTrack` 设置为 NO，否则加入频道会失败并返回错误码 -2。
+:::note
+注： 如果该参数设置为 `AgoraAudioTrackTypeDirect`，则在调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道时，必须在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中将 `publishMicrophoneTrack` 设置为 NO，否则加入频道会失败并返回错误码 -2。
 :::

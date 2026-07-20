@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtcChannelMediaOptions"
-description: "频道媒体选项。"
+title: AgoraRtcChannelMediaOptions
+description: 频道媒体选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_channelmediaoptions
+  sourcePath: html-docs/rtc/macOS/API/class_channelmediaoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_channelmediaoptions__prototype"></a>
 
-```objectivec
+```text
 @interface AgoraRtcChannelMediaOptions : NSObject
 @property(assign, nonatomic) BOOL publishCameraTrack;
 @property(assign, nonatomic) BOOL publishSecondaryCameraTrack;
@@ -52,41 +60,41 @@ description: "频道媒体选项。"
 
 <a id="class_channelmediaoptions__detailed_desc"></a>
 
-支持在同一个 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，你可以同时将 `publishMicrophoneTrack`、 `publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack` 设置为 YES，但 `publishCameraTrack`、 `publishScreenCaptureVideo` （iOS）/ `publishScreenTrack` （macOS）、 `publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 YES。
+支持在同一个 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，你可以同时将 `publishMicrophoneTrack`、`publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack` 设置为 YES，但 `publishCameraTrack`、`publishScreenCaptureVideo`（iOS）/`publishScreenTrack`（macOS）、`publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 YES。
 
-:::info[注]
-建议你根据业务场景自行设置各成员参数值，否则 SDK 会自动为其赋值。
+:::note
+注： 建议你根据业务场景自行设置各成员参数值，否则 SDK 会自动为其赋值。
 :::
 
 <a id="class_channelmediaoptions__parameters"></a>
 
 ## 属性
 
-### `publishCameraTrack`
+### publishCameraTrack
 
 是否发布由摄像头采集的视频：
 
 - YES：发布由摄像头采集的视频。
 - NO：不发布由摄像头采集的视频。
 
-### `publishSecondaryCameraTrack`
+### publishSecondaryCameraTrack
 
 是否发布由第二路摄像头采集的视频：
 
 - YES：发布由第二路摄像头采集的视频。
 - NO：不发布由第二路摄像头采集的视频。
 
-### `publishMicrophoneTrack`
+### publishMicrophoneTrack
 
 是否发布由麦克风采集的音频：
 
 - YES：发布由麦克风采集的音频。
 - NO：不发布由麦克风采集的音频。
 
-### `publishScreenCaptureVideo`
+### publishScreenCaptureVideo
 
-:::info[注]
-自 v4.0.0 起，参数名由 publishScreenTrack 更名为 publishScreenCaptureVideo。
+:::note
+注： 自 v4.0.0 起，参数名由 publishScreenTrack 更名为 publishScreenCaptureVideo。
 :::
 
 是否发布来自屏幕的视频采集：
@@ -94,126 +102,126 @@ description: "频道媒体选项。"
 - YES：发布来自屏幕的视频采集。
 - NO：不发布来自屏幕的视频采集。
 
-### `publishScreenCaptureAudio`
+### publishScreenCaptureAudio
 
 是否发布来自屏幕的音频采集：
 
 - YES：发布来自屏幕的音频采集。
 - NO：不发布来自屏幕的音频采集。
 
-### `publishThirdCameraTrack`
+### publishThirdCameraTrack
 
 是否发布由第三路摄像头采集的视频：
 
 - YES：发布由第三路摄像头采集的视频。
 - NO：不发布由第三路摄像头采集的视频。
 
-### `publishFourthCameraTrack`
+### publishFourthCameraTrack
 
 是否发布由第四路摄像头采集的视频：
 
 - YES：发布由第四路摄像头采集的视频。
 - NO：不发布由第四路摄像头采集的视频。
 
-### `publishScreenTrack`
+### publishScreenTrack
 
 （仅适用于 macOS）是否发布从主屏幕采集的视频：
 
 - YES：发布从主屏幕采集的视频。
 - NO：不发布从主屏幕采集的视频。
 
-### `publishSecondaryScreenTrack`
+### publishSecondaryScreenTrack
 
 （仅适用于 macOS）是否发布从第二块屏幕采集的视频：
 
 - YES：发布从第二块屏幕采集的视频。
 - NO：不发布从第二块屏幕采集的视频。
 
-### `publishThirdScreenTrack`
+### publishThirdScreenTrack
 
 （仅适用于 macOS）是否发布从第三块屏幕采集的视频：
 
 - YES：发布从第三块屏幕采集的视频。
 - NO：不发布从第三块屏幕采集的视频。
 
-### `publishFourthScreenTrack`
+### publishFourthScreenTrack
 
 （仅适用于 macOS）是否发布从第四块屏幕采集的视频：
 
 - YES：发布从第四块屏幕采集的视频。
 - NO：不发布从第四块屏幕采集的视频。
 
-### `publishCustomAudioTrack`
+### publishCustomAudioTrack
 
 是否发布从自定义音频源采集的音频：
 
 - YES：发布从自定义音频源采集的音频。
 - NO：不发布从自定义音频源采集的音频。
 
-### `publishCustomAudioTrackId`
+### publishCustomAudioTrackId
 
 要发布的自定义音频轨道的 ID。默认值为 0。你可以通过 createCustomAudioTrack 方法获取自定义音频轨道 ID。
 
-### `publishCustomVideoTrack`
+### publishCustomVideoTrack
 
 是否发布自定义视频源采集的视频：
 
 - YES：发布自定义视频源采集的视频。
 - NO：不发布自定义视频源采集的视频。
 
-### `publishEncodedVideoTrack`
+### publishEncodedVideoTrack
 
 是否发布编码后的视频：
 
 - YES：发布编码后的视频。
 - NO：不发布编码后的视频。
 
-### `publishMediaPlayerAudioTrack`
+### publishMediaPlayerAudioTrack
 
 是否发布媒体播放器的音频：
 
 - YES：发布媒体播放器的音频。
 - NO：不发布媒体播放器的音频。
 
-### `publishMediaPlayerVideoTrack`
+### publishMediaPlayerVideoTrack
 
 是否发布媒体播放器的视频：
 
 - YES：发布媒体播放器的视频。
 - NO：不发布媒体播放器的视频。
 
-### `publishTranscodedVideoTrack`
+### publishTranscodedVideoTrack
 
 是否发布本地合图视频轨道：
 
 - YES：发布本地合图视频轨道。
 - NO：（默认）不发布本地合图视频轨道。
 
-### `publishLipSyncTrack`
+### publishLipSyncTrack
 
 是否发布由语音驱动扩展处理后的视频轨道：
 
 - YES：发布由语音驱动扩展处理后的视频轨道。
 - NO：（默认）不发布由语音驱动扩展处理后的视频轨道。
 
-### `autoSubscribeAudio`
+### autoSubscribeAudio
 
 用户加入频道时，是否自动订阅所有远端音频流：
 
 - YES：自动订阅所有远端音频流。
 - NO：不自动订阅任何远端音频流。
 
-### `autoSubscribeVideo`
+### autoSubscribeVideo
 
 用户加入频道时，是否自动订阅所有远端视频流：
 
 - YES：自动订阅所有远端视频流。
 - NO：不自动订阅任何远端视频流。
 
-### `enableAudioRecordingOrPlayout`
+### enableAudioRecordingOrPlayout
 
-:::info[注]
-如果你需要发布麦克风采集的音频流，请确保该参数设置为 YES。
+:::note
+注： 如果你需要发布麦克风采集的音频流，请确保该参数设置为 YES。
 :::
 
 是否启用音频采集或播放功能：
@@ -221,58 +229,60 @@ description: "频道媒体选项。"
 - YES：启用音频采集或播放功能。
 - NO：不启用音频采集或播放功能。
 
-### `publishMediaPlayerId`
+### publishMediaPlayerId
 
 要发布的媒体播放器 ID。默认值为 0。
 
-### `clientRoleType`
+### clientRoleType
 
 用户角色，详见 [AgoraClientRole](/zh-CN/api-reference/rtc/macos/enum-clientroletype)。
 
-:::info[注]
-如果你将用户角色设置为观众，则无法在频道中发布音视频流。如果你希望在直播中发布媒体流，请确保将用户角色设置为主播。
+:::note
+注： 如果你将用户角色设置为观众，则无法在频道中发布音视频流。如果你希望在直播中发布媒体流，请确保将用户角色设置为主播。
 :::
 
-### `audienceLatencyLevel`
+### audienceLatencyLevel
 
 互动直播中观众的延迟等级，详见 [AgoraAudienceLatencyLevelType](/zh-CN/api-reference/rtc/macos/enum-audiencelatencyleveltype)。
 
-### `defaultVideoStreamType`
+### defaultVideoStreamType
 
 默认的视频流类型，详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/macos/enum-videostreamtype)。
 
-### `channelProfile`
+### channelProfile
 
 频道场景，详见 [AgoraChannelProfile](/zh-CN/api-reference/rtc/macos/enum-channelprofiletype)。
 
-### `publishMixedAudioTrack`
+### publishMixedAudioTrack
 
 是否发布混音音频轨道：
 
 - YES：发布混音音频轨道。
 - NO：不发布混音音频轨道。
 
-### `audioDelayMs`
+### audioDelayMs
 
 发送音频帧的延迟（单位为毫秒）。你可以使用该参数设置需要发送的音频帧的延迟，以确保音视频同步。若要关闭延迟，将该值设为 0。
 
-### `mediaPlayerAudioDelayMs`
+### mediaPlayerAudioDelayMs
 
 发送媒体播放器音频帧的延迟（单位为毫秒）。用于显式控制音视频同步。若要关闭延迟，将该值设为 0。
 
-### `token`
+### token
 
 你在服务器上生成的用于鉴权的 Token。
 
-:::info[注]
-- 该参数仅在调用 updateChannelWithMediaOptions 或 updateChannelExWithMediaOptions 方法时生效。
-- 请确保用于生成 Token 的 App ID、频道名和用户名与用于初始化 RTC 引擎的 sharedEngineWithConfig:delegate: 方法，以及用于加入频道的 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 和 joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess: 方法中使用的参数一致。
+:::note
+注：
+
+- 该参数仅在调用 `updateChannelWithMediaOptions` 或 `updateChannelExWithMediaOptions` 方法时生效。
+- 请确保用于生成 Token 的 App ID、频道名和用户名与用于初始化 RTC 引擎的 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 方法，以及用于加入频道的 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 和 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 方法中使用的参数一致。
 :::
 
-### `enableBuiltInMediaEncryption`
+### enableBuiltInMediaEncryption
 
-:::info[注]
-调用 updateChannelMediaOptions 方法时该参数将被忽略。
+:::note
+注： 调用 updateChannelMediaOptions 方法时该参数将被忽略。
 :::
 
 是否启用媒体包加密：
@@ -280,18 +290,20 @@ description: "频道媒体选项。"
 - YES：启用媒体包加密。
 - NO：（默认）不启用媒体包加密。
 
-### `publishRhythmPlayerTrack`
+### publishRhythmPlayerTrack
 
 是否向远端用户发布节拍器的声音：
 
 - YES：发布处理后的音频帧，本地用户和远端用户都能听到节拍器。
 - NO：不发布节拍器的声音，只有本地用户能听到节拍器。
 
-### `isInteractiveAudience`
+### isInteractiveAudience
 
-:::info[注]
-- 该参数仅适用于连麦直播场景。联播主播需调用 joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess: 方法以观众身份加入其他主播的频道，并将 isInteractiveAudience 设置为 YES。
-- 该参数仅在用户角色为 AgoraClientRoleAudience 时生效。
+:::note
+注：
+
+- 该参数仅适用于连麦直播场景。联播主播需调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 方法以观众身份加入其他主播的频道，并将 `isInteractiveAudience` 设置为 YES。
+- 该参数仅在用户角色为 `AgoraClientRoleAudience` 时生效。
 :::
 
 是否启用互动模式：
@@ -299,14 +311,14 @@ description: "频道媒体选项。"
 - YES：启用互动模式。启用后，若用户角色为观众，则可以低延迟接收远端视频流。
 - NO：不启用互动模式。禁用后，用户将以默认设置接收远端视频流。
 
-### `customVideoTrackId`
+### customVideoTrackId
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。
 
-### `isAudioFilterable`
+### isAudioFilterable
 
-:::info[注]
-如需启用该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::note
+注： 如需启用该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
 
 是否根据音量算法过滤正在发布的音频流：
@@ -314,10 +326,10 @@ description: "频道媒体选项。"
 - YES：音频流会被过滤。
 - NO：音频流不会被过滤。
 
-### `enableMultipath`
+### enableMultipath
 
-:::info[注]
-权限和系统要求：
+:::note
+注： 权限和系统要求：
 
 - iOS：iOS 12.0 或更高版本。
 - macOS：10.14 或更高版本。
@@ -328,10 +340,10 @@ description: "频道媒体选项。"
 - YES：启用多路径传输。
 - NO：禁用多路径传输。
 
-### `preferMultipathType`
+### preferMultipathType
 
 首选的传输路径类型。详见 [AgoraMultipathType](/zh-CN/api-reference/rtc/macos/enum-multipathtype)。
 
-:::info[注]
-使用该参数时，请确保 `enableMultipath` 设置为 YES。
+:::note
+注： 使用该参数时，请确保 `enableMultipath` 设置为 YES。
 :::

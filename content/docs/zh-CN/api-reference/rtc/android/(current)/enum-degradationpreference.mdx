@@ -1,35 +1,43 @@
 ---
-title: "DEGRADATION_PREFERENCE"
-description: "带宽受限时的视频降级偏好设置。"
+title: DEGRADATION_PREFERENCE
+description: 带宽受限时的视频降级偏好设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_degradationpreference
+  sourcePath: html-docs/rtc/Android/API/enum_degradationpreference.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_degradationpreference__parameters"></a>
 
 ## 枚举值
 
-### `MAINTAIN_AUTO`
+### MAINTAIN_AUTO
 
-（-1）：（默认）自动模式。SDK 会根据设置的视频场景自动选择 `MAINTAIN_FRAMERATE`、 `MAINTAIN_BALANCED` 或 `MAINTAIN_RESOLUTION`，以实现最佳的整体体验质量（QoE）。
+（-1）：（默认）自动模式。SDK 会根据设置的视频场景自动选择 `MAINTAIN_FRAMERATE`、`MAINTAIN_BALANCED` 或 `MAINTAIN_RESOLUTION`，以实现最佳的整体体验质量（QoE）。
 
-### `MAINTAIN_QUALITY`
+### MAINTAIN_QUALITY
 
-（0）：在带宽受限的视频编码过程中，优先降低帧率以保持分辨率。适用于对视频质量要求较高的场景。
+（0）：已废弃。建议改用 `MAINTAIN_RESOLUTION`。在带宽受限的视频编码过程中，其行为与 `MAINTAIN_RESOLUTION` 相同：优先降低帧率以保持分辨率。适用于对视频质量要求较高的场景。
 
-### `MAINTAIN_FRAMERATE`
+### MAINTAIN_FRAMERATE
 
 （1）：在带宽受限的视频编码过程中，优先降低分辨率以保持帧率。
 
-### `MAINTAIN_BALANCED`
+### MAINTAIN_BALANCED
 
 （2）：在带宽受限的视频编码过程中，同时降低帧率和分辨率。该模式的降级程度低于 `MAINTAIN_QUALITY` 和 `MAINTAIN_FRAMERATE`，适用于对流畅度和视频质量均有要求的场景。
 
-:::info[注]
-发送端视频的分辨率可能会发生变化，远端用户需要处理该问题。详见 [onVideoSizeChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
+:::note
+注： 发送端视频的分辨率可能会发生变化，远端用户需要处理该问题。详见 [onVideoSizeChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
 :::
 
-### `MAINTAIN_RESOLUTION`
+### MAINTAIN_RESOLUTION
 
 （3）：在带宽受限的视频编码过程中，优先降低帧率以保持分辨率。适用于对视频质量要求较高的场景。
 
-### `DISABLED`
+### DISABLED
 
 （100）：关闭视频质量控制（VQC）调节功能。

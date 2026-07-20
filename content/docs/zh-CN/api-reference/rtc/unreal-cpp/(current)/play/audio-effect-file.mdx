@@ -1,10 +1,19 @@
 ---
-title: "音效文件播放"
-description: "音效文件播放 API reference."
+title: 音效文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_audio_effect_file
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_audio_effect_file.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_effect_file"></a>
 
 <a id="api_irtcengine_geteffectcurrentposition"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getEffectCurrentPosition
 
@@ -12,7 +21,7 @@ description: "音效文件播放 API reference."
 
 <a id="api_irtcengine_geteffectcurrentposition__prototype"></a>
 
-```cpp
+```text
 virtual int getEffectCurrentPosition(int soundId) = 0;
 ```
 
@@ -20,15 +29,15 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 
 ### 详情
 
-:::warning[注意]
-该方法需要在 playEffect 后调用。
+:::note
+注意： 该方法需要在 playEffect 后调用。
 :::
 
 <a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
@@ -37,12 +46,11 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 ### 返回值
 
 - 方法调用成功，返回指定音效文件的播放进度（毫秒）。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_geteffectduration"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getEffectDuration
 
@@ -50,7 +58,7 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 
 <a id="api_irtcengine_geteffectduration__prototype"></a>
 
-```cpp
+```text
 virtual int getEffectDuration(const char* filePath) = 0;
 ```
 
@@ -58,32 +66,31 @@ virtual int getEffectDuration(const char* filePath) = 0;
 
 ### 详情
 
-:::warning[注意]
-该方法需要在加入频道后调用。
+:::note
+注意： 该方法需要在加入频道后调用。
 :::
 
 <a id="api_irtcengine_geteffectduration__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+### filePath
 
 文件路径：
 
-- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 /assets/ 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 content://com.android.providers.media.documents/document/audio%3A14441。
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\\music\\audio.mp4`。
 
 <a id="api_irtcengine_geteffectduration__return_values"></a>
 
 ### 返回值
 
 - 方法调用成功，返回指定音效文件时长（毫秒）。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_geteffectsvolume"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getEffectsVolume
 
@@ -91,7 +98,7 @@ virtual int getEffectDuration(const char* filePath) = 0;
 
 <a id="api_irtcengine_geteffectsvolume__prototype"></a>
 
-```cpp
+```text
 virtual int getEffectsVolume() = 0;
 ```
 
@@ -101,8 +108,8 @@ virtual int getEffectsVolume() = 0;
 
 音量范围为 0~100。100 （默认值）为原始文件音量。
 
-:::warning[注意]
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+:::note
+注意： 该方法需要在 [playEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
 <a id="api_irtcengine_geteffectsvolume__return_values"></a>
@@ -110,12 +117,11 @@ virtual int getEffectsVolume() = 0;
 ### 返回值
 
 - 音效文件的音量。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getvolumeofeffect"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getVolumeOfEffect
 
@@ -123,7 +129,7 @@ virtual int getEffectsVolume() = 0;
 
 <a id="api_irtcengine_getvolumeofeffect__prototype"></a>
 
-```cpp
+```text
 virtual int getVolumeOfEffect(int soundId) = 0;
 ```
 
@@ -131,7 +137,7 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效文件的 ID。
 
@@ -139,13 +145,14 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 
 ### 返回值
 
-- ≥ 0: 方法调用成功，返回播放音量。音量范围为 [0,100]。100 为原始音量。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+<a id="api_irtcengine_getvolumeofeffect__ul_twp_41f_kqb"></a>
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- ≥ 0: 方法调用成功，返回播放音量。音量范围为 [0,100]。100 为原始音量。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_pausealleffects"></a>
+
+<a id="ariaid-title6"></a>
 
 ## pauseAllEffects
 
@@ -153,7 +160,7 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 
 <a id="api_irtcengine_pausealleffects__prototype"></a>
 
-```cpp
+```text
 virtual int pauseAllEffects() = 0;
 ```
 
@@ -162,12 +169,11 @@ virtual int pauseAllEffects() = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_pauseeffect"></a>
+
+<a id="ariaid-title7"></a>
 
 ## pauseEffect
 
@@ -175,7 +181,7 @@ virtual int pauseAllEffects() = 0;
 
 <a id="api_irtcengine_pauseeffect__prototype"></a>
 
-```cpp
+```text
 virtual int pauseEffect(int soundId) = 0;
 ```
 
@@ -183,7 +189,7 @@ virtual int pauseEffect(int soundId) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
@@ -192,12 +198,11 @@ virtual int pauseEffect(int soundId) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_playalleffects"></a>
+
+<a id="ariaid-title8"></a>
 
 ## playAllEffects
 
@@ -205,7 +210,7 @@ virtual int pauseEffect(int soundId) = 0;
 
 <a id="api_irtcengine_playalleffects__prototype"></a>
 
-```cpp
+```text
 virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bool publish = false) = 0;
 ```
 
@@ -219,19 +224,19 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 ### 参数
 
-#### `loopCount`
+### loopCount
 
 音效文件循环播放的次数：
 
-- -1: 无限循环播放音效文件，直至调用 stopEffect 或 stopAllEffects 后停止。
+- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
 - 0: 播放音效文件一次。
 - 1: 播放音效文件两次。
 
-#### `pitch`
+### pitch
 
 音效的音调。取值范围为 [0.5,2.0]。默认值为 1.0，代表原始音调。取值越小，则音调越低。
 
-#### `pan`
+### pan
 
 音效的空间位置。取值范围为 [-1.0,1.0]:
 
@@ -239,28 +244,27 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 - 0: 音效出现在正前边。
 - 1.0: 音效出现在右边。
 
-#### `gain`
+### gain
 
 音效的音量。取值范围为 [0,100]。100 为默认值，代表原始音量。取值越小，则音量越低。
 
-#### `publish`
+### publish
 
 是否将音效发布到远端：
 
-- true: 将音效发布到远端。本地和远端用户都能听到该音效。
-- false: （默认）不将音效发布到远端。只能本地用户能听到该音效。
+- `true`: 将音效发布到远端。本地和远端用户都能听到该音效。
+- `false`: （默认）不将音效发布到远端。只能本地用户能听到该音效。
 
 <a id="api_irtcengine_playalleffects__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_playeffect3"></a>
+
+<a id="ariaid-title9"></a>
 
 ## playEffect
 
@@ -268,7 +272,7 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 <a id="api_irtcengine_playeffect3__prototype"></a>
 
-```cpp
+```text
 virtual int playEffect(int soundId,
     const char* filePath,
     int loopCount,
@@ -280,6 +284,8 @@ virtual int playEffect(int soundId,
 ```
 
 <a id="api_irtcengine_playeffect3__detailed_desc"></a>
+
+<a id="api_irtcengine_playeffect3__playEffect-desc"></a>
 
 你可以多次调用该方法，传入不同的 soundID 和 filePath，同时播放多个音效文件。为获得最佳用户体验，建议同时播放的音效文件不超过 3 个。
 
@@ -305,34 +311,34 @@ virtual int playEffect(int soundId,
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
-:::warning[注意]
-如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 soundId 相同。
+:::note
+注意： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 soundId 相同。
 :::
 
-#### `filePath`
+### filePath
 
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
-:::warning[注意]
-如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 filePath 相同。
+:::note
+注意： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 preloadEffect 中设置的 filePath 相同。
 :::
 
-#### `loopCount`
+### loopCount
 
 音效循环播放的次数。
 
 - ≥ 0: 循环播放次数。例如，1 表示循环播放 1 次，即总计播放 2 次。
 - -1: 无限循环播放。
 
-#### `pitch`
+### pitch
 
 音效的音调，取值范围为 [0.5,2.0]。默认值为 1.0，表示原始音调。取值越小，则音调越低。
 
-#### `pan`
+### pan
 
 音效的空间位置。取值范围为 [-1.0,1.0]，例如：
 
@@ -340,18 +346,18 @@ virtual int playEffect(int soundId,
 - 0.0：音效出现在正前方
 - 1.0：音效出现在右边
 
-#### `gain`
+### gain
 
 音效的音量。取值范围为 [0.0,100.0]。默认值为 100.0，表示原始音量。取值越小，则音量越低。
 
-#### `publish`
+### publish
 
 是否将音效发布至远端：
 
-- true: 将音效发布至远端。本地用户和远端用户都能听到音效。
-- false: 不将音效发布至远端。只有本地用户能听到音效。
+- `true`: 将音效发布至远端。本地用户和远端用户都能听到音效。
+- `false`: 不将音效发布至远端。只有本地用户能听到音效。
 
-#### `startPos`
+### startPos
 
 音效文件的播放位置，单位为毫秒。
 
@@ -360,12 +366,11 @@ virtual int playEffect(int soundId,
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_preloadeffect"></a>
+
+<a id="ariaid-title10"></a>
 
 ## preloadEffect
 
@@ -373,13 +378,15 @@ virtual int playEffect(int soundId,
 
 <a id="api_irtcengine_preloadeffect__prototype"></a>
 
-```cpp
+```text
 virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) = 0;
 ```
 
 <a id="api_irtcengine_preloadeffect__detailed_desc"></a>
 
 为保证通信畅通，请注意控制预加载音效文件的大小。
+
+<a id="api_irtcengine_preloadeffect__audioFormats"></a>
 
 该方法支持的预加载音频文件的格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
@@ -399,28 +406,27 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
-#### `filePath`
+### filePath
 
 文件路径：
 
-- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 /assets/ 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 content://com.android.providers.media.documents/document/audio%3A14441。
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\\music\\audio.mp4`。
 
 <a id="api_irtcengine_preloadeffect__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_resumealleffects"></a>
+
+<a id="ariaid-title11"></a>
 
 ## resumeAllEffects
 
@@ -428,7 +434,7 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 
 <a id="api_irtcengine_resumealleffects__prototype"></a>
 
-```cpp
+```text
 virtual int resumeAllEffects() = 0;
 ```
 
@@ -453,12 +459,11 @@ virtual int resumeAllEffects() = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_resumeeffect"></a>
+
+<a id="ariaid-title12"></a>
 
 ## resumeEffect
 
@@ -466,7 +471,7 @@ virtual int resumeAllEffects() = 0;
 
 <a id="api_irtcengine_resumeeffect__prototype"></a>
 
-```cpp
+```text
 virtual int resumeEffect(int soundId) = 0;
 ```
 
@@ -474,7 +479,7 @@ virtual int resumeEffect(int soundId) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
@@ -483,12 +488,11 @@ virtual int resumeEffect(int soundId) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_seteffectposition"></a>
+
+<a id="ariaid-title13"></a>
 
 ## setEffectPosition
 
@@ -496,7 +500,7 @@ virtual int resumeEffect(int soundId) = 0;
 
 <a id="api_irtcengine_seteffectposition__prototype"></a>
 
-```cpp
+```text
 virtual int setEffectPosition(int soundId, int pos) = 0;
 ```
 
@@ -506,19 +510,19 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 
 成功设置后，本地音效文件会在指定位置开始播放。
 
-:::warning[注意]
-该方法需要在 playEffect 后调用。
+:::note
+注意： 该方法需要在 playEffect 后调用。
 :::
 
 <a id="api_irtcengine_seteffectposition__parameters"></a>
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
-#### `pos`
+### pos
 
 音效文件的播放位置，单位为毫秒。
 
@@ -527,12 +531,11 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_seteffectsvolume"></a>
+
+<a id="ariaid-title14"></a>
 
 ## setEffectsVolume
 
@@ -540,7 +543,7 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 
 <a id="api_irtcengine_seteffectsvolume__prototype"></a>
 
-```cpp
+```text
 virtual int setEffectsVolume(int volume) = 0;
 ```
 
@@ -562,7 +565,7 @@ virtual int setEffectsVolume(int volume) = 0;
 
 ### 参数
 
-#### `volume`
+### volume
 
 播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
 
@@ -571,12 +574,11 @@ virtual int setEffectsVolume(int volume) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setvolumeofeffect"></a>
+
+<a id="ariaid-title15"></a>
 
 ## setVolumeOfEffect
 
@@ -584,7 +586,7 @@ virtual int setEffectsVolume(int volume) = 0;
 
 <a id="api_irtcengine_setvolumeofeffect__prototype"></a>
 
-```cpp
+```text
 virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 ```
 
@@ -606,11 +608,11 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 指定音效的 ID。每个音效均有唯一的 ID。
 
-#### `volume`
+### volume
 
 播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
 
@@ -619,12 +621,11 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopalleffects"></a>
+
+<a id="ariaid-title16"></a>
 
 ## stopAllEffects
 
@@ -632,7 +633,7 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 
 <a id="api_irtcengine_stopalleffects__prototype"></a>
 
-```cpp
+```text
 virtual int stopAllEffects() = 0;
 ```
 
@@ -657,12 +658,11 @@ virtual int stopAllEffects() = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopeffect"></a>
+
+<a id="ariaid-title17"></a>
 
 ## stopEffect
 
@@ -670,7 +670,7 @@ virtual int stopAllEffects() = 0;
 
 <a id="api_irtcengine_stopeffect__prototype"></a>
 
-```cpp
+```text
 virtual int stopEffect(int soundId) = 0;
 ```
 
@@ -694,7 +694,7 @@ virtual int stopEffect(int soundId) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 指定音效文件的 ID。每个音效文件均有唯一的 ID。
 
@@ -703,12 +703,11 @@ virtual int stopEffect(int soundId) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_unloadalleffects"></a>
+
+<a id="ariaid-title18"></a>
 
 ## unloadAllEffects
 
@@ -716,7 +715,7 @@ virtual int stopEffect(int soundId) = 0;
 
 <a id="api_irtcengine_unloadalleffects__prototype"></a>
 
-```cpp
+```text
 virtual int unloadAllEffects() = 0;
 ```
 
@@ -725,12 +724,11 @@ virtual int unloadAllEffects() = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_unloadeffect"></a>
+
+<a id="ariaid-title19"></a>
 
 ## unloadEffect
 
@@ -738,7 +736,7 @@ virtual int unloadAllEffects() = 0;
 
 <a id="api_irtcengine_unloadeffect__prototype"></a>
 
-```cpp
+```text
 virtual int unloadEffect(int soundId) = 0;
 ```
 
@@ -762,7 +760,7 @@ virtual int unloadEffect(int soundId) = 0;
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 指定音效文件的 ID。每个音效文件均有唯一的 ID。
 
@@ -771,12 +769,11 @@ virtual int unloadEffect(int soundId) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
+
+<a id="ariaid-title20"></a>
 
 ## onAudioEffectFinished
 
@@ -784,12 +781,14 @@ virtual int unloadEffect(int soundId) = 0;
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioEffectFinished(int soundId) {
     }
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__desc"></a>
 
 当播放音效结束后，会触发该回调。
 
@@ -797,9 +796,6 @@ virtual void onAudioEffectFinished(int soundId) {
 
 ### 参数
 
-#### `soundId`
+### soundId
 
 指定音效的 ID。每个音效均有唯一的 ID。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,19 @@
 ---
-title: "垫片推流"
-description: "垫片推流 API reference."
+title: 垫片推流
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_image_source
+  sourcePath: html-docs/rtc/Cpp/API/toc_image_source.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_image_source"></a>
 
 <a id="api_irtcengine_enablevideoimagesource"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableVideoImageSource
 
@@ -12,7 +21,7 @@ description: "垫片推流 API reference."
 
 <a id="api_irtcengine_enablevideoimagesource__prototype"></a>
 
-```cpp
+```text
 virtual int enableVideoImageSource(bool enable, const ImageTrackOptions& options) = 0;
 ```
 
@@ -30,14 +39,14 @@ virtual int enableVideoImageSource(bool enable, const ImageTrackOptions& options
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否用自定义图片替代当前视频画面：
 
 - true：用自定义图片替代当前视频画面。
 - false：（默认）不替代当前视频画面。
 
-#### `options`
+### options
 
 图片配置，详见 [ImageTrackOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-imagetrackoptions)。
 
@@ -46,7 +55,4 @@ virtual int enableVideoImageSource(bool enable, const ImageTrackOptions& options
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

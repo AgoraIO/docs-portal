@@ -1,18 +1,27 @@
 ---
-title: "已编码视频数据"
-description: "已编码视频数据 API reference."
+title: 已编码视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_video_encoded
+  sourcePath: html-docs/rtc/Electron/API/toc_video_encoded.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_encoded"></a>
 
 <a id="api_imediaengine_addlistener_imediaengine"></a>
 
+<a id="ariaid-title2"></a>
+
 ## addListener
 
-添加一个 IMediaEngineEvent 监听器。
+添加一个 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent) 监听器。
 
 <a id="api_imediaengine_addlistener_imediaengine__prototype"></a>
 
-```typescript
+```text
 addListener?<EventType extends keyof IMediaEngineEvent>(
       eventType: EventType,
       listener: IMediaEngineEvent[EventType]
@@ -27,23 +36,22 @@ addListener?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-#### `eventType`
+### eventType
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
 
-#### `listener`
+### listener
 
 `eventType` 对应的回调函数。以添加 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 为例：
 
-```typescript
+```text
 const onPlaybackAudioFrameBeforeMixing = (channelId: string, uid: number, audioFrame: AudioFrame) => {};
 engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
 
-### 所属接口类
-- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
-
 <a id="api_imediaengine_registervideoencodedframeobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## registerVideoEncodedFrameObserver
 
@@ -51,7 +59,7 @@ engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBefor
 
 <a id="api_imediaengine_registervideoencodedframeobserver__prototype"></a>
 
-```typescript
+```text
 abstract registerVideoEncodedFrameObserver(
     observer: IVideoEncodedFrameObserver
   ): number;
@@ -61,15 +69,15 @@ abstract registerVideoEncodedFrameObserver(
 
 如果你只想要观测编码后的视频帧 (如 H.264 格式)，而不需要对视频进行解码和渲染，声网推荐你通过该方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver) 类。
 
-:::info[注]
-该方法需要在加入频道前调用。
+:::note
+注： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_imediaengine_registervideoencodedframeobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+### observer
 
 视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver)。
 
@@ -78,12 +86,11 @@ abstract registerVideoEncodedFrameObserver(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_removealllisteners_imediaengine"></a>
+
+<a id="ariaid-title4"></a>
 
 ## removeAllListeners
 
@@ -91,7 +98,7 @@ abstract registerVideoEncodedFrameObserver(
 
 <a id="api_imediaengine_removealllisteners_imediaengine__prototype"></a>
 
-```typescript
+```text
 removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
       eventType?: EventType
     ): void;
@@ -103,22 +110,21 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-#### `eventType`
+### eventType
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
 
-### 所属接口类
-- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
-
 <a id="api_imediaengine_removelistener_imediaengine"></a>
+
+<a id="ariaid-title5"></a>
 
 ## removeListener
 
-移除指定的 IMediaEngineEvent 监听器。
+移除指定的 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent) 监听器。
 
 <a id="api_imediaengine_removelistener_imediaengine__prototype"></a>
 
-```typescript
+```text
 removeListener?<EventType extends keyof IMediaEngineEvent>(
       eventType: EventType,
       listener: IMediaEngineEvent[EventType]
@@ -131,24 +137,23 @@ removeListener?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-#### `eventType`
+### eventType
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
 
-#### `listener`
+### listener
 
 `eventType` 对应的回调函数。必须传入 [addListener](/zh-CN/api-reference/rtc/electron/video/video-encoded#api_imediaengine_addlistener_imediaengine) 中传入的同一个函数对象。以取消监听 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 为例：
 
-```typescript
+```text
 const onPlaybackAudioFrameBeforeMixing = (channelId: string, uid: number, audioFrame: AudioFrame) => {};
 engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 engine.removeListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
 
-### 所属接口类
-- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
-
 <a id="api_imediaengine_unregistervideoencodedframeobserver"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unregisterVideoEncodedFrameObserver
 
@@ -156,7 +161,7 @@ engine.removeListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBe
 
 <a id="api_imediaengine_unregistervideoencodedframeobserver__prototype"></a>
 
-```typescript
+```text
 abstract unregisterVideoEncodedFrameObserver(
     observer: IVideoEncodedFrameObserver
   ): number;
@@ -168,7 +173,7 @@ abstract unregisterVideoEncodedFrameObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 视频帧观测器，观测每帧视频的接收, 详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver)。
 
@@ -177,12 +182,11 @@ abstract unregisterVideoEncodedFrameObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onEncodedVideoFrameReceived
 
@@ -190,7 +194,7 @@ abstract unregisterVideoEncodedFrameObserver(
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
 
-```typescript
+```text
 onEncodedVideoFrameReceived?(
     channelId: string,
     uid: number,
@@ -208,25 +212,22 @@ onEncodedVideoFrameReceived?(
 
 ### 参数
 
-#### `channelId`
+### channelId
 
 频道名。
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `imageBuffer`
+### imageBuffer
 
 视频图像 buffer。
 
-#### `length`
+### length
 
 视频图像的数据长度。
 
-#### `videoEncodedFrameInfo`
+### videoEncodedFrameInfo
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/electron/class-encodedvideoframeinfo)。
-
-### 所属接口类
-- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver)

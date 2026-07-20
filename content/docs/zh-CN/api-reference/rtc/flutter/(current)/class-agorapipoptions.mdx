@@ -1,10 +1,18 @@
 ---
-title: "AgoraPipOptions"
-description: "声网画中画模式的配置选项。"
+title: AgoraPipOptions
+description: 声网画中画模式的配置选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_agorapipoptions
+  sourcePath: html-docs/rtc/Flutter/API/class_agorapipoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_agorapipoptions__prototype"></a>
 
-```dart
+```text
 class AgoraPipOptions {
   final bool? autoEnterEnabled;
   final int? aspectRatioX;
@@ -28,7 +36,7 @@ class AgoraPipOptions {
 
 <a id="class_agorapipoptions__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v6.6.2 版本新增。
 
@@ -38,73 +46,120 @@ class AgoraPipOptions {
 
 ## 属性
 
-### `autoEnterEnabled`
+### autoEnterEnabled
 
-是否自动进入画中画模式。 仅适用于 Android 平台。
+是否自动进入画中画模式。
 
-### `aspectRatioX`
+仅适用于 Android 平台。
 
-画中画窗口的水平宽高比。 仅适用于 Android 平台。
+### aspectRatioX
 
-### `aspectRatioY`
+画中画窗口的水平宽高比。
 
-画中画窗口的垂直宽高比。 仅适用于 Android 平台。
+仅适用于 Android 平台。
 
-### `sourceRectHintLeft`
+### aspectRatioY
 
-源矩形提示的左坐标。 用于指定画中画窗口的初始位置。 仅适用于 Android 平台。
+画中画窗口的垂直宽高比。
 
-### `sourceRectHintTop`
+仅适用于 Android 平台。
 
-源矩形提示的上坐标。 用于指定画中画窗口的初始位置。 仅适用于 Android 平台。
+### sourceRectHintLeft
 
-### `sourceRectHintRight`
+源矩形提示的左坐标。
 
-源矩形提示的右坐标。 用于指定画中画窗口的初始位置。 仅适用于 Android 平台。
+用于指定画中画窗口的初始位置。
+仅适用于 Android 平台。
 
-### `sourceRectHintBottom`
+### sourceRectHintTop
 
-源矩形提示的下坐标。 用于指定画中画窗口的初始位置。 仅适用于 Android 平台。
+源矩形提示的上坐标。
 
-### `seamlessResizeEnabled`
+用于指定画中画窗口的初始位置。
+仅适用于 Android 平台。
 
-是否启用画中画窗口的无缝调整大小。 启用后，画中画窗口将平滑调整大小。 默认为 `false`。 仅适用于 Android 平台。
+### sourceRectHintRight
 
-### `useExternalStateMonitor`
+源矩形提示的右坐标。
 
-是否使用外部状态监控。 启用后，创建专用线程来监控画中画窗口状态。使用 externalStateMonitorInterval 配置监控频率。 默认为 `false`。 仅适用于 Android 平台。
+用于指定画中画窗口的初始位置。
+仅适用于 Android 平台。
 
-### `externalStateMonitorInterval`
+### sourceRectHintBottom
 
-外部状态监控的间隔，单位为毫秒。 仅在 useExternalStateMonitor 为 `true` 时生效。 默认为 100ms。 仅适用于 Android 平台。
+源矩形提示的下坐标。
 
-### `sourceContentView`
+用于指定画中画窗口的初始位置。
+仅适用于 Android 平台。
 
-源内容视图标识符。 设置为 0 以使用根视图作为源。 仅适用于 iOS 平台。
+### seamlessResizeEnabled
 
-### `contentView`
+是否启用画中画窗口的无缝调整大小。
 
-用于视频渲染的内容视图标识符。 设置为 0 以让 SDK 管理视图。当设置为 0 时，必须通过 videoStreams 提供视频源。 仅适用于 iOS 平台。
+启用后，画中画窗口将平滑调整大小。
+默认为 `false`。
+仅适用于 Android 平台。
 
-### `videoStreams`
+### useExternalStateMonitor
 
-视频转码配置。 仅在 contentView 设置为 0 时生效。当用户让 SDK 管理视图时，所有视频流将放置在画中画窗口的根视图中。 仅适用于 iOS 平台。
+是否使用外部状态监控。
 
-### `contentViewLayout`
+启用后，创建专用线程来监控画中画窗口状态。使用 externalStateMonitorInterval 配置监控频率。
+默认为 `false`。
+仅适用于 Android 平台。
 
-画中画视频流的布局配置。 仅在 contentView 设置为 0 时生效。 仅适用于 iOS 平台。
+### externalStateMonitorInterval
 
-### `preferredContentWidth`
+外部状态监控的间隔，单位为毫秒。
 
-画中画内容的首选宽度。 仅适用于 iOS 平台。
+仅在 useExternalStateMonitor 为 `true` 时生效。
+默认为 100ms。
+仅适用于 Android 平台。
 
-### `preferredContentHeight`
+### sourceContentView
 
-画中画内容的首选高度。 仅适用于 iOS 平台。
+源内容视图标识符。
 
-### `controlStyle`
+设置为 0 以使用根视图作为源。
+仅适用于 iOS 平台。
 
-画中画窗口的控制样式。 可用样式：
+### contentView
+
+用于视频渲染的内容视图标识符。
+
+设置为 0 以让 SDK 管理视图。当设置为 0 时，必须通过 videoStreams 提供视频源。
+仅适用于 iOS 平台。
+
+### videoStreams
+
+视频转码配置。
+
+仅在 contentView 设置为 0 时生效。当用户让 SDK 管理视图时，所有视频流将放置在画中画窗口的根视图中。
+仅适用于 iOS 平台。
+
+### contentViewLayout
+
+画中画视频流的布局配置。
+
+仅在 contentView 设置为 0 时生效。
+仅适用于 iOS 平台。
+
+### preferredContentWidth
+
+画中画内容的首选宽度。
+
+仅适用于 iOS 平台。
+
+### preferredContentHeight
+
+画中画内容的首选高度。
+
+仅适用于 iOS 平台。
+
+### controlStyle
+
+画中画窗口的控制样式。
+可用样式：
 
 - 0：显示所有系统控件（默认）
 - 1：隐藏前进和后退按钮

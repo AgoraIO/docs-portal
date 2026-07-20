@@ -1,10 +1,19 @@
 ---
-title: "发布和订阅"
-description: "发布和订阅 API reference."
+title: 发布和订阅
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_publishnsubscribe
+  sourcePath: html-docs/rtc/RN/API/toc_publishnsubscribe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_publishnsubscribe"></a>
 
 <a id="api_irtcengine_enabledualstreammode3"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableDualStreamMode
 
@@ -12,7 +21,7 @@ description: "发布和订阅 API reference."
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```typescript
+```text
 abstract enableDualStreamMode(
     enabled: boolean,
     streamConfig?: SimulcastStreamConfig
@@ -21,7 +30,7 @@ abstract enableDualStreamMode(
 
 <a id="api_irtcengine_enabledualstreammode3__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 弃用： 从 v4.2.0 起废弃，请改用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2)。
 
@@ -32,9 +41,11 @@ abstract enableDualStreamMode(
 
 开启双流模式后，你可以在收流端调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 enableDualStreamModeEx 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -42,19 +53,19 @@ abstract enableDualStreamMode(
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启双流模式：
 
 - true: 开启双流模式。
 - false: (默认) 关闭双流模式。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
+:::note
+注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
@@ -62,12 +73,11 @@ abstract enableDualStreamMode(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableDualStreamModeEx
 
@@ -75,7 +85,7 @@ abstract enableDualStreamMode(
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```typescript
+```text
 abstract enableDualStreamModeEx(
     enabled: boolean,
     streamConfig: SimulcastStreamConfig,
@@ -85,7 +95,7 @@ abstract enableDualStreamModeEx(
 
 <a id="api_irtcengineex_enabledualstreammodeex__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 弃用： 从 v4.2.0 起废弃，请改用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setdualstreammodeex)。
 
@@ -96,30 +106,30 @@ abstract enableDualStreamModeEx(
 
 开启双流模式后，你可以在收流端调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
-该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
+:::note
+注： 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
 :::
 
 <a id="api_irtcengineex_enabledualstreammodeex__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启双流模式：
 
 - true: 开启双流模式。
 - false: (默认) 关闭双流模式。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
+:::note
+注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -128,12 +138,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
+
+<a id="ariaid-title4"></a>
 
 ## muteAllRemoteAudioStreams
 
@@ -141,7 +150,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```typescript
+```text
 abstract muteAllRemoteAudioStreams(mute: boolean): number;
 ```
 
@@ -149,8 +158,9 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::info[注]
-SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeAudio` 为 false，即可在加入频道时取消订阅所有用户的音频流。 如果在调用该方法之后又调用了 [enableAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
+:::note
+注： SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeAudio` 为 false，即可在加入频道时取消订阅所有用户的音频流。
+如果在调用该方法之后又调用了 [enableAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
 :::
 
 <a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
@@ -163,7 +173,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的音频流：
 
@@ -175,12 +185,11 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
+
+<a id="ariaid-title5"></a>
 
 ## muteAllRemoteAudioStreamsEx
 
@@ -188,7 +197,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```typescript
+```text
 abstract muteAllRemoteAudioStreamsEx(
     mute: boolean,
     connection: RtcConnection
@@ -199,23 +208,25 @@ abstract muteAllRemoteAudioStreamsEx(
 
 成功调用该方法后，本地用户会取消或恢复订阅远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 joinChannel 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeAudio` 为 false。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的音频流：
 
 - true: 取消订阅所有远端用户的音频流。
 - false:（默认）订阅所有远端用户的音频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -224,12 +235,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteallremotevideostreams"></a>
+
+<a id="ariaid-title6"></a>
 
 ## muteAllRemoteVideoStreams
 
@@ -237,7 +247,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```typescript
+```text
 abstract muteAllRemoteVideoStreams(mute: boolean): number;
 ```
 
@@ -245,8 +255,9 @@ abstract muteAllRemoteVideoStreams(mute: boolean): number;
 
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
 
-:::info[注]
-SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeVideo` 为 false，即可在加入频道时取消订阅所有用户的视频流。 如果在调用该方法之后又调用了 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
+:::note
+注： SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeVideo` 为 false，即可在加入频道时取消订阅所有用户的视频流。
+如果在调用该方法之后又调用了 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
 :::
 
 <a id="api_irtcengine_muteallremotevideostreams__timing"></a>
@@ -259,7 +270,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的视频流。
 
@@ -271,12 +282,11 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteallremotevideostreamsex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## muteAllRemoteVideoStreamsEx
 
@@ -284,7 +294,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```typescript
+```text
 abstract muteAllRemoteVideoStreamsEx(
     mute: boolean,
     connection: RtcConnection
@@ -299,14 +309,14 @@ abstract muteAllRemoteVideoStreamsEx(
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消订阅所有远端用户的视频流。
 
 - true: 取消订阅所有用户的视频流。
 - false:（默认）订阅所有用户的视频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -315,12 +325,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_mutelocalaudiostream"></a>
+
+<a id="ariaid-title8"></a>
 
 ## muteLocalAudioStream
 
@@ -328,7 +337,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```typescript
+```text
 abstract muteLocalAudioStream(mute: boolean): number;
 ```
 
@@ -352,7 +361,7 @@ abstract muteLocalAudioStream(mute: boolean): number;
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发布本地音频流。
 
@@ -364,12 +373,11 @@ abstract muteLocalAudioStream(mute: boolean): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_mutelocalaudiostreamex"></a>
+
+<a id="ariaid-title9"></a>
 
 ## muteLocalAudioStreamEx
 
@@ -377,7 +385,7 @@ abstract muteLocalAudioStream(mute: boolean): number;
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```typescript
+```text
 abstract muteLocalAudioStreamEx(
     mute: boolean,
     connection: RtcConnection
@@ -388,22 +396,22 @@ abstract muteLocalAudioStreamEx(
 
 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
-:::info[注]
-该方法不影响音频采集状态，因为没有禁用音频采集设备。
+:::note
+注： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发布本地音频流。
 
 - true: 取消发布。
 - false:（默认）发布。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -412,12 +420,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_mutelocalvideostream"></a>
+
+<a id="ariaid-title10"></a>
 
 ## muteLocalVideoStream
 
@@ -425,13 +432,14 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```typescript
+```text
 abstract muteLocalVideoStream(mute: boolean): number;
 ```
 
 <a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
 
-该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。 相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo) (false) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
+相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo)(false) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -449,7 +457,7 @@ abstract muteLocalVideoStream(mute: boolean): number;
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发送本地视频流。
 
@@ -461,12 +469,11 @@ abstract muteLocalVideoStream(mute: boolean): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_mutelocalvideostreamex"></a>
+
+<a id="ariaid-title11"></a>
 
 ## muteLocalVideoStreamEx
 
@@ -474,7 +481,7 @@ abstract muteLocalVideoStream(mute: boolean): number;
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```typescript
+```text
 abstract muteLocalVideoStreamEx(
     mute: boolean,
     connection: RtcConnection
@@ -485,7 +492,9 @@ abstract muteLocalVideoStreamEx(
 
 成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 该方法不影响视频采集状态，没有禁用摄像头。
 :::
 
@@ -493,14 +502,14 @@ abstract muteLocalVideoStreamEx(
 
 ### 参数
 
-#### `mute`
+### mute
 
 是否取消发送本地视频流。
 
 - true: 取消发送本地视频流。
 - false: （默认）发送本地视频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -509,12 +518,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteremoteaudiostream"></a>
+
+<a id="ariaid-title12"></a>
 
 ## muteRemoteAudioStream
 
@@ -522,7 +530,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```typescript
+```text
 abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 ```
 
@@ -544,11 +552,11 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 
 ### 参数
 
-#### `uid`
+### uid
 
 指定用户的用户 ID。
 
-#### `mute`
+### mute
 
 是否取消订阅指定远端用户的音频流。
 
@@ -560,12 +568,11 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteremoteaudiostreamex"></a>
+
+<a id="ariaid-title13"></a>
 
 ## muteRemoteAudioStreamEx
 
@@ -573,7 +580,7 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```typescript
+```text
 abstract muteRemoteAudioStreamEx(
     uid: number,
     mute: boolean,
@@ -589,18 +596,18 @@ abstract muteRemoteAudioStreamEx(
 
 ### 参数
 
-#### `uid`
+### uid
 
 指定用户的 ID。
 
-#### `mute`
+### mute
 
 是否停止接收指定音频流：
 
 - true: 停止接收指定音频流。
 - false:（默认）继续接收指定音频流。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -609,12 +616,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muteremotevideostream"></a>
+
+<a id="ariaid-title14"></a>
 
 ## muteRemoteVideoStream
 
@@ -622,7 +628,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```typescript
+```text
 abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 ```
 
@@ -644,11 +650,11 @@ abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 
 ### 参数
 
-#### `uid`
+### uid
 
 指定用户的用户 ID。
 
-#### `mute`
+### mute
 
 是否取消订阅指定远端用户的视频流。
 
@@ -660,12 +666,11 @@ abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_muteremotevideostreamex"></a>
+
+<a id="ariaid-title15"></a>
 
 ## muteRemoteVideoStreamEx
 
@@ -673,7 +678,7 @@ abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```typescript
+```text
 abstract muteRemoteVideoStreamEx(
     uid: number,
     mute: boolean,
@@ -689,18 +694,18 @@ abstract muteRemoteVideoStreamEx(
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `mute`
+### mute
 
 是否停止接收某个远端用户的视频：
 
 - true: 停止接收。
 - false: （默认）恢复接收。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -709,12 +714,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setdualstreammode2"></a>
+
+<a id="ariaid-title16"></a>
 
 ## setDualStreamMode
 
@@ -722,7 +726,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```typescript
+```text
 abstract setDualStreamMode(
     mode: SimulcastStreamMode,
     streamConfig?: SimulcastStreamConfig
@@ -733,14 +737,14 @@ abstract setDualStreamMode(
 
 SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即发送端不主动发送小流，主播身份的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DisableSimulcastStream （始终不发送小流）或 EnableSimulcastStream （始终发送小流）。
-- 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AutoSimulcastStream。
+- 如果你想修改此行为，可以调用该方法并修改 `mode` 为 `DisableSimulcastStream`（始终不发送小流）或 `EnableSimulcastStream`（始终发送小流）。
+- 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 `mode` 设置为 `AutoSimulcastStream`。
 
-:::info[注]
-该方法和 [enableDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+:::note
+注： 该方法和 [enableDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
 
-- 调用该方法并设置 mode 为 DisableSimulcastStream 时，跟调用 enableDualStreamMode 并设置 enabled 为 false 的效果相同。
-- 调用该方法并设置 mode 为 EnableSimulcastStream 时，跟调用 enableDualStreamMode 并设置 enabled 为 true 的效果相同。
+- 调用该方法并设置 `mode` 为 `DisableSimulcastStream` 时，跟调用 [enableDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_enabledualstreammode3) 并设置 `enabled` 为 false 的效果相同。
+- 调用该方法并设置 `mode` 为 `EnableSimulcastStream` 时，跟调用 [enableDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_enabledualstreammode3) 并设置 `enabled` 为 true 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -748,16 +752,16 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 
 ### 参数
 
-#### `mode`
+### mode
 
 发送视频流的模式。详见 [SimulcastStreamMode](/zh-CN/api-reference/rtc/react-native/enum-simulcaststreammode)。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
+:::note
+注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
@@ -765,12 +769,11 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
+
+<a id="ariaid-title17"></a>
 
 ## setDualStreamModeEx
 
@@ -778,7 +781,7 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```typescript
+```text
 abstract setDualStreamModeEx(
     mode: SimulcastStreamMode,
     streamConfig: SimulcastStreamConfig,
@@ -790,14 +793,14 @@ abstract setDualStreamModeEx(
 
 SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即发送端不主动发送小流，主播身份的接收端可以调用 [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DisableSimulcastStream （始终不发送小流）或 EnableSimulcastStream （始终发送小流）。
-- 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AutoSimulcastStream。
+- 如果你想修改此行为，可以调用该方法并修改 `mode` 为 `DisableSimulcastStream`（始终不发送小流）或 `EnableSimulcastStream`（始终发送小流）。
+- 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 `mode` 设置为 `AutoSimulcastStream`。
 
-:::info[注]
-该方法和 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+:::note
+注： 该方法和 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
 
-- 调用该方法并设置 mode 为 DisableSimulcastStream 时，跟 enableDualStreamModeEx(false) 的效果相同。
-- 调用该方法并设置 mode 为 EnableSimulcastStream 时，跟 enableDualStreamModeEx(true) 的效果相同。
+- 调用该方法并设置 `mode` 为 `DisableSimulcastStream` 时，跟 `enableDualStreamModeEx(false)` 的效果相同。
+- 调用该方法并设置 `mode` 为 `EnableSimulcastStream` 时，跟 `enableDualStreamModeEx(true)` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -805,19 +808,19 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 
 ### 参数
 
-#### `mode`
+### mode
 
 发送视频流的模式。详见 [SimulcastStreamMode](/zh-CN/api-reference/rtc/react-native/enum-simulcaststreammode)。
 
-#### `streamConfig`
+### streamConfig
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
+:::note
+注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -826,12 +829,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
+
+<a id="ariaid-title18"></a>
 
 ## setRemoteDefaultVideoStreamType
 
@@ -839,7 +841,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```typescript
+```text
 abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 ```
 
@@ -847,14 +849,14 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 
 取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AutoSimulcastStream)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 DisableSimulcastStream （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 EnableSimulcastStream （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `DisableSimulcastStream`（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `EnableSimulcastStream`（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::info[注]
-如果你既调用了该方法，也调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype)，则 SDK 以 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 中的设置为准。
+:::note
+注： 如果你既调用了该方法，也调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype)，则 SDK 以 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__timing"></a>
@@ -867,7 +869,7 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 
 ### 参数
 
-#### `streamType`
+### streamType
 
 默认订阅的视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
 
@@ -876,12 +878,11 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
+
+<a id="ariaid-title19"></a>
 
 ## setRemoteVideoStreamType
 
@@ -889,7 +890,7 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```typescript
+```text
 abstract setRemoteVideoStreamType(
     uid: number,
     streamType: VideoStreamType
@@ -900,26 +901,28 @@ abstract setRemoteVideoStreamType(
 
 取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AutoSimulcastStream)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 DisableSimulcastStream （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 EnableSimulcastStream （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `DisableSimulcastStream`（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `EnableSimulcastStream`（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 setRemoteDefaultVideoStreamType，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `streamType`
+### streamType
 
 视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
 
@@ -928,12 +931,11 @@ abstract setRemoteVideoStreamType(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
+
+<a id="ariaid-title20"></a>
 
 ## setRemoteVideoStreamTypeEx
 
@@ -941,7 +943,7 @@ abstract setRemoteVideoStreamType(
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```typescript
+```text
 abstract setRemoteVideoStreamTypeEx(
     uid: number,
     streamType: VideoStreamType,
@@ -953,29 +955,29 @@ abstract setRemoteVideoStreamTypeEx(
 
 取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AutoSimulcastStream)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 DisableSimulcastStream （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode 并将 mode 设置为 EnableSimulcastStream （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即：发送端仅发送大流，仅主播身份的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `DisableSimulcastStream`（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `EnableSimulcastStream`（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::info[注]
-如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 `mode` 设置为 `DisableSimulcastStream` （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 修改设置。
+:::note
+注： 如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 `mode` 设置为 `DisableSimulcastStream`（始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 修改设置。
 :::
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `streamType`
+### streamType
 
 视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -984,12 +986,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
+
+<a id="ariaid-title21"></a>
 
 ## setRemoteVideoSubscriptionOptions
 
@@ -997,7 +998,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__prototype"></a>
 
-```typescript
+```text
 abstract setRemoteVideoSubscriptionOptions(
     uid: number,
     options: VideoSubscriptionOptions
@@ -1008,9 +1009,9 @@ abstract setRemoteVideoSubscriptionOptions(
 
 当远端发送双流时，可调用此方法来设置远端视频流的订阅选项。SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
 
-- 如果注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
-- 如果注册的是 IVideoEncodedFrameObserver 观测器，则默认仅订阅编码后的数据。
-- 如果注册了两种观测器，则默认跟随后注册的视频观测器。举例来说，如果后注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
+- 如果注册的是 [IVideoFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoframeobserver) 观测器，则默认订阅原始数据和编码后的数据。
+- 如果注册的是 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoencodedframeobserver) 观测器，则默认仅订阅编码后的数据。
+- 如果注册了两种观测器，则默认跟随后注册的视频观测器。举例来说，如果后注册的是 [IVideoFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoframeobserver) 观测器，则默认订阅原始数据和编码后的数据。
 
 如果你想修改以上默认行为，或者想针对不同 `uid` 设置不同的订阅选项，可调用该方法设置。
 
@@ -1018,11 +1019,11 @@ abstract setRemoteVideoSubscriptionOptions(
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `options`
+### options
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/react-native/class-videosubscriptionoptions)。
 
@@ -1031,12 +1032,11 @@ abstract setRemoteVideoSubscriptionOptions(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
+
+<a id="ariaid-title22"></a>
 
 ## setRemoteVideoSubscriptionOptionsEx
 
@@ -1044,7 +1044,7 @@ abstract setRemoteVideoSubscriptionOptions(
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__prototype"></a>
 
-```typescript
+```text
 abstract setRemoteVideoSubscriptionOptionsEx(
     uid: number,
     options: VideoSubscriptionOptions,
@@ -1060,15 +1060,15 @@ abstract setRemoteVideoSubscriptionOptionsEx(
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `options`
+### options
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/react-native/class-videosubscriptionoptions)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -1077,12 +1077,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribeaudioallowlist"></a>
+
+<a id="ariaid-title23"></a>
 
 ## setSubscribeAudioAllowlist
 
@@ -1090,7 +1089,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeAudioAllowlist(
     uidList: number[],
     uidNumber: number
@@ -1101,9 +1100,11 @@ abstract setSubscribeAudioAllowlist(
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeAudio` 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1112,11 +1113,12 @@ abstract setSubscribeAudioAllowlist(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-音频订阅白名单的用户 ID 列表。 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+音频订阅白名单的用户 ID 列表。
+如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
@@ -1125,12 +1127,11 @@ abstract setSubscribeAudioAllowlist(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
+
+<a id="ariaid-title24"></a>
 
 ## setSubscribeAudioAllowlistEx
 
@@ -1138,7 +1139,7 @@ abstract setSubscribeAudioAllowlist(
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeAudioAllowlistEx(
     uidList: number[],
     uidNumber: number,
@@ -1150,9 +1151,11 @@ abstract setSubscribeAudioAllowlistEx(
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeAudio` 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1161,15 +1164,16 @@ abstract setSubscribeAudioAllowlistEx(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-音频订阅白名单的用户 ID 列表。 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+音频订阅白名单的用户 ID 列表。
+如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -1178,12 +1182,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribeaudioblocklist"></a>
+
+<a id="ariaid-title25"></a>
 
 ## setSubscribeAudioBlocklist
 
@@ -1191,7 +1194,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeAudioBlocklist(
     uidList: number[],
     uidNumber: number
@@ -1202,9 +1205,11 @@ abstract setSubscribeAudioBlocklist(
 
 你可以调用该方法指定不订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeAudio` 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1213,11 +1218,12 @@ abstract setSubscribeAudioBlocklist(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-订阅黑名单的用户 ID 列表。 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+订阅黑名单的用户 ID 列表。
+如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
@@ -1226,12 +1232,11 @@ abstract setSubscribeAudioBlocklist(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
+
+<a id="ariaid-title26"></a>
 
 ## setSubscribeAudioBlocklistEx
 
@@ -1239,7 +1244,7 @@ abstract setSubscribeAudioBlocklist(
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeAudioBlocklistEx(
     uidList: number[],
     uidNumber: number,
@@ -1251,9 +1256,11 @@ abstract setSubscribeAudioBlocklistEx(
 
 你可以调用该方法指定不订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeAudio` 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1262,15 +1269,16 @@ abstract setSubscribeAudioBlocklistEx(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-订阅黑名单的用户 ID 列表。 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+订阅黑名单的用户 ID 列表。
+如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -1279,12 +1287,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribevideoallowlist"></a>
+
+<a id="ariaid-title27"></a>
 
 ## setSubscribeVideoAllowlist
 
@@ -1292,7 +1299,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeVideoAllowlist(
     uidList: number[],
     uidNumber: number
@@ -1303,9 +1310,11 @@ abstract setSubscribeVideoAllowlist(
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1314,11 +1323,12 @@ abstract setSubscribeVideoAllowlist(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-视频订阅白名单的用户 ID 列表。 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+视频订阅白名单的用户 ID 列表。
+如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
@@ -1327,12 +1337,11 @@ abstract setSubscribeVideoAllowlist(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
+
+<a id="ariaid-title28"></a>
 
 ## setSubscribeVideoAllowlistEx
 
@@ -1340,7 +1349,7 @@ abstract setSubscribeVideoAllowlist(
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeVideoAllowlistEx(
     uidList: number[],
     uidNumber: number,
@@ -1352,9 +1361,11 @@ abstract setSubscribeVideoAllowlistEx(
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1363,15 +1374,16 @@ abstract setSubscribeVideoAllowlistEx(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-视频订阅白名单的用户 ID 列表。 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+视频订阅白名单的用户 ID 列表。
+如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -1380,12 +1392,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setsubscribevideoblocklist"></a>
+
+<a id="ariaid-title29"></a>
 
 ## setSubscribeVideoBlocklist
 
@@ -1393,7 +1404,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeVideoBlocklist(
     uidList: number[],
     uidNumber: number
@@ -1404,9 +1415,11 @@ abstract setSubscribeVideoBlocklist(
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1415,11 +1428,12 @@ abstract setSubscribeVideoBlocklist(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-视频订阅黑名单的用户 ID 列表。 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+视频订阅黑名单的用户 ID 列表。
+如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
@@ -1428,12 +1442,11 @@ abstract setSubscribeVideoBlocklist(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
+
+<a id="ariaid-title30"></a>
 
 ## setSubscribeVideoBlocklistEx
 
@@ -1441,7 +1454,7 @@ abstract setSubscribeVideoBlocklist(
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```typescript
+```text
 abstract setSubscribeVideoBlocklistEx(
     uidList: number[],
     uidNumber: number,
@@ -1453,9 +1466,11 @@ abstract setSubscribeVideoBlocklistEx(
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1464,15 +1479,16 @@ abstract setSubscribeVideoBlocklistEx(
 
 ### 参数
 
-#### `uidList`
+### uidList
 
-视频订阅黑名单的用户 ID 列表。 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
+视频订阅黑名单的用户 ID 列表。
+如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-#### `uidNumber`
+### uidNumber
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
@@ -1481,12 +1497,11 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
+
+<a id="ariaid-title31"></a>
 
 ## onAudioPublishStateChanged
 
@@ -1494,7 +1509,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```typescript
+```text
 onAudioPublishStateChanged?(
     channel: string,
     oldState: StreamPublishState,
@@ -1509,26 +1524,25 @@ onAudioPublishStateChanged?(
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `oldState`
+### oldState
 
 之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-#### `newState`
+### newState
 
 当前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
+
+<a id="ariaid-title32"></a>
 
 ## onAudioSubscribeStateChanged
 
@@ -1536,7 +1550,7 @@ onAudioPublishStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```typescript
+```text
 onAudioSubscribeStateChanged?(
     channel: string,
     uid: number,
@@ -1552,30 +1566,29 @@ onAudioSubscribeStateChanged?(
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `oldState`
+### oldState
 
 之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-#### `newState`
+### newState
 
 当前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
+
+<a id="ariaid-title33"></a>
 
 ## onVideoSubscribeStateChanged
 
@@ -1583,7 +1596,7 @@ onAudioSubscribeStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```typescript
+```text
 onVideoSubscribeStateChanged?(
     channel: string,
     uid: number,
@@ -1599,25 +1612,22 @@ onVideoSubscribeStateChanged?(
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `uid`
+### uid
 
 远端用户的 ID。
 
-#### `oldState`
+### oldState
 
 之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-#### `newState`
+### newState
 
 当前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-#### `elapseSinceLastState`
+### elapseSinceLastState
 
 两次状态变化时间间隔（毫秒）。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

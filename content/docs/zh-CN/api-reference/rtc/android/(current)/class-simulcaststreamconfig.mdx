@@ -1,10 +1,18 @@
 ---
-title: "SimulcastStreamConfig"
-description: "用于配置不同质量层级中的视频小流。"
+title: SimulcastStreamConfig
+description: 用于配置不同质量层级中的视频小流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_simulcaststreamconfig
+  sourcePath: html-docs/rtc/Android/API/class_simulcaststreamconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_simulcaststreamconfig__prototype"></a>
 
-```java
+```text
 public class SimulcastStreamConfig {
  public VideoEncoderConfiguration.VideoDimensions dimensions;
  public int bitrate;
@@ -20,14 +28,14 @@ public class SimulcastStreamConfig {
 
 ## 属性
 
-### `dimensions`
+### dimensions
 
 视频分辨率。默认值为视频大流分辨率的 50%。详见 [VideoDimensions](/zh-CN/api-reference/rtc/android/class-videodimensions)。
 
-### `bitrate`
+### bitrate
 
 视频码率（Kbps）。默认值为 -1。无需手动设置此参数，SDK 会根据你设置的视频分辨率和帧率自动匹配最合适的码率。
 
-### `framerate`
+### framerate
 
 本地视频的帧率（fps）。默认值为 5。

@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/RN/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerAudioFrameObserver
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract registerAudioFrameObserver(
     observer: IAudioPcmFrameSink,
     mode?: RawAudioFrameOpModeType
@@ -25,11 +34,11 @@ abstract registerAudioFrameObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiopcmframesink)。
 
-#### `mode`
+### mode
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/react-native/enum-rawaudioframeopmodetype)。
 
@@ -38,12 +47,11 @@ abstract registerAudioFrameObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_registerplayersourceobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## registerPlayerSourceObserver
 
@@ -51,7 +59,7 @@ abstract registerAudioFrameObserver(
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```typescript
+```text
 abstract registerPlayerSourceObserver(
     observer: IMediaPlayerSourceObserver
   ): number;
@@ -69,7 +77,7 @@ abstract registerPlayerSourceObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)。
 
@@ -78,12 +86,11 @@ abstract registerPlayerSourceObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## registerVideoFrameObserver
 
@@ -91,7 +98,7 @@ abstract registerPlayerSourceObserver(
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract registerVideoFrameObserver(
     observer: IMediaPlayerVideoFrameObserver
   ): number;
@@ -105,7 +112,7 @@ abstract registerVideoFrameObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 视频帧观测器，观测每帧视频的接收。详见 [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayervideoframeobserver)。
 
@@ -114,12 +121,11 @@ abstract registerVideoFrameObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title5"></a>
 
 ## unregisterAudioFrameObserver
 
@@ -127,7 +133,7 @@ abstract registerVideoFrameObserver(
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 ```
 
@@ -137,7 +143,7 @@ abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 
 ### 参数
 
-#### `observer`
+### observer
 
 音频帧观测器，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiopcmframesink)。
 
@@ -146,12 +152,11 @@ abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unregisterplayersourceobserver"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unregisterPlayerSourceObserver
 
@@ -159,7 +164,7 @@ abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```typescript
+```text
 abstract unregisterPlayerSourceObserver(
     observer: IMediaPlayerSourceObserver
   ): number;
@@ -171,7 +176,7 @@ abstract unregisterPlayerSourceObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)。
 
@@ -180,12 +185,11 @@ abstract unregisterPlayerSourceObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title7"></a>
 
 ## unregisterVideoFrameObserver
 
@@ -193,7 +197,7 @@ abstract unregisterPlayerSourceObserver(
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract unregisterVideoFrameObserver(
     observer: IMediaPlayerVideoFrameObserver
   ): number;
@@ -205,7 +209,7 @@ abstract unregisterVideoFrameObserver(
 
 ### 参数
 
-#### `observer`
+### observer
 
 视频帧观测器，观测每帧视频的接收，详见 [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayervideoframeobserver)。
 
@@ -214,12 +218,11 @@ abstract unregisterVideoFrameObserver(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onAudioVolumeIndication
 
@@ -227,7 +230,7 @@ abstract unregisterVideoFrameObserver(
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```typescript
+```text
 onAudioVolumeIndication?(volume: number): void;
 ```
 
@@ -239,14 +242,13 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-#### `volume`
+### volume
 
 播放器的当前音量，取值范围为 [0,255]。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onFrame
 
@@ -254,7 +256,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```typescript
+```text
 onFrame?(frame: AudioPcmFrame): void;
 ```
 
@@ -266,14 +268,13 @@ onFrame?(frame: AudioPcmFrame): void;
 
 ### 参数
 
-#### `frame`
+### frame
 
 音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/react-native/class-audiopcmframe)。
 
-### 所属接口类
-- [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiopcmframesink)
-
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onMetaData
 
@@ -281,7 +282,7 @@ onFrame?(frame: AudioPcmFrame): void;
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```typescript
+```text
 onMetaData?(data: Uint8Array, length: number): void;
 ```
 
@@ -293,18 +294,17 @@ onMetaData?(data: Uint8Array, length: number): void;
 
 ### 参数
 
-#### `data`
+### data
 
 具体数据，用户自定义格式的数据。
 
-#### `length`
+### length
 
 数据长度，单位为 byte。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onPlayBufferUpdated
 
@@ -312,7 +312,7 @@ onMetaData?(data: Uint8Array, length: number): void;
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```typescript
+```text
 onPlayBufferUpdated?(playCachedBuffer: number): void;
 ```
 
@@ -320,21 +320,20 @@ onPlayBufferUpdated?(playCachedBuffer: number): void;
 
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
-- 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 PlayerEventBufferLow (6)。
-- 当缓冲数据支持的播放时间大于阈值（默认为 0）时，返回 PlayerEventBufferRecover (7)。
+- 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 `PlayerEventBufferLow` (6)。
+- 当缓冲数据支持的播放时间大于阈值（默认为 0）时，返回 `PlayerEventBufferRecover` (7)。
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__parameters"></a>
 
 ### 参数
 
-#### `playCachedBuffer`
+### playCachedBuffer
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onPlayerEvent
 
@@ -342,7 +341,7 @@ onPlayBufferUpdated?(playCachedBuffer: number): void;
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```typescript
+```text
 onPlayerEvent?(
     eventCode: MediaPlayerEvent,
     elapsedTime: number,
@@ -352,28 +351,27 @@ onPlayerEvent?(
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
 
-- 调用 seek 定位播放后，SDK 会触发该回调，报告定位播放的结果。
+- 调用 [seek](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
 
 ### 参数
 
-#### `eventCode`
+### eventCode
 
 播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+### elapsedTime
 
 发生事件的时间 (毫秒)。
 
-#### `message`
+### message
 
 事件的信息。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerInfoUpdated
 
@@ -381,7 +379,7 @@ onPlayerEvent?(
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```typescript
+```text
 onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 ```
 
@@ -393,14 +391,13 @@ onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 
 ### 参数
 
-#### `info`
+### info
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/react-native/class-playerupdatedinfo)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title14"></a>
 
 ## onPlayerSourceStateChanged
 
@@ -408,7 +405,7 @@ onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```typescript
+```text
 onPlayerSourceStateChanged?(
     state: MediaPlayerState,
     reason: MediaPlayerReason
@@ -423,18 +420,17 @@ onPlayerSourceStateChanged?(
 
 ### 参数
 
-#### `state`
+### state
 
 新的播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerstate)。
 
-#### `reason`
+### reason
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onPlayerSrcInfoChanged
 
@@ -442,7 +438,7 @@ onPlayerSourceStateChanged?(
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```typescript
+```text
 onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 ```
 
@@ -452,18 +448,17 @@ onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 
 ### 参数
 
-#### `from`
+### from
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/react-native/class-srcinfo)。
 
-#### `to`
+### to
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/react-native/class-srcinfo)。
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onPositionChanged
 
@@ -471,7 +466,7 @@ onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```typescript
+```text
 onPositionChanged?(positionMs: number, timestampMs: number): void;
 ```
 
@@ -483,22 +478,21 @@ onPositionChanged?(positionMs: number, timestampMs: number): void;
 
 ### 参数
 
-#### `positionMs`
+### positionMs
 
 当前播放进度，单位为 ms。
 
-#### `timestampMs`
+### timestampMs
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
-:::info[注]
-该参数仅在频道内生效。
+:::note
+注： 该参数仅在频道内生效。
 :::
 
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title17"></a>
 
 ## onPreloadEvent
 
@@ -506,7 +500,7 @@ onPositionChanged?(positionMs: number, timestampMs: number): void;
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```typescript
+```text
 onPreloadEvent?(src: string, event: PlayerPreloadEvent): void;
 ```
 
@@ -516,13 +510,10 @@ onPreloadEvent?(src: string, event: PlayerPreloadEvent): void;
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的路径。
 
-#### `event`
+### event
 
 预加载媒体资源时发生的事件。详见 [PlayerPreloadEvent](/zh-CN/api-reference/rtc/react-native/enum-playerpreloadevent)。
-
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)

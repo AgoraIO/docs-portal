@@ -1,10 +1,19 @@
 ---
-title: "已编码视频数据"
-description: "已编码视频数据 API reference."
+title: 已编码视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_video_encoded
+  sourcePath: html-docs/rtc/Csharp/API/toc_video_encoded.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_encoded"></a>
 
 <a id="api_imediaengine_registervideoencodedframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RegisterVideoEncodedFrameObserver
 
@@ -12,7 +21,7 @@ description: "已编码视频数据 API reference."
 
 <a id="api_imediaengine_registervideoencodedframeobserver__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver videoEncodedImageReceiver, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
 ```
 
@@ -22,7 +31,9 @@ public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 如果你只想要观测编码后的视频帧 (如 H.264 格式)，而不需要对视频进行解码和渲染，声网推荐你通过该方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoencodedframeobserver) 类。
 
-:::warning[注意]
+:::note
+注意：
+
 该方法需要在加入频道前调用。
 :::
 
@@ -30,11 +41,11 @@ public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 ### 参数
 
-#### `videoEncodedImageReceiver`
+### videoEncodedImageReceiver
 
 视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoencodedframeobserver)。
 
-#### `mode`
+### mode
 
 视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-observermode)。
 
@@ -43,9 +54,11 @@ public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+<a id="ariaid-title3"></a>
 
 ## OnEncodedVideoFrameReceived
 
@@ -53,7 +66,7 @@ public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
 
-```csharp
+```text
 public virtual bool OnEncodedVideoFrameReceived(uint uid, IntPtr imageBufferPtr, UInt64 length, EncodedVideoFrameInfo videoEncodedFrameInfo)
         {
             return true;
@@ -68,19 +81,19 @@ public virtual bool OnEncodedVideoFrameReceived(uint uid, IntPtr imageBufferPtr,
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `imageBufferPtr`
+### imageBufferPtr
 
 视频图像 buffer。
 
-#### `length`
+### length
 
 视频图像的数据长度。
 
-#### `videoEncodedFrameInfo`
+### videoEncodedFrameInfo
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/csharp-windows/class-encodedvideoframeinfo)。
 
@@ -88,7 +101,6 @@ public virtual bool OnEncodedVideoFrameReceived(uint uid, IntPtr imageBufferPtr,
 
 ### 返回值
 
-无实际含义。
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return"></a>
 
-### 所属接口类
-- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoencodedframeobserver)
+无实际含义。

@@ -1,10 +1,19 @@
 ---
-title: "媒体资源打开"
-description: "媒体资源打开 API reference."
+title: 媒体资源打开
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_mediaplayer_open
+  sourcePath: html-docs/rtc/macOS/API/toc_mediaplayer_open.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_open"></a>
 
 <a id="api_imediaplayer_open"></a>
+
+<a id="ariaid-title2"></a>
 
 ## open:startPos:
 
@@ -12,14 +21,14 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_open__prototype"></a>
 
-```objectivec
+```text
 - (int)open:(NSString *)url startPos:(NSInteger)startPos NS_SWIFT_NAME(open(_:startPos:));
 ```
 
 <a id="api_imediaplayer_open__detailed_desc"></a>
 
-:::info[注]
-该方法为异步调用。
+:::note
+注： 该方法为异步调用。
 :::
 
 <a id="api_imediaplayer_open__timing"></a>
@@ -38,11 +47,11 @@ description: "媒体资源打开 API reference."
 
 ### 参数
 
-#### `url`
+### url
 
 媒体文件的路径，支持本地路径和在线路径。
 
-#### `startPos`
+### startPos
 
 播放的起始位置（毫秒）。默认值为 0。
 
@@ -51,12 +60,11 @@ description: "媒体资源打开 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_openwithmediasource"></a>
+
+<a id="ariaid-title3"></a>
 
 ## openWithMediaSource:
 
@@ -64,7 +72,7 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_openwithmediasource__prototype"></a>
 
-```objectivec
+```text
 - (int)openWithMediaSource:(AgoraMediaSource *)source NS_SWIFT_NAME(open(with:));
 ```
 
@@ -72,8 +80,8 @@ description: "媒体资源打开 API reference."
 
 该方法支持打开不同类型的媒体文件，包括以 `ipod-library://` 开头的文件，并设置播放选项。
 
-:::info[注]
-[openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放文件之前，已收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStateOpenCompleted`。
+:::note
+注： [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放文件之前，已收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStateOpenCompleted`。
 :::
 
 <a id="api_imediaplayer_openwithmediasource__timing"></a>
@@ -86,7 +94,7 @@ description: "媒体资源打开 API reference."
 
 ### 参数
 
-#### `source`
+### source
 
 媒体资源。详见 [AgoraMediaSource](/zh-CN/api-reference/rtc/macos/class-mediasource)。
 
@@ -95,12 +103,11 @@ description: "媒体资源打开 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_preloadsrc"></a>
+
+<a id="ariaid-title4"></a>
 
 ## preloadSrc:startPos:
 
@@ -108,7 +115,7 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_preloadsrc__prototype"></a>
 
-```objectivec
+```text
 - (int)preloadSrc:(NSString *)src startPos:(int)startPos NS_SWIFT_NAME(preloadSrc(_:startPos:));
 ```
 
@@ -116,8 +123,10 @@ description: "媒体资源打开 API reference."
 
 你可以调用此方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用此方法。如果预加载成功并希望播放该媒体资源，请调用 [playPreloadedSrc:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 `stop`。
 
-:::info[注]
-- 在调用此方法之前，请确保已成功调用 open:startPos: 或 openWithMediaSource: 打开媒体资源。
+:::note
+注：
+
+- 在调用此方法之前，请确保已成功调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -125,11 +134,11 @@ description: "媒体资源打开 API reference."
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL。
 
-#### `startPos`
+### startPos
 
 媒体资源预加载到播放列表后开始播放的位置（毫秒）。预加载直播流时，将该参数设置为 0。
 
@@ -138,12 +147,11 @@ description: "媒体资源打开 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_switchsrc"></a>
+
+<a id="ariaid-title5"></a>
 
 ## switchSrc:syncPts:
 
@@ -151,7 +159,7 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_switchsrc__prototype"></a>
 
-```objectivec
+```text
 - (int)switchSrc:(NSString *)src syncPts:(BOOL)syncPts NS_SWIFT_NAME(switchSrc(_:syncPts:));
 ```
 
@@ -162,11 +170,12 @@ description: "媒体资源打开 API reference."
 - 当网络较差时，将播放的媒体资源切换为码率较低的媒体资源地址。
 - 当网络良好时，将播放的媒体资源切换为码率较高的媒体资源地址。
 
-:::info[注]
-确保在调用该方法前已调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法。 为确保正常播放，调用该方法时请注意以下事项：
+:::note
+注： 确保在调用该方法前已调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法。
+为确保正常播放，调用该方法时请注意以下事项：
 
 - 播放暂停时不要调用该方法。
-- 切换过程中不要调用 seekToPosition: 方法。
+- 切换过程中不要调用 [seekToPosition:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法。
 - 切换媒体资源前，请确保播放位置未超过要切换的媒体资源的总时长。
 :::
 
@@ -180,11 +189,11 @@ description: "媒体资源打开 API reference."
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL 地址。
 
-#### `syncPts`
+### syncPts
 
 是否在切换前后同步播放位置（毫秒）：
 
@@ -196,12 +205,11 @@ description: "媒体资源打开 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unloadsrc"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unloadSrc:
 
@@ -209,21 +217,21 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_unloadsrc__prototype"></a>
 
-```objectivec
+```text
 - (int)unloadSrc:(NSString *)src NS_SWIFT_NAME(unloadSrc(_:));
 ```
 
 <a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
 
-:::info[注]
-[unloadSrc:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
+:::note
+注： [unloadSrc:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
 :::
 
 <a id="api_imediaplayer_unloadsrc__parameters"></a>
 
 ### 参数
 
-#### `src`
+### src
 
 媒体资源的 URL。
 
@@ -232,7 +240,4 @@ description: "媒体资源打开 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

@@ -1,10 +1,19 @@
 ---
-title: "人脸检测"
-description: "人脸检测 API reference."
+title: 人脸检测
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_face_detection
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_face_detection.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_face_detection"></a>
 
 <a id="api_irtcengine_enablefacedetection"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableFaceDetection
 
@@ -12,14 +21,14 @@ description: "人脸检测 API reference."
 
 <a id="api_irtcengine_enablefacedetection__prototype"></a>
 
-```cpp
+```text
 virtual int enableFaceDetection(bool enabled) = 0;
 ```
 
 <a id="api_irtcengine_enablefacedetection__detailed_desc"></a>
 
-:::warning[注意]
-该方法仅适用于 Android 和 iOS。
+:::note
+注意： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_enablefacedetection__timing"></a>
@@ -48,24 +57,23 @@ virtual int enableFaceDetection(bool enabled) = 0;
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启人脸检测：
 
-- true：开启人脸检测。
-- false：（默认）关闭人脸检测。
+- `true`：开启人脸检测。
+- `false`：（默认）关闭人脸检测。
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
+
+<a id="ariaid-title3"></a>
 
 ## onFacePositionChanged
 
@@ -73,7 +81,7 @@ virtual int enableFaceDetection(bool enabled) = 0;
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__prototype"></a>
 
-```cpp
+```text
 virtual void onFacePositionChanged(int imageWidth, int imageHeight,
                 const Rectangle* vecRectangle, const int* vecDistance,
                 int numFaces) {
@@ -87,7 +95,7 @@ virtual void onFacePositionChanged(int imageWidth, int imageHeight,
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__detailed_desc"></a>
 
-调用 [enableFaceDetection](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) `(true)` 开启本地人脸检测后，你可以通过该回调实时获取以下人脸检测的信息：
+调用 [enableFaceDetection](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection)`(true)` 开启本地人脸检测后，你可以通过该回调实时获取以下人脸检测的信息：
 
 - 摄像头采集的画面大小
 - 人脸在 view 中的位置
@@ -95,41 +103,40 @@ virtual void onFacePositionChanged(int imageWidth, int imageHeight,
 
 其中，人脸距设备屏幕的距离由 SDK 通过摄像头采集的画面大小和人脸在 view 中的位置拟合计算得出。
 
-:::warning[注意]
+:::note
+注意：
+
 - 该回调仅适用于 Android 和 iOS 平台。
 - 当检测到摄像头前的人脸消失时，该回调会立刻触发；在无人脸的状态下，该回调触发频率会降低，以节省设备耗能。
 - 当人脸距离设备屏幕过近时，SDK 不会触发该回调。
-- Android 平台上，人脸距设备屏幕的距离（distance ）值有一定误差，请不要用它进行精确计算。
+- Android 平台上，人脸距设备屏幕的距离（distance）值有一定误差，请不要用它进行精确计算。
 :::
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__parameters"></a>
 
 ### 参数
 
-#### `imageWidth`
+### imageWidth
 
 摄像头采集画面的宽度 (px)。
 
-#### `imageHeight`
+### imageHeight
 
 摄像头采集画面的高度 (px)。
 
-#### `vecRectangle`
+### vecRectangle
 
 是一个长度为 numFaces 的数组，表示检测到的人脸信息：
 
-- x：人脸在 view 中的 x 坐标 (px)。以摄像头采集 view 的左上角为原点，x 坐标为人脸左上角相对于原点的横向位移。
-- y：人脸在 view 中的 y 坐标 (px)。以摄像头采集 view 的左上角为原点，y 坐标为人脸左上角相对原点的纵向位移。
-- width：人脸在 view 中的宽度 (px)。
-- height：人脸在 view 中的高度 (px)。
+- `x`：人脸在 view 中的 x 坐标 (px)。以摄像头采集 view 的左上角为原点，x 坐标为人脸左上角相对于原点的横向位移。
+- `y`：人脸在 view 中的 y 坐标 (px)。以摄像头采集 view 的左上角为原点，y 坐标为人脸左上角相对原点的纵向位移。
+- `width`：人脸在 view 中的宽度 (px)。
+- `height`：人脸在 view 中的高度 (px)。
 
-#### `vecDistance`
+### vecDistance
 
 是一个长度为 numFaces 的数组，表示人脸和设备屏幕之间的距离 (cm)。
 
-#### `numFaces`
+### numFaces
 
 检测的人脸数量。如果为 0，则表示没有检测到人脸。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

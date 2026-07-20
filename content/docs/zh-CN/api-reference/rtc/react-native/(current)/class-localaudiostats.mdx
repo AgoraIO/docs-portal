@@ -1,10 +1,18 @@
 ---
-title: "LocalAudioStats"
-description: "本地音频统计数据。"
+title: LocalAudioStats
+description: 本地音频统计数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_localaudiostats
+  sourcePath: html-docs/rtc/RN/API/class_localaudiostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localaudiostats__prototype"></a>
 
-```typescript
+```text
 export class LocalAudioStats {
 
   numChannels?: number;
@@ -20,7 +28,7 @@ export class LocalAudioStats {
   audioDeviceDelay?: number;
 
   earMonitorDelay?: number;
-  
+
   aecEstimatedDelay?: number;
 }
 ```
@@ -29,34 +37,34 @@ export class LocalAudioStats {
 
 ## 属性
 
-### `numChannels`
+### numChannels
 
 声道数。
 
-### `sentSampleRate`
+### sentSampleRate
 
 发送本地音频的采样率，单位为 Hz。
 
-### `sentBitrate`
+### sentBitrate
 
 发送本地音频的码率平均值，单位为 Kbps。
 
-### `txPacketLossRate`
+### txPacketLossRate
 
 弱网对抗前本端到声网边缘服务器的丢包率 (%)。
 
-### `internalCodec`
+### internalCodec
 
 内部的 payload 类型。
 
-### `audioDeviceDelay`
+### audioDeviceDelay
 
 播放或录制音频时，音频设备模块的延迟 (ms)。
 
-### `earMonitorDelay`
+### earMonitorDelay
 
 耳返延迟 (ms)，即声音从麦克风输入到耳机输出的延迟。
 
-### `aecEstimatedDelay`
+### aecEstimatedDelay
 
 回声消除延迟 (ms)，即回声消除 (Acoustic Echo Cancellation, AEC) 模块测算出音频在本地播放前与被本地采集后的信号延迟。

@@ -1,23 +1,31 @@
 ---
-title: "AgoraVideoViewSetupMode"
-description: "视图的设置模式。"
+title: AgoraVideoViewSetupMode
+description: 视图的设置模式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_videoviewsetupmode
+  sourcePath: html-docs/rtc/macOS/API/enum_videoviewsetupmode.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_videoviewsetupmode__parameters"></a>
 
 ## 枚举值
 
-### `AgoraVideoViewSetupReplace`
+### AgoraVideoViewSetupReplace
 
 （0）：（默认）清除所有已添加的视图，并替换为新视图。
 
-### `AgoraVideoViewSetupAdd`
+### AgoraVideoViewSetupAdd
 
 （1）：添加一个视图。
 
-### `AgoraVideoViewSetupRemove`
+### AgoraVideoViewSetupRemove
 
 （2）：删除一个视图。
 
-:::info[注]
-当你不再需要使用某个视图时，建议通过将 `setupMode` 设置为 `AgoraVideoViewSetupRemove` 来删除该视图，否则可能会导致渲染资源泄漏。
+:::note
+注： 当你不再需要使用某个视图时，建议通过将 `setupMode` 设置为 `AgoraVideoViewSetupRemove` 来删除该视图，否则可能会导致渲染资源泄漏。
 :::

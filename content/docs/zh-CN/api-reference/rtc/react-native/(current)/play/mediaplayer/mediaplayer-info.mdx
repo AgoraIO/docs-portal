@@ -1,10 +1,19 @@
 ---
-title: "播放信息获取"
-description: "播放信息获取 API reference."
+title: 播放信息获取
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_mediaplayer_info
+  sourcePath: html-docs/rtc/RN/API/toc_mediaplayer_info.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 <a id="api_imediaplayer_getaudiobufferdelay"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getAudioBufferDelay
 
@@ -12,7 +21,7 @@ description: "播放信息获取 API reference."
 
 <a id="api_imediaplayer_getaudiobufferdelay__prototype"></a>
 
-```typescript
+```text
 abstract getAudioBufferDelay(): number;
 ```
 
@@ -22,7 +31,7 @@ abstract getAudioBufferDelay(): number;
 
 ### 参数
 
-#### `delayMs`
+### delayMs
 
 输出参数，表示播放媒体文件时的音频缓冲延迟，单位为毫秒。
 
@@ -31,12 +40,11 @@ abstract getAudioBufferDelay(): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getduration"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getDuration
 
@@ -44,7 +52,7 @@ abstract getAudioBufferDelay(): number;
 
 <a id="api_imediaplayer_getduration__prototype"></a>
 
-```typescript
+```text
 abstract getDuration(): number;
 ```
 
@@ -56,10 +64,9 @@ abstract getDuration(): number;
 
 媒体文件总时长（毫秒）。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getmediaplayerid"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getMediaPlayerId
 
@@ -67,7 +74,7 @@ abstract getDuration(): number;
 
 <a id="api_imediaplayer_getmediaplayerid__prototype"></a>
 
-```typescript
+```text
 abstract getMediaPlayerId(): number;
 ```
 
@@ -78,12 +85,11 @@ abstract getMediaPlayerId(): number;
 ### 返回值
 
 - 方法调用成功，返回播放器 ID。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getmute"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMute
 
@@ -91,7 +97,7 @@ abstract getMediaPlayerId(): number;
 
 <a id="api_imediaplayer_getmute__prototype"></a>
 
-```typescript
+```text
 abstract getMute(): boolean;
 ```
 
@@ -104,10 +110,9 @@ abstract getMute(): boolean;
 - true：当前播放的媒体文件为静音。
 - false：当前播放的媒体文件没有静音。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getplayoutvolume"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getPlayoutVolume
 
@@ -115,7 +120,7 @@ abstract getMute(): boolean;
 
 <a id="api_imediaplayer_getplayoutvolume__prototype"></a>
 
-```typescript
+```text
 abstract getPlayoutVolume(): number;
 ```
 
@@ -130,10 +135,9 @@ abstract getPlayoutVolume(): number;
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getplayposition"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getPlayPosition
 
@@ -141,7 +145,7 @@ abstract getPlayoutVolume(): number;
 
 <a id="api_imediaplayer_getplayposition__prototype"></a>
 
-```typescript
+```text
 abstract getPlayPosition(): number;
 ```
 
@@ -152,12 +156,11 @@ abstract getPlayPosition(): number;
 ### 返回值
 
 - 方法调用成功，返回当前播放进度（毫秒）。
-- &lt; 0: 方法调用失败，详见 MediaPlayerReason。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getPlaySrc
 
@@ -165,7 +168,7 @@ abstract getPlayPosition(): number;
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract getPlaySrc(): string;
 ```
 
@@ -177,10 +180,9 @@ abstract getPlaySrc(): string;
 
 播放的媒体资源的路径。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getPublishSignalVolume
 
@@ -188,7 +190,7 @@ abstract getPlaySrc(): string;
 
 <a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
 
-```typescript
+```text
 abstract getPublishSignalVolume(): number;
 ```
 
@@ -199,12 +201,11 @@ abstract getPublishSignalVolume(): number;
 ### 返回值
 
 - ≥ 0: 播放文件的远端播放音量。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_getstate"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getState
 
@@ -212,7 +213,7 @@ abstract getPublishSignalVolume(): number;
 
 <a id="api_imediaplayer_getstate__prototype"></a>
 
-```typescript
+```text
 abstract getState(): MediaPlayerState;
 ```
 
@@ -224,10 +225,9 @@ abstract getState(): MediaPlayerState;
 
 播放器当前状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerstate)。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="api_imediaplayer_getstreamcount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## getStreamCount
 
@@ -235,14 +235,14 @@ abstract getState(): MediaPlayerState;
 
 <a id="api_imediaplayer_getstreamcount__prototype"></a>
 
-```typescript
+```text
 abstract getStreamCount(): number;
 ```
 
 <a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
 
-:::info[注]
-请在 [open](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后并收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 `PlayerStateOpenCompleted` 后再调用该方法。
+:::note
+注： 请在 [open](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后并收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 `PlayerStateOpenCompleted` 后再调用该方法。
 :::
 
 <a id="api_imediaplayer_getstreamcount__return_values"></a>
@@ -250,12 +250,11 @@ abstract getStreamCount(): number;
 ### 返回值
 
 - 方法调用成功，返回该媒体文件中媒体流的数量。
-- &lt; 0: 方法调用失败，详见 MediaPlayerReason。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 <a id="api_imediaplayer_getstreaminfo"></a>
+
+<a id="ariaid-title12"></a>
 
 ## getStreamInfo
 
@@ -263,7 +262,7 @@ abstract getStreamCount(): number;
 
 <a id="api_imediaplayer_getstreaminfo__prototype"></a>
 
-```typescript
+```text
 abstract getStreamInfo(index: number): PlayerStreamInfo;
 ```
 
@@ -279,7 +278,7 @@ abstract getStreamInfo(index: number): PlayerStreamInfo;
 
 ### 参数
 
-#### `index`
+### index
 
 媒体流索引值。该参数的值需小于 [getStreamCount](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的返回值。
 
@@ -287,13 +286,12 @@ abstract getStreamInfo(index: number): PlayerStreamInfo;
 
 ### 返回值
 
-- 方法调用成功，返回媒体流信息，详见 PlayerStreamInfo。
+- 方法调用成功，返回媒体流信息，详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/react-native/class-playerstreaminfo)。
 - 方法调用失败，返回 null。
 
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
-
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerPlaybackStats
 
@@ -301,7 +299,7 @@ abstract getStreamInfo(index: number): PlayerStreamInfo;
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
 
-```typescript
+```text
 onPlayerPlaybackStats?(stats: PlayerPlaybackStats): void;
 ```
 
@@ -313,9 +311,6 @@ onPlayerPlaybackStats?(stats: PlayerPlaybackStats): void;
 
 ### 参数
 
-#### `stats`
+### stats
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/react-native/class-playerplaybackstats)。
-
-### 所属接口类
-- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)

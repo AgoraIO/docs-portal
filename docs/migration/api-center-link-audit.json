@@ -3,18 +3,18 @@
     "errors": 0,
     "invalidLinks": 0,
     "legacyOldSiteBodyLinks": 0,
-    "links": 33419,
+    "links": 70017,
     "missingFragments": 0,
     "missingLocalPaths": 0,
-    "ownedMdxPages": 1506,
-    "preservedMdxPages": 3746,
+    "ownedMdxPages": 4956,
+    "preservedMdxPages": 296,
     "visibleMdxPages": 5252,
-    "warnings": 199
+    "warnings": 203
   },
   "issues": [],
   "outputTypes": {
     "asset": 93,
-    "generated-html": 1307,
+    "generated-html": 4757,
     "manual-mdx": 197,
     "navigation": 2,
     "navigation-meta": 91
@@ -29,6 +29,16 @@
     "empty-source-body": {
       "count": 5,
       "explanation": "The legacy generator exposes a named page whose source body is intentionally empty.",
+      "severity": "info"
+    },
+    "empty-source-code": {
+      "count": 9,
+      "explanation": "The legacy source contains an empty code block; the migration preserves its anchor and omits the empty fence without inventing a signature.",
+      "severity": "info"
+    },
+    "generated-fragment-normalized": {
+      "count": 4,
+      "explanation": "A generated-page fragment was rewritten to the unique stable anchor exposed by its local target.",
       "severity": "info"
     },
     "manual-fragment-alias": {
@@ -57,12 +67,12 @@
       "severity": "warning"
     },
     "source-only-link-removed": {
-      "count": 770,
+      "count": 809,
       "explanation": "A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.",
       "severity": "info"
     },
     "unresolved-fragment": {
-      "count": 14,
+      "count": 18,
       "explanation": "A legacy fragment could not be mapped to a stable target fragment.",
       "severity": "warning"
     },

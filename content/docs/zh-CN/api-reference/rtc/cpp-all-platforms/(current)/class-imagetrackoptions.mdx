@@ -1,10 +1,18 @@
 ---
-title: "ImageTrackOptions"
-description: "用于图像配置。"
+title: ImageTrackOptions
+description: 用于图像配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_imagetrackoptions
+  sourcePath: html-docs/rtc/Cpp/API/class_imagetrackoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_imagetrackoptions__prototype"></a>
 
-```cpp
+```text
 struct ImageTrackOptions {
   const char* imageUrl;
   int fps;
@@ -16,18 +24,18 @@ struct ImageTrackOptions {
 
 ## 属性
 
-### `imageUrl`
+### imageUrl
 
 图像的 URL。支持的图像格式包括 JPEG、JPG、PNG 和 GIF。支持从本地的绝对路径或相对路径添加图像。
 
-:::info[注]
-在 Android 平台上，不支持从 `/assets/` 添加图像。
+:::note
+注： 在 Android 平台上，不支持从 `/assets/` 添加图像。
 :::
 
-### `fps`
+### fps
 
 发布的视频流的帧率，取值范围为 [1, 30]，默认值为 1。
 
-### `mirrorMode`
+### mirrorMode
 
 镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。

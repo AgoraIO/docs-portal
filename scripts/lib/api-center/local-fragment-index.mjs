@@ -19,7 +19,10 @@ function cleanHeadingText(value) {
   return String(value ?? '')
     .replace(/\s+\{#[^}\s]+\}\s*$/, '')
     .replace(/!\[[^\]]*]\([^)]+\)/g, '')
-    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(
+      /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\((?:<[^>\n]+>|[^)\n]+)\)/g,
+      '$1',
+    )
     .replace(/<[^>]+>/g, '')
     .replace(/[`*_~]/g, '')
     .replace(/&amp;/g, '&')
@@ -56,7 +59,9 @@ export function targetPathToRoute(targetPath) {
   const relative = posix(targetPath)
     .replace(/^content\/docs\//, '')
     .replace(/\.mdx?$/i, '');
-  const segments = relative.split('/').filter((segment) => !ROUTE_GROUP.test(segment));
+  const segments = relative
+    .split('/')
+    .filter((segment) => !ROUTE_GROUP.test(segment));
   if (segments.at(-1) === 'index') segments.pop();
   return `/${segments.join('/')}`;
 }
@@ -109,11 +114,13 @@ export function collectSamePageFragments(source) {
   const fragments = new Set();
   const scannable = maskCode(source);
   for (const match of scannable.matchAll(
-    /(?<!!)\[((?:[^\[\]\n]|\[[^\]\n]*])*)]\(#([^\s)]+)(?:\s+"[^"]*")?\s*\)/g,
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\(#([^\s)]+)(?:\s+"[^"]*")?\s*\)/g,
   )) {
     fragments.add(decode(match[2]));
   }
-  for (const match of scannable.matchAll(/\bhref\s*=\s*(?:"#([^"]+)"|'#([^']+)')/gi)) {
+  for (const match of scannable.matchAll(
+    /\bhref\s*=\s*(?:"#([^"]+)"|'#([^']+)')/gi,
+  )) {
     fragments.add(decode(match[1] ?? match[2]));
   }
   return fragments;
@@ -165,8 +172,12 @@ export function insertFragmentAliases(source, requestedFragments) {
     inserted.push(requested);
   }
   let output = source;
-  for (const insertion of insertions.sort((left, right) => right.index - left.index)) {
-    const escaped = insertion.anchor.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  for (const insertion of insertions.sort(
+    (left, right) => right.index - left.index,
+  )) {
+    const escaped = insertion.anchor
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;');
     output = `${output.slice(0, insertion.index)}<a id="${escaped}"></a>\n${output.slice(insertion.index)}`;
   }
   return { body: output, inserted, unresolved };
@@ -216,7 +227,9 @@ export async function buildLocalFragmentIndex({ repoRoot, virtualPages = [] }) {
       if (cache.has(normalized)) return cache.get(normalized);
       const page = routes.get(normalized);
       if (!page) return null;
-      const source = page.virtual ? page.body : await fs.readFile(page.absolute, 'utf8');
+      const source = page.virtual
+        ? page.body
+        : await fs.readFile(page.absolute, 'utf8');
       const anchors = extractMdxAnchors(source);
       cache.set(normalized, anchors);
       return anchors;
@@ -240,7 +253,7 @@ export function collectLocalFragmentReferences(source, sourceRoute) {
   const references = [];
   const scannable = maskCode(source);
   for (const match of scannable.matchAll(
-    /(?<!!)\[((?:[^\[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
   )) {
     const parsed = parseLocalFragmentHref(match[2], sourceRoute);
     if (parsed?.fragment) references.push(parsed);
@@ -262,7 +275,7 @@ export async function rewriteLocalFragmentLinks(
   const replacements = [];
   const scannable = maskCode(source);
   for (const match of scannable.matchAll(
-    /(?<!!)\[((?:[^\[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)(?:\s+"[^"]*")?\s*\)/g,
   )) {
     const parsed = parseLocalFragmentHref(match[2], sourceRoute);
     if (!parsed?.fragment) continue;
@@ -285,7 +298,9 @@ export async function rewriteLocalFragmentLinks(
     });
   }
   let body = source;
-  for (const replacement of replacements.sort((left, right) => right.start - left.start)) {
+  for (const replacement of replacements.sort(
+    (left, right) => right.start - left.start,
+  )) {
     body = `${body.slice(0, replacement.start)}${replacement.value}${body.slice(replacement.end)}`;
   }
   return { body, warnings };

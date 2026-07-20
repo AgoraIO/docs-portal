@@ -1,10 +1,19 @@
 ---
-title: "setSrcChannelInfo"
-description: "设置源频道的信息。"
+title: setSrcChannelInfo
+description: 设置源频道的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc/android/API/api_channelmediarelayconfiguration_setsrcchannelinfo
+  sourcePath: html-docs/rtc/Android/API/api_channelmediarelayconfiguration_setsrcchannelinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_channelmediarelayconfiguration_setsrcchannelinfo__prototype"></a>
 
-```java
+```text
 public void setSrcChannelInfo(ChannelMediaInfo srcInfo)
 ```
 
@@ -14,12 +23,13 @@ public void setSrcChannelInfo(ChannelMediaInfo srcInfo)
 
 ## 参数
 
-### `srcInfo`
+### srcInfo
 
 源频道的信息，详见 [ChannelMediaInfo](/zh-CN/api-reference/rtc/android/class-channelmediainfo)。
 
-- channelName：源频道的频道名。默认值为 null，表示 SDK 使用当前频道的频道名。
-- uid：要转发媒体流的主播的用户 ID。默认值为 0，表示 SDK 自动生成一个随机的用户 ID。你必须将其设置为 0。
-- token：加入源频道所需的 Token。该 Token 是根据你在 srcInfo 中设置的 channelName 和 uid 生成的。
-  - 如果你未启用 App 证书，请将该参数设置为默认值 null，表示 SDK 使用 App ID。
-  - 如果你已启用 App 证书，必须使用根据 channelName 和 uid 生成的 Token，且 uid 必须设置为 0。
+- `channelName`：源频道的频道名。默认值为 `null`，表示 SDK 使用当前频道的频道名。
+- `uid`：要转发媒体流的主播的用户 ID。默认值为 0，表示 SDK 自动生成一个随机的用户 ID。你必须将其设置为 0。
+- `token`：加入源频道所需的 Token。该 Token 是根据你在 `srcInfo` 中设置的 `channelName` 和 `uid` 生成的。
+
+  - 如果你未启用 App 证书，请将该参数设置为默认值 `null`，表示 SDK 使用 App ID。
+  - 如果你已启用 App 证书，必须使用根据 `channelName` 和 `uid` 生成的 Token，且 `uid` 必须设置为 0。

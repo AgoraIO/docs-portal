@@ -1,10 +1,19 @@
 ---
-title: "虚拟节拍器"
-description: "虚拟节拍器 API reference."
+title: 虚拟节拍器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_rhythmplayer
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_rhythmplayer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_rhythmplayer"></a>
 
 <a id="api_irtcengine_configrhythmplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## ConfigRhythmPlayer
 
@@ -12,7 +21,7 @@ description: "虚拟节拍器 API reference."
 
 <a id="api_irtcengine_configrhythmplayer__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int ConfigRhythmPlayer(const FAgoraRhythmPlayerConfig& config);
 ```
@@ -20,8 +29,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 <a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
 
 - 调用 [StartRhythmPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig) 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 publishRhythmPlayerTrack 设为 true。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig) 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 publishRhythmPlayerTrack 设为 `true`。
 
 <a id="api_irtcengine_configrhythmplayer__timing"></a>
 
@@ -45,7 +54,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `config`
+### config
 
 节拍器配置。详见 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig)。
 
@@ -54,12 +63,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startrhythmplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## StartRhythmPlayer
 
@@ -67,15 +75,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startrhythmplayer__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRhythmPlayer(const FString& sound1, const FString& sound2, const FAgoraRhythmPlayerConfig& config);
 ```
 
 <a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
 
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig) 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 publishRhythmPlayerTrack 设为 true。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig) 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 publishRhythmPlayerTrack 设为 `true`。
 
 <a id="api_irtcengine_startrhythmplayer__scenario"></a>
 
@@ -105,15 +113,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `sound1`
+### sound1
 
-强拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+强拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\\music\\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `sound2`
+### sound2
 
-弱拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+弱拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\\music\\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `config`
+### config
 
 节拍器配置。详见 [FAgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-agorarhythmplayerconfig)。
 
@@ -123,12 +131,12 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -22: 无法找到音频文件。请填写正确的 sound1 和 sound2。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_stoprhythmplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## StopRhythmPlayer
 
@@ -136,7 +144,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stoprhythmplayer__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopRhythmPlayer();
 ```
@@ -147,8 +155,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用 [StartRhythmPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
 
-:::warning[注意]
-该方法仅适用于 Android 和 iOS。
+:::note
+注意： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_stoprhythmplayer__return_values"></a>
@@ -156,12 +164,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+<a id="ariaid-title5"></a>
 
 ## OnRhythmPlayerStateChanged
 
@@ -169,7 +176,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRhythmPlayerStateChanged(FENUMWRAP_RHYTHM_PLAYER_STATE_TYPE state, FENUMWRAP_RHYTHM_PLAYER_REASON reason);
 ```
@@ -178,21 +185,18 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 虚拟节拍器状态发生改变时，SDK 会触发该回调报告当前的虚拟节拍器状态。在虚拟节拍器出现故障时，该回调可以帮助你了解当前虚拟节拍的状态以及出现故障的原因，方便你排查问题。
 
-:::warning[注意]
-该回调仅适用于 Android 和 iOS。
+:::note
+注意： 该回调仅适用于 Android 和 iOS。
 :::
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters"></a>
 
 ### 参数
 
-#### `state`
+### state
 
 当前的虚拟节拍器状态，详见 [FENUMWRAP_RHYTHM_PLAYER_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-rhythmplayerstatetype)。
 
-#### `errorCode`
+### errorCode
 
 虚拟节拍器发生错误的错误码和错误信息，详见 [FENUMWRAP_RHYTHM_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-rhythmplayerreason)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,19 @@
 ---
-title: "人像锁定"
-description: "人像锁定 API reference."
+title: 人像锁定
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_center_stage
+  sourcePath: html-docs/rtc/Flutter/API/toc_center_stage.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_center_stage"></a>
 
 <a id="api_irtcengine_enablecameracenterstage"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableCameraCenterStage
 
@@ -12,7 +21,7 @@ description: "人像锁定 API reference."
 
 <a id="api_irtcengine_enablecameracenterstage__prototype"></a>
 
-```dart
+```text
 Future<void> enableCameraCenterStage(bool enabled);
 ```
 
@@ -20,10 +29,12 @@ Future<void> enableCameraCenterStage(bool enabled);
 
 人像锁定功能默认关闭，你需要调用该方法开启。如果需要关闭该功能，则需重新调用该方法并将 `enabled` 设置为 false。
 
-:::info[注]
-该方法仅适用于 iOS 和 macOS。 由于该功能对设备性能要求较高，你需要在以下类型或更高性能的设备上使用该功能：
+:::note
+注： 该方法仅适用于 iOS 和 macOS。
+由于该功能对设备性能要求较高，你需要在以下类型或更高性能的设备上使用该功能：
 
 - iPad：
+
   - 12.9 英寸 iPad Pro（第五代）
   - 11 英寸 iPad Pro（第三代）
   - iPad（第九代）
@@ -50,7 +61,7 @@ Future<void> enableCameraCenterStage(bool enabled);
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启人像锁定功能：
 
@@ -63,10 +74,9 @@ Future<void> enableCameraCenterStage(bool enabled);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_iscameracenterstagesupported"></a>
+
+<a id="ariaid-title3"></a>
 
 ## isCameraCenterStageSupported
 
@@ -74,7 +84,7 @@ Future<void> enableCameraCenterStage(bool enabled);
 
 <a id="api_irtcengine_iscameracenterstagesupported__prototype"></a>
 
-```dart
+```text
 Future<bool> isCameraCenterStageSupported();
 ```
 
@@ -82,8 +92,8 @@ Future<bool> isCameraCenterStageSupported();
 
 在调用 [enableCameraCenterStage](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) 开启人像锁定功能前，建议你先调用该方法查询当前设备是否支持人像锁定。
 
-:::info[注]
-该方法仅适用于 iOS 和 macOS。
+:::note
+注： 该方法仅适用于 iOS 和 macOS。
 :::
 
 <a id="api_irtcengine_iscameracenterstagesupported__timing"></a>
@@ -98,6 +108,3 @@ Future<bool> isCameraCenterStageSupported();
 
 - true: 当前摄像头支持人像锁定。
 - false: 当前摄像头不支持人像锁定。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)

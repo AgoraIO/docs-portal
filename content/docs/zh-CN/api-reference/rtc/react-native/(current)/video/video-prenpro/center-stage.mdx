@@ -1,10 +1,19 @@
 ---
-title: "人像锁定"
-description: "人像锁定 API reference."
+title: 人像锁定
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_center_stage
+  sourcePath: html-docs/rtc/RN/API/toc_center_stage.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_center_stage"></a>
 
 <a id="api_irtcengine_enablecameracenterstage"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableCameraCenterStage
 
@@ -12,7 +21,7 @@ description: "人像锁定 API reference."
 
 <a id="api_irtcengine_enablecameracenterstage__prototype"></a>
 
-```typescript
+```text
 abstract enableCameraCenterStage(enabled: boolean): number;
 ```
 
@@ -20,10 +29,12 @@ abstract enableCameraCenterStage(enabled: boolean): number;
 
 人像锁定功能默认关闭，你需要调用该方法开启。如果需要关闭该功能，则需重新调用该方法并将 `enabled` 设置为 false。
 
-:::info[注]
-该方法仅适用于 iOS。 由于该功能对设备性能要求较高，你需要在以下类型或更高性能的设备上使用该功能：
+:::note
+注： 该方法仅适用于 iOS。
+由于该功能对设备性能要求较高，你需要在以下类型或更高性能的设备上使用该功能：
 
 - iPad：
+
   - 12.9 英寸 iPad Pro（第五代）
   - 11 英寸 iPad Pro（第三代）
   - iPad（第九代）
@@ -50,7 +61,7 @@ abstract enableCameraCenterStage(enabled: boolean): number;
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否开启人像锁定功能：
 
@@ -62,12 +73,11 @@ abstract enableCameraCenterStage(enabled: boolean): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_iscameracenterstagesupported"></a>
+
+<a id="ariaid-title3"></a>
 
 ## isCameraCenterStageSupported
 
@@ -75,7 +85,7 @@ abstract enableCameraCenterStage(enabled: boolean): number;
 
 <a id="api_irtcengine_iscameracenterstagesupported__prototype"></a>
 
-```typescript
+```text
 abstract isCameraCenterStageSupported(): boolean;
 ```
 
@@ -83,8 +93,8 @@ abstract isCameraCenterStageSupported(): boolean;
 
 在调用 [enableCameraCenterStage](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) 开启人像锁定功能前，建议你先调用该方法查询当前设备是否支持人像锁定。
 
-:::info[注]
-该方法仅适用于 iOS。
+:::note
+注： 该方法仅适用于 iOS。
 :::
 
 <a id="api_irtcengine_iscameracenterstagesupported__timing"></a>
@@ -99,6 +109,3 @@ abstract isCameraCenterStageSupported(): boolean;
 
 - true: 当前摄像头支持人像锁定。
 - false: 当前摄像头不支持人像锁定。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)

@@ -1,10 +1,18 @@
 ---
-title: "EnableVoiceAITuner"
-description: "开启或关闭 AI 调音器功能。"
+title: EnableVoiceAITuner
+description: 开启或关闭 AI 调音器功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengine_enablevoiceaituner
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_enablevoiceaituner.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengine_enablevoiceaituner__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableVoiceAITuner(bool enabled, VOICE_AI_TUNER_TYPE type);
 ```
 
@@ -34,14 +42,14 @@ AI 调音器功能支持美化音质，调整音色风格。
 
 ## 参数
 
-### `enabled`
+### enabled
 
 是否开启 AI 调音器功能：
 
-- true：开启 AI 调音器功能。
-- false：（默认）关闭 AI 调音器功能。
+- `true`：开启 AI 调音器功能。
+- `false`：（默认）关闭 AI 调音器功能。
 
-### `type`
+### type
 
 AI 调音器音效类型，详见 [VOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-voiceaitunertype)。
 
@@ -50,4 +58,4 @@ AI 调音器音效类型，详见 [VOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

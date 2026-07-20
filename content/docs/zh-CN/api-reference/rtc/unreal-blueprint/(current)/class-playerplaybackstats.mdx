@@ -1,13 +1,21 @@
 ---
-title: "FPlayerPlaybackStats"
-description: "当前播放的媒体资源的相关信息。"
+title: FPlayerPlaybackStats
+description: 当前播放的媒体资源的相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_playerplaybackstats
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_playerplaybackstats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_playerplaybackstats__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FPlayerPlaybackStats {
-	
+
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FPlayerPlaybackStats")
@@ -34,7 +42,7 @@ public:
 		return AgoraData;
 	}
 	void FreeAgoraData(agora::media::base::PlayerPlaybackStats & AgoraData) const {
-		
+
 	}
 };
 ```
@@ -45,18 +53,18 @@ public:
 
 ## 属性
 
-### `videoFps`
+### videoFps
 
 视频帧率，单位为 fps。
 
-### `videoBitrateInKbps`
+### videoBitrateInKbps
 
 视频码率，单位为 kbps。
 
-### `audioBitrateInKbps`
+### audioBitrateInKbps
 
 音频码率，单位为 kbps。
 
-### `totalBitrateInKbps`
+### totalBitrateInKbps
 
 媒体流的总码率，单位为 kbps。

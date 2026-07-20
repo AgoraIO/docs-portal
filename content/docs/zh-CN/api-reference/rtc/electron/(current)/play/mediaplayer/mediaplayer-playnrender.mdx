@@ -1,10 +1,19 @@
 ---
-title: "媒体资源播放和渲染"
-description: "媒体资源播放和渲染 API reference."
+title: 媒体资源播放和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_mediaplayer_playnrender
+  sourcePath: html-docs/rtc/Electron/API/toc_mediaplayer_playnrender.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_playnrender"></a>
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## selectAudioTrack
 
@@ -12,7 +21,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract selectAudioTrack(index: number): number;
 ```
 
@@ -20,15 +29,15 @@ abstract selectAudioTrack(index: number): number;
 
 获取音频文件的音轨索引后，你可以调用该方法指定任一音轨进行播放。如果一个多音轨文件的不同音轨存放了不同语言的歌曲，你可以调用该方法设置播放语言。
 
-:::info[注]
-你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
+:::note
+注： 你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
 
 ### 参数
 
-#### `index`
+### index
 
 音轨的索引值。
 
@@ -37,12 +46,11 @@ abstract selectAudioTrack(index: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setAudioDualMonoMode
 
@@ -50,7 +58,7 @@ abstract selectAudioTrack(index: number): number;
 
 <a id="api_imediaplayer_setaudiodualmonomode__prototype"></a>
 
-```typescript
+```text
 abstract setAudioDualMonoMode(mode: AudioDualMonoMode): number;
 ```
 
@@ -58,8 +66,10 @@ abstract setAudioDualMonoMode(mode: AudioDualMonoMode): number;
 
 在双声道音频文件中，左声道和右声道可以存储不同的音频数据。根据实际需要，你可以设置声道模式为原始模式、左声道模式、右声道模式或混合模式。例如，在 KTV 场景中，音频文件的左声道存储了伴奏，右声道存储了原唱的歌声。如果你只需听伴奏，调用该方法设置音频文件的声道模式为左声道模式；如果你需要同时听伴奏和原唱，调用该方法设置声道模式为混合模式。
 
-:::info[注]
-- 你需要在调用 open 后调用该方法。
+:::note
+注：
+
+- 你需要在调用 [open](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 - 该方法仅适用于双声道的音频文件。
 :::
 
@@ -67,7 +77,7 @@ abstract setAudioDualMonoMode(mode: AudioDualMonoMode): number;
 
 ### 参数
 
-#### `mode`
+### mode
 
 声道模式。详见 [AudioDualMonoMode](/zh-CN/api-reference/rtc/electron/enum-audiodualmonomode)。
 
@@ -76,12 +86,11 @@ abstract setAudioDualMonoMode(mode: AudioDualMonoMode): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setaudiopitch"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setAudioPitch
 
@@ -89,21 +98,21 @@ abstract setAudioDualMonoMode(mode: AudioDualMonoMode): number;
 
 <a id="api_imediaplayer_setaudiopitch__prototype"></a>
 
-```typescript
+```text
 abstract setAudioPitch(pitch: number): number;
 ```
 
 <a id="api_imediaplayer_setaudiopitch__detailed_desc"></a>
 
-:::info[注]
-你需要在调用 [open](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
+:::note
+注： 你需要在调用 [open](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 :::
 
 <a id="api_imediaplayer_setaudiopitch__parameters"></a>
 
 ### 参数
 
-#### `pitch`
+### pitch
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
 
@@ -112,12 +121,11 @@ abstract setAudioPitch(pitch: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setloopcount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setLoopCount
 
@@ -125,19 +133,20 @@ abstract setAudioPitch(pitch: number): number;
 
 <a id="api_imediaplayer_setloopcount__prototype"></a>
 
-```typescript
+```text
 abstract setLoopCount(loopCount: number): number;
 ```
 
 <a id="api_imediaplayer_setloopcount__detailed_desc"></a>
 
-如果你希望循环播放，请调用该方法并设置循环播放次数。 循环播放结束时，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，向你报告播放状态为 PlayerStatePlaybackAllLoopsCompleted。
+如果你希望循环播放，请调用该方法并设置循环播放次数。
+循环播放结束时，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，向你报告播放状态为 PlayerStatePlaybackAllLoopsCompleted。
 
 <a id="api_imediaplayer_setloopcount__parameters"></a>
 
 ### 参数
 
-#### `loopCount`
+### loopCount
 
 循环播放的次数。
 
@@ -149,12 +158,11 @@ abstract setLoopCount(loopCount: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setPlaybackSpeed
 
@@ -162,7 +170,7 @@ abstract setLoopCount(loopCount: number): number;
 
 <a id="api_imediaplayer_setplaybackspeed__prototype"></a>
 
-```typescript
+```text
 abstract setPlaybackSpeed(speed: number): number;
 ```
 
@@ -174,7 +182,7 @@ abstract setPlaybackSpeed(speed: number): number;
 
 ### 参数
 
-#### `speed`
+### speed
 
 播放速度。推荐取值范围为 [30,400]，其中：
 
@@ -187,12 +195,11 @@ abstract setPlaybackSpeed(speed: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setPlayerOptionInInt
 
@@ -200,13 +207,14 @@ abstract setPlaybackSpeed(speed: number): number;
 
 <a id="api_imediaplayer_setplayeroption__prototype"></a>
 
-```typescript
+```text
 abstract setPlayerOptionInInt(key: string, value: number): number;
 ```
 
 <a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
 
-媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInString](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 `value` 是 Int 型， [setPlayerOptionInString](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 是 String 型。二者不可混用。
+媒体播放器支持通过 `key` 和 `value` 来设置选项。
+该方法和 [setPlayerOptionInString](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 `value` 是 Int 型，[setPlayerOptionInString](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 是 String 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption__scenario"></a>
 
@@ -224,11 +232,11 @@ abstract setPlayerOptionInInt(key: string, value: number): number;
 
 ### 参数
 
-#### `key`
+### key
 
 key 值。
 
-#### `value`
+### value
 
 value 值。
 
@@ -237,12 +245,11 @@ value 值。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setplayeroption2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setPlayerOptionInString
 
@@ -250,13 +257,14 @@ value 值。
 
 <a id="api_imediaplayer_setplayeroption2__prototype"></a>
 
-```typescript
+```text
 abstract setPlayerOptionInString(key: string, value: string): number;
 ```
 
 <a id="api_imediaplayer_setplayeroption2__detailed_desc"></a>
 
-媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInInt](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 `value` 是 String 型， [setPlayerOptionInInt](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 是 Int 型。二者不可混用。
+媒体播放器支持通过 `key` 和 `value` 来设置选项。
+该方法和 [setPlayerOptionInInt](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 `value` 是 String 型，[setPlayerOptionInInt](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 是 Int 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption2__scenario"></a>
 
@@ -274,11 +282,11 @@ abstract setPlayerOptionInString(key: string, value: string): number;
 
 ### 参数
 
-#### `key`
+### key
 
 key 值。
 
-#### `value`
+### value
 
 value 值。
 
@@ -287,12 +295,11 @@ value 值。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setview"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setView
 
@@ -300,7 +307,7 @@ value 值。
 
 <a id="api_imediaplayer_setview__prototype"></a>
 
-```typescript
+```text
 abstract setView(view: any): number;
 ```
 
@@ -316,7 +323,7 @@ abstract setView(view: any): number;
 
 ### 参数
 
-#### `view`
+### view
 
 渲染视图。Windows 平台为窗口句柄（HWND）。
 
@@ -325,7 +332,4 @@ abstract setView(view: any): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

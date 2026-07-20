@@ -1,19 +1,27 @@
 ---
-title: "ENCODING_PREFERENCE"
-description: "视频编码器偏好。"
+title: ENCODING_PREFERENCE
+description: 视频编码器偏好。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/enum_encodingpreference
+  sourcePath: html-docs/rtc/Unity/API/enum_encodingpreference.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_encodingpreference__parameters"></a>
 
 ## 枚举值
 
-### `PREFER_AUTO`
+### PREFER_AUTO
 
 -1：自适应偏好。SDK 根据平台、设备类型等因素自动选择最优的编码类型进行编码。
 
-### `PREFER_SOFTWARE`
+### PREFER_SOFTWARE
 
 0：软件编码偏好。SDK 优先使用软件编码器进行视频编码。
 
-### `PREFER_HARDWARE`
+### PREFER_HARDWARE
 
 1：硬件编码偏好。SDK 优先使用硬件编码器进行视频编码。当设备不支持硬件编码时，SDK 会自动使用软件编码，并通过 [OnLocalVideoStats](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `hwEncoderAccelerating` 报告当前使用的视频编码器类型。

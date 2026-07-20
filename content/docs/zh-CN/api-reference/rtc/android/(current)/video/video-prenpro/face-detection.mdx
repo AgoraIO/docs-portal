@@ -1,10 +1,19 @@
 ---
-title: "人脸检测"
-description: "人脸检测 API reference."
+title: 人脸检测
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_face_detection
+  sourcePath: html-docs/rtc/Android/API/toc_face_detection.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_face_detection"></a>
 
 <a id="api_irtcengine_enablefacedetection"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableFaceDetection
 
@@ -12,7 +21,7 @@ description: "人脸检测 API reference."
 
 <a id="api_irtcengine_enablefacedetection__prototype"></a>
 
-```java
+```text
 public abstract int enableFaceDetection(boolean enabled);
 ```
 
@@ -38,7 +47,7 @@ public abstract int enableFaceDetection(boolean enabled);
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用本地用户的人脸检测功能：
 
@@ -50,12 +59,11 @@ public abstract int enableFaceDetection(boolean enabled);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
+
+<a id="ariaid-title3"></a>
 
 ## onFacePositionChanged
 
@@ -63,7 +71,7 @@ public abstract int enableFaceDetection(boolean enabled);
 
 <a id="callback_irtcengineeventhandler_onfacepositionchanged__prototype"></a>
 
-```java
+```text
 public void onFacePositionChanged(int imageWidth, int imageHeight, AgoraFacePositionInfo[] faceRectArr)
 ```
 
@@ -75,7 +83,9 @@ public void onFacePositionChanged(int imageWidth, int imageHeight, AgoraFacePosi
 - 人脸在本地视图中的位置。
 - 人脸与屏幕之间的距离。该距离值基于本地视频尺寸和人脸位置的拟合计算得出。
 
-:::info[注]
+:::note
+注：
+
 - 当检测到摄像头前的人脸消失时，会立即触发该回调。当未检测到人脸时，为降低本地设备的功耗，该回调的触发频率会降低。
 - 当人脸靠近屏幕时，SDK 会停止触发该回调。
 - 在 Android 平台，该回调中上报的距离值可能与实际距离略有偏差，因此不建议用于精确计算。
@@ -85,17 +95,14 @@ public void onFacePositionChanged(int imageWidth, int imageHeight, AgoraFacePosi
 
 ### 参数
 
-#### `imageWidth`
+### imageWidth
 
 本地摄像头采集的视频图像的宽度（单位为像素）。
 
-#### `imageHeight`
+### imageHeight
 
 本地摄像头采集的视频图像的高度（单位为像素）。
 
-#### `faceRectArr`
+### faceRectArr
 
 检测到的人脸信息。该数组的长度取决于检测到的人脸数量，可能为 0，表示摄像头前未检测到人脸。详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/android/class-agorafacepositioninfo)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,18 @@
 ---
-title: "LiveTranscoding"
-description: "用于配置媒体推流的转码参数。"
+title: LiveTranscoding
+description: 用于配置媒体推流的转码参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_livetranscoding
+  sourcePath: html-docs/rtc/Android/API/class_livetranscoding.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_livetranscoding__prototype"></a>
 
-```java
+```text
 public class LiveTranscoding {
   public int width;
   public int height;
@@ -33,52 +41,52 @@ public class LiveTranscoding {
 
 ## 属性
 
-### `width`
+### width
 
 视频宽度，单位为像素，默认值为 360。
 
-- 当推送视频流至 CDN 时， width 的取值范围为 [64,1920]。若该值小于 64，声网服务器会自动调整为 64；若该值大于 1920，则自动调整为 1920。
-- 当推送音频流至 CDN 时，请将 width 和 height 设置为 0。
+- 当推送视频流至 CDN 时，`width` 的取值范围为 [64,1920]。若该值小于 64，声网服务器会自动调整为 64；若该值大于 1920，则自动调整为 1920。
+- 当推送音频流至 CDN 时，请将 `width` 和 `height` 设置为 0。
 
-### `height`
+### height
 
 视频高度，单位为像素，默认值为 640。
 
-- 当推送视频流至 CDN 时， height 的取值范围为 [64,1080]。若该值小于 64，声网服务器会自动调整为 64；若该值大于 1080，则自动调整为 1080。
-- 当推送音频流至 CDN 时，请将 width 和 height 设置为 0。
+- 当推送视频流至 CDN 时，`height` 的取值范围为 [64,1080]。若该值小于 64，声网服务器会自动调整为 64；若该值大于 1080，则自动调整为 1080。
+- 当推送音频流至 CDN 时，请将 `width` 和 `height` 设置为 0。
 
-### `videoBitrate`
+### videoBitrate
 
 视频编码码率（Kbps）。无需设置该参数，仅保留默认值 STANDARD_BITRATE 即可。SDK 会根据已设置的视频分辨率和帧率自动匹配最合适的码率。关于视频分辨率与帧率的对应关系，详见 `Video profile`。
 
-### `videoFramerate`
+### videoFramerate
 
 媒体推流设置的视频输出帧率（fps），默认值为 15。该值的取值范围为 (0,30]。
 
-:::info[注]
-声网服务器会将大于 30 的值调整为 30。
+:::note
+注： 声网服务器会将大于 30 的值调整为 30。
 :::
 
-### `lowLatency`
+### lowLatency
 
 延迟模式：
 
 - true：低延迟模式，但无法保证画质。
 - false：默认值，高延迟但可保证画质。
 
-### `videoGop`
+### videoGop
 
 媒体推流中视频帧的 GOP（图像组）设置，单位为帧，默认值为 30。
 
-### `audioSampleRate`
+### audioSampleRate
 
 媒体输出流的音频采样率（Hz）。详见 [AudioSampleRateType](/zh-CN/api-reference/rtc/android/enum-audiosampleratetype)。
 
-### `audioBitrate`
+### audioBitrate
 
 音频输出流的编码码率，单位为 Kbps，默认值为 48，最大值为 128。
 
-### `audioChannels`
+### audioChannels
 
 媒体推流使用的音频声道数。声网建议选择 1（单声道）或 2（立体声）。若选择 3、4 或 5，则需要特定播放器支持。
 
@@ -88,30 +96,30 @@ public class LiveTranscoding {
 - 4：四声道。
 - 5：五声道。
 
-### `audioCodecProfile`
+### audioCodecProfile
 
 媒体推流使用的音频编码器配置类型。详见 [AudioCodecProfileType](/zh-CN/api-reference/rtc/android/enum-audiocodecprofiletype)。
 
-### `videoCodecProfile`
+### videoCodecProfile
 
 媒体推流使用的视频编码器配置类型。可设置为 66、77 或默认值 100。详见 [VideoCodecProfileType](/zh-CN/api-reference/rtc/android/enum-videocodecprofiletype)。
 
-:::info[注]
-如果设置为其他值，声网会自动使用默认值。
+:::note
+注： 如果设置为其他值，声网会自动使用默认值。
 :::
 
-### `videoCodecType`
+### videoCodecType
 
 媒体推流使用的视频编码器类型。详见 [VideoCodecType](/zh-CN/api-reference/rtc/android/enum-videocodectypeforstream)。
 
-### `userCount`
+### userCount
 
 媒体推流中用户数量，取值范围为 [0,17]。
 
-### `userConfigExtraInfo`
+### userConfigExtraInfo
 
 保留字段。用于将用户自定义的信息以 SEI 的形式随 H.264/H.265 视频流发送至 CDN 侧播放端，最大字节长度为 4096。
 
-### `metadata`
+### metadata
 
 发送至 CDN 客户端的元数据内容。

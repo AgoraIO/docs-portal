@@ -1,10 +1,19 @@
 ---
-title: "本地截图上传"
-description: "本地截图上传 API reference."
+title: 本地截图上传
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_snapshot
+  sourcePath: html-docs/rtc/Android/API/toc_snapshot.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableContentInspect
 
@@ -12,7 +21,7 @@ description: "本地截图上传 API reference."
 
 <a id="api_irtcengine_enablecontentinspect__prototype"></a>
 
-```java
+```text
 public abstract int enableContentInspect(boolean enabled, ContentInspectConfig config);
 ```
 
@@ -20,9 +29,11 @@ public abstract int enableContentInspect(boolean enabled, ContentInspectConfig c
 
 SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-contentinspectconfig) 中设置的模块类型和频率，对本地用户发送的视频进行截图并上传。完成截图和上传后，声网服务器会通过 HTTPS 请求将回调通知发送到你的应用服务器，并将所有截图发送到第三方云存储服务。
 
-:::info[注]
+:::note
+注：
+
 - 在调用该方法前，请确保你已在声网控制台启用本地截图上传功能。
-- 当视频审核模块设置为使用声网自研扩展（CONTENT_INSPECT_TYPE_SUPERVISE ）进行视频审核时，需要使用本地截图上传动态库 agora_content_inspect_extension.so。删除该库将禁用截图上传功能。
+- 当视频审核模块设置为使用声网自研扩展（`CONTENT_INSPECT_TYPE_SUPERVISE`）进行视频审核时，需要使用本地截图上传动态库 agora_content_inspect_extension.so。删除该库将禁用截图上传功能。
 :::
 
 <a id="api_irtcengine_enablecontentinspect__timing"></a>
@@ -35,14 +46,14 @@ SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-c
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用本地截图上传功能：
 
 - true：启用本地截图上传功能。
 - false：关闭本地截图上传功能。
 
-#### `config`
+### config
 
 截图上传配置，详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-contentinspectconfig)。
 
@@ -51,12 +62,11 @@ SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-c
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_enablecontentinspectex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableContentInspectEx
 
@@ -64,7 +74,7 @@ SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-c
 
 <a id="api_irtcengineex_enablecontentinspectex__prototype"></a>
 
-```java
+```text
 public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig config, RtcConnection connection);
 ```
 
@@ -72,8 +82,8 @@ public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig
 
 启用该功能后，SDK 会根据你在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-contentinspectconfig) 中设置的模块类型和频率，对本地用户发送的视频进行截图并上传。截图上传后，声网服务器会通过 HTTPS 请求将回调通知发送到你的应用服务器，并将所有截图上传至第三方云存储服务。
 
-:::info[注]
-在调用该方法前，请确保你已[联系技术支持](https://ticket.shengwang.cn/)开通本地截图上传服务。
+:::note
+注： 在调用该方法前，请确保你已[联系技术支持](https://ticket.shengwang.cn/)开通本地截图上传服务。
 :::
 
 <a id="api_irtcengineex_enablecontentinspectex__scenario"></a>
@@ -92,18 +102,18 @@ public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用本地截图上传功能：
 
 - true：启用本地截图上传功能。
 - false：关闭本地截图上传功能。
 
-#### `config`
+### config
 
 截图上传的配置参数，详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-contentinspectconfig)。
 
-#### `connection`
+### connection
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
@@ -112,12 +122,11 @@ public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_takesnapshot"></a>
+
+<a id="ariaid-title4"></a>
 
 ## takeSnapshot [1/2]
 
@@ -125,14 +134,14 @@ public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig
 
 <a id="api_irtcengine_takesnapshot__prototype"></a>
 
-```java
+```text
 public abstract int takeSnapshot(int uid, String filePath);
 ```
 
 <a id="api_irtcengine_takesnapshot__detailed_desc"></a>
 
-:::info[注]
-该方法为异步方法，调用返回时 SDK 尚未完成快照操作。当用于本地视频快照时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行快照。如果用户的视频已进行预处理，例如添加水印或美颜，生成的快照将包含预处理效果。
+:::note
+注： 该方法为异步方法，调用返回时 SDK 尚未完成快照操作。当用于本地视频快照时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行快照。如果用户的视频已进行预处理，例如添加水印或美颜，生成的快照将包含预处理效果。
 :::
 
 <a id="api_irtcengine_takesnapshot__timing"></a>
@@ -151,31 +160,30 @@ public abstract int takeSnapshot(int uid, String filePath);
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果要截取本地用户的视频快照，请将 `uid` 设置为 0。
 
-#### `filePath`
+### filePath
 
-:::info[注]
-请确保指定的路径存在且可写。
+:::note
+注： 请确保指定的路径存在且可写。
 :::
 
 快照的本地路径（包含文件扩展名）。例如：
 
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Android: `/storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg`
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_takesnapshot2"></a>
+
+<a id="ariaid-title5"></a>
 
 ## takeSnapshot [2/2]
 
@@ -183,15 +191,17 @@ public abstract int takeSnapshot(int uid, String filePath);
 
 <a id="api_irtcengine_takesnapshot2__prototype"></a>
 
-```java
+```text
 public abstract int takeSnapshot(int uid, SnapshotConfig config);
 ```
 
 <a id="api_irtcengine_takesnapshot2__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法为异步调用，调用返回时 SDK 尚未完成截图操作。
-- 当用于本地视频截图时，该方法会对 ChannelMediaOptions 中指定的视频流进行截图。
+- 当用于本地视频截图时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。
 :::
 
 <a id="api_irtcengine_takesnapshot2__timing"></a>
@@ -210,11 +220,11 @@ public abstract int takeSnapshot(int uid, SnapshotConfig config);
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。如果要截取本地用户的视频，请将 `uid` 设置为 0。
 
-#### `config`
+### config
 
 截图的配置信息，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/android/class-snapshotconfig)。
 
@@ -223,12 +233,11 @@ public abstract int takeSnapshot(int uid, SnapshotConfig config);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_takesnapshotex"></a>
+
+<a id="ariaid-title6"></a>
 
 ## takeSnapshotEx [1/2]
 
@@ -236,14 +245,14 @@ public abstract int takeSnapshot(int uid, SnapshotConfig config);
 
 <a id="api_irtcengineex_takesnapshotex__prototype"></a>
 
-```java
+```text
 public abstract int takeSnapshotEx(RtcConnection connection, int uid, String filePath);
 ```
 
 <a id="api_irtcengineex_takesnapshotex__detailed_desc"></a>
 
-:::info[注]
-`takeSnapshotEx` 为异步调用，调用该方法时 SDK 尚未完成截图操作。用于本地视频截图时，会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。如果用户的视频已进行预处理（如添加水印或美颜），截图结果中会包含这些预处理效果。
+:::note
+注： `takeSnapshotEx` 为异步调用，调用该方法时 SDK 尚未完成截图操作。用于本地视频截图时，会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。如果用户的视频已进行预处理（如添加水印或美颜），截图结果中会包含这些预处理效果。
 :::
 
 <a id="api_irtcengineex_takesnapshotex__scenario"></a>
@@ -268,35 +277,34 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, String fil
 
 ### 参数
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。如果要对本地用户的视频进行截图，请将 `uid` 设置为 0。
 
-#### `filePath`
+### filePath
 
-:::info[注]
-请确保指定的路径存在且可写。
+:::note
+注： 请确保指定的路径存在且可写。
 :::
 
 截图的本地路径（包含文件扩展名）。例如：
 
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Android: `/storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg`
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
+
+<a id="ariaid-title7"></a>
 
 ## takeSnapshotEx [2/2]
 
@@ -304,15 +312,17 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, String fil
 
 <a id="api_irtcengineex_takesnapshotex2__prototype"></a>
 
-```java
+```text
 public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotConfig config);
 ```
 
 <a id="api_irtcengineex_takesnapshotex2__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 该方法为异步调用，调用该方法后 SDK 并不会立即完成截图。
-- 用于本地视频截图时，该方法会对 ChannelMediaOptions 中指定的视频流进行截图。
+- 用于本地视频截图时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。
 - 如果用户的视频已进行预处理，例如添加水印或美颜，截图结果中会包含这些预处理效果。
 :::
 
@@ -338,15 +348,15 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotCo
 
 ### 参数
 
-#### `connection`
+### connection
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-#### `uid`
+### uid
 
 用户 ID。如果要截取本地用户的视频，请将 `uid` 设置为 0。
 
-#### `config`
+### config
 
 截图的配置信息，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/android/class-snapshotconfig)。
 
@@ -355,12 +365,11 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotCo
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onSnapshotTaken
 
@@ -368,7 +377,7 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotCo
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__prototype"></a>
 
-```java
+```text
 public void onSnapshotTaken(int uid, String filePath, int width, int height, int errCode)
 ```
 
@@ -386,31 +395,29 @@ public void onSnapshotTaken(int uid, String filePath, int width, int height, int
 
 ### 参数
 
-#### `uid`
+### uid
 
-用户 ID。 `uid` 为 0 表示本地用户。
+用户 ID。`uid` 为 0 表示本地用户。
 
-#### `filePath`
+### filePath
 
 截图的本地路径。
 
-#### `width`
+### width
 
 截图的宽度（像素）。
 
-#### `height`
+### height
 
 截图的高度（像素）。
 
-#### `errCode`
+### errCode
 
 截图结果的错误码：
 
 - 0：成功。
 - &lt; 0：失败：
-  - -1：SDK 写入文件或编码 JPEG 图像失败。
-  - -2：调用 takeSnapshot 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
-  - -3：调用 takeSnapshot 方法过于频繁。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+  - -1：SDK 写入文件或编码 JPEG 图像失败。
+  - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
+  - -3：调用 `takeSnapshot` 方法过于频繁。

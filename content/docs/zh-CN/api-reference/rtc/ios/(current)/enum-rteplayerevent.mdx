@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtePlayerEvent"
-description: "媒体播放器事件类型。"
+title: AgoraRtePlayerEvent
+description: 媒体播放器事件类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_rteplayerevent
+  sourcePath: html-docs/rtc/iOS/API/enum_rteplayerevent.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerevent__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -12,86 +20,86 @@ description: "媒体播放器事件类型。"
 
 ## 枚举值
 
-### `AgoraRtePlayerEventSeekBegin`
+### AgoraRtePlayerEventSeekBegin
 
 （0）：开始跳转到指定位置播放。
 
-### `AgoraRtePlayerEventSeekComplete`
+### AgoraRtePlayerEventSeekComplete
 
 （1）：跳转到指定位置完成。
 
-### `AgoraRtePlayerEventSeekError`
+### AgoraRtePlayerEventSeekError
 
 （2）：跳转到指定位置时发生错误。
 
-### `AgoraRtePlayerEventBufferLow`
+### AgoraRtePlayerEventBufferLow
 
 （3）：当前缓冲数据不足，无法继续播放。
 
-### `AgoraRtePlayerEventBufferRecover`
+### AgoraRtePlayerEventBufferRecover
 
 （4）：当前缓冲数据已恢复，可继续播放。
 
-### `AgoraRtePlayerEventFreezeStart`
+### AgoraRtePlayerEventFreezeStart
 
 （5）：音频或视频发生卡顿。
 
-### `AgoraRtePlayerEventFreezeStop`
+### AgoraRtePlayerEventFreezeStop
 
 （6）：音频或视频卡顿结束。
 
-### `AgoraRtePlayerEventOneLoopPlaybackCompleted`
+### AgoraRtePlayerEventOneLoopPlaybackCompleted
 
 （7）：完成一次循环播放。
 
-### `AgoraRtePlayerEventAuthenticationWillExpire`
+### AgoraRtePlayerEventAuthenticationWillExpire
 
 （8）：Token 即将过期。收到该事件后需生成新的 Token，并通过 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 更新 URL。
 
-### `AgoraRtePlayerEventAbrFallbackToAudioOnlyLayer`
+### AgoraRtePlayerEventAbrFallbackToAudioOnlyLayer
 
 （9）：因网络问题，从接收音视频流降级为仅接收远端音频流。
 
-### `AgoraRtePlayerEventAbrRecoverFromAudioOnlyLayer`
+### AgoraRtePlayerEventAbrRecoverFromAudioOnlyLayer
 
 （10）：网络恢复后，从仅接收远端音频流恢复为接收音视频流。
 
-### `AgoraRtePlayerEventSwitchBegin`
+### AgoraRtePlayerEventSwitchBegin
 
 （11）：开始切换到新 URL。
 
-### `AgoraRtePlayerEventSwitchComplete`
+### AgoraRtePlayerEventSwitchComplete
 
 （12）：切换到新 URL 完成。
 
-### `AgoraRtePlayerEventSwitchError`
+### AgoraRtePlayerEventSwitchError
 
 （13）：切换到新 URL 时发生错误。
 
-### `AgoraRtePlayerEventFirstDisplayed`
+### AgoraRtePlayerEventFirstDisplayed
 
 （14）：首帧视频已显示。
 
-### `AgoraRtePlayerEventReachCacheFileMaxCount`
+### AgoraRtePlayerEventReachCacheFileMaxCount
 
 （15）：缓存文件数量达到上限。
 
-### `AgoraRtePlayerEventReachCacheFileMaxSize`
+### AgoraRtePlayerEventReachCacheFileMaxSize
 
 （16）：缓存文件大小达到上限。
 
-### `AgoraRtePlayerEventTryOpenStart`
+### AgoraRtePlayerEventTryOpenStart
 
 （17）：开始尝试打开新 URL。
 
-### `AgoraRtePlayerEventTryOpenSucceed`
+### AgoraRtePlayerEventTryOpenSucceed
 
 （18）：成功打开新 URL。
 
-### `AgoraRtePlayerEventTryOpenFailed`
+### AgoraRtePlayerEventTryOpenFailed
 
 （19）：打开新 URL 失败。
 
-### `AgoraRtePlayerEventAudioTrackChanged`
+### AgoraRtePlayerEventAudioTrackChanged
 
 （20）：当前音轨已切换。

@@ -1,48 +1,59 @@
 ---
-title: "EAUDIO_PROFILE_TYPE"
-description: "音频编码属性。"
+title: EAUDIO_PROFILE_TYPE
+description: 音频编码属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_audioprofiletype
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_audioprofiletype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audioprofiletype__parameters"></a>
 
 ## 枚举值
 
-### `AUDIO_PROFILE_DEFAULT`
+### AUDIO_PROFILE_DEFAULT
 
 0: 默认值。
 
+<a id="enum_audioprofiletype__default-profile"></a>
+
 - 直播场景下：48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
 - 通信场景下：
-  - Windows 平台：16 kHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
-  - Android、macOS、iOS 平台： 32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
 
-### `AUDIO_PROFILE_SPEECH_STANDARD`
+  - Windows 平台：16 kHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
+  - Android、macOS、iOS 平台：32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
+
+### AUDIO_PROFILE_SPEECH_STANDARD
 
 1: 指定 32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
 
-### `AUDIO_PROFILE_MUSIC_STANDARD`
+### AUDIO_PROFILE_MUSIC_STANDARD
 
 2: 指定 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
 
-### `AUDIO_PROFILE_MUSIC_STANDARD_STEREO`
+### AUDIO_PROFILE_MUSIC_STANDARD_STEREO
 
 3: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
 
 如需实现立体声，你还需要调用 [SetAdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 FAdvancedAudioOptions 中设置 audioProcessingChannels 为 AUDIO_PROCESSING_STEREO。
 
-### `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`
+### AUDIO_PROFILE_MUSIC_HIGH_QUALITY
 
 4: 指定 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
 
-### `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO`
+### AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO
 
 5: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
 
 如需实现立体声，你还需要调用 [SetAdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 FAdvancedAudioOptions 中设置 audioProcessingChannels 为 AUDIO_PROCESSING_STEREO。
 
-### `AUDIO_PROFILE_IOT`
+### AUDIO_PROFILE_IOT
 
 6: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AEC。
 
-### `AUDIO_PROFILE_NUM`
+### AUDIO_PROFILE_NUM
 
 枚举值边界。

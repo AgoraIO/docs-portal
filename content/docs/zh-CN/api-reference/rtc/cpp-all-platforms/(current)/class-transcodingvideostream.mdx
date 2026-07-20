@@ -1,10 +1,18 @@
 ---
-title: "TranscodingVideoStream"
-description: "用于设置本地合成画面的视频流。"
+title: TranscodingVideoStream
+description: 用于设置本地合成画面的视频流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_transcodingvideostream
+  sourcePath: html-docs/rtc/Cpp/API/class_transcodingvideostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_transcodingvideostream__prototype"></a>
 
-```cpp
+```text
 struct TranscodingVideoStream {
   VIDEO_SOURCE_TYPE sourceType;
   uid_t remoteUserUid;
@@ -24,68 +32,68 @@ struct TranscodingVideoStream {
 
 ## 属性
 
-### `sourceType`
+### sourceType
 
 视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### `remoteUserUid`
+### remoteUserUid
 
 远端用户 ID。
 
-:::info[注]
-仅当视频源类型为 `VIDEO_SOURCE_REMOTE` 时使用该参数。
+:::note
+注： 仅当视频源类型为 `VIDEO_SOURCE_REMOTE` 时使用该参数。
 :::
 
-### `imageUrl`
+### imageUrl
 
 本地图像的文件路径，例如：Windows: C:\\Users\\\{username\}\\Pictures\\image.png。
 
-:::info[注]
-仅当视频源类型为图像时使用该参数。
+:::note
+注： 仅当视频源类型为图像时使用该参数。
 :::
 
-### `mediaPlayerId`
+### mediaPlayerId
 
 媒体播放器 ID。
 
-:::info[注]
-仅当视频源类型为 `VIDEO_SOURCE_MEDIA_PLAYER` 时使用该参数。
+:::note
+注： 仅当视频源类型为 `VIDEO_SOURCE_MEDIA_PLAYER` 时使用该参数。
 :::
 
-### `x`
+### x
 
 视频左上角相对于画布原点（画布左上角）的横向偏移。
 
-### `y`
+### y
 
 视频左上角相对于画布原点（画布左上角）的纵向偏移。
 
-### `width`
+### width
 
 视频在画布上的宽度（像素）。
 
-### `height`
+### height
 
 视频在画布上的高度（像素）。
 
-### `zOrder`
+### zOrder
 
 视频图层的层级，取值范围为 [0, 100]。
 
 - 0：（默认）图层位于最底层。
 - 100：图层位于最顶层。
 
-### `alpha`
+### alpha
 
 视频的透明度，取值范围为 [0.0, 1.0]。
 
 - 0.0：完全透明。
 - 1.0：完全不透明。
 
-### `mirror`
+### mirror
 
-:::info[注]
-该参数仅对摄像头类型的视频源生效。
+:::note
+注： 该参数仅对摄像头类型的视频源生效。
 :::
 
 是否对视频进行镜像处理。

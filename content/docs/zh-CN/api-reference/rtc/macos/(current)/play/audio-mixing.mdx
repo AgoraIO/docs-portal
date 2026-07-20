@@ -1,10 +1,19 @@
 ---
-title: "音乐文件播放"
-description: "音乐文件播放 API reference."
+title: 音乐文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_audio_mixing
+  sourcePath: html-docs/rtc/macOS/API/toc_audio_mixing.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustAudioMixingPlayoutVolume:
 
@@ -12,25 +21,25 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustAudioMixingPlayoutVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingPlayoutVolume(_:));
 ```
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__detailed_desc"></a>
 
-你需要在调用 `startAudioMixing` 方法，并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+你需要在调用 `startAudioMixing` 方法，并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__timing"></a>
 
 ### 调用时机
 
-你需要在调用 `startAudioMixing` 方法，并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+你需要在调用 `startAudioMixing` 方法，并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__parameters"></a>
 
 ### 参数
 
-#### `volume`
+### volume
 
 本地播放的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
 
@@ -39,12 +48,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustAudioMixingPublishVolume:
 
@@ -52,7 +60,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustAudioMixingPublishVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingPublishVolume(_:));
 ```
 
@@ -64,13 +72,13 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
 
 ### 参数
 
-#### `volume`
+### volume
 
 用于本地播放的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
 
@@ -79,12 +87,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
+
+<a id="ariaid-title4"></a>
 
 ## adjustAudioMixingVolume:
 
@@ -92,7 +99,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustAudioMixingVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingVolume(_:));
 ```
 
@@ -100,8 +107,8 @@ description: "音乐文件播放 API reference."
 
 你可以通过该方法在本地客户端和远端客户端调节混音音量。
 
-:::info[注]
-该方法不会影响通过 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
+:::note
+注： 该方法不会影响通过 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
@@ -114,7 +121,7 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `volume`
+### volume
 
 混音音量。取值范围为 0 到 100。默认值为 100，表示原始音量。
 
@@ -123,12 +130,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getAudioMixingCurrentPosition
 
@@ -136,7 +142,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
 
-```objectivec
+```text
 - (int)getAudioMixingCurrentPosition NS_SWIFT_NAME(getAudioMixingCurrentPosition());
 ```
 
@@ -144,9 +150,11 @@ description: "音乐文件播放 API reference."
 
 获取音频混音的播放位置（毫秒）。
 
-:::info[注]
-- 你需要在调用 startAudioMixing:loopback:cycle:startPos: 并收到 audioMixingStateChanged 回调（AgoraAudioMixingStateTypePlaying ）后调用此方法。
-- 如果你需要多次调用 getAudioMixingCurrentPosition，请确保两次调用之间的时间间隔大于 500 毫秒。
+:::note
+注：
+
+- 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying`）后调用此方法。
+- 如果你需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -154,12 +162,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - ≥ 0：方法调用成功，返回当前混音的播放位置（毫秒）。返回 0 表示当前音乐文件尚未开始播放。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getAudioMixingDuration
 
@@ -167,7 +174,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_getaudiomixingduration__prototype"></a>
 
-```objectivec
+```text
 - (int)getAudioMixingDuration NS_SWIFT_NAME(getAudioMixingDuration());
 ```
 
@@ -177,19 +184,18 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_getaudiomixingduration__return_values"></a>
 
 ### 返回值
 
 - ≥ 0：方法调用成功，返回音频混音的时长（毫秒）。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getAudioMixingPlayoutVolume
 
@@ -197,7 +203,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)getAudioMixingPlayoutVolume NS_SWIFT_NAME(getAudioMixingPlayoutVolume());
 ```
 
@@ -209,19 +215,18 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getAudioMixingPublishVolume
 
@@ -229,7 +234,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)getAudioMixingPublishVolume NS_SWIFT_NAME(getAudioMixingPublishVolume());
 ```
 
@@ -237,8 +242,8 @@ description: "音乐文件播放 API reference."
 
 该方法有助于你排查与音频音量相关的问题。
 
-:::info[注]
-你需要在调用 `startAudioMixing` 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+:::note
+注： 你需要在调用 `startAudioMixing` 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying`）后调用此方法。
 :::
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
@@ -246,12 +251,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - ≥ 0：方法调用成功，返回混音音量，取值范围为 [0,100]。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getAudioTrackCount
 
@@ -259,14 +263,14 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_getaudiotrackcount__prototype"></a>
 
-```objectivec
+```text
 - (int)getAudioTrackCount NS_SWIFT_NAME(getAudioTrackCount());
 ```
 
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
-:::info[注]
-你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+:::note
+注： 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用此方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -274,12 +278,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
+
+<a id="ariaid-title10"></a>
 
 ## pauseAudioMixing
 
@@ -287,7 +290,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_pauseaudiomixing__prototype"></a>
 
-```objectivec
+```text
 - (int)pauseAudioMixing NS_SWIFT_NAME(pauseAudioMixing());
 ```
 
@@ -306,12 +309,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
+
+<a id="ariaid-title11"></a>
 
 ## resumeAudioMixing
 
@@ -319,7 +321,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_resumeaudiomixing__prototype"></a>
 
-```objectivec
+```text
 - (int)resumeAudioMixing NS_SWIFT_NAME(resumeAudioMixing());
 ```
 
@@ -338,12 +340,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_selectaudiotrack"></a>
+
+<a id="ariaid-title12"></a>
 
 ## selectAudioTrack:
 
@@ -351,7 +352,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_selectaudiotrack__prototype"></a>
 
-```objectivec
+```text
 - (int)selectAudioTrack:(NSInteger)index NS_SWIFT_NAME(selectAudioTrack(_:));
 ```
 
@@ -359,16 +360,18 @@ description: "音乐文件播放 API reference."
 
 获取音频文件的音轨索引后，可以调用该方法指定任意音轨进行播放。例如，如果多音轨文件的不同音轨存储了不同语言的歌曲，可以调用该方法设置播放语言。
 
-:::info[注]
+:::note
+注：
+
 - 支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
-- 需要在调用 startAudioMixing 并收到 audioMixingStateChanged 回调（状态为 AgoraAudioMixingStateTypePlaying ）后调用该方法。
+- 需要在调用 `startAudioMixing` 并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
 
 ### 参数
 
-#### `index`
+### index
 
 你想要指定的音轨索引。该值应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
 
@@ -377,12 +380,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_selectmultiaudiotrack"></a>
+
+<a id="ariaid-title13"></a>
 
 ## selectMultiAudioTrack:publishTrackIndex:
 
@@ -390,7 +392,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_imediaplayer_selectmultiaudiotrack__prototype"></a>
 
-```objectivec
+```text
 - (int)selectMultiAudioTrack:(NSInteger)playoutTrackIndex publishTrackIndex:(NSInteger)publishTrackIndex NS_SWIFT_NAME(selectMultiAudioTrack(_:publishTrackIndex:));
 ```
 
@@ -408,11 +410,11 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `playoutTrackIndex`
+### playoutTrackIndex
 
 用于本地播放的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
-#### `publishTrackIndex`
+### publishTrackIndex
 
 要发布到频道中的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
@@ -421,12 +423,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
+
+<a id="ariaid-title14"></a>
 
 ## setAudioMixingDualMonoMode:
 
@@ -434,7 +435,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioMixingDualMonoMode:(AgoraAudioMixingDualMonoMode)mode NS_SWIFT_NAME(setAudioMixingDualMonoMode(_:));
 ```
 
@@ -445,8 +446,8 @@ description: "音乐文件播放 API reference."
 - 如果你只想听伴奏，可以将声道模式设置为左声道模式。
 - 如果你想同时听到伴奏和原唱人声，可以将声道模式设置为混合模式。
 
-:::info[注]
-该方法仅适用于立体声音频文件。
+:::note
+注： 该方法仅适用于立体声音频文件。
 :::
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__scenario"></a>
@@ -462,13 +463,13 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` （`AgoraAudioMixingStateTypePlaying` ）回调后调用该方法。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:`（`AgoraAudioMixingStateTypePlaying`）回调后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
 
 ### 参数
 
-#### `mode`
+### mode
 
 声道模式。详见 [AgoraAudioMixingDualMonoMode](/zh-CN/api-reference/rtc/macos/enum-audiomixingdualmonomode)。
 
@@ -477,12 +478,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
+
+<a id="ariaid-title15"></a>
 
 ## setAudioMixingPitch:
 
@@ -490,7 +490,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioMixingPitch:(NSInteger)pitch NS_SWIFT_NAME(setAudioMixingPitch(_:));
 ```
 
@@ -502,13 +502,13 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
 
 ### 参数
 
-#### `pitch`
+### pitch
 
 按半音阶设置本地音乐文件的音调（默认值为 0，表示保持原始音调）。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，本地音乐文件的音调越高或越低。
 
@@ -517,12 +517,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
+
+<a id="ariaid-title16"></a>
 
 ## setAudioMixingPlaybackSpeed:
 
@@ -530,7 +529,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioMixingPlaybackSpeed:(NSInteger)speed NS_SWIFT_NAME(setAudioMixingPlaybackSpeed(_:));
 ```
 
@@ -542,7 +541,7 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `speed`
+### speed
 
 播放速度。声网建议设置为 50 到 400 之间的值，定义如下：
 
@@ -555,12 +554,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
+
+<a id="ariaid-title17"></a>
 
 ## setAudioMixingPosition:
 
@@ -568,7 +566,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_setaudiomixingposition__prototype"></a>
 
-```objectivec
+```text
 - (int)setAudioMixingPosition:(NSInteger)pos NS_SWIFT_NAME(setAudioMixingPosition(_:));
 ```
 
@@ -580,13 +578,13 @@ description: "音乐文件播放 API reference."
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying`）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingposition__parameters"></a>
 
 ### 参数
 
-#### `pos`
+### pos
 
 播放位置（单位为毫秒）。
 
@@ -595,12 +593,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startaudiomixing"></a>
+
+<a id="ariaid-title18"></a>
 
 ## startAudioMixing:loopback:cycle:
 
@@ -608,7 +605,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_startaudiomixing__prototype"></a>
 
-```objectivec
+```text
 - (int)startAudioMixing:(NSString *  _Nonnull)filePath
                loopback:(BOOL)loopback
                   cycle:(NSInteger)cycle NS_SWIFT_NAME(startAudioMixing(_:loopback:cycle:));
@@ -618,8 +615,10 @@ description: "音乐文件播放 API reference."
 
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](/zh-CN/api-reference/faq/product/audio_format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或 SDK 无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
-:::info[注]
-- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos: 方法播放此类文件。
+:::note
+注：
+
+- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果你需要多次调用该方法，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -633,20 +632,20 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `filePath`
+### filePath
 
 文件路径：
 
-- iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如： /var/mobile/Containers/Data/audio.mp4。
+- iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
 
-#### `loopback`
+### loopback
 
 是否只在本地客户端播放音乐文件：
 
 - YES：只在本地客户端播放音乐文件，只有本地用户可以听到音乐。
 - NO：将音乐文件发布到远端客户端，本地用户和远端用户都可以听到音乐。
 
-#### `cycle`
+### cycle
 
 音乐文件的播放次数：
 
@@ -658,18 +657,19 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 尚未就绪。
+
     - 音频模块未启用。
     - 程序未完成。
-    - AgoraRtcEngineKit 初始化失败。请重新初始化 AgoraRtcEngineKit。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+    - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
 <a id="api_irtcengine_startaudiomixing2"></a>
+
+<a id="ariaid-title19"></a>
 
 ## startAudioMixing:loopback:cycle:startPos:
 
@@ -677,7 +677,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_startaudiomixing2__prototype"></a>
 
-```objectivec
+```text
 - (int)startAudioMixing:(NSString *  _Nonnull)filePath
                loopback:(BOOL)loopback
                   cycle:(NSInteger)cycle
@@ -688,8 +688,10 @@ description: "音乐文件播放 API reference."
 
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](/zh-CN/api-reference/faq/product/audio_format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
-:::info[注]
-- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos: 方法播放此类文件。
+:::note
+注：
+
+- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果需要多次调用该方法，确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -703,33 +705,33 @@ description: "音乐文件播放 API reference."
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypePlaying` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypeStopped` ）回调。
+成功调用该方法后，SDK 会触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypePlaying`）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)（`AgoraAudioMixingStateTypeStopped`）回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+### filePath
 
 文件路径：
 
-- iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如： /var/mobile/Containers/Data/audio.mp4。
+- iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
 
-#### `loopback`
+### loopback
 
 是否只在本地客户端播放音乐文件：
 
 - YES：只在本地客户端播放音乐文件，只有本地用户可以听到音乐。
 - NO：将音乐文件发布到远端客户端，本地用户和远端用户都可以听到音乐。
 
-#### `cycle`
+### cycle
 
 音乐文件的播放次数。
 
 - &gt; 0：播放的次数。例如，1 表示播放 1 次。
 - -1：无限循环播放音频文件。
 
-#### `startPos`
+### startPos
 
 音乐文件的播放起始位置（单位为毫秒）。
 
@@ -738,18 +740,19 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 尚未就绪。
+
     - 音频模块未启用。
     - 程序未完整。
-    - AgoraRtcEngineKit 初始化失败。请重新初始化 AgoraRtcEngineKit。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+    - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
 <a id="api_irtcengine_stopaudiomixing"></a>
+
+<a id="ariaid-title20"></a>
 
 ## stopAudioMixing
 
@@ -757,7 +760,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_stopaudiomixing__prototype"></a>
 
-```objectivec
+```text
 - (int)stopAudioMixing NS_SWIFT_NAME(stopAudioMixing());
 ```
 
@@ -776,12 +779,11 @@ description: "音乐文件播放 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
+
+<a id="ariaid-title21"></a>
 
 ## rtcEngineLocalAudioMixingDidFinish:
 
@@ -789,13 +791,13 @@ description: "音乐文件播放 API reference."
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngineLocalAudioMixingDidFinish:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineLocalAudioMixingDidFinish(_:)) __deprecated_msg("Use rtcEngine:audioMixingStateChanged:reasonCode: instead");
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.5.0 版本废弃，请改用 `audioMixingStateChanged`。
 
@@ -811,14 +813,13 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
+
+<a id="ariaid-title22"></a>
 
 ## rtcEngine:audioMixingPositionChanged:
 
@@ -826,7 +827,7 @@ description: "音乐文件播放 API reference."
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine audioMixingPositionChanged:(NSInteger)position NS_SWIFT_NAME(rtcEngine(_:audioMixingPositionChanged:));
 ```
 
@@ -844,18 +845,17 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-#### `position`
+### position
 
 播放进度，单位为毫秒。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
+
+<a id="ariaid-title23"></a>
 
 ## rtcEngine:audioMixingStateChanged:reasonCode:
 
@@ -863,7 +863,7 @@ description: "音乐文件播放 API reference."
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine audioMixingStateChanged:(AgoraAudioMixingStateType)state
                                                                     reasonCode:(AgoraAudioMixingReasonCode)reasonCode NS_SWIFT_NAME(rtcEngine(_:audioMixingStateChanged:reasonCode:));
 ```
@@ -882,17 +882,14 @@ description: "音乐文件播放 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-#### `state`
+### state
 
 音乐文件的播放状态，详见 [AgoraAudioMixingStateType](/zh-CN/api-reference/rtc/macos/enum-audiomixingstatetype)。
 
-#### `reasonCode`
+### reasonCode
 
 错误码，详见 [AgoraAudioMixingReasonCode](/zh-CN/api-reference/rtc/macos/enum-audiomixingreasontype)。
-
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

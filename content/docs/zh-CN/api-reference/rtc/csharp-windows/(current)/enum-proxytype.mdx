@@ -1,27 +1,35 @@
 ---
-title: "PROXY_TYPE"
-description: "代理类型。"
+title: PROXY_TYPE
+description: 代理类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_proxytype
+  sourcePath: html-docs/rtc/Csharp/API/enum_proxytype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_proxytype__parameters"></a>
 
 ## 枚举值
 
-### `NONE_PROXY_TYPE`
+### NONE_PROXY_TYPE
 
 0: 预留参数，暂不支持。
 
-### `UDP_PROXY_TYPE`
+### UDP_PROXY_TYPE
 
 1: UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。
 
-### `TCP_PROXY_TYPE`
+### TCP_PROXY_TYPE
 
 2: TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。
 
-### `LOCAL_PROXY_TYPE`
+### LOCAL_PROXY_TYPE
 
 3: 预留参数，暂不支持。
 
-### `TCP_PROXY_AUTO_FALLBACK_TYPE`
+### TCP_PROXY_AUTO_FALLBACK_TYPE
 
 4: 自动模式。在该模式下，SDK 优先连接 SD-RTN™，如果连接失败，自动切换为 TLS 443。

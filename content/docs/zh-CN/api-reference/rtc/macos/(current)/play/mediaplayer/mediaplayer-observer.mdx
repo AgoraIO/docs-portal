@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/macOS/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AgoraRtcMediaPlayerGetVideoPixelFormat
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat__prototype"></a>
 
-```objectivec
+```text
 - (AgoraVideoFormat)AgoraRtcMediaPlayerGetVideoPixelFormat NS_SWIFT_NAME(AgoraRtcMediaPlayerGetVideoPixelFormat());
 ```
 
@@ -24,12 +33,11 @@ description: "音视频观测器 API reference."
 
 ### 返回值
 
-你为原始视频数据设置的期望格式，详见 [AgoraVideoFormat](/zh-CN/api-reference/rtc/macos/enum-videopixelformat)。默认情况下，原始视频像素格式（`AgoraVideoFormatDefault` ）可能是 `I420` 或 `CVPixelBufferRef`。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
+你为原始视频数据设置的期望格式，详见 [AgoraVideoFormat](/zh-CN/api-reference/rtc/macos/enum-videopixelformat)。默认情况下，原始视频像素格式（`AgoraVideoFormatDefault`）可能是 `I420` 或 `CVPixelBufferRef`。
 
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## AgoraRtcMediaPlayer:didReceivePixelBuffer:
 
@@ -37,7 +45,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceivePixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceivePixelBuffer:));
 ```
@@ -56,18 +64,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 媒体播放器对象，详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `pixelBuffer`
+### pixelBuffer
 
 包含像素缓冲区详细信息的 `CVPixelBufferRef` 对象。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
-
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe"></a>
+
+<a id="ariaid-title4"></a>
 
 ## AgoraRtcMediaPlayer:didReceiveVideoFrame:
 
@@ -75,7 +82,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceiveVideoFrame:(AgoraOutputVideoFrame * _Nonnull)videoFrame NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveVideoFrame:));
 ```
@@ -92,18 +99,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器对象。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `videoFrame`
+### videoFrame
 
 视频帧信息。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
-
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## AgoraRtcMediaPlayer:volumeIndicationDidReceive:
 
@@ -111,7 +117,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              volumeIndicationDidReceive:(NSInteger)volume NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:volumeIndicationDidReceive:));
 ```
@@ -130,18 +136,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer) 实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `volume`
+### volume
 
 媒体播放器的音量，取值范围为 0 到 255。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink"></a>
+
+<a id="ariaid-title6"></a>
 
 ## AgoraRtcMediaPlayer:didReceiveAudioFrame:
 
@@ -149,7 +154,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceiveAudioFrame:(AgoraAudioFrame* _Nonnull)audioFrame NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveAudioFrame:));
 ```
@@ -168,18 +173,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例，详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `audioFrame`
+### audioFrame
 
 音频帧信息，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/macos/class-audioframe)。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerAudioFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiopcmframesink)
-
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title7"></a>
 
 ## AgoraRtcMediaPlayer:didReceiveData:length:
 
@@ -187,7 +191,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              didReceiveData:(NSString *_Nullable)data
                      length:(NSInteger)length NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveData:length:));
@@ -207,22 +211,21 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `data`
+### data
 
 媒体元数据的详细数据。
 
-#### `length`
+### length
 
 数据长度（字节）。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title8"></a>
 
 ## AgoraRtcMediaPlayer:didPlayBufferUpdated:
 
@@ -230,15 +233,15 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              didPlayBufferUpdated:(NSInteger)playCachedBuffer NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didPlayBufferUpdated:));
 ```
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
 
-- 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 AgoraMediaPlayerEventBufferLow （6）。
-- 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 AgoraMediaPlayerEventBufferRecover （7）。
+- 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 `AgoraMediaPlayerEventBufferLow`（6）。
+- 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 `AgoraMediaPlayerEventBufferRecover`（7）。
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__timing"></a>
 
@@ -250,18 +253,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `playCachedBuffer`
+### playCachedBuffer
 
 缓冲数据可支持的播放时长（毫秒）。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title9"></a>
 
 ## AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:
 
@@ -269,7 +271,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
               didOccurEvent:(AgoraMediaPlayerEvent)eventCode
                 elapsedTime:(NSInteger)elapsedTime
@@ -290,26 +292,25 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `eventCode`
+### eventCode
 
 播放器事件类型。详见 [AgoraMediaPlayerEvent](/zh-CN/api-reference/rtc/macos/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+### elapsedTime
 
 事件发生的时间，单位为毫秒。
 
-#### `message`
+### message
 
 事件的相关信息。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title10"></a>
 
 ## AgoraRtcMediaPlayer:infoUpdated:
 
@@ -317,7 +318,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit infoUpdated:(AgoraMediaPlayerUpdatedInfo *_Nonnull)info NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:infoUpdated:));
 ```
 
@@ -335,18 +336,17 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 媒体播放器对象。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `info`
+### info
 
 媒体播放器相关的信息。详见 [AgoraMediaPlayerUpdatedInfo](/zh-CN/api-reference/rtc/macos/class-playerupdatedinfo)。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## AgoraRtcMediaPlayer:didChangedToState:reason:
 
@@ -354,7 +354,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
           didChangedToState:(AgoraMediaPlayerState)state
                       reason:(AgoraMediaPlayerReason)reason NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didChangedTo:reason:));
@@ -374,22 +374,21 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 媒体播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `state`
+### state
 
 播放状态。详见 [AgoraMediaPlayerState](/zh-CN/api-reference/rtc/macos/enum-mediaplayerstate)。
 
-#### `reason`
+### reason
 
 播放状态变化的原因。详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/macos/enum-mediaplayerreason)。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title12"></a>
 
 ## AgoraRtcMediaPlayer:playerSrcInfoDidChange:from:
 
@@ -397,7 +396,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit playerSrcInfoDidChange:(AgoraMediaPlayerSrcInfo *_Nonnull)to from:(AgoraMediaPlayerSrcInfo *_Nonnull)from NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:playerSrcInfoDidChange:from:));
 ```
 
@@ -415,22 +414,21 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `to`
+### to
 
 变更后的媒体播放器源信息。详见 [AgoraMediaPlayerSrcInfo](/zh-CN/api-reference/rtc/macos/class-srcinfo)。
 
-#### `from`
+### from
 
 变更前的媒体播放器源信息。详见 [AgoraMediaPlayerSrcInfo](/zh-CN/api-reference/rtc/macos/class-srcinfo)。
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title13"></a>
 
 ## AgoraRtcMediaPlayer:didChangedToPosition:atTimestamp:
 
@@ -438,7 +436,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didChangedToPosition:(NSInteger)positionMs
                 atTimestamp:(NSTimeInterval)timestampMs NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didChangedTo:atTimestamp:));
@@ -458,26 +456,25 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `positionMs`
+### positionMs
 
 当前播放进度，单位为毫秒。
 
-#### `timestampMs`
+### timestampMs
 
 发送 `positionMs` 时的 NTP 时间戳，单位为毫秒。
 
-:::info[注]
-该参数仅在频道内生效。
+:::note
+注： 该参数仅在频道内生效。
 :::
 
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)
-
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title14"></a>
 
 ## AgoraRtcMediaPlayer:didPreloadEvent:
 
@@ -485,7 +482,7 @@ description: "音视频观测器 API reference."
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```objectivec
+```text
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
             didPreloadEvent:(AgoraMediaPlayerPreloadEvent)event NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didPreloadEvent:));
 ```
@@ -502,13 +499,10 @@ description: "音视频观测器 API reference."
 
 ### 参数
 
-#### `playerKit`
+### playerKit
 
 播放器实例，详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
 
-#### `event`
+### event
 
 预加载媒体资源时发生的事件，详见 [AgoraMediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/macos/enum-playerpreloadevent)。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)

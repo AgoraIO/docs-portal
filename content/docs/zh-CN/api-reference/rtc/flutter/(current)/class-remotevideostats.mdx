@@ -1,10 +1,18 @@
 ---
-title: "RemoteVideoStats"
-description: "远端视频流的统计信息。"
+title: RemoteVideoStats
+description: 远端视频流的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_remotevideostats
+  sourcePath: html-docs/rtc/Flutter/API/class_remotevideostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_remotevideostats__prototype"></a>
 
-```dart
+```text
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RemoteVideoStats {
   const RemoteVideoStats(
@@ -92,79 +100,80 @@ class RemoteVideoStats {
 
 ## 属性
 
-### `uid`
+### uid
 
 用户 ID，指定是哪个用户的视频流。
 
-### `delay`
+### delay
 
 延时（毫秒）。
 
-:::info[注]
-弃用：在有音画同步机制的音视频场景中，你可以参考 [RemoteAudioStats](/zh-CN/api-reference/rtc/flutter/class-remoteaudiostats) 里的 `networkTransportDelay` 和 `jitterBufferDelay` 成员的值，了解视频的延迟数据。
+:::note
+注： 弃用：在有音画同步机制的音视频场景中，你可以参考 [RemoteAudioStats](/zh-CN/api-reference/rtc/flutter/class-remoteaudiostats) 里的 `networkTransportDelay` 和 `jitterBufferDelay` 成员的值，了解视频的延迟数据。
 :::
 
-### `e2eDelay`
+### e2eDelay
 
 端到端视频延时（毫秒）。即，自远端用户视频采集起，至本地用户接收并渲染视频的总时长。
 
-### `width`
+### width
 
 视频流宽（像素）。
 
-### `height`
+### height
 
 视频流高（像素）。
 
-### `receivedBitrate`
+### receivedBitrate
 
 （上次统计后）接收到的码率(Kbps)。
 
-### `decoderOutputFrameRate`
+### decoderOutputFrameRate
 
 远端视频解码器的输出帧率，单位为 fps。
 
-### `rendererOutputFrameRate`
+### rendererOutputFrameRate
 
 远端视频渲染器的输出帧率，单位为 fps。
 
-### `frameLossRate`
+### frameLossRate
 
 远端视频丢包率(%)。
 
-### `packetLossRate`
+### packetLossRate
 
 远端视频在使用抗丢包技术之后的丢包率(%)。
 
-### `rxStreamType`
+### rxStreamType
 
 视频流类型，大流或小流。详见 [VideoStreamType](/zh-CN/api-reference/rtc/flutter/enum-videostreamtype)。
 
-### `totalFrozenTime`
+### totalFrozenTime
 
 远端用户在加入频道后发生视频卡顿的累计时长（ms）。通话过程中，视频帧率设置不低于 5 fps 时，连续渲染的两帧视频之间间隔超过 500 ms，则记为一次视频卡顿。
 
-### `frozenRate`
+### frozenRate
 
 远端用户在加入频道后发生视频卡顿的累计时长占视频总有效时长的百分比 (%)。视频有效时长是指远端用户加入频道后视频未被停止发送或禁用的时长。
 
-### `totalActiveTime`
+### totalActiveTime
 
-视频有效时长（毫秒）。 视频总有效时长是远端用户或主播加入频道后，既没有停止发送视频流，也没有禁用视频模块的通话时长。
+视频有效时长（毫秒）。
+视频总有效时长是远端用户或主播加入频道后，既没有停止发送视频流，也没有禁用视频模块的通话时长。
 
-### `publishDuration`
+### publishDuration
 
 远端视频流的累计发布时长（毫秒）。
 
-### `avSyncTimeMs`
+### avSyncTimeMs
 
 音频超前视频的时间 (ms)。
 
-:::info[注]
-如果为负值，则代表音频落后于视频。
+:::note
+注： 如果为负值，则代表音频落后于视频。
 :::
 
-### `mosValue`
+### mosValue
 
 在统计周期内远端音频流的质量。该质量由声网实时音频 MOS（主观意见评分）测量方法确定。返回值范围为 [0, 500]，除以 100 后为 MOS 分数，范围为 0 到 5，分数越高表示音频质量越好。声网实时音频 MOS 评分对应的主观音质感受如下：
 

@@ -1,21 +1,24 @@
 ---
 title: 音频采集
-description: 音频采集 API reference.
 _migration:
-  type: existing-mdx-normalized
+  type: generated-html
+  status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_audio_capture
   sourcePath: html-docs/rtc/HarmonyOS/API/toc_audio_capture.html
-  generator: api-center-existing-normalizer
-  status: warning
+  generator: oxygen
   warnings:
     - code: empty-source-code
       severity: info
-      message: 1 empty code block was omitted because the authoritative legacy source provides no signature.
-      count: 1
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
+
 <a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustRecordingSignalVolume
 
@@ -23,7 +26,7 @@ _migration:
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
 
-```arkts
+```text
 public abstract adjustRecordingSignalVolume(volume: number): number;
 ```
 
@@ -45,7 +48,7 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 
 ### 参数
 
-#### `volume`
+### volume
 
 音量，取值范围为 [0,400]。
 
@@ -58,12 +61,13 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enableinearmonitoring"></a>
+
+<a id="ariaid-title3"></a>
+
+## /zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enableinearmonitoring
 
 开启耳返功能。
 
@@ -89,22 +93,25 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
 <a id="api_irtcengine_enableinearmonitoring__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableInEarMonitoring
 
@@ -112,11 +119,13 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 
 <a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
 
-```arkts
+```text
 public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Constants.EarMontoringFilterType): number;
 ```
 
 <a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
+
+<a id="api_irtcengine_enableinearmonitoring2__desc"></a>
 
 该方法用于打开或关闭耳返功能。
 
@@ -136,14 +145,14 @@ public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Co
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
-#### `includeAudioFilters`
+### includeAudioFilters
 
 耳返 Audio filter 类型。详见 [EarMontoringFilterType](/zh-CN/api-reference/rtc/harmonyos/enum-earmonitoringfiltertype)。
 
@@ -152,13 +161,13 @@ public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Co
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_enablelocalaudio"></a>
+
+<a id="ariaid-title5"></a>
 
 ## enableLocalAudio
 
@@ -166,7 +175,7 @@ public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Co
 
 <a id="api_irtcengine_enablelocalaudio__prototype"></a>
 
-```arkts
+```text
 public abstract enableLocalAudio(enabled: boolean): number;
 ```
 
@@ -183,7 +192,7 @@ public abstract enableLocalAudio(enabled: boolean): number;
 
 ### 适用场景
 
-该方法不影响接收远端音频流， [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio) `(false)` 适用于只听不发的用户场景。
+该方法不影响接收远端音频流，[enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio)`(false)` 适用于只听不发的用户场景。
 
 <a id="api_irtcengine_enablelocalaudio__timing"></a>
 
@@ -201,28 +210,27 @@ public abstract enableLocalAudio(enabled: boolean): number;
 
 ### 相关回调
 
-音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 STOPPED (0) 或 RECORDING (1)。
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 STOPPED(0) 或 RECORDING(1)。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
-- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
-- false: 关闭本地音频功能，即停止本地音频采集。
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setInEarMonitoringVolume
 
@@ -230,7 +238,7 @@ public abstract enableLocalAudio(enabled: boolean): number;
 
 <a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
 
-```arkts
+```text
 public abstract setInEarMonitoringVolume(volume: number): number;
 ```
 
@@ -252,7 +260,7 @@ public abstract setInEarMonitoringVolume(volume: number): number;
 
 ### 参数
 
-#### `volume`
+### volume
 
 音量，取值范围为 [0,400]。
 
@@ -265,8 +273,6 @@ public abstract setInEarMonitoringVolume(volume: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-  - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+  - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。

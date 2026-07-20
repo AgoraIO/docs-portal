@@ -1,10 +1,19 @@
 ---
-title: "跨频道媒体流转发"
-description: "跨频道媒体流转发 API reference."
+title: 跨频道媒体流转发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_channel_media_relay
+  sourcePath: html-docs/rtc/Csharp/API/toc_channel_media_relay.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_channel_media_relay"></a>
 
 <a id="api_irtcengine_pauseallchannelmediarelay"></a>
+
+<a id="ariaid-title2"></a>
 
 ## PauseAllChannelMediaRelay
 
@@ -12,7 +21,7 @@ description: "跨频道媒体流转发 API reference."
 
 <a id="api_irtcengine_pauseallchannelmediarelay__prototype"></a>
 
-```csharp
+```text
 public abstract int PauseAllChannelMediaRelay();
 ```
 
@@ -22,8 +31,8 @@ public abstract int PauseAllChannelMediaRelay();
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::warning[注意]
-该方法需要在调用 [StartOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
+:::note
+注意： 该方法需要在调用 [StartOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
 :::
 
 <a id="api_irtcengine_pauseallchannelmediarelay__return_values"></a>
@@ -31,13 +40,13 @@ public abstract int PauseAllChannelMediaRelay();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_pauseallchannelmediarelayex"></a>
+
+<a id="ariaid-title3"></a>
 
 ## PauseAllChannelMediaRelayEx
 
@@ -45,7 +54,7 @@ public abstract int PauseAllChannelMediaRelay();
 
 <a id="api_irtcengineex_pauseallchannelmediarelayex__prototype"></a>
 
-```csharp
+```text
 public abstract int PauseAllChannelMediaRelayEx(RtcConnection connection);
 ```
 
@@ -55,15 +64,15 @@ public abstract int PauseAllChannelMediaRelayEx(RtcConnection connection);
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::warning[注意]
-该方法需要在调用 [StartOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) 开始跨频道媒体流转发后调用。
+:::note
+注意： 该方法需要在调用 [StartOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) 开始跨频道媒体流转发后调用。
 :::
 
 <a id="api_irtcengineex_pauseallchannelmediarelayex__parameters"></a>
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -72,13 +81,13 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
-
 <a id="api_irtcengine_resumeallchannelmediarelay"></a>
+
+<a id="ariaid-title4"></a>
 
 ## ResumeAllChannelMediaRelay
 
@@ -86,7 +95,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_resumeallchannelmediarelay__prototype"></a>
 
-```csharp
+```text
 public abstract int ResumeAllChannelMediaRelay();
 ```
 
@@ -96,8 +105,8 @@ public abstract int ResumeAllChannelMediaRelay();
 
 调用 [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::warning[注意]
-该方法需要在 [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
+:::note
+注意： 该方法需要在 [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
 :::
 
 <a id="api_irtcengine_resumeallchannelmediarelay__return_values"></a>
@@ -105,13 +114,13 @@ public abstract int ResumeAllChannelMediaRelay();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_resumeallchannelmediarelayex"></a>
+
+<a id="ariaid-title5"></a>
 
 ## ResumeAllChannelMediaRelayEx
 
@@ -119,7 +128,7 @@ public abstract int ResumeAllChannelMediaRelay();
 
 <a id="api_irtcengineex_resumeallchannelmediarelayex__prototype"></a>
 
-```csharp
+```text
 public abstract int ResumeAllChannelMediaRelayEx(RtcConnection connection);
 ```
 
@@ -129,15 +138,15 @@ public abstract int ResumeAllChannelMediaRelayEx(RtcConnection connection);
 
 调用 [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::warning[注意]
-该方法需要在 [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 后调用。
+:::note
+注意： 该方法需要在 [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 后调用。
 :::
 
 <a id="api_irtcengineex_resumeallchannelmediarelayex__parameters"></a>
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -146,13 +155,13 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
-
 <a id="api_irtcengine_startorupdatechannelmediarelay"></a>
+
+<a id="ariaid-title6"></a>
 
 ## StartOrUpdateChannelMediaRelay
 
@@ -160,7 +169,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__prototype"></a>
 
-```csharp
+```text
 public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguration configuration);
 ```
 
@@ -175,10 +184,12 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::warning[注意]
+:::note
+注意：
+
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要[联系技术支持](https://ticket.shengwang.cn/)开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -186,7 +197,7 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 
 ### 参数
 
-#### `configuration`
+### configuration
 
 跨频道媒体流转发参数配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediarelayconfiguration)。
 
@@ -195,15 +206,15 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_startorupdatechannelmediarelayex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## StartOrUpdateChannelMediaRelayEx
 
@@ -211,7 +222,7 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__prototype"></a>
 
-```csharp
+```text
 public abstract int StartOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfiguration configuration, RtcConnection connection);
 ```
 
@@ -226,10 +237,12 @@ public abstract int StartOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfigurat
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::warning[注意]
+:::note
+注意：
+
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要[联系技术支持](https://ticket.shengwang.cn/)开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -237,11 +250,11 @@ public abstract int StartOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfigurat
 
 ### 参数
 
-#### `configuration`
+### configuration
 
 跨频道媒体流转发参数配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediarelayconfiguration)。
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -250,15 +263,15 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
-
 <a id="api_irtcengine_stopchannelmediarelay"></a>
+
+<a id="ariaid-title8"></a>
 
 ## StopChannelMediaRelay
 
@@ -266,7 +279,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_stopchannelmediarelay__prototype"></a>
 
-```csharp
+```text
 public abstract int StopChannelMediaRelay();
 ```
 
@@ -276,8 +289,9 @@ public abstract int StopChannelMediaRelay();
 
 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 RELAY_STATE_IDLE (0) 和 RELAY_OK (0)，则表示已停止转发媒体流。
 
-:::warning[注意]
-如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
+:::note
+注意：
+       如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::
 
 <a id="api_irtcengine_stopchannelmediarelay__return_values"></a>
@@ -285,13 +299,13 @@ public abstract int StopChannelMediaRelay();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_stopchannelmediarelayex"></a>
+
+<a id="ariaid-title9"></a>
 
 ## StopChannelMediaRelayEx
 
@@ -299,7 +313,7 @@ public abstract int StopChannelMediaRelay();
 
 <a id="api_irtcengineex_stopchannelmediarelayex__prototype"></a>
 
-```csharp
+```text
 public abstract int StopChannelMediaRelayEx(RtcConnection connection);
 ```
 
@@ -309,15 +323,16 @@ public abstract int StopChannelMediaRelayEx(RtcConnection connection);
 
 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 RELAY_STATE_IDLE (0) 和 RELAY_OK (0)，则表示已停止转发媒体流。
 
-:::warning[注意]
-如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
+:::note
+注意：
+       如果该方法调用不成功，SDK 会触发 OnChannelMediaRelayStateChanged 回调，并报告状态码 RELAY_ERROR_SERVER_NO_RESPONSE (2) 或 RELAY_ERROR_SERVER_CONNECTION_LOST (8)。你可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::
 
 <a id="api_irtcengineex_stopchannelmediarelayex__parameters"></a>
 
 ### 参数
 
-#### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
@@ -326,13 +341,13 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
-
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged"></a>
+
+<a id="ariaid-title10"></a>
 
 ## OnChannelMediaRelayStateChanged
 
@@ -340,7 +355,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnChannelMediaRelayStateChanged(int state, int code) {}
 ```
 
@@ -352,13 +367,10 @@ public virtual void OnChannelMediaRelayStateChanged(int state, int code) {}
 
 ### 参数
 
-#### `state`
+### state
 
 跨频道媒体流转发状态。详见 [CHANNEL_MEDIA_RELAY_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-channelmediarelaystate)。
 
-#### `code`
+### code
 
 跨频道媒体流转发出错的错误码。详见 [CHANNEL_MEDIA_RELAY_ERROR](/zh-CN/api-reference/rtc/csharp-windows/enum-channelmediarelayerror)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

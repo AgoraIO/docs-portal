@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtePlayerState"
-description: "媒体播放器的状态。"
+title: AgoraRtePlayerState
+description: 媒体播放器的状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_rteplayerstate
+  sourcePath: html-docs/rtc/macOS/API/enum_rteplayerstate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerstate__detailed_desc"></a>
 
-### `自从`
+### 自从
 
 自 v4.4.0 版本新增。
 
@@ -12,34 +20,34 @@ description: "媒体播放器的状态。"
 
 ## 枚举值
 
-### `AgoraRtePlayerStateIdle`
+### AgoraRtePlayerStateIdle
 
 （0）：空闲状态。
 
-### `AgoraRtePlayerStateOpening`
+### AgoraRtePlayerStateOpening
 
 （1）：正在打开 URL 资源。调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 后触发该状态。
 
-### `AgoraRtePlayerStateOpenCompleted`
+### AgoraRtePlayerStateOpenCompleted
 
 （2）：成功打开 URL 资源。调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 成功后触发该状态。
 
-### `AgoraRtePlayerStatePlaying`
+### AgoraRtePlayerStatePlaying
 
 （3）：正在播放状态。
 
-### `AgoraRtePlayerStatePaused`
+### AgoraRtePlayerStatePaused
 
 （4）：播放已暂停。成功调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player) 后触发该状态。
 
-### `AgoraRtePlayerStatePlaybackCompleted`
+### AgoraRtePlayerStatePlaybackCompleted
 
 （5）：播放已完成。
 
-### `AgoraRtePlayerStateStopped`
+### AgoraRtePlayerStateStopped
 
 （6）：播放已停止。成功调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player) 后触发该状态。
 
-### `AgoraRtePlayerStateFailed`
+### AgoraRtePlayerStateFailed
 
 （7）：播放失败。发生内部错误时触发该状态。收到该状态后需先调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player)，再调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 重新打开资源。

@@ -1,10 +1,18 @@
 ---
-title: "EncryptionConfig"
-description: "配置内置加密模式和密钥。"
+title: EncryptionConfig
+description: 配置内置加密模式和密钥。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_encryptionconfig
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_encryptionconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_encryptionconfig__prototype"></a>
 
-```arkts
+```text
 export class EncryptionConfig {
   encryptionMode : EncryptionMode = EncryptionMode.AES_128_GCM2;
   encryptionKey : string = "";
@@ -16,24 +24,26 @@ export class EncryptionConfig {
 
 <a id="class_encryptionconfig__parameters"></a>
 
-### `encryptionMode`
+##
+
+### encryptionMode
 
 内置加密模式。详见 [EncryptionMode](/zh-CN/api-reference/rtc/harmonyos/enum-encryptionmode)。建议使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式。这两种模式支持使用盐，安全性更高。
 
-### `encryptionKey`
+### encryptionKey
 
 内置加密密钥，字符串类型，长度无限制。建议使用 32 字节的密钥。
 
-:::warning[注意]
-如果未指定该参数或将该参数设置为 `NULL`，则无法启用内置加密，且 SDK 会返回错误码 `-2`。
+:::note
+注意： 如果未指定该参数或将该参数设置为 `NULL`，则无法启用内置加密，且 SDK 会返回错误码 `-2`。
 :::
 
-### `encryptionKdfSalt`
+### encryptionKdfSalt
 
 盐，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。
 
-如需在 App 中添加声网内置媒体流加密，详见 媒体流加密。
+如需在 App 中添加声网内置媒体流加密，详见媒体流加密。
 
-:::warning[注意]
-只有在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下，该参数才生效。此时，需确保填入该参数的值不全为 `0`。
+:::note
+注意： 只有在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下，该参数才生效。此时，需确保填入该参数的值不全为 `0`。
 :::

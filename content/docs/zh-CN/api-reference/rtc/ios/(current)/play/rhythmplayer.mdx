@@ -1,10 +1,19 @@
 ---
-title: "虚拟节拍器"
-description: "虚拟节拍器 API reference."
+title: 虚拟节拍器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_rhythmplayer
+  sourcePath: html-docs/rtc/iOS/API/toc_rhythmplayer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_rhythmplayer"></a>
 
 <a id="api_irtcengine_configrhythmplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## configRhythmPlayer:
 
@@ -12,13 +21,13 @@ description: "虚拟节拍器 API reference."
 
 <a id="api_irtcengine_configrhythmplayer__prototype"></a>
 
-```objectivec
+```text
 - (int)configRhythmPlayer:(AgoraRhythmPlayerConfig * _Nullable)config NS_SWIFT_NAME(configRhythmPlayer(_:));
 ```
 
 <a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.6.0 版本废弃。
 
@@ -34,7 +43,7 @@ description: "虚拟节拍器 API reference."
 
 ### 参数
 
-#### `config`
+### config
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/ios/class-agorarhythmplayerconfig)。
 
@@ -43,12 +52,11 @@ description: "虚拟节拍器 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startrhythmplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## startRhythmPlayer:sound2:config:
 
@@ -56,13 +64,13 @@ description: "虚拟节拍器 API reference."
 
 <a id="api_irtcengine_startrhythmplayer__prototype"></a>
 
-```objectivec
+```text
 - (int)startRhythmPlayer:(NSString * _Nonnull)sound1 sound2:(NSString * _Nonnull)sound2 config:(AgoraRhythmPlayerConfig *  _Nullable)config NS_SWIFT_NAME(startRhythmPlayer(_:sound2:config:));
 ```
 
 <a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.6.0 版本废弃。
 
@@ -90,15 +98,15 @@ description: "虚拟节拍器 API reference."
 
 ### 参数
 
-#### `sound1`
+### sound1
 
-强拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如， /var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+强拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如，/var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `sound2`
+### sound2
 
-弱拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如， /var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+弱拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如，/var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `config`
+### config
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/ios/class-agorarhythmplayerconfig)。
 
@@ -107,13 +115,13 @@ description: "虚拟节拍器 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -22：未找到音效文件。请设置正确的 sound1 和 sound2 路径。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+  - -22：未找到音效文件。请设置正确的 `sound1` 和 `sound2` 路径。
 
 <a id="api_irtcengine_stoprhythmplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## stopRhythmPlayer
 
@@ -121,13 +129,13 @@ description: "虚拟节拍器 API reference."
 
 <a id="api_irtcengine_stoprhythmplayer__prototype"></a>
 
-```objectivec
+```text
 - (int)stopRhythmPlayer NS_SWIFT_NAME(stopRhythmPlayer());
 ```
 
 <a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.6.0 版本废弃。
 
@@ -138,12 +146,11 @@ description: "虚拟节拍器 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+<a id="ariaid-title5"></a>
 
 ## rtcEngine:didRhythmPlayerStateChanged:reason:
 
@@ -151,14 +158,14 @@ description: "虚拟节拍器 API reference."
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didRhythmPlayerStateChanged:(AgoraRhythmPlayerState)state
         reason:(AgoraRhythmPlayerReason)reason NS_SWIFT_NAME(rtcEngine(_:didRhythmPlayerStateChanged:reason:));
 ```
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 自 v4.6.0 版本废弃。
 
@@ -174,17 +181,14 @@ description: "虚拟节拍器 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 当前使用的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。
 
-#### `state`
+### state
 
 当前虚拟节拍器的状态，详见 [AgoraRhythmPlayerState](/zh-CN/api-reference/rtc/ios/enum-rhythmplayerstatetype)。
 
-#### `reason`
+### reason
 
 与虚拟节拍器错误相关的错误码和错误信息，详见 [AgoraRhythmPlayerReason](/zh-CN/api-reference/rtc/ios/enum-rhythmplayerreason)。
-
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

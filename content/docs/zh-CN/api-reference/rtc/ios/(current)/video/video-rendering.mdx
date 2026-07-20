@@ -1,10 +1,19 @@
 ---
-title: "视频渲染"
-description: "视频渲染 API reference."
+title: 视频渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_video_rendering
+  sourcePath: html-docs/rtc/iOS/API/toc_video_rendering.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableInstantMediaRendering
 
@@ -12,20 +21,20 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```objectivec
+```text
 - (int)enableInstantMediaRendering NS_SWIFT_NAME(enableInstantMediaRendering());
 ```
 
 <a id="api_irtcengine_enableinstantmediarendering__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.1.1 版本新增。
 
 调用该方法后，SDK 会启用极速帧渲染模式，从而加快你加入频道后首帧的渲染速度。
 
-:::info[注]
-主播和观众都需调用该方法，才能体验音视频帧的极速渲染。若需取消极速渲染，需调用 [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) 方法销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
+:::note
+注： 主播和观众都需调用该方法，才能体验音视频帧的极速渲染。若需取消极速渲染，需调用 [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) 方法销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
 :::
 
 <a id="api_irtcengine_enableinstantmediarendering__scenario"></a>
@@ -45,13 +54,13 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -7：在 AgoraRtcEngineKit 初始化前调用该方法。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+  - -7：在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化前调用该方法。
 
 <a id="api_irtcengine_setlocalrendermode1"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setLocalRenderMode:mode:
 
@@ -59,14 +68,14 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setlocalrendermode1__prototype"></a>
 
-```objectivec
+```text
 - (int)setLocalRenderMode:(NSUInteger)uid
                      mode:(AgoraVideoRenderMode)mode NS_SWIFT_NAME(setLocalRenderMode(_:mode:)) __deprecated;
 ```
 
 <a id="api_irtcengine_setlocalrendermode1__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃。
 
@@ -76,11 +85,11 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `mode`
+### mode
 
 本地视频显示模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rendermodetype)。
 
@@ -89,12 +98,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setLocalRenderMode:mirror:
 
@@ -102,7 +110,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```objectivec
+```text
 - (int)setLocalRenderMode:(AgoraVideoRenderMode)mode
                    mirror:(AgoraVideoMirrorMode)mirror NS_SWIFT_NAME(setLocalRenderMode(_:mirror:));
 ```
@@ -111,8 +119,8 @@ description: "视频渲染 API reference."
 
 你可以在初始化本地视频视图后调用该方法，更新其渲染模式和镜像模式。该方法仅影响你本地看到的视频视图，不影响本地视频的发布。
 
-:::info[注]
-该方法仅对主摄像头（`AgoraMediaSourceTypePrimaryCamera` ）生效。在使用自定义视频采集或其他视频源的场景中，应使用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代。
+:::note
+注： 该方法仅对主摄像头（`AgoraMediaSourceTypePrimaryCamera`）生效。在使用自定义视频采集或其他视频源的场景中，应使用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代。
 :::
 
 <a id="api_irtcengine_setlocalrendermode2__timing"></a>
@@ -121,18 +129,18 @@ description: "视频渲染 API reference."
 
 调用时序：
 
-- 请确保在调用该方法前已调用 setupLocalVideo: 方法初始化本地视频视图。
+- 请确保在调用该方法前已调用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视频视图。
 - 通话过程中，你可以多次调用该方法更新本地视频视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
 
 ### 参数
 
-#### `mode`
+### mode
 
 本地视频的显示模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rendermodetype)。
 
-#### `mirror`
+### mirror
 
 本地视频视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。如果使用前置摄像头，SDK 默认启用镜像模式；如果使用后置摄像头，SDK 默认关闭镜像模式。
 
@@ -141,12 +149,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlocalrendertargetfps"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setLocalRenderTargetFps:targetFps:
 
@@ -154,7 +161,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
 
-```objectivec
+```text
 - (int)setLocalRenderTargetFps:(AgoraVideoSourceType)sourceType
                                targetFps:(int)targetFps;
 ```
@@ -179,11 +186,11 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `sourceType`
+### sourceType
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
 
-#### `targetFps`
+### targetFps
 
 本地视频的采集帧率（fps）。支持的取值包括：1、7、10、15、24、30、60。将该参数设置为低于实际视频帧率的值，否则设置不生效。
 
@@ -192,12 +199,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setLocalVideoMirrorMode:
 
@@ -205,13 +211,13 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```objectivec
+```text
 - (int)setLocalVideoMirrorMode:(AgoraVideoMirrorMode)mode NS_SWIFT_NAME(setLocalVideoMirrorMode(_:)) __deprecated;
 ```
 
 <a id="api_irtcengine_setlocalvideomirrormode__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃。
 
@@ -219,7 +225,7 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `mode`
+### mode
 
 本地视频镜像模式。详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
@@ -228,12 +234,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremoterendermode2"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setRemoteRenderMode:mode:mirror:
 
@@ -241,7 +246,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```objectivec
+```text
 - (int)setRemoteRenderMode:(NSUInteger)uid
                       mode:(AgoraVideoRenderMode)mode
                     mirror:(AgoraVideoMirrorMode)mirror NS_SWIFT_NAME(setRemoteRenderMode(_:mode:mirror:));
@@ -251,8 +256,10 @@ description: "视频渲染 API reference."
 
 初始化远端用户的视频视图后，你可以调用该方法更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
 
-:::info[注]
-- 调用该方法前需先通过 setupRemoteVideo: 方法初始化远端视图。
+:::note
+注：
+
+- 调用该方法前需先通过 [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图。
 - 通话过程中，你可以多次调用该方法以更新远端用户视频视图的显示模式。
 :::
 
@@ -260,15 +267,15 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的用户 ID。
 
-#### `mode`
+### mode
 
 远端用户视图的渲染模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rendermodetype)。
 
-#### `mirror`
+### mirror
 
 远端用户视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
@@ -277,12 +284,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setRemoteRenderModeEx:mode:mirror:connection:
 
@@ -290,7 +296,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```objectivec
+```text
 - (int)setRemoteRenderModeEx:(NSUInteger)uid
                         mode:(AgoraVideoRenderMode)mode
                       mirror:(AgoraVideoMirrorMode)mirror
@@ -301,8 +307,10 @@ description: "视频渲染 API reference."
 
 你可以调用该方法更新远端用户的视频渲染模式和镜像模式。该方法仅影响你本地看到的远端用户视频视图。
 
-:::info[注]
-- 请在调用 setupRemoteVideo: 方法初始化远端视图后调用该方法。
+:::note
+注：
+
+- 请在调用 [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后调用该方法。
 - 通话过程中，你可以根据需要多次调用该方法更新远端用户视频视图的显示模式。
 :::
 
@@ -316,19 +324,19 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户的用户 ID。
 
-#### `mode`
+### mode
 
 远端用户的视频显示模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rendermodetype)。
 
-#### `mirror`
+### mirror
 
 远端用户视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
-#### `connection`
+### connection
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
@@ -337,12 +345,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremoterendertargetfps"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setRemoteRenderTargetFps:
 
@@ -350,7 +357,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
 
-```objectivec
+```text
 - (int)setRemoteRenderTargetFps:(int)targetFps;
 ```
 
@@ -374,7 +381,7 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `targetFps`
+### targetFps
 
 本地视频的采集帧率（fps）。支持的取值包括：1、7、10、15、24、30、60。将该参数设置为低于实际视频帧率的值，否则设置不生效。
 
@@ -383,12 +390,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setrendermode"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setRenderMode:
 
@@ -396,7 +402,7 @@ description: "视频渲染 API reference."
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```objectivec
+```text
 - (int)setRenderMode:(AgoraMediaPlayerRenderMode)mode NS_SWIFT_NAME(setRenderMode(_:));
 ```
 
@@ -406,7 +412,7 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `mode`
+### mode
 
 视图的渲染模式，详见 [AgoraMediaPlayerRenderMode](/zh-CN/api-reference/rtc/ios/enum-agoramediaplayerrendermode)。
 
@@ -415,12 +421,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setuplocalvideo"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setupLocalVideo:
 
@@ -428,16 +433,18 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```objectivec
+```text
 - (int)setupLocalVideo:(AgoraRtcVideoCanvas * _Nullable)local NS_SWIFT_NAME(setupLocalVideo(_:));
 ```
 
 <a id="api_irtcengine_setuplocalvideo__detailed_desc"></a>
 
-该方法在本地设备上初始化本地视频流的画面，仅影响你本地看到的视频内容，不影响本地视频的发布。你可以调用该方法将本地视频流绑定到指定的视频画面（`view` ），并设置画面的渲染模式和镜像模式。绑定关系在离开频道后仍然有效。如需停止渲染或解绑本地视频与画面，将 `view` 设为 nil 即可。 在实时互动场景中，如果你需要在本地视频预览中同时查看多个处于视频链路不同观察位置的预览画面，可以多次调用该方法，设置不同的 `view`，并为每个 `view` 设置不同的观察位置。例如，将视频源设置为摄像头后，配置两个 `view`，分别设置 `position` 为 `AgoraVideoModulePositionPostCaptureOrigin` 和 `AgoraVideoModulePositionPostCapture`，即可在本地视频预览中同时查看原始未处理的视频帧和经过美颜特效、虚拟背景、水印等预处理后的视频帧。
+该方法在本地设备上初始化本地视频流的画面，仅影响你本地看到的视频内容，不影响本地视频的发布。你可以调用该方法将本地视频流绑定到指定的视频画面（`view`），并设置画面的渲染模式和镜像模式。绑定关系在离开频道后仍然有效。如需停止渲染或解绑本地视频与画面，将 `view` 设为 nil 即可。
 
-:::info[注]
-若仅需在通话中更新本地视频画面的渲染模式或镜像模式，请调用 [setLocalRenderMode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
+在实时互动场景中，如果你需要在本地视频预览中同时查看多个处于视频链路不同观察位置的预览画面，可以多次调用该方法，设置不同的 `view`，并为每个 `view` 设置不同的观察位置。例如，将视频源设置为摄像头后，配置两个 `view`，分别设置 `position` 为 `AgoraVideoModulePositionPostCaptureOrigin` 和 `AgoraVideoModulePositionPostCapture`，即可在本地视频预览中同时查看原始未处理的视频帧和经过美颜特效、虚拟背景、水印等预处理后的视频帧。
+
+:::note
+注： 若仅需在通话中更新本地视频画面的渲染模式或镜像模式，请调用 [setLocalRenderMode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -456,7 +463,7 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `local`
+### local
 
 本地视频画面及相关设置，详见 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas)。
 
@@ -465,12 +472,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setupremotevideo"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setupRemoteVideo:
 
@@ -478,24 +484,30 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```objectivec
+```text
 - (int)setupRemoteVideo:(AgoraRtcVideoCanvas * _Nonnull)remote NS_SWIFT_NAME(setupRemoteVideo(_:));
 ```
 
 <a id="api_irtcengine_setupremotevideo__detailed_desc"></a>
 
-该方法在本地设备上初始化远端视频流的视频视图，仅影响你本地看到的视频画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户 ID。如果你尚未获取远端用户 ID，请在收到 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。 若要解绑远端用户与视图的绑定关系，请将 `view` 参数设置为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。 在移动端进行合流视频自定义布局的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
+该方法在本地设备上初始化远端视频流的视频视图，仅影响你本地看到的视频画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户 ID。如果你尚未获取远端用户 ID，请在收到 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。
 
-:::info[注]
-- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 setRemoteRenderMode 方法。
-- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed: 回调时将远端用户绑定到视图。
+若要解绑远端用户与视图的绑定关系，请将 `view` 参数设置为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。
+
+在移动端进行合流视频自定义布局的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
+
+:::note
+注：
+
+- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderMode` 方法。
+- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
 
 ### 参数
 
-#### `remote`
+### remote
 
 远端视频视图及其相关设置，详见 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas)。
 
@@ -504,12 +516,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
+
+<a id="ariaid-title13"></a>
 
 ## setupRemoteVideoEx:connection:
 
@@ -517,17 +528,23 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```objectivec
+```text
 - (int)setupRemoteVideoEx:(AgoraRtcVideoCanvas* _Nonnull)remote
                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setupRemoteVideoEx(_:connection:));
 ```
 
 <a id="api_irtcengineex_setupremotevideoex__detailed_desc"></a>
 
-该方法在本地设备上初始化远端视频流的视频视图，仅影响你所看到的远端视频画面。你可以调用该方法将远端视频流绑定到指定的视频视图，并设置渲染模式和镜像模式。 你需要在远端用户加入频道前，通过 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas) 设置远端用户的 UID。如果你尚未获取远端用户的 UID，可在收到 `didJoinedOfUid` 回调后再设置。 如果启用了视频录制功能，录制服务会以虚拟客户端身份加入频道，其他客户端也会因此收到 `onUserJoined` 回调。请勿将该虚拟客户端绑定到应用视图，因为它不会发送任何视频流。 如需解绑远端用户与视图的绑定关系，请将 `view` 参数设为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。
+该方法在本地设备上初始化远端视频流的视频视图，仅影响你所看到的远端视频画面。你可以调用该方法将远端视频流绑定到指定的视频视图，并设置渲染模式和镜像模式。
 
-:::info[注]
-若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderModeEx` 方法。
+你需要在远端用户加入频道前，通过 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas) 设置远端用户的 UID。如果你尚未获取远端用户的 UID，可在收到 `didJoinedOfUid` 回调后再设置。
+
+如果启用了视频录制功能，录制服务会以虚拟客户端身份加入频道，其他客户端也会因此收到 `onUserJoined` 回调。请勿将该虚拟客户端绑定到应用视图，因为它不会发送任何视频流。
+
+如需解绑远端用户与视图的绑定关系，请将 `view` 参数设为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。
+
+:::note
+注： 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderModeEx` 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__scenario"></a>
@@ -540,11 +557,11 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `remote`
+### remote
 
 远端视频视图的设置。详见 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas)。
 
-#### `connection`
+### connection
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
@@ -552,12 +569,12 @@ description: "视频渲染 API reference."
 
 ### 返回值
 
-0：方法调用成功。 &lt; 0：方法调用失败。
-
-### 所属接口类
-- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+0：方法调用成功。
+&lt; 0：方法调用失败。
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
+
+<a id="ariaid-title14"></a>
 
 ## startMediaRenderingTracing
 
@@ -565,20 +582,22 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```objectivec
+```text
 - (int)startMediaRenderingTracing NS_SWIFT_NAME(startMediaRenderingTracing());
 ```
 
 <a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.1.1 版本新增。
 
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关事件信息。
 
-:::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
+:::note
+注：
+
+- 如果你未调用该方法，SDK 会从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
@@ -593,13 +612,13 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -7：在初始化 AgoraRtcEngineKit 之前调用该方法。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+  - -7：在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 之前调用该方法。
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
+
+<a id="ariaid-title15"></a>
 
 ## startMediaRenderingTracingEx:
 
@@ -607,20 +626,22 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```objectivec
+```text
 - (int)startMediaRenderingTracingEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startMediaRenderingTracingEx(_:));
 ```
 
 <a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.1.1 版本新增。
 
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
 
-:::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannelByToken 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
+:::note
+注：
+
+- 如果你未调用该方法，SDK 会从调用 `joinChannelByToken` 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
@@ -634,7 +655,7 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `connection`
+### connection
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
@@ -643,12 +664,11 @@ description: "视频渲染 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
+
+<a id="ariaid-title16"></a>
 
 ## rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:
 
@@ -656,7 +676,7 @@ description: "视频渲染 API reference."
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didTranscodedStreamLayoutInfoUpdatedWithUserId:(NSUInteger)uid videoLayoutInfo:(AgoraVideoLayoutInfo* _Nonnull)videoLayoutInfo NS_SWIFT_NAME(rtcEngine(_:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:));
 ```
 
@@ -674,22 +694,21 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-#### `uid`
+### uid
 
 发布该合图视频的用户 ID。
 
-#### `videoLayoutInfo`
+### videoLayoutInfo
 
 混合流中某个子视频流的布局信息，详见 [AgoraVideoLayoutInfo](/zh-CN/api-reference/rtc/ios/class-videolayoutinfo)。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
+
+<a id="ariaid-title17"></a>
 
 ## rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:
 
@@ -697,7 +716,7 @@ description: "视频渲染 API reference."
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoRenderingTracingResultOfUid:(NSUInteger)uid currentEvent:(AgoraMediaTraceEvent)currentEvent tracingInfo:(AgoraVideoRenderingTracingInfo * _Nonnull)tracingInfo NS_SWIFT_NAME(rtcEngine(_:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:));
 ```
 
@@ -715,21 +734,18 @@ description: "视频渲染 API reference."
 
 ### 参数
 
-#### `engine`
+### engine
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `currentEvent`
+### currentEvent
 
 当前的视频帧渲染事件。详见 [AgoraMediaTraceEvent](/zh-CN/api-reference/rtc/ios/enum-mediatraceevent)。
 
-#### `tracingInfo`
+### tracingInfo
 
 视频帧渲染过程中的指标信息。你需要尽可能降低这些指标的数值，以提高首帧视频渲染的效率。详见 [AgoraVideoRenderingTracingInfo](/zh-CN/api-reference/rtc/ios/class-videorenderingtracinginfo)。
-
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

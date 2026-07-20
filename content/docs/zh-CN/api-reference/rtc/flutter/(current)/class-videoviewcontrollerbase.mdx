@@ -1,10 +1,18 @@
 ---
-title: "VideoViewControllerBase"
-description: "AgoraVideoView 的控制器，用于渲染本地和远端视频。"
+title: VideoViewControllerBase
+description: AgoraVideoView 的控制器，用于渲染本地和远端视频。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_videoviewcontrollerbase
+  sourcePath: html-docs/rtc/Flutter/API/class_videoviewcontrollerbase.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videoviewcontrollerbase__prototype"></a>
 
-```dart
+```text
 abstract class VideoViewControllerBase {
   RtcEngine get rtcEngine;
   VideoCanvas get canvas;
@@ -19,44 +27,44 @@ abstract class VideoViewControllerBase {
 
 在不同平台上，该类对应的默认视图不同：
 
-- Android: https://developer.android.com/reference/android/view/TextureView。如果你想要使用 [SurfaceView](https://developer.android.com/reference/android/view/SurfaceView)，则设置 useAndroidSurfaceView 的属性为 true。
-- iOS: [UIView](https://developer.apple.com/documentation/uikit/uiview)。 如果你想要使用 [FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html)，则设置 useFlutterTexture 的属性为 true。
-- macOS 和 Windows： [FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html)。
+- Android: https://developer.android.com/reference/android/view/TextureView 。如果你想要使用 [SurfaceView](https://developer.android.com/reference/android/view/SurfaceView) ，则设置 `useAndroidSurfaceView` 的属性为 true。
+- iOS: [UIView](https://developer.apple.com/documentation/uikit/uiview) 。 如果你想要使用 [FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html) ，则设置 `useFlutterTexture` 的属性为 true。
+- macOS 和 Windows：[FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html) 。
 
 <a id="class_videoviewcontrollerbase__parameters"></a>
 
 ## 属性
 
-### `rtcEngine`
+### rtcEngine
 
 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)。
 
-### `canvas`
+### canvas
 
 本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/flutter/class-videocanvas)。
 
-### `connection`
+### connection
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### `useFlutterTexture`
+### useFlutterTexture
 
-:::info[注]
-`FlutterTexture` 适用于 Android、iOS、macOS 和 Windows 平台。
+:::note
+注： `FlutterTexture` 适用于 Android、iOS、macOS 和 Windows 平台。
 :::
 
 是否使用 `FlutterTexture` 渲染视频：
 
-- true: 使用 FlutterTexture 渲染视频。
-- false: 不使用 FlutterTexture 渲染视频。
+- true: 使用 `FlutterTexture` 渲染视频。
+- false: 不使用  `FlutterTexture` 渲染视频。
 
-### `useAndroidSurfaceView`
+### useAndroidSurfaceView
 
-:::info[注]
-Android `SurfaceView` 仅适用于 Android 平台。
+:::note
+注： Android `SurfaceView` 仅适用于 Android 平台。
 :::
 
 是否使用 Android `SurfaceView` 渲染视频：
 
-- true: 使用 Android SurfaceView 渲染视频。
-- false: 不使用 Android SurfaceView 渲染视频。
+- true: 使用 Android `SurfaceView` 渲染视频。
+- false: 不使用  Android `SurfaceView` 渲染视频。

@@ -1,10 +1,18 @@
 ---
-title: "AudioVolumeInfo"
-description: "表示用户的音量信息。"
+title: AudioVolumeInfo
+description: 表示用户的音量信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_audiovolumeinfo
+  sourcePath: html-docs/rtc/Android/API/class_audiovolumeinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audiovolumeinfo__prototype"></a>
 
-```java
+```text
 public static class AudioVolumeInfo {
   public int uid;
   public int volume;
@@ -17,22 +25,24 @@ public static class AudioVolumeInfo {
 
 ## 属性
 
-### `uid`
+### uid
 
 用户 ID。
 
-- 在本地用户的回调中， uid 为 0。
-- 在远端用户的回调中， uid 为瞬时音量最大的远端用户 ID。
+- 在本地用户的回调中，`uid` 为 0。
+- 在远端用户的回调中，`uid` 为瞬时音量最大的远端用户 ID。
 
-### `volume`
+### volume
 
 用户的音量，取值范围为 0（最低）到 255（最高）。如果本地用户开启了音频采集并调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 进行静音，则该值表示本地采集音频信号的音量值。调用 `startAudioMixing` 后，该值表示混音后的音量值。
 
-### `vad`
+### vad
 
-:::info[注]
-- vad 参数不会上报远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
-- 使用该参数时，必须在调用 enableAudioVolumeIndication 时将 reportVad 设置为 true。
+:::note
+注：
+
+- `vad` 参数不会上报远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
+- 使用该参数时，必须在调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 时将 `reportVad` 设置为 true。
 :::
 
 本地用户的语音活动状态：
@@ -40,10 +50,10 @@ public static class AudioVolumeInfo {
 - 0：未说话；
 - 1：正在说话。
 
-### `voicePitch`
+### voicePitch
 
 本地用户的语音音高，取值范围为 0.0 到 4000.0。
 
-:::info[注]
-`voicePitch` 参数不会上报远端用户的语音音高。在远端用户回调中，该值始终为 0.0。
+:::note
+注： `voicePitch` 参数不会上报远端用户的语音音高。在远端用户回调中，该值始终为 0.0。
 :::

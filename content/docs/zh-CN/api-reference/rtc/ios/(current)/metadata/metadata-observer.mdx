@@ -1,10 +1,19 @@
 ---
-title: "媒体流附属信息分发"
-description: "媒体流附属信息分发 API reference."
+title: 媒体流附属信息分发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_metadata_observer
+  sourcePath: html-docs/rtc/iOS/API/toc_metadata_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_metadata_observer"></a>
 
 <a id="api_agoramediametadatadatasource_metadatamaxsize"></a>
+
+<a id="ariaid-title2"></a>
 
 ## metadataMaxSize
 
@@ -12,7 +21,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="api_agoramediametadatadatasource_metadatamaxsize__prototype"></a>
 
-```objectivec
+```text
 - (NSInteger)metadataMaxSize NS_SWIFT_NAME(metadataMaxSize());
 ```
 
@@ -26,10 +35,9 @@ description: "媒体流附属信息分发 API reference."
 
 方法调用成功，返回你希望使用的元数据缓冲区的最大大小，单位为字节。最大值为 1024 字节。
 
-### 所属接口类
-- [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
-
 <a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp"></a>
+
+<a id="ariaid-title3"></a>
 
 ## readyToSendMetadataAtTimestamp:sourceType:
 
@@ -37,7 +45,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__prototype"></a>
 
-```objectivec
+```text
 - (NSData * _Nullable)readyToSendMetadataAtTimestamp:(NSTimeInterval)timestamp sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(readyToSendMetadata(atTimestamp:sourceType:));
 ```
 
@@ -45,8 +53,8 @@ description: "媒体流附属信息分发 API reference."
 
 该回调在 SDK 准备好发送元数据时触发。
 
-:::info[注]
-请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。
+:::note
+注： 请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。
 :::
 
 <a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__timing"></a>
@@ -59,11 +67,11 @@ description: "媒体流附属信息分发 API reference."
 
 ### 参数
 
-#### `timestamp`
+### timestamp
 
 时间戳。
 
-#### `sourceType`
+### sourceType
 
 视频数据类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
 
@@ -73,15 +81,14 @@ description: "媒体流附属信息分发 API reference."
 
 你希望发送的元数据，格式为 `NSData`，包含以下参数：
 
-- uid：发送元数据的远端用户 ID。
-- size：元数据的大小。
-- buffer：元数据内容。
-- timeStampMs：发送元数据时的 NTP 时间戳（毫秒）。
-
-### 所属接口类
-- [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
+- `uid`：发送元数据的远端用户 ID。
+- `size`：元数据的大小。
+- `buffer`：元数据内容。
+- `timeStampMs`：发送元数据时的 NTP 时间戳（毫秒）。
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setMediaMetadataDelegate:withType:
 
@@ -89,7 +96,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```objectivec
+```text
 - (BOOL)setMediaMetadataDelegate:(id<AgoraMediaMetadataDelegate> _Nullable)metadataDelegate withType:(AgoraMetadataType)type NS_SWIFT_NAME(setMediaMetadataDelegate(_:with:));
 ```
 
@@ -97,19 +104,19 @@ description: "媒体流附属信息分发 API reference."
 
 你需要实现 [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver) 协议，并在该方法中指定元数据类型。该方法使你能够在视频流中添加同步的元数据，以实现更丰富的直播互动场景，例如发送购物链接、数字优惠券和在线问答。
 
-:::info[注]
-请在调用 `joinChannelByToken` 之前调用该方法。
+:::note
+注： 请在调用 `joinChannelByToken` 之前调用该方法。
 :::
 
 <a id="api_irtcengine_registermediametadataobserver__parameters"></a>
 
 ### 参数
 
-#### `metadataDelegate`
+### metadataDelegate
 
 元数据观察者，详见 [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver)。
 
-#### `type`
+### type
 
 元数据类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。当前 SDK 仅支持 `AgoraMetadataTypeVideo`。
 
@@ -120,10 +127,9 @@ description: "媒体流附属信息分发 API reference."
 - YES：方法调用成功。
 - NO：方法调用失败。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setmediametadatadatasource"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setMediaMetadataDataSource:withType:
 
@@ -131,7 +137,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="api_irtcengine_setmediametadatadatasource__prototype"></a>
 
-```objectivec
+```text
 - (BOOL)setMediaMetadataDataSource:(id<AgoraMediaMetadataDataSource> _Nullable)metadataDataSource withType:(AgoraMetadataType)type NS_SWIFT_NAME(setMediaMetadataDataSource(_:with:));
 ```
 
@@ -139,19 +145,19 @@ description: "媒体流附属信息分发 API reference."
 
 你需要在该方法中实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议，并指定元数据的数据格式。成功调用该方法后，SDK 会触发 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调。你可以结合 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法，在视频流中添加同步的元数据，实现更丰富的直播互动，例如发送购物链接、数字优惠券和在线问答。
 
-:::info[注]
-该方法需要在加入频道前调用。
+:::note
+注： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_irtcengine_setmediametadatadatasource__parameters"></a>
 
 ### 参数
 
-#### `metadataDataSource`
+### metadataDataSource
 
 元数据的数据源，需实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议。详见 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)。
 
-#### `type`
+### type
 
 元数据的类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。SDK 当前仅支持 `AgoraMetadataTypeVideo`。
 
@@ -162,10 +168,9 @@ description: "媒体流附属信息分发 API reference."
 - YES：方法调用成功。
 - NO：方法调用失败。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
-
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
+
+<a id="ariaid-title6"></a>
 
 ## didMetadataReceived:
 
@@ -173,7 +178,7 @@ description: "媒体流附属信息分发 API reference."
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```objectivec
+```text
 - (void)didMetadataReceived:(AgoraMetadata * _Nonnull)metadata NS_SWIFT_NAME(didMetadataReceived(_:));
 ```
 
@@ -189,9 +194,6 @@ description: "媒体流附属信息分发 API reference."
 
 ### 参数
 
-#### `metadata`
+### metadata
 
 接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/ios/class-metadata)。
-
-### 所属接口类
-- [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver)

@@ -1,10 +1,19 @@
 ---
-title: "音频采集"
-description: "音频采集 API reference."
+title: 音频采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_audio_capture
+  sourcePath: html-docs/rtc/iOS/API/toc_audio_capture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustRecordingSignalVolume:
 
@@ -12,7 +21,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustRecordingSignalVolume:(NSInteger)volume NS_SWIFT_NAME(adjustRecordingSignalVolume(_:));
 ```
 
@@ -30,7 +39,7 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `volume`
+### volume
 
 用户的音量。取值范围为 [0,400]。
 
@@ -43,12 +52,11 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enableinearmonitoring"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableInEarMonitoring:
 
@@ -56,7 +64,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_enableinearmonitoring__prototype"></a>
 
-```objectivec
+```text
 - (int)enableInEarMonitoring:(BOOL)enabled NS_SWIFT_NAME(enable(inEarMonitoring:));
 ```
 
@@ -64,8 +72,8 @@ description: "音频采集 API reference."
 
 你可以调用该方法启用或关闭耳返监听功能。
 
-:::info[注]
-[enableInEarMonitoring:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring) 仅在使用有线或蓝牙耳机时有效。
+:::note
+注： [enableInEarMonitoring:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring) 仅在使用有线或蓝牙耳机时有效。
 :::
 
 <a id="api_irtcengine_enableinearmonitoring__timing"></a>
@@ -78,7 +86,7 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用耳返监听功能：
 
@@ -90,13 +98,13 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -8：请确保当前音频路由为蓝牙或耳机。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_enableinearmonitoring2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableInEarMonitoring:includeAudioFilters:
 
@@ -104,14 +112,14 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
 
-```objectivec
+```text
 - (int)enableInEarMonitoring:(BOOL)enabled includeAudioFilters:(AgoraEarMonitoringFilterType)includeAudioFilters NS_SWIFT_NAME(enable(inEarMonitoring:includeAudioFilters:));
 ```
 
 <a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
 
-:::info[注]
-你必须使用有线或蓝牙耳机才能听到耳返监听效果。
+:::note
+注： 你必须使用有线或蓝牙耳机才能听到耳返监听效果。
 :::
 
 <a id="api_irtcengine_enableinearmonitoring2__timing"></a>
@@ -124,14 +132,14 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用耳返监听功能。
 
 - YES：启用耳返监听。
 - NO：（默认）关闭耳返监听。
 
-#### `includeAudioFilters`
+### includeAudioFilters
 
 耳返监听的音频滤波器类型，详见 [AgoraEarMonitoringFilterType](/zh-CN/api-reference/rtc/ios/enum-earmonitoringfiltertype)。
 
@@ -140,13 +148,13 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -8：请确保当前音频路由为蓝牙或有线耳机。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_enablelocalaudio"></a>
+
+<a id="ariaid-title5"></a>
 
 ## enableLocalAudio:
 
@@ -154,18 +162,19 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_enablelocalaudio__prototype"></a>
 
-```objectivec
+```text
 - (int)enableLocalAudio:(BOOL)enabled NS_SWIFT_NAME(enableLocalAudio(_:));
 ```
 
 <a id="api_irtcengine_enablelocalaudio__detailed_desc"></a>
 
-[enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio) 方法用于启用或关闭本地音频采集功能。默认情况下，加入频道时会启用音频功能。调用该方法可以停止或重新启动本地音频采集。 该方法与 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
+[enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio) 方法用于启用或关闭本地音频采集功能。默认情况下，加入频道时会启用音频功能。调用该方法可以停止或重新启动本地音频采集。
+该方法与 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
 
-- enableLocalAudio:：关闭或重新启用本地音频采集和处理。如果使用该方法关闭或重新启用本地音频采集，可能会导致远端音频播放出现短暂中断。
-- muteLocalAudioStream:：仅停止或恢复发送本地音频流，不影响音频采集状态。
+- [enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio)：关闭或重新启用本地音频采集和处理。如果使用该方法关闭或重新启用本地音频采集，可能会导致远端音频播放出现短暂中断。
+- [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：仅停止或恢复发送本地音频流，不影响音频采集状态。
 
-该方法不会影响接收远端音频流。将 `enabled` 设为 NO 适用于只接收远端音频而不发送本地音频的场景。 你可以在加入频道前或加入频道后调用该方法。在加入频道前调用时，仅设置设备状态，加入频道后立即生效。
+该方法不会影响接收远端音频流。将 `enabled` 设为 NO 适用于只接收远端音频而不发送本地音频的场景。你可以在加入频道前或加入频道后调用该方法。在加入频道前调用时，仅设置设备状态，加入频道后立即生效。
 
 <a id="api_irtcengine_enablelocalaudio__scenario"></a>
 
@@ -183,13 +192,13 @@ description: "音频采集 API reference."
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:localAudioStateChanged:reason:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped` （0）或 `AgoraAudioLocalStateRecording` （1）。
+成功调用该方法后，SDK 会触发 [rtcEngine:localAudioStateChanged:reason:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped`（0）或 `AgoraAudioLocalStateRecording`（1）。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 - YES：（默认）重新启用本地音频功能，即启动本地音频采集设备（例如麦克风）。
 - NO：关闭本地音频功能，即停止本地音频采集。
@@ -199,12 +208,11 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_muterecordingsignal"></a>
+
+<a id="ariaid-title6"></a>
 
 ## muteRecordingSignal:
 
@@ -212,7 +220,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_muterecordingsignal__prototype"></a>
 
-```objectivec
+```text
 - (int)muteRecordingSignal:(BOOL)muted NS_SWIFT_NAME(muteRecordingSignal(_:));
 ```
 
@@ -235,7 +243,7 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `muted`
+### muted
 
 - YES：静音录制信号。
 - NO：（默认）不静音录制信号。
@@ -245,12 +253,11 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setInEarMonitoringVolume:
 
@@ -258,7 +265,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)setInEarMonitoringVolume:(NSInteger)volume NS_SWIFT_NAME(setInEarMonitoringVolume(_:));
 ```
 
@@ -274,7 +281,7 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `volume`
+### volume
 
 用户的音量。取值范围为 [0,400]。
 
@@ -287,8 +294,6 @@ description: "音频采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -2：参数设置不合法，例如耳返音量超出有效范围（小于 0 或大于 400）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+  - -2：参数设置不合法，例如耳返音量超出有效范围（小于 0 或大于 400）。

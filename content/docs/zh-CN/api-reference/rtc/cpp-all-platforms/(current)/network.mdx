@@ -1,10 +1,24 @@
 ---
-title: "网络及其他"
-description: "网络及其他 API reference."
+title: 网络及其他
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network
+  sourcePath: html-docs/rtc/Cpp/API/toc_network.html
+  generator: oxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc/windows/API/class_localaccesspointconfiguration.html as local text.
 ---
+
 <a id="toc_network"></a>
 
 <a id="api_irtcengine_complain"></a>
+
+<a id="ariaid-title2"></a>
 
 ## complain
 
@@ -12,7 +26,7 @@ description: "网络及其他 API reference."
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```cpp
+```text
 virtual int complain(const char* callId, const char* description) = 0;
 ```
 
@@ -24,11 +38,11 @@ virtual int complain(const char* callId, const char* description) = 0;
 
 ### 参数
 
-#### `callId`
+### callId
 
 当前通话的通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
 
-#### `description`
+### description
 
 （可选）对通话的描述。字符串长度应小于 800 字节。
 
@@ -37,15 +51,15 @@ virtual int complain(const char* callId, const char* description) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
-  - -7：在 IRtcEngine 初始化之前调用该方法。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -7：在 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
 <a id="api_irtcengine_enableencryption"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableEncryption
 
@@ -53,7 +67,7 @@ virtual int complain(const char* callId, const char* description) = 0;
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```cpp
+```text
 virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 ```
 
@@ -61,7 +75,9 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 用户离开频道后，SDK 会自动关闭内置加密功能。若需启用该功能，请在用户重新加入频道前调用该方法。
 
-:::info[注]
+:::note
+注：
+
 - 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
 - 启用内置加密功能后，无法使用旁路推流功能。
 :::
@@ -82,14 +98,14 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用内置加密功能：
 
 - true：启用内置加密功能。
 - false：（默认）关闭内置加密功能。
 
-#### `config`
+### config
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
 
@@ -98,15 +114,15 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效，请传入有效参数。
   - -4：内置加密模式错误或 SDK 加载外部加密库失败，请检查枚举值或重新加载外部加密库。
-  - -7：SDK 未初始化，请先初始化 IRtcEngine 实例后再调用该方法。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -7：SDK 未初始化，请先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例后再调用该方法。
 
 <a id="api_irtcengineex_enableencryptionex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableEncryptionEx
 
@@ -114,7 +130,7 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```cpp
+```text
 virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, const EncryptionConfig& config) = 0;
 ```
 
@@ -122,7 +138,9 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 
 用户离开频道后，SDK 会自动关闭内置加密。若需启用内置加密，请在用户重新加入频道前调用该方法。
 
-:::info[注]
+:::note
+注：
+
 - 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
 - 启用内置加密后，无法使用旁路推流功能。
 :::
@@ -143,18 +161,18 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 
 ### 参数
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
-#### `enabled`
+### enabled
 
 是否启用内置加密：
 
 - true：启用内置加密。
 - false：（默认）关闭内置加密。
 
-#### `config`
+### config
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
 
@@ -163,12 +181,11 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
+
+<a id="ariaid-title5"></a>
 
 ## enableWebSdkInteroperability
 
@@ -176,13 +193,13 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```cpp
+```text
 virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 ```
 
 <a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
 
@@ -192,7 +209,7 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 
 ### 参数
 
-#### `enabled`
+### enabled
 
 是否启用互通功能：
 
@@ -204,12 +221,11 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getcallid"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getCallId
 
@@ -217,7 +233,7 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```cpp
+```text
 virtual int getCallId(agora::util::AString& callId) = 0;
 ```
 
@@ -235,7 +251,7 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 
 ### 参数
 
-#### `callId`
+### callId
 
 输出参数，当前通话的 `callId`。
 
@@ -244,12 +260,11 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_getcallidex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getCallIdEx
 
@@ -257,7 +272,7 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```cpp
+```text
 virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& connection) = 0;
 ```
 
@@ -281,11 +296,11 @@ virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& conne
 
 ### 参数
 
-#### `callId`
+### callId
 
 输出参数，当前通话的 `callId`。
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
@@ -294,12 +309,11 @@ virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& conne
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getconnectionstate"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getConnectionState
 
@@ -307,7 +321,7 @@ virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& conne
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```cpp
+```text
 virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 ```
 
@@ -325,10 +339,9 @@ virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 
 方法调用成功，返回当前连接状态，详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengineex_getconnectionstateex"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getConnectionStateEx
 
@@ -336,7 +349,7 @@ virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```cpp
+```text
 virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connection) = 0;
 ```
 
@@ -358,7 +371,7 @@ virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connecti
 
 ### 参数
 
-#### `connection`
+### connection
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
@@ -368,10 +381,9 @@ virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connecti
 
 当前的连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
 
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
-
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getCurrentMonotonicTimeInMs
 
@@ -379,13 +391,13 @@ virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connecti
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```cpp
+```text
 virtual int64_t getCurrentMonotonicTimeInMs() = 0;
 ```
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
 
-在自定义视频采集或自定义音频采集场景中，为确保音视频同步，建议调用该方法获取 SDK 当前的单调时间（单位为毫秒），并将该值传入采集的视频帧（[VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe) ）和音频帧（[AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe) ）的时间戳参数中。单调时间是指一个随时间单调递增的时间序列。
+在自定义视频采集或自定义音频采集场景中，为确保音视频同步，建议调用该方法获取 SDK 当前的单调时间（单位为毫秒），并将该值传入采集的视频帧（[VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)）和音频帧（[AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)）的时间戳参数中。单调时间是指一个随时间单调递增的时间序列。
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
 
@@ -398,20 +410,19 @@ virtual int64_t getCurrentMonotonicTimeInMs() = 0;
 ### 返回值
 
 - ≥ 0：方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_geterrordescription"></a>
 
+<a id="ariaid-title11"></a>
+
 ## getErrorDescription
 
-getErrorDescription：获取警告或错误描述。
+[getErrorDescription](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_geterrordescription)：获取警告或错误描述。
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```cpp
+```text
 virtual const char* getErrorDescription(int code) = 0;
 ```
 
@@ -421,7 +432,7 @@ virtual const char* getErrorDescription(int code) = 0;
 
 ### 参数
 
-#### `code`
+### code
 
 SDK 报告的错误码。
 
@@ -432,10 +443,9 @@ SDK 报告的错误码。
 - 方法调用成功时，返回错误码对应的描述字符串。
 - 方法调用失败时，返回空字符串。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getnetworktype"></a>
+
+<a id="ariaid-title12"></a>
 
 ## getNetworkType
 
@@ -443,14 +453,14 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```cpp
+```text
 virtual int getNetworkType() = 0;
 ```
 
 <a id="api_irtcengine_getnetworktype__detailed_desc"></a>
 
-:::info[注]
-[getNetworkType](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getnetworktype) 方法可在加入频道前或加入频道后调用。
+:::note
+注： [getNetworkType](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getnetworktype) 方法可在加入频道前或加入频道后调用。
 :::
 
 <a id="api_irtcengine_getnetworktype__return_values"></a>
@@ -458,6 +468,7 @@ virtual int getNetworkType() = 0;
 ### 返回值
 
 - 0：方法调用成功，返回本地网络连接类型。
+
   - 0：SDK 与网络断开连接。
   - 1：网络类型为 LAN。
   - 2：网络类型为 Wi-Fi（包括热点）。
@@ -465,13 +476,13 @@ virtual int getNetworkType() = 0;
   - 4：网络类型为移动 3G。
   - 5：网络类型为移动 4G。
   - 6：网络类型为移动 5G。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：网络类型未知。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getntpwalltimeinms"></a>
+
+<a id="ariaid-title13"></a>
 
 ## getNtpWallTimeInMs
 
@@ -479,7 +490,7 @@ virtual int getNetworkType() = 0;
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```cpp
+```text
 virtual uint64_t getNtpWallTimeInMs() = 0;
 ```
 
@@ -493,10 +504,9 @@ virtual uint64_t getNtpWallTimeInMs() = 0;
 
 方法调用成功，返回当前 NTP 时间的 Unix 时间戳（毫秒）。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getversion"></a>
+
+<a id="ariaid-title14"></a>
 
 ## getVersion
 
@@ -504,7 +514,7 @@ virtual uint64_t getNtpWallTimeInMs() = 0;
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```cpp
+```text
 virtual const char* getVersion(int* build) = 0;
 ```
 
@@ -514,7 +524,7 @@ virtual const char* getVersion(int* build) = 0;
 
 ### 参数
 
-#### `build`
+### build
 
 输出参数，表示 SDK 的构建索引。
 
@@ -525,10 +535,9 @@ virtual const char* getVersion(int* build) = 0;
 - 方法调用成功时，返回 SDK 的版本号字符串。
 - 方法调用失败，返回空字符串。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
+
+<a id="ariaid-title15"></a>
 
 ## isFeatureAvailableOnDevice
 
@@ -536,13 +545,13 @@ virtual const char* getVersion(int* build) = 0;
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```cpp
+```text
 virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 ```
 
 <a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.3.0 版本新增。
 
@@ -552,7 +561,7 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 
 ### 参数
 
-#### `type`
+### type
 
 高级功能的类型，详见 [FeatureType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-featuretype)。
 
@@ -563,10 +572,9 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 - true：当前设备支持指定的功能。
 - false：当前设备不支持指定的功能。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_querydevicescore"></a>
+
+<a id="ariaid-title16"></a>
 
 ## queryDeviceScore
 
@@ -574,7 +582,7 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```cpp
+```text
 virtual int queryDeviceScore() = 0;
 ```
 
@@ -587,12 +595,11 @@ virtual int queryDeviceScore() = 0;
 ### 返回值
 
 - 方法调用成功，返回当前设备评分，范围为 [0, 100]，数值越大表示设备性能越强。大多数设备评分在 60 到 100 之间。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_queryinterface"></a>
+
+<a id="ariaid-title17"></a>
 
 ## queryInterface
 
@@ -600,7 +607,7 @@ virtual int queryDeviceScore() = 0;
 
 <a id="api_irtcengine_queryinterface__prototype"></a>
 
-```cpp
+```text
 virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 ```
 
@@ -610,11 +617,11 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 
 ### 参数
 
-#### `iid`
+### iid
 
 接口的 ID，详见 [INTERFACE_ID_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-interfaceidtype)。
 
-#### `inter`
+### inter
 
 输出参数，表示指定接口的指针。
 
@@ -623,12 +630,11 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_rate"></a>
+
+<a id="ariaid-title18"></a>
 
 ## rate
 
@@ -636,29 +642,29 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```cpp
+```text
 virtual int rate(const char* callId, int rating, const char* description) = 0;
 ```
 
 <a id="api_irtcengine_rate__detailed_desc"></a>
 
-:::info[注]
-请确保在离开频道后再调用该方法。
+:::note
+注： 请确保在离开频道后再调用该方法。
 :::
 
 <a id="api_irtcengine_rate__parameters"></a>
 
 ### 参数
 
-#### `callId`
+### callId
 
 当前通话的 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
 
-#### `rating`
+### rating
 
 评分值，范围为 1（最低分）到 5（最高分）。
 
-#### `description`
+### description
 
 （可选）通话的描述信息，字符串长度应小于 800 字节。
 
@@ -667,14 +673,14 @@ virtual int rate(const char* callId, int rating, const char* description) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
   - -2：参数无效。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_registerpacketobserver"></a>
+
+<a id="ariaid-title19"></a>
 
 ## registerPacketObserver
 
@@ -682,7 +688,7 @@ virtual int rate(const char* callId, int rating, const char* description) = 0;
 
 <a id="api_irtcengine_registerpacketobserver__prototype"></a>
 
-```cpp
+```text
 virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 ```
 
@@ -690,7 +696,9 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 调用该方法注册一个数据包观察器。当声网 SDK 触发用于语音或视频数据包传输的 [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver) 回调时，你可以通过该方法处理数据包，例如加密或解密。
 
-:::info[注]
+:::note
+注：
+
 - 处理后发送到网络的数据包大小不得超过 1200 字节，否则 SDK 可能无法发送该数据包。
 - 请确保接收端和发送端都调用该方法，否则可能会出现无声音或黑屏等未定义行为。
 - 当你使用媒体推流或录制功能时，声网不建议调用该方法。
@@ -701,7 +709,7 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 ### 参数
 
-#### `observer`
+### observer
 
 数据包观察器。详见 [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)。
 
@@ -710,12 +718,11 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_sendcustomreportmessage"></a>
+
+<a id="ariaid-title20"></a>
 
 ## sendCustomReportMessage
 
@@ -723,7 +730,7 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```cpp
+```text
 virtual int sendCustomReportMessage(const char* id, const char* category, const char* event, const char* label, int value) = 0;
 ```
 
@@ -735,23 +742,23 @@ virtual int sendCustomReportMessage(const char* id, const char* category, const 
 
 ### 参数
 
-#### `id`
+### id
 
 消息的唯一标识。
 
-#### `category`
+### category
 
 消息的分类。
 
-#### `event`
+### event
 
 事件名称。
 
-#### `label`
+### label
 
 消息标签。
 
-#### `value`
+### value
 
 消息的数值。
 
@@ -760,12 +767,11 @@ virtual int sendCustomReportMessage(const char* id, const char* category, const 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
+
+<a id="ariaid-title21"></a>
 
 ## sendCustomReportMessageEx
 
@@ -773,7 +779,7 @@ virtual int sendCustomReportMessage(const char* id, const char* category, const 
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```cpp
+```text
 virtual int sendCustomReportMessageEx(const char* id, const char* category, const char* event, const char* label, int value, const RtcConnection& connection) = 0;
 ```
 
@@ -791,27 +797,27 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 
 ### 参数
 
-#### `id`
+### id
 
 自定义消息的唯一标识。
 
-#### `category`
+### category
 
 自定义消息的分类。
 
-#### `event`
+### event
 
 自定义消息的事件名称。
 
-#### `label`
+### label
 
 自定义消息的标签。
 
-#### `value`
+### value
 
 自定义消息的数值。
 
-#### `connection`
+### connection
 
 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection) 对象。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
@@ -820,12 +826,11 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setavsyncsource"></a>
+
+<a id="ariaid-title22"></a>
 
 ## setAVSyncSource
 
@@ -833,7 +838,7 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```cpp
+```text
 virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 ```
 
@@ -841,19 +846,19 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 用户可能会使用两台独立设备分别发送音频和视频流。为了确保接收端的音视频同步，你可以在视频发送端调用该方法，并传入音频发送端的频道名和用户 ID。SDK 会以音频流的时间戳为参考，自动调整视频流，即使两台发送设备处于不同的上行网络（如 Wi-Fi 和 4G），也能实现音视频同步。
 
-:::info[注]
-声网建议你在加入频道前调用该方法。
+:::note
+注： 声网建议你在加入频道前调用该方法。
 :::
 
 <a id="api_irtcengine_setavsyncsource__parameters"></a>
 
 ### 参数
 
-#### `channelId`
+### channelId
 
 音频发送端的频道名。
 
-#### `uid`
+### uid
 
 音频发送端的用户 ID。
 
@@ -862,12 +867,11 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setcloudproxy"></a>
+
+<a id="ariaid-title23"></a>
 
 ## setCloudProxy
 
@@ -875,22 +879,30 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```cpp
+```text
 virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 ```
 
 <a id="api_irtcengine_setcloudproxy__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v3.3.0 版本新增。
 
-当用户的网络访问受防火墙限制时，需要先配置防火墙，允许访问声网提供的特定 IP 地址和端口，然后调用该方法启用云代理，并通过 `proxyType` 参数设置云代理类型。 成功连接到云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，状态为 `CONNECTION_STATE_CONNECTING`，原因为 `CONNECTION_CHANGED_SETTING_PROXY_SERVER`。 要禁用已设置的云代理，请调用 `setCloudProxy(NONE_PROXY)`。 要更改已设置的云代理类型，请先调用 `setCloudProxy(NONE_PROXY)`，然后再调用 [setCloudProxy](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setcloudproxy) 设置新的 `proxyType`。
+当用户的网络访问受防火墙限制时，需要先配置防火墙，允许访问声网提供的特定 IP 地址和端口，然后调用该方法启用云代理，并通过 `proxyType` 参数设置云代理类型。
 
-:::info[注]
+成功连接到云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，状态为 `CONNECTION_STATE_CONNECTING`，原因为 `CONNECTION_CHANGED_SETTING_PROXY_SERVER`。
+
+要禁用已设置的云代理，请调用 `setCloudProxy(NONE_PROXY)`。
+
+要更改已设置的云代理类型，请先调用 `setCloudProxy(NONE_PROXY)`，然后再调用 [setCloudProxy](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setcloudproxy) 设置新的 `proxyType`。
+
+:::note
+注：
+
 - 建议在加入频道前调用该方法。
 - 当用户处于防火墙之后并使用强制 UDP 云代理时，旁路推流和跨频道联播服务不可用。
-- 当使用强制 TCP 云代理时，调用 startAudioMixing 播放 HTTP 协议的在线音乐文件会发生错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
+- 当使用强制 TCP 云代理时，调用 `startAudioMixing` 播放 HTTP 协议的在线音乐文件会发生错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__related"></a>
@@ -903,7 +915,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 ### 参数
 
-#### `proxyType`
+### proxyType
 
 云代理类型，详见 [CLOUD_PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-cloudproxytype)。
 
@@ -912,14 +924,14 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setlocalaccesspoint"></a>
+
+<a id="ariaid-title24"></a>
 
 ## setLocalAccessPoint
 
@@ -927,7 +939,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```cpp
+```text
 virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0;
 ```
 
@@ -935,8 +947,8 @@ virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0
 
 成功部署声网私有媒体服务器并在内网客户端集成 4.x RTC SDK 后，你可以调用该方法指定本地接入点，并将接入模块分配给 SDK。
 
-:::info[注]
-该方法仅在部署声网混合云解决方案后生效。你可以联系销售了解详情并部署声网混合云。
+:::note
+注： 该方法仅在部署声网混合云解决方案后生效。你可以联系销售了解详情并部署声网混合云。
 :::
 
 <a id="api_irtcengine_setlocalaccesspoint__timing"></a>
@@ -949,21 +961,20 @@ virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0
 
 ### 参数
 
-#### `config`
+### config
 
-本地接入点配置。详见 [LocalAccessPointConfiguration](class_localaccesspointconfiguration.html)。
+本地接入点配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlogfile"></a>
+
+<a id="ariaid-title25"></a>
 
 ## setLogFile
 
@@ -971,20 +982,20 @@ virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```cpp
+```text
 virtual int setLogFile(const char* filePath) = 0;
 ```
 
 <a id="api_irtcengine_setlogfile__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志文件路径。
 
 用于指定 SDK 输出日志的文件路径，日志文件记录 SDK 运行过程中的所有日志数据。你需要在调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 后立即调用该方法，否则日志输出可能不完整。
 
-:::info[注]
-请确保日志文件所在目录已存在且具有写权限。
+:::note
+注： 请确保日志文件所在目录已存在且具有写权限。
 :::
 
 <a id="api_irtcengine_setlogfile__timing"></a>
@@ -997,7 +1008,7 @@ virtual int setLogFile(const char* filePath) = 0;
 
 ### 参数
 
-#### `filePath`
+### filePath
 
 日志文件的完整路径，使用 UTF-8 编码。
 
@@ -1006,12 +1017,11 @@ virtual int setLogFile(const char* filePath) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlogfilesize"></a>
+
+<a id="ariaid-title26"></a>
 
 ## setLogFileSize
 
@@ -1019,39 +1029,40 @@ virtual int setLogFile(const char* filePath) = 0;
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```cpp
+```text
 virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 ```
 
 <a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志文件大小。
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
-- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log 和 agorasdk.4.log。
-- API 调用日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log 和 agoraapi.4.log。
+- SDK 日志文件包括：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log` 和 `agorasdk.4.log`。
+- API 调用日志文件包括：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log` 和 `agoraapi.4.log`。
 - 每个日志文件的默认大小为 2,048 KB，采用 UTF-8 编码。
-- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log 文件。
-- 当 agorasdk.log 写满时，SDK 会按以下顺序处理日志文件：
-  1. 删除 agorasdk.4.log （如果存在）。
-  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
-  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
-  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
-  5. 创建新的 agorasdk.log 文件。
-- agoraapi.log 的覆盖规则与 agorasdk.log 相同。
+- SDK 会将最新日志写入 `agorasdk.log` 或 `agoraapi.log` 文件。
+- 当 `agorasdk.log` 写满时，SDK 会按以下顺序处理日志文件：
 
-:::info[注]
-该方法仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
+  1. 删除 `agorasdk.4.log`（如果存在）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 创建新的 `agorasdk.log` 文件。
+- `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
+
+:::note
+注： 该方法仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
 :::
 
 <a id="api_irtcengine_setlogfilesize__parameters"></a>
 
 ### 参数
 
-#### `fileSizeInKBytes`
+### fileSizeInKBytes
 
 `agorasdk.log` 文件的大小（单位：KB）。取值范围为 [128, 20480]。默认值为 2,048 KB。如果设置值小于 128 KB，SDK 会自动调整为 128 KB；如果设置值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
 
@@ -1060,12 +1071,11 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setlogfilter"></a>
+
+<a id="ariaid-title27"></a>
 
 ## setLogFilter
 
@@ -1073,23 +1083,23 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```cpp
+```text
 virtual int setLogFilter(unsigned int filter) = 0;
 ```
 
 <a id="api_irtcengine_setlogfilter__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志过滤等级。
 
-你可以使用一个或多个日志过滤等级的组合来设置 SDK 的日志输出等级。日志等级的顺序为 `LOG_FILTER_OFF`、 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR`、 `LOG_FILTER_WARN`、 `LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择某个等级后，将输出该等级及更高级别的日志。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志。
+你可以使用一个或多个日志过滤等级的组合来设置 SDK 的日志输出等级。日志等级的顺序为 `LOG_FILTER_OFF`、`LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR`、`LOG_FILTER_WARN`、`LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择某个等级后，将输出该等级及更高级别的日志。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志。
 
 <a id="api_irtcengine_setlogfilter__parameters"></a>
 
 ### 参数
 
-#### `filter`
+### filter
 
 SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-logfiltertype)。
 
@@ -1098,12 +1108,11 @@ SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cp
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setloglevel"></a>
+
+<a id="ariaid-title28"></a>
 
 ## setLogLevel
 
@@ -1111,13 +1120,13 @@ SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cp
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```cpp
+```text
 virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 ```
 
 <a id="api_irtcengine_setloglevel__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志等级。
 
@@ -1127,7 +1136,7 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 
 ### 参数
 
-#### `level`
+### level
 
 日志等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-loglevel)。
 
@@ -1136,12 +1145,11 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setparameters"></a>
+
+<a id="ariaid-title29"></a>
 
 ## setParameters
 
@@ -1149,7 +1157,7 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```cpp
+```text
 virtual int setParameters(const char* parameters) = 0;
 ```
 
@@ -1161,7 +1169,7 @@ virtual int setParameters(const char* parameters) = 0;
 
 ### 参数
 
-#### `parameters`
+### parameters
 
 指向 JSON 字符串格式的参数集合。
 
@@ -1170,12 +1178,11 @@ virtual int setParameters(const char* parameters) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
+
+<a id="ariaid-title30"></a>
 
 ## setRemoteSubscribeFallbackOption
 
@@ -1183,7 +1190,7 @@ virtual int setParameters(const char* parameters) = 0;
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0;
 ```
 
@@ -1201,7 +1208,7 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 
 ### 参数
 
-#### `option`
+### option
 
 订阅流的回退选项，详见 [STREAM_FALLBACK_OPTIONS](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamfallbackoptions)。
 
@@ -1210,12 +1217,11 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startechotest3"></a>
+
+<a id="ariaid-title31"></a>
 
 ## startEchoTest
 
@@ -1223,7 +1229,7 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```cpp
+```text
 virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 ```
 
@@ -1234,9 +1240,11 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 - 如果音频播放正常，说明音频设备和上下行网络正常。
 - 如果视频播放正常，说明视频设备和上下行网络正常。
 
-:::info[注]
+:::note
+注：
+
 - 在频道中调用该方法时，请确保未发布任何音视频流。
-- 调用该方法后需调用 stopEchoTest 结束测试，否则你将无法进行下一次音视频通话回路测试，也无法加入频道。
+- 调用该方法后需调用 [stopEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_stopechotest) 结束测试，否则你将无法进行下一次音视频通话回路测试，也无法加入频道。
 - 在直播场景中，该方法仅适用于主播角色。
 :::
 
@@ -1250,7 +1258,7 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 ### 参数
 
-#### `config`
+### config
 
 音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-echotestconfiguration)。
 
@@ -1259,12 +1267,11 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startlastmileprobetest"></a>
+
+<a id="ariaid-title32"></a>
 
 ## startLastmileProbeTest
 
@@ -1272,22 +1279,23 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```cpp
+```text
 virtual int startLastmileProbeTest(const LastmileProbeConfig& config) = 0;
 ```
 
 <a id="api_irtcengine_startlastmileprobetest__detailed_desc"></a>
 
-调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。 相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
+调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。
+相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
 
-- onLastmileQuality：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，更贴近用户体验。
-- onLastmileProbeResult：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
+- [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality)：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，更贴近用户体验。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult)：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
 
 ### 参数
 
-#### `config`
+### config
 
 Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeconfig)。
 
@@ -1296,12 +1304,11 @@ Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopechotest"></a>
+
+<a id="ariaid-title33"></a>
 
 ## stopEchoTest
 
@@ -1309,7 +1316,7 @@ Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```cpp
+```text
 virtual int stopEchoTest() = 0;
 ```
 
@@ -1322,13 +1329,13 @@ virtual int stopEchoTest() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-  - -5（ERR_REFUSED ）：停止回声测试失败，可能未在运行中。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+  - -5（`ERR_REFUSED`）：停止回声测试失败，可能未在运行中。
 
 <a id="api_irtcengine_stoplastmileprobetest"></a>
+
+<a id="ariaid-title34"></a>
 
 ## stopLastmileProbeTest
 
@@ -1336,7 +1343,7 @@ virtual int stopEchoTest() = 0;
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```cpp
+```text
 virtual int stopLastmileProbeTest() = 0;
 ```
 
@@ -1347,12 +1354,11 @@ virtual int stopLastmileProbeTest() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
+
+<a id="ariaid-title35"></a>
 
 ## onConnectionBanned
 
@@ -1360,44 +1366,43 @@ virtual int stopLastmileProbeTest() = 0;
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```cpp
+```text
 virtual void onConnectionBanned() __deprecated {}
 ```
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
+
+<a id="ariaid-title36"></a>
 
 ## onConnectionInterrupted
 
-onConnectionInterrupted 回调。
+[onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```cpp
+```text
 virtual void onConnectionInterrupted() __deprecated {}
 ```
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
 
-#### `废弃`
+### 废弃
 
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
 
 当 SDK 建立连接后与服务器断开超过 4 秒时，会触发该回调。触发后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。
 
-:::info[注]
-[onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 与 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
+:::note
+注： [onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 与 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
 
-- 当 SDK 成功加入频道后与服务器断开连接超过 4 秒时，会触发 onConnectionInterrupted 回调。
-- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 onConnectionLost 回调。
+- 当 SDK 成功加入频道后与服务器断开连接超过 4 秒时，会触发 [onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
+- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 回调。
 
 如果 SDK 在与声网边缘服务器断开连接 20 分钟后仍未重新加入频道，则停止重连。
 :::
@@ -1408,18 +1413,17 @@ virtual void onConnectionInterrupted() __deprecated {}
 
 当 SDK 与服务器的连接中断超过 4 秒时触发。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
+
+<a id="ariaid-title37"></a>
 
 ## onConnectionLost
 
-onConnectionLost 回调。当 SDK 与声网边缘服务器的连接中断后 10 秒内无法重新连接时触发。
+[onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 回调。当 SDK 与声网边缘服务器的连接中断后 10 秒内无法重新连接时触发。
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```cpp
+```text
 virtual void onConnectionLost() {}
 ```
 
@@ -1433,10 +1437,9 @@ virtual void onConnectionLost() {}
 
 当 SDK 与声网边缘服务器的连接中断后 10 秒内无法重新连接时触发。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
+
+<a id="ariaid-title38"></a>
 
 ## onConnectionStateChanged
 
@@ -1444,7 +1447,7 @@ virtual void onConnectionLost() {}
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
 ```
 
@@ -1456,18 +1459,17 @@ virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CH
 
 ### 参数
 
-#### `state`
+### state
 
 当前的连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
 
-#### `reason`
+### reason
 
 连接状态变化的原因。详见 [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionchangedreasontype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
+
+<a id="ariaid-title39"></a>
 
 ## onEncryptionError
 
@@ -1475,7 +1477,7 @@ virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CH
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```cpp
+```text
 virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 ```
 
@@ -1487,14 +1489,13 @@ virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 
 ### 参数
 
-#### `errorType`
+### errorType
 
 错误类型，详见 [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-encryptionerrortype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
+
+<a id="ariaid-title40"></a>
 
 ## onLastmileProbeResult
 
@@ -1502,7 +1503,7 @@ virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```cpp
+```text
 virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 ```
 
@@ -1514,14 +1515,13 @@ virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 
 ### 参数
 
-#### `result`
+### result
 
 上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileproberesult)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
+
+<a id="ariaid-title41"></a>
 
 ## onLastmileQuality
 
@@ -1529,7 +1529,7 @@ virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```cpp
+```text
 virtual void onLastmileQuality(int quality) { (void)quality; }
 ```
 
@@ -1541,14 +1541,13 @@ virtual void onLastmileQuality(int quality) { (void)quality; }
 
 ### 参数
 
-#### `quality`
+### quality
 
 Last-mile 网络质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onmultipathstats"></a>
+
+<a id="ariaid-title42"></a>
 
 ## onMultipathStats
 
@@ -1556,13 +1555,13 @@ Last-mile 网络质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
 
-```cpp
+```text
 virtual void onMultipathStats(const MultipathStats& stats)
 ```
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__detailed_desc"></a>
 
-#### `自从`
+### 自从
 
 自 v4.6.0 版本新增。
 
@@ -1576,14 +1575,13 @@ virtual void onMultipathStats(const MultipathStats& stats)
 
 ### 参数
 
-#### `stats`
+### stats
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-multipathstats)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
+
+<a id="ariaid-title43"></a>
 
 ## onNetworkQuality
 
@@ -1591,7 +1589,7 @@ virtual void onMultipathStats(const MultipathStats& stats)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```cpp
+```text
 virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 ```
 
@@ -1599,30 +1597,29 @@ virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 
 该回调报告频道中每个用户的 Last-mile 网络状况。Last-mile 指的是本地设备与声网边缘服务器之间的连接。SDK 每两秒触发一次该回调。如果频道中有多个用户，SDK 会触发多次该回调。该回调通过在频道内发送和接收广播数据包来反馈网络质量。为避免广播风暴导致频道内数据传输量过大，该回调默认最多同时反馈 4 个远端用户的网络质量。
 
-:::info[注]
-`txQuality` 在用户未发送流时为 `UNKNOWN`； `rxQuality` 在用户未接收流时为 `UNKNOWN`。
+:::note
+注： `txQuality` 在用户未发送流时为 `UNKNOWN`；`rxQuality` 在用户未接收流时为 `UNKNOWN`。
 :::
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 用户 ID。用于指定要报告网络质量的用户。如果该值为 0，则表示报告本地用户的网络质量。
 
-#### `txQuality`
+### txQuality
 
 用户的上行网络质量评分，依据上行网络的传输码率、丢包率、平均往返时延（RTT）和抖动情况评估。该评分有助于判断当前上行网络是否能支持所选的视频编码器配置。例如，1000 Kbps 的上行网络可能足以支持分辨率为 640 × 480、帧率为 15 fps 的视频帧，但可能不足以支持高于 1280 × 720 的分辨率。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
 
-#### `rxQuality`
+### rxQuality
 
 用户的下行网络质量评分，依据下行网络的丢包率、平均 RTT 和抖动情况评估。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
+
+<a id="ariaid-title44"></a>
 
 ## onNetworkTypeChanged
 
@@ -1630,7 +1627,7 @@ virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 ```
 
@@ -1642,14 +1639,13 @@ virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 
 ### 参数
 
-#### `type`
+### type
 
 本地网络连接的类型，详见 [NETWORK_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-networktype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
+
+<a id="ariaid-title45"></a>
 
 ## onPermissionError
 
@@ -1657,7 +1653,7 @@ virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```cpp
+```text
 virtual void onPermissionError(PERMISSION_TYPE permissionType)
 ```
 
@@ -1669,14 +1665,13 @@ virtual void onPermissionError(PERMISSION_TYPE permissionType)
 
 ### 参数
 
-#### `permissionType`
+### permissionType
 
 设备权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
+
+<a id="ariaid-title46"></a>
 
 ## onPermissionGranted
 
@@ -1684,7 +1679,7 @@ virtual void onPermissionError(PERMISSION_TYPE permissionType)
 
 <a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
 
-```cpp
+```text
 virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 ```
 
@@ -1694,14 +1689,13 @@ virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 
 ### 参数
 
-#### `permissionType`
+### permissionType
 
 权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
+
+<a id="ariaid-title47"></a>
 
 ## onProxyConnected
 
@@ -1709,7 +1703,7 @@ virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```cpp
+```text
 virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyType, const char* localProxyIp, int elapsed)
 ```
 
@@ -1721,30 +1715,29 @@ virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyTy
 
 ### 参数
 
-#### `channel`
+### channel
 
 频道名。
 
-#### `uid`
+### uid
 
 用户 ID。
 
-#### `proxyType`
+### proxyType
 
 连接的代理类型，详见 [PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-proxytype)。
 
-#### `localProxyIp`
+### localProxyIp
 
 预留参数，暂未使用。
 
-#### `elapsed`
+### elapsed
 
 从调用 `joinChannel` 到触发该回调所经历的时间，单位为毫秒。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_ipacketobserver_onreceiveaudiopacket"></a>
+
+<a id="ariaid-title48"></a>
 
 ## onReceiveAudioPacket
 
@@ -1752,7 +1745,7 @@ virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyTy
 
 <a id="callback_ipacketobserver_onreceiveaudiopacket__prototype"></a>
 
-```cpp
+```text
 virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 ```
 
@@ -1762,7 +1755,7 @@ virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 
 ### 参数
 
-#### `packet`
+### packet
 
 接收到的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
 
@@ -1770,12 +1763,12 @@ virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 
 ### 返回值
 
-true：音频包接收成功。 false：音频包被丢弃。
-
-### 所属接口类
-- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+true：音频包接收成功。
+false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onreceivevideopacket"></a>
+
+<a id="ariaid-title49"></a>
 
 ## onReceiveVideoPacket
 
@@ -1783,7 +1776,7 @@ true：音频包接收成功。 false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onreceivevideopacket__prototype"></a>
 
-```cpp
+```text
 virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 ```
 
@@ -1793,7 +1786,7 @@ virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 
 ### 参数
 
-#### `packet`
+### packet
 
 接收到的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
 
@@ -1801,12 +1794,12 @@ virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 
 ### 返回值
 
-true：视频数据包接收成功。 false：视频数据包被丢弃。
-
-### 所属接口类
-- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+true：视频数据包接收成功。
+false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
+
+<a id="ariaid-title50"></a>
 
 ## onRemoteSubscribeFallbackToAudioOnly
 
@@ -1814,7 +1807,7 @@ true：视频数据包接收成功。 false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```cpp
+```text
 virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRecover)
 ```
 
@@ -1825,29 +1818,28 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 - 下行网络条件较差，已订阅的视频流被降级为纯音频流。
 - 下行网络条件改善，已订阅的流恢复为视频流。
 
-:::info[注]
-当远端媒体流因网络较弱切换为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调监控高质量与视频小流之间的切换。
+:::note
+注： 当远端媒体流因网络较弱切换为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调监控高质量与视频小流之间的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
 
 ### 参数
 
-#### `uid`
+### uid
 
 远端用户 ID。
 
-#### `isFallbackOrRecover`
+### isFallbackOrRecover
 
 是否因网络变化导致媒体流切换：
 
 - true：由于网络条件差，已订阅的媒体流降级为纯音频流。
 - false：网络条件改善后，已订阅的媒体流恢复为视频流。
 
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_ipacketobserver_onsendaudiopacket"></a>
+
+<a id="ariaid-title51"></a>
 
 ## onSendAudioPacket
 
@@ -1855,7 +1847,7 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 
 <a id="callback_ipacketobserver_onsendaudiopacket__prototype"></a>
 
-```cpp
+```text
 virtual bool onSendAudioPacket(Packet& packet) = 0;
 ```
 
@@ -1865,7 +1857,7 @@ virtual bool onSendAudioPacket(Packet& packet) = 0;
 
 ### 参数
 
-#### `packet`
+### packet
 
 发送的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
 
@@ -1873,12 +1865,12 @@ virtual bool onSendAudioPacket(Packet& packet) = 0;
 
 ### 返回值
 
-true：音频包发送成功。 false：音频包被丢弃。
-
-### 所属接口类
-- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+true：音频包发送成功。
+false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onsendvideopacket"></a>
+
+<a id="ariaid-title52"></a>
 
 ## onSendVideoPacket
 
@@ -1886,7 +1878,7 @@ true：音频包发送成功。 false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onsendvideopacket__prototype"></a>
 
-```cpp
+```text
 virtual bool onSendVideoPacket(Packet& packet) = 0;
 ```
 
@@ -1896,7 +1888,7 @@ virtual bool onSendVideoPacket(Packet& packet) = 0;
 
 ### 参数
 
-#### `packet`
+### packet
 
 发送的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
 
@@ -1904,12 +1896,12 @@ virtual bool onSendVideoPacket(Packet& packet) = 0;
 
 ### 返回值
 
-true：视频数据包发送成功。 false：视频数据包被丢弃。
-
-### 所属接口类
-- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+true：视频数据包发送成功。
+false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
+
+<a id="ariaid-title53"></a>
 
 ## onUplinkNetworkInfoUpdated
 
@@ -1917,23 +1909,20 @@ true：视频数据包发送成功。 false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```cpp
+```text
 virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info)
 ```
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__detailed_desc"></a>
 
-:::info[注]
-该回调仅适用于将外部编码的 H.264 格式视频数据推送至 SDK 的场景。
+:::note
+注： 该回调仅适用于将外部编码的 H.264 格式视频数据推送至 SDK 的场景。
 :::
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters"></a>
 
 ### 参数
 
-#### `info`
+### info
 
 上行网络信息。详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-uplinknetworkinfo)。
-
-### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

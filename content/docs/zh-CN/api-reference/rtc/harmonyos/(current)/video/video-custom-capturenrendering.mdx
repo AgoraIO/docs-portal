@@ -1,10 +1,19 @@
 ---
-title: "自定义视频采集和渲染"
-description: "自定义视频采集和渲染 API reference."
+title: 自定义视频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_video_custom_capturenrendering
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_video_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_createcustomvideotrack"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createCustomVideoTrack
 
@@ -12,7 +21,7 @@ description: "自定义视频采集和渲染 API reference."
 
 <a id="api_irtcengine_createcustomvideotrack__prototype"></a>
 
-```arkts
+```text
 public abstract createCustomVideoTrack(): number;
 ```
 
@@ -23,20 +32,19 @@ public abstract createCustomVideoTrack(): number;
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
 1. 调用该方法创建视频轨道并获得视频轨道 ID。
-2. 调用 joinChannelWithOptions 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
-3. 调用 pushExternalVideoFrameById 将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+2. 调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 `true`。
+3. 调用 [pushExternalVideoFrameById](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe3) 将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
 ### 返回值
 
 - 方法调用成功，返回视频轨道 ID 作为该视频轨道的唯一标识。
-- 方法调用失败，返回 0xffffffff。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_destroycustomvideotrack"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyCustomVideoTrack
 
@@ -44,7 +52,7 @@ public abstract createCustomVideoTrack(): number;
 
 <a id="api_irtcengine_destroycustomvideotrack__prototype"></a>
 
-```arkts
+```text
 public abstract destroyCustomVideoTrack(videoTrackId: number): number;
 ```
 
@@ -52,7 +60,7 @@ public abstract destroyCustomVideoTrack(videoTrackId: number): number;
 
 ### 参数
 
-#### `videoTrackId`
+### videoTrackId
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
@@ -61,12 +69,11 @@ public abstract destroyCustomVideoTrack(videoTrackId: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_pushvideoframe3"></a>
+
+<a id="ariaid-title4"></a>
 
 ## pushExternalVideoFrameById
 
@@ -74,7 +81,7 @@ public abstract destroyCustomVideoTrack(videoTrackId: number): number;
 
 <a id="api_irtcengine_pushvideoframe3__prototype"></a>
 
-```arkts
+```text
 public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: number): number;
 ```
 
@@ -84,32 +91,35 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
-1. 调用 createCustomVideoTrack 方法创建视频轨道并获得视频轨道 ID。:::info [注]
-如果你只需推送一路自定义采集的视频流到频道中，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法启用外部视频源，此时 SDK 会自动创建一个 videoTrackId 为 0 的视频轨道。:::
-2. 调用 joinChannelWithOptions 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
+
+   :::note
+   注： 如果你只需推送一路自定义采集的视频流到频道中，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法启用外部视频源，此时 SDK 会自动创建一个 videoTrackId 为 0 的视频轨道。
+   :::
+2. 调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 `true`。
 3. 调用该方法将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
-:::error[危险]
-调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
+:::error
+危险： 调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
 
-- 如果你不再需要采集外部视频数据，可以调用 destroyCustomVideoTrack 销毁自定义采集的视频轨道。
-- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 muteLocalVideoStream 取消发送视频流，或调用 updateChannelMediaOptions 将 publishCustomVideoTrack 设置为 false。
+- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
+- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消发送视频流，或调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_updatechannelmediaoptions) 将 publishCustomVideoTrack 设置为 `false`。
 :::
 
 <a id="api_irtcengine_pushvideoframe3__parameters"></a>
 
 ### 参数
 
-#### `frame`
+### frame
 
 待推送的外部原始视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/harmonyos/class-videoframe)。
 
-#### `videoTrackId`
+### videoTrackId
 
 调用 createCustomVideoTrack 方法返回的视频轨道 ID。
 
-:::info[注]
-如果你只需推送一路外部视频流， videoTrackId 设置为 0 即可。
+:::note
+注： 如果你只需推送一路外部视频流，videoTrackId 设置为 0 即可。
 :::
 
 <a id="api_irtcengine_pushvideoframe3__return_values"></a>
@@ -117,12 +127,11 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 ### 返回值
 
 - 0: 推送成功。
-- &lt; 0: 推送失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 推送失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_pushvideoframe4"></a>
+
+<a id="ariaid-title5"></a>
 
 ## pushExternalVideoFrame
 
@@ -130,7 +139,7 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 
 <a id="api_irtcengine_pushvideoframe4__prototype"></a>
 
-```arkts
+```text
 public abstract pushExternalVideoFrame(frame: VideoFrame): boolean;
 ```
 
@@ -138,13 +147,13 @@ public abstract pushExternalVideoFrame(frame: VideoFrame): boolean;
 
 ### 详情
 
-调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法，设置 enabled 参数为 `true`、 encodedFrame 参数为 `false` 后，你可以调用本方法将未编码的外部视频帧推送到 SDK。
+调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法，设置 enabled 参数为 `true`、encodedFrame 参数为 `false` 后，你可以调用本方法将未编码的外部视频帧推送到 SDK。
 
 <a id="api_irtcengine_pushvideoframe4__parameters"></a>
 
 ### 参数
 
-#### `frame`
+### frame
 
 待推送的外部原始视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/harmonyos/class-videoframe)。
 
@@ -152,13 +161,12 @@ public abstract pushExternalVideoFrame(frame: VideoFrame): boolean;
 
 ### 返回值
 
-- true：方法调用成功。
-- false：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- `true`：方法调用成功。
+- `false`：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_setexternalvideosource"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setExternalVideoSource
 
@@ -166,7 +174,7 @@ public abstract pushExternalVideoFrame(frame: VideoFrame): boolean;
 
 <a id="api_imediaengine_setexternalvideosource__prototype"></a>
 
-```arkts
+```text
 public abstract setExternalVideoSource(enable: boolean, useTexture: boolean, sourceType: Constants.ExternalVideoSourceType): number;
 ```
 
@@ -190,21 +198,21 @@ public abstract setExternalVideoSource(enable: boolean, useTexture: boolean, sou
 
 ### 参数
 
-#### `enable`
+### enable
 
 是否启用外部视频源：
 
-- true: 启用外部视频源。SDK 准备接收外部视频帧。
-- false:（默认）不启用外部视频源。
+- `true`: 启用外部视频源。SDK 准备接收外部视频帧。
+- `false`:（默认）不启用外部视频源。
 
-#### `useTexture`
+### useTexture
 
 是否使用 Texture 格式的外部视频帧：
 
-- true: 使用 Texture 格式的外部视频帧。
-- false: 不使用 Texture 格式的外部视频帧。
+- `true`: 使用 Texture 格式的外部视频帧。
+- `false`: 不使用 Texture 格式的外部视频帧。
 
-#### `sourceType`
+### sourceType
 
 外部视频帧是否编码，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-externalvideosourcetype)。
 
@@ -213,7 +221,4 @@ public abstract setExternalVideoSource(enable: boolean, useTexture: boolean, sou
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
-
-### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

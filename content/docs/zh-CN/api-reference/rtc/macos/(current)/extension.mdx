@@ -1,10 +1,19 @@
 ---
-title: "插件"
-description: "插件 API reference."
+title: 插件
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_extension
+  sourcePath: html-docs/rtc/macOS/API/toc_extension.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_extension"></a>
 
 <a id="api_irtcengine_enableextension"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableExtensionWithVendor:extension:enabled:sourceType:
 
@@ -12,7 +21,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_enableextension__prototype"></a>
 
-```objectivec
+```text
 - (int)enableExtensionWithVendor:(NSString * _Nonnull)provider
                        extension:(NSString * _Nonnull)extension
                          enabled:(BOOL)enabled
@@ -21,7 +30,9 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_enableextension__detailed_desc"></a>
 
-:::info[注]
+:::note
+注：
+
 - 如果你想启用多个扩展，需要多次调用该方法。
 - 成功调用该方法后，不能再加载其他扩展。
 :::
@@ -36,22 +47,22 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `extension`
+### extension
 
 扩展的名称。
 
-#### `enabled`
+### enabled
 
 是否启用该扩展：
 
 - YES：启用扩展。
 - NO：禁用扩展。
 
-#### `sourceType`
+### sourceType
 
 扩展的来源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
@@ -60,13 +71,13 @@ description: "插件 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getextensionproperty"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getExtensionPropertyWithVendor:extension:key:
 
@@ -74,7 +85,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_getextensionproperty__prototype"></a>
 
-```objectivec
+```text
 - (NSString * _Nullable)getExtensionPropertyWithVendor:(NSString * _Nonnull)provider
                                              extension:(NSString * _Nonnull)extension
                                                    key:(NSString * _Nonnull)key NS_SWIFT_NAME(getExtensionProperty(withVendor:extension:key:));
@@ -92,15 +103,15 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展组件提供方的名称。
 
-#### `extension`
+### extension
 
 扩展组件的名称。
 
-#### `key`
+### key
 
 扩展组件的键值。
 
@@ -111,10 +122,9 @@ description: "插件 API reference."
 - 方法调用成功时，返回扩展组件的信息。
 - 方法调用失败时，返回空字符串。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_getextensionproperty2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getExtensionPropertyWithVendor:extension:key:sourceType:
 
@@ -122,7 +132,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_getextensionproperty2__prototype"></a>
 
-```objectivec
+```text
 - (NSString * _Nullable)getExtensionPropertyWithVendor:(NSString * _Nonnull)provider
                                              extension:(NSString * _Nonnull)extension
                                                    key:(NSString * _Nonnull)key
@@ -141,19 +151,19 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `extension`
+### extension
 
 扩展的名称。
 
-#### `key`
+### key
 
 扩展的键值。
 
-#### `sourceType`
+### sourceType
 
 扩展的来源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
@@ -164,10 +174,9 @@ description: "插件 API reference."
 - 方法调用成功时，返回扩展信息。
 - 方法调用失败时，返回空字符串。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_registerextension"></a>
+
+<a id="ariaid-title5"></a>
 
 ## registerExtensionWithVendor:extension:sourceType:
 
@@ -175,7 +184,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_registerextension__prototype"></a>
 
-```objectivec
+```text
 - (int)registerExtensionWithVendor:(NSString * _Nonnull)provider
                          extension:(NSString * _Nonnull)extension
                         sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(registerExtension(withVendor:extension:sourceType:));
@@ -185,7 +194,9 @@ description: "插件 API reference."
 
 对于 SDK 外部的扩展（例如来自 Extensions Marketplace 和 SDK Extensions 的扩展），你需要在调用此方法前加载它们。对于 SDK 内部的扩展（即包含在完整 SDK 包中的扩展），在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 后会自动加载并注册。
 
-:::info[注]
+:::note
+注：
+
 - 如果你想注册多个扩展，需要多次调用此方法。
 - SDK 中不同扩展的数据处理顺序由注册顺序决定。即先注册的扩展会先处理数据。
 :::
@@ -196,22 +207,22 @@ description: "插件 API reference."
 
 声网建议你在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 后、加入频道前调用此方法。
 
-- 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo: 启用视频模块后调用此方法。
+- 对于视频扩展（如美颜特效扩展），你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 或 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 启用视频模块后调用此方法。
 - 在调用此方法之前，你需要将扩展动态库（.xcframework）链接到 Xcode 项目中以加载扩展。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `extension`
+### extension
 
 扩展的名称。
 
-#### `sourceType`
+### sourceType
 
 扩展的数据源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
@@ -220,13 +231,13 @@ description: "插件 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
-
 <a id="api_irtcengine_setextensionproperty"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setExtensionPropertyWithVendor:extension:key:value:
 
@@ -234,7 +245,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_setextensionproperty__prototype"></a>
 
-```objectivec
+```text
 - (int)setExtensionPropertyWithVendor:(NSString * _Nonnull)provider
                             extension:(NSString * _Nonnull)extension
                                   key:(NSString * _Nonnull)key
@@ -245,8 +256,8 @@ description: "插件 API reference."
 
 启用扩展后，可以调用该方法设置扩展的属性。
 
-:::info[注]
-如果需要为多个扩展设置属性，需要多次调用该方法。
+:::note
+注： 如果需要为多个扩展设置属性，需要多次调用该方法。
 :::
 
 <a id="api_irtcengine_setextensionproperty__timing"></a>
@@ -259,19 +270,19 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `extension`
+### extension
 
 扩展的名称。
 
-#### `key`
+### key
 
 扩展属性的键。
 
-#### `value`
+### value
 
 扩展属性键对应的值。
 
@@ -280,12 +291,11 @@ description: "插件 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setExtensionProviderPropertyWithVendor:key:value:
 
@@ -293,7 +303,7 @@ description: "插件 API reference."
 
 <a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
 
-```objectivec
+```text
 - (int)setExtensionProviderPropertyWithVendor:(NSString * _Nonnull)provider
                                           key:(NSString * _Nonnull)key
                                         value:(NSString * _Nonnull)value NS_SWIFT_NAME(setExtensionProviderPropertyWithVendor(_:key:value:));
@@ -303,8 +313,8 @@ description: "插件 API reference."
 
 你可以调用此方法根据扩展提供方的类型初始化相关参数。
 
-:::info[注]
-如果你想为多个扩展设置扩展提供方的属性，需要多次调用此方法。
+:::note
+注： 如果你想为多个扩展设置扩展提供方的属性，需要多次调用此方法。
 :::
 
 <a id="api_irtcengine_setextensionproviderproperty__timing"></a>
@@ -317,15 +327,15 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `provider`
+### provider
 
 扩展提供方的名称。
 
-#### `key`
+### key
 
 扩展的键名。
 
-#### `value`
+### value
 
 扩展键的值。
 
@@ -334,12 +344,11 @@ description: "插件 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
-
-### 所属接口类
-- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onExtensionErrorWithContext:error:message:
 
@@ -347,7 +356,7 @@ description: "插件 API reference."
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
 
-```objectivec
+```text
 - (void)onExtensionErrorWithContext:(AgoraExtensionContext * _Nonnull)context
                    error:(int)error
                  message:(NSString * _Nullable)message NS_SWIFT_NAME(onExtensionErrorWithContext(_:error:message:));
@@ -367,22 +376,21 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [AgoraExtensionContext](/zh-CN/api-reference/rtc/macos/class-extensioncontext)。
 
-#### `error`
+### error
 
 错误码。详情请参见扩展提供方提供的扩展文档。
 
-#### `message`
+### message
 
 错误原因。详情请参见扩展提供方提供的扩展文档。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onEventWithContext:key:value:
 
@@ -390,7 +398,7 @@ description: "插件 API reference."
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
 
-```objectivec
+```text
 - (void)onEventWithContext:(AgoraExtensionContext * _Nonnull)context
             key:(NSString * _Nullable)key
           value:(NSString * _Nullable)value NS_SWIFT_NAME(onEventWithContext(_:key:value:));
@@ -404,22 +412,21 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息，详见 [AgoraExtensionContext](/zh-CN/api-reference/rtc/macos/class-extensioncontext)。
 
-#### `key`
+### key
 
 扩展事件的键。
 
-#### `value`
+### value
 
 扩展事件键对应的值。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onExtensionStartedWithContext:
 
@@ -427,7 +434,7 @@ description: "插件 API reference."
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
 
-```objectivec
+```text
 - (void)onExtensionStartedWithContext:(AgoraExtensionContext * _Nonnull)context NS_SWIFT_NAME(onExtensionStartedWithContext(_:));
 ```
 
@@ -443,14 +450,13 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [AgoraExtensionContext](/zh-CN/api-reference/rtc/macos/class-extensioncontext)。
 
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
-
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onExtensionStoppedWithContext:
 
@@ -458,7 +464,7 @@ description: "插件 API reference."
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
 
-```objectivec
+```text
 - (void)onExtensionStoppedWithContext:(AgoraExtensionContext * _Nonnull)context NS_SWIFT_NAME(onExtensionStoppedWithContext(_:));
 ```
 
@@ -474,9 +480,6 @@ description: "插件 API reference."
 
 ### 参数
 
-#### `context`
+### context
 
 扩展的上下文信息。详见 [AgoraExtensionContext](/zh-CN/api-reference/rtc/macos/class-extensioncontext)。
-
-### 所属接口类
-- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
