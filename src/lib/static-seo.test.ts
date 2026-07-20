@@ -30,6 +30,7 @@ describe('static SEO metadata', () => {
         description: 'Build with Agora.',
         imageUrl:
           'https://assets-docs.agora.io/og/agora-docs-og-introduction.png',
+        markdownUrl: 'https://docs.example.com/en/introduction.md',
         title: 'Introduction | Agora Docs',
         url: '/en/introduction',
       },
@@ -166,6 +167,42 @@ describe('static SEO metadata', () => {
 
     expect(result).toContain('<title>Introduction | Agora Docs</title>');
     expect(result).not.toContain('Introduction | Agora Docs | Agora Docs');
+  });
+
+  it('keeps platform views canonical to the parent and links platform markdown', () => {
+    const [page] = createStaticSeoManifest({
+      baseUrl: 'https://docs.example.com',
+      pages: [
+        {
+          canonicalPath: '/en/api-reference/api-ref/uikit-sdk',
+          markdownPath: '/en/api-reference/api-ref/uikit-sdk/ios.md',
+          title: 'Fastboard API',
+          url: '/en/api-reference/api-ref/uikit-sdk/ios',
+        },
+      ],
+    });
+
+    expect(page).toMatchObject({
+      canonicalUrl:
+        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk',
+      markdownUrl:
+        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/ios.md',
+      url: '/en/api-reference/api-ref/uikit-sdk/ios',
+    });
+    if (!page) {
+      throw new Error('Expected platform SEO metadata');
+    }
+
+    const head = createStaticSeoHead(page);
+    expect(head.links).toContainEqual({
+      href: 'https://docs.example.com/en/api-reference/api-ref/uikit-sdk',
+      rel: 'canonical',
+    });
+    expect(head.links).toContainEqual({
+      href: 'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/ios.md',
+      rel: 'alternate',
+      type: 'text/markdown',
+    });
   });
 });
 

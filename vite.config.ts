@@ -11,6 +11,7 @@ import {
   createDocsPrerenderPaths,
   selectStaticDocsPrerenderPaths,
 } from './src/lib/prerender-pages';
+import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
 const isStaticDeployment =
@@ -21,10 +22,12 @@ const selectedPrerenderPaths = process.env.TSS_PRERENDER_PATHS?.split(',')
   .filter(Boolean);
 const docsPrerenderPaths = isTest
   ? []
-  : createDocsPrerenderPaths({
-      openApiPaths: getOpenApiPrerenderPaths(),
-      pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
-    });
+  : isStaticDeployment
+    ? readPublishedDocsRoutes().map((route) => route.url)
+    : createDocsPrerenderPaths({
+        openApiPaths: getOpenApiPrerenderPaths(),
+        pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
+      });
 const prerenderPages = (
   isStaticDeployment
     ? selectStaticDocsPrerenderPaths(docsPrerenderPaths, selectedPrerenderPaths)
