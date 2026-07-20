@@ -491,4 +491,169 @@ describe('API Center navigation runner', () => {
     });
     expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
   });
+
+  it('generates expandable Edu Store TypeDoc navigation from supplemental source evidence', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-navigation-edu-store-'),
+    );
+    roots.push(repoRoot);
+    const manifestPath = 'docs/migration/api-center-html-manifest.json';
+    const root = 'content/docs/zh-CN/api-reference';
+    const apiRoot = `${root}/flexible-classroom/web/api-reference`;
+    const eduRoot = `${apiRoot}/edu-store`;
+    const routeRoot =
+      '/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store';
+    const overview = {
+      requestedUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/overview',
+      supplementalGeneratedSource: {
+        kind: 'edu-store-typedoc',
+        targetPlatform: 'web',
+        sourceRelativePath: 'index.html',
+        sourceNavigation: [
+          { label: 'Exports', sourceRelativePath: 'modules.html' },
+          {
+            label: '"agora-edu-core/src/index"',
+            sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
+          },
+        ],
+      },
+      sourceResolution: {
+        status: 'resolved',
+        targetPath: `${eduRoot}/index.mdx`,
+        targetRoute: routeRoot,
+      },
+    };
+    const exportsPage = {
+      requestedUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules.html',
+      supplementalGeneratedSource: {
+        kind: 'edu-store-typedoc',
+        targetPlatform: 'web',
+        sourceRelativePath: 'modules.html',
+      },
+      sourceResolution: {
+        status: 'resolved',
+        targetPath: `${eduRoot}/modules/index.mdx`,
+        targetRoute: `${routeRoot}/modules`,
+      },
+    };
+    const modulePage = {
+      requestedUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules/agora_edu_core_src_index_.html',
+      supplementalGeneratedSource: {
+        kind: 'edu-store-typedoc',
+        targetPlatform: 'web',
+        sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
+      },
+      sourceResolution: {
+        status: 'resolved',
+        targetPath: `${eduRoot}/modules/agora-edu-core-src-index.mdx`,
+        targetRoute: `${routeRoot}/modules/agora-edu-core-src-index`,
+      },
+    };
+    const manifest = {
+      source: { commit: 'fixture' },
+      live: {
+        capturedAt: '2026-07-20T00:00:00.000Z',
+        heroTitle: 'API 中心',
+        heroDescription: '查看 API。',
+      },
+      entries: [],
+      pageEvidence: [overview, exportsPage, modulePage],
+    };
+    await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, manifestPath),
+      JSON.stringify(manifest),
+    );
+    await fs.mkdir(path.join(repoRoot, root), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, `${root}/meta.json`),
+      JSON.stringify({ title: '参考中心', root: true, pages: ['overview'] }),
+    );
+    const platformRoot = `${root}/flexible-classroom/web`;
+    await fs.mkdir(path.join(repoRoot, platformRoot), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, `${platformRoot}/meta.json`),
+      JSON.stringify({ title: 'Web', navScope: {}, pages: ['api-reference'] }),
+    );
+    await fs.mkdir(path.join(repoRoot, apiRoot), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, `${apiRoot}/meta.json`),
+      JSON.stringify({
+        title: 'API 参考',
+        pages: [
+          '[Classroom SDK API](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)',
+          `[Edu Store API](${routeRoot})`,
+        ],
+      }),
+    );
+    for (const targetPath of [
+      overview.sourceResolution.targetPath,
+      exportsPage.sourceResolution.targetPath,
+      modulePage.sourceResolution.targetPath,
+    ]) {
+      await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(repoRoot, targetPath),
+        '---\ntitle: Page\n---\n',
+      );
+    }
+
+    const result = await runApiCenterNavigation({
+      repoRoot,
+      manifestPath,
+      lanes: [],
+    });
+    const parentMeta = JSON.parse(
+      await fs.readFile(path.join(repoRoot, `${apiRoot}/meta.json`), 'utf8'),
+    );
+    const eduMeta = JSON.parse(
+      await fs.readFile(path.join(repoRoot, `${eduRoot}/meta.json`), 'utf8'),
+    );
+    const exportsMeta = JSON.parse(
+      await fs.readFile(
+        path.join(repoRoot, `${eduRoot}/modules/meta.json`),
+        'utf8',
+      ),
+    );
+    const platformMeta = JSON.parse(
+      await fs.readFile(
+        path.join(repoRoot, `${platformRoot}/meta.json`),
+        'utf8',
+      ),
+    );
+
+    expect(result.parity.counts.supplementalNavigationLeaves).toBe(2);
+    expect(parentMeta.pages).toEqual([
+      '[Classroom SDK API](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)',
+      'edu-store',
+    ]);
+    expect(eduMeta).toMatchObject({
+      title: 'Edu Store API',
+      pages: ['index', 'modules'],
+    });
+    expect(exportsMeta).toMatchObject({
+      title: 'Exports',
+      pages: ['index', 'agora-edu-core-src-index'],
+    });
+    expect(platformMeta).toMatchObject({
+      navScope: {},
+      sidebarLabels: {
+        [`${routeRoot}/modules/agora-edu-core-src-index`]:
+          '"agora-edu-core/src/index"',
+      },
+    });
+    await expect(
+      runApiCenterNavigation({
+        repoRoot,
+        manifestPath,
+        lanes: [],
+        mode: 'check',
+      }),
+    ).resolves.toBeTruthy();
+  });
 });

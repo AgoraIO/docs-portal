@@ -9,9 +9,10 @@
 - External entries: 10
 - Overview actions: 91
 - Root navigation actions: 65
-- Entry meta files: 90
-- Entry meta links: 1298
+- Entry meta files: 98
+- Entry meta links: 1597
 - Visible legacy navigation leaves: 1326
+- Supplemental TypeDoc navigation leaves: 286
 - Missing navigation targets: 0
 - Warnings: 0
 - Errors: 0
@@ -19,7 +20,7 @@
 ## Migration types
 
 - `overview-entry`: 91
-- `navigation-meta`: 90
+- `navigation-meta`: 98
 
 ## Warning explanations
 

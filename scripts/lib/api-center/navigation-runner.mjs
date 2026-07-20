@@ -575,6 +575,171 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
   return { metaByPath, openApiEntries };
 }
 
+function parseMetaLink(value) {
+  if (typeof value !== 'string') return null;
+  const match = value.match(/^\[((?:\\.|[^\]])+)]\(([^)]+)\)$/);
+  return match ? { label: match[1], route: match[2] } : null;
+}
+
+function replaceMetaLinkWithFolder(pages, route, folder) {
+  let label = null;
+  const replaced = (pages ?? []).map((page) => {
+    const link = parseMetaLink(page);
+    if (link?.route !== route) return page;
+    label = link.label;
+    return folder;
+  });
+  if (!label && !replaced.includes(folder)) replaced.push(folder);
+  return { label, pages: replaced };
+}
+
+async function addEduStoreTypeDocMetaPlans({ manifest, metaByPath, repoRoot }) {
+  const supplemental = (manifest.pageEvidence ?? []).filter(
+    (page) =>
+      page.supplementalGeneratedSource?.kind === 'edu-store-typedoc' &&
+      page.sourceResolution?.status === 'resolved',
+  );
+  const pagesByPlatform = new Map();
+  for (const page of supplemental) {
+    const platform = page.supplementalGeneratedSource.targetPlatform;
+    const pages = pagesByPlatform.get(platform) ?? [];
+    pages.push(page);
+    pagesByPlatform.set(platform, pages);
+  }
+
+  let navigationLeaves = 0;
+  for (const [platform, pages] of pagesByPlatform) {
+    const overview = pages.find(
+      (page) =>
+        page.supplementalGeneratedSource.sourceRelativePath === 'index.html',
+    );
+    if (!overview) {
+      throw new Error(`Missing ${platform} Edu Store TypeDoc overview.`);
+    }
+    const sourceNavigation =
+      overview.supplementalGeneratedSource.sourceNavigation ?? [];
+    if (sourceNavigation.length === 0) {
+      throw new Error(
+        `Missing ${platform} Edu Store TypeDoc source navigation.`,
+      );
+    }
+    const bySourcePath = new Map(
+      pages.map((page) => [
+        page.supplementalGeneratedSource.sourceRelativePath.toLowerCase(),
+        page,
+      ]),
+    );
+    const exportsItem = sourceNavigation[0];
+    const exportsPage = bySourcePath.get(
+      exportsItem.sourceRelativePath.toLowerCase(),
+    );
+    if (!exportsPage) {
+      throw new Error(
+        `Missing ${platform} Edu Store target for ${exportsItem.sourceRelativePath}.`,
+      );
+    }
+    const moduleItems = sourceNavigation.slice(1).map((item) => {
+      const page = bySourcePath.get(item.sourceRelativePath.toLowerCase());
+      if (!page) {
+        throw new Error(
+          `Missing ${platform} Edu Store target for ${item.sourceRelativePath}.`,
+        );
+      }
+      return { item, page };
+    });
+    navigationLeaves += sourceNavigation.length;
+
+    const eduStoreDirectory = path.posix.dirname(
+      overview.sourceResolution.targetPath,
+    );
+    const apiReferenceDirectory = path.posix.dirname(eduStoreDirectory);
+    const parentMetaPath = `${apiReferenceDirectory}/meta.json`;
+    const parentRoute = path.posix.dirname(
+      overview.sourceResolution.targetRoute,
+    );
+    const currentParentPlan = metaByPath.get(parentMetaPath);
+    const parentMeta = await readMeta(repoRoot, parentMetaPath, null);
+    const replacement = replaceMetaLinkWithFolder(
+      currentParentPlan?.pages ?? parentMeta.pages,
+      overview.sourceResolution.targetRoute,
+      'edu-store',
+    );
+    const existingEduStoreMeta = replacement.label
+      ? null
+      : await readMeta(repoRoot, `${eduStoreDirectory}/meta.json`, null);
+    const eduStoreLabel = replacement.label ?? existingEduStoreMeta?.title;
+    if (!eduStoreLabel) {
+      throw new Error(
+        `Missing ${platform} Edu Store API link in ${parentMetaPath}.`,
+      );
+    }
+    metaByPath.set(parentMetaPath, {
+      ...(currentParentPlan ?? {}),
+      metaPath: parentMetaPath,
+      rootRoute: parentRoute,
+      title: parentMeta.title,
+      pages: replacement.pages,
+      metaPatch: currentParentPlan?.metaPatch ?? {},
+      preserveExistingPages: false,
+    });
+
+    const exportsDirectory = path.posix.dirname(
+      exportsPage.sourceResolution.targetPath,
+    );
+    const modulePages = moduleItems.map(({ page }) =>
+      path.posix
+        .relative(exportsDirectory, page.sourceResolution.targetPath)
+        .replace(/\.mdx$/, ''),
+    );
+    const moduleLabels = Object.fromEntries(
+      moduleItems.map(({ item, page }) => [
+        page.sourceResolution.targetRoute,
+        item.label,
+      ]),
+    );
+    const platformDirectory = path.posix.dirname(apiReferenceDirectory);
+    const platformMetaPath = `${platformDirectory}/meta.json`;
+    const currentPlatformPlan = metaByPath.get(platformMetaPath);
+    const platformMeta = await readMeta(repoRoot, platformMetaPath, null);
+    metaByPath.set(platformMetaPath, {
+      ...(currentPlatformPlan ?? {}),
+      metaPath: platformMetaPath,
+      rootRoute: routeForDocsDirectory(platformDirectory),
+      title: platformMeta.title,
+      pages: currentPlatformPlan?.pages ?? platformMeta.pages,
+      metaPatch: {
+        ...(currentPlatformPlan?.metaPatch ?? {}),
+        sidebarLabels: {
+          ...(currentPlatformPlan?.metaPatch?.sidebarLabels ?? {}),
+          [overview.sourceResolution.targetRoute]: eduStoreLabel,
+          [exportsPage.sourceResolution.targetRoute]: exportsItem.label,
+          ...moduleLabels,
+        },
+      },
+      preserveExistingPages: false,
+    });
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${eduStoreDirectory}/meta.json`,
+      rootRoute: overview.sourceResolution.targetRoute,
+      title: eduStoreLabel,
+      pages: ['index', 'modules'],
+      metaPatch: {
+        sidebarLabels: {
+          [overview.sourceResolution.targetRoute]: eduStoreLabel,
+          [exportsPage.sourceResolution.targetRoute]: exportsItem.label,
+        },
+      },
+    });
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${exportsDirectory}/meta.json`,
+      rootRoute: exportsPage.sourceResolution.targetRoute,
+      title: exportsItem.label,
+      pages: ['index', ...modulePages],
+    });
+  }
+  return { navigationLeaves };
+}
+
 function productGroups(entries) {
   const groups = [];
   const byProduct = new Map();
@@ -735,6 +900,7 @@ function navigationParityReport({
   overviewBody,
   rootPages,
   routeMap,
+  supplementalNavigationLeaves,
 }) {
   const internalEntries = entries.filter(
     (entry) => entry.urlFamily !== 'external',
@@ -811,6 +977,7 @@ function navigationParityReport({
         0,
       ),
       visibleNavigationLeaves: visibleLeaves.length,
+      supplementalNavigationLeaves,
       missingNavigationTargets: missingNavigationTargets.length,
       warnings: issues.filter((issue) => issue.severity === 'warning').length,
       errors: issues.filter((issue) => issue.severity === 'error').length,
@@ -837,6 +1004,7 @@ function navigationParityMarkdown(report) {
     `- Entry meta files: ${report.counts.entryMetaFiles}`,
     `- Entry meta links: ${report.counts.entryMetaLinks}`,
     `- Visible legacy navigation leaves: ${report.counts.visibleNavigationLeaves}`,
+    `- Supplemental TypeDoc navigation leaves: ${report.counts.supplementalNavigationLeaves}`,
     `- Missing navigation targets: ${report.counts.missingNavigationTargets}`,
     `- Warnings: ${report.counts.warnings}`,
     `- Errors: ${report.counts.errors}`,
@@ -958,12 +1126,18 @@ export async function runApiCenterNavigation({
     routeMap,
     lanes,
   );
+  const supplementalNavigation = await addEduStoreTypeDocMetaPlans({
+    manifest,
+    metaByPath,
+    repoRoot,
+  });
   const parity = navigationParityReport({
     entries,
     metaByPath,
     overviewBody,
     rootPages,
     routeMap,
+    supplementalNavigationLeaves: supplementalNavigation.navigationLeaves,
   });
   if (parity.counts.errors > 0) {
     throw new Error(

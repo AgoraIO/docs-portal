@@ -313,4 +313,25 @@ describe('API Center scoped sidebars', () => {
       ]),
     );
   });
+
+  it.each([
+    'electron',
+    'web',
+  ])('keeps the Flexible Classroom %s Edu Store source directory expandable', async (platform) => {
+    const sidebar = await loadApiReferenceSidebar([
+      'flexible-classroom',
+      platform,
+      'api-reference',
+      'classroom-sdk',
+    ]);
+    const eduStore = findNode(sidebar, 'Edu Store API');
+
+    expect(eduStore).toBeDefined();
+    const titles = collectTitles(eduStore?.children ?? []);
+    expect(titles).toContain('Exports');
+    expect(titles).toContain('"agora-edu-core/src/configs/index"');
+    expect(titles).not.toContain(
+      'Namespace "agora-edu-core/src/configs/index"',
+    );
+  });
 });

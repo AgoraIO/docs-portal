@@ -378,13 +378,20 @@ export function mapSidebarEntriesToTree(
   return nodes;
 }
 
-export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
+export function pageTreeNodeToSidebarNodes(
+  node: Node,
+  sidebarLabels: Record<string, string> = {},
+): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
   }
 
   if (node.type === 'page') {
-    return [pageTreeItemToSidebarPageNode(node)];
+    return [
+      pageTreeItemToSidebarPageNode(node, undefined, {
+        title: sidebarLabels[node.url],
+      }),
+    ];
   }
 
   if (node.type !== 'folder') {
@@ -404,7 +411,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     node.index &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
       ? pageTreeItemToSidebarPageNode(node.index, undefined, {
-          title: getFolderIndexTitle(node.index, node.name),
+          title:
+            sidebarLabels[node.index.url] ??
+            getFolderIndexTitle(node.index, node.name),
         })
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
@@ -435,7 +444,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   ) {
     return [
       pageTreeItemToSidebarPageNode(onlyChild, undefined, {
-        title: normalizeLabel(node.name, onlyChild.url),
+        title:
+          sidebarLabels[onlyChild.url] ??
+          normalizeLabel(node.name, onlyChild.url),
       }),
     ];
   }
@@ -462,7 +473,10 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       continue;
     }
 
-    for (const sidebarNode of pageTreeNodeToSidebarNodes(child)) {
+    for (const sidebarNode of pageTreeNodeToSidebarNodes(
+      child,
+      sidebarLabels,
+    )) {
       if (pendingIndexNode) {
         if (currentSection) {
           currentSection.children.push(pendingIndexNode);
@@ -487,7 +501,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   if (!hasRealChildren && node.index) {
     return [
       pageTreeItemToSidebarPageNode(node.index, undefined, {
-        title: normalizeLabel(node.name, node.index.url),
+        title:
+          sidebarLabels[node.index.url] ??
+          normalizeLabel(node.name, node.index.url),
       }),
     ];
   }
@@ -513,7 +529,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       // Rule: a folder whose index matches its title links the header to it.
       ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
-      title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
+      title:
+        (node.index ? sidebarLabels[node.index.url] : undefined) ??
+        normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',
     },
   ];

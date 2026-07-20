@@ -537,7 +537,7 @@ function navScopeNodeToSidebarNodes(
   if (meta?.navScope) {
     return shouldUseScopedFolderEntryInParent(node, meta, getNodeMeta)
       ? [getFolderPageNode(node, meta)]
-      : pageTreeNodeToSidebarNodes(node);
+      : pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
   }
 
   if (node.index && node.children.length === 0) {
@@ -553,7 +553,7 @@ function navScopeNodeToSidebarNodes(
     ];
   }
 
-  return pageTreeNodeToSidebarNodes(node);
+  return pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
 }
 
 function pageTreeFolderToParentSidebarNodes(

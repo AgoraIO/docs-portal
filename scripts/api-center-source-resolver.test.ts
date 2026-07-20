@@ -101,9 +101,21 @@ describe('API Center source resolver', () => {
         sourcePlatform,
       );
       await fs.mkdir(path.join(sourceRoot, 'classes'), { recursive: true });
+      await fs.mkdir(path.join(sourceRoot, 'modules'), { recursive: true });
       await fs.writeFile(
         path.join(sourceRoot, 'index.html'),
-        '<main>Index</main>',
+        `<nav class="tsd-navigation"><ul>
+          <li><a href="modules.html">Exports</a></li>
+          <li><a href="modules/agora_edu_core_src_index_.html">"agora-edu-core/src/index"</a></li>
+        </ul></nav><main>Index</main>`,
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'modules.html'),
+        '<main>Exports</main>',
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'modules/agora_edu_core_src_index_.html'),
+        '<main>Module</main>',
       );
       await fs.writeFile(
         path.join(sourceRoot, 'classes/cloud-drive.html'),
@@ -126,9 +138,9 @@ describe('API Center source resolver', () => {
       lanes: [],
     });
 
-    expect(manifest.pageEvidence).toHaveLength(4);
+    expect(manifest.pageEvidence).toHaveLength(8);
     expect(manifest.sourceResolutionSummary).toMatchObject({
-      classifiedPageCount: 4,
+      classifiedPageCount: 8,
       unresolvedPageCount: 0,
     });
     expect(manifest.pageEvidence).toEqual(
@@ -140,7 +152,19 @@ describe('API Center source resolver', () => {
           sourceResolution: expect.objectContaining({
             sourcePath: 'html-docs/flexible-classroom/Web/index.html',
             targetPath:
-              'content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store.mdx',
+              'content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/index.mdx',
+          }),
+          supplementalGeneratedSource: expect.objectContaining({
+            sourceNavigation: [
+              {
+                label: 'Exports',
+                sourceRelativePath: 'modules.html',
+              },
+              {
+                label: '"agora-edu-core/src/index"',
+                sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
+              },
+            ],
           }),
         }),
         expect.objectContaining({

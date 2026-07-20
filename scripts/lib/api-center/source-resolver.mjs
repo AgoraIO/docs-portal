@@ -155,6 +155,23 @@ async function supplementalEduStoreResolution(page, newRoot) {
   };
 }
 
+export function parseTypeDocNavigationHtml(html) {
+  const $ = cheerio.load(html);
+  return $('nav.tsd-navigation > ul > li > a')
+    .toArray()
+    .map((node) => {
+      const anchor = $(node);
+      const href = anchor.attr('href')?.split(/[?#]/, 1)[0];
+      const label = anchor.text().replace(/\s+/g, ' ').trim();
+      if (!href || !label) return null;
+      return {
+        label,
+        sourceRelativePath: decodeURIComponent(href).replace(/^\.\//, ''),
+      };
+    })
+    .filter(Boolean);
+}
+
 async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
   const retained = (manifest.pageEvidence ?? []).filter(
     (page) => page.supplementalGeneratedSource?.kind !== 'edu-store-typedoc',
@@ -169,19 +186,31 @@ async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
     const files = await walkFiles(sourceRoot, (name) =>
       name.toLowerCase().endsWith('.html'),
     );
+    const overviewFile = files.find((file) => file.relative === 'index.html');
+    const sourceNavigation = overviewFile
+      ? parseTypeDocNavigationHtml(
+          await fs.readFile(overviewFile.absolute, 'utf8'),
+        )
+      : [];
     for (const file of files) {
       const isOverview = file.relative === 'index.html';
       const sourceStem = file.relative.replace(/\.html$/i, '');
-      const targetStem = isOverview
+      const normalizedSourceStem = sourceStem
+        .split('/')
+        .map(kebabSegment)
+        .filter(Boolean)
+        .join('/');
+      const routeStem = isOverview
         ? 'edu-store'
-        : `edu-store/${sourceStem
-            .split('/')
-            .map(kebabSegment)
-            .filter(Boolean)
-            .join('/')}`;
+        : `edu-store/${normalizedSourceStem}`;
+      const targetStem = isOverview
+        ? 'edu-store/index'
+        : sourceStem === 'modules'
+          ? 'edu-store/modules/index'
+          : routeStem;
       const legacySuffix = isOverview ? 'overview' : file.relative;
       const requestedUrl = `https://doc.shengwang.cn/api-ref/flexible-classroom/${source.legacyPlatform}/${legacySuffix}`;
-      const targetRoute = `/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${targetStem}`;
+      const targetRoute = `/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${routeStem}`;
       supplemental.push({
         requestedUrl,
         finalUrl: requestedUrl,
@@ -190,10 +219,12 @@ async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
         supplementalGeneratedSource: {
           kind: 'edu-store-typedoc',
           legacyPlatform: source.legacyPlatform,
+          targetPlatform: source.targetPlatform,
           sourcePath: posix(path.relative(oldRoot, file.absolute)),
           sourceRelativePath: file.relative,
-          targetPath: `content/docs${targetRoute}.mdx`,
+          targetPath: `content/docs/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${targetStem}.mdx`,
           targetRoute,
+          ...(isOverview ? { sourceNavigation } : {}),
         },
       });
     }
