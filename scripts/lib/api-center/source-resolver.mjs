@@ -70,6 +70,8 @@ const EDU_STORE_TYPEDOC_SOURCES = [
     targetPlatform: 'electron',
   },
 ];
+const EDU_STORE_SIDEBAR_SOURCE =
+  'docs-api-reference/flexible-classroom/_sidebar_.meta.javascript.electron.js';
 
 function posix(value) {
   return value.split(path.sep).join('/');
@@ -196,11 +198,75 @@ export function parseTypeDocContentTocHtml(html) {
     .filter(Boolean);
 }
 
+export function parseEduStoreSidebarSource(source) {
+  const categoryStart = source.search(/label:\s*['"]Edu Store API['"]/);
+  if (categoryStart < 0) return [];
+  const itemsStart = source.indexOf('items', categoryStart);
+  const arrayStart = source.indexOf('[', itemsStart);
+  if (itemsStart < 0 || arrayStart < 0) return [];
+
+  let depth = 0;
+  let quote = null;
+  let escaped = false;
+  let arrayEnd = -1;
+  for (let index = arrayStart; index < source.length; index += 1) {
+    const character = source[index];
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (character === '\\') {
+        escaped = true;
+      } else if (character === quote) {
+        quote = null;
+      }
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      quote = character;
+    } else if (character === '[') {
+      depth += 1;
+    } else if (character === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        arrayEnd = index;
+        break;
+      }
+    }
+  }
+  if (arrayEnd < 0) return [];
+
+  const itemsSource = source.slice(arrayStart + 1, arrayEnd);
+  const result = [];
+  const itemPattern =
+    /\{\s*type:\s*['"]doc['"]\s*,\s*label:\s*['"]([^'"]+)['"]\s*,\s*id:\s*['"]flexible-classroom\/\{\{platform\}\}\/([^'"]+)['"]\s*,?\s*\}/g;
+  for (const match of itemsSource.matchAll(itemPattern)) {
+    const relative = match[2];
+    result.push({
+      label: match[1],
+      sourceRelativePath:
+        relative === 'overview' ? 'index.html' : `${relative}.html`,
+    });
+  }
+  return result;
+}
+
 async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
   const retained = (manifest.pageEvidence ?? []).filter(
     (page) => page.supplementalGeneratedSource?.kind !== 'edu-store-typedoc',
   );
   const supplemental = [];
+  const sidebarSourcePath = path.resolve(oldRoot, EDU_STORE_SIDEBAR_SOURCE);
+  const sourceSidebar = parseEduStoreSidebarSource(
+    await fs.readFile(sidebarSourcePath, 'utf8'),
+  );
+  if (sourceSidebar.length === 0) {
+    throw new Error(
+      `Edu Store sidebar source contains no visible pages: ${EDU_STORE_SIDEBAR_SOURCE}`,
+    );
+  }
+  const visibleSidebarPaths = new Set(
+    sourceSidebar.map((item) => item.sourceRelativePath),
+  );
   for (const source of EDU_STORE_TYPEDOC_SOURCES) {
     const sourceRoot = path.resolve(
       oldRoot,
@@ -250,10 +316,21 @@ async function addSupplementalEduStoreEvidence(manifest, oldRoot) {
           targetPlatform: source.targetPlatform,
           sourcePath: posix(path.relative(oldRoot, file.absolute)),
           sourceRelativePath: file.relative,
-          navigationRole: isOverview ? 'visible-entry' : 'hidden-reachable',
+          navigationRole: isOverview
+            ? 'visible-entry'
+            : visibleSidebarPaths.has(file.relative)
+              ? 'visible-child'
+              : 'hidden-reachable',
           targetPath: `content/docs/zh-CN/api-reference/flexible-classroom/${source.targetPlatform}/api-reference/${targetStem}.mdx`,
           targetRoute,
-          ...(isOverview ? { sourceNavigation, sourceToc } : {}),
+          ...(isOverview
+            ? {
+                sourceNavigation,
+                sourceSidebar,
+                sourceSidebarPath: EDU_STORE_SIDEBAR_SOURCE,
+                sourceToc,
+              }
+            : {}),
         },
       });
     }

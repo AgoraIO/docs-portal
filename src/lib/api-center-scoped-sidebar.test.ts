@@ -317,7 +317,7 @@ describe('API Center scoped sidebars', () => {
   it.each([
     'electron',
     'web',
-  ])('keeps the Flexible Classroom %s Edu Store details reachable but out of the sidebar', async (platform) => {
+  ])('matches the old Flexible Classroom %s Edu Store sidebar', async (platform) => {
     const payload = await loadApiReferencePayload([
       'flexible-classroom',
       platform,
@@ -329,7 +329,20 @@ describe('API Center scoped sidebars', () => {
 
     expect(eduStore).toBeDefined();
     const titles = collectTitles(eduStore?.children ?? []);
-    expect(titles).toEqual([]);
+    expect(titles).toEqual([
+      '概览',
+      'CloudDriveStore',
+      'GroupStore',
+      'HandUpStore',
+      'MediaStore',
+      'RecordingStore',
+      'RoomStore',
+      'StreamStore',
+      'UserStore',
+      'ConnectionStore',
+      'StatisticsStore',
+      'WidgetStore',
+    ]);
     expect(collectTitles(sidebar)).not.toContain('Exports');
     expect(collectTitles(sidebar)).not.toContain(
       '"agora-edu-core/src/configs/index"',

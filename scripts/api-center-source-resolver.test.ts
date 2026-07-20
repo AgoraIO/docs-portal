@@ -7,6 +7,7 @@ import {
   buildPathMapIndex,
   oxygenTocTargetIndex,
   parseCsv,
+  parseEduStoreSidebarSource,
   parseOxygenNavigationHtml,
   resolveLegacyPage,
   resolveManifestSources,
@@ -17,7 +18,8 @@ const temporaryDirectories: string[] = [];
 type SupplementalEduStorePage = {
   supplementalGeneratedSource: {
     kind?: string;
-    navigationRole?: 'hidden-reachable' | 'visible-entry';
+    navigationRole?: 'hidden-reachable' | 'visible-child' | 'visible-entry';
+    sourceSidebar?: Array<{ label: string; sourceRelativePath: string }>;
     sourceToc?: Array<{ depth: number; fragment: string; label: string }>;
     targetPlatform: string;
   };
@@ -114,6 +116,27 @@ describe('API Center source resolver', () => {
         'module.exports = [];\n',
       );
     }
+    const sidebarSource = `module.exports = [{
+      type: "category",
+      label: "Edu Store API",
+      items: [
+        { type: "doc", label: "概览", id: "flexible-classroom/{{platform}}/overview" },
+        { type: "doc", label: "CloudDriveStore", id: "flexible-classroom/{{platform}}/classes/cloud-drive" },
+      ],
+    }];\n`;
+    const sidebarPath = path.join(
+      oldRoot,
+      'docs-api-reference/flexible-classroom/_sidebar_.meta.javascript.electron.js',
+    );
+    await fs.mkdir(path.dirname(sidebarPath), { recursive: true });
+    await fs.writeFile(sidebarPath, sidebarSource);
+    expect(parseEduStoreSidebarSource(sidebarSource)).toEqual([
+      { label: '概览', sourceRelativePath: 'index.html' },
+      {
+        label: 'CloudDriveStore',
+        sourceRelativePath: 'classes/cloud-drive.html',
+      },
+    ]);
     const storeHeadings = [
       'Cloud Drive Store',
       'Group Store',
@@ -203,6 +226,13 @@ describe('API Center source resolver', () => {
                 sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
               },
             ],
+            sourceSidebar: [
+              { label: '概览', sourceRelativePath: 'index.html' },
+              {
+                label: 'CloudDriveStore',
+                sourceRelativePath: 'classes/cloud-drive.html',
+              },
+            ],
             sourceToc: storeHeadings.map((label) => ({
               depth: 3,
               fragment: label.toLowerCase().replaceAll(' ', '-'),
@@ -214,7 +244,7 @@ describe('API Center source resolver', () => {
           requestedUrl:
             'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/cloud-drive.html',
           supplementalGeneratedSource: expect.objectContaining({
-            navigationRole: 'hidden-reachable',
+            navigationRole: 'visible-child',
           }),
           sourceResolution: expect.objectContaining({
             sourcePath:
@@ -242,15 +272,21 @@ describe('API Center source resolver', () => {
       expect(
         platformPages.filter(
           (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-child',
+        ),
+      ).toHaveLength(1);
+      expect(
+        platformPages.filter(
+          (page) =>
             page.supplementalGeneratedSource.navigationRole ===
             'hidden-reachable',
         ),
-      ).toHaveLength(3);
+      ).toHaveLength(2);
     }
     expect(JSON.stringify(manifest)).not.toContain(oldRoot);
   });
 
-  it('keeps exactly one visible entry and 398 hidden reachable Edu Store pages per platform', async () => {
+  it('matches the old visible Edu Store sidebar and keeps the remaining TypeDoc pages hidden', async () => {
     const manifest = JSON.parse(
       await fs.readFile(
         path.resolve('docs/migration/api-center-html-manifest.json'),
@@ -274,16 +310,46 @@ describe('API Center source resolver', () => {
       expect(
         pages.filter(
           (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-child',
+        ),
+      ).toHaveLength(11);
+      expect(
+        pages.filter(
+          (page) =>
             page.supplementalGeneratedSource.navigationRole ===
             'hidden-reachable',
         ),
-      ).toHaveLength(398);
+      ).toHaveLength(387);
       expect(
         pages.find(
           (page) =>
             page.supplementalGeneratedSource.navigationRole === 'visible-entry',
         )?.supplementalGeneratedSource.sourceToc,
       ).toHaveLength(10);
+      expect(
+        pages
+          .find(
+            (page) =>
+              page.supplementalGeneratedSource.navigationRole ===
+              'visible-entry',
+          )
+          ?.supplementalGeneratedSource.sourceSidebar?.map(
+            (item) => item.label,
+          ),
+      ).toEqual([
+        '概览',
+        'CloudDriveStore',
+        'GroupStore',
+        'HandUpStore',
+        'MediaStore',
+        'RecordingStore',
+        'RoomStore',
+        'StreamStore',
+        'UserStore',
+        'ConnectionStore',
+        'StatisticsStore',
+        'WidgetStore',
+      ]);
     }
     expect(
       manifest.pageEvidence.filter(

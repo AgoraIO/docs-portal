@@ -498,7 +498,7 @@ describe('API Center navigation runner', () => {
     expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
   });
 
-  it('keeps supplemental Edu Store TypeDoc details hidden, reachable, and reconciled', async () => {
+  it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-navigation-edu-store-'),
     );
@@ -534,6 +534,13 @@ describe('API Center navigation runner', () => {
           {
             label: '"agora-edu-core/src/index"',
             sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
+          },
+        ],
+        sourceSidebar: [
+          { label: '概览', sourceRelativePath: 'index.html' },
+          {
+            label: 'CloudDriveStore',
+            sourceRelativePath: 'classes/cloud-drive.html',
           },
         ],
       },
@@ -573,7 +580,7 @@ describe('API Center navigation runner', () => {
         targetRoute: `${routeRoot}/modules/agora-edu-core-src-index`,
       },
     };
-    const hiddenPages = [
+    const supplementalDetailPages = [
       exportsPage,
       modulePage,
       ...[
@@ -596,6 +603,14 @@ describe('API Center navigation runner', () => {
         },
       })),
     ];
+    const visibleChildPage = supplementalDetailPages.find(
+      (page) =>
+        page.supplementalGeneratedSource.sourceRelativePath ===
+        'classes/cloud-drive.html',
+    );
+    if (!visibleChildPage) throw new Error('Missing visible child fixture.');
+    visibleChildPage.supplementalGeneratedSource.navigationRole =
+      'visible-child';
     const regularTypeDocTargets = [
       `${root}/rtc/web/meta.json`,
       `${root}/rtc/react-sdk/web-sdk/meta.json`,
@@ -612,7 +627,7 @@ describe('API Center navigation runner', () => {
       entries: [],
       pageEvidence: [
         overview,
-        ...hiddenPages,
+        ...supplementalDetailPages,
         ...regularTypeDocTargets.map((targetPath) => ({
           requestedUrl: `https://doc.shengwang.cn/api-ref/${targetPath}`,
           sourceResolution: {
@@ -650,7 +665,7 @@ describe('API Center navigation runner', () => {
         ],
       }),
     );
-    for (const targetPath of [overview, ...hiddenPages].map(
+    for (const targetPath of [overview, ...supplementalDetailPages].map(
       (page) => page.sourceResolution.targetPath,
     )) {
       await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
@@ -729,19 +744,21 @@ describe('API Center navigation runner', () => {
     );
 
     expect(result.parity.counts).toMatchObject({
-      hiddenReachableTypeDocTargets: 5,
-      invalidHiddenTargetLinks: 0,
+      hiddenReachableTypeDocTargets: 4,
+      invalidSupplementalTargetLinks: 0,
       missingHiddenTargets: 0,
+      missingVisibleChildTargets: 0,
       promotedSupplementalNavigationLeaves: 0,
+      visibleSupplementalChildPages: 1,
       visibleSupplementalEntryPages: 1,
     });
     expect(parentMeta.pages).toEqual([
       '[Classroom SDK API](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)',
-      `[Edu Store API](${routeRoot})`,
+      'edu-store',
     ]);
     expect(eduMeta).toMatchObject({
       title: 'Edu Store API',
-      pages: ['index'],
+      pages: ['index', 'classes/cloud-drive'],
     });
     await expect(
       fs.access(path.join(repoRoot, staleModulesMetaPath)),
@@ -750,6 +767,10 @@ describe('API Center navigation runner', () => {
       title: 'Web',
       navScope: {},
       pages: ['api-reference'],
+      sidebarLabels: {
+        [routeRoot]: '概览',
+        [`${routeRoot}/classes/cloud-drive`]: 'CloudDriveStore',
+      },
     });
     for (const [targetPath, contents] of regularTypeDocMeta) {
       expect(await fs.readFile(path.join(repoRoot, targetPath), 'utf8')).toBe(
