@@ -5,6 +5,10 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import yaml from 'js-yaml';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
+import {
+  API_CENTER_GENERATOR_CONVERSION_OPTIONS,
+  extractHtmlPageMetadata,
+} from './html-to-mdx.mjs';
 import { splitOpenApiDescription } from './openapi-normalizer.mjs';
 
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference/';
@@ -79,6 +83,14 @@ function splitFrontmatter(source) {
     data: yaml.load(match[1]) ?? {},
     body: String(source).slice(match[0].length),
   };
+}
+
+function normalizeDescription(value) {
+  return String(value ?? '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\s*\n\s*/g, ' ')
+    .trim();
 }
 
 function docsPathToRoute(targetPath) {
@@ -257,6 +269,9 @@ function reportMarkdown(report) {
     `- Ownership source paths checked: ${report.counts.ownershipSourcePaths}`,
     `- Generator fallback violations: ${report.counts.generatorFallbackViolations}`,
     `- Generated-text violations: ${report.counts.generatedTextViolations}`,
+    `- Generated HTML descriptions checked: ${report.counts.generatedHtmlDescriptionsChecked}`,
+    `- Generated HTML descriptions present: ${report.counts.generatedHtmlDescriptionsPresent}`,
+    `- Generated HTML description provenance violations: ${report.counts.generatedHtmlDescriptionViolations}`,
     `- Runtime label substitutions checked: ${report.counts.runtimeLabelSubstitutions}`,
     `- Provenance-matched OpenAPI normalizations: ${report.counts.openapiNormalizedProvenanceMatches}`,
     `  - Legacy-source descriptions: ${report.counts.openapiNormalizedLegacyMatches}`,
@@ -378,6 +393,9 @@ export async function auditApiCenterProvenance({
   let ownedMdxFiles = 0;
   let ownershipSourcePaths = 0;
   let generatedTextViolations = 0;
+  let generatedHtmlDescriptionsChecked = 0;
+  let generatedHtmlDescriptionsPresent = 0;
+  let generatedHtmlDescriptionViolations = 0;
   let runtimeLabelSubstitutions = 0;
 
   for (const { ownershipPath, ledger } of ledgers) {
@@ -416,6 +434,42 @@ export async function auditApiCenterProvenance({
       if (!(await exists(targetAbsolute))) continue;
       const source = await fs.readFile(targetAbsolute, 'utf8');
       const parsed = splitFrontmatter(source);
+      if (
+        record.type === 'generated-html' &&
+        sourceAbsolute &&
+        (await exists(sourceAbsolute))
+      ) {
+        generatedHtmlDescriptionsChecked += 1;
+        const generator = parsed.data?._migration?.generator;
+        const conversionOptions =
+          API_CENTER_GENERATOR_CONVERSION_OPTIONS[generator];
+        const legacyHtml = await fs.readFile(sourceAbsolute, 'utf8');
+        const expectedDescription = conversionOptions
+          ? extractHtmlPageMetadata({
+              html: legacyHtml,
+              ...conversionOptions,
+            }).description
+          : '';
+        const actualDescription = normalizeDescription(parsed.data.description);
+        if (actualDescription) generatedHtmlDescriptionsPresent += 1;
+        if (!conversionOptions || actualDescription !== expectedDescription) {
+          generatedHtmlDescriptionViolations += 1;
+          errors.push({
+            ...issue(
+              'generated-html-description-source-drift',
+              'Generated HTML frontmatter description must exactly derive from the authoritative page-level source summary.',
+              {
+                sourcePath: record.sourcePath,
+                targetPath: record.targetPath,
+                generator: generator ?? null,
+                expectedDescription,
+                actualDescription,
+              },
+            ),
+            axis: 'source-provenance',
+          });
+        }
+      }
       const checks = [
         ...FORBIDDEN_GENERATED_TEXT,
         ...(ownershipPath.includes('navigation')
@@ -970,6 +1024,9 @@ export async function auditApiCenterProvenance({
       preservedRootNavigationItems: baseRoot ? preservedRootItems.length : 0,
       generatorFallbackViolations,
       generatedTextViolations,
+      generatedHtmlDescriptionsChecked,
+      generatedHtmlDescriptionsPresent,
+      generatedHtmlDescriptionViolations,
       runtimeLabelSubstitutions,
       openapiNormalizedProvenanceMatches,
       openapiNormalizedLegacyMatches,

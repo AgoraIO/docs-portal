@@ -1,6 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { convertHtmlToMdx } from './html-to-mdx.mjs';
+import {
+  API_CENTER_GENERATOR_CONVERSION_OPTIONS,
+  convertHtmlToMdx,
+} from './html-to-mdx.mjs';
 import {
   buildLocalFragmentIndex,
   insertFragmentAliases,
@@ -25,25 +28,6 @@ const SUPPORTED_GENERATORS = new Set([
 ]);
 
 const ZH_CN_API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference/';
-
-const GENERATOR_CONVERSION_OPTIONS = {
-  appledoc: {
-    rootSelector: 'main[role="main"]',
-    titleSelector: 'main[role="main"] > h1.title, main[role="main"] h1',
-  },
-  doxygen: {
-    rootSelector: '.contents',
-    titleSelector: '.headertitle .title',
-  },
-  oxygen: {
-    rootSelector: 'main > article',
-    titleSelector: 'main > article > h1.title, main > article > h1',
-  },
-  typedoc: {
-    rootSelector: '.col-content',
-    titleSelector: '.tsd-page-title h1',
-  },
-};
 
 function pageMatches(page, { generators, scope, urls }) {
   const resolution = page.sourceResolution;
@@ -319,7 +303,7 @@ export async function runHtmlGenerators({
       sourcePath: resolution.sourcePath,
       routeMap,
       onAsset: assetHandler({ run, sourceAbsolutePath, oldRoot }),
-      ...GENERATOR_CONVERSION_OPTIONS[resolution.generator],
+      ...API_CENTER_GENERATOR_CONVERSION_OPTIONS[resolution.generator],
     });
     const warnings = converted.warnings.map((warning) =>
       warning.code === 'unresolved-link'

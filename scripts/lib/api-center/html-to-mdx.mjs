@@ -10,6 +10,25 @@ import {
   rewriteLegacyHref,
 } from './migration-framework.mjs';
 
+export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
+  appledoc: {
+    rootSelector: 'main[role="main"]',
+    titleSelector: 'main[role="main"] > h1.title, main[role="main"] h1',
+  },
+  doxygen: {
+    rootSelector: '.contents',
+    titleSelector: '.headertitle .title',
+  },
+  oxygen: {
+    rootSelector: 'main > article',
+    titleSelector: 'main > article > h1.title, main > article > h1',
+  },
+  typedoc: {
+    rootSelector: '.col-content',
+    titleSelector: '.tsd-page-title h1',
+  },
+});
+
 function cleanText(value) {
   return String(value ?? '')
     .replace(/\u00a0/g, ' ')
@@ -98,6 +117,59 @@ function selectArticle($) {
     if (match.length > 0 && cleanText(match.text()).length > 0) return match;
   }
   return $('body').first();
+}
+
+function loadHtmlPage({ html, rootSelector, titleSelector }) {
+  const $ = cheerio.load(html);
+  const preferredTitle = titleSelector
+    ? cleanText($(titleSelector).first().text())
+    : '';
+  $('script, style, nav, footer, header').remove();
+  const article = rootSelector ? $(rootSelector).first() : selectArticle($);
+  if (article.length === 0) {
+    return {
+      $,
+      article,
+      titleNode: null,
+      descriptionNode: null,
+      title: '',
+      description: '',
+    };
+  }
+  const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
+  const titleNode =
+    selectedTitleNode?.length > 0
+      ? selectedTitleNode
+      : article.find('h1').first();
+  const title = cleanText(
+    preferredTitle || titleNode.text() || $('title').first().text(),
+  );
+  const titleArticle = titleNode.closest('article').get(0);
+  const articleNode = article.get(0);
+  const descriptionNode = article
+    .find('.shortdesc, .lead, .tsd-comment-shortform')
+    .filter((_, node) => {
+      const nodeArticle = $(node).closest('article').get(0);
+      return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
+    })
+    .first();
+  return {
+    $,
+    article,
+    titleNode,
+    descriptionNode,
+    title,
+    description: cleanText(descriptionNode.text()),
+  };
+}
+
+export function extractHtmlPageMetadata(options) {
+  const { article, title, description } = loadHtmlPage(options);
+  return {
+    found: article.length > 0,
+    title,
+    description,
+  };
 }
 
 function createState(options) {
@@ -595,12 +667,8 @@ export async function convertHtmlToMdx({
   rootSelector,
   titleSelector,
 }) {
-  const $ = cheerio.load(html);
-  const preferredTitle = titleSelector
-    ? cleanText($(titleSelector).first().text())
-    : '';
-  $('script, style, nav, footer, header').remove();
-  const article = rootSelector ? $(rootSelector).first() : selectArticle($);
+  const { $, article, titleNode, descriptionNode, title, description } =
+    loadHtmlPage({ html, rootSelector, titleSelector });
   if (article.length === 0) {
     return {
       title: '',
@@ -623,25 +691,7 @@ export async function convertHtmlToMdx({
     fragmentMap,
     onAsset,
   });
-  const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
-  const titleNode =
-    selectedTitleNode?.length > 0
-      ? selectedTitleNode
-      : article.find('h1').first();
-  const title = cleanText(
-    preferredTitle || titleNode.text() || $('title').first().text(),
-  );
   state.pageTitle = title;
-  const titleArticle = titleNode.closest('article').get(0);
-  const articleNode = article.get(0);
-  const descriptionNode = article
-    .find('.shortdesc, .lead, .tsd-comment-shortform')
-    .filter((_, node) => {
-      const nodeArticle = $(node).closest('article').get(0);
-      return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
-    })
-    .first();
-  const description = cleanText(descriptionNode.text());
   const fragments = [];
   article.find('[id], a[name]').each((_, node) => {
     const element = $(node);

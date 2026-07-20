@@ -17,6 +17,9 @@
 - Ownership source paths checked: 5140
 - Generator fallback violations: 0
 - Generated-text violations: 0
+- Generated HTML descriptions checked: 4757
+- Generated HTML descriptions present: 3227
+- Generated HTML description provenance violations: 0
 - Runtime label substitutions checked: 7
 - Provenance-matched OpenAPI normalizations: 5
   - Legacy-source descriptions: 5

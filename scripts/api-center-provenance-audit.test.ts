@@ -34,11 +34,13 @@ describe('API Center provenance audit', () => {
     const overviewPath = 'content/docs/zh-CN/api-reference/overview.mdx';
     const page = `---
 title: Page
+description: Source summary.
 _migration:
   type: generated-html
   status: migrated
   sourceUrl: https://doc.shengwang.cn/api-ref/example/page
   sourcePath: ${sourcePath}
+  generator: typedoc
   warnings: []
 ---
 
@@ -60,7 +62,10 @@ _migration:
     await fs.mkdir(path.join(oldRoot, path.dirname(sourcePath)), {
       recursive: true,
     });
-    await fs.writeFile(path.join(oldRoot, sourcePath), '<h1>Page</h1>');
+    await fs.writeFile(
+      path.join(oldRoot, sourcePath),
+      '<div class="col-content"><div class="tsd-page-title"><h1>Page</h1></div><p class="tsd-comment-shortform">Source summary.</p><p>Source body.</p></div>',
+    );
     for (const [filePath, contents] of [
       [targetPath, page],
       [overviewPath, overview],
@@ -189,6 +194,9 @@ _migration:
       sourceProvenanceErrors: 0,
       placementErrors: 0,
       unapprovedRequirementAssumptions: 0,
+      generatedHtmlDescriptionsChecked: 1,
+      generatedHtmlDescriptionsPresent: 1,
+      generatedHtmlDescriptionViolations: 0,
     });
     expect(report.liveEvidence.matchedEntries).toBe(1);
     expect(report.liveEvidence.bundleMatchedEntries).toBe(1);
@@ -197,6 +205,45 @@ _migration:
     );
     expect(markdown).toContain(
       'Technical decisions (not recorded as user requirements)',
+    );
+
+    const fabricated = page.replace(
+      'description: Source summary.',
+      'description: Fabricated summary.',
+    );
+    await fs.writeFile(path.join(repoRoot, targetPath), fabricated);
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/api-center-generated-files.json'),
+      JSON.stringify({
+        files: [
+          {
+            contentHash: hash(fabricated),
+            sourcePath,
+            sourceUrl: 'https://doc.shengwang.cn/api-ref/example/page',
+            targetPath,
+            type: 'generated-html',
+          },
+        ],
+      }),
+    );
+
+    const { report: fabricatedReport } = await auditApiCenterProvenance({
+      repoRoot,
+      oldRoot,
+      liveBundleUrl: 'https://doc.shengwang.cn/assets/js/main.fixture.js',
+      liveBundleText: 'const link = "/api-ref/example/page";',
+    });
+    expect(fabricatedReport.counts).toMatchObject({
+      generatedHtmlDescriptionsChecked: 1,
+      generatedHtmlDescriptionsPresent: 1,
+      generatedHtmlDescriptionViolations: 1,
+    });
+    expect(fabricatedReport.errors).toContainEqual(
+      expect.objectContaining({
+        code: 'generated-html-description-source-drift',
+        expectedDescription: 'Source summary.',
+        actualDescription: 'Fabricated summary.',
+      }),
     );
   });
 });
