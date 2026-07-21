@@ -17,7 +17,7 @@ _migration:
 通过该类，你可以设置双声道处理，实现立体声。建议按如下步骤设置：
 
 1. 前处理：调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/electron/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `AudioProcessingStereo` (2)。
-2. 后处理：调用  [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 并将 `profile` 设为 `AudioProfileMusicStandardStereo` (3) 或 `AudioProfileMusicHighQualityStereo` (5)。
+2. 后处理：调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 并将 `profile` 设为 `AudioProfileMusicStandardStereo` (3) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 :::note
 注：
@@ -31,10 +31,17 @@ _migration:
 
 ## 枚举值
 
-### AudioProcessingMono
+<ParameterList>
+<a id="audioprocessingmono"></a>
+<Parameter name="AudioProcessingMono">
 
 1: （默认）单声道。
 
-### AudioProcessingStereo
+</Parameter>
+<a id="audioprocessingstereo"></a>
+<Parameter name="AudioProcessingStereo">
 
 2: 双声道。
+
+</Parameter>
+</ParameterList>

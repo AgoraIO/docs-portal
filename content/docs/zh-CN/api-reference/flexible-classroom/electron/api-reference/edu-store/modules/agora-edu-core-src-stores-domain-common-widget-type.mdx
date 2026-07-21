@@ -43,9 +43,11 @@ Dimensions: \{height:number;real?:boolean;width:number\}
 
 #### Type declaration
 
-- height:number
-- Optional real?:boolean
-- width:number
+<ParameterList title="Type declaration">
+<Parameter name="height" type="number" required />
+<Parameter name="real" type="boolean" optional />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
 <a id="Offset"></a>
 
@@ -57,8 +59,10 @@ Offset: \{left:number;top:number\}
 
 #### Type declaration
 
-- left:number
-- top:number
+<ParameterList title="Type declaration">
+<Parameter name="left" type="number" required />
+<Parameter name="top" type="number" required />
+</ParameterList>
 
 <a id="Point"></a>
 
@@ -70,9 +74,11 @@ Point: \{real?:boolean;x:number;y:number\}
 
 #### Type declaration
 
-- Optional real?:boolean
-- x:number
-- y:number
+<ParameterList title="Type declaration">
+<Parameter name="real" type="boolean" optional />
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
 
 <a id="ResizeBounds"></a>
 
@@ -84,10 +90,12 @@ ResizeBounds: \{maxHeight:number;maxWidth:number;minHeight:number;minWidth:numbe
 
 #### Type declaration
 
-- maxHeight:number
-- maxWidth:number
-- minHeight:number
-- minWidth:number
+<ParameterList title="Type declaration">
+<Parameter name="maxHeight" type="number" required />
+<Parameter name="maxWidth" type="number" required />
+<Parameter name="minHeight" type="number" required />
+<Parameter name="minWidth" type="number" required />
+</ParameterList>
 
 <a id="TrackContext"></a>
 
@@ -99,9 +107,35 @@ TrackContext: \{offset:[Offset](/zh-CN/api-reference/flexible-classroom/electron
 
 #### Type declaration
 
-- offset:[Offset](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Offset)
-- outerSize:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-- resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+<ParameterList title="Type declaration">
+<Parameter name="offset" required>
+
+<ParameterType>
+
+[Offset](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Offset)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="outerSize" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="resizeBounds" required>
+
+<ParameterType>
+
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 <a id="TrackOptions"></a>
 
@@ -113,5 +147,7 @@ TrackOptions: \{initial?:boolean;needTransition?:boolean\}
 
 #### Type declaration
 
-- Optional initial?:boolean
-- Optional needTransition?:boolean
+<ParameterList title="Type declaration">
+<Parameter name="initial" type="boolean" optional />
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>

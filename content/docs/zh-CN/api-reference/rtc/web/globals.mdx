@@ -353,10 +353,10 @@ OptimizationMode: "motion"|"detail"|"balanced"
 
 RequiredOnlyOneOf&lt;T, K&gt;: object[K] extends infer O? object: never
 
-Type parameters
-
-- T
-- K:keyof T
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+<Parameter name="K" type="keyof T" />
+</ParameterList>
 
 <a id="sdk_codec"></a>
 
@@ -369,7 +369,7 @@ SDK_CODEC: keyof typeof VideoCodec
 - `"vp8"`: 浏览器使用 VP8 编码。
 - `"h264"`: 浏览器使用 H.264 编码。
 - `"vp9"`: (Beta) 浏览器使用 VP9 编码。
-- `"av1"`:  (Beta) 浏览器使用 AV1 编码。
+- `"av1"`: (Beta) 浏览器使用 AV1 编码。
 - `"h265"`: 浏览器使用 H.265 编码。如果频道内有客户端不支持使用 H.265 编码，则会回退到现有编码格式。
 
 各编码格式在浏览器上的支持限制如下：
@@ -412,51 +412,63 @@ ScreenAudioTrackInitConfig: object
 
 #### Type declaration
 
-- Optional AEC?:boolean
+<ParameterList title="Type declaration">
+<Parameter name="AEC" type="boolean" optional>
 
-  是否开启回声消除：
+是否开启回声消除：
 
-  - `true`: 开启回声消除。
-  - `false`: 不开启回声消除。
-- Optional AGC?:boolean
+- `true`: 开启回声消除。
+- `false`: 不开启回声消除。
 
-  是否开启自动增益：
+</Parameter>
+<Parameter name="AGC" type="boolean" optional>
 
-  - `true`: 开启自动增益。
-  - `false`: 不开启自动增益。
-- Optional ANS?:boolean
+是否开启自动增益：
 
-  是否开启噪声抑制：
+- `true`: 开启自动增益。
+- `false`: 不开启自动增益。
 
-  - `true`: 开启噪声抑制。
-  - `false`: 不开启噪声抑制。
-- Optional restrictOwnAudio?:boolean
+</Parameter>
+<Parameter name="ANS" type="boolean" optional>
 
-  :::info[自从]
-  *4.24.1*
+是否开启噪声抑制：
 
-  是否禁止本地页面声音采集。
+- `true`: 开启噪声抑制。
+- `false`: 不开启噪声抑制。
 
-  - `true`：禁止本地页面声音采集。
-  - `false`：(默认) 允许本地页面声音采集。
-  												详见 [restrictOwnAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/restrictOwnAudio)。
+</Parameter>
+<Parameter name="restrictOwnAudio" type="boolean" optional>
 
-  > 该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
-  :::
-- Optional suppressLocalAudioPlayback?:boolean
+:::info[自从]
+*4.24.1*
 
-  :::info[自从]
-  *4.24.1*
+是否禁止本地页面声音采集。
 
-  是否禁止本地播放音频。
+- `true`：禁止本地页面声音采集。
+- `false`：(默认) 允许本地页面声音采集。
+  详见 [restrictOwnAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/restrictOwnAudio)。
 
-  - `true`：禁止本地播放音频。
-  - `false`：(默认) 允许本地播放音频。
+> 该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
+:::
 
-  详见 [suppressLocalAudioPlayback](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)。
+</Parameter>
+<Parameter name="suppressLocalAudioPlayback" type="boolean" optional>
 
-  > 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
-  :::
+:::info[自从]
+*4.24.1*
+
+是否禁止本地播放音频。
+
+- `true`：禁止本地播放音频。
+- `false`：(默认) 允许本地播放音频。
+
+详见 [suppressLocalAudioPlayback](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)。
+
+> 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
+:::
+
+</Parameter>
+</ParameterList>
 
 <a id="screenencoderconfigurationpreset"></a>
 
@@ -530,15 +542,17 @@ SDK 支持预设的视频属性，以及在各浏览器上的支持情况，请�
 
 - track-updated(track:MediaStreamTrack):void
 
-- 媒体轨道有更新时触发。
+媒体轨道有更新时触发。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" type="MediaStreamTrack" required>
 
-  - track: MediaStreamTrack
+媒体轨道。详见 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack)。
 
-    媒体轨道。详见 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack)。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 ## Variables
 
@@ -550,12 +564,62 @@ AUDIO_ENCODER_CONFIG_SETTINGS: object
 
 #### Type declaration
 
-- high_quality:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
-- high_quality_stereo:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
-- music_standard:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
-- speech_low_quality:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
-- speech_standard:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
-- standard_stereo:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+<ParameterList title="Type declaration">
+<Parameter name="high_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="high_quality_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="music_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_low_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="standard_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 <a id="agorartc"></a>
 

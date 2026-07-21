@@ -53,18 +53,24 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo, const char* cha
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### userInfo
+</Parameter>
+<a id="userinfo"></a>
+<Parameter name="userInfo">
 
 输入和输出参数。标识用户的 [UserInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-userinfo) 对象：
 
 - 输入值：一个 UserInfo 对象。
 - 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -75,9 +81,14 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo, const char* cha
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### localUserAccount
+</Parameter>
+<a id="localuseraccount"></a>
+<Parameter name="localUserAccount">
 
 本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuid__return_values"></a>
 
@@ -130,18 +141,24 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
 
-### userInfo
+</Parameter>
+<a id="userinfo-1"></a>
+<Parameter name="userInfo">
 
 输入和输出参数。标识用户的 [UserInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-userinfo) 对象：
 
 - 输入值：一个 UserInfo 对象。
 - 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -152,9 +169,14 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### localUserAccount
+</Parameter>
+<a id="localuseraccount-1"></a>
+<Parameter name="localUserAccount">
 
 本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
 
@@ -215,7 +237,9 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -227,7 +251,9 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel__d99e178"></a>
 
@@ -240,13 +266,20 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 (非必选项) 预留参数。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel__return_values"></a>
 
@@ -315,7 +348,9 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -327,7 +362,9 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel2__channelID_desc"></a>
 
@@ -340,13 +377,20 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -424,7 +468,9 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -436,17 +482,26 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection,
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -520,7 +575,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -532,7 +589,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-4"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -543,7 +602,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### userAccount
+</Parameter>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
 
@@ -552,6 +613,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 10 个数字 0-9
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount__return_values"></a>
 
@@ -630,7 +694,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -642,7 +708,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-5"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -653,7 +721,9 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### userAccount
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
 
@@ -663,9 +733,14 @@ virtual int joinChannelWithUserAccount(const char* token,
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
 
@@ -743,7 +818,9 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-5"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -755,7 +832,9 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-6"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -766,7 +845,9 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### userAccount
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
 
@@ -776,13 +857,20 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler-1"></a>
+<Parameter name="eventHandler">
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__return_values"></a>
 
@@ -919,9 +1007,14 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 
 <a id="api_irtcengine_leavechannel2__parml_jsr_dky_hqb"></a>
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-leavechanneloptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -958,7 +1051,7 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 注意：
 
 - 该方法是异步操作，调用返回时并没有真正退出频道。
-- 如果你调用了 [leaveChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel) 或 [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel2) ，会同时离开 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 及 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 加入的频道。
+- 如果你调用了 [leaveChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel) 或 [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel2)，会同时离开 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 及 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 加入的频道。
 :::
 
 <a id="api_irtcengineex_leavechannelex__scenario"></a>
@@ -992,9 +1085,14 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex__return_values"></a>
 
@@ -1065,17 +1163,24 @@ virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOp
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-leavechanneloptions)。
 
 :::note
 注： 该参数仅支持设置 LeaveChannelOptions 中的 stopMicrophoneRecording 成员，设置其他成员均不生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
 
@@ -1136,7 +1241,9 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-6"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -1154,7 +1261,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
     :::
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-7"></a>
+<Parameter name="channelId">
 
 待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
           该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -1164,9 +1273,14 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannel__return_values"></a>
 
@@ -1230,7 +1344,9 @@ virtual int preloadChannelWithUserAccount(const char* token, const char* channel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-7"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -1248,7 +1364,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
     :::
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-8"></a>
+<Parameter name="channelId">
 
 待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
           该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -1258,7 +1376,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### userAccount
+</Parameter>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
 
@@ -1267,6 +1387,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0-9
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
 
@@ -1329,11 +1452,15 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 
 ### 参数
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 你的项目在控制台注册的 App ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
 
@@ -1342,6 +1469,9 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 - 10 个数字 0-9
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
 
@@ -1392,9 +1522,14 @@ virtual int renewToken(const char* token) = 0;
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-8"></a>
+<Parameter name="token">
 
 新生成的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_renewtoken__return_values"></a>
 
@@ -1454,9 +1589,14 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 频道使用场景。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-channelprofiletype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setchannelprofile__return_values"></a>
 
@@ -1527,13 +1667,18 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role"></a>
+<Parameter name="role">
 
 用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
 
 :::note
 注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole__return_values"></a>
 
@@ -1611,7 +1756,9 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role-1"></a>
+<Parameter name="role">
 
 用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
 
@@ -1619,9 +1766,14 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
 :::
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 用户具体设置，包含用户级别。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -1657,9 +1809,14 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-7"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -1694,13 +1851,20 @@ virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, cons
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-8"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions)。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -1747,9 +1911,14 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-9"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatepreloadchanneltoken__return_values"></a>
 
@@ -1804,17 +1973,26 @@ virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newR
 
 ### 参数
 
-### oldRole
+<ParameterList>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
 
 切换前的角色：[CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
 
-### newRole
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
 
 切换后的角色：[CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
 
-### newRoleOptions
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1857,13 +2035,20 @@ virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, C
 
 ### 参数
 
-### reason
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
 
 切换用户角色失败的原因。详见 [CLIENT_ROLE_CHANGE_FAILED_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientrolechangefailedreason)。
 
-### currentRole
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
 
 当前用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1898,13 +2083,20 @@ virtual void onError(int err, const char* msg) {
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err"></a>
+<Parameter name="err">
 
 错误码。详见 [ERROR_CODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-errorcodetype)。
 
-### msg
+</Parameter>
+<a id="msg"></a>
+<Parameter name="msg">
 
 错误描述。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1954,17 +2146,26 @@ virtual void onJoinChannelSuccess(const char* channel,
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地调用 joinChannel [2/2] 开始到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2006,9 +2207,14 @@ virtual void onLeaveChannel(const RtcStats& stats) {
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2041,13 +2247,20 @@ virtual void onLocalUserRegistered(uid_t uid, const char* userAccount) {
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 本地用户的 ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-6"></a>
+<Parameter name="userAccount">
 
 本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2091,17 +2304,26 @@ virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 重新加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2185,9 +2407,14 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2237,9 +2464,14 @@ virtual void onTokenPrivilegeWillExpire(const char* token) {
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-10"></a>
+<Parameter name="token">
 
 即将过期的 Token。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2272,13 +2504,20 @@ virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info) {
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-userinfo) 类。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2328,17 +2567,26 @@ virtual void onUserJoined(uid_t uid, int elapsed) {
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 新加入频道的远端用户/主播 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 joinChannel [1/2] 或 joinChannel [2/2] 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2386,13 +2634,20 @@ virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) {
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-9"></a>
+<Parameter name="uid">
 
 离线的远端用户或主播的 ID。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-userofflinereasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

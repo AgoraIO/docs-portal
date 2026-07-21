@@ -30,7 +30,9 @@ public class MediaPlayerSource {
 
 ## 属性
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 要播放的媒体文件的 URL。
 
@@ -38,15 +40,21 @@ public class MediaPlayerSource {
 注： 如果打开的是普通媒体资源，请传入 `url` 的值；如果打开的是自定义媒体资源，请传入 `provider` 的值。声网建议不要在一次调用中同时传入这两个参数的值，否则调用可能失败。
 :::
 
-### uri
+</Parameter>
+<a id="uri"></a>
+<Parameter name="uri">
 
 媒体文件的 URI（统一资源标识符）。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 从该位置（单位为毫秒）开始播放。默认值为 0。
 
-### autoPlay
+</Parameter>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
 
 :::note
 注： 如果关闭自动播放，在打开媒体文件后需手动调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 方法播放。
@@ -57,7 +65,9 @@ public class MediaPlayerSource {
 - true：（默认）自动播放。
 - false：不自动播放。
 
-### enableCache
+</Parameter>
+<a id="enablecache"></a>
+<Parameter name="enableCache">
 
 :::note
 注： 声网仅支持缓存非 HLS 协议传输的点播音视频流。如果需要启用缓存功能，请为 `uri` 赋值；否则，默认基于 `url` 进行缓存。启用该功能后，Media Player 会将正在播放的部分音视频文件缓存于本地设备，可在无网络的情况下播放。缓存统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-cachestatistics)。
@@ -68,7 +78,9 @@ public class MediaPlayerSource {
 - true：开启缓存。
 - false：（默认）关闭缓存。
 
-### enableMultiAudioTrack
+</Parameter>
+<a id="enablemultiaudiotrack"></a>
+<Parameter name="enableMultiAudioTrack">
 
 :::note
 注： 如果需要为本地播放和发布到频道分别设置音轨，需设置此参数为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
@@ -79,7 +91,9 @@ public class MediaPlayerSource {
 - true：允许选择不同音轨。
 - false：（默认）不允许选择不同音轨。
 
-### isAgoraSource
+</Parameter>
+<a id="isagorasource"></a>
+<Parameter name="isAgoraSource">
 
 :::note
 注： 如果需要播放通过直播服务分发的直播或点播视频，请将媒体资源的 URL 传入 `url`，并将 `isAgoraSource` 设置为 true；否则无需设置该参数。
@@ -90,7 +104,9 @@ public class MediaPlayerSource {
 - true：是。
 - false：（默认）否。
 
-### isLiveSource
+</Parameter>
+<a id="islivesource"></a>
+<Parameter name="isLiveSource">
 
 :::note
 注： 如果打开的是直播流，声网建议将该参数设为 true，以便更快加载直播流。若打开的媒体资源并非直播流，但设置了 `isLiveSource=true`，也不会提升加载速度。
@@ -101,10 +117,15 @@ public class MediaPlayerSource {
 - true：是直播流。
 - false：（默认）不是直播流。
 
-### provider
+</Parameter>
+<a id="provider"></a>
+<Parameter name="provider">
 
 自定义媒体资源文件的数据提供回调，详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercustomdataprovider)。
 
 :::note
 注： 如果打开的是自定义媒体资源，请传入 `provider` 的值；如果打开的是普通媒体资源，请传入 `url` 的值。声网建议不要在一次调用中同时传入 `url` 和 `provider` 的值，否则调用可能失败。
 :::
+
+</Parameter>
+</ParameterList>

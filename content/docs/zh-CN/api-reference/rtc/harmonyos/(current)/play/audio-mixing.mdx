@@ -43,9 +43,14 @@ public abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
@@ -92,9 +97,14 @@ public abstract adjustAudioMixingPublishVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
@@ -145,9 +155,14 @@ public abstract adjustAudioMixingVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
@@ -194,13 +209,18 @@ public abstract adjustPlaybackSignalVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-3"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
@@ -482,13 +502,20 @@ public abstract selectMultiAudioTrack(playoutTrackIndex:number, publishTrackInde
 
 ### 参数
 
-### playoutTrackIndex
+<ParameterList>
+<a id="playouttrackindex"></a>
+<Parameter name="playoutTrackIndex">
 
 用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
-### publishTrackIndex
+</Parameter>
+<a id="publishtrackindex"></a>
+<Parameter name="publishTrackIndex">
 
 用于发送至远端的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -525,13 +552,18 @@ public abstract setAudioMixingPlaybackSpeed(speed: number): number
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 音乐文件的播放速度。推荐取值范围为 [50,400]，其中：
 
 - 50: 0.5 倍速。
 - 100: 原始速度。
 - 400: 4 倍速。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
 
@@ -578,9 +610,14 @@ public abstract setAudioMixingPosition(pos: number): number;
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
@@ -638,27 +675,38 @@ public abstract startAudioMixing(filepath: string, loopback: boolean, cycle: num
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 文件路径：
 
-### loopback
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否只在本地播放音乐文件：
 
 - `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
 - `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt;0: 播放次数。例如，1 表示播放 1 次。
 - -1: 无限循环播放。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -744,9 +792,14 @@ onAudioMixingPositionChanged?:(position:bigint) => void
 
 ### 参数
 
-### position
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 音乐文件当前的播放进度，单位为 ms。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__return_values"></a>
 
@@ -783,13 +836,20 @@ onAudioMixingStateChanged?:(state:Constants.AudioMixingState,reason:Constants.Au
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐文件播放状态。详见 [AudioMixingState](/zh-CN/api-reference/rtc/harmonyos/enum-audiomixingstatetype)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 错误码。详见 [AudioMixingReason](/zh-CN/api-reference/rtc/harmonyos/enum-audiomixingreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

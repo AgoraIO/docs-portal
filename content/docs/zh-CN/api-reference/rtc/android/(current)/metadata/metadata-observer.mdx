@@ -65,15 +65,22 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 元数据观察器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 元数据类型。当前 SDK 仅支持以下类型：
 
 - `VIDEO_METADATA`：视频元数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registermediametadataobserver__return_values"></a>
 
@@ -106,15 +113,22 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 元数据观察者。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 元数据类型。当前 SDK 仅支持以下类型：
 
 - `VIDEO_METADATA`：视频元数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
 
@@ -153,9 +167,14 @@ public abstract void onMetadataReceived(AgoraMetadata metadata)
 
 ### 参数
 
-### metadata
+<ParameterList>
+<a id="metadata"></a>
+<Parameter name="metadata">
 
 接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-metadata)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -191,13 +210,20 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 ### 参数
 
-### timeStampMs
+<ParameterList>
+<a id="timestampms"></a>
+<Parameter name="timeStampMs">
 
 时间戳。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
 

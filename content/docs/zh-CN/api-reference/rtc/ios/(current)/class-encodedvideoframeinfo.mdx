@@ -31,42 +31,65 @@ __attribute__((visibility("default"))) @interface AgoraEncodedVideoFrameInfo: NS
 
 ## 属性
 
-### codecType
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 本地视频流的首选编码器类型，详见 [AgoraVideoCodecType](/zh-CN/api-reference/rtc/ios/enum-videocodectype)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频帧的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度（像素）。
 
-### framesPerSecond
+</Parameter>
+<a id="framespersecond"></a>
+<Parameter name="framesPerSecond">
 
 视频帧的每秒帧数。当该参数不为 0 时，可用于计算外部编码视频帧的 Unix 时间戳。
 
-### frameType
+</Parameter>
+<a id="frametype"></a>
+<Parameter name="frameType">
 
 视频帧的类型，详见 [AgoraVideoFrameType](/zh-CN/api-reference/rtc/ios/enum-videoframetype)。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频帧的旋转信息。
 
-### trackId
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 预留参数，用于未来支持多个视频轨道。
 
-### captureTimeMs
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
 
 外部编码视频帧的采集时间戳（毫秒）。
 
-### decodeTimeMs
+</Parameter>
+<a id="decodetimems"></a>
+<Parameter name="decodeTimeMs">
 
 输出参数，表示用于解码视频帧的时间戳（毫秒）。
 
-### streamType
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 视频流的类型，详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/ios/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>

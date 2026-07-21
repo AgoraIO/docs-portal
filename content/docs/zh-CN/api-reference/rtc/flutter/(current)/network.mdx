@@ -38,13 +38,20 @@ Future<void> complain({required String callId, required String description});
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
 
 通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_getcallid) 获取该参数。
 
-### description
+</Parameter>
+<a id="description"></a>
+<Parameter name="description">
 
 通话的描述。长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_complain__return_values"></a>
 
@@ -98,16 +105,23 @@ Future<void> enableEncryption(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启内置加密：
 
 - `true`: 开启内置加密。
 - `false`:（默认）关闭内置加密。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/flutter/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableencryption__return_values"></a>
 
@@ -163,20 +177,29 @@ Future<void> enableEncryptionEx(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启内置加密：
 
 - `true`: 开启内置加密。
 - `false`:（默认）关闭内置加密。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/flutter/class-encryptionconfig)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableencryptionex__return_values"></a>
 
@@ -215,12 +238,17 @@ Future<void> enableWebSdkInteroperability(bool enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否打开与 Web SDK 的互通：
 
 - true: 打开互通。
 - false: (默认) 关闭互通。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
 
@@ -252,9 +280,14 @@ Future<String?> getAssetAbsolutePath(String assetPath)
 
 ### 参数
 
-### assetPath
+<ParameterList>
+<a id="assetpath"></a>
+<Parameter name="assetPath">
 
 pubspec.yaml 文件中配置的 `flutter -> assets` 字段。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rtcengineext_getassetabsolutepath__return_values"></a>
 
@@ -328,9 +361,14 @@ Future<String> getCallIdEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -394,9 +432,14 @@ Future<ConnectionStateType> getConnectionStateEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getconnectionstateex__return_values"></a>
 
@@ -464,9 +507,14 @@ Future<String> getErrorDescription(int code);
 
 ### 参数
 
-### code
+<ParameterList>
+<a id="code"></a>
+<Parameter name="code">
 
 SDK 报告的错误码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geterrordescription__return_values"></a>
 
@@ -631,9 +679,14 @@ Future<bool> isFeatureAvailableOnDevice(FeatureType type);
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 进阶功能类型，详见 [FeatureType](/zh-CN/api-reference/rtc/flutter/enum-featuretype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
 
@@ -707,17 +760,26 @@ Future<void> rate(
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid-1"></a>
+<Parameter name="callId">
 
 通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_getcallid) 获取该参数。
 
-### rating
+</Parameter>
+<a id="rating"></a>
+<Parameter name="rating">
 
 给通话的评分，最低 1 分，最高 5 分。
 
-### description
+</Parameter>
+<a id="description-1"></a>
+<Parameter name="description">
 
 给通话的描述。长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_rate__return_values"></a>
 
@@ -810,13 +872,20 @@ Future<void> setAVSyncSource({required String channelId, required int uid});
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 标识音频发送端所在频道的频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 音频发送端的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setavsyncsource__return_values"></a>
 
@@ -861,10 +930,15 @@ Future<void> setCloudProxy(CloudProxyType proxyType);
 
 ### 参数
 
-### proxyType
+<ParameterList>
+<a id="proxytype"></a>
+<Parameter name="proxyType">
 
 云代理类型，详见 [CloudProxyType](/zh-CN/api-reference/rtc/flutter/enum-cloudproxytype)。
 该参数为必填参数，如果你不赋值，SDK 会报错。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcloudproxy__return_values"></a>
 
@@ -908,9 +982,14 @@ Future<void> setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
 
 Local Access Point 配置。详见 LocalAccessPointConfiguration。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -958,9 +1037,14 @@ Future<void> setLogFile(String filePath);
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 日志文件的完整路径。该日志文件为 UTF-8 编码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfile__return_values"></a>
 
@@ -1015,9 +1099,14 @@ Future<void> setLogFileSize(int fileSizeInKBytes);
 
 ### 参数
 
-### fileSizeInKBytes
+<ParameterList>
+<a id="filesizeinkbytes"></a>
+<Parameter name="fileSizeInKBytes">
 
 单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 2,048 KB。如果你将 `fileSizeInKByte` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSizeInKByte` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilesize__return_values"></a>
 
@@ -1057,9 +1146,14 @@ Future<void> setLogFilter(LogFilterType filter);
 
 ### 参数
 
-### filter
+<ParameterList>
+<a id="filter"></a>
+<Parameter name="filter">
 
 日志过滤等级。详见 [LogFilterType](/zh-CN/api-reference/rtc/flutter/enum-logfiltertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilter__return_values"></a>
 
@@ -1097,9 +1191,14 @@ Future<void> setLogLevel(LogLevel level);
 
 ### 参数
 
-### level
+<ParameterList>
+<a id="level"></a>
+<Parameter name="level">
 
 日志级别。详见 [LogLevel](/zh-CN/api-reference/rtc/flutter/enum-loglevel)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setloglevel__return_values"></a>
 
@@ -1131,9 +1230,14 @@ Future<void> setParameters(String parameters);
 
 ### 参数
 
-### parameters
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
 
 JSON 字符串形式的参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setparameters__return_values"></a>
 
@@ -1168,9 +1272,14 @@ Future<void> setRemoteSubscribeFallbackOption(StreamFallbackOptions option);
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 订阅流的回退选项。详见 [StreamFallbackOptions](/zh-CN/api-reference/rtc/flutter/enum-streamfallbackoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
 
@@ -1219,9 +1328,14 @@ Future<void> startEchoTest(EchoTestConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
 
 音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/flutter/class-echotestconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startechotest3__return_values"></a>
 
@@ -1271,9 +1385,14 @@ Future<void> startLastmileProbeTest(LastmileProbeConfig config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
 
 Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/flutter/class-lastmileprobeconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlastmileprobetest__return_values"></a>
 
@@ -1363,9 +1482,14 @@ final void Function(RtcConnection connection)? onConnectionBanned;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1402,9 +1526,14 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1432,9 +1561,14 @@ SDK 在调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtceng
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1463,17 +1597,26 @@ final void Function(RtcConnection connection, ConnectionStateType state,
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/flutter/enum-connectionstatetype)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 引起当前网络连接状态改变的原因。详见 [ConnectionChangedReasonType](/zh-CN/api-reference/rtc/flutter/enum-connectionchangedreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1502,13 +1645,20 @@ final void Function(RtcConnection connection, EncryptionErrorType errorType)?
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### errorType
+</Parameter>
+<a id="errortype"></a>
+<Parameter name="errorType">
 
 错误类型，详见 [EncryptionErrorType](/zh-CN/api-reference/rtc/flutter/enum-encryptionerrortype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1536,9 +1686,14 @@ final void Function(LastmileProbeResult result)? onLastmileProbeResult;
 
 ### 参数
 
-### result
+<ParameterList>
+<a id="result"></a>
+<Parameter name="result">
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/flutter/class-lastmileproberesult)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1567,9 +1722,14 @@ final void Function(QualityType quality)? onLastmileQuality;
 
 ### 参数
 
-### quality
+<ParameterList>
+<a id="quality"></a>
+<Parameter name="quality">
 
 Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1606,9 +1766,14 @@ Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/e
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/flutter/class-multipathstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1643,21 +1808,32 @@ final void Function(RtcConnection connection, int remoteUid,
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 用户 ID。表示该回调报告的是持有该 ID 的用户的网络质量。如果当 uid 为 0 时，返回的是本地用户的网络质量。
 
-### txQuality
+</Parameter>
+<a id="txquality"></a>
+<Parameter name="txQuality">
 
 该用户的上行网络质量，基于发送码率、上行丢包率、平均往返时延和网络抖动计算。 该值代表当前的上行网络质量，帮助判断是否可以支持当前设置的视频编码属性。 假设上行码率是 1000 Kbps，那么支持直播场景下 640 × 480 的分辨率、15 fps 的帧率没有问题，但是支持 1280 × 720 的分辨率就会有困难。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/enum-qualitytype)。
 
-### rxQuality
+</Parameter>
+<a id="rxquality"></a>
+<Parameter name="rxQuality">
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1686,13 +1862,20 @@ final void Function(RtcConnection connection, NetworkType type)?
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 本地网络连接类型。详见 [NetworkType](/zh-CN/api-reference/rtc/flutter/enum-networktype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1720,9 +1903,14 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 ### 参数
 
-### permissionType
+<ParameterList>
+<a id="permissiontype"></a>
+<Parameter name="permissionType">
 
 设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/flutter/enum-permissiontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1749,9 +1937,14 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 ### 参数
 
-### permissionType
+<ParameterList>
+<a id="permissiontype-1"></a>
+<Parameter name="permissionType">
 
 权限类型，详见 [PermissionType](/zh-CN/api-reference/rtc/flutter/enum-permissiontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1780,21 +1973,32 @@ final void Function(String channel, int uid, ProxyType proxyType,
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID
 
-### localProxyIp
+</Parameter>
+<a id="localproxyip"></a>
+<Parameter name="localProxyIp">
 
 预留参数，暂不支持。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调的经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1830,14 +2034,21 @@ final void Function(int uid, bool isFallbackOrRecover)?
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### isFallbackOrRecover
+</Parameter>
+<a id="isfallbackorrecover"></a>
+<Parameter name="isFallbackOrRecover">
 
 - true: 由于网络环境不理想，订阅流已回退为音频流。
 - false: 由于网络环境改善，订阅流已恢复为音视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1869,9 +2080,14 @@ final void Function(UplinkNetworkInfo info)? onUplinkNetworkInfoUpdated;
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/flutter/class-uplinknetworkinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

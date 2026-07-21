@@ -243,14 +243,30 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- 增加一个音频裸数据观察者
+增加一个音频裸数据观察者
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addCameraProcessors"></a>
 
@@ -258,15 +274,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addCameraProcessors(processors:IBaseProcessor[]):void
 
-- 增加摄像头视频流前处理器
+增加摄像头视频流前处理器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required>
 
-  - processors: IBaseProcessor[]
+视频采集前处理器
 
-    视频采集前处理器
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="addMicrophoneProcessors"></a>
 
@@ -274,15 +292,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addMicrophoneProcessors(processors:IBaseProcessor[]):void
 
-- 增加麦克风音频流前处理器
+增加麦克风音频流前处理器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required>
 
-  - processors: IBaseProcessor[]
+音频采集前处理器
 
-    音频采集前处理器
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="addPreviewCameraProcessors"></a>
 
@@ -290,13 +310,13 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addPreviewCameraProcessors(processors:IBaseProcessor[]):void
 
-- 增加摄像头视频流前处理器(预览)
+增加摄像头视频流前处理器(预览)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processors: IBaseProcessor[]
-
-  Returns void
+Returns void
 
 <a id="addPreviewMicrophoneProcessors"></a>
 
@@ -304,13 +324,13 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addPreviewMicrophoneProcessors(processors:IBaseProcessor[]):void
 
-- 增加麦克风音频流前处理器(预览)
+增加麦克风音频流前处理器(预览)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processors: IBaseProcessor[]
-
-  Returns void
+Returns void
 
 <a id="addRawDataListener"></a>
 
@@ -318,25 +338,27 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - addRawDataListener(cb:(buffer:AudioBuffer)=&gt;void):void
 
-- ### deprecated
+### deprecated
 
 增加一个本地音频裸数据观察者，使用 addAudioRawDataObserver 替代此方法
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(buffer:AudioBuffer)= &amp; gt;void" required>
 
-  - cb: (buffer:AudioBuffer)=&gt;void
+订阅者
 
-    订阅者
+- - (buffer:AudioBuffer):void
 
-    - - (buffer:AudioBuffer):void
-
-      - Parameters
-
-        - buffer: AudioBuffer
-
-        Returns void
+  <ParameterList title="Parameters">
+  <Parameter name="buffer" type="AudioBuffer" required />
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="enableDualStream"></a>
 
@@ -344,19 +366,37 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - enableDualStream(enable:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 开启双流
+开启双流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required>
 
-  - enable: boolean
+是否开启
 
-    是否开启
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</Parameter>
+<Parameter name="connectionType" optional>
 
-    RTC 连接
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+RTC 连接
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="enableLocalAudio"></a>
 
@@ -364,15 +404,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - enableLocalAudio(value:boolean):void
 
-- 开启或关闭本地音频
+开启或关闭本地音频
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required>
 
-  - value: boolean
+boolean
 
-    boolean
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="enableLocalPlayback"></a>
 
@@ -380,13 +422,13 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - enableLocalPlayback(value:boolean):void
 
-- 开启或关闭本地所有音频播放
+开启或关闭本地所有音频播放
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required />
+</ParameterList>
 
-  - value: boolean
-
-  Returns void
+Returns void
 
 <a id="enableLocalVideo"></a>
 
@@ -394,15 +436,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - enableLocalVideo(value:boolean):void
 
-- 开启或关闭本地视频
+开启或关闭本地视频
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required>
 
-  - value: boolean
+boolean
 
-    boolean
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="getDisplayDevices"></a>
 
@@ -410,11 +454,11 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - getDisplayDevices():Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-- 获取可采集的屏幕列表
+获取可采集的屏幕列表
 
-  Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-  屏幕列表
+屏幕列表
 
 <a id="getMediaTrackPlayer"></a>
 
@@ -422,17 +466,19 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - getMediaTrackPlayer(streamUrl:string):undefined|StreamMediaPlayer
 
-- 通过 URL 获取流媒体播放器
+通过 URL 获取流媒体播放器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUrl" type="string" required>
 
-  - streamUrl: string
+要播放的视频流地址
 
-    要播放的视频流地址
+</Parameter>
+</ParameterList>
 
-  Returns undefined|StreamMediaPlayer
+Returns undefined|StreamMediaPlayer
 
-  视频播放器对象，用于控制音视频播放
+视频播放器对象，用于控制音视频播放
 
 <a id="getSnapshot"></a>
 
@@ -440,24 +486,30 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - getSnapshot(channel:string, streamUuid:number, filePath:string):Promise&lt;void|AGSnapshotInfo&gt;
 
-- 视频截图（此接口仅 Electron 支持）。
+视频截图（此接口仅 Electron 支持）。
 截取指定房间内的指定视频流，生成 JPG 图片保存到本地。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="channel" type="string" required>
 
-  - channel: string
+RTC 频道名称，使用 roomUuid。
 
-    RTC 频道名称，使用 roomUuid。
-  - streamUuid: number
+</Parameter>
+<Parameter name="streamUuid" type="number" required>
 
-    流 ID。
-  - filePath: string
+流 ID。
 
-    保存图片的本地绝对路径。
+</Parameter>
+<Parameter name="filePath" type="string" required>
 
-  Returns Promise&lt;void|AGSnapshotInfo&gt;
+保存图片的本地绝对路径。
 
-  截图信息
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void|AGSnapshotInfo&gt;
+
+截图信息
 
 <a id="getSnapshotRgba"></a>
 
@@ -465,21 +517,25 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - getSnapshotRgba(channel:string, streamUuid:number):undefined|ImageData
 
-- 视频截图（此接口仅 Web 支持）。
+视频截图（此接口仅 Web 支持）。
 截取指定房间内的指定视频流。此方法返回携带 RGBA 信息的 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData) 数据。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="channel" type="string" required>
 
-  - channel: string
+RTC 频道名称，可使用 roomUuid。
 
-    RTC 频道名称，可使用 roomUuid。
-  - streamUuid: number
+</Parameter>
+<Parameter name="streamUuid" type="number" required>
 
-    流 ID。
+流 ID。
 
-  Returns undefined|ImageData
+</Parameter>
+</ParameterList>
 
-  截图信息
+Returns undefined|ImageData
+
+截图信息
 
 <a id="getWindowDevices"></a>
 
@@ -487,11 +543,11 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - getWindowDevices():Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-- 获取可采集应用窗口列表
+获取可采集应用窗口列表
 
-  Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-  应用窗口列表
+应用窗口列表
 
 <a id="hasScreenSharePermission"></a>
 
@@ -499,11 +555,11 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - hasScreenSharePermission():boolean
 
-- 检测是否有屏幕采集权限
+检测是否有屏幕采集权限
 
-  Returns boolean
+Returns boolean
 
-  是否有屏幕采集的权限
+是否有屏幕采集的权限
 
 <a id="isScreenDeviceEnumerateSupported"></a>
 
@@ -511,11 +567,11 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - isScreenDeviceEnumerateSupported():boolean
 
-- 检测是否可以获取到屏幕采集设备列表
+检测是否可以获取到屏幕采集设备列表
 
-  Returns boolean
+Returns boolean
 
-  是否可获取到屏幕采集设备列表
+是否可获取到屏幕采集设备列表
 
 <a id="removeAudioRawDataObserver"></a>
 
@@ -523,14 +579,30 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removeAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- 删除音频裸数据数据观察者
+删除音频裸数据数据观察者
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeCameraProcessors"></a>
 
@@ -538,9 +610,9 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removeCameraProcessors():void
 
-- 移除摄像头视频流处理器
+移除摄像头视频流处理器
 
-  Returns void
+Returns void
 
 <a id="removeMicrophoneProcessors"></a>
 
@@ -548,9 +620,9 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removeMicrophoneProcessors():void
 
-- 移除麦克风音频流处理器
+移除麦克风音频流处理器
 
-  Returns void
+Returns void
 
 <a id="removePreviewCameraProcessors"></a>
 
@@ -558,9 +630,9 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removePreviewCameraProcessors():void
 
-- 移除摄像头视频流处理器(预览)
+移除摄像头视频流处理器(预览)
 
-  Returns void
+Returns void
 
 <a id="removePreviewMicrophoneProcessors"></a>
 
@@ -568,9 +640,9 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removePreviewMicrophoneProcessors():void
 
-- 移除麦克风音频流处理器(预览)
+移除麦克风音频流处理器(预览)
 
-  Returns void
+Returns void
 
 <a id="removeRawDataListener"></a>
 
@@ -578,23 +650,25 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - removeRawDataListener(cb:(buffer:AudioBuffer)=&gt;void):void
 
-- ### deprecated
+### deprecated
 
 删除一个本地音频裸数据数据观察者，使用 removeAudioRawDataObserver 替代此方法
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(buffer:AudioBuffer)= &amp; gt;void" required>
 
-  - cb: (buffer:AudioBuffer)=&gt;void
+- - (buffer:AudioBuffer):void
 
-    - - (buffer:AudioBuffer):void
-
-      - Parameters
-
-        - buffer: AudioBuffer
-
-        Returns void
+  <ParameterList title="Parameters">
+  <Parameter name="buffer" type="AudioBuffer" required />
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setAudioRawDataConfig"></a>
 
@@ -602,17 +676,33 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setAudioRawDataConfig(config:[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- 设置音频裸数据回调参数
+设置音频裸数据回调参数
 需要在加入教室前调用
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+<ParameterType>
 
-    配置
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
 
-  Returns void
+</ParameterType>
+
+配置
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setCameraDevice"></a>
 
@@ -620,15 +710,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setCameraDevice(id:string):void
 
-- 设置视频设备 ID
+设置视频设备 ID
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
 
-  - id: string
+设备 ID
 
-    设备 ID
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setCurrentScreenShareDevice"></a>
 
@@ -636,13 +728,21 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setCurrentScreenShareDevice(device:[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)):void
 
-- 设置当前正在屏幕共享的设备
+设置当前正在屏幕共享的设备
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="device" required>
 
-  - device: [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)
+<ParameterType>
 
-  Returns void
+[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setLowStreamParameter"></a>
 
@@ -650,19 +750,43 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setLowStreamParameter(setLowStreamParameter:[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- 设置小流分辨率及码率
+设置小流分辨率及码率
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="setLowStreamParameter" required>
 
-  - setLowStreamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+<ParameterType>
 
-    要设置的小流参数
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
 
-    RTC 连接
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</ParameterType>
 
-  Returns void
+要设置的小流参数
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+RTC 连接
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setMirror"></a>
 
@@ -670,15 +794,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setMirror(v:boolean):void
 
-- 镜像开关
+镜像开关
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="v" type="boolean" required>
 
-  - v: boolean
+开启或关闭
 
-    开启或关闭
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setPlaybackDevice"></a>
 
@@ -686,15 +812,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setPlaybackDevice(id:string):void
 
-- 设置扬声器设备 ID
+设置扬声器设备 ID
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
 
-  - id: string
+设备 ID
 
-    设备 ID
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setRecordingDevice"></a>
 
@@ -702,15 +830,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setRecordingDevice(id:string):void
 
-- 设置音频设备 ID
+设置音频设备 ID
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
 
-  - id: string
+设备 ID
 
-    设备 ID
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setupLocalScreenShare"></a>
 
@@ -718,15 +848,17 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setupLocalScreenShare(dom:HTMLElement):void
 
-- 为屏幕共享设置显示区域
+为屏幕共享设置显示区域
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="dom" type="HTMLElement" required>
 
-  - dom: HTMLElement
+渲染节点
 
-    渲染节点
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setupLocalVideo"></a>
 
@@ -734,19 +866,31 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setupLocalVideo(dom:HTMLElement, mirror:boolean, renderMode?:[AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)):void
 
-- 为视频设置显示区域
+为视频设置显示区域
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="dom" type="HTMLElement" required>
 
-  - dom: HTMLElement
+渲染节点
 
-    渲染节点
-  - mirror: boolean
+</Parameter>
+<Parameter name="mirror" type="boolean" required>
 
-    是否开启镜像
-  - Optional renderMode: [AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+是否开启镜像
 
-  Returns void
+</Parameter>
+<Parameter name="renderMode" optional>
+
+<ParameterType>
+
+[AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setupMediaStream"></a>
 
@@ -754,19 +898,21 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - setupMediaStream(streamUrl:string, dom:HTMLElement, mirror:boolean, playVideo:boolean, playAudio:boolean):void
 
-- 播放流媒体
+播放流媒体
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUrl" type="string" required>
 
-  - streamUrl: string
+hls url
 
-    hls url
-  - dom: HTMLElement
-  - mirror: boolean
-  - playVideo: boolean
-  - playAudio: boolean
+</Parameter>
+<Parameter name="dom" type="HTMLElement" required />
+<Parameter name="mirror" type="boolean" required />
+<Parameter name="playVideo" type="boolean" required />
+<Parameter name="playAudio" type="boolean" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="startLoopbackRecording"></a>
 
@@ -774,18 +920,36 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - startLoopbackRecording(params?:\{audioDeviceName?:string;connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}):void
 
-- 启动声卡采集
+启动声卡采集
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
 
-  - Optional params: \{audioDeviceName?:string;connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}
+<ParameterType>
 
-    可选参数对象，包括音频设备名称和连接类型
+\{audioDeviceName?:string;connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}
 
-    - Optional audioDeviceName?:string
-    - Optional connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</ParameterType>
 
-  Returns void
+可选参数对象，包括音频设备名称和连接类型
+
+<ParameterList>
+<Parameter name="audioDeviceName" type="string" optional />
+<Parameter name="connType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="startPlaybackDeviceTest"></a>
 
@@ -793,16 +957,18 @@ videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/we
 
 - startPlaybackDeviceTest(url:string):void
 
-- 开启扬声器测试
+开启扬声器测试
 Electron 端不支持 Base64 格式的音频数据
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required>
 
-  - url: string
+资源地址
 
-    资源地址
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="startRecordingDeviceTest"></a>
 
@@ -810,15 +976,17 @@ Electron 端不支持 Base64 格式的音频数据
 
 - startRecordingDeviceTest(indicateInterval:number):void
 
-- 开启音频设备测试
+开启音频设备测试
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="indicateInterval" type="number" required>
 
-  - indicateInterval: number
+探测频率（毫秒）
 
-    探测频率（毫秒）
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="startScreenShareCapture"></a>
 
@@ -826,18 +994,36 @@ Electron 端不支持 Base64 格式的音频数据
 
 - startScreenShareCapture(params?:\{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}):void
 
-- 开始屏幕共享
+开始屏幕共享
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
 
-  - Optional params: \{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
+<ParameterType>
 
-    - Optional audioDeviceName?:string
-    - Optional id?:string
-    - Optional type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
-    - Optional withAudio?:boolean
+\{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
 
-  Returns void
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioDeviceName" type="string" optional />
+<Parameter name="id" type="string" optional />
+<Parameter name="type" optional>
+
+<ParameterType>
+
+[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stopLoopbackRecording"></a>
 
@@ -845,17 +1031,35 @@ Electron 端不支持 Base64 格式的音频数据
 
 - stopLoopbackRecording(params?:\{connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}):void
 
-- 停止声卡采集
+停止声卡采集
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
 
-  - Optional params: \{connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}
+<ParameterType>
 
-    可选参数对象，包括连接类型
+\{connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)\}
 
-    - Optional connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</ParameterType>
 
-  Returns void
+可选参数对象，包括连接类型
+
+<ParameterList>
+<Parameter name="connType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stopPlaybackDeviceTest"></a>
 
@@ -863,9 +1067,9 @@ Electron 端不支持 Base64 格式的音频数据
 
 - stopPlaybackDeviceTest():void
 
-- 停止扬声器测试
+停止扬声器测试
 
-  Returns void
+Returns void
 
 <a id="stopRecordingDeviceTest"></a>
 
@@ -873,9 +1077,9 @@ Electron 端不支持 Base64 格式的音频数据
 
 - stopRecordingDeviceTest():void
 
-- 停止音频设备测试
+停止音频设备测试
 
-  Returns void
+Returns void
 
 <a id="stopScreenShareCapture"></a>
 
@@ -883,16 +1087,20 @@ Electron 端不支持 Base64 格式的音频数据
 
 - stopScreenShareCapture(params?:\{withAudio?:boolean\}):void
 
-- 停止屏幕共享
+停止屏幕共享
 withAudio: 是否同时关闭声卡采集，默认: True
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;withAudio?:boolean\&#125;" optional>
 
-  - Optional params: \{withAudio?:boolean\}
+<ParameterList>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
 
-    - Optional withAudio?:boolean
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="updateLocalMediaState"></a>
 
@@ -900,15 +1108,41 @@ withAudio: 是否同时关闭声卡采集，默认: True
 
 - updateLocalMediaState(param0:\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}):Promise&lt;void&gt;
 
-- 更新本地媒体状态
+更新本地媒体状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" required>
 
-  - param0: \{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
+<ParameterType>
 
-    视频状态和音频状态
+\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
 
-    - Optional audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+</ParameterType>
 
-  Returns Promise&lt;void&gt;
+视频状态和音频状态
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;

@@ -52,7 +52,7 @@ _migration:
 
 - new AGAudioRawDataDispatcher():[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
 
-- Returns [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+Returns [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
 
 ## Properties
 
@@ -70,7 +70,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get audioTrackRawDataConfig():[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
 
-- Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
 
 <a id="hasAudioTrackRawDataObservers"></a>
 
@@ -78,7 +78,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get hasAudioTrackRawDataObservers():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="hasMicrophoneRawDataObservers"></a>
 
@@ -86,7 +86,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get hasMicrophoneRawDataObservers():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="isStarted"></a>
 
@@ -94,7 +94,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get isStarted():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="microphoneTrackRawDataConfig"></a>
 
@@ -102,7 +102,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get microphoneTrackRawDataConfig():[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
 
-- Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
 
 ## Methods
 
@@ -112,81 +112,129 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - addAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="dispatch"></a>
 
 ### dispatch
 
-- dispatch(event:"AudioRawDataRecored", ...params:[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]):void
-- dispatch(event:"AudioRawDataBeforeMixed", ...params:[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid:string,channelName:string]):void
-- dispatch(event:"ObserverChanged", ...params:[position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]):void
-- dispatch(event:"MicrophoneTrackCreated", ...params:[track:ILocalAudioTrack]):void
-- dispatch(event:"AudioTrackSubscribed", ...params:[track:IRemoteAudioTrack,streamUuid:string,channelName:string]):void
-- dispatch(event:"MicrophoneTrackDestroyed", ...params:[]):void
-- dispatch(event:"AudioTrackUnsubscribed", ...params:[streamUuid:string,channelName:string]):void
-- dispatch(event:"Start", ...params:[]):void
-- dispatch(event:"Stop", ...params:[]):void
+- dispatch(event:"AudioRawDataRecored",...params:[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]):void
+- dispatch(event:"AudioRawDataBeforeMixed",...params:[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid:string,channelName:string]):void
+- dispatch(event:"ObserverChanged",...params:[position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]):void
+- dispatch(event:"MicrophoneTrackCreated",...params:[track:ILocalAudioTrack]):void
+- dispatch(event:"AudioTrackSubscribed",...params:[track:IRemoteAudioTrack,streamUuid:string,channelName:string]):void
+- dispatch(event:"MicrophoneTrackDestroyed",...params:[]):void
+- dispatch(event:"AudioTrackUnsubscribed",...params:[streamUuid:string,channelName:string]):void
+- dispatch(event:"Start",...params:[]):void
+- dispatch(event:"Stop",...params:[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="...params" required>
 
-  - event: "AudioRawDataRecored"
-  - Rest...params: [rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]
+<ParameterType>
 
-  Returns void
-- Parameters
+[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]
 
-  - event: "AudioRawDataBeforeMixed"
-  - Rest...params: [rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid:string,channelName:string]
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "ObserverChanged"
-  - Rest...params: [position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="...params" required>
 
-  - event: "MicrophoneTrackCreated"
-  - Rest...params: [track:ILocalAudioTrack]
+<ParameterType>
 
-  Returns void
-- Parameters
+[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid:string,channelName:string]
 
-  - event: "AudioTrackSubscribed"
-  - Rest...params: [track:IRemoteAudioTrack,streamUuid:string,channelName:string]
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "MicrophoneTrackDestroyed"
-  - Rest...params: []
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="...params" required>
 
-  - event: "AudioTrackUnsubscribed"
-  - Rest...params: [streamUuid:string,channelName:string]
+<ParameterType>
 
-  Returns void
-- Parameters
+[position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]
 
-  - event: "Start"
-  - Rest...params: []
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "Stop"
-  - Rest...params: []
+Returns void
 
-  Returns void
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="...params" type="[track:ILocalAudioTrack]" required />
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="...params" type="[track:IRemoteAudioTrack,streamUuid:string,channelName:string]" required />
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="...params" type="[streamUuid:string,channelName:string]" required />
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+Returns void
 
 <a id="register"></a>
 
@@ -202,60 +250,140 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 - register(event:"Start", callback:[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)):void
 - register(event:"Stop", callback:[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "AudioRawDataRecored"
-  - callback: [CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
 
-  - event: "AudioRawDataBeforeMixed"
-  - callback: [CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "ObserverChanged"
-  - callback: [CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "MicrophoneTrackCreated"
-  - callback: [CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
 
-  - event: "AudioTrackSubscribed"
-  - callback: [CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "MicrophoneTrackDestroyed"
-  - callback: [CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "AudioTrackUnsubscribed"
-  - callback: [CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
 
-  - event: "Start"
-  - callback: [CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "Stop"
-  - callback: [CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+Returns void
 
-  Returns void
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeAudioRawDataObserver"></a>
 
@@ -263,12 +391,28 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - removeAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setConfig"></a>
 
@@ -276,12 +420,28 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setConfig(config:[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="start"></a>
 
@@ -289,7 +449,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - start():void
 
-- Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -297,7 +457,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - stop():void
 
-- Returns void
+Returns void
 
 <a id="unregister"></a>
 
@@ -313,57 +473,137 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 - unregister(event:"Start", callback:[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)):void
 - unregister(event:"Stop", callback:[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "AudioRawDataRecored"
-  - callback: [CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
 
-  - event: "AudioRawDataBeforeMixed"
-  - callback: [CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "ObserverChanged"
-  - callback: [CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "MicrophoneTrackCreated"
-  - callback: [CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
 
-  - event: "AudioTrackSubscribed"
-  - callback: [CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "MicrophoneTrackDestroyed"
-  - callback: [CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+Returns void
 
-  Returns void
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="callback" required>
 
-  - event: "AudioTrackUnsubscribed"
-  - callback: [CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+<ParameterType>
 
-  Returns void
-- Parameters
+[CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
 
-  - event: "Start"
-  - callback: [CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+</ParameterType>
 
-  Returns void
-- Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "Stop"
-  - callback: [CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+Returns void
 
-  Returns void
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

@@ -30,7 +30,9 @@ public static class LastmileProbeResult {
 
 ## 属性
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 Last-mile 网络探测的状态，包括：
 
@@ -38,14 +40,23 @@ Last-mile 网络探测的状态，包括：
 - `LASTMILE_PROBE_RESULT_INCOMPLETE_NO_BWE` (2)：探测未完成，因未进行带宽预测，可能是测试资源暂时受限。
 - `LASTMILE_PROBE_RESULT_UNAVAILABLE` (3)：未进行探测，可能由于网络状况较差。
 
-### rtt
+</Parameter>
+<a id="rtt"></a>
+<Parameter name="rtt">
 
 往返时延，单位为毫秒。
 
-### uplinkReport
+</Parameter>
+<a id="uplinkreport"></a>
+<Parameter name="uplinkReport">
 
 上行 Last-mile 网络探测结果，详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/android/class-lastmileprobeonewayresult)。
 
-### downlinkReport
+</Parameter>
+<a id="downlinkreport"></a>
+<Parameter name="downlinkReport">
 
 下行 Last-mile 网络探测结果，详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/android/class-lastmileprobeonewayresult)。
+
+</Parameter>
+</ParameterList>

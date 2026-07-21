@@ -72,23 +72,39 @@ _migration:
 
 - new Client(options:object):[Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
 
-- **NOTE**：加解密功能仅在 IoT 场景适用。
+**NOTE**：加解密功能仅在 IoT 场景适用。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="options" type="object" required>
 
-  - options: object
+<ParameterList>
+<Parameter name="encryptionKey" type="string" optional>
 
-    - Optional encryptionKey?:string
+加密密钥。
 
-      加密密钥。
-    - Optional encryptionMode?:[ENCRYPTION_MODE](/zh-CN/api-reference/rtc/mini-program/enums/encryption-mode)
+</Parameter>
+<Parameter name="encryptionMode" optional>
 
-      加密模式。
-    - Optional encryptionSalt?:string
+<ParameterType>
 
-      加密盐值，长度为 32 字节。
+[ENCRYPTION_MODE](/zh-CN/api-reference/rtc/mini-program/enums/encryption-mode)
 
-  Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+</ParameterType>
+
+加密模式。
+
+</Parameter>
+<Parameter name="encryptionSalt" type="string" optional>
+
+加密盐值，长度为 32 字节。
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
 
 ## Methods
 
@@ -98,33 +114,41 @@ _migration:
 
 - destroy(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 销毁客户端对象。
+销毁客户端对象。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="onSuccess" type="function" optional>
 
-  - Optional onSuccess: function
+方法调用成功时执行的回调函数。
 
-    方法调用成功时执行的回调函数。
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - Optional onFailure: function
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-    - - (err:object):void
+- - (err:object):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-        - err: object
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-          - code:number
-          - reason:string
+  </Parameter>
+  </ParameterList>
 
-        Returns void
+  Returns void
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="init"></a>
 
@@ -132,36 +156,46 @@ _migration:
 
 - init(appId:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 初始化客户端对象。
+初始化客户端对象。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId" type="string" required>
 
-  - appId: string
+你的小程序项目的 App ID。
 
-    你的小程序项目的 App ID。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    方法调用成功时执行的回调函数。无返回值。
+方法调用成功时执行的回调函数。无返回值。
 
-    - - ():void
+- - ():void
 
-      - Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:object):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:object):void
 
-        - err: object
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-          - code:number
-          - reason:string
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        Returns void
+  </Parameter>
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="join"></a>
 
@@ -169,61 +203,85 @@ _migration:
 
 - join(channelKey:string, channel:string, uid:number|string, isAudioOnly:boolean, UidType?:[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 加入频道。
+加入频道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelKey" type="string" required>
 
-  - channelKey: string
+在 app 服务器端生成的用于鉴权的 Token：
 
-    在 app 服务器端生成的用于鉴权的 Token：
+- 安全要求不高：你可以使用控制台生成的临时 Token，详见生成 Token。
+- 安全要求高：将值设为你的服务端生成的正式 Token，详见使用 Token 鉴权。
 
-    - 安全要求不高：你可以使用控制台生成的临时 Token，详见生成 Token。
-    - 安全要求高：将值设为你的服务端生成的正式 Token，详见使用 Token 鉴权。
-  - channel: string
+</Parameter>
+<Parameter name="channel" type="string" required>
 
-    频道名，能标识直播频道的字符串。
-  - uid: number|string
+频道名，能标识直播频道的字符串。
 
-    指定用户的 ID。
+</Parameter>
+<Parameter name="uid" type="number | string" required>
 
-    - INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。需要保证唯一。如果不指定 uid（即设为 null），服务器会报错。
-    - STRING: 字符串，长度不超过 255 个字符。
-  - isAudioOnly: boolean
+指定用户的 ID。
 
-    是否为纯音频场景：
+- INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。需要保证唯一。如果不指定 uid（即设为 null），服务器会报错。
+- STRING: 字符串，长度不超过 255 个字符。
 
-    - `true`：纯音频场景。
-    - `false`：非纯音频场景。
-  - Optional UidType: [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)
+</Parameter>
+<Parameter name="isAudioOnly" type="boolean" required>
 
-    用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)。
-  - Optional onSuccess: function
+是否为纯音频场景：
 
-    方法调用成功时执行的回调函数。返回值为用户 ID。
+- `true`：纯音频场景。
+- `false`：非纯音频场景。
 
-    - - (uid:number):void
+</Parameter>
+<Parameter name="UidType" optional>
 
-      - Parameters
+<ParameterType>
 
-        - uid: number
+[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)
 
-        Returns void
-  - Optional onFailure: function
+</ParameterType>
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)。
 
-    - - (err:object):void
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-      - Parameters
+方法调用成功时执行的回调函数。返回值为用户 ID。
 
-        - err: object
+- - (uid:number):void
 
-          - code:number
-          - reason:string
+  <ParameterList title="Parameters">
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        Returns void
+  Returns void
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
+
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+
+- - (err:object):void
+
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
+
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="leave"></a>
 
@@ -231,33 +289,41 @@ _migration:
 
 - leave(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 退出频道。
+退出频道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="onSuccess" type="function" optional>
 
-  - Optional onSuccess: function
+方法调用成功时执行的回调函数。无返回值。
 
-    方法调用成功时执行的回调函数。无返回值。
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - Optional onFailure: function
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-    - - (err:object):void
+- - (err:object):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-        - err: object
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-          - code:number
-          - reason:string
+  </Parameter>
+  </ParameterList>
 
-        Returns void
+  Returns void
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="mute"></a>
 
@@ -265,43 +331,55 @@ _migration:
 
 - mute(uid:number, target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 停止接收远端用户的音视频流。
+停止接收远端用户的音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-  - uid: number
+远端用户的 ID。
 
-    远端用户的 ID。
-  - target: string
+</Parameter>
+<Parameter name="target" type="string" required>
 
-    选择停止接收哪一种流，有三种选择：
+选择停止接收哪一种流，有三种选择：
 
-    - `audio`：远端用户发送的音频流，即声音。
-    - `video`：远端用户发送的视频流，即视频画面。
-    - `all`：远端用户发送的音视频流，即声音和视频画面。
-  - Optional onSuccess: function
+- `audio`：远端用户发送的音频流，即声音。
+- `video`：远端用户发送的视频流，即视频画面。
+- `all`：远端用户发送的音视频流，即声音和视频画面。
 
-    方法调用成功时执行的回调函数。无返回值。
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    - - ():void
+方法调用成功时执行的回调函数。无返回值。
 
-      - Returns void
-  - Optional onFailure: function
+- - ():void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+  Returns void
 
-    - - (err:object):void
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-      - Parameters
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-        - err: object
+- - (err:object):void
 
-          - code:number
-          - reason:string
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-        Returns void
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="mutelocal"></a>
 
@@ -309,40 +387,50 @@ _migration:
 
 - muteLocal(target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 停止发送本地用户的音视频流。
+停止发送本地用户的音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="target" type="string" required>
 
-  - target: string
+选择停止发送哪一种流，有三种选择：
 
-    选择停止发送哪一种流，有三种选择：
+- `audio`：本地用户发送的音频流，即声音。
+- `video`：本地用户发送的视频流，即视频画面。
+- `all`：本地用户发送的音视频流，即声音和视频画面。
 
-    - `audio`：本地用户发送的音频流，即声音。
-    - `video`：本地用户发送的视频流，即视频画面。
-    - `all`：本地用户发送的音视频流，即声音和视频画面。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    方法调用成功时执行的回调函数。无返回值。
+方法调用成功时执行的回调函数。无返回值。
 
-    - - ():void
+- - ():void
 
-      - Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:object):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:object):void
 
-        - err: object
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-          - code:number
-          - reason:string
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        Returns void
+  </Parameter>
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="off"></a>
 
@@ -350,15 +438,17 @@ _migration:
 
 - off(event:string):void
 
-- 取消监听流事件。
+取消监听流事件。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+想要取消监听的流事件。
 
-    想要取消监听的流事件。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="on"></a>
 
@@ -387,134 +477,176 @@ v2.5.4
 当你在服务端踢除频道内的用户后，被踢出频道的用户会收到该回调。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;client-banned&quot;" required>
 
-- event: "client-banned"
+当前触发的事件。`"client-banned"` 表示用户被服务器禁止。
 
-  当前触发的事件。`"client-banned"` 表示用户被服务器禁止。
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序发生错误。
  该回调中会包含详细的错误码和错误信息。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;error&quot;" required>
 
-- event: "error"
+当前触发的事件。`"error"` 表示发生错误。
 
-  当前触发的事件。`"error"` 表示发生错误。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        - code:number
-        - reason:string
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序已添加远端音视频流。
  该回调中会包含已添加的远端用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;stream-added&quot;" required>
 
-- event: "stream-added"
+当前触发的事件。`"stream-added"` 表示已添加远端音视频流。
 
-  当前触发的事件。`"stream-added"` 表示已添加远端音视频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序已删除远端音视频流。
  该回调中会包含已删除的远端用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;stream-removed&quot;" required>
 
-- event: "stream-removed"
+当前触发的事件。`"stream-removed"` 表示已删除远端音视频流。
 
-  当前触发的事件。`"stream-removed"` 表示已删除远端音视频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序已更新 URL 地址。
  该回调中会包含远端用户的 ID 和更新后的拉流地址。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;update-url&quot;" required>
 
-- event: "update-url"
+当前触发的事件。`"update-url"` 表示已更新 URL 地址。
 
-  当前触发的事件。`"update-url"` 表示已更新 URL 地址。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  <Parameter name="url" type="string" required />
+  </ParameterList>
 
-        - uid:number
-        - url:string
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序远端视频已旋转。
  该回调中会包含视频的旋转信息以及远端用户的 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;video-rotation&quot;" required>
 
-- event: "video-rotation"
+当前触发的事件。`"video-rotation"` 表示远端视频已旋转。
 
-  当前触发的事件。`"video-rotation"` 表示远端视频已旋转。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="rotation" type="number" required />
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - rotation:number
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -528,11 +660,13 @@ v2.5.3
 一般情况下，在收到该消息之后，应向服务端重新申请 Token，并调用 [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 方法传入新的 Token 重新加入频道。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;token-privilege-did-expire&quot;" required>
 
-- event: "token-privilege-did-expire"
+当前触发的事件。`"token-privilege-did-expire"` 表示 Token 已过期。
 
-  当前触发的事件。`"token-privilege-did-expire"` 表示 Token 已过期。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -545,107 +679,141 @@ v2.5.3
  然后调用 [renewToken](/zh-CN/api-reference/rtc/mini-program/classes/client#renewtoken) 将新生成的 Token 传给 SDK。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;token-privilege-will-expire&quot;" required>
 
-- event: "token-privilege-will-expire"
+当前触发的事件。`"token-privilege-will-expire"` 表示 Token 即将过期。
 
-  当前触发的事件。`"token-privilege-will-expire"` 表示 Token 即将过期。
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序远端用户已停止发送音频流。
  该回调中会包含停止发送音频流的用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;mute-audio&quot;" required>
 
-- event: "mute-audio"
+当前触发的事件。`"mute-audio"` 表示远端用户已停止发送音频流。
 
-  当前触发的事件。`"mute-audio"` 表示远端用户已停止发送音频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序远端用户已停止发送视频流。
  该回调中会包含停止发送视频流的用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;mute-video&quot;" required>
 
-- event: "mute-video"
+当前触发的事件。`"mute-video"` 表示远端用户已停止发送视频流。
 
-  当前触发的事件。`"mute-video"` 表示远端用户已停止发送视频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序远端用户已恢复发送音频流。
  该回调中会包含恢复发送音频流的用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;unmute-audio&quot;" required>
 
-- event: "unmute-audio"
+当前触发的事件。`"unmute-audio"` 表示远端用户已恢复发送音频流。
 
-  当前触发的事件。`"unmute-audio"` 表示远端用户已恢复发送音频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
 通知应用程序远端用户已恢复发送视频流。
  该回调中会包含恢复发送视频流的用户 ID。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;unmute-video&quot;" required>
 
-- event: "unmute-video"
+当前触发的事件。`"unmute-video"` 表示远端用户已恢复发送视频流。
 
-  当前触发的事件。`"unmute-video"` 表示远端用户已恢复发送视频流。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-        - uid:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -653,24 +821,32 @@ Returns void
 
 该回调报告跨频道媒体流转发过程中发生的事件。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;channel-media-relay-event&quot;" required>
 
-- event: "channel-media-relay-event"
+当前触发的事件。`"channel-media-relay-event"` 表示报告媒体流转发事件。
 
-  当前触发的事件。`"channel-media-relay-event"` 表示报告媒体流转发事件。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  </ParameterList>
 
-        - code:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -678,25 +854,33 @@ Returns void
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;channel-media-relay-state&quot;" required>
 
-- event: "channel-media-relay-state"
+当前触发的事件。`"channel-media-relay-state"` 表示媒体流转发状态。
 
-  当前触发的事件。`"channel-media-relay-state"` 表示媒体流转发状态。
-- callback: function
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-  具体的事件详情。
+具体的事件详情。
 
-  - - (evt:object):void
+- - (evt:object):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="evt" type="object" required>
 
-      - evt: object
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="state" type="number" required />
+  </ParameterList>
 
-        - code:number
-        - state:number
+  </Parameter>
+  </ParameterList>
 
-      Returns void
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -706,41 +890,49 @@ Returns void
 
 - publish(onSuccess?:function, onFailure?:function):Promise&lt;string&gt;
 
-- 发布本地音视频流。
+发布本地音视频流。
 
 该方法将本地音视频流发布到 SD-RTN。互动直播中，调用该 API 的用户即默认为主播。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="onSuccess" type="function" optional>
 
-  - Optional onSuccess: function
+方法调用成功时执行的回调函数。返回值为音视频流的推流地址。
 
-    方法调用成功时执行的回调函数。返回值为音视频流的推流地址。
+- - (url:string):void
 
-    - - (url:string):void
+  <ParameterList title="Parameters">
+  <Parameter name="url" type="string" required />
+  </ParameterList>
 
-      - Parameters
+  Returns void
 
-        - url: string
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-        Returns void
-  - Optional onFailure: function
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+- - (err:object):void
 
-    - - (err:object):void
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-      - Parameters
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        - err: object
+  </Parameter>
+  </ParameterList>
 
-          - code:number
-          - reason:string
+  Returns void
 
-        Returns void
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;string&gt;
+Returns Promise&lt;string&gt;
 
-  string 型，音视频流的推流地址。
+string 型，音视频流的推流地址。
 
 <a id="rejoin"></a>
 
@@ -748,66 +940,92 @@ Returns void
 
 - rejoin(channelKey:string, channel:string, uid:number|string, uids:number, isAudioOnly:boolean, UidType?:[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 重新加入频道。
+重新加入频道。
 
 该方法让用户重新加入声网 RTC 频道。如果你的小程序中有切后台的场景需求，请确保使用该方法做好重连机制。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelKey" type="string" required>
 
-  - channelKey: string
+在 app 服务器端生成的用于鉴权的 Token：
 
-    在 app 服务器端生成的用于鉴权的 Token：
+- 安全要求不高：你可以使用控制台生成的临时 Token，详见获取临时 Token。
+- 安全要求高：将值设为你的服务端生成的正式 Token，详见[从服务端生成 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-    - 安全要求不高：你可以使用控制台生成的临时 Token，详见获取临时 Token。
-    - 安全要求高：将值设为你的服务端生成的正式 Token，详见[从服务端生成 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
-  - channel: string
+</Parameter>
+<Parameter name="channel" type="string" required>
 
-    频道名，能标识直播频道的字符串。
-  - uid: number|string
+频道名，能标识直播频道的字符串。
 
-    指定用户的 ID。
+</Parameter>
+<Parameter name="uid" type="number | string" required>
 
-    - INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。需要保证唯一性。如果不指定 uid（即设为 null），服务器会报错。
-    - STRING: 字符串，长度不超过 255 个字符。
-  - uids: number
+指定用户的 ID。
 
-    频道内已有用户的用户 ID 列表。
-  - isAudioOnly: boolean
+- INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。需要保证唯一性。如果不指定 uid（即设为 null），服务器会报错。
+- STRING: 字符串，长度不超过 255 个字符。
 
-    是否为纯音频场景：
+</Parameter>
+<Parameter name="uids" type="number" required>
 
-    - `true`：纯音频场景。
-    - `false`：非纯音频场景。
-  - Optional UidType: [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)
+频道内已有用户的用户 ID 列表。
 
-    用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="isAudioOnly" type="boolean" required>
 
-    方法调用成功时执行的回调函数。返回值为用户 ID。
+是否为纯音频场景：
 
-    - - (uid:number):void
+- `true`：纯音频场景。
+- `false`：非纯音频场景。
 
-      - Parameters
+</Parameter>
+<Parameter name="UidType" optional>
 
-        - uid: number
+<ParameterType>
 
-        Returns void
-  - Optional onFailure: function
+[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</ParameterType>
 
-    - - (err:object):void
+用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype)。
 
-      - Parameters
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-        - err: object
+方法调用成功时执行的回调函数。返回值为用户 ID。
 
-          - code:number
-          - reason:string
+- - (uid:number):void
 
-        Returns void
+  <ParameterList title="Parameters">
+  <Parameter name="uid" type="number" required />
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  Returns void
+
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
+
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+
+- - (err:object):void
+
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
+
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="renewtoken"></a>
 
@@ -824,32 +1042,42 @@ v2.5.3
  当收到 `client.on("token-privilege-will-expire")` 消息时，调用该 API 以更新 Token，否则 SDK 会无法和服务器建立连接。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="token" type="string" required>
 
-- token: string
+新的 Token。
 
-  新的 Token。
-- Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-  方法调用成功时执行的回调函数。
+方法调用成功时执行的回调函数。
 
-  - - ():void
+- - ():void
 
-    - Returns void
-- Optional onFailure: function
+  Returns void
 
-  方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-  - - (err:object):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-    - Parameters
+- - (err:object):void
 
-      - err: object
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-        - code:number
-        - reason:string
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-      Returns void
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -865,15 +1093,23 @@ Returns Promise&lt;void&gt;
 v2.5.6
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="audioCodec" required>
 
-- audioCodec: [AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)
+<ParameterType>
 
-  IoT 设备使用的音频编码格式，详见[AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)。
+[AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)
 
-  - 0: PCMU/G711u 格式。
-  - 8: PCMA/G711a 格式。
-  - 9: G722 格式。
+</ParameterType>
+
+IoT 设备使用的音频编码格式，详见[AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)。
+
+- 0: PCMU/G711u 格式。
+- 8: PCMA/G711a 格式。
+- 9: G722 格式。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -891,34 +1127,40 @@ v2.5.3
 如果发送端选择发送视频双流 (大流和小流)，该方法可以在订阅端选择接收大流还是小流。如果不设置，订阅端默认接收大流。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-- uid: number
+用户 ID。
 
-  用户 ID。
-- streamType: 0|1
-- Optional onSuccess: function
+</Parameter>
+<Parameter name="streamType" type="0 | 1" required />
+<Parameter name="onSuccess" type="function" optional>
 
-  方法调用成功时执行的回调函数。
+方法调用成功时执行的回调函数。
 
-  - - (url:string):void
+- - (url:string):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="url" type="string" required />
+  </ParameterList>
 
-      - url: string
+  Returns void
 
-      Returns void
-- Optional onFailure: function
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-  方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-  - - (err:any):void
+- - (err:any):void
 
-    - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="any" required />
+  </ParameterList>
 
-      - err: any
+  Returns void
 
-      Returns void
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -928,41 +1170,51 @@ Returns Promise&lt;void&gt;
 
 - setRole(role:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 设置用户角色。
+设置用户角色。
 
 注：如果在主播已 `publish` 的状态下调用该方法将用户角色设置为 `audience`，会导致之前的推流地址无效。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="role" type="string" required>
 
-  - role: string
+用户角色。选择如下一种角色：
 
-    用户角色。选择如下一种角色：
+- `broadcaster`：将用户角色设置为主播。主播可以调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。
+- `audience`：(默认) 将用户角色设置为观众。观众不能调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。
 
-    - `broadcaster`：将用户角色设置为主播。主播可以调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。
-    - `audience`：(默认) 将用户角色设置为观众。观众不能调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    方法调用成功时执行的回调函数。无返回值。
+方法调用成功时执行的回调函数。无返回值。
 
-    - - ():void
+- - ():void
 
-      - Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:object):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:object):void
 
-        - err: object
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-          - code:number
-          - reason:string
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        Returns void
+  </Parameter>
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="startchannelmediarelay"></a>
 
@@ -970,7 +1222,7 @@ Returns Promise&lt;void&gt;
 
 - startChannelMediaRelay(config:[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback:function):void
 
-- 开始跨频道媒体流转发。
+开始跨频道媒体流转发。
 
 该方法可用于实现跨频道媒体流转发。
 
@@ -1006,27 +1258,45 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)
+<ParameterType>
 
-    跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)。
-  - callback: function
+[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)
 
-    媒体流转发是否成功的回调。
+</ParameterType>
 
-    - `null`：媒体流转发成功。
-    - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
+跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)。
 
-    - - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-      - Parameters
+媒体流转发是否成功的回调。
 
-        - err: null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+- `null`：媒体流转发成功。
+- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-        Returns void
+- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+
+  <ParameterList title="Parameters">
+  <Parameter name="err" required>
+
+  <ParameterType>
+
+  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stopchannelmediarelay"></a>
 
@@ -1034,7 +1304,7 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 
 - stopChannelMediaRelay(callback:function):void
 
-- 停止跨频道媒体流转发。
+停止跨频道媒体流转发。
 
 一旦停止转发，用户会退出所有的目标频道。
 
@@ -1059,24 +1329,34 @@ stopChannelMediaRelay: function() {
 }
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="callback" type="function" required>
 
-  - callback: function
+停止跨频道媒体流转发是否成功的回调。
 
-    停止跨频道媒体流转发是否成功的回调。
+- `null`：停止跨频道媒体流转发成功。
+- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-    - `null`：停止跨频道媒体流转发成功。
-    - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
+- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
 
-    - - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+  <ParameterList title="Parameters">
+  <Parameter name="err" required>
 
-      - Parameters
+  <ParameterType>
 
-        - err: null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
 
-        Returns void
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="subscribe"></a>
 
@@ -1084,51 +1364,61 @@ stopChannelMediaRelay: function() {
 
 - subscribe(uid:number, options?:object, onSuccess?:function, onFailure?:function):Promise&lt;object&gt;
 
-- 订阅远端音视频流。
+订阅远端音视频流。
 
 该方法从 SD-RTN 订阅并接收远端音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-  - uid: number
+要订阅的远端用户 ID。
 
-    要订阅的远端用户 ID。
-  - Optional options: object
+</Parameter>
+<Parameter name="options" type="object" optional>
 
-    设置是否订阅视频或音频。
+设置是否订阅视频或音频。
 
-    - Optional audio?:boolean
-    - Optional video?:boolean
-  - Optional onSuccess: function
+<ParameterList>
+<Parameter name="audio" type="boolean" optional />
+<Parameter name="video" type="boolean" optional />
+</ParameterList>
 
-    方法调用成功时执行的回调函数。返回值为音视频的拉流地址。
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    - - (url:string, rotation:number):void
+方法调用成功时执行的回调函数。返回值为音视频的拉流地址。
 
-      - Parameters
+- - (url:string, rotation:number):void
 
-        - url: string
-        - rotation: number
+  <ParameterList title="Parameters">
+  <Parameter name="url" type="string" required />
+  <Parameter name="rotation" type="number" required />
+  </ParameterList>
 
-        Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:any):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:any):void
 
-        - err: any
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="any" required />
+  </ParameterList>
 
-        Returns void
+  Returns void
 
-  Returns Promise&lt;object&gt;
+</Parameter>
+</ParameterList>
 
-  一个对象，包含以下数据：
+Returns Promise&lt;object&gt;
 
-  - `url`：string 型，音视频流的拉流地址
-  - `rotation`：number 型，视频帧顺时针旋转角度。
+一个对象，包含以下数据：
+
+- `url`：string 型，音视频流的拉流地址
+- `rotation`：number 型，视频帧顺时针旋转角度。
 
 <a id="unmute"></a>
 
@@ -1136,43 +1426,55 @@ stopChannelMediaRelay: function() {
 
 - unmute(uid:number, target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 恢复接收远端用户的音视频流。
+恢复接收远端用户的音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-  - uid: number
+远端用户的 ID。
 
-    远端用户的 ID。
-  - target: string
+</Parameter>
+<Parameter name="target" type="string" required>
 
-    选择停止接收哪一种流，有三种选择：
+选择停止接收哪一种流，有三种选择：
 
-    - `audio`：远端用户发送的音频流，即声音。
-    - `video`：远端用户发送的视频流，即视频画面。
-    - `all`：远端用户发送的音视频流，即声音和视频画面。
-  - Optional onSuccess: function
+- `audio`：远端用户发送的音频流，即声音。
+- `video`：远端用户发送的视频流，即视频画面。
+- `all`：远端用户发送的音视频流，即声音和视频画面。
 
-    方法调用成功时执行的回调函数。无返回值。
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    - - ():void
+方法调用成功时执行的回调函数。无返回值。
 
-      - Returns void
-  - Optional onFailure: function
+- - ():void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+  Returns void
 
-    - - (err:object):void
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-      - Parameters
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-        - err: object
+- - (err:object):void
 
-          - code:number
-          - reason:string
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-        Returns void
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="unmutelocal"></a>
 
@@ -1180,40 +1482,50 @@ stopChannelMediaRelay: function() {
 
 - unmuteLocal(target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 恢复发送本地用户的音视频流。
+恢复发送本地用户的音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="target" type="string" required>
 
-  - target: string
+选择恢复发送哪一种流，有三种选择：
 
-    选择恢复发送哪一种流，有三种选择：
+- `audio`：本地用户发送的音频流，即声音。
+- `video`：本地用户发送的视频流，即视频画面。
+- `all`：本地用户发送的音视频流，即声音和视频画面。
 
-    - `audio`：本地用户发送的音频流，即声音。
-    - `video`：本地用户发送的视频流，即视频画面。
-    - `all`：本地用户发送的音视频流，即声音和视频画面。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    方法调用成功时执行的回调函数。无返回值。
+方法调用成功时执行的回调函数。无返回值。
 
-    - - ():void
+- - ():void
 
-      - Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:object):void
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:object):void
 
-        - err: object
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="object" required>
 
-          - code:number
-          - reason:string
+  <ParameterList>
+  <Parameter name="code" type="number" required />
+  <Parameter name="reason" type="string" required />
+  </ParameterList>
 
-        Returns void
+  </Parameter>
+  </ParameterList>
 
-  Returns Promise&lt;void&gt;
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="unpublish"></a>
 
@@ -1221,30 +1533,34 @@ stopChannelMediaRelay: function() {
 
 - unpublish(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 停止发布本地音视频流。
+停止发布本地音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="onSuccess" type="function" optional>
 
-  - Optional onSuccess: function
+方法调用成功时执行的回调函数。无返回值。
 
-    方法调用成功时执行的回调函数。无返回值。
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - Optional onFailure: function
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    方法调用失败时执行的回调函数。返回值为错误码和错误信息。
+方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-    - - (err:any):void
+- - (err:any):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="any" required />
+  </ParameterList>
 
-        - err: any
+  Returns void
 
-        Returns void
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="unsubscribe"></a>
 
@@ -1252,35 +1568,41 @@ stopChannelMediaRelay: function() {
 
 - unsubscribe(uid:number, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
 
-- 停止订阅远端音视频流。
+停止订阅远端音视频流。
 
 该方法停止从 SD-RTN 订阅并接收远端音视频流。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-  - uid: number
+要停止订阅的远端用户 ID。
 
-    要停止订阅的远端用户 ID。
-  - Optional onSuccess: function
+</Parameter>
+<Parameter name="onSuccess" type="function" optional>
 
-    方法调用成功时执行的回调函数。无返回值。
+方法调用成功时执行的回调函数。无返回值。
 
-    - - ():void
+- - ():void
 
-      - Returns void
-  - Optional onFailure: function
+  Returns void
 
-    方法调用成功时执行的回调函数。返回值为错误码和错误信息。
+</Parameter>
+<Parameter name="onFailure" type="function" optional>
 
-    - - (err:any):void
+方法调用成功时执行的回调函数。返回值为错误码和错误信息。
 
-      - Parameters
+- - (err:any):void
 
-        - err: any
+  <ParameterList title="Parameters">
+  <Parameter name="err" type="any" required />
+  </ParameterList>
 
-        Returns void
+  Returns void
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updatechannelmediarelay"></a>
 
@@ -1288,7 +1610,7 @@ stopChannelMediaRelay: function() {
 
 - updateChannelMediaRelay(config:[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback:function):void
 
-- 更新媒体流转发的目标频道。
+更新媒体流转发的目标频道。
 
 成功开始跨频道转发媒体流后，如果你希望添加或删除媒体流转发的目标频道，可以调用该方法。
 
@@ -1316,27 +1638,45 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)
+<ParameterType>
 
-    跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)。
-  - callback: function
+[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)
 
-    更新目标频道是否成功的回调。
+</ParameterType>
 
-    - `null`：更新目标频道成功。
-    - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
+跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration)。
 
-    - - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+</Parameter>
+<Parameter name="callback" type="function" required>
 
-      - Parameters
+更新目标频道是否成功的回调。
 
-        - err: null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+- `null`：更新目标频道成功。
+- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-        Returns void
+- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+
+  <ParameterList title="Parameters">
+  <Parameter name="err" required>
+
+  <ParameterType>
+
+  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="updateplayernetstatus"></a>
 
@@ -1352,15 +1692,19 @@ v2.5.3
 当收到 live-player 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-- uid: number
+远端用户的用户 ID。
 
-  远端用户的用户 ID。
-- detail: any
+</Parameter>
+<Parameter name="detail" type="any" required>
 
-  微信事件回调的 `e.detail` 对象。
-   Note：要收到 live-player 组件报告的网络状态数据，你需要在创建 live-player 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
+微信事件回调的 `e.detail` 对象。
+ Note：要收到 live-player 组件报告的网络状态数据，你需要在创建 live-player 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1378,15 +1722,19 @@ v2.5.3
 当收到 live-player 组件报告的拉流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required>
 
-- uid: number
+远端用户的用户 ID。
 
-  远端用户的用户 ID。
-- detail: any
+</Parameter>
+<Parameter name="detail" type="any" required>
 
-  微信事件回调的 `e.detail` 对象。
-   Note：要收到 live-player 组件报告的拉流状态码，你需要在创建 live-player 组件时注册监听 `bindstatechange`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
+微信事件回调的 `e.detail` 对象。
+ Note：要收到 live-player 组件报告的拉流状态码，你需要在创建 live-player 组件时注册监听 `bindstatechange`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1404,12 +1752,14 @@ v2.5.3
 当收到 live-pusher 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="detail" type="any" required>
 
-- detail: any
+微信事件回调的 `e.detail` 对象。
+ Note：要收到 live-pusher 组件报告的网络状态通知，你需要在创建 live-pusher 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
-  微信事件回调的 `e.detail` 对象。
-   Note：要收到 live-pusher 组件报告的网络状态通知，你需要在创建 live-pusher 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1427,11 +1777,13 @@ v2.5.3
 当收到 live-pusher 组件报告的推流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="detail" type="any" required>
 
-- detail: any
+微信事件回调的 `e.detail` 对象。
+ Note：要收到 live-pusher 组件报告的推流状态码，你需要在创建 live-pusher 组件时注册监听 `bindstatechange`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
-  微信事件回调的 `e.detail` 对象。
-   Note：要收到 live-pusher 组件报告的推流状态码，你需要在创建 live-pusher 组件时注册监听 `bindstatechange`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
+</Parameter>
+</ParameterList>
 
 Returns void

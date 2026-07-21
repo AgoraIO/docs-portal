@@ -48,15 +48,29 @@ _migration:
 
 - new AgoraRteStreamMediaTrack(rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager), opts?:\{playAudio:boolean;playVideo:boolean\}):[AgoraRteStreamMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-stream-media-track)
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#constructor)Parameters
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#constructor)
 
-  - rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
-  - Optional opts: \{playAudio:boolean;playVideo:boolean\}
+<ParameterList title="Parameters">
+<Parameter name="rtc" required>
 
-    - playAudio:boolean
-    - playVideo:boolean
+<ParameterType>
 
-  Returns [AgoraRteStreamMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-stream-media-track)
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="opts" type="\&#123;playAudio:boolean;playVideo:boolean\&#125;" optional>
+
+<ParameterList>
+<Parameter name="playAudio" type="boolean" required />
+<Parameter name="playVideo" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteStreamMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-stream-media-track)
 
 ## Properties
 
@@ -108,11 +122,11 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/
 
 - setPlayAudio(play:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="play" type="boolean" required />
+</ParameterList>
 
-  - play: boolean
-
-  Returns void
+Returns void
 
 <a id="setPlayVideo"></a>
 
@@ -120,11 +134,11 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/
 
 - setPlayVideo(play:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="play" type="boolean" required />
+</ParameterList>
 
-  - play: boolean
-
-  Returns void
+Returns void
 
 <a id="setView"></a>
 
@@ -132,11 +146,19 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/
 
 - setView(canvas:[AgoraMediaPlayerCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-media-player-canvas)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraMediaPlayerCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-media-player-canvas)
+<ParameterType>
 
-  Returns void
+[AgoraMediaPlayerCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-media-player-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="start"></a>
 
@@ -144,7 +166,9 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/
 
 - start():number
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[start](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#start)Returns number
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[start](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#start)
+
+Returns number
 
 <a id="stop"></a>
 
@@ -152,4 +176,6 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/
 
 - stop():number
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#stop)Returns number
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#stop)
+
+Returns number

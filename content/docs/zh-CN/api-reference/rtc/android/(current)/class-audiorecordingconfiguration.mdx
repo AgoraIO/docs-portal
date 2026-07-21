@@ -27,7 +27,9 @@ public class AudioRecordingConfiguration {
 
 ## 属性
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件的绝对路径（包括文件扩展名）。例如：/sdcard/emulated/0/audio.aac。
 
@@ -35,7 +37,9 @@ public class AudioRecordingConfiguration {
 注： 确保日志文件目录存在且可写。
 :::
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz）。支持以下数值：16000、（默认）32000、44100、48000。
 
@@ -43,14 +47,18 @@ public class AudioRecordingConfiguration {
 注： 如果将该参数设置为 44100 或 48000，声网建议录制 WAV 文件，或将 `quality` 设置为 `AUDIO_RECORDING_QUALITY_MEDIUM` 或 `AUDIO_RECORDING_QUALITY_HIGH` 的 AAC 文件，以获得更好的录音质量。
 :::
 
-### codec
+</Parameter>
+<a id="codec"></a>
+<Parameter name="codec">
 
 是否对音频数据进行编码：
 
 - true：将音频数据编码为 AAC 格式。
 - false：（默认）不编码，直接保存录音数据。
 
-### fileRecordOption
+</Parameter>
+<a id="filerecordoption"></a>
+<Parameter name="fileRecordOption">
 
 录制内容选项：
 
@@ -58,7 +66,9 @@ public class AudioRecordingConfiguration {
 - `AUDIO_FILE_RECORDING_PLAYBACK (2)`：仅录制所有远端用户的音频。
 - `AUDIO_FILE_RECORDING_MIXED (3)`：（默认）录制本地和所有远端用户的混音音频。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 :::note
 注： 该参数仅适用于 AAC 文件。
@@ -71,7 +81,9 @@ public class AudioRecordingConfiguration {
 - `AUDIO_RECORDING_QUALITY_HIGH (2)`：高音质，文件大小约为 3.75 MB。
 - `AUDIO_RECORDING_QUALITY_ULTRA_HIGH (3)`：超高音质，采样率为 32 kHz，录制 10 分钟后的文件大小约为 7.5 MB。
 
-### recordingChannel
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
 
 :::note
 注： 实际录制的音频声道与采集的音频声道有关。
@@ -86,3 +98,6 @@ public class AudioRecordingConfiguration {
 
 - 1：（默认）单声道。
 - 2：双声道。
+
+</Parameter>
+</ParameterList>

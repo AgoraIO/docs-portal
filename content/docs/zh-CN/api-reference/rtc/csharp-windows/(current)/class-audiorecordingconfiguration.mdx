@@ -59,7 +59,9 @@ public class AudioRecordingConfiguration
 
 ## 属性
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\music\audio.aac`。
 
@@ -71,7 +73,9 @@ public class AudioRecordingConfiguration
 请确保你指定的路径存在并且可写。
 :::
 
-### encode
+</Parameter>
+<a id="encode"></a>
+<Parameter name="encode">
 
 设置是否编码音频数据：
 
@@ -80,7 +84,9 @@ public class AudioRecordingConfiguration
 - `true`: 将音频数据用 AAC 编码。
 - `false`:（默认）不编码音频数据，直接保存录制的音频数据。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz）。
 
@@ -99,11 +105,15 @@ public class AudioRecordingConfiguration
 如果把该参数设为 44100 或 48000，为保证录音效果，建议录制 WAV 文件或 quality 为 AUDIO_RECORDING_QUALITY_MEDIUM 或 AUDIO_RECORDING_QUALITY_HIGH 的 AAC 文件。
 :::
 
-### fileRecordingType
+</Parameter>
+<a id="filerecordingtype"></a>
+<Parameter name="fileRecordingType">
 
 录音内容。详见 [AUDIO_FILE_RECORDING_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiofilerecordingtype)。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音音质。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiorecordingqualitytype)。
 
@@ -115,7 +125,9 @@ public class AudioRecordingConfiguration
 该参数仅适用于 AAC 文件。
 :::
 
-### recordingChannel
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
 
 录制的音频声道。目前支持如下取值：
 
@@ -132,3 +144,6 @@ public class AudioRecordingConfiguration
 
 此外，集成方案也会影响最终录制的音频声道。因此，如果你希望录制立体声，请[联系技术支持](https://ticket.shengwang.cn/)协助。
 :::
+
+</Parameter>
+</ParameterList>

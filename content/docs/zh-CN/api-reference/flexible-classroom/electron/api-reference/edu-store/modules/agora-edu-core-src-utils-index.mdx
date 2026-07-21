@@ -37,11 +37,11 @@ _migration:
 
 - CustomBtoa(input:any):string
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="input" type="any" required />
+</ParameterList>
 
-  - input: any
-
-  Returns string
+Returns string
 
 <a id="EduRole2RteRole"></a>
 
@@ -49,12 +49,28 @@ _migration:
 
 - EduRole2RteRole(roomType:[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), roleType:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)):"audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomType" required>
 
-  - roomType: [EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
-  - roleType: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+<ParameterType>
 
-  Returns "audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
+[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="roleType" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns "audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
 
 <a id="RteRole2EduRole"></a>
 
@@ -62,12 +78,20 @@ _migration:
 
 - RteRole2EduRole(roomType:[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), role:string):[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomType" required>
 
-  - roomType: [EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
-  - role: string
+<ParameterType>
 
-  Returns [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="role" type="string" required />
+</ParameterList>
+
+Returns [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
 
 <a id="getImageSize"></a>
 
@@ -75,11 +99,11 @@ _migration:
 
 - getImageSize(file:File):Promise&lt;\{height:number;width:number\}&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="file" type="File" required />
+</ParameterList>
 
-  - file: File
-
-  Returns Promise&lt;\{height:number;width:number\}&gt;
+Returns Promise&lt;\{height:number;width:number\}&gt;
 
 <a id="getPlatform"></a>
 
@@ -87,7 +111,7 @@ _migration:
 
 - getPlatform():[WEB](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB)|[MACOS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS)|[WINDOWS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS)|[H5](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
 
-- Returns [WEB](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB)|[MACOS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS)|[WINDOWS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS)|[H5](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
+Returns [WEB](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB)|[MACOS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS)|[WINDOWS](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS)|[H5](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
 
 <a id="number2Percent"></a>
 
@@ -95,9 +119,9 @@ _migration:
 
 - number2Percent(v:number, fixed?:number):string
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="v" type="number" required />
+<Parameter name="fixed" type="number" optional />
+</ParameterList>
 
-  - v: number
-  - Optional fixed: number
-
-  Returns string
+Returns string

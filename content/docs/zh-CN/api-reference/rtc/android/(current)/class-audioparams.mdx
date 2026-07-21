@@ -40,7 +40,9 @@ public class AudioParams {
 
 ## 属性
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 音频采样率（Hz），可设置为以下值：
 
@@ -50,20 +52,29 @@ public class AudioParams {
 - 44100。
 - 48000。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为以下值：
 
 - 1：（默认）单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频数据的使用模式，可设置为以下值：
 
 - `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`（0）：只读模式，例如用户通过声网 SDK 获取数据后进行媒体流推送。
 - `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE`（2）：读写模式，例如用户拥有自定义音频特效处理模块并进行音频预处理，如变声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 每个回调中包含的采样数，例如用于媒体推送时设置为 1024。
+
+</Parameter>
+</ParameterList>

@@ -33,12 +33,17 @@ public abstract int enableSoundPositionIndication(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用远端用户的立体声声像功能：
 
 - true：启用立体声声像。
 - false：关闭立体声声像。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
 
@@ -81,11 +86,15 @@ public abstract int setRemoteVoicePosition(int uid, double pan, double gain);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### pan
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
 
 远端用户的语音位置，取值范围为 -1.0 到 1.0：
 
@@ -93,9 +102,14 @@ public abstract int setRemoteVoicePosition(int uid, double pan, double gain);
 - -1.0：远端语音来自左侧。
 - 1.0：远端语音来自右侧。
 
-### gain
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 远端用户的音量，取值范围为 0.0 到 100.0。默认值为 100.0（远端用户的原始音量）。数值越小，音量越低。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevoiceposition__return_values"></a>
 
@@ -143,11 +157,15 @@ public abstract int setRemoteVoicePositionEx(int uid, double pan, double gain, R
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### pan
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
 
 远端用户的语音位置。取值范围为 -1.0 到 1.0：
 
@@ -155,13 +173,20 @@ public abstract int setRemoteVoicePositionEx(int uid, double pan, double gain, R
 - 0.0：（默认）远端语音来自正前方；
 - 1.0：远端语音来自右侧。
 
-### gain
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
 
 远端用户的音量。取值范围为 0.0 到 100.0，默认值为 100.0（默认）。数值越小，音量越低。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
 

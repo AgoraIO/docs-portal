@@ -62,7 +62,9 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 本地合图的配置，详见 [AgoraLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/macos/class-localtranscoderconfiguration)。
 
@@ -72,6 +74,9 @@ _migration:
 - 每路参与本地合图的视频流的最大分辨率为 4096 × 2160。若超过该限制，合图不生效。
 - 合图后的视频流的最大分辨率为 4096 × 2160。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
 
@@ -139,9 +144,14 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 本地合图的配置。详见 [AgoraLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/macos/class-localtranscoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
 
@@ -183,13 +193,20 @@ _migration:
 
 ### 参数
 
-### stream
+<ParameterList>
+<a id="stream"></a>
+<Parameter name="stream">
 
 在视频合图过程中无法被合图的视频流。详见 [AgoraTranscodingVideoStream](/zh-CN/api-reference/rtc/macos/class-transcodingvideostream)。
 
-### errorCode
+</Parameter>
+<a id="errorcode"></a>
+<Parameter name="errorCode">
 
 本地合图错误的原因。详见 [AgoraVideoTranscoderError](/zh-CN/api-reference/rtc/macos/enum-videotranscodererror)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

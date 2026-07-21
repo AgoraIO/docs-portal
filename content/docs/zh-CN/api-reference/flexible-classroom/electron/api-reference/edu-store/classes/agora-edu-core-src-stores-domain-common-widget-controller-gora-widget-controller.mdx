@@ -64,13 +64,37 @@ _migration:
 
 - new AgoraWidgetController(_scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), _api:[EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service), _stateListeners:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)[]):[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="_scene" required>
 
-  - _scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
-  - _api: [EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
-  - _stateListeners: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)[]
+<ParameterType>
 
-  Returns [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="_api" required>
+
+<ParameterType>
+
+[EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="_stateListeners" required>
+
+<ParameterType>
+
+[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
 
 ## Properties
 
@@ -88,7 +112,7 @@ logger: LoggerFacade
 
 - get classroomConfig():[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
-- Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
 <a id="eventBus"></a>
 
@@ -96,9 +120,9 @@ logger: LoggerFacade
 
 - get eventBus():[AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
 
-- widget消息总线
+widget消息总线
 
-  Returns [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
+Returns [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
 
 <a id="widgetIds"></a>
 
@@ -106,9 +130,9 @@ logger: LoggerFacade
 
 - get widgetIds():string[]
 
-- 当前存在的 Widget 实例ID列表
+当前存在的 Widget 实例ID列表
 
-  Returns string[]
+Returns string[]
 
 <a id="zIndexController"></a>
 
@@ -116,9 +140,9 @@ logger: LoggerFacade
 
 - get zIndexController():[AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
 
-- 层级控制器
+层级控制器
 
-  Returns [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
+Returns [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
 
 ## Methods
 
@@ -128,13 +152,21 @@ logger: LoggerFacade
 
 - addBroadcastListener(listener:Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;):void
 
-- 监听广播消息
+监听广播消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;
+<ParameterType>
 
-  Returns void
+Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;,"widgetId" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addWidgetMessageListener"></a>
 
@@ -142,13 +174,21 @@ logger: LoggerFacade
 
 - addWidgetMessageListener(listener:[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;):void
 
-- 增加一个消息监听器
+增加一个消息监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;
+<ParameterType>
 
-  Returns void
+[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addWidgetStateListener"></a>
 
@@ -156,13 +196,21 @@ logger: LoggerFacade
 
 - addWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
 
-- 添加一个组件状态监听器
+添加一个组件状态监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+<ParameterType>
 
-  Returns void
+[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="broadcast"></a>
 
@@ -170,14 +218,14 @@ logger: LoggerFacade
 
 - broadcast(messageType:string, message?:unknown):void
 
-- 广播消息
+广播消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="messageType" type="string" required />
+<Parameter name="message" type="unknown" optional />
+</ParameterList>
 
-  - messageType: string
-  - Optional message: unknown
-
-  Returns void
+Returns void
 
 <a id="deleteWidget"></a>
 
@@ -185,13 +233,13 @@ logger: LoggerFacade
 
 - deleteWidget(widgetId:string):Promise&lt;\{data:any\}&gt;
 
-- 删除房间 Widget
+删除房间 Widget
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+</ParameterList>
 
-  - widgetId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="destroy"></a>
 
@@ -199,9 +247,9 @@ logger: LoggerFacade
 
 - destroy():void
 
-- 销毁
+销毁
 
-  Returns void
+Returns void
 
 <a id="getWidgetProperties"></a>
 
@@ -209,13 +257,13 @@ logger: LoggerFacade
 
 - getWidgetProperties(widgetId:string):any
 
-- 获取 Widget 属性
+获取 Widget 属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+</ParameterList>
 
-  - widgetId: string
-
-  Returns any
+Returns any
 
 <a id="getWidgetState"></a>
 
@@ -223,13 +271,13 @@ logger: LoggerFacade
 
 - getWidgetState(widgetId:string):any
 
-- 获取 Widget 状态
+获取 Widget 状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+</ParameterList>
 
-  - widgetId: string
-
-  Returns any
+Returns any
 
 <a id="getWidgetTrack"></a>
 
@@ -237,13 +285,13 @@ logger: LoggerFacade
 
 - getWidgetTrack(widgetId:string):any
 
-- 获取 Widget 轨迹同步信息
+获取 Widget 轨迹同步信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+</ParameterList>
 
-  - widgetId: string
-
-  Returns any
+Returns any
 
 <a id="getWidgetUserProperties"></a>
 
@@ -251,13 +299,13 @@ logger: LoggerFacade
 
 - getWidgetUserProperties(widgetId:string):any
 
-- 获取 Widget 用户属性
+获取 Widget 用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+</ParameterList>
 
-  - widgetId: string
-
-  Returns any
+Returns any
 
 <a id="removeBroadcastListener"></a>
 
@@ -265,13 +313,21 @@ logger: LoggerFacade
 
 - removeBroadcastListener(listener:Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;):void
 
-- 移除一个广播消息监听器
+移除一个广播消息监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;
+<ParameterType>
 
-  Returns void
+Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;,"widgetId" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeWidgetExtraProperties"></a>
 
@@ -279,14 +335,14 @@ logger: LoggerFacade
 
 - removeWidgetExtraProperties(widgetId:string, keys?:string[]):Promise&lt;\{data:any\}&gt;
 
-- 删除扩展信息字段
+删除扩展信息字段
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="keys" type="string[]" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional keys: string[]
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="removeWidgetMessageListener"></a>
 
@@ -294,13 +350,21 @@ logger: LoggerFacade
 
 - removeWidgetMessageListener(listener:[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;):void
 
-- 移除一个消息监听器
+移除一个消息监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;
+<ParameterType>
 
-  Returns void
+[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeWidgetStateListener"></a>
 
@@ -308,13 +372,21 @@ logger: LoggerFacade
 
 - removeWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
 
-- 移除一个组件状态监听器
+移除一个组件状态监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+<ParameterType>
 
-  Returns void
+[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -322,14 +394,14 @@ logger: LoggerFacade
 
 - removeWidgetUserProperties(widgetId:string, keys?:string[]):Promise&lt;\{data:any\}&gt;
 
-- 删除用户属性字段
+删除用户属性字段
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="keys" type="string[]" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional keys: string[]
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="sendMessage"></a>
 
@@ -337,15 +409,15 @@ logger: LoggerFacade
 
 - sendMessage(toWidgetId:string, messageType:string, message?:unknown):void
 
-- 向指定 Widget 发送消息
+向指定 Widget 发送消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="toWidgetId" type="string" required />
+<Parameter name="messageType" type="string" required />
+<Parameter name="message" type="unknown" optional />
+</ParameterList>
 
-  - toWidgetId: string
-  - messageType: string
-  - Optional message: unknown
-
-  Returns void
+Returns void
 
 <a id="setWidegtActive"></a>
 
@@ -353,15 +425,15 @@ logger: LoggerFacade
 
 - setWidegtActive(widgetId:string, props?:any, ownerUserUuid?:string):Promise&lt;\{data:any\}&gt;
 
-- 设置 widget 为活跃
+设置 widget 为活跃
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="props" type="any" optional />
+<Parameter name="ownerUserUuid" type="string" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional props: any
-  - Optional ownerUserUuid: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="setWidgetInactive"></a>
 
@@ -369,14 +441,14 @@ logger: LoggerFacade
 
 - setWidgetInactive(widgetId:string, props?:any):Promise&lt;\{data:any\}&gt;
 
-- 设置 widget 为不活跃
+设置 widget 为不活跃
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="props" type="any" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional props: any
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="updateWidgetProperties"></a>
 
@@ -384,14 +456,14 @@ logger: LoggerFacade
 
 - updateWidgetProperties(widgetId:string, props:any):Promise&lt;\{data:any\}&gt;
 
-- 更新 widget 属性
+更新 widget 属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="props" type="any" required />
+</ParameterList>
 
-  - widgetId: string
-  - props: any
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -399,11 +471,11 @@ logger: LoggerFacade
 
 - updateWidgetUserProperties(widgetId:string, props:any):void
 
-- 更新 widget 用户属性
+更新 widget 用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="props" type="any" required />
+</ParameterList>
 
-  - widgetId: string
-  - props: any
-
-  Returns void
+Returns void

@@ -38,7 +38,9 @@ public static class MediaRecorderConfiguration {
 
 ## 属性
 
-### storagePath
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
 
 （必填）本地保存录制文件的绝对路径，路径需包含文件名及扩展名。例如：Android: `/storage/emulated/0/Android/data/<package name>/files/example.mp4`。
 
@@ -46,13 +48,17 @@ public static class MediaRecorderConfiguration {
 注： 请确保指定路径存在且可写。
 :::
 
-### containerFormat
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
 
 录制文件的封装格式。目前仅支持：
 
 - `CONTAINER_MP4`：MP4 格式。
 
-### streamType
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 录制内容类型：
 
@@ -60,37 +66,56 @@ public static class MediaRecorderConfiguration {
 - `STREAM_TYPE_VIDEO`：仅录制视频。
 - `STREAM_TYPE_BOTH`：（默认）同时录制音频和视频。
 
-### maxDurationMs
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
 
 录制的最⼤时长，单位为毫秒。默认值为 120000。
 
-### recorderInfoUpdateInterval
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
 
 录制信息的更新间隔，单位为毫秒。有效范围为 [1000, 10000]。SDK 会根据该值触发 [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/android/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调以更新录制信息。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 （必填）录制视频的宽度（像素）。宽高乘积的最大值不得超过 3840 × 2160。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 （必填）录制视频的高度（像素）。宽高乘积的最大值不得超过 3840 × 2160。
 
-### fps
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
 
 （必填）录制视频的帧率。最大帧率不能超过 30，例如：5、10、15、24、30 等。
 
-### sample_rate
+</Parameter>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
 
 （必填）录制音频的采样率（Hz）。可设置为 16000、32000、44100、48000。
 
-### channel_num
+</Parameter>
+<a id="channel_num"></a>
+<Parameter name="channel_num">
 
 （必填）录制音频的声道数：
 
 - 1：单声道。
 - 2：立体声。
 
-### videoSourceType
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
 
 （必填）录制使用的视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>

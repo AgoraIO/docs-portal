@@ -25,11 +25,15 @@ export class MixedAudioStream {
 
 ## 属性
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 音频源的类型。详见 [AudioSourceType](/zh-CN/api-reference/rtc/electron/enum-audiosourcetype)。
 
-### remoteUserUid
+</Parameter>
+<a id="remoteuseruid"></a>
+<Parameter name="remoteUserUid">
 
 远端用户 ID。
 
@@ -37,10 +41,15 @@ export class MixedAudioStream {
 注： 当参与本地音频合流的音频源类型为 AudioSourceRemoteUser 时，需要设置该参数。
 :::
 
-### trackId
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 :::note
 注： 当参与本地本地音频合流的音频源类型为 AudioSourceCustom 时，需要设置该参数。
 :::
+
+</Parameter>
+</ParameterList>

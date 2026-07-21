@@ -14,18 +14,29 @@ _migration:
 
 ## 枚举值
 
-### EAR_MONITORING_FILTER_NONE
+<ParameterList>
+<a id="ear_monitoring_filter_none"></a>
+<Parameter name="EAR_MONITORING_FILTER_NONE">
 
 （1&lt;&lt;0）：耳返中不添加音频滤镜。
 
-### EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS
+</Parameter>
+<a id="ear_monitoring_filter_built_in_audio_filters"></a>
+<Parameter name="EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS">
 
 （1&lt;&lt;1）：耳返中添加人声特效音频滤镜。若你实现了如美声或音效等功能，用户可听到添加效果后的声音。
 
-### EAR_MONITORING_FILTER_NOISE_SUPPRESSION
+</Parameter>
+<a id="ear_monitoring_filter_noise_suppression"></a>
+<Parameter name="EAR_MONITORING_FILTER_NOISE_SUPPRESSION">
 
 （1&lt;&lt;2）：耳返中添加降噪音频滤镜。
 
-### EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER
+</Parameter>
+<a id="ear_monitoring_filter_reuse_post_processing_filter"></a>
+<Parameter name="EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER">
 
 （1&lt;&lt;15）：复用发送端已处理的音频滤镜用于耳返。可降低 CPU 使用率，但会增加耳返延迟，适用于对延迟不敏感且需低 CPU 消耗的场景。
+
+</Parameter>
+</ParameterList>

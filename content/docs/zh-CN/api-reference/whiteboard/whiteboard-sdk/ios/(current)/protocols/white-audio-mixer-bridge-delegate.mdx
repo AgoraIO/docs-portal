@@ -31,40 +31,37 @@ _migration:
 
 `- (void)startAudioMixing:(NSString *)*filePath* loopback:(BOOL)*loopback* replace:(BOOL)*replace* cycle:(NSInteger)*cycle*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="filePath">
 
-| `filePath` | 指定需要混音的本地或在线音频文件的绝对路径。 |
-| --- | --- |
-| `loopback` | <Slot name="api-center-table-0" /> |
-| `replace` | <Slot name="api-center-table-1" /> |
-| `cycle` | <Slot name="api-center-table-2" /> |
+指定需要混音的本地或在线音频文件的绝对路径。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="loopback">
 
 是否只有本地用户可以听到混音后的音频流：
 
 - `YES`：只有本地可以听到混音的音频流。
 - `NO`：本地和对方都可以听到混音的音频流。
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="replace">
 
 是否播放麦克风采集的音频：
 
 - `YES`： 只播放音频文件，不播放麦克风采集的音频。
 - `NO`: 将音频文件和麦克风采集的音频混音后播放。
 
-</Slot>
-
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
 - -1: 无限循环播放。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -118,10 +115,13 @@ _migration:
 
 `- (void)setAudioMixingPosition:(NSInteger)*position*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="position">
 
-| `position` | 整数。进度条位置，单位为毫秒。 |
-| --- | --- |
+整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 

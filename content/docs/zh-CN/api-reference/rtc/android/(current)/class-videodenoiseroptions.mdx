@@ -33,32 +33,47 @@ public class VideoDenoiserOptions {
 
 ## 属性
 
-### VIDEO_DENOISER_AUTO
+<ParameterList>
+<a id="video_denoiser_auto"></a>
+<Parameter name="VIDEO_DENOISER_AUTO">
 
 `0`：（默认）自动模式。SDK 会根据环境光线自动启用或关闭视频降噪功能。
 
-### VIDEO_DENOISER_MANUAL
+</Parameter>
+<a id="video_denoiser_manual"></a>
+<Parameter name="VIDEO_DENOISER_MANUAL">
 
 `1`：手动模式。你需手动启用或关闭视频降噪功能。
 
-### VIDEO_DENOISER_LEVEL_HIGH_QUALITY
+</Parameter>
+<a id="video_denoiser_level_high_quality"></a>
+<Parameter name="VIDEO_DENOISER_LEVEL_HIGH_QUALITY">
 
 `0`：（默认）提升视频质量的降噪模式。该模式在性能消耗与降噪质量之间取得平衡，性能消耗适中，降噪速度适中，整体视频质量最佳。
 
-### VIDEO_DENOISER_LEVEL_FAST
+</Parameter>
+<a id="video_denoiser_level_fast"></a>
+<Parameter name="VIDEO_DENOISER_LEVEL_FAST">
 
 `1`：提升性能效率的降噪模式。该模式优先考虑降低性能消耗而非降噪质量，性能消耗较低，降噪速度较快。为避免处理后的视频出现拖影效果（移动物体后方的残影），声网推荐在摄像头固定的情况下使用该设置。
 
-### denoiserMode
+</Parameter>
+<a id="denoisermode"></a>
+<Parameter name="denoiserMode">
 
 视频降噪模式。
 
 - `VIDEO_DENOISER_AUTO`（0）：（默认）自动模式。SDK 会根据环境光线自动启用或关闭视频降噪功能。
 - `VIDEO_DENOISER_MANUAL`（1）：手动模式。你需手动启用或关闭视频降噪功能。
 
-### denoiserLevel
+</Parameter>
+<a id="denoiserlevel"></a>
+<Parameter name="denoiserLevel">
 
 视频降噪等级。
 
 - `VIDEO_DENOISER_LEVEL_HIGH_QUALITY`（0）：（默认）在弱光增强过程中提升视频质量。会处理视频图像的亮度、细节和噪声，性能消耗适中，处理速度适中，整体视频质量最佳。
 - `VIDEO_DENOISER_LEVEL_FAST`（1）：提升性能效率的降噪模式。该模式优先考虑降低性能消耗而非降噪质量，性能消耗较低，降噪速度较快。为避免处理后的视频出现拖影效果（移动物体后方的残影），声网推荐在摄像头固定的情况下使用该设置。
+
+</Parameter>
+</ParameterList>

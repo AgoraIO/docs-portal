@@ -47,12 +47,17 @@ public abstract int enableFaceDetection(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用本地用户的人脸检测功能：
 
 - true：启用人脸检测。
 - false：（默认）关闭人脸检测。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
@@ -99,17 +104,26 @@ public void onFacePositionChanged(int imageWidth, int imageHeight, AgoraFacePosi
 
 ### 参数
 
-### imageWidth
+<ParameterList>
+<a id="imagewidth"></a>
+<Parameter name="imageWidth">
 
 本地摄像头采集的视频图像的宽度（单位为像素）。
 
-### imageHeight
+</Parameter>
+<a id="imageheight"></a>
+<Parameter name="imageHeight">
 
 本地摄像头采集的视频图像的高度（单位为像素）。
 
-### faceRectArr
+</Parameter>
+<a id="facerectarr"></a>
+<Parameter name="faceRectArr">
 
 检测到的人脸信息。该数组的长度取决于检测到的人脸数量，可能为 0，表示摄像头前未检测到人脸。详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/android/class-agorafacepositioninfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

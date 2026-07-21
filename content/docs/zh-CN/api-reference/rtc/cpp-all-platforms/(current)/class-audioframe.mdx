@@ -32,49 +32,74 @@ uint32_t rtpTimestamp;
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 音频帧的类型。详见 [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioframetype)。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样点数量。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个采样点的字节数。对于 PCM，通常为 16 位（2 字节）。详见 `BYTES_PER_SAMPLE`。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 音频通道数（立体声时为交错格式）。
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 每个声道的采样率（每秒采样数）。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 输出参数，表示音频帧的数据缓冲区。当使用立体声通道时，数据为交错格式。缓冲区大小计算方式为：samples × channels × bytesPerSample。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该时间戳恢复采集顺序，并在视频场景中与视频帧同步，包括使用自定义视频源的场景。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
 
 保留参数，供未来使用。
 
-### presentationMs
+</Parameter>
+<a id="presentationms"></a>
+<Parameter name="presentationMs">
 
 该音频帧的 PTS 时间戳，用于指示帧的原始 PTS 时间，并通过该时间戳与视频帧同步。
 
-### audioTrackNumber
+</Parameter>
+<a id="audiotracknumber"></a>
+<Parameter name="audioTrackNumber">
 
 音频轨道编号。
 
-### rtpTimestamp
+</Parameter>
+<a id="rtptimestamp"></a>
+<Parameter name="rtpTimestamp">
 
 音频帧中第一个采样点的 RTP 时间戳。
+
+</Parameter>
+</ParameterList>

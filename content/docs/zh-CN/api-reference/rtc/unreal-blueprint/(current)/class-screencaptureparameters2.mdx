@@ -56,7 +56,9 @@ public:
 
 ## 属性
 
-### captureAudio
+<ParameterList>
+<a id="captureaudio"></a>
+<Parameter name="captureAudio">
 
 屏幕共享时是否采集系统音频：
 
@@ -70,7 +72,9 @@ public:
 - 为提高屏幕共享时采集系统音频的成功率，请确保你已调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 方法并设置音频场景为 `AUDIO_SCENARIO_GAME_STREAMING`。
 :::
 
-### audioParams
+</Parameter>
+<a id="audioparams"></a>
+<Parameter name="audioParams">
 
 共享屏幕流的音频配置。详见 [FScreenAudioParameters](/zh-CN/api-reference/rtc/unreal-blueprint/class-screenaudioparameters)。
 
@@ -78,7 +82,9 @@ public:
 注意： 该参数仅在 captureAudio 为 `true` 时生效。
 :::
 
-### captureVideo
+</Parameter>
+<a id="capturevideo"></a>
+<Parameter name="captureVideo">
 
 屏幕共享时是否采集屏幕：
 
@@ -89,10 +95,15 @@ public:
 注： 受系统限制，采集屏幕仅适用于 Android API 级别为 21 及以上，即 Android 5 及以上。
 :::
 
-### videoParams
+</Parameter>
+<a id="videoparams"></a>
+<Parameter name="videoParams">
 
 共享屏幕流的视频编码配置。详见 [FScreenVideoParameters](/zh-CN/api-reference/rtc/unreal-blueprint/class-screenvideoparameters)。
 
 :::caution
 注意： 该参数仅在 captureVideo 为 `true` 时生效。
 :::
+
+</Parameter>
+</ParameterList>

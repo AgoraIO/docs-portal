@@ -18,21 +18,32 @@ _migration:
 注： 不同视频观测点在视频链路上的具体位置详见[视频模块](/zh-CN/realtime-media/rtc/reference/key-concept)。
 :::
 
-### POSITION_POST_CAPTURER
+<ParameterList>
+<a id="position_post_capturer"></a>
+<Parameter name="POSITION_POST_CAPTURER">
 
 1: 本地采集视频数据并且经过前处理之后的位置，对应 [OnCaptureVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此处观测到的视频具备视频前处理的效果，可通过开启美颜、虚拟背景或水印等方式验证。
 
-### POSITION_PRE_RENDERER
+</Parameter>
+<a id="position_pre_renderer"></a>
+<Parameter name="POSITION_PRE_RENDERER">
 
 2: 接收远端发送的视频在渲染前的位置，对应 [OnRenderVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
 
-### POSITION_PRE_ENCODER
+</Parameter>
+<a id="position_pre_encoder"></a>
+<Parameter name="POSITION_PRE_ENCODER">
 
 4: 本地视频编码前的位置，对应 [OnPreEncodeVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此处观测到的视频具备视频前处理和编码前处理的效果：
 
 - 对于视频前处理效果，可通过开启美颜、虚拟背景或水印等方式验证。
 - 对于编码前处理效果，可通过设置一个较低的帧率（例如 5 fps）验证。
 
-### POSITION_POST_CAPTURER_ORIGIN
+</Parameter>
+<a id="position_post_capturer_origin"></a>
+<Parameter name="POSITION_POST_CAPTURER_ORIGIN">
 
 8: 本地采集视频之后、前处理之前的位置。此处观测到的视频不具备前处理的效果，可通过开启美颜、虚拟背景或设置水印等方式验证。
+
+</Parameter>
+</ParameterList>

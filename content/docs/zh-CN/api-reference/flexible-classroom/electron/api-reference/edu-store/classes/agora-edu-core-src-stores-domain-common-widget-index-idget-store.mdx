@@ -46,7 +46,7 @@ _migration:
 
 - get widgetController():undefined|[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
 
-- Returns undefined|[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+Returns undefined|[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
 
 ## Methods
 
@@ -56,16 +56,24 @@ _migration:
 
 - addWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
 
-- ### deprecated
+### deprecated
 
 since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 添加一个组件状态监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+<ParameterType>
 
-  Returns void
+[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="deleteWidget"></a>
 
@@ -73,15 +81,17 @@ since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 
 - deleteWidget(widgetId:string):undefined|Promise&lt;\{data:any\}&gt;
 
-- 删除当前房间中的此组件实例
+删除当前房间中的此组件实例
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required>
 
-  - widgetId: string
+widget ID
 
-    widget ID
+</Parameter>
+</ParameterList>
 
-  Returns undefined|Promise&lt;\{data:any\}&gt;
+Returns undefined|Promise&lt;\{data:any\}&gt;
 
 <a id="onDestroy"></a>
 
@@ -89,7 +99,9 @@ since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 
 - onDestroy():void
 
-- Overrides EduStoreBase.onDestroyReturns void
+Overrides EduStoreBase.onDestroy
+
+Returns void
 
 <a id="onInstall"></a>
 
@@ -97,7 +109,9 @@ since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 
 - onInstall():void
 
-- Overrides EduStoreBase.onInstallReturns void
+Overrides EduStoreBase.onInstall
+
+Returns void
 
 <a id="removeWidgetExtra"></a>
 
@@ -105,14 +119,14 @@ since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 
 - removeWidgetExtra(widgetId:string, keys?:string[]):undefined|Promise&lt;\{data:any\}&gt;
 
-- 删除组件扩展属性
+删除组件扩展属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="keys" type="string[]" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional keys: string[]
-
-  Returns undefined|Promise&lt;\{data:any\}&gt;
+Returns undefined|Promise&lt;\{data:any\}&gt;
 
 <a id="removeWidgetStateListener"></a>
 
@@ -120,16 +134,24 @@ since v2.9.0, please use AgoraWidgetController.addWidgetStateListener
 
 - removeWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
 
-- ### deprecated
+### deprecated
 
 since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 移除一个组件状态监听器
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="listener" required>
 
-  - listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+<ParameterType>
 
-  Returns void
+[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -137,14 +159,14 @@ since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 
 - removeWidgetUserProperties(widgetId:string, keys?:string[]):undefined|Promise&lt;\{data:any\}&gt;
 
-- 删除组件用户属性
+删除组件用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="keys" type="string[]" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional keys: string[]
-
-  Returns undefined|Promise&lt;\{data:any\}&gt;
+Returns undefined|Promise&lt;\{data:any\}&gt;
 
 <a id="setActive"></a>
 
@@ -152,19 +174,23 @@ since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 
 - setActive(widgetId:string, widgetProps?:any, ownerUserUuid?:string):void
 
-- 设置组件为可用状态
+设置组件为可用状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required>
 
-  - widgetId: string
+widget ID
 
-    widget ID
-  - Optional widgetProps: any
+</Parameter>
+<Parameter name="widgetProps" type="any" optional>
 
-    widget 属性
-  - Optional ownerUserUuid: string
+widget 属性
 
-  Returns void
+</Parameter>
+<Parameter name="ownerUserUuid" type="string" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setInactive"></a>
 
@@ -172,18 +198,22 @@ since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 
 - setInactive(widgetId:string, widgetProps?:any):void
 
-- 设置组件为不可用状态
+设置组件为不可用状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required>
 
-  - widgetId: string
+widget ID
 
-    widget ID
-  - Optional widgetProps: any
+</Parameter>
+<Parameter name="widgetProps" type="any" optional>
 
-    widget 属性
+widget 属性
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="updateWidgetProperties"></a>
 
@@ -191,14 +221,14 @@ since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 
 - updateWidgetProperties(widgetId:string, widgetProps?:any):undefined|Promise&lt;\{data:any\}&gt;
 
-- 更新组件全局属性，属性更新将同步至该组件在所有客户端上的实例
+更新组件全局属性，属性更新将同步至该组件在所有客户端上的实例
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="widgetProps" type="any" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional widgetProps: any
-
-  Returns undefined|Promise&lt;\{data:any\}&gt;
+Returns undefined|Promise&lt;\{data:any\}&gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -206,11 +236,11 @@ since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener
 
 - updateWidgetUserProperties(widgetId:string, widgetProps?:any):undefined|void
 
-- 更新组件用户属性，属性更新将同步至当前用户私有属性中
+更新组件用户属性，属性更新将同步至当前用户私有属性中
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="widgetId" type="string" required />
+<Parameter name="widgetProps" type="any" optional />
+</ParameterList>
 
-  - widgetId: string
-  - Optional widgetProps: any
-
-  Returns undefined|void
+Returns undefined|void

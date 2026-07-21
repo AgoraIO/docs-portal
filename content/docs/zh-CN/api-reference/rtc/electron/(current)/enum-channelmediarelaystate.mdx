@@ -14,18 +14,29 @@ _migration:
 
 ## 枚举值
 
-### RelayStateIdle
+<ParameterList>
+<a id="relaystateidle"></a>
+<Parameter name="RelayStateIdle">
 
 0: 初始状态。在成功调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) 停止跨频道媒体流转发后，[onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 会回调该状态。
 
-### RelayStateConnecting
+</Parameter>
+<a id="relaystateconnecting"></a>
+<Parameter name="RelayStateConnecting">
 
 1: SDK 尝试跨频道。
 
-### RelayStateRunning
+</Parameter>
+<a id="relaystaterunning"></a>
+<Parameter name="RelayStateRunning">
 
 2: 源频道主播成功加入目标频道。
 
-### RelayStateFailure
+</Parameter>
+<a id="relaystatefailure"></a>
+<Parameter name="RelayStateFailure">
 
 3: 发生异常，详见 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 的 `code` 参数提示的错误信息。
+
+</Parameter>
+</ParameterList>

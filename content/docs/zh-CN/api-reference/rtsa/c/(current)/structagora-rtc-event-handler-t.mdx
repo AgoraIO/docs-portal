@@ -36,15 +36,38 @@ _migration:
 
 收到频道内远端用户的音频帧回调。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | sent_ts | Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_audio_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197) 的时间。 |
-| [in] | data_ptr | 音频包数据。 |
-| [in] | data_len | 音频包数据长度（字节）。 |
-| [in] | info_ptr | 音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="sent_ts" direction="[in]">
+
+Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_audio_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197) 的时间。
+
+</Parameter>
+<Parameter name="data_ptr" direction="[in]">
+
+音频包数据。
+
+</Parameter>
+<Parameter name="data_len" direction="[in]">
+
+音频包数据长度（字节）。
+
+</Parameter>
+<Parameter name="info_ptr" direction="[in]">
+
+音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac571090198206c2fa3bc68fb8cee42d0"></a>
 
@@ -57,10 +80,13 @@ _migration:
 
 当 SDK 与服务器断开连接超过 10 秒时，SDK 会触发该回调。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a57ad737a0443bb604e11ae6c6b37fd5d"></a>
 
@@ -73,12 +99,23 @@ _migration:
 
 该回调方法表示 SDK 运行时出现了（网络或媒体相关的）错误。 通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | code | 错误码，详见 [agora_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abf)。 |
-| [in] | msg | 错误描述。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="code" direction="[in]">
+
+错误码，详见 [agora_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abf) 。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+错误描述。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3006c067f8a7deb521580c5044f27ff8"></a>
 
@@ -89,12 +126,23 @@ _migration:
 
 加入频道成功回调。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 本地用户 ID。 |
-| [in] | elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+本地用户 ID。
+
+</Parameter>
+<Parameter name="elapsed_ms" direction="[in]">
+
+从频道成功创建开始到发生此回调过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="ab698db32db28c348552915a3a1337bf8"></a>
 
@@ -107,12 +155,23 @@ _migration:
 
 收到此回调后，发送端需生成一个新的关键帧。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | stream_type | 需要生成关键帧的视频流类型，详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="stream_type" direction="[in]">
+
+需要生成关键帧的视频流类型，详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa05b9b9e42a2018a913ac18bf0022919"></a>
 
@@ -125,11 +184,18 @@ _migration:
 
 加入频道时，声网服务器会验证你在 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 中传入的 License。如果 License 验证失败，则 SDK 会触发该回调，你可以根据收到的错误码处理问题。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | error | 错误码。详见 [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19b)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="error" direction="[in]">
+
+错误码。详见 [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19b) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a96f899b78b34a3ef989bc094cd6327e9"></a>
 
@@ -140,11 +206,24 @@ _migration:
 
 本地用户注册回调。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uname" direction="[in]">
 
-| [in] | uname | 使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：26 个小写英文字母 a-z 26 个大写英文字母 A-Z 10 个数字 0-9 空格 "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \\\{", "\\\}", "\|", "~", "," |
-| --- | --- | --- |
-| [in] | uid | 使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。 |
+使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
+
+</Parameter>
+</ParameterList>
 
 <a id="ab0a6462ac391a960f767d2cf6ce8078a"></a>
 
@@ -159,13 +238,28 @@ _migration:
 v1.9.5
 :::
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | uid | 发送消息的用户 ID。 |
-| [in] | payload | 消息 Payload。 |
-| [in] | length | 消息 Payload 长度。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+发送消息的用户 ID。
+
+</Parameter>
+<Parameter name="payload" direction="[in]">
+
+消息 Payload。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+消息 Payload 长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="ad3cf11417984d7a70c9eedc739ce9452"></a>
 
@@ -176,13 +270,28 @@ v1.9.5
 
 收到频道内本地用户和远端用户的混音数据回调。此回调每 20 ms 触发一次。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | data_ptr | 音频包数据。 |
-| [in] | data_len | 音频包数据长度（字节）。 |
-| [in] | info_ptr | 音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="data_ptr" direction="[in]">
+
+音频包数据。
+
+</Parameter>
+<Parameter name="data_len" direction="[in]">
+
+音频包数据长度（字节）。
+
+</Parameter>
+<Parameter name="info_ptr" direction="[in]">
+
+音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a80dfcd1cd72a006a7b2daae4d7f80eea"></a>
 
@@ -197,14 +306,33 @@ v1.9.5
 v1.9.2
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | type | RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955)。 |
-| [in] | msg | RDT 消息负载。 |
-| [in] | len | RDT 消息长度。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="type" direction="[in]">
+
+RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) 。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+RDT 消息负载。
+
+</Parameter>
+<Parameter name="len" direction="[in]">
+
+RDT 消息长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="afa921fa31ea49ef1c97a17949119e386"></a>
 
@@ -221,12 +349,23 @@ v1.9.2
 
 当 RDT 通道的连接状态发生变化时，SDK 会触发该回调并报告当前的连接状态。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | state | 连接状态。详见 [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="state" direction="[in]">
+
+连接状态。详见 [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="acadee60a0d36eec3939e769a40e43cad"></a>
 
@@ -243,10 +382,13 @@ SDK 会在如下场景中触发该回调：
 - 网络断开。
 - 用户切换网络类型，例如 4G 网络切换成 Wi-Fi 网络。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="af1aad04da5b59bb0ae4575c1121eaa59"></a>
 
@@ -259,12 +401,23 @@ SDK 会在如下场景中触发该回调：
 
 有时候由于网络原因，客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 本地用户 ID。 |
-| [in] | elapsed_ms | 从开始重连到重连成功的时间（毫秒）。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+本地用户 ID。
+
+</Parameter>
+<Parameter name="elapsed_ms" direction="[in]">
+
+从开始重连到重连成功的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a631f8f2d7c71a54bbb1825dc5b386eba"></a>
 
@@ -275,11 +428,25 @@ SDK 会在如下场景中触发该回调：
 
 远端用户注册回调。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uname" direction="[in]">
 
-| [in] | uname | 使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：26 个小写英文字母 a-z 26 个大写英文字母 A-Z 10 个数字 0-9 空格"!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \\\{", "\\\}", "\|", "~", "," |
-| --- | --- | --- |
-| [in] | uid | 使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。 |
+使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+
+  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
+
+</Parameter>
+</ParameterList>
 
 <a id="a7c73b2bb0558e2b695d8838ee542c87a"></a>
 
@@ -296,15 +463,38 @@ SDK 会在如下场景中触发该回调：
 v1.9.5
 :::
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 发送消息的用户 ID。 |
-| [in] | stream_id | 接收到的消息的 Stream ID。 |
-| [in] | data | 接收到的数据。 |
-| [in] | length | 数据流大小。 |
-| [in] | sent_ts | 数据流发送的时间戳。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+发送消息的用户 ID。
+
+</Parameter>
+<Parameter name="stream_id" direction="[in]">
+
+接收到的消息的 Stream ID。
+
+</Parameter>
+<Parameter name="data" direction="[in]">
+
+接收到的数据。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+数据流大小。
+
+</Parameter>
+<Parameter name="sent_ts" direction="[in]">
+
+数据流发送的时间戳。
+
+</Parameter>
+</ParameterList>
 
 <a id="af3ef06a16cd4cf3aa585dd6ad13ada0b"></a>
 
@@ -315,11 +505,18 @@ v1.9.5
 
 编码器码率更新通知回调。你可以使用此回调提醒 App 更新编码器码率。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | target_bps | 码率需要更新到的目标值，单位为 bps。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="target_bps" direction="[in]">
+
+码率需要更新到的目标值，单位为 bps。
+
+</Parameter>
+</ParameterList>
 
 <a id="aef1aa16dd5b32baa1aa03887f40f6ee9"></a>
 
@@ -332,11 +529,18 @@ Token 服务即将过期回调。
 
 在调用 [agora_rtc_join_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738) 时如果指定了 Token，由于 Token 具有一定的时效，在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒应用程序更新 Token。当收到该回调时，用户需要重新在服务端生成新的 Token，然后调用 [agora_rtc_renew_token](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a87c94a2d518278926807e24592b41336) 将新生成的 Token 传给 SDK。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | token | 即将服务失效的 Token。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="token" direction="[in]">
+
+即将服务失效的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4c8f017cc2fa8aaa6e91c966b97a8aee"></a>
 
@@ -357,11 +561,18 @@ v1.9.5
 收到该回调后，请确保根据新的映射关系更新相关的订阅逻辑。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | user | 远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="user" direction="[in]">
+
+远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="ada682c16b9d0e53404beb76c9c3a02a2"></a>
 
@@ -379,12 +590,23 @@ v1.9.5
 - 远端用户加入频道。
 - 远端用户网络中断后重新加入频道。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 用户 ID。 |
-| [in] | elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="elapsed_ms" direction="[in]">
+
+从频道成功创建开始到发生此回调过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa57af03ef9f26ab68917fa7a30f703bd"></a>
 
@@ -405,12 +627,23 @@ v1.9.5
 调用该方法前，请确保 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 中的 use_string_uid 设为 true。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | user | 加入频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
-| [in] | elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="user" direction="[in]">
+
+加入频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) 。
+
+</Parameter>
+<Parameter name="elapsed_ms" direction="[in]">
+
+从频道成功创建开始到发生此回调过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="ab749491e46ce8d06aa69507ebb630bf9"></a>
 
@@ -421,21 +654,26 @@ v1.9.5
 
 频道内远端用户暂停/恢复发送音频流回调。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | muted | <Slot name="api-center-table-0" /> |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="muted" direction="[in]">
 
 远端用户是否发送音频流：
 
 - 0: 该用户恢复发送音频流；
 - 其他值: 该用户暂停发送音频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a7ba3bed4e4d97a4e39096f07d2333311"></a>
 
@@ -446,21 +684,26 @@ v1.9.5
 
 频道内远端用户暂停/恢复发送视频流回调。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 远端用户的用户 ID。 |
-| [in] | muted | <Slot name="api-center-table-1" /> |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="muted" direction="[in]">
 
 远端用户是否发送视频流：
 
 - 0: 该用户恢复发送视频流；
 - 其他值: 该用户暂停发送视频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="aa20dd2bc2ee7389257e7d03dd28a3dd4"></a>
 
@@ -476,12 +719,23 @@ SDK 会在如下场景触发该回调：
 - 正常离开：远端用户会发送类似“再见”的消息。接收此消息后，判断用户离开频道。
 - 超时掉线：如果本地用户在 20 秒内没有收到远端用户的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。建议使用云信令 SDK 来做可靠的掉线检测。
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 离开频道的用户 ID。 |
-| [in] | reason | 用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+离开频道的用户 ID。
+
+</Parameter>
+<Parameter name="reason" direction="[in]">
+
+用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="af3a7f207010bafca7aa99fdba5a9b1ab"></a>
 
@@ -492,12 +746,23 @@ SDK 会在如下场景触发该回调：
 
 使用 User Account 场景下，远端用户离开频道回调。
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | user | 离开频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
-| [in] | reason | 用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="user" direction="[in]">
+
+离开频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) 。
+
+</Parameter>
+<Parameter name="reason" direction="[in]">
+
+用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="ab6c026de857cff2283f7f5287af0551a"></a>
 
@@ -508,15 +773,38 @@ SDK 会在如下场景触发该回调：
 
 收到频道内远端用户的视频帧回调。
 
-<h4 data-toc-hidden="true" id={"参数-24"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
-| --- | --- | --- |
-| [in] | uid | 发送视频帧的远端用户的用户 ID。 |
-| [in] | sent_ts | Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_video_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5) 的时间。 |
-| [in] | data_ptr | 视频包数据。 |
-| [in] | data_len | 视频包数据长度（字节）。 |
-| [in] | info_ptr | 视频帧信息。详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t)。 |
+Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) 。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+发送视频帧的远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="sent_ts" direction="[in]">
+
+Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_video_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5) 的时间。
+
+</Parameter>
+<Parameter name="data_ptr" direction="[in]">
+
+视频包数据。
+
+</Parameter>
+<Parameter name="data_len" direction="[in]">
+
+视频包数据长度（字节）。
+
+</Parameter>
+<Parameter name="info_ptr" direction="[in]">
+
+视频帧信息。详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 ---
 

@@ -80,26 +80,36 @@ _migration:
 
 该方法创建并让录制端加入频道，随后开始录制。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
-| --- | --- |
-| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 的保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。 |
-| name | 待录制频道的频道名。 |
-| uid | <Slot name="api-center-table-0" /> |
-| config | 录制的详细设置。详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。 |
-| logLevel | <Slot name="api-center-table-1" /> |
+录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="channelKey">
+
+用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 的保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。
+
+</Parameter>
+<Parameter name="name">
+
+待录制频道的频道名。
+
+</Parameter>
+<Parameter name="uid">
 
 录制使用的用户 UID。同一个频道里不能出现两个相同的 UID，否则会产生未定义行为。有两种设置方法：
 
 - 设置为 0，系统将自动分配一个 UID。
 - 设置一个唯一的 UID，不能与现在频道内的任何 UID 重复。取值范围：1 到 (232-1)。
 
-</Slot>
+</Parameter>
+<Parameter name="config">
 
-<Slot for="api-center-table-1">
+录制的详细设置。详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。
+
+</Parameter>
+<Parameter name="logLevel">
 
 生成 log 的等级。设置完成后，只有等级低于所设 logLevel 的 log 才会被生成：
 
@@ -110,7 +120,8 @@ _migration:
 - 5: 日志等级为 Info。
 - 6: 日志等级为 Debug。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -138,17 +149,23 @@ _migration:
 为保证通信质量，我们建议一个频道内使用同一类型的数据标识用户身份，因此录制端的用户标识数据类型要与 Native/Web SDK 的保持一致。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。 |
-| --- | --- |
-| channelKey | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
-| name | 待录制频道的频道名。 |
-| userAccount | <Slot name="api-center-table-2" /> |
-| config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。 |
-| logLevel | <Slot name="api-center-table-3" /> |
+录制端的 appId 必须与 Native/Web SDK 的保持一致。详见获取 App ID。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="channelKey">
+
+用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。
+
+</Parameter>
+<Parameter name="name">
+
+待录制频道的频道名。
+
+</Parameter>
+<Parameter name="userAccount">
 
 用户的 User Account。该参数为必填，最大不超过 255 字节，不可填 null。请确保加入频道的 User Account 的唯一性。以下为支持的字符集范围（共 89 个字符）：
 
@@ -158,9 +175,13 @@ _migration:
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+<Parameter name="config">
 
-<Slot for="api-center-table-3">
+录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config)。
+
+</Parameter>
+<Parameter name="logLevel">
 
 生成 log 的等级。设置完成后，只有等级低于所设 logLevel 的 log 才会被生成：
 
@@ -171,7 +192,8 @@ _migration:
 - 5: 日志等级为 Info。
 - 6: 日志等级为 Debug。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -191,10 +213,13 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) 回调后，你可以调用 getUidByUserAccount 方法，通过传入 User Account 获取指定用户的 UID。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userAccount">
 
-| userAccount | 用户 User Account，必填。 |
-| --- | --- |
+用户 User Account，必填。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -213,10 +238,13 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) 回调后，你可以调用 getUserAccountByUid 方法，通过传入 UID 获取指定用户的 User Account。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户 UID，必填。 |
-| --- | --- |
+用户 UID，必填。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -249,10 +277,13 @@ _migration:
 合流模式下如果有视频，必须调用该方法设置布局。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="layout">
 
-| layout | 视频合流布局的具体设置，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout)。 |
-| --- | --- |
+视频合流布局的具体设置，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -282,12 +313,23 @@ _migration:
 水印仅适用于合流模式（[RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 true）。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="literaWms">
 
-| literaWms | 设置文字水印。[LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config) 组成的数组。录制 SDK 最多支持 10 个文字水印。 |
-| --- | --- |
-| timestampWms | 设置时间戳水印。[TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config) 组成的数组。录制 SDK 只支持 1 个时间戳水印。 |
-| imgWms | 设置图片水印。[ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config) 组成的数组。录制 SDK 最多支持 4 个图片水印。 |
+设置文字水印。[LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config) 组成的数组。录制 SDK 最多支持 10 个文字水印。
+
+</Parameter>
+<Parameter name="timestampWms">
+
+设置时间戳水印。[TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config) 组成的数组。录制 SDK 只支持 1 个时间戳水印。
+
+</Parameter>
+<Parameter name="imgWms">
+
+设置图片水印。[ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config) 组成的数组。录制 SDK 最多支持 4 个图片水印。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -307,10 +349,13 @@ _migration:
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a85cd3d1ddc810c3b01997c994aed41a0) 为 false 时有效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uids">
 
-| uids | UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
-| --- | --- |
+UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -330,10 +375,13 @@ _migration:
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a85cd3d1ddc810c3b01997c994aed41a0) 为 false 时有效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uids">
 
-| uids | UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
-| --- | --- |
+UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -406,11 +454,18 @@ _migration:
 该设置对 Agora Web SDK 的用户无效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 该用户的 UID。 |
-| --- | --- |
-| imagePath | 背景图片路径。仅支持本地 JPEG 文件。 |
+该用户的 UID。
+
+</Parameter>
+<Parameter name="imagePath">
+
+背景图片路径。仅支持本地 JPEG 文件。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -428,10 +483,20 @@ _migration:
 
 设置完成后，只有等级低于和等于所设 level 的 log 才会被生成。默认值为 5。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="level">
 
-| level | log 过滤等级： 1: 日志等级为 Fatal。 2: 日志等级为 Error。 3: 日志等级为 Warning。 4: 日志等级为 Notice。 5: 日志等级为 Info。 6: 日志等级为 Debug。 |
-| --- | --- |
+log 过滤等级：
+
+- 1: 日志等级为 Fatal。
+- 2: 日志等级为 Error。
+- 3: 日志等级为 Warning。
+- 4: 日志等级为 Notice。
+- 5: 日志等级为 Info。
+- 6: 日志等级为 Debug。
+
+</Parameter>
+</ParameterList>
 
 ## 类成员变量说明
 

@@ -42,24 +42,34 @@ CarouselSetting: \{interval:number;range:number;state:number;type:number\}
 
 #### Type declaration
 
-- interval:number
+<ParameterList title="Type declaration">
+<Parameter name="interval" type="number" required>
 
-  轮播列表更新周期，单位：秒
-- range:number
+轮播列表更新周期，单位：秒
 
-  轮播范围，哪些用户可以参与轮播
-  1: 全部
-  2: 仅设备可用用户
-- state:number
+</Parameter>
+<Parameter name="range" type="number" required>
 
-  轮播是否开启
-  1: 开启
-  0: 关闭
-- type:number
+轮播范围，哪些用户可以参与轮播
+1: 全部
+2: 仅设备可用用户
 
-  轮播类型
-  1: 顺序
-  2: 随机
+</Parameter>
+<Parameter name="state" type="number" required>
+
+轮播是否开启
+1: 开启
+0: 关闭
+
+</Parameter>
+<Parameter name="type" type="number" required>
+
+轮播类型
+1: 顺序
+2: 随机
+
+</Parameter>
+</ParameterList>
 
 <a id="ClassroomSchedule"></a>
 
@@ -71,18 +81,34 @@ ClassroomSchedule: \{closeDelay:number;duration?:number;startTime?:number;state?
 
 #### Type declaration
 
-- closeDelay:number
+<ParameterList title="Type declaration">
+<Parameter name="closeDelay" type="number" required>
 
-  拖堂时间，单位：秒
-- Optional duration?:number
+拖堂时间，单位：秒
 
-  教室持续时间，单位：秒
-- Optional startTime?:number
+</Parameter>
+<Parameter name="duration" type="number" optional>
 
-  教室开始时间，单位：毫秒
-- Optional state?:[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+教室持续时间，单位：秒
 
-  教室状态
+</Parameter>
+<Parameter name="startTime" type="number" optional>
+
+教室开始时间，单位：毫秒
+
+</Parameter>
+<Parameter name="state" optional>
+
+<ParameterType>
+
+[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+
+</ParameterType>
+
+教室状态
+
+</Parameter>
+</ParameterList>
 
 <a id="ExpandedScope"></a>
 
@@ -94,12 +120,24 @@ ExpandedScope: \{state:[ExpandedScopeState](/zh-CN/api-reference/flexible-classr
 
 #### Type declaration
 
-- state:[ExpandedScopeState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-xpanded-scope-state)
+<ParameterList title="Type declaration">
+<Parameter name="state" required>
 
-  视频墙是否开启
-- userUuids:string[]
+<ParameterType>
 
-  视频墙用户 UUID 列表
+[ExpandedScopeState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-xpanded-scope-state)
+
+</ParameterType>
+
+视频墙是否开启
+
+</Parameter>
+<Parameter name="userUuids" type="string[]" required>
+
+视频墙用户 UUID 列表
+
+</Parameter>
+</ParameterList>
 
 <a id="FcrCustomMessage"></a>
 
@@ -123,18 +161,28 @@ HandUpProgress: \{payload?:any;ts:number;userName:string;userUuid:string\}
 
 #### Type declaration
 
-- Optional payload?:any
+<ParameterList title="Type declaration">
+<Parameter name="payload" type="any" optional>
 
-  扩展信息
-- ts:number
+扩展信息
 
-  举手时间戳，单位：秒
-- userName:string
+</Parameter>
+<Parameter name="ts" type="number" required>
 
-  用户姓名
-- userUuid:string
+举手时间戳，单位：秒
 
-  用户 UUID
+</Parameter>
+<Parameter name="userName" type="string" required>
+
+用户姓名
+
+</Parameter>
+<Parameter name="userUuid" type="string" required>
+
+用户 UUID
+
+</Parameter>
+</ParameterList>
 
 <a id="HostingScene"></a>
 
@@ -146,9 +194,11 @@ HostingScene: \{finishType:number;reserveVideoURL:string;videoURL:string\}
 
 #### Type declaration
 
-- finishType:number
-- reserveVideoURL:string
-- videoURL:string
+<ParameterList title="Type declaration">
+<Parameter name="finishType" type="number" required />
+<Parameter name="reserveVideoURL" type="string" required />
+<Parameter name="videoURL" type="string" required />
+</ParameterList>
 
 <a id="RecordStreamingUrl"></a>
 
@@ -160,15 +210,23 @@ RecordStreamingUrl: \{flv:string;hls:string;rtmp:string\}
 
 #### Type declaration
 
-- flv:string
+<ParameterList title="Type declaration">
+<Parameter name="flv" type="string" required>
 
-  FLV URL
-- hls:string
+FLV URL
 
-  HLS URL
-- rtmp:string
+</Parameter>
+<Parameter name="hls" type="string" required>
 
-  RTMP URL
+HLS URL
+
+</Parameter>
+<Parameter name="rtmp" type="string" required>
+
+RTMP URL
+
+</Parameter>
+</ParameterList>
 
 <a id="TrackData"></a>
 
@@ -180,18 +238,30 @@ TrackData: \{extra?:any;position:\{xaxis:number;yaxis:number\};size?:\{height:nu
 
 #### Type declaration
 
-- Optional extra?:any
+<ParameterList title="Type declaration">
+<Parameter name="extra" type="any" optional>
 
-  扩展信息
-- position:\{xaxis:number;yaxis:number\}
+扩展信息
 
-  对象坐标
+</Parameter>
+<Parameter name="position" type="\&#123;xaxis:number;yaxis:number\&#125;" required>
 
-  - xaxis:number
-  - yaxis:number
-- Optional size?:\{height:number;width:number\}
+对象坐标
 
-  对象尺寸
+<ParameterList>
+<Parameter name="xaxis" type="number" required />
+<Parameter name="yaxis" type="number" required />
+</ParameterList>
 
-  - height:number
-  - width:number
+</Parameter>
+<Parameter name="size" type="\&#123;height:number;width:number\&#125;" optional>
+
+对象尺寸
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>

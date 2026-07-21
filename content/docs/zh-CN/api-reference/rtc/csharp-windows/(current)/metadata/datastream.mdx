@@ -53,11 +53,15 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-### reliable
+</Parameter>
+<a id="reliable"></a>
+<Parameter name="reliable">
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
@@ -68,12 +72,17 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 注意： 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
 :::
 
-### ordered
+</Parameter>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
 - `true`: 接收方会按照发送方发送的顺序收到数据包。
 - `false`: 接收方不保证按照发送方发送的顺序收到数据包。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream__return_values"></a>
 
@@ -126,11 +135,15 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-1"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-### reliable
+</Parameter>
+<a id="reliable-1"></a>
+<Parameter name="reliable">
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
@@ -141,16 +154,23 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 注意： 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
 :::
 
-### ordered
+</Parameter>
+<a id="ordered-1"></a>
+<Parameter name="ordered">
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
 - `true`: 接收方会按照发送方发送的顺序收到数据包。
 - `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex__return_values"></a>
 
@@ -193,13 +213,20 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-2"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-datastreamconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
@@ -246,17 +273,26 @@ public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-3"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-datastreamconfig)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
@@ -293,11 +329,16 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 ### 参数
 
-### metadata
+<ParameterList>
+<a id="metadata"></a>
+<Parameter name="metadata">
 
 媒体附属信息。详见 [Metadata](/zh-CN/api-reference/rtc/csharp-windows/class-metadata)。
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendmetadata__return_values"></a>
 
@@ -330,9 +371,14 @@ public abstract int SetMaxMetadataSize(int size);
 
 ### 参数
 
-### size
+<ParameterList>
+<a id="size"></a>
+<Parameter name="size">
 
 媒体附属信息的最大大小。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmaxmetadatasize__return_values"></a>
 
@@ -383,17 +429,26 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-4"></a>
+<Parameter name="streamId">
 
 数据流 ID。可以通过 CreateDataStream [2/2] 获取。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 待发送的数据。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendstreammessage__return_values"></a>
 
@@ -444,21 +499,32 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-5"></a>
+<Parameter name="streamId">
 
 数据流 ID。可以通过 CreateDataStreamEx [2/2] 获取。
 
-### data
+</Parameter>
+<a id="data-1"></a>
+<Parameter name="data">
 
 待发送的数据。
 
-### length
+</Parameter>
+<a id="length-1"></a>
+<Parameter name="length">
 
 数据长度。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_sendstreammessageex__return_values"></a>
 
@@ -495,29 +561,44 @@ public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, in
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送消息的用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-6"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-### data
+</Parameter>
+<a id="data-2"></a>
+<Parameter name="data">
 
 接收到的数据。
 
-### length
+</Parameter>
+<a id="length-2"></a>
+<Parameter name="length">
 
 数据长度，单位为字节。
 
-### sentTs
+</Parameter>
+<a id="sentts"></a>
+<Parameter name="sentTs">
 
 数据流发出的时间。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -547,29 +628,44 @@ public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUi
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 发送消息的用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-7"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 错误码。详见 。
 
-### missed
+</Parameter>
+<a id="missed"></a>
+<Parameter name="missed">
 
 丢失的消息数量。
 
-### cached
+</Parameter>
+<a id="cached"></a>
+<Parameter name="cached">
 
 数据流中断时，后面缓存的消息数量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

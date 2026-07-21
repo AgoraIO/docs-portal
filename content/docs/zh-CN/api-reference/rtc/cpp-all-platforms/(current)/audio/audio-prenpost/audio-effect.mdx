@@ -43,16 +43,23 @@ virtual int enableVoiceAITuner(bool enabled, VOICE_AI_TUNER_TYPE type) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用语音 AI 调音器：
 
 - true：启用语音 AI 调音器。
 - false：（默认）关闭语音 AI 调音器。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 语音 AI 调音器的音效类型，详见 [VOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-voiceaitunertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevoiceaituner__return_values"></a>
 
@@ -91,13 +98,20 @@ virtual int setAdvancedAudioOptions(AdvancedAudioOptions& options, int sourceTyp
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 高级音频选项。详见 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-advancedaudiooptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 音频源的类型。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
 
@@ -162,16 +176,23 @@ virtual int setAINSMode(bool enabled,  AUDIO_AINS_MODE mode) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用 AI 降噪功能：
 
 - true：启用 AI 降噪。
 - false：（默认）关闭 AI 降噪。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 AI 降噪模式。详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioainsmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setainsmode__return_values"></a>
 
@@ -237,7 +258,9 @@ virtual int setAudioEffectParameters(AUDIO_EFFECT_PRESET preset, int param1, int
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 SDK 预设音效选项：
 
@@ -247,7 +270,9 @@ SDK 预设音效选项：
   - 启用后，用户需使用立体声播放设备才能听到预期效果。
 - `PITCH_CORRECTION`（10）：音高修正效果。
 
-### param1
+</Parameter>
+<a id="param1"></a>
+<Parameter name="param1">
 
 - 当 `preset` 为 `ROOM_ACOUSTICS_3D_VOICE` 时，设置 3D 人声效果的循环周期，单位为秒，取值范围为 [1, 60]，默认值为 10，表示声音每 10 秒围绕你移动一圈。
 - 当 `preset` 为 `PITCH_CORRECTION` 时，表示音高修正的基本模式：
@@ -256,7 +281,9 @@ SDK 预设音效选项：
   - `2`：自然小调。
   - `3`：日本五声音阶。
 
-### param2
+</Parameter>
+<a id="param2"></a>
+<Parameter name="param2">
 
 - 当 `preset` 为 `ROOM_ACOUSTICS_3D_VOICE` 时，需将 `param2` 设置为 `0`。
 - 当 `preset` 为 `PITCH_CORRECTION` 时，表示音高修正的主音：
@@ -273,6 +300,9 @@ SDK 预设音效选项：
   - `10`：F#
   - `11`：G
   - `12`：G#
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
 
@@ -333,9 +363,14 @@ virtual int setAudioEffectPreset(AUDIO_EFFECT_PRESET preset) = 0;
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-1"></a>
+<Parameter name="preset">
 
 SDK 预设音效选项。详见 [AUDIO_EFFECT_PRESET](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioeffectpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
 
@@ -374,13 +409,20 @@ virtual int setLocalVoiceEqualization(AUDIO_EQUALIZATION_BAND_FREQUENCY bandFreq
 
 ### 参数
 
-### bandFrequency
+<ParameterList>
+<a id="bandfrequency"></a>
+<Parameter name="bandFrequency">
 
 频段索引，取值范围为 0 到 9，分别对应语音效果的 10 个中心频率段：31、62、125、250、500、1k、2k、4k、8k 和 16k Hz。详见 [AUDIO_EQUALIZATION_BAND_FREQUENCY](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioequalizationbandfrequency)。
 
-### bandGain
+</Parameter>
+<a id="bandgain"></a>
+<Parameter name="bandGain">
 
 每个频段的增益值，单位为 dB。取值范围为 -15 到 15，默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
 
@@ -427,13 +469,18 @@ virtual int setLocalVoiceFormant(double formantRatio) = 0;
 
 ### 参数
 
-### formantRatio
+<ParameterList>
+<a id="formantratio"></a>
+<Parameter name="formantRatio">
 
 共振峰比例。取值范围为 [-1.0, 1.0]。默认值为 0.0，表示不改变音色。
 
 :::note
 注： 建议将该值设置在 [-0.4, 0.6] 范围内，否则声音可能会严重失真。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
 
@@ -472,9 +519,14 @@ virtual int setLocalVoicePitch(double pitch) = 0;
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 本地语音的音调。取值范围为 [0.5, 2.0]，值越小，音调越低。（默认值为 1.0，表示不改变音调。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
 
@@ -515,13 +567,20 @@ virtual int setLocalVoiceReverb(AUDIO_REVERB_TYPE reverbKey, int value) = 0;
 
 ### 参数
 
-### reverbKey
+<ParameterList>
+<a id="reverbkey"></a>
+<Parameter name="reverbKey">
 
 混响键，详见 [AUDIO_REVERB_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioreverbtype)。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 混响键对应的取值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
 
@@ -583,26 +642,35 @@ virtual int setVoiceBeautifierParameters(VOICE_BEAUTIFIER_PRESET preset, int par
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-2"></a>
+<Parameter name="preset">
 
 预设音效选项：
 
 - `SINGING_BEAUTIFIER`：歌唱美声特效。
 
-### param1
+</Parameter>
+<a id="param1-1"></a>
+<Parameter name="param1">
 
 歌声的性别特征选项：
 
 - `1`：男性音色。
 - `2`：女性音色。
 
-### param2
+</Parameter>
+<a id="param2-1"></a>
+<Parameter name="param2">
 
 歌声的混响效果选项：
 
 - `1`：混响效果类似在小房间中歌唱。
 - `2`：混响效果类似在大房间中歌唱。
 - `3`：混响效果类似在大厅中歌唱。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
 
@@ -660,9 +728,14 @@ virtual int setVoiceBeautifierPreset(VOICE_BEAUTIFIER_PRESET preset) = 0;
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-3"></a>
+<Parameter name="preset">
 
 预设的美声特效选项，详见 [VOICE_BEAUTIFIER_PRESET](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-voicebeautifierpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
 
@@ -725,9 +798,14 @@ virtual int setVoiceConversionPreset(VOICE_CONVERSION_PRESET preset) = 0;
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-4"></a>
+<Parameter name="preset">
 
 预设的声动语聊特效选项，详见 [VOICE_CONVERSION_PRESET](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-voiceconversionpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
 

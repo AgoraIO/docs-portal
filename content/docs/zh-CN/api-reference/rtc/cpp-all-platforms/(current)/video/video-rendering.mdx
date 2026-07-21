@@ -95,9 +95,14 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) __depre
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 本地画面的显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rendermodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendermode1__return_values"></a>
 
@@ -143,17 +148,24 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_M
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode-1"></a>
+<Parameter name="renderMode">
 
 本地视频画面的显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 本地视频画面的镜像模式。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。
 
 :::note
 注： 如果使用前置摄像头，SDK 默认开启镜像模式；如果使用后置摄像头，SDK 默认关闭镜像模式。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
 
@@ -198,17 +210,24 @@ virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps)
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### targetFps
+</Parameter>
+<a id="targetfps"></a>
+<Parameter name="targetFps">
 
 本地视频的采集帧率（fps）。支持的值包括：1、7、10、15、24、30、60。
 
 :::note
 注： 将该参数设置为低于实际视频帧率的值，否则设置无效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
 
@@ -245,9 +264,14 @@ virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) __depreca
 
 ### 参数
 
-### mirrorMode
+<ParameterList>
+<a id="mirrormode-1"></a>
+<Parameter name="mirrorMode">
 
 本地视频镜像模式。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
 
@@ -289,17 +313,26 @@ virtual int setRemoteRenderMode(uid_t uid, media::base::RENDER_MODE_TYPE renderM
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-2"></a>
+<Parameter name="renderMode">
 
 远端用户视图的渲染模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-2"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoterendermode2__return_values"></a>
 
@@ -347,21 +380,32 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-3"></a>
+<Parameter name="renderMode">
 
 视频显示模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-3"></a>
+<Parameter name="mirrorMode">
 
 镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
 
@@ -406,11 +450,16 @@ virtual int setRemoteRenderTargetFps(int targetFps) = 0;
 
 ### 参数
 
-### targetFps
+<ParameterList>
+<a id="targetfps-1"></a>
+<Parameter name="targetFps">
 
 远端视频的渲染最大帧率（fps）。支持的取值包括：1、7、10、15、24、30、60。
 
 - 请将该参数设置为低于实际视频帧率的值，否则设置不会生效。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoterendertargetfps__return_values"></a>
 
@@ -443,9 +492,14 @@ virtual int setRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode-4"></a>
+<Parameter name="renderMode">
 
 渲染模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rendermodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setrendermode__return_values"></a>
 
@@ -498,9 +552,14 @@ virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 本地视频视图及相关设置，详见 [VideoCanvas](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setuplocalvideo__return_values"></a>
 
@@ -542,9 +601,14 @@ virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-1"></a>
+<Parameter name="canvas">
 
 远端视频视图及其相关设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setupremotevideo__return_values"></a>
 
@@ -595,13 +659,20 @@ virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& c
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-2"></a>
+<Parameter name="canvas">
 
 远端视频视图的设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videocanvas)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setupremotevideoex__return_values"></a>
 
@@ -701,9 +772,14 @@ virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
 
@@ -748,25 +824,38 @@ virtual void onTranscodedStreamLayoutInfo(uid_t uid, int width, int height, int 
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 发布该合图视频的用户 ID。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 合图视频的宽度（单位为像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 合图视频的高度（单位为像素）。
 
-### layoutCount
+</Parameter>
+<a id="layoutcount"></a>
+<Parameter name="layoutCount">
 
 合图视频中包含的布局信息数量。
 
-### layoutlist
+</Parameter>
+<a id="layoutlist"></a>
+<Parameter name="layoutlist">
 
 子视频流的布局信息数组。详见 [VideoLayout](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videolayout)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -800,17 +889,26 @@ virtual void onVideoRenderingTracingResult(uid_t uid, MEDIA_TRACE_EVENT currentE
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### currentEvent
+</Parameter>
+<a id="currentevent"></a>
+<Parameter name="currentEvent">
 
 当前视频帧渲染事件，详见 [MEDIA_TRACE_EVENT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediatraceevent)。
 
-### tracingInfo
+</Parameter>
+<a id="tracinginfo"></a>
+<Parameter name="tracingInfo">
 
 视频帧渲染过程中的各项指标，详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videorenderingtracinginfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

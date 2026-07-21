@@ -47,9 +47,14 @@ public abstract startRtmpStreamWithoutTranscoding(url:string): number;
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__return_values"></a>
 
@@ -106,13 +111,20 @@ public abstract startRtmpStreamWithTranscoding(url: string, transcoding: LiveTra
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-1"></a>
+<Parameter name="url">
 
 旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
 
-### transcoding
+</Parameter>
+<a id="transcoding"></a>
+<Parameter name="transcoding">
 
 旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/harmonyos/class-livetranscoding)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__return_values"></a>
 
@@ -157,9 +169,14 @@ public abstract stopRtmpStream(url: string): number;
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-2"></a>
+<Parameter name="url">
 
 旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoprtmpstream__return_values"></a>
 
@@ -198,9 +215,14 @@ public abstract updateRtmpTranscoding(transcoding: LiveTranscoding): number;
 
 ### 参数
 
-### transcoding
+<ParameterList>
+<a id="transcoding-1"></a>
+<Parameter name="transcoding">
 
 旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/harmonyos/class-livetranscoding)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatertmptranscoding__return_values"></a>
 
@@ -231,13 +253,20 @@ onRtmpStreamingEvent? : (url:string,event:Constants.RtmpStreamingEvent) => void;
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-3"></a>
+<Parameter name="url">
 
 旁路推流 URL。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 旁路推流事件码。详见 [RtmpStreamingEvent](/zh-CN/api-reference/rtc/harmonyos/enum-rtmpstreamingevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -267,17 +296,26 @@ onRtmpStreamingStateChanged? : (url:string,state:Constants.RtmpStreamPublishStat
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-4"></a>
+<Parameter name="url">
 
 推流状态发生改变的 URL 地址。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的推流状态，详见 [RtmpStreamPublishState](/zh-CN/api-reference/rtc/harmonyos/enum-rtmpstreampublishstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 推流状态改变的原因，详见 [RtmpStreamPublishReason](/zh-CN/api-reference/rtc/harmonyos/enum-rtmpstreampublishreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

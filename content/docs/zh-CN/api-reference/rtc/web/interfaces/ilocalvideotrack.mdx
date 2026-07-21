@@ -125,11 +125,13 @@ event_beauty_effect_overload:
 从 H.264 或 H.265 视频流中解析出 SEI 数据时触发，此事件会返回 SEI 数据。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="sei" type="Uint8Array" required>
 
-- sei: Uint8Array
+Uint8Array 类型的 SEI 数据
 
-  Uint8Array 类型的 SEI 数据
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -147,11 +149,19 @@ Returns void
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" optional>
 
-- Optional data: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
+<ParameterType>
 
-  `<video>` 标签的可见状态信息。
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
+
+</ParameterType>
+
+`<video>` 标签的可见状态信息。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -231,14 +241,24 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" optional>
 
-- Optional config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
+<ParameterType>
 
-  新生成视频轨道的编码配置。你可以通过 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 传入 SDK 内置的编码配置；也可以通过传入一个 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 来自定义视频编码配置。
-- Optional cloneTrack: boolean
+[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) | [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
 
-  是否克隆当前轨道。默认为 `true`。
+</ParameterType>
+
+新生成视频轨道的编码配置。你可以通过 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 传入 SDK 内置的编码配置；也可以通过传入一个 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 来自定义视频编码配置。
+
+</Parameter>
+<Parameter name="cloneTrack" type="boolean" optional>
+
+是否克隆当前轨道。默认为 `true`。
+
+</Parameter>
+</ParameterList>
 
 Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
 
@@ -250,13 +270,13 @@ Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotr
 
 - close():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#close)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#close)
 
-  关闭本地轨道，并释放相关采集设备。
+关闭本地轨道，并释放相关采集设备。
 
-  一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
+一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-  Returns void
+Returns void
 
 <a id="getcurrentframedata"></a>
 
@@ -282,17 +302,19 @@ Returns ImageData
 
 - getListeners(event:string):Function[]
 
-- Inherited from EventEmitter.getListeners
+Inherited from EventEmitter.getListeners
 
-  指定一个事件名，获取当前所有监听这个事件的回调函数。
+指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+事件名称。
 
-    事件名称。
+</Parameter>
+</ParameterList>
 
-  Returns Function[]
+Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -300,13 +322,13 @@ Returns ImageData
 
 - getMediaStreamTrack():MediaStreamTrack
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
-  获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-  Returns MediaStreamTrack
+Returns MediaStreamTrack
 
-  一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
 <a id="getrtcrtptransceiver"></a>
 
@@ -314,28 +336,34 @@ Returns ImageData
 
 - getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)):RTCRtpTransceiver|undefined
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
-  获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
+获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
 
-  该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
+该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-  > 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
-  >
-  > - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
-  > - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+>
+> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
+> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" optional>
 
-  - Optional type: [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
+<ParameterType>
 
-    视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)。
+[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
 
-  Returns RTCRtpTransceiver
-   |
-   undefined
+</ParameterType>
 
-  当前轨道的 `RTCRtpTransceiver` 实例。
+视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)。
+
+</Parameter>
+</ParameterList>
+
+Returns RTCRtpTransceiver | undefined
+
+当前轨道的 `RTCRtpTransceiver` 实例。
 
 <a id="getstats"></a>
 
@@ -343,15 +371,15 @@ Returns ImageData
 
 - getStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
 
-- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#getstats)
+Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#getstats)
 
-  获取本地视频轨道的相关信息。
+获取本地视频轨道的相关信息。
 
-  ### deprecated
+### deprecated
 
-  自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
+自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
 
-  Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
 
 <a id="gettrackid"></a>
 
@@ -359,13 +387,13 @@ Returns ImageData
 
 - getTrackId():string
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
 
-  获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
+获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-  Returns string
+Returns string
 
-  媒体轨道 ID。
+媒体轨道 ID。
 
 <a id="gettracklabel"></a>
 
@@ -373,17 +401,17 @@ Returns ImageData
 
 - getTrackLabel():string
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettracklabel)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettracklabel)
 
-  获取本地轨道的来源描述。
+获取本地轨道的来源描述。
 
-  Returns string
+Returns string
 
-  可能返回以下值：
+可能返回以下值：
 
-  - 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
-  - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
-  - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
+- 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
+- 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
+- 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
 <a id="getvideoelementvisiblestatus"></a>
 
@@ -391,23 +419,21 @@ Returns ImageData
 
 - getVideoElementVisibleStatus():[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)|undefined
 
-- - @自从
+- @自从
 
-   *4.8.0*
+     *4.8.0*
 
 获取 HTML `<video>` 标签的可见状态和不可见原因。
 
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
-  Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
-   |
-   undefined
+Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) | undefined
 
-  [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
-  - `localVideoTrack.isPlaying` 为 `false`。
-  - `<video>` 标签不存在。
-  - `<video>` 标签不是通过 `play` 方法调用产生的。
+- `localVideoTrack.isPlaying` 为 `false`。
+- `<video>` 标签不存在。
+- `<video>` 标签不是通过 `play` 方法调用产生的。
 
 <a id="off"></a>
 
@@ -415,20 +441,24 @@ Returns ImageData
 
 - off(event:string, listener:Function):void
 
-- Inherited from EventEmitter.off
+Inherited from EventEmitter.off
 
-  取消一个指定事件的监听。
+取消一个指定事件的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    监听事件时传入的回调函数。
+监听事件时传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -439,56 +469,75 @@ Returns ImageData
 - on(event:"video-element-visible-status", listener:typeof event_video_element_visible_status):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
 
-- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-updated&quot;" required>
 
-  - event: "track-updated"
+事件名称。
 
-    事件名称。
-  - listener: typeof event_track_updated
+</Parameter>
+<Parameter name="listener" type="typeof event_track_updated" required>
 
-    详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。
+详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。
 
-  Returns void
-- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+</Parameter>
+</ParameterList>
 
-  Parameters
+Returns void
 
-  - event: "track-ended"
+Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-    事件名称。
-  - listener: typeof event_track_ended
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-ended&quot;" required>
 
-    详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended)。
+事件名称。
 
-  Returns void
-- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+</Parameter>
+<Parameter name="listener" type="typeof event_track_ended" required>
 
-  Parameters
+详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended)。
 
-  - event: "video-element-visible-status"
+</Parameter>
+</ParameterList>
 
-    事件名称。
-  - listener: typeof event_video_element_visible_status
+Returns void
 
-    详见 [video-element-visible-status](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#event_video_element_visible_status)。
+Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-  Returns void
-- Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;video-element-visible-status&quot;" required>
 
-  添加事件监听器。
+事件名称。
 
-  Parameters
+</Parameter>
+<Parameter name="listener" type="typeof event_video_element_visible_status" required>
 
-  - event: "transceiver-updated"
+详见 [video-element-visible-status](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#event_video_element_visible_status)。
 
-    事件名称。
-  - listener: typeof event_transceiver_updated
+</Parameter>
+</ParameterList>
 
-    详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)。
+Returns void
 
-  Returns void
+Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+
+添加事件监听器。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;transceiver-updated&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_transceiver_updated" required>
+
+详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -496,22 +545,26 @@ Returns ImageData
 
 - once(event:string, listener:Function):void
 
-- Inherited from EventEmitter.once
+Inherited from EventEmitter.once
 
-  监听一个指定的事件，当事件触发时会调用传入的回调函数。
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
-  当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    传入的回调函数。
+传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="pipe"></a>
 
@@ -525,11 +578,13 @@ Returns ImageData
 将 `Processor` 注入本地视频轨道。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IBaseProcessor" required>
 
-- processor: IBaseProcessor
+`Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-  `Processor` 实例。每个插件均有对应类型的 `Processor`。
+</Parameter>
+</ParameterList>
 
 Returns IBaseProcessor
 
@@ -541,23 +596,33 @@ Returns IBaseProcessor
 
 - play(element:string|HTMLElement, config?:[VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)):void
 
-- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
+Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
 
-  在页面上播放远端视频轨道。
+在页面上播放远端视频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="element" type="string | HTMLElement" required>
 
-  - element: string|HTMLElement
+指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
 
-    指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
+- `string`: 指定该 DOM 元素的 ID 值。
+- `HTMLElement`: 直接传入一个 DOM 元素对象。
 
-    - `string`: 指定该 DOM 元素的 ID 值。
-    - `HTMLElement`: 直接传入一个 DOM 元素对象。
-  - Optional config: [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)
+</Parameter>
+<Parameter name="config" optional>
 
-    设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。
+<ParameterType>
 
-  Returns void
+[VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)
+
+</ParameterType>
+
+设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removealllisteners"></a>
 
@@ -565,17 +630,19 @@ Returns IBaseProcessor
 
 - removeAllListeners(event?:string):void
 
-- Inherited from EventEmitter.removeAllListeners
+Inherited from EventEmitter.removeAllListeners
 
-  指定一个事件，取消其所有的监听。
+指定一个事件，取消其所有的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
 
-  - Optional event: string
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
-    指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="replacetrack"></a>
 
@@ -620,17 +687,21 @@ await localVideoTrack.replaceTrack(newTrack, true);
 ```
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" type="MediaStreamTrack" required>
 
-- track: MediaStreamTrack
+新的视频轨道。需要传入一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-  新的视频轨道。需要传入一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
-- stopOldTrack: boolean
+</Parameter>
+<Parameter name="stopOldTrack" type="boolean" required>
 
-  是否停止原有的视频轨道：
+是否停止原有的视频轨道：
 
-  - 停止原有的视频轨道。
-  - 保留原有的视频轨道。
+- 停止原有的视频轨道。
+- 保留原有的视频轨道。
+
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -640,15 +711,17 @@ Returns Promise&lt;void&gt;
 
 - sendSeiData(sei:Uint8Array):void
 
-- 在 H.264 视频流中添加 SEI 数据。
+在 H.264 视频流中添加 SEI 数据。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="sei" type="Uint8Array" required>
 
-  - sei: Uint8Array
+SEI 数据。
 
-    SEI 数据。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setenabled"></a>
 
@@ -670,14 +743,16 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="enabled" type="boolean" required>
 
-- enabled: boolean
+是否启用该轨道:
 
-  是否启用该轨道:
+- `true`: 启用该轨道。
+- `false`: 禁用该轨道。
 
-  - `true`: 启用该轨道。
-  - `false`: 禁用该轨道。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -687,15 +762,23 @@ Returns Promise&lt;void&gt;
 
 - setEncoderConfiguration(config:[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)):Promise&lt;void&gt;
 
-- 设置视频的编码参数，包括分辨率、帧率、码率。
+设置视频的编码参数，包括分辨率、帧率、码率。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
+<ParameterType>
 
-    你可以传入 SDK 预设的视频编码配置 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)，也可以传入自定义的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 对象。
+[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) | [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+你可以传入 SDK 预设的视频编码配置 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)，也可以传入自定义的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 对象。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="setmuted"></a>
 
@@ -716,14 +799,16 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="muted" type="boolean" required>
 
-- muted: boolean
+是否发送该轨道的媒体数据:
 
-  是否发送该轨道的媒体数据:
+- `true`: 暂停发送该轨道的媒体数据。
+- `false`: 恢复发送该轨道的媒体数据。
 
-  - `true`: 暂停发送该轨道的媒体数据。
-  - `false`: 恢复发送该轨道的媒体数据。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -743,24 +828,32 @@ Returns Promise&lt;void&gt;
 > 注意事项：该方法只支持 Chrome 浏览器。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="mode" required>
 
-- mode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
+<ParameterType>
 
-  视频传输优化模式：
+[OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
 
-  - `"balanced"`: 使用默认的传输优化模式：
+</ParameterType>
 
-    - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
-    - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。
-  - `"detail"`: 清晰优先。
+视频传输优化模式：
 
-    - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
-    - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
-  - `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+- `"balanced"`: 使用默认的传输优化模式：
 
-    - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
-    - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
+  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
+  - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。
+- `"detail"`: 清晰优先。
+
+  - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。
+- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+
+  - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
+
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -770,11 +863,11 @@ Returns Promise&lt;void&gt;
 
 - stop():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
 
-  停止播放。
+停止播放。
 
-  Returns void
+Returns void
 
 <a id="unpipe"></a>
 

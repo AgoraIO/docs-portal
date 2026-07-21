@@ -62,21 +62,49 @@ _migration:
 
 - new AgoraRteSubscribeThread(client:IAgoraRTCClient, user:IAgoraRTCRemoteUser, __namedParameters:\{audioPlaybackDeviceId?:string;canvasMap?:Map&lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)&gt;;channelName:string;mediaType:"audio"|"video";muteMap:Map&lt;string,boolean&gt;;volumeMap:Map&lt;string,number&gt;\}, rawDataDispatcher:[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
-- Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#constructor)Parameters
+Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#constructor)
 
-  - client: IAgoraRTCClient
-  - user: IAgoraRTCRemoteUser
-  - __namedParameters: \{audioPlaybackDeviceId?:string;canvasMap?:Map&lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)&gt;;channelName:string;mediaType:"audio"|"video";muteMap:Map&lt;string,boolean&gt;;volumeMap:Map&lt;string,number&gt;\}
+<ParameterList title="Parameters">
+<Parameter name="client" type="IAgoraRTCClient" required />
+<Parameter name="user" type="IAgoraRTCRemoteUser" required />
+<Parameter name="__namedParameters" required>
 
-    - Optional audioPlaybackDeviceId?:string
-    - Optional canvasMap?:Map&lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)&gt;
-    - channelName:string
-    - mediaType:"audio"|"video"
-    - muteMap:Map&lt;string,boolean&gt;
-    - volumeMap:Map&lt;string,number&gt;
-  - rawDataDispatcher: [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+<ParameterType>
 
-  Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+\{audioPlaybackDeviceId?:string;canvasMap?:Map & lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt;;channelName:string;mediaType:"audio" | "video";muteMap:Map & lt;string,boolean & gt;;volumeMap:Map & lt;string,number & gt;\}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioPlaybackDeviceId" type="string" optional />
+<Parameter name="canvasMap" optional>
+
+<ParameterType>
+
+Map & lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt;
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="channelName" type="string" required />
+<Parameter name="mediaType" type="&quot;audio&quot; | &quot;video&quot;" required />
+<Parameter name="muteMap" type="Map &amp; lt;string,boolean &amp; gt;" required />
+<Parameter name="volumeMap" type="Map &amp; lt;string,number &amp; gt;" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="rawDataDispatcher" required>
+
+<ParameterType>
+
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
 ## Properties
 
@@ -114,7 +142,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - get canvas():undefined|[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
 
-- Returns undefined|[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+Returns undefined|[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
 
 <a id="mute"></a>
 
@@ -122,7 +150,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - get mute():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="streamUuid"></a>
 
@@ -130,7 +158,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - get streamUuid():string
 
-- Returns string
+Returns string
 
 <a id="track"></a>
 
@@ -138,7 +166,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - get track():undefined|IRemoteAudioTrack|IRemoteVideoTrack
 
-- Returns undefined|IRemoteAudioTrack|IRemoteVideoTrack
+Returns undefined|IRemoteAudioTrack|IRemoteVideoTrack
 
 ## Methods
 
@@ -146,14 +174,16 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+- emit(evt:string,...args:any[]):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#emit)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
 <a id="isTrackSubscribed"></a>
 
@@ -161,7 +191,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - isTrackSubscribed():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="off"></a>
 
@@ -169,12 +199,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - off(evt:string, cb:CallableFunction):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#off)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
 <a id="on"></a>
 
@@ -182,12 +214,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - on(evt:string, cb:CallableFunction):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#on)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
 <a id="onExecution"></a>
 
@@ -195,7 +229,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - onExecution():Promise&lt;void&gt;
 
-- Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[onExecution](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#onExecution)Returns Promise&lt;void&gt;
+Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[onExecution](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#onExecution)
+
+Returns Promise&lt;void&gt;
 
 <a id="once"></a>
 
@@ -203,12 +239,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - once(evt:string, cb:CallableFunction):[AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#once)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread)
 
 <a id="play"></a>
 
@@ -216,7 +254,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - play():void
 
-- Returns void
+Returns void
 
 <a id="preparePcmCallback"></a>
 
@@ -224,7 +262,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - preparePcmCallback():void
 
-- Returns void
+Returns void
 
 <a id="removeAllEventListeners"></a>
 
@@ -232,7 +270,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - removeAllEventListeners():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#removeAllEventListeners)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#removeAllEventListeners)
+
+Returns void
 
 <a id="run"></a>
 
@@ -240,7 +280,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - run():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[run](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#run)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[run](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#run)
+
+Returns void
 
 <a id="setAudioFrameCallback"></a>
 
@@ -248,7 +290,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - setAudioFrameCallback():Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setAudioPlaybackDevice"></a>
 
@@ -256,11 +298,11 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - setAudioPlaybackDevice(deviceId:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required />
+</ParameterList>
 
-  - deviceId: string
-
-  Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -268,7 +310,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - stop():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#stop)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#stop)
+
+Returns void
 
 <a id="stopAudioFrameCallback"></a>
 
@@ -276,4 +320,4 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-
 
 - stopAudioFrameCallback():void
 
-- Returns void
+Returns void

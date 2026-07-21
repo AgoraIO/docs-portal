@@ -33,20 +33,29 @@ _migration:
 
 ### 参数
 
-### thumbSize
+<ParameterList>
+<a id="thumbsize"></a>
+<Parameter name="thumbSize">
 
 屏幕或窗口缩略图的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`thumbSize` 为 100 × 100，则缩略图的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则缩略图为原始图像，SDK 不进行缩放。
 
-### iconSize
+</Parameter>
+<a id="iconsize"></a>
+<Parameter name="iconSize">
 
 应用程序图标的目标尺寸（宽度和高度，单位为像素）。SDK 会对原始图像进行缩放，使图像最长边的长度与目标尺寸一致，同时不扭曲原始图像。例如，若原始图像为 400 × 300，`iconSize` 为 100 × 100，则图标的实际尺寸为 100 × 75。如果目标尺寸大于原始尺寸，则图标为原始图像，SDK 不进行缩放。
 
-### includeScreen
+</Parameter>
+<a id="includescreen"></a>
+<Parameter name="includeScreen">
 
 是否返回屏幕信息：
 
 - YES：返回屏幕和窗口信息。
 - NO：仅返回窗口信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getscreencapturesources__return_values"></a>
 
@@ -85,9 +94,14 @@ _migration:
 
 ### 参数
 
-### scenarioType
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 屏幕共享场景。详见 [AgoraScreenScenarioType](/zh-CN/api-reference/rtc/macos/enum-screenscenariotype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setscreencapturescenario__return_values"></a>
 
@@ -126,13 +140,20 @@ _migration:
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 屏幕来源类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 屏幕共享的配置，详见 [AgoraScreenCaptureConfiguration](/zh-CN/api-reference/rtc/macos/class-screencaptureconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapture2__return_values"></a>
 
@@ -184,11 +205,15 @@ _migration:
 
 ### 参数
 
-### displayId
+<ParameterList>
+<a id="displayid"></a>
+<Parameter name="displayId">
 
 要共享的屏幕的屏幕 ID。
 
-### regionRect
+</Parameter>
+<a id="regionrect"></a>
+<Parameter name="regionRect">
 
 （可选）相对于窗口的区域位置。如果未设置该参数，SDK 共享整个窗口。该参数包含以下字段：
 
@@ -199,9 +224,14 @@ _migration:
 
 如果指定的区域超出窗口范围，SDK 仅共享窗口内的区域；如果设置 `width` 或 `height` 为 0，SDK 共享整个窗口。
 
-### captureParams
+</Parameter>
+<a id="captureparams"></a>
+<Parameter name="captureParams">
 
 屏幕共享配置。默认视频分辨率为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。屏幕共享视频流的视频属性仅需通过该参数设置，与 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapturebydisplayid__return_values"></a>
 
@@ -260,11 +290,15 @@ _migration:
 
 ### 参数
 
-### windowId
+<ParameterList>
+<a id="windowid"></a>
+<Parameter name="windowId">
 
 要共享的窗口的 ID。
 
-### regionRect
+</Parameter>
+<a id="regionrect-1"></a>
+<Parameter name="regionRect">
 
 （可选）相对于窗口的区域位置。如果未设置该参数，SDK 会共享整个窗口。该参数包含以下字段：
 
@@ -275,9 +309,14 @@ _migration:
 
 如果指定的区域超出窗口范围，SDK 只共享窗口内的区域；如果设置 width 或 height 为 0，SDK 会共享整个窗口。
 
-### captureParams
+</Parameter>
+<a id="captureparams-1"></a>
+<Parameter name="captureParams">
 
 屏幕共享配置。默认视频分辨率为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapturebywindowid__return_values"></a>
 
@@ -363,9 +402,14 @@ _migration:
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopscreencapture2__return_values"></a>
 
@@ -402,9 +446,14 @@ _migration:
 
 ### 参数
 
-### captureParams
+<ParameterList>
+<a id="captureparams-2"></a>
+<Parameter name="captureParams">
 
 屏幕共享的编码参数。屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
 
@@ -442,13 +491,18 @@ _migration:
 
 ### 参数
 
-### rect
+<ParameterList>
+<a id="rect"></a>
+<Parameter name="rect">
 
 相对于屏幕或窗口的区域位置。
 
 - 如果不设置该参数，SDK 会共享整个屏幕。
 - 如果指定的区域超出屏幕或窗口范围，SDK 仅共享其中的区域。
 - 如果设置的宽度或高度为 0，SDK 会共享整个屏幕或窗口。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencaptureregion2__return_values"></a>
 

@@ -62,12 +62,22 @@ _migration:
 
 - new AgoraRtePublishThreadMain(client:IAgoraRTCClient, _config:[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
-- Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#constructor)Parameters
+Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#constructor)
 
-  - client: IAgoraRTCClient
-  - _config: [RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
+<ParameterList title="Parameters">
+<Parameter name="client" type="IAgoraRTCClient" required />
+<Parameter name="_config" required>
 
-  Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+<ParameterType>
+
+[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
 ## Properties
 
@@ -99,7 +109,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - get latencyLevel():AudienceLatencyLevelType
 
-- Returns AudienceLatencyLevelType
+Returns AudienceLatencyLevelType
 
 <a id="localAudioTrack"></a>
 
@@ -107,7 +117,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - get localAudioTrack():undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
-- Returns undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+Returns undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
 <a id="localVideoTrack"></a>
 
@@ -115,7 +125,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - get localVideoTrack():undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
-- Returns undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+Returns undefined|[AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
 ## Methods
 
@@ -125,7 +135,7 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - checkAllTracksPublishState():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="checkDuplicateTypeTracks"></a>
 
@@ -133,24 +143,26 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - checkDuplicateTypeTracks(tracks:ILocalTrack[]):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tracks" type="ILocalTrack[]" required />
+</ParameterList>
 
-  - tracks: ILocalTrack[]
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="emit"></a>
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+- emit(evt:string,...args:any[]):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#emit)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
 <a id="handleTrackDestroy"></a>
 
@@ -158,11 +170,11 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - handleTrackDestroy(track:ILocalTrack):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" type="ILocalTrack" required />
+</ParameterList>
 
-  - track: ILocalTrack
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="handleTrackStateChanged"></a>
 
@@ -170,11 +182,19 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - handleTrackStateChanged(state:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="state" required>
 
-  - state: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+<ParameterType>
 
-  Returns void
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="isTrackPublished"></a>
 
@@ -182,11 +202,11 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - isTrackPublished(track?:ILocalTrack):boolean
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" type="ILocalTrack" optional />
+</ParameterList>
 
-  - Optional track: ILocalTrack
-
-  Returns boolean
+Returns boolean
 
 <a id="off"></a>
 
@@ -194,12 +214,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - off(evt:string, cb:CallableFunction):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#off)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
 <a id="on"></a>
 
@@ -207,12 +229,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - on(evt:string, cb:CallableFunction):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#on)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
 <a id="onExecution"></a>
 
@@ -220,7 +244,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - onExecution():Promise&lt;void&gt;
 
-- Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[onExecution](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#onExecution)Returns Promise&lt;void&gt;
+Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[onExecution](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#onExecution)
+
+Returns Promise&lt;void&gt;
 
 <a id="once"></a>
 
@@ -228,12 +254,14 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - once(evt:string, cb:CallableFunction):[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#once)Parameters
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-publish-thread-main)
 
 <a id="publishTracks"></a>
 
@@ -241,11 +269,11 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - publishTracks(tracks:ILocalTrack[]):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tracks" type="ILocalTrack[]" required />
+</ParameterList>
 
-  - tracks: ILocalTrack[]
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="removeAllEventListeners"></a>
 
@@ -253,7 +281,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - removeAllEventListeners():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#removeAllEventListeners)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#removeAllEventListeners)
+
+Returns void
 
 <a id="run"></a>
 
@@ -261,7 +291,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - run():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[run](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#run)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[run](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#run)
+
+Returns void
 
 <a id="setTrackThread"></a>
 
@@ -269,12 +301,20 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - setTrackThread(type:"audio"|"video", trackThread:[AgoraRteMediaTrackThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-media-track-thread)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" type="&quot;audio&quot; | &quot;video&quot;" required />
+<Parameter name="trackThread" required>
 
-  - type: "audio"|"video"
-  - trackThread: [AgoraRteMediaTrackThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-media-track-thread)
+<ParameterType>
 
-  Returns void
+[AgoraRteMediaTrackThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-media-track-thread)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stop"></a>
 
@@ -282,7 +322,9 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - stop():void
 
-- Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[stop](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#stop)Returns void
+Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread).[stop](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread#stop)
+
+Returns void
 
 <a id="unpublishTracks"></a>
 
@@ -290,8 +332,8 @@ Inherited from [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/electron
 
 - unpublishTracks(tracks:ILocalTrack[]):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tracks" type="ILocalTrack[]" required />
+</ParameterList>
 
-  - tracks: ILocalTrack[]
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;

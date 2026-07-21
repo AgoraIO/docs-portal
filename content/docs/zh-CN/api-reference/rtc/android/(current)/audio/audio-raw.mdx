@@ -215,9 +215,14 @@ public abstract int registerAudioFrameObserver(IAudioFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频帧观测器实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)。设置为 `null` 可释放该实例。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频帧观测器对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudioframeobserver__return_values"></a>
 
@@ -259,27 +264,38 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 在 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的音频采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 在 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的音频通道数：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式：
 
 - `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`（0）：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
 - `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE`（2）：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 在 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的每次调用采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -322,20 +338,29 @@ SDK 会根据采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/and
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率，可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为以下取值：
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
@@ -382,7 +407,9 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为以下值：
 
@@ -392,12 +419,17 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 - 44100：44.1 kHz。
 - 48000：48 kHz。
 
-### channel
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为以下值：
 
 - 1：单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
 
@@ -430,7 +462,9 @@ public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, 
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的采样率。可设置为以下值（单位：Hz）：
 
@@ -440,20 +474,27 @@ public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, 
 - 44100
 - 48000
 
-### channel
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的声道数。可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调中返回的音频数据的采样点数。
 
 :::note
 注： 在 RTMP 推流场景中，建议设置为 1024。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -500,27 +541,38 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、24000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式：
 
 - `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY` (0)：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
 - `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE` (2)：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 每次调用返回的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
@@ -561,27 +613,38 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-5"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率，可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-5"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式：
 
 - 0：只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
 - 2：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据并进行修改后播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
 
 每次调用的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
@@ -623,40 +686,59 @@ public abstract boolean onEarMonitoringAudioFrame(int type, int samplesPerChanne
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 音频帧类型。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个音频采样点的字节数。例如，每个 PCM 音频采样点通常占用 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错格式。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 音频缓冲区。缓冲区大小 = `samplesPerChannel` × `channels` × `bytesPerSample`。详见 `ByteBuffer`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该参数在视频或音频相关场景中（包括使用自定义视频源的场景）实现音视频帧同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
 
 预留参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe__return_values"></a>
 
@@ -698,44 +780,65 @@ public abstract boolean onMixedAudioFrame(String channelId, int type, int sample
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 音频帧类型。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-1"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample-1"></a>
+<Parameter name="bytesPerSample">
 
 每个音频采样的字节数。例如，每个 PCM 音频采样通常占用 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。使用立体声时，数据为交错格式。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-1"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### buffer
+</Parameter>
+<a id="buffer-1"></a>
+<Parameter name="buffer">
 
 音频缓冲区。缓冲区大小 = `samplesPerChannel` × `channels` × `bytesPerSample`。详见 `ByteBuffer`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems-1"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该参数在视频或音频相关场景中（包括使用外部视频源的场景）实现音视频帧同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type-1"></a>
+<Parameter name="avsync_type">
 
 预留参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe__return_values"></a>
 
@@ -777,44 +880,65 @@ public abstract boolean onPlaybackAudioFrame(String channelId, int type, int sam
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### type
+</Parameter>
+<a id="type-2"></a>
+<Parameter name="type">
 
 音频帧类型。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-2"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample-2"></a>
+<Parameter name="bytesPerSample">
 
 每个音频采样点的字节数。例如，每个 PCM 音频采样点通常占用 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels-2"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-2"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### buffer
+</Parameter>
+<a id="buffer-2"></a>
+<Parameter name="buffer">
 
 音频缓冲区。缓冲区大小 = `samplesPerChannel` × `channels` × `bytesPerSample`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems-2"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该参数在视频或音频相关场景中（包括使用外部视频源的场景）实现音视频帧同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type-2"></a>
+<Parameter name="avsync_type">
 
 预留参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe__return_values"></a>
 
@@ -853,56 +977,83 @@ public abstract boolean onPlaybackAudioFrameBeforeMixing(String channelId, int u
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 已订阅远端用户的用户 ID。
 
-### type
+</Parameter>
+<a id="type-3"></a>
+<Parameter name="type">
 
 音频帧类型。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-3"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample-3"></a>
+<Parameter name="bytesPerSample">
 
 每个音频采样点的字节数。例如，每个 PCM 音频采样点通常为 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels-3"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。立体声数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-3"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### buffer
+</Parameter>
+<a id="buffer-3"></a>
+<Parameter name="buffer">
 
 音频缓冲区。缓冲区大小 = `samplesPerChannel` × `channels` × `bytesPerSample`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems-3"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该参数在视频或音频相关场景中（包括使用自定义视频源的场景）实现音视频同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type-3"></a>
+<Parameter name="avsync_type">
 
 预留参数。
 
-### rtpTimestamp
+</Parameter>
+<a id="rtptimestamp"></a>
+<Parameter name="rtpTimestamp">
 
 RTP 时间戳。
 
-### presentationMs
+</Parameter>
+<a id="presentationms"></a>
+<Parameter name="presentationMs">
 
 展示时间戳（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values"></a>
 
@@ -944,44 +1095,65 @@ public abstract boolean onRecordAudioFrame(String channelId, int type, int sampl
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### type
+</Parameter>
+<a id="type-4"></a>
+<Parameter name="type">
 
 音频帧类型。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-4"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample-4"></a>
+<Parameter name="bytesPerSample">
 
 每个音频采样的字节数。例如，每个 PCM 音频采样通常占用 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels-4"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。如果使用立体声，数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-4"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### buffer
+</Parameter>
+<a id="buffer-4"></a>
+<Parameter name="buffer">
 
 音频缓冲区。缓冲区大小 = `samplesPerChannel` × `channels` × `bytesPerSample`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems-4"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该参数在视频或音频相关场景中（包括使用外部视频源的场景）实现音视频帧同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type-4"></a>
+<Parameter name="avsync_type">
 
 预留参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe__return_values"></a>
 

@@ -53,16 +53,23 @@ public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): nu
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启内置加密：
 
 - true: 开启内置加密。
 - false:（默认）关闭内置加密。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/harmonyos/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableencryption__return_values"></a>
 
@@ -115,9 +122,14 @@ public abstract getCallId(): string;
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
 
 输出参数，当前的通话 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getcallid__return_values"></a>
 
@@ -161,9 +173,14 @@ public abstract  getCallIdEx(connection:RtcConnection):string;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 返回值
 
@@ -234,9 +251,14 @@ public static getErrorDescription(error: number): string {
 
 ### 参数
 
-### error
+<ParameterList>
+<a id="error"></a>
+<Parameter name="error">
 
 SDK 报告的错误码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geterrordescription__return_values"></a>
 
@@ -326,9 +348,14 @@ public abstract setParameters(parameters: string): number;
 
 ### 参数
 
-### parameters
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
 
 JSON 字符串形式的参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setparameters__return_values"></a>
 
@@ -384,9 +411,14 @@ public abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/harmonyos/class-lastmileprobeconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlastmileprobetest__return_values"></a>
 
@@ -474,15 +506,22 @@ onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constan
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__connectionstate"></a>
 
 当前网络连接状态。详见 [ConnectionState](/zh-CN/api-reference/rtc/harmonyos/enum-connectionstatetype)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 引起当前网络连接状态改变的原因。详见 [ConnectionChangedReason](/zh-CN/api-reference/rtc/harmonyos/enum-connectionchangedreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -512,9 +551,14 @@ onEncryptionError?:(errorType:Constants.EncryptionError) => void;
 
 ### 参数
 
-### errorType
+<ParameterList>
+<a id="errortype"></a>
+<Parameter name="errorType">
 
 错误类型，详见 [EncryptionError](/zh-CN/api-reference/rtc/harmonyos/enum-encryptionerrortype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -544,9 +588,14 @@ onLastmileProbeResult? : (result:LastmileProbeResult) => void;
 
 ### 参数
 
-### result
+<ParameterList>
+<a id="result"></a>
+<Parameter name="result">
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/harmonyos/class-lastmileproberesult)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -578,9 +627,14 @@ onLastmileQuality? : (quality:Constants.QualityType) => void;
 
 ### 参数
 
-### quality
+<ParameterList>
+<a id="quality"></a>
+<Parameter name="quality">
 
 Last mile 网络质量。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -622,17 +676,26 @@ onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。表示该回调报告的是持有该 ID 的用户的网络质量。如果当 uid 为 0 时，返回的是本地用户的网络质量。
 
-### txQuality
+</Parameter>
+<a id="txquality"></a>
+<Parameter name="txQuality">
 
 该用户的上行网络质量，基于发送码率、上行丢包率、平均往返时延和网络抖动计算。 该值代表当前的上行网络质量，帮助判断是否可以支持当前设置的视频编码属性。 假设上行码率是 1000 Kbps，那么支持直播场景下 640 × 480 的分辨率、15 fps 的帧率没有问题，但是支持 1280 × 720 的分辨率就会有困难。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
 
-### rxQuality
+</Parameter>
+<a id="rxquality"></a>
+<Parameter name="rxQuality">
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -662,9 +725,14 @@ onPermissionError?:(permission:Constants.PermissionType) => void;
 
 ### 参数
 
-### permission
+<ParameterList>
+<a id="permission"></a>
+<Parameter name="permission">
 
 设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/harmonyos/enum-permissiontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

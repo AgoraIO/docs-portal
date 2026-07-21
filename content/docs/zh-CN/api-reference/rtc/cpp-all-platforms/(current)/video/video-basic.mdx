@@ -97,12 +97,17 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用本地视频采集：
 
 - true：（默认）启用本地视频采集。
 - false：关闭本地视频采集。关闭后，远端用户无法接收到本地用户的视频流，但本地用户仍可接收远端用户的视频流。设置为 false 时，无需本地摄像头。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -204,9 +209,14 @@ virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码配置，详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
@@ -253,13 +263,20 @@ virtual int setVideoEncoderConfigurationEx(const VideoEncoderConfiguration& conf
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频编码配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
@@ -300,7 +317,9 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
 
 ### 参数
 
-### scenarioType
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 视频应用场景类型，详见 [VIDEO_APPLICATION_SCENARIO_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoapplicationscenariotype)。
 
@@ -326,6 +345,9 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
       - 码率：500 Kbps。
 - `APPLICATION_SCENARIO_1V1`（2）：适用于一对一直播场景。SDK 会优化策略，以满足低延迟和高画质的需求，提升视频质量、首帧渲染速度、中低端设备的延迟表现以及弱网环境下的流畅性。注意：该枚举值仅适用于主播对主播的场景。
 - `APPLICATION_SCENARIO_LIVESHOW`（3）：适用于秀场场景。SDK 会启用多项性能优化，包括自动启用音视频帧加速渲染（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_enableinstantmediarendering)）以减少首帧延迟，以及启用 B 帧编码以提升图像质量和带宽效率，即使在弱网或低端设备上也能提供更好的视频质量和播放流畅性。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -415,9 +437,14 @@ virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
@@ -493,9 +520,14 @@ virtual int stopPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
@@ -534,21 +566,32 @@ virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int hei
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 本地首帧视频画面的宽度，单位为像素。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地首帧视频画面的高度，单位为像素。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 加入频道到该回调触发的时间间隔，单位为毫秒。如果在加入频道前调用了 `startPreview`，该参数表示从调用 `startPreview` 到该事件触发的时间间隔。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -587,13 +630,20 @@ virtual void onFirstLocalVideoFramePublished(VIDEO_SOURCE_TYPE source, int elaps
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到该回调触发的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -629,21 +679,32 @@ virtual void onFirstRemoteVideoDecoded(uid_t uid, int width, int height, int ela
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送视频流的远端用户 ID。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 视频流的宽度（单位为像素）。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 视频流的高度（单位为像素）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -679,21 +740,32 @@ virtual void onFirstRemoteVideoFrame(uid_t uid, int width, int height, int elaps
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID，即发送视频流的用户。
 
-### width
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
 
 视频流的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
 
 视频流的高度（像素）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -725,13 +797,20 @@ virtual void onLocalVideoEvent(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_EVENT_TYPE 
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-2"></a>
+<Parameter name="source">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 本地视频事件类型，详见 [LOCAL_VIDEO_EVENT_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideoeventtype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -774,17 +853,26 @@ SDK 在以下情况下会触发该回调，并将 `state` 设置为 `LOCAL_VIDEO
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-3"></a>
+<Parameter name="source">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频的状态，详见 [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态变化的原因，详见 [LOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -816,13 +904,20 @@ SDK 每两秒触发一次该回调。
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-4"></a>
+<Parameter name="source">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流的统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localvideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -858,21 +953,32 @@ virtual void onRemoteVideoStateChanged(uid_t uid, REMOTE_VIDEO_STATE state, REMO
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 发生视频状态变化的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频的状态，详见 [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-remotevideostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频状态变化的原因，详见 [REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-remotevideostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -904,9 +1010,14 @@ SDK 每两秒为每位远端用户触发一次该回调。如果频道中有多�
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频流的统计信息。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -942,21 +1053,32 @@ virtual void onRemoteVideoTransportStats(uid_t uid, unsigned short delay, unsign
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID，表示发送视频包的用户。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 从发送端到接收端的网络时延（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 远端用户发送的视频包的丢包率（%）。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收视频的码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -988,16 +1110,23 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) __deprecated
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 指定的远端用户是否启用本地视频采集功能：
 
 - true：启用视频模块，频道内其他用户可以看到该远端用户的视频。
 - false：关闭视频模块，频道内其他用户无法接收该远端用户的视频流，但该远端用户仍可接收其他用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1031,16 +1160,23 @@ virtual void onUserEnableVideo(uid_t uid, bool enabled)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### enabled
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用视频模块：
 
 - true：视频模块已启用。
 - false：视频模块已关闭。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1072,16 +1208,23 @@ virtual void onUserMuteVideo(uid_t uid, bool muted)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否停止发布视频流：
 
 - true：远端用户停止发布视频流。
 - false：远端用户恢复发布视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1107,25 +1250,38 @@ virtual void onVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, const char* ch
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-5"></a>
+<Parameter name="source">
 
 视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的视频发布状态。详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的视频发布状态。详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streampublishstate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 从上一个状态切换到当前状态所经历的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1155,29 +1311,42 @@ virtual void onVideoSizeChanged(VIDEO_SOURCE_TYPE sourceType, uid_t uid, int wid
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 发生视频尺寸或旋转变化的用户 ID。本地用户的 `uid` 为 0，表示本地用户的视频预览。
 
-### width
+</Parameter>
+<a id="width-3"></a>
+<Parameter name="width">
 
 视频流的宽度（单位为像素）。
 
-### height
+</Parameter>
+<a id="height-3"></a>
+<Parameter name="height">
 
 视频流的高度（单位为像素）。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频旋转角度，取值范围为 [0, 360)。
 
 :::note
 注： `rotation` 参数在 iOS 平台上始终为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

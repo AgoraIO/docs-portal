@@ -38,19 +38,27 @@ _migration:
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 音频帧类型，详见 [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audioframetype)。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 声道数量(如果是立体声，数据是交叉的)。
 
@@ -59,22 +67,33 @@ _migration:
 - 1: 单声道
 - 2: 双声道
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 每声道每秒的采样点数。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 声音数据缓存区（如果是立体声，数据是交叉存储的）。
 
 缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的渲染时间戳。
 
 你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
 
 保留参数。
+
+</Parameter>
+</ParameterList>

@@ -46,7 +46,9 @@ _migration:
 
 - new EduErrorCenter():[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#constructor)Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#constructor)
+
+Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
 ## Properties
 
@@ -62,14 +64,16 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+- emit(evt:string,...args:any[]):[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#emit)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
 <a id="handleNonThrowableError"></a>
 
@@ -77,12 +81,22 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - handleNonThrowableError(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:Error):void
 
-- Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleNonThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleNonThrowableError)Parameters
+Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleNonThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleNonThrowableError)
 
-  - code: [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
-  - error: Error
+<ParameterList title="Parameters">
+<Parameter name="code" required>
 
-  Returns void
+<ParameterType>
+
+[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="error" type="Error" required />
+</ParameterList>
+
+Returns void
 
 <a id="handleThrowableError"></a>
 
@@ -90,12 +104,22 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - handleThrowableError(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:Error):never
 
-- Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleThrowableError)Parameters
+Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleThrowableError)
 
-  - code: [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
-  - error: Error
+<ParameterList title="Parameters">
+<Parameter name="code" required>
 
-  Returns never
+<ParameterType>
+
+[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="error" type="Error" required />
+</ParameterList>
+
+Returns never
 
 <a id="off"></a>
 
@@ -103,12 +127,14 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - off(evt:string, cb:CallableFunction):[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#off)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
 <a id="offError"></a>
 
@@ -116,20 +142,44 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - offError(cb:(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))=&gt;void):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))=&gt;void
+<ParameterType>
 
-    - - (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)):void
+(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))= & gt;void
 
-      - Parameters
+</ParameterType>
 
-        - code: [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
-        - error: [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
+- - (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)):void
 
-        Returns void
+  <ParameterList title="Parameters">
+  <Parameter name="code" required>
+
+  <ParameterType>
+
+  [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="error" required>
+
+  <ParameterType>
+
+  [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -137,12 +187,14 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - on(evt:string, cb:CallableFunction):[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#on)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
 <a id="onError"></a>
 
@@ -150,20 +202,44 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - onError(cb:(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))=&gt;void):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))=&gt;void
+<ParameterType>
 
-    - - (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)):void
+(code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror))= & gt;void
 
-      - Parameters
+</ParameterType>
 
-        - code: [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
-        - error: [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
+- - (code:[AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code), error:[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)):void
 
-        Returns void
+  <ParameterList title="Parameters">
+  <Parameter name="code" required>
+
+  <ParameterType>
+
+  [AGEduErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-error-gedu-error-code)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="error" required>
+
+  <ParameterType>
+
+  [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
 
   Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -171,12 +247,14 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - once(evt:string, cb:CallableFunction):[EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#once)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
+Returns [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-error-du-error-center)
 
 <a id="removeAllEventListeners"></a>
 
@@ -184,4 +262,6 @@ shared: [EduErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - removeAllEventListeners():void
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#removeAllEventListeners)Returns void
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#removeAllEventListeners)
+
+Returns void

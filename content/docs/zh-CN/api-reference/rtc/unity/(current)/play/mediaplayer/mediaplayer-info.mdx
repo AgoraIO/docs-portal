@@ -31,9 +31,14 @@ public virtual int GetAudioBufferDelay()
 
 ### 参数
 
-### delayMs
+<ParameterList>
+<a id="delayms"></a>
+<Parameter name="delayMs">
 
 输出参数，表示播放媒体文件时的音频缓冲延迟，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getaudiobufferdelay__return_values"></a>
 
@@ -66,9 +71,14 @@ public abstract int GetDuration(ref Int64 duration);
 
 ### 参数
 
-### duration
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
 
 输出参数。媒体文件总时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getduration__return_values"></a>
 
@@ -128,12 +138,17 @@ public abstract int GetMute(ref bool muted);
 
 ### 参数
 
-### muted
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 输出参数。静音状态：
 
 - true: 媒体文件已静音。
 - false: 媒体文件未静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getmute__return_values"></a>
 
@@ -166,12 +181,17 @@ public abstract int GetPlayoutVolume(ref int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 输出参数。本地播放音量，取值范围从 0 到 100：
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getplayoutvolume__return_values"></a>
 
@@ -204,9 +224,14 @@ public abstract int GetPlayPosition(ref Int64 pos);
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 媒体资源文件当前的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getplayposition__return_values"></a>
 
@@ -265,9 +290,14 @@ public abstract int GetPublishSignalVolume(ref int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 输出参数。播放文件的远端播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getpublishsignalvolume__return_values"></a>
 
@@ -330,9 +360,14 @@ public abstract int GetStreamCount(ref Int64 count);
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 输出参数。当前媒体文件中媒体流的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreamcount__return_values"></a>
 
@@ -371,13 +406,20 @@ public abstract int GetStreamInfo(Int64 index, ref PlayerStreamInfo info);
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 媒体流索引值。该参数需小于 [GetStreamCount](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的 `count` 参数。
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 输出参数。媒体流的所有信息，详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/unity/class-playerstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreaminfo__return_values"></a>
 
@@ -414,9 +456,14 @@ public virtual void OnPlayerPlaybackStats(PlayerPlaybackStats stats)
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/unity/class-playerplaybackstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

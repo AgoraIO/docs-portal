@@ -33,9 +33,14 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频帧观察者对象，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver1_imediaplayer__return_values"></a>
 
@@ -68,13 +73,20 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer, RAW_
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频帧观测器对象。详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiopcmframesink)。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式。详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
 
@@ -115,9 +127,14 @@ virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) =
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-2"></a>
+<Parameter name="observer">
 
 用于监听播放过程中的事件。详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
@@ -152,9 +169,14 @@ virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observe
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-3"></a>
+<Parameter name="observer">
 
 视频帧观察器。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__return_values"></a>
 
@@ -187,9 +209,14 @@ virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-4"></a>
+<Parameter name="observer">
 
 音频帧观察器。详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__return_values"></a>
 
@@ -222,9 +249,14 @@ virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer)
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-5"></a>
+<Parameter name="observer">
 
 媒体播放器观察者，用于监听播放过程中的事件。详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
@@ -257,9 +289,14 @@ virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-6"></a>
+<Parameter name="observer">
 
 视频帧观察器。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__return_values"></a>
 
@@ -294,9 +331,14 @@ virtual void onAudioVolumeIndication(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 媒体播放器的音量，取值范围为 0 到 255。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -330,9 +372,14 @@ virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 音频帧信息，详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiopcmframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -360,13 +407,20 @@ virtual void onMetaData(const void* data, int length) = 0;
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 媒体元数据的详细数据。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度，单位为字节。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -403,9 +457,14 @@ virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 
 ### 参数
 
-### playCachedBuffer
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 缓冲数据可支持的播放时长，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -433,17 +492,26 @@ virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t el
 
 ### 参数
 
-### eventCode
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MEDIA_PLAYER_EVENT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerevent)。
 
-### elapsedTime
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 事件发生的时间，单位为毫秒。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的相关信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -471,9 +539,14 @@ virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-playerupdatedinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -501,13 +574,20 @@ virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state, m
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 播放状态。详见 [MEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放状态变化的原因。详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -533,13 +613,20 @@ virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const medi
 
 ### 参数
 
-### from
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 正在播放的媒体资源的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-srcinfo)。
 
-### to
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变更后的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-srcinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -567,17 +654,24 @@ virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 
 ### 参数
 
-### positionMs
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 媒体文件的播放位置，单位为毫秒。
 
-### timestampMs
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度对应的 NTP 时间戳，单位为毫秒。
 
 :::note
 注： 该参数仅在频道内生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -603,13 +697,20 @@ virtual void onPreloadEvent(const char* src, media::base::PLAYER_PRELOAD_EVENT e
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时触发的事件，详见 [PLAYER_PRELOAD_EVENT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-playerpreloadevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -637,13 +738,20 @@ virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 
 ### 参数
 
-### buffer
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 输出参数，表示数据缓冲区（字节）。你需要将 SDK 请求的 `bufferSize` 大小的数据写入该缓冲区。
 
-### bufferSize
+</Parameter>
+<a id="buffersize"></a>
+<Parameter name="bufferSize">
 
 数据缓冲区的长度（字节）。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__return_values"></a>
 

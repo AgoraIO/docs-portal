@@ -67,14 +67,40 @@ _migration:
 
 - new RtcChannelAdapterWeb(channelName:string, configs:[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config), base:[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base), audioRawDataDispatcher:[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#constructor)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#constructor)
 
-  - channelName: string
-  - configs: [RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
-  - base: [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
-  - audioRawDataDispatcher: [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="configs" required>
 
-  Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+<ParameterType>
+
+[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="base" required>
+
+<ParameterType>
+
+[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioRawDataDispatcher" required>
+
+<ParameterType>
+
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
 ## Properties
 
@@ -108,14 +134,16 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+- emit(evt:string,...args:any[]):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
-- Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#emit)Parameters
+Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
 <a id="enableDualStream"></a>
 
@@ -123,12 +151,22 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - enableDualStream(enable:boolean, connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[enableDualStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#enableDualStream)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[enableDualStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#enableDualStream)
 
-  - enable: boolean
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+<Parameter name="connectionType" required>
 
-  Returns Promise&lt;void&gt;
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="getCurrentFrameData"></a>
 
@@ -136,11 +174,13 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - getCurrentFrameData(streamUuid:string):ImageData
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[getCurrentFrameData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#getCurrentFrameData)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[getCurrentFrameData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#getCurrentFrameData)
 
-  - streamUuid: string
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
-  Returns ImageData
+Returns ImageData
 
 <a id="getSessionId"></a>
 
@@ -148,7 +188,9 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - getSessionId():any
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[getSessionId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#getSessionId)Returns any
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[getSessionId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#getSessionId)
+
+Returns any
 
 <a id="join"></a>
 
@@ -156,13 +198,23 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - join(token:string, streamUuid:string, connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[join](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#join)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[join](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#join)
 
-  - token: string
-  - streamUuid: string
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="token" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="connectionType" required>
 
-  Returns Promise&lt;void&gt;
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="leave"></a>
 
@@ -170,11 +222,21 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - leave(connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[leave](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#leave)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[leave](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#leave)
 
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="connectionType" optional>
 
-  Returns Promise&lt;void&gt;
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="muteLocalAudio"></a>
 
@@ -182,12 +244,22 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteLocalAudio(mute:boolean, connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalAudio](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalAudio)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalAudio](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalAudio)
 
-  - mute: boolean
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+<Parameter name="connectionType" required>
 
-  Returns number
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="muteLocalScreenShare"></a>
 
@@ -195,12 +267,22 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteLocalScreenShare(mute:boolean, connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalScreenShare](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalScreenShare)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalScreenShare](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalScreenShare)
 
-  - mute: boolean
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+<Parameter name="connectionType" required>
 
-  Returns number
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="muteLocalVideo"></a>
 
@@ -208,12 +290,22 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteLocalVideo(mute:boolean, connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalVideo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalVideo)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteLocalVideo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteLocalVideo)
 
-  - mute: boolean
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+<Parameter name="connectionType" required>
 
-  Returns number
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="muteRemoteAudio"></a>
 
@@ -221,12 +313,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteRemoteAudio(streamUuid:string, mute:boolean):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteAudio](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteAudio)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteAudio](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteAudio)
 
-  - streamUuid: string
-  - mute: boolean
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="muteRemoteVideo"></a>
 
@@ -234,12 +328,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteRemoteVideo(streamUuid:string, mute:boolean):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteVideo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteVideo)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteVideo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteVideo)
 
-  - streamUuid: string
-  - mute: boolean
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="muteRemoteVideoMass"></a>
 
@@ -247,12 +343,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - muteRemoteVideoMass(streamUuids:string[], mute:boolean):Promise&lt;string[]&gt;
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteVideoMass](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteVideoMass)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[muteRemoteVideoMass](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#muteRemoteVideoMass)
 
-  - streamUuids: string[]
-  - mute: boolean
+<ParameterList title="Parameters">
+<Parameter name="streamUuids" type="string[]" required />
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  Returns Promise&lt;string[]&gt;
+Returns Promise&lt;string[]&gt;
 
 <a id="off"></a>
 
@@ -260,12 +358,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - off(evt:string, cb:CallableFunction):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
-- Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#off)Parameters
+Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
 <a id="on"></a>
 
@@ -273,12 +373,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - on(evt:string, cb:CallableFunction):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
-- Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#on)Parameters
+Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
 <a id="onAudioVolumeIndication"></a>
 
@@ -286,19 +388,23 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - onAudioVolumeIndication(cb:(volumes:Map&lt;string,number&gt;)=&gt;void):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onAudioVolumeIndication](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onAudioVolumeIndication)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onAudioVolumeIndication](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onAudioVolumeIndication)
 
-  - cb: (volumes:Map&lt;string,number&gt;)=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(volumes:Map &amp; lt;string,number &amp; gt;)= &amp; gt;void" required>
 
-    - - (volumes:Map&lt;string,number&gt;):void
+- - (volumes:Map&lt;string,number&gt;):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="volumes" type="Map &amp; lt;string,number &amp; gt;" required />
+  </ParameterList>
 
-        - volumes: Map&lt;string,number&gt;
+  Returns void
 
-        Returns void
+</Parameter>
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="onConnectedThroughCloudProxy"></a>
 
@@ -306,19 +412,37 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - onConnectedThroughCloudProxy(cb:(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onConnectedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onConnectedThroughCloudProxy)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onConnectedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onConnectedThroughCloudProxy)
 
-  - cb: (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
+<ParameterType>
 
-      - Parameters
+(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt;void
 
-        - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</ParameterType>
 
-        Returns void
+- - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="connectionType" required>
+
+  <ParameterType>
+
+  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onConnectionStateChanged"></a>
 
@@ -326,20 +450,46 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - onConnectionStateChanged(cb:(state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onConnectionStateChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onConnectionStateChanged)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onConnectionStateChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onConnectionStateChanged)
 
-  - cb: (state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
+<ParameterType>
 
-      - Parameters
+(state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt;void
 
-        - state: [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
-        - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</ParameterType>
 
-        Returns void
+- - (state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="state" required>
+
+  <ParameterType>
+
+  [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="connectionType" required>
+
+  <ParameterType>
+
+  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onNetworkStats"></a>
 
@@ -347,19 +497,37 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - onNetworkStats(cb:(stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))=&gt;void):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onNetworkStats)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onNetworkStats)
 
-  - cb: (stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)):void
+<ParameterType>
 
-      - Parameters
+(stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))= & gt;void
 
-        - stats: [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)
+</ParameterType>
 
-        Returns void
+- - (stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="stats" required>
+
+  <ParameterType>
+
+  [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onPublishedThroughCloudProxy"></a>
 
@@ -367,20 +535,38 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - onPublishedThroughCloudProxy(cb:(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingProxy:boolean)=&gt;void):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onPublishedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onPublishedThroughCloudProxy)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[onPublishedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#onPublishedThroughCloudProxy)
 
-  - cb: (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingProxy:boolean)=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingProxy:boolean):void
+<ParameterType>
 
-      - Parameters
+(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingProxy:boolean)= & gt;void
 
-        - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
-        - isUsingProxy: boolean
+</ParameterType>
 
-        Returns void
+- - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingProxy:boolean):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="connectionType" required>
+
+  <ParameterType>
+
+  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="isUsingProxy" type="boolean" required />
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="once"></a>
 
@@ -388,12 +574,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - once(evt:string, cb:CallableFunction):[RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
-- Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#once)Parameters
+Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
+Returns [RtcChannelAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-channel-adapter-web)
 
 <a id="removeAllEventListeners"></a>
 
@@ -401,7 +589,9 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - removeAllEventListeners():void
 
-- Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#removeAllEventListeners)Returns void
+Inherited from [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#removeAllEventListeners)
+
+Returns void
 
 <a id="setCloudProxy"></a>
 
@@ -409,11 +599,21 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - setCloudProxy(proxyType:[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setCloudProxy)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setCloudProxy)
 
-  - proxyType: [AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+<ParameterList title="Parameters">
+<Parameter name="proxyType" required>
 
-  Returns number
+<ParameterType>
+
+[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setLatencyLevel"></a>
 
@@ -421,11 +621,21 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)):void
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setLatencyLevel)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setLatencyLevel)
 
-  - level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+<ParameterList title="Parameters">
+<Parameter name="level" required>
 
-  Returns void
+<ParameterType>
+
+[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setLowStreamParameter"></a>
 
@@ -433,12 +643,30 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - setLowStreamParameter(streamParameter:[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setLowStreamParameter)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setLowStreamParameter)
 
-  - streamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="streamParameter" required>
 
-  Returns number
+<ParameterType>
+
+[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="connectionType" required>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -446,12 +674,14 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - setRemoteTrackVolume(streamUuid:string, volume:number):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setRemoteTrackVolume](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setRemoteTrackVolume)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setRemoteTrackVolume](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setRemoteTrackVolume)
 
-  - streamUuid: string
-  - volume: number
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="volume" type="number" required />
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -459,10 +689,28 @@ sub: [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-refe
 
 - setRemoteVideoStreamType(streamUuid:string, streamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setRemoteVideoStreamType)Parameters
+Overrides [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base).[setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base#setRemoteVideoStreamType)
 
-  - streamUuid: string
-  - streamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="streamType" required>
 
-  Returns number
+<ParameterType>
+
+[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="connectionType" required>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number

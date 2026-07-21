@@ -41,10 +41,13 @@ _migration:
 
 `- (void)postIframeMessage:(id)*payload*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="payload">
 
-| `payload` | 关键信息。 |
-| --- | --- |
+关键信息。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -58,17 +61,18 @@ _migration:
 
 `- (void)getSceneFromScenePath:(NSString *)*scenePath* result:(void ( ^ ) ( WhiteScene *_Nullable scene ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="scenePath">
 
-| `scenePath` | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。 |
-| --- | --- |
-| `result` | <Slot name="api-center-table-0" /> |
+场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="result">
 
 方法调用结果回调。方法调用成功时，返回场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -82,17 +86,18 @@ _migration:
 
 `- (void)getScenePathType:(NSString *)*pathOrDir* result:(void ( ^ ) ( WhiteScenePathType pathType ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="pathOrDir">
 
-| `pathOrDir` | 场景路径类型。 |
-| --- | --- |
-| `result` | <Slot name="api-center-table-1" /> |
+场景路径类型。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="result">
 
 回调。返回指定场景的路径类型，详见 [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-scene-path-type)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -110,10 +115,13 @@ _migration:
 
 `- (void)getEntireScenes:(void ( ^ ) ( NSDictionary<NSString*,NSArray<WhiteScene*> *> *dict ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前房间内所有场景的信息。 |
-| --- | --- |
+回调。返回当前房间内所有场景的信息。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -127,10 +135,13 @@ _migration:
 
 `- (void)addMagixEventListener:(NSString *)*eventName*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="eventName">
 
-| `eventName` | 想要监听的自定义事件名称。 |
-| --- | --- |
+想要监听的自定义事件名称。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -152,17 +163,18 @@ _migration:
 
 `- (void)addHighFrequencyEventListener:(NSString *)*eventName* fireInterval:(NSUInteger)*millseconds*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="eventName">
 
-| `eventName` | 想要监听的自定义事件名称。 |
-| --- | --- |
-| `millseconds` | <Slot name="api-center-table-2" /> |
+想要监听的自定义事件名称。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="millseconds">
 
 SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -184,10 +196,13 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)removeMagixEventListener:(NSString *)*eventName*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="eventName">
 
-| `eventName` | 想要移除监听的自定义事件名称。 |
-| --- | --- |
+想要移除监听的自定义事件名称。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -217,17 +232,18 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)convertToPointInWorld:(WhitePanEvent *)*point* result:(void ( ^ ) ( WhitePanEvent *convertPoint ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="point">
 
-| `point` | 点在 iOS 坐标系中的坐标。详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。 |
-| --- | --- |
-| `result` | <Slot name="api-center-table-3" /> |
+点在 iOS 坐标系中的坐标。详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。
 
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="result">
 
 回调。返回点在世界坐标系上的坐标，详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -245,10 +261,13 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)setCameraBound:(WhiteCameraBound *)*cameraBound*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="cameraBound">
 
-| `cameraBound` | 视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。 |
-| --- | --- |
+视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -262,10 +281,13 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)moveCamera:(WhiteCameraConfig *)*camera*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="camera">
 
-| `camera` | 视角的参数配置，详见 [WhiteCameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-config)。 |
-| --- | --- |
+视角的参数配置，详见 [WhiteCameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-config)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -283,10 +305,13 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)moveCameraToContainer:(WhiteRectangleConfig *)*rectangle*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="rectangle">
 
-| `rectangle` | 视觉矩形的参数设置，详见 [WhiteRectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config)。 |
-| --- | --- |
+视觉矩形的参数设置，详见 [WhiteRectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config)。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -300,10 +325,13 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)scalePptToFit:(WhiteAnimationMode)*mode*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="mode">
 
-| `mode` | 视角调整时的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。 |
-| --- | --- |
+视角调整时的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+
+</Parameter>
+</ParameterList>
 
 #### Availability
 
@@ -354,10 +382,16 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)disableCameraTransform:(BOOL)*disable*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disable">
 
-| `disable` | 是否禁止用户调整视角： `YES`: 禁止用户调整视角。 `NO`: (默认) 允许用户调整视角。 |
-| --- | --- |
+是否禁止用户调整视角：
+
+- `YES`: 禁止用户调整视角。
+- `NO`: (默认) 允许用户调整视角。
+
+</Parameter>
+</ParameterList>
 
 #### Availability
 
@@ -375,17 +409,18 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)getScenePreviewImage:(NSString *)*scenePath* completion:(void ( ^ ) ( UIImage *_Nullable image ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="scenePath">
 
-| `scenePath` | 场景路径。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-4" /> |
+场景路径。
 
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="completionHandler">
 
 返回指定场景的预览图。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -399,20 +434,21 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)getSceneSnapshotImage:(NSString *)*scenePath* completion:(void ( ^ ) ( UIImage *_Nullable image ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="scenePath">
 
-| `scenePath` | 场景路径。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-5" /> |
+场景路径。
 
-<Slot for="api-center-table-5">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，将返回指定场景的截图。
 - 如果方法调用失败，将返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -433,10 +469,16 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 `- (void)getLocalSnapShotWithCompletion:(void ( ^ ) ( UIImage *_Nullable image , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="completionHandler">
 
-| `completionHandler` | 方法调用结果： 如果方法调用成功，将返回指定场景的截图。 如果方法调用失败，将返回错误信息。 |
-| --- | --- |
+方法调用结果：
+
+- 如果方法调用成功，将返回指定场景的截图。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 

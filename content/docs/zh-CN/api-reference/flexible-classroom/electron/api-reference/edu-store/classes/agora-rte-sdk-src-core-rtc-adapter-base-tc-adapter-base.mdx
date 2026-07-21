@@ -90,7 +90,9 @@ _migration:
 
 - new RtcAdapterBase():[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
 ## Methods
 
@@ -100,12 +102,28 @@ _migration:
 
 - addAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns number
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="addCameraProcessors"></a>
 
@@ -113,11 +131,11 @@ _migration:
 
 - addCameraProcessors(processor:IBaseProcessor[]):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processor: IBaseProcessor[]
-
-  Returns number
+Returns number
 
 <a id="addMicrophoneProcessors"></a>
 
@@ -125,11 +143,11 @@ _migration:
 
 - addMicrophoneProcessors(processor:IBaseProcessor[]):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processor: IBaseProcessor[]
-
-  Returns number
+Returns number
 
 <a id="addPreviewCameraProcessors"></a>
 
@@ -137,11 +155,11 @@ _migration:
 
 - addPreviewCameraProcessors(processor:IBaseProcessor[]):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processor: IBaseProcessor[]
-
-  Returns number
+Returns number
 
 <a id="addPreviewMicrophoneProcessors"></a>
 
@@ -149,11 +167,11 @@ _migration:
 
 - addPreviewMicrophoneProcessors(processor:IBaseProcessor[]):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IBaseProcessor[]" required />
+</ParameterList>
 
-  - processor: IBaseProcessor[]
-
-  Returns number
+Returns number
 
 <a id="adjustLoopbackSignalVolume"></a>
 
@@ -161,12 +179,20 @@ _migration:
 
 - adjustLoopbackSignalVolume(volume:number, connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required />
+<Parameter name="connType" optional>
 
-  - volume: number
-  - Optional connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns number
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="createRtcChannel"></a>
 
@@ -174,12 +200,20 @@ _migration:
 
 - createRtcChannel(channelName:string, base:[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)):[RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="base" required>
 
-  - channelName: string
-  - base: [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+<ParameterType>
 
-  Returns [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base)
+[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base)
 
 <a id="destroy"></a>
 
@@ -187,20 +221,22 @@ _migration:
 
 - destroy():number
 
-- Returns number
+Returns number
 
 <a id="emit"></a>
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+- emit(evt:string,...args:any[]):[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
 <a id="enableLocalAudio"></a>
 
@@ -208,11 +244,11 @@ _migration:
 
 - enableLocalAudio(enable:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+</ParameterList>
 
-  - enable: boolean
-
-  Returns number
+Returns number
 
 <a id="enableLocalVideo"></a>
 
@@ -220,11 +256,11 @@ _migration:
 
 - enableLocalVideo(enable:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+</ParameterList>
 
-  - enable: boolean
-
-  Returns number
+Returns number
 
 <a id="enableLoopbackRecording"></a>
 
@@ -232,13 +268,21 @@ _migration:
 
 - enableLoopbackRecording(enable:boolean, device?:string, connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+<Parameter name="device" type="string" optional />
+<Parameter name="connType" optional>
 
-  - enable: boolean
-  - Optional device: string
-  - Optional connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns number
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="enablePreviewLocalAudio"></a>
 
@@ -246,11 +290,11 @@ _migration:
 
 - enablePreviewLocalAudio(enable:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+</ParameterList>
 
-  - enable: boolean
-
-  Returns number
+Returns number
 
 <a id="enablePreviewLocalVideo"></a>
 
@@ -258,11 +302,11 @@ _migration:
 
 - enablePreviewLocalVideo(enable:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+</ParameterList>
 
-  - enable: boolean
-
-  Returns number
+Returns number
 
 <a id="getAudioDeviceManager"></a>
 
@@ -270,7 +314,7 @@ _migration:
 
 - getAudioDeviceManager():[RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base)
 
-- Returns [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base)
+Returns [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base)
 
 <a id="getCurrentFrameData"></a>
 
@@ -278,13 +322,13 @@ _migration:
 
 - getCurrentFrameData(channelName:string, streamUuid:string, isLocal:boolean):ImageData
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="isLocal" type="boolean" required />
+</ParameterList>
 
-  - channelName: string
-  - streamUuid: string
-  - isLocal: boolean
-
-  Returns ImageData
+Returns ImageData
 
 <a id="getDiaplayDevices"></a>
 
@@ -292,7 +336,7 @@ _migration:
 
 - getDiaplayDevices():Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-- Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
 <a id="getVideoDeviceManager"></a>
 
@@ -300,7 +344,7 @@ _migration:
 
 - getVideoDeviceManager():[RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-video-device-manager-base)
 
-- Returns [RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-video-device-manager-base)
+Returns [RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-video-device-manager-base)
 
 <a id="getWindowDevices"></a>
 
@@ -308,7 +352,7 @@ _migration:
 
 - getWindowDevices():Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
-- Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+Returns Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
 
 <a id="hasScreenSharePermission"></a>
 
@@ -316,7 +360,7 @@ _migration:
 
 - hasScreenSharePermission():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="isScreenDeviceEnumerateSupported"></a>
 
@@ -324,7 +368,7 @@ _migration:
 
 - isScreenDeviceEnumerateSupported():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="off"></a>
 
@@ -332,12 +376,14 @@ _migration:
 
 - off(evt:string, cb:CallableFunction):[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
 <a id="on"></a>
 
@@ -345,12 +391,14 @@ _migration:
 
 - on(evt:string, cb:CallableFunction):[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
 <a id="onAutoplayFailed"></a>
 
@@ -358,15 +406,17 @@ _migration:
 
 - onAutoplayFailed(cb:()=&gt;void):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" type="()= &amp; gt;void" required>
 
-  - cb: ()=&gt;void
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
+</Parameter>
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="onLocalAudioPlaybackTestVolumeChanged"></a>
 
@@ -374,11 +424,19 @@ _migration:
 
 - onLocalAudioPlaybackTestVolumeChanged(cb:[LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)
+<ParameterType>
 
-  Returns number
+[LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalAudioTrackStateChanged"></a>
 
@@ -386,11 +444,19 @@ _migration:
 
 - onLocalAudioTrackStateChanged(cb:[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+<ParameterType>
 
-  Returns number
+[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalAudioVolume"></a>
 
@@ -398,19 +464,21 @@ _migration:
 
 - onLocalAudioVolume(cb:(volume:number)=&gt;void):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(volume:number)= &amp; gt;void" required>
 
-  - cb: (volume:number)=&gt;void
+- - (volume:number):void
 
-    - - (volume:number):void
+  <ParameterList title="Parameters">
+  <Parameter name="volume" type="number" required />
+  </ParameterList>
 
-      - Parameters
+  Returns void
 
-        - volume: number
+</Parameter>
+</ParameterList>
 
-        Returns void
-
-  Returns number
+Returns number
 
 <a id="onLocalLoopbackDeviceStateChanged"></a>
 
@@ -418,11 +486,19 @@ _migration:
 
 - onLocalLoopbackDeviceStateChanged(cb:[LocalLoopbackDeviceStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalLoopbackDeviceStateEvent)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [LocalLoopbackDeviceStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalLoopbackDeviceStateEvent)
+<ParameterType>
 
-  Returns number
+[LocalLoopbackDeviceStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalLoopbackDeviceStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalScreenShareTrackStateChanged"></a>
 
@@ -430,11 +506,19 @@ _migration:
 
 - onLocalScreenShareTrackStateChanged(cb:[LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)
+<ParameterType>
 
-  Returns number
+[LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalVideoTrackStateChanged"></a>
 
@@ -442,11 +526,19 @@ _migration:
 
 - onLocalVideoTrackStateChanged(cb:[LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)
+<ParameterType>
 
-  Returns number
+[LocalVideoTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalVideoTrackStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="once"></a>
 
@@ -454,12 +546,14 @@ _migration:
 
 - once(evt:string, cb:CallableFunction):[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
 
 <a id="removeAllEventListeners"></a>
 
@@ -467,7 +561,9 @@ _migration:
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void
 
 <a id="removeAudioRawDataObserver"></a>
 
@@ -475,12 +571,28 @@ _migration:
 
 - removeAudioRawDataObserver(observer:[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns number
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="removeCameraProcessors"></a>
 
@@ -488,7 +600,7 @@ _migration:
 
 - removeCameraProcessors():number
 
-- Returns number
+Returns number
 
 <a id="removeMicrophoneProcessors"></a>
 
@@ -496,7 +608,7 @@ _migration:
 
 - removeMicrophoneProcessors():number
 
-- Returns number
+Returns number
 
 <a id="removePreviewCameraProcessors"></a>
 
@@ -504,7 +616,7 @@ _migration:
 
 - removePreviewCameraProcessors():number
 
-- Returns number
+Returns number
 
 <a id="removePreviewMicrophoneProcessors"></a>
 
@@ -512,7 +624,7 @@ _migration:
 
 - removePreviewMicrophoneProcessors():number
 
-- Returns number
+Returns number
 
 <a id="setAudioPlaybackDevice"></a>
 
@@ -520,11 +632,11 @@ _migration:
 
 - setAudioPlaybackDevice(deviceId:string):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required />
+</ParameterList>
 
-  - deviceId: string
-
-  Returns number
+Returns number
 
 <a id="setAudioRawDataConfig"></a>
 
@@ -532,12 +644,28 @@ _migration:
 
 - setAudioRawDataConfig(config:[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config), position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
-  - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterType>
 
-  Returns number
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setAudioRecordingDevice"></a>
 
@@ -545,11 +673,11 @@ _migration:
 
 - setAudioRecordingDevice(deviceId:string):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required />
+</ParameterList>
 
-  - deviceId: string
-
-  Returns number
+Returns number
 
 <a id="setBeautyEffectOptions"></a>
 
@@ -557,12 +685,20 @@ _migration:
 
 - setBeautyEffectOptions(enable:boolean, options:[AGBeautyEffect](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gbeauty-effect)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+<Parameter name="options" required>
 
-  - enable: boolean
-  - options: [AGBeautyEffect](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gbeauty-effect)
+<ParameterType>
 
-  Returns number
+[AGBeautyEffect](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gbeauty-effect)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setVideoCameraDevice"></a>
 
@@ -570,11 +706,11 @@ _migration:
 
 - setVideoCameraDevice(deviceId:string):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required />
+</ParameterList>
 
-  - deviceId: string
-
-  Returns number
+Returns number
 
 <a id="setupLocalVideo"></a>
 
@@ -582,12 +718,28 @@ _migration:
 
 - setupLocalVideo(canvas:[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas), videoSourceType:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
-  - videoSourceType: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+<ParameterType>
 
-  Returns number
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" required>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setupPreviewLocalVideo"></a>
 
@@ -595,11 +747,19 @@ _migration:
 
 - setupPreviewLocalVideo(canvas:[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+<ParameterType>
 
-  Returns number
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setupRemoteVideo"></a>
 
@@ -607,11 +767,19 @@ _migration:
 
 - setupRemoteVideo(canvas:[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+<ParameterType>
 
-  Returns number
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="startAudioPlaybackDeviceTest"></a>
 
@@ -619,11 +787,11 @@ _migration:
 
 - startAudioPlaybackDeviceTest(url:string):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+</ParameterList>
 
-  - url: string
-
-  Returns number
+Returns number
 
 <a id="startAudioRecordingDeviceTest"></a>
 
@@ -631,11 +799,11 @@ _migration:
 
 - startAudioRecordingDeviceTest(indicateInterval:number):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="indicateInterval" type="number" required />
+</ParameterList>
 
-  - indicateInterval: number
-
-  Returns number
+Returns number
 
 <a id="startScreenCapture"></a>
 
@@ -643,16 +811,34 @@ _migration:
 
 - startScreenCapture(params?:\{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
 
-  - Optional params: \{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
+<ParameterType>
 
-    - Optional audioDeviceName?:string
-    - Optional id?:string
-    - Optional type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
-    - Optional withAudio?:boolean
+\{audioDeviceName?:string;id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
 
-  Returns number
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioDeviceName" type="string" optional />
+<Parameter name="id" type="string" optional />
+<Parameter name="type" optional>
+
+<ParameterType>
+
+[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="stopAudioPlaybackDeviceTest"></a>
 
@@ -660,7 +846,7 @@ _migration:
 
 - stopAudioPlaybackDeviceTest():number
 
-- Returns number
+Returns number
 
 <a id="stopAudioRecordingDeviceTest"></a>
 
@@ -668,7 +854,7 @@ _migration:
 
 - stopAudioRecordingDeviceTest():number
 
-- Returns number
+Returns number
 
 <a id="stopScreenCapture"></a>
 
@@ -676,7 +862,7 @@ _migration:
 
 - stopScreenCapture():number
 
-- Returns number
+Returns number
 
 <a id="takeSnapshot"></a>
 
@@ -684,13 +870,13 @@ _migration:
 
 - takeSnapshot(channelName:string, streamUuid:number, filePath:string):Promise&lt;void|[AGSnapshotInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gsnapshot-info)&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="streamUuid" type="number" required />
+<Parameter name="filePath" type="string" required />
+</ParameterList>
 
-  - channelName: string
-  - streamUuid: number
-  - filePath: string
-
-  Returns Promise&lt;void|[AGSnapshotInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gsnapshot-info)&gt;
+Returns Promise&lt;void|[AGSnapshotInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gsnapshot-info)&gt;
 
 <a id="getRtcVersion"></a>
 
@@ -698,4 +884,4 @@ _migration:
 
 - getRtcVersion():string
 
-- Returns string
+Returns string

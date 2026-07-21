@@ -41,9 +41,14 @@ virtual int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver* observ
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoencodedframeobserver__return_values"></a>
 
@@ -81,21 +86,32 @@ virtual bool onEncodedVideoFrameReceived(rtc::uid_t uid, const uint8_t* imageBuf
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### imageBuffer
+</Parameter>
+<a id="imagebuffer"></a>
+<Parameter name="imageBuffer">
 
 视频图像 buffer。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 视频图像的数据长度。
 
-### videoEncodedFrameInfo
+</Parameter>
+<a id="videoencodedframeinfo"></a>
+<Parameter name="videoEncodedFrameInfo">
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-encodedvideoframeinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
 

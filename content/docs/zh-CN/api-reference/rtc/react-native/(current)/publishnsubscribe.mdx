@@ -53,20 +53,27 @@ abstract enableDualStreamMode(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
 - true: 开启双流模式。
 - false: (默认) 关闭双流模式。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
 :::note
 注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
 
@@ -118,14 +125,18 @@ abstract enableDualStreamModeEx(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
 - true: 开启双流模式。
 - false: (默认) 关闭双流模式。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-1"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
@@ -133,9 +144,14 @@ abstract enableDualStreamModeEx(
 注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
 
@@ -181,12 +197,17 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的音频流：
 
 - true: 取消订阅所有远端用户的音频流。
 - false:（默认）订阅所有远端用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -231,16 +252,23 @@ abstract muteAllRemoteAudioStreamsEx(
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的音频流：
 
 - true: 取消订阅所有远端用户的音频流。
 - false:（默认）订阅所有远端用户的音频流。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
 
@@ -286,12 +314,17 @@ abstract muteAllRemoteVideoStreams(mute: boolean): number;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的视频流。
 
 - true: 取消订阅所有用户的视频流。
 - false:（默认）订阅所有用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
@@ -329,16 +362,23 @@ abstract muteAllRemoteVideoStreamsEx(
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-3"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的视频流。
 
 - true: 取消订阅所有用户的视频流。
 - false:（默认）订阅所有用户的视频流。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
 
@@ -385,12 +425,17 @@ abstract muteLocalAudioStream(mute: boolean): number;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-4"></a>
+<Parameter name="mute">
 
 是否取消发布本地音频流。
 
 - true: 取消发布。
 - false:（默认）发布。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
@@ -432,16 +477,23 @@ abstract muteLocalAudioStreamEx(
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-5"></a>
+<Parameter name="mute">
 
 是否取消发布本地音频流。
 
 - true: 取消发布。
 - false:（默认）发布。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
 
@@ -489,12 +541,17 @@ abstract muteLocalVideoStream(mute: boolean): number;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-6"></a>
+<Parameter name="mute">
 
 是否取消发送本地视频流。
 
 - true: 取消发送本地视频流。
 - false: （默认）发送本地视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
@@ -538,16 +595,23 @@ abstract muteLocalVideoStreamEx(
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-7"></a>
+<Parameter name="mute">
 
 是否取消发送本地视频流。
 
 - true: 取消发送本地视频流。
 - false: （默认）发送本地视频流。
 
-### connection
+</Parameter>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
 
@@ -592,16 +656,23 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 指定用户的用户 ID。
 
-### mute
+</Parameter>
+<a id="mute-8"></a>
+<Parameter name="mute">
 
 是否取消订阅指定远端用户的音频流。
 
 - true: 取消订阅指定用户的音频流。
 - false:（默认）订阅指定用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
@@ -640,20 +711,29 @@ abstract muteRemoteAudioStreamEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 指定用户的 ID。
 
-### mute
+</Parameter>
+<a id="mute-9"></a>
+<Parameter name="mute">
 
 是否停止接收指定音频流：
 
 - true: 停止接收指定音频流。
 - false:（默认）继续接收指定音频流。
 
-### connection
+</Parameter>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
 
@@ -698,16 +778,23 @@ abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 指定用户的用户 ID。
 
-### mute
+</Parameter>
+<a id="mute-10"></a>
+<Parameter name="mute">
 
 是否取消订阅指定远端用户的视频流。
 
 - true: 取消订阅指定用户的视频流。
 - false: （默认）订阅指定用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
@@ -746,20 +833,29 @@ abstract muteRemoteVideoStreamEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-### mute
+</Parameter>
+<a id="mute-11"></a>
+<Parameter name="mute">
 
 是否停止接收某个远端用户的视频：
 
 - true: 停止接收。
 - false: （默认）恢复接收。
 
-### connection
+</Parameter>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
 
@@ -808,17 +904,24 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SimulcastStreamMode](/zh-CN/api-reference/rtc/react-native/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-2"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
 :::note
 注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
 
@@ -868,11 +971,15 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SimulcastStreamMode](/zh-CN/api-reference/rtc/react-native/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-3"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig)。
 
@@ -880,9 +987,14 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 注： 当设置 `mode` 为 `DisableSimulcastStream` 时，再设置 `streamConfig` 不会生效。
 :::
 
-### connection
+</Parameter>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
 
@@ -933,9 +1045,14 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 
 ### 参数
 
-### streamType
+<ParameterList>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 默认订阅的视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
 
@@ -986,13 +1103,20 @@ abstract setRemoteVideoStreamType(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-1"></a>
+<Parameter name="streamType">
 
 视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
 
@@ -1041,17 +1165,26 @@ abstract setRemoteVideoStreamTypeEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-2"></a>
+<Parameter name="streamType">
 
 视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
 
-### connection
+</Parameter>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
 
@@ -1095,13 +1228,20 @@ abstract setRemoteVideoSubscriptionOptions(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/react-native/class-videosubscriptionoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
 
@@ -1140,17 +1280,26 @@ abstract setRemoteVideoSubscriptionOptionsEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/react-native/class-videosubscriptionoptions)。
 
-### connection
+</Parameter>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
 
@@ -1197,14 +1346,21 @@ abstract setSubscribeAudioAllowlist(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist"></a>
+<Parameter name="uidList">
 
 音频订阅白名单的用户 ID 列表。
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
 
@@ -1252,18 +1408,27 @@ abstract setSubscribeAudioAllowlistEx(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-1"></a>
+<Parameter name="uidList">
 
 音频订阅白名单的用户 ID 列表。
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-1"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
 
@@ -1310,14 +1475,21 @@ abstract setSubscribeAudioBlocklist(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-2"></a>
+<Parameter name="uidList">
 
 订阅黑名单的用户 ID 列表。
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-2"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
 
@@ -1365,18 +1537,27 @@ abstract setSubscribeAudioBlocklistEx(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-3"></a>
+<Parameter name="uidList">
 
 订阅黑名单的用户 ID 列表。
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-3"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
 
@@ -1423,14 +1604,21 @@ abstract setSubscribeVideoAllowlist(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-4"></a>
+<Parameter name="uidList">
 
 视频订阅白名单的用户 ID 列表。
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-4"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
 
@@ -1478,18 +1666,27 @@ abstract setSubscribeVideoAllowlistEx(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-5"></a>
+<Parameter name="uidList">
 
 视频订阅白名单的用户 ID 列表。
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-5"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-12"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
 
@@ -1536,14 +1733,21 @@ abstract setSubscribeVideoBlocklist(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-6"></a>
+<Parameter name="uidList">
 
 视频订阅黑名单的用户 ID 列表。
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-6"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
 
@@ -1591,18 +1795,27 @@ abstract setSubscribeVideoBlocklistEx(
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-7"></a>
+<Parameter name="uidList">
 
 视频订阅黑名单的用户 ID 列表。
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-7"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-13"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
 
@@ -1640,21 +1853,32 @@ onAudioPublishStateChanged?(
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1686,25 +1910,38 @@ onAudioSubscribeStateChanged?(
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-### oldState
+</Parameter>
+<a id="oldstate-1"></a>
+<Parameter name="oldState">
 
 之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-### newState
+</Parameter>
+<a id="newstate-1"></a>
+<Parameter name="newState">
 
 当前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate-1"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1736,25 +1973,38 @@ onVideoSubscribeStateChanged?(
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-9"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-### oldState
+</Parameter>
+<a id="oldstate-2"></a>
+<Parameter name="oldState">
 
 之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-### newState
+</Parameter>
+<a id="newstate-2"></a>
+<Parameter name="newState">
 
 当前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/react-native/enum-streamsubscribestate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate-2"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

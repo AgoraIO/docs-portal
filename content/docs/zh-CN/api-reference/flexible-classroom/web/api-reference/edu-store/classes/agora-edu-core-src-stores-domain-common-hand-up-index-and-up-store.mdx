@@ -41,18 +41,22 @@ _migration:
 
 - allowHandsUp(state:0|1, autoStage:boolean):void
 
-- 配置允许学生举手
+配置允许学生举手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="state" type="0 | 1" required>
 
-  - state: 0|1
+是否允许举手，0 不允许，1 允许
 
-    是否允许举手，0 不允许，1 允许
-  - autoStage: boolean
+</Parameter>
+<Parameter name="autoStage" type="boolean" required>
 
-    是否开启自动上台
+是否开启自动上台
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="cancelHandUp"></a>
 
@@ -60,15 +64,17 @@ _migration:
 
 - cancelHandUp(userUuid?:string):Promise&lt;void&gt;
 
-- 取消举手
+取消举手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" optional>
 
-  - Optional userUuid: string
+用户 ID
 
-    用户 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="cancelWaveArm"></a>
 
@@ -76,13 +82,13 @@ _migration:
 
 - cancelWaveArm(userUuid?:string):Promise&lt;void&gt;
 
-- 取消挥手
+取消挥手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" optional />
+</ParameterList>
 
-  - Optional userUuid: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="confirmInvited"></a>
 
@@ -90,12 +96,12 @@ _migration:
 
 - confirmInvited():Promise&lt;void&gt;
 
-- ### deprecated
+### deprecated
 
 使用 onPodium 替代
 确认接受上台邀请
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="invitePodium"></a>
 
@@ -103,24 +109,30 @@ _migration:
 
 - invitePodium(userUuid:string, duration:number, payload?:unknown):Promise&lt;void&gt;
 
-- ### deprecated
+### deprecated
 
 使用 handUp 替代
 邀请学生上台互动
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+学生ID
 
-    学生ID
-  - duration: number
+</Parameter>
+<Parameter name="duration" type="number" required>
 
-    超时时长
-  - Optional payload: unknown
+超时时长
 
-    扩展信息
+</Parameter>
+<Parameter name="payload" type="unknown" optional>
 
-  Returns Promise&lt;void&gt;
+扩展信息
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="offPodium"></a>
 
@@ -128,15 +140,17 @@ _migration:
 
 - offPodium(userUuid:string):Promise&lt;void&gt;
 
-- 让指定学生下讲台
+让指定学生下讲台
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+用户 ID
 
-    用户 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="offPodiumAll"></a>
 
@@ -144,9 +158,9 @@ _migration:
 
 - offPodiumAll():Promise&lt;void&gt;
 
-- 让全部学生下讲台
+让全部学生下讲台
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="onPodium"></a>
 
@@ -154,21 +168,31 @@ _migration:
 
 - onPodium(userUuid:string, source?:[PodiumSrouce](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)):Promise&lt;void&gt;
 
-- 同意学生上讲台
+同意学生上讲台
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+用户 ID
 
-    用户 ID
-  - Optional source: [PodiumSrouce](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)
+</Parameter>
+<Parameter name="source" optional>
 
-    邀请来源：
+<ParameterType>
 
-    - 老师从花名册邀请学生上讲台
-    - 学生举手老师同意上讲台
+[PodiumSrouce](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+邀请来源：
+
+- 老师从花名册邀请学生上讲台
+- 学生举手老师同意上讲台
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="rejectHandUp"></a>
 
@@ -176,18 +200,20 @@ _migration:
 
 - rejectHandUp(userUuid:string):Promise&lt;void&gt;
 
-- ### deprecated
+### deprecated
 
 使用 cancelHandUp 代替
 拒绝举手上台请求
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+用户 ID
 
-    用户 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="waveArm"></a>
 
@@ -195,18 +221,24 @@ _migration:
 
 - waveArm(teacherUuid:string, duration:number, payload?:unknown):Promise&lt;void&gt;
 
-- 学生挥手
+学生挥手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="teacherUuid" type="string" required>
 
-  - teacherUuid: string
+老师 ID
 
-    老师 ID
-  - duration: number
+</Parameter>
+<Parameter name="duration" type="number" required>
 
-    超时时长
-  - Optional payload: unknown
+超时时长
 
-    扩展信息
+</Parameter>
+<Parameter name="payload" type="unknown" optional>
 
-  Returns Promise&lt;void&gt;
+扩展信息
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;

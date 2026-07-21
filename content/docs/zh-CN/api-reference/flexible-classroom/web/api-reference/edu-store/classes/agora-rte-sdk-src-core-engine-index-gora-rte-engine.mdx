@@ -51,11 +51,21 @@ _migration:
 
 - new AgoraRteEngine(config:[AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
 
-  - config: [AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+<ParameterType>
+
+[AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 ## Accessors
 
@@ -65,7 +75,7 @@ _migration:
 
 - get apiServicePathPrefix():string
 
-- Returns string
+Returns string
 
 ## Methods
 
@@ -75,11 +85,11 @@ _migration:
 
 - createAgoraRteScene(sceneId:string):[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="sceneId" type="string" required />
+</ParameterList>
 
-  - sceneId: string
-
-  Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
 <a id="destroy"></a>
 
@@ -87,20 +97,22 @@ _migration:
 
 - destroy():void
 
-- Returns void
+Returns void
 
 <a id="emit"></a>
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+- emit(evt:string,...args:any[]):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="getAgoraMediaControl"></a>
 
@@ -108,7 +120,7 @@ _migration:
 
 - getAgoraMediaControl():[AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-control-gora-media-control)
 
-- Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-control-gora-media-control)
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-control-gora-media-control)
 
 <a id="login"></a>
 
@@ -116,12 +128,12 @@ _migration:
 
 - login(rtmToken:string, userId:string):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="rtmToken" type="string" required />
+<Parameter name="userId" type="string" required />
+</ParameterList>
 
-  - rtmToken: string
-  - userId: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="logout"></a>
 
@@ -129,7 +141,7 @@ _migration:
 
 - logout():void
 
-- Returns void
+Returns void
 
 <a id="off"></a>
 
@@ -137,12 +149,14 @@ _migration:
 
 - off(evt:string, cb:CallableFunction):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="on"></a>
 
@@ -150,12 +164,14 @@ _migration:
 
 - on(evt:string, cb:CallableFunction):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="once"></a>
 
@@ -163,12 +179,14 @@ _migration:
 
 - once(evt:string, cb:CallableFunction):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="removeAllEventListeners"></a>
 
@@ -176,7 +194,9 @@ _migration:
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void
 
 <a id="uploadSDKLogToAgoraService"></a>
 
@@ -184,11 +204,19 @@ _migration:
 
 - uploadSDKLogToAgoraService(tagInfo:[TagInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-log-upload-type#TagInfo)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tagInfo" required>
 
-  - tagInfo: [TagInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-log-upload-type#TagInfo)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[TagInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-log-upload-type#TagInfo)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="createWithConfig"></a>
 
@@ -196,11 +224,19 @@ _migration:
 
 - createWithConfig(config:[AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)):[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
+<ParameterType>
 
-  Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+[AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="getRtcVersion"></a>
 
@@ -208,7 +244,7 @@ _migration:
 
 - getRtcVersion():string
 
-- Returns string
+Returns string
 
 <a id="getVersion"></a>
 
@@ -216,4 +252,4 @@ _migration:
 
 - getVersion():string
 
-- Returns string
+Returns string

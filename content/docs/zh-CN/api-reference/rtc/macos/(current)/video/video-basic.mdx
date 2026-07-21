@@ -93,12 +93,17 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用本地视频采集。
 
 - YES：（默认）启用本地视频采集。
 - NO：关闭本地视频采集。关闭后，远端用户无法接收你的本地视频流，但你仍可接收远端用户的视频流。设置为 NO 时，无需本地摄像头。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -203,9 +208,14 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频配置参数。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
@@ -257,13 +267,20 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频配置参数。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
@@ -300,15 +317,21 @@ _migration:
 
 ### 参数
 
-### size
+<ParameterList>
+<a id="size"></a>
+<Parameter name="size">
 
 你想要设置的视频尺寸。最大值为 1280 × 720。
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 你想要设置的视频帧率。最大值为 30。你可以设置为 5、10、15、24、30 等。
 
-### bitrate
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 你想要设置的视频码率。你需要根据宽度、高度和帧率手动计算码率。在相同宽高下，码率会随着帧率的变化而变化：
 
@@ -323,6 +346,9 @@ _migration:
 - 如果帧率为 30 fps，码率为 300。
 
 如果你设置的码率超出合理范围，SDK 会自动将其调整到范围内的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoprofile2__return_values"></a>
 
@@ -365,7 +391,9 @@ _migration:
 
 ### 参数
 
-### scenarioType
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 视频应用场景的类型，详见 [AgoraApplicationScenarioType](/zh-CN/api-reference/rtc/macos/enum-videoapplicationscenariotype)。
 
@@ -402,6 +430,9 @@ _migration:
 注意：该枚举值仅适用于主播对主播的场景。
 
 - `AgoraApplicationLiveShowScenario`（3）：适用于秀场场景。在该场景中，快速的视频渲染和高画质至关重要。SDK 会进行多项性能优化，包括自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_enableinstantmediarendering)），以及启用 B 帧编码以提升图像质量和带宽效率。即使在网络较差或低端设备上，SDK 也能提供增强的视频质量和流畅的播放体验。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -495,9 +526,14 @@ _migration:
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
@@ -563,9 +599,14 @@ _migration:
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
@@ -604,21 +645,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### size
+</Parameter>
+<a id="size-1"></a>
+<Parameter name="size">
 
 首帧本地视频画面的尺寸。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannelByToken\:channelId\:info\:uid\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道到 SDK 触发该回调的时间间隔（毫秒）。如果在加入频道前调用了 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview2)，该参数表示从调用 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview2) 到触发该事件的时间间隔。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -655,17 +707,26 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 加入频道到该回调被触发的时间间隔（毫秒）。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-3"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -704,21 +765,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送视频流的远端用户 ID。
 
-### size
+</Parameter>
+<a id="size-2"></a>
+<Parameter name="size">
 
 视频尺寸。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 方法到触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -754,21 +826,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-3"></a>
+<Parameter name="engine">
 
 引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 发送视频流的远端用户 ID。
 
-### size
+</Parameter>
+<a id="size-3"></a>
+<Parameter name="size">
 
 视频画面的尺寸。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 加入频道到触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -811,21 +894,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-4"></a>
+<Parameter name="engine">
 
 当前使用的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-4"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频的状态，详见 [AgoraVideoLocalState](/zh-CN/api-reference/rtc/macos/enum-localvideostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态变化的原因，详见 [AgoraLocalVideoStreamReason](/zh-CN/api-reference/rtc/macos/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -857,17 +951,26 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-5"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流的统计信息。详见 [AgoraRtcLocalVideoStats](/zh-CN/api-reference/rtc/macos/class-localvideostats)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-5"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -903,25 +1006,38 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-6"></a>
+<Parameter name="engine">
 
 引擎对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 发生视频状态变化的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频的状态。详见 [AgoraVideoRemoteState](/zh-CN/api-reference/rtc/macos/enum-remotevideostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频状态变化的原因。详见 [AgoraVideoRemoteReason](/zh-CN/api-reference/rtc/macos/enum-remotevideostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 方法到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -953,13 +1069,20 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-7"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频流的统计信息。详见 [AgoraRtcRemoteVideoStats](/zh-CN/api-reference/rtc/macos/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -995,25 +1118,38 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-8"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 发送视频包的远端用户 ID。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 从发送端到接收端的网络时延（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 远端用户发送的视频包的丢包率（%）。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收到的视频码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1051,20 +1187,29 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-9"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 指定的远端用户是否启用本地视频采集功能：
 
 - YES：启用视频模块，频道内其他用户可以看到该远端用户的视频。
 - NO：关闭视频模块，频道内其他用户无法接收该远端用户的视频流，但该远端用户仍可接收其他用户的视频流。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1098,18 +1243,27 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-10"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### enabled
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 - YES：视频模块已启用。
 - NO：视频模块已关闭。
 
-### uid
+</Parameter>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 远端用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1147,20 +1301,29 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-11"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否停止发布视频流：
 
 - YES：远端用户停止发布视频流。
 - NO：远端用户恢复发布视频流。
 
-### uid
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1198,29 +1361,44 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-12"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-6"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的视频发布状态，详见 [AgoraStreamPublishState](/zh-CN/api-reference/rtc/macos/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的视频发布状态，详见 [AgoraStreamPublishState](/zh-CN/api-reference/rtc/macos/enum-streampublishstate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 从之前状态到当前状态所经历的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1250,29 +1428,42 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-13"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-7"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 发生视频尺寸或旋转变化的用户 ID。对于本地用户，`uid` 为 0，表示本地用户的视频预览。
 
-### size
+</Parameter>
+<a id="size-4"></a>
+<Parameter name="size">
 
 视频尺寸。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 旋转信息，取值范围为 [0, 360)。
 
 :::note
 注： `rotation` 参数在 iOS 上始终为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1310,9 +1501,14 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-14"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

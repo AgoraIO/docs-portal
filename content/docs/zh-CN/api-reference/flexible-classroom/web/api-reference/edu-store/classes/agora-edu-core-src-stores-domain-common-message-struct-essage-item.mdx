@@ -46,21 +46,39 @@ _migration:
 
 - new MessageItem(data:\{content:string;id:string;isBroadcast:boolean;isOwn?:boolean;messageId:string;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);ts:number;unread?:boolean;userName:string\}):[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" required>
 
-  - data: \{content:string;id:string;isBroadcast:boolean;isOwn?:boolean;messageId:string;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);ts:number;unread?:boolean;userName:string\}
+<ParameterType>
 
-    - content:string
-    - id:string
-    - isBroadcast:boolean
-    - Optional isOwn?:boolean
-    - messageId:string
-    - role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
-    - ts:number
-    - Optional unread?:boolean
-    - userName:string
+\{content:string;id:string;isBroadcast:boolean;isOwn?:boolean;messageId:string;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);ts:number;unread?:boolean;userName:string\}
 
-  Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+</ParameterType>
+
+<ParameterList>
+<Parameter name="content" type="string" required />
+<Parameter name="id" type="string" required />
+<Parameter name="isBroadcast" type="boolean" required />
+<Parameter name="isOwn" type="boolean" optional />
+<Parameter name="messageId" type="string" required />
+<Parameter name="role" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="ts" type="number" required />
+<Parameter name="unread" type="boolean" optional />
+<Parameter name="userName" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
 
 ## Properties
 
@@ -126,14 +144,16 @@ userName: string
 
 - toMessage():\{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;role:string;timestamp:number;uid:string;unread:undefined|boolean;userName:string\}
 
-- Returns \{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;role:string;timestamp:number;uid:string;unread:undefined|boolean;userName:string\}
+Returns \{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;role:string;timestamp:number;uid:string;unread:undefined|boolean;userName:string\}
 
-  - content:string
-  - id:string
-  - isBroadcast:boolean
-  - isOwn:undefined|boolean
-  - role:string
-  - timestamp:number
-  - uid:string
-  - unread:undefined|boolean
-  - userName:string
+<ParameterList title="Returns &#123; content: string; id: string; isBroadcast: boolean; isOwn: undefined | boolean; role: string; timestamp: number; uid: string; unread: undefined | boolean; userName: string &#125;">
+<Parameter name="content" type="string" required />
+<Parameter name="id" type="string" required />
+<Parameter name="isBroadcast" type="boolean" required />
+<Parameter name="isOwn" type="undefined | boolean" required />
+<Parameter name="role" type="string" required />
+<Parameter name="timestamp" type="number" required />
+<Parameter name="uid" type="string" required />
+<Parameter name="unread" type="undefined | boolean" required />
+<Parameter name="userName" type="string" required />
+</ParameterList>

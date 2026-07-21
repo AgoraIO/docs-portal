@@ -20,7 +20,7 @@ _migration:
 通过该类，你可以设置双声道处理，实现立体声。建议按如下步骤设置：
 
 1. 前处理：调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-advancedaudiooptions) 中设置 audioProcessingChannels 为 AUDIO_PROCESSING_STEREO (2)。
-2. 后处理：调用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2)  并将 profile 设为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO (3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+2. 后处理：调用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2) 并将 profile 设为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO (3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 :::caution
 注意：
@@ -45,10 +45,17 @@ _migration:
 
 ## 枚举值
 
-### AUDIO_PROCESSING_MONO
+<ParameterList>
+<a id="audio_processing_mono"></a>
+<Parameter name="AUDIO_PROCESSING_MONO">
 
 1: （默认）单声道。
 
-### AUDIO_PROCESSING_STEREO
+</Parameter>
+<a id="audio_processing_stereo"></a>
+<Parameter name="AUDIO_PROCESSING_STEREO">
 
 2: 双声道。
+
+</Parameter>
+</ParameterList>

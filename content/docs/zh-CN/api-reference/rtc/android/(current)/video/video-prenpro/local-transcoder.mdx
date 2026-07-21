@@ -68,9 +68,14 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 本地视频合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-localtranscoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
 
@@ -138,9 +143,14 @@ public abstract int updateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 本地合图配置。详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-localtranscoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
 
@@ -181,11 +191,15 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 
 ### 参数
 
-### stream
+<ParameterList>
+<a id="stream"></a>
+<Parameter name="stream">
 
 在视频合图过程中无法被合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/android/class-transcodingvideostream)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 本地视频合图错误的原因：
 
@@ -195,6 +209,9 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 - 4：无效的图片格式。请确保图片格式为 PNG、JPEG 或 GIF。
 - 5：合图后的视频分辨率无效。
 - 20：内部错误。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

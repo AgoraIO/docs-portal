@@ -51,12 +51,17 @@ virtual int enableFaceDetection(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用本地用户的人脸检测功能：
 
 - true：启用人脸检测。
 - false：（默认）关闭人脸检测。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
@@ -112,15 +117,21 @@ virtual void onFacePositionChanged(int imageWidth, int imageHeight, const Rectan
 
 ### 参数
 
-### imageWidth
+<ParameterList>
+<a id="imagewidth"></a>
+<Parameter name="imageWidth">
 
 本地摄像头采集的视频图像的宽度（像素）。
 
-### imageHeight
+</Parameter>
+<a id="imageheight"></a>
+<Parameter name="imageHeight">
 
 本地摄像头采集的视频图像的高度（像素）。
 
-### vecRectangle
+</Parameter>
+<a id="vecrectangle"></a>
+<Parameter name="vecRectangle">
 
 长度为 `numFaces` 的数组，表示检测到的人脸信息：
 
@@ -129,13 +140,20 @@ virtual void onFacePositionChanged(int imageWidth, int imageHeight, const Rectan
 - `width`：人脸在捕获视图中的宽度（像素）。
 - `height`：人脸在捕获视图中的高度（像素）。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
 
-### vecDistance
+</Parameter>
+<a id="vecdistance"></a>
+<Parameter name="vecDistance">
 
 长度为 `numFaces` 的数组，表示每张人脸与设备屏幕之间的距离（厘米）。
 
-### numFaces
+</Parameter>
+<a id="numfaces"></a>
+<Parameter name="numFaces">
 
 检测到的人脸数量。若为 0，表示未检测到人脸。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

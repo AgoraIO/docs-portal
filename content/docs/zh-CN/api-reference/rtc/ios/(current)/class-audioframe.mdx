@@ -30,37 +30,56 @@ __attribute__((visibility("default"))) @interface AgoraAudioFrame : NSObject
 
 ## 属性
 
-### samplesPerChannel
+<ParameterList>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 音频帧中每个声道的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个采样点的字节数。对于 PCM，此参数通常设置为 16 位（2 字节）。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 音频声道数（如果为立体声，则数据交错排列）。
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 音频帧中每个声道的采样率。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 音频帧的数据缓冲区。当音频帧使用立体声道时，数据缓冲区为交错格式。缓冲区大小为：`buffer` = `samples` × `channels` × `bytesPerSample`。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 外部音频帧的时间戳（毫秒）。你可以使用该时间戳恢复采集音频帧的顺序，并在视频场景中同步音频和视频帧，包括使用自定义视频源的场景。
 
-### avSyncType
+</Parameter>
+<a id="avsynctype"></a>
+<Parameter name="avSyncType">
 
 预留参数
 
-### rtpTimestamp
+</Parameter>
+<a id="rtptimestamp"></a>
+<Parameter name="rtpTimestamp">
 
 音频帧中第一个采样点的 RTP 时间戳。
+
+</Parameter>
+</ParameterList>

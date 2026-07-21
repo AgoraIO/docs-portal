@@ -33,12 +33,17 @@ int enableAutoRemoveCache(boolean enable);
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用 SDK 自动删除缓存的媒体文件：
 
 - true：自动删除缓存的媒体文件。
 - false：（默认）不自动删除缓存的媒体文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
 
@@ -220,9 +225,14 @@ int removeCacheByUri(String uri);
 
 ### 参数
 
-### uri
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 要删除的媒体文件的 URI（统一资源标识符）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
 
@@ -292,9 +302,14 @@ int setCacheDir(String path);
 
 ### 参数
 
-### path
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 要缓存的媒体文件的绝对路径。确保该目录已存在且可写。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
 
@@ -327,9 +342,14 @@ int setMaxCacheFileCount(int count);
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 可缓存的媒体文件数量上限（默认值为 1000）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
 
@@ -362,9 +382,14 @@ int setMaxCacheFileSize(long cacheSize);
 
 ### 参数
 
-### cacheSize
+<ParameterList>
+<a id="cachesize"></a>
+<Parameter name="cacheSize">
 
 缓存媒体文件的聚合存储空间的最大大小，单位为字节。（默认值为 1 GB。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
 
@@ -405,9 +430,14 @@ void onPlayerCacheStats(CacheStatistics stats)
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 正在缓存的媒体文件的统计信息。详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-cachestatistics)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -36,11 +36,15 @@ addListener?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
 
-### listener
+</Parameter>
+<a id="listener"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。以添加 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 为例：
 
@@ -48,6 +52,9 @@ addListener?<EventType extends keyof IMediaEngineEvent>(
 const onPlaybackAudioFrameBeforeMixing = (channelId: string, uid: number, audioFrame: AudioFrame) => {};
 engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -81,9 +88,14 @@ abstract registerVideoEncodedFrameObserver(
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoencodedframeobserver__return_values"></a>
 
@@ -118,9 +130,14 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype-1"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -149,11 +166,15 @@ removeListener?<EventType extends keyof IMediaEngineEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype-2"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengineevent)。
 
-### listener
+</Parameter>
+<a id="listener-1"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。必须传入 [addListener](/zh-CN/api-reference/rtc/electron/video/video-encoded#api_imediaengine_addlistener_imediaengine) 中传入的同一个函数对象。以取消监听 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 为例：
 
@@ -162,6 +183,9 @@ const onPlaybackAudioFrameBeforeMixing = (channelId: string, uid: number, audioF
 engine.addListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 engine.removeListener('onPlaybackAudioFrameBeforeMixing', onPlaybackAudioFrameBeforeMixing);
 ```
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -189,9 +213,14 @@ abstract unregisterVideoEncodedFrameObserver(
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收, 详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_unregistervideoencodedframeobserver__return_values"></a>
 
@@ -232,25 +261,38 @@ onEncodedVideoFrameReceived?(
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### imageBuffer
+</Parameter>
+<a id="imagebuffer"></a>
+<Parameter name="imageBuffer">
 
 视频图像 buffer。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 视频图像的数据长度。
 
-### videoEncodedFrameInfo
+</Parameter>
+<a id="videoencodedframeinfo"></a>
+<Parameter name="videoEncodedFrameInfo">
 
 编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/electron/class-encodedvideoframeinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

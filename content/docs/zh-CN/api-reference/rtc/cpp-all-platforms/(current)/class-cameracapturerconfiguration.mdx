@@ -32,7 +32,9 @@ struct CameraCapturerConfiguration {
 
 ## 属性
 
-### cameraDirection
+<ParameterList>
+<a id="cameradirection"></a>
+<Parameter name="cameraDirection">
 
 （可选）摄像头方向，详见 [CAMERA_DIRECTION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-cameradirection)。
 
@@ -40,7 +42,9 @@ struct CameraCapturerConfiguration {
 注： 该参数仅适用于 Android 和 iOS 平台。
 :::
 
-### cameraFocalLengthType
+</Parameter>
+<a id="camerafocallengthtype"></a>
+<Parameter name="cameraFocalLengthType">
 
 （可选）摄像头焦距类型，详见 [CAMERA_FOCAL_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-camerafocallengthtype)。
 
@@ -56,7 +60,9 @@ struct CameraCapturerConfiguration {
 两种方法的区别在于，方法一的超广角尺寸不可调节，而方法二支持自由调节变焦因子。
 :::
 
-### deviceId
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 摄像头 ID，最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
 
@@ -64,7 +70,9 @@ struct CameraCapturerConfiguration {
 注： 该参数仅适用于 Windows 和 macOS 平台。
 :::
 
-### cameraId
+</Parameter>
+<a id="cameraid"></a>
+<Parameter name="cameraId">
 
 （可选）摄像头 ID。
 
@@ -76,13 +84,20 @@ struct CameraCapturerConfiguration {
 - 使用 `cameraId` 可更精确地指定某个摄像头，适用于多摄像头设备中 `cameraDirection` 无法识别或访问所有摄像头的场景，建议直接使用 `cameraId` 指定目标摄像头。
 :::
 
-### followEncodeDimensionRatio
+</Parameter>
+<a id="followencodedimensionratio"></a>
+<Parameter name="followEncodeDimensionRatio">
 
 （可选）是否遵循 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中设置的视频宽高比：
 
 - true：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频宽高比裁剪采集的视频，并同步更新本地预览画面以及 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 中的视频帧。
 - false：不遵循设置的视频宽高比。SDK 不会更改采集视频帧的宽高比。
 
-### format
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
 
 （可选）视频帧的格式，详见 [VideoFormat](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoformat)。
+
+</Parameter>
+</ParameterList>

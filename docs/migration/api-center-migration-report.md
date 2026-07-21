@@ -20,6 +20,13 @@
 - `manual-mdx`: 685
 - `openapi`: 130
 
+## Structured parameter rendering
+
+- `appledoc`: 142 lists, 225 fields
+- `doxygen`: 709 lists, 1470 fields
+- `oxygen`: 8389 lists, 26894 fields
+- `typedoc`: 3683 lists, 6896 fields
+
 ## Warning explanations
 
 - `broken-live-body-link` (27, warning): The live source body contains a link that currently returns HTTP 400/404.

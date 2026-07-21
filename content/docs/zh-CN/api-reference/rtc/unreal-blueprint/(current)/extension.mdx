@@ -51,15 +51,21 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### enable
+</Parameter>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用插件：
 
@@ -68,9 +74,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - `true`: 启用插件。
 - `false`: 禁用插件。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableextension__return_values"></a>
 
@@ -118,29 +129,44 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-1"></a>
+<Parameter name="provider">
 
 输出参数。提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-1"></a>
+<Parameter name="extension">
 
 输出参数。插件的名称。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 输出参数。插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 输出参数。插件属性 Key 对应的值。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
 
-### buf_len
+</Parameter>
+<a id="buf_len"></a>
+<Parameter name="buf_len">
 
 插件属性 JSON 字符串的最大长度。最大值为 512 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getextensionproperty2__return_values"></a>
 
@@ -192,16 +218,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### path
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 插件的动态库路径和名称。例如：`/library/libagora_segmentation_extension.dll`。
 
-### unload_after_use
+</Parameter>
+<a id="unload_after_use"></a>
+<Parameter name="unload_after_use">
 
 是否在插件使用完毕后自动卸载：
 
 - `true`: 当 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
 - `false`: 不自动卸载插件，直到进程退出（推荐）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
 
@@ -252,17 +285,26 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-2"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-2"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### type
+</Parameter>
+<a id="type-2"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerextension__return_values"></a>
 
@@ -318,25 +360,38 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-3"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-3"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 插件属性 Key 对应的值。
 
-### type
+</Parameter>
+<a id="type-3"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [EUABT_MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproperty__return_values"></a>
 
@@ -384,17 +439,26 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-4"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value-2"></a>
+<Parameter name="value">
 
 插件属性 Key 对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
 
@@ -432,17 +496,26 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。详见插件服务商提供的插件文档。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 错误原因。详见插件服务商提供的插件文档。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -473,17 +546,26 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-1"></a>
+<Parameter name="context">
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value-3"></a>
+<Parameter name="value">
 
 插件属性 Key 对应的值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -514,9 +596,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-2"></a>
+<Parameter name="context">
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -547,9 +634,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-3"></a>
+<Parameter name="context">
 
 插件上下文信息，详见 [FExtensionContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

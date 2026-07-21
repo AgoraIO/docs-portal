@@ -45,9 +45,14 @@ Future<UserInfo> getUserInfoByUid(int uid);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuid__return_values"></a>
 
@@ -94,9 +99,14 @@ Future<UserInfo> getUserInfoByUserAccount(String userAccount);
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
 
@@ -160,7 +170,9 @@ Future<void> joinChannel(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -172,7 +184,9 @@ Future<void> joinChannel(
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -181,13 +195,20 @@ Future<void> joinChannel(
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -263,7 +284,9 @@ Future<void> joinChannelEx(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -275,13 +298,20 @@ Future<void> joinChannelEx(
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -353,7 +383,9 @@ Future<void> joinChannelWithUserAccount(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -365,7 +397,9 @@ Future<void> joinChannelWithUserAccount(
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### userAccount
+</Parameter>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 `null`。以下为支持的字符集范围（共 89 个字符）：
 
@@ -375,9 +409,14 @@ Future<void> joinChannelWithUserAccount(
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
 
@@ -449,7 +488,9 @@ Future<void> joinChannelWithUserAccountEx(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -461,7 +502,9 @@ Future<void> joinChannelWithUserAccountEx(
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 :::
 
-### userAccount
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 `null`。以下为支持的字符集范围（共 89 个字符）：
 
@@ -471,9 +514,14 @@ Future<void> joinChannelWithUserAccountEx(
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__return_values"></a>
 
@@ -538,9 +586,14 @@ Future<void> leaveChannel({LeaveChannelOptions? options});
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/flutter/class-leavechanneloptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -606,17 +659,24 @@ Future<void> leaveChannelEx(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/flutter/class-leavechanneloptions)。
 
 :::note
 注： 该参数仅支持设置 [LeaveChannelOptions](/zh-CN/api-reference/rtc/flutter/class-leavechanneloptions) 中的 `stopMicrophoneRecording` 成员，设置其他成员均不生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
 
@@ -666,7 +726,9 @@ Future<void> preloadChannel(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
@@ -677,7 +739,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - 如果你使用了通配的 Token，调用 [updatePreloadChannelToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatepreloadchanneltoken) 来更新所有预加载频道的 Token。生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
 该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -687,9 +751,14 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannel__return_values"></a>
 
@@ -746,7 +815,9 @@ Future<void> preloadChannelWithUserAccount(
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-5"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
@@ -757,7 +828,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - 如果你使用了通配的 Token，调用 [updatePreloadChannelToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatepreloadchanneltoken) 来更新所有预加载频道的 Token。生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
   - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
 该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
@@ -767,7 +840,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### userAccount
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 `null`。以下为支持的字符集范围（共 89 个字符）：
 
@@ -776,6 +851,9 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 - 10 个数字 0-9
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
 
@@ -833,11 +911,15 @@ Future<void> registerLocalUserAccount(
 
 ### 参数
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 你的项目在控制台注册的 App ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。该参数为必填，最大不超过 255 字节，不可填 `null`。以下为支持的字符集范围（共 89 个字符）：
 
@@ -846,6 +928,9 @@ Future<void> registerLocalUserAccount(
 - 10 个数字 0-9
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
 
@@ -888,9 +973,14 @@ Future<void> renewToken(String token);
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-6"></a>
+<Parameter name="token">
 
 新生成的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_renewtoken__return_values"></a>
 
@@ -934,9 +1024,14 @@ Future<void> setChannelProfile(ChannelProfileType profile);
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 频道使用场景。详见 [ChannelProfileType](/zh-CN/api-reference/rtc/flutter/enum-channelprofiletype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setchannelprofile__return_values"></a>
 
@@ -1000,7 +1095,9 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role"></a>
+<Parameter name="role">
 
 用户角色。详见 [ClientRoleType](/zh-CN/api-reference/rtc/flutter/enum-clientroletype)。
 
@@ -1008,9 +1105,14 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
 :::
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 用户具体设置，包含用户级别。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/flutter/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -1042,9 +1144,14 @@ Future<void> updateChannelMediaOptions(ChannelMediaOptions options);
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-7"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -1078,13 +1185,20 @@ Future<void> updateChannelMediaOptionsEx(
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-8"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions)。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -1124,9 +1238,14 @@ Future<void> updatePreloadChannelToken(String token);
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-7"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatepreloadchanneltoken__return_values"></a>
 
@@ -1175,21 +1294,32 @@ final void Function(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### oldRole
+</Parameter>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
 
 切换前的角色：[ClientRoleType](/zh-CN/api-reference/rtc/flutter/enum-clientroletype)。
 
-### newRole
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
 
 切换后的角色：[ClientRoleType](/zh-CN/api-reference/rtc/flutter/enum-clientroletype)。
 
-### newRoleOptions
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/flutter/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1226,17 +1356,26 @@ final void Function(
 
 ### 参数
 
-### reason
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
 
 切换用户角色失败的原因。详见 [ClientRoleChangeFailedReason](/zh-CN/api-reference/rtc/flutter/enum-clientrolechangefailedreason)。
 
-### currentRole
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
 
 当前用户角色。详见 [ClientRoleType](/zh-CN/api-reference/rtc/flutter/enum-clientroletype)。
 
-### connection
+</Parameter>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1264,13 +1403,20 @@ final void Function(ErrorCodeType err, String msg)? onError;
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err"></a>
+<Parameter name="err">
 
 错误码。详见 [ErrorCodeType](/zh-CN/api-reference/rtc/flutter/enum-errorcodetype)。
 
-### msg
+</Parameter>
+<a id="msg"></a>
+<Parameter name="msg">
 
 错误描述。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1305,13 +1451,20 @@ final void Function(RtcConnection connection, int elapsed)?
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 开始到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1345,13 +1498,20 @@ final void Function(RtcConnection connection, RtcStats stats)? onLeaveChannel;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/flutter/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1379,13 +1539,20 @@ final void Function(int uid, String userAccount)? onLocalUserRegistered;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 本地用户的 ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
 
 本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1418,9 +1585,14 @@ final void Function(RtcConnection connection, int elapsed)?
 
 ### 参数
 
-### elapsed
+<ParameterList>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1454,13 +1626,20 @@ final void Function(RtcConnection connection, int elapsed)?
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-8"></a>
+<Parameter name="token">
 
 更新的 Token。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 错误码，详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/flutter/enum-renewtokenerrorcode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1495,9 +1674,14 @@ final void Function(RtcConnection connection)? onRequestToken;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1529,13 +1713,20 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/flutter/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1576,9 +1767,14 @@ final void Function(RtcConnection connection, String token)?
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-9"></a>
+<Parameter name="token">
 
 即将过期的 Token。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1606,13 +1802,20 @@ final void Function(int uid, UserInfo info)? onUserInfoUpdated;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/flutter/class-userinfo) 类。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1652,17 +1855,26 @@ final void Function(RtcConnection connection, int remoteUid, int elapsed)?
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 新加入频道的远端用户/主播 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1700,17 +1912,26 @@ final void Function(RtcConnection connection, int remoteUid,
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 离线的远端用户或主播的 ID。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [UserOfflineReasonType](/zh-CN/api-reference/rtc/flutter/enum-userofflinereasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

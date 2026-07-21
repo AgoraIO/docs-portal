@@ -82,9 +82,14 @@ public abstract int pauseAllChannelMediaRelayEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_pauseallchannelmediarelayex__return_values"></a>
 
@@ -166,9 +171,14 @@ public abstract int resumeAllChannelMediaRelayEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_resumeallchannelmediarelayex__return_values"></a>
 
@@ -222,9 +232,14 @@ public abstract int startOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 
 ### 参数
 
-### channelMediaRelayConfiguration
+<ParameterList>
+<a id="channelmediarelayconfiguration"></a>
+<Parameter name="channelMediaRelayConfiguration">
 
 媒体流转发的配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/android/class-channelmediarelayconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__return_values"></a>
 
@@ -291,13 +306,20 @@ public abstract int startOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfigurat
 
 ### 参数
 
-### channelMediaRelayConfiguration
+<ParameterList>
+<a id="channelmediarelayconfiguration-1"></a>
+<Parameter name="channelMediaRelayConfiguration">
 
 媒体流转发的配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/android/class-channelmediarelayconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__return_values"></a>
 
@@ -381,9 +403,14 @@ public abstract int stopChannelMediaRelayEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_stopchannelmediarelayex__return_values"></a>
 
@@ -426,7 +453,9 @@ public void onChannelMediaRelayStateChanged(int state, int code)
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 跨频道媒体流转发的状态码：
 
@@ -435,7 +464,9 @@ public void onChannelMediaRelayStateChanged(int state, int code)
 - `RELAY_STATE_RUNNING`：SDK 成功将媒体流转发到目标频道。
 - `RELAY_STATE_FAILURE`：发生错误，详见 [code](/zh-CN/api-reference/rtc/android/play/rte-player#api_error_code)。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 跨频道媒体流转发的错误码：
 
@@ -451,6 +482,9 @@ public void onChannelMediaRelayStateChanged(int state, int code)
 - `RELAY_ERROR_INTERNAL_ERROR`：服务器内部发生错误。
 - `RELAY_ERROR_SRC_TOKEN_EXPIRED`：源频道的 Token 已过期。
 - `RELAY_ERROR_DEST_TOKEN_EXPIRED`：目标频道的 Token 已过期。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

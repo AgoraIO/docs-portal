@@ -30,7 +30,9 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 
 ## 属性
 
-### dimensions
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 :::note
 注：
@@ -62,22 +64,30 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 - `AgoraVideoDimension2540x1440`：2540 × 1440。
 - `AgoraVideoDimension3840x2160`：3840 × 2160。
 
-### codecType
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 本地视频流的首选编码器类型。详见 [AgoraVideoCodecType](/zh-CN/api-reference/rtc/ios/enum-videocodectype)。
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 编码视频帧的帧率（fps）。默认值为 15。详见 [AgoraVideoFrameRate](/zh-CN/api-reference/rtc/ios/enum-framerate)。
 
-### bitrate
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 视频的编码码率（Kbps）。无需手动设置该参数，保持默认值 AgoraVideoBitrateStandard 即可。SDK 会根据设置的视频分辨率和帧率自动匹配最合适的码率。
 
 - AgoraVideoBitrateStandard（0）：（推荐）标准码率模式。
 - AgoraVideoBitrateCompatible（-1）：自适应码率模式，一般不建议使用该值。
 
-### minBitrate
+</Parameter>
+<a id="minbitrate"></a>
+<Parameter name="minBitrate">
 
 视频的最小编码码率（Kbps）。SDK 会自动调整编码码率以适应网络状况。设置高于默认值会强制编码器输出高质量图像，但可能导致更多丢包，影响视频流畅性。
 
@@ -85,11 +95,15 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 注： 该参数仅适用于互动直播场景。
 :::
 
-### orientationMode
+</Parameter>
+<a id="orientationmode"></a>
+<Parameter name="orientationMode">
 
 编码视频的方向模式。详见 [AgoraVideoOutputOrientationMode](/zh-CN/api-reference/rtc/ios/enum-orientationmode)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 设置本地视频流发布时的镜像模式，仅影响远端用户看到的视频。详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
@@ -97,7 +111,9 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 注： 默认情况下，视频不镜像。
 :::
 
-### degradationPreference
+</Parameter>
+<a id="degradationpreference"></a>
+<Parameter name="degradationPreference">
 
 在带宽受限的情况下的视频降级偏好。详见 [AgoraDegradationPreference](/zh-CN/api-reference/rtc/ios/enum-degradationpreference)。
 
@@ -105,9 +121,14 @@ __attribute__((visibility("default"))) @interface AgoraVideoEncoderConfiguration
 注： 当该参数设置为 `AgoraDegradationMaintainFramerate`（1）或 `AgoraDegradationBalanced`（2）时，`orientationMode` 需同时设置为 `AgoraVideoOutputOrientationModeAdaptative`（0），否则设置不生效。
 :::
 
-### advancedVideoOptions
+</Parameter>
+<a id="advancedvideooptions"></a>
+<Parameter name="advancedVideoOptions">
 
 视频编码的高级选项。详见 [AgoraAdvancedVideoOptions](/zh-CN/api-reference/rtc/ios/class-advanceoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 相关参考
 

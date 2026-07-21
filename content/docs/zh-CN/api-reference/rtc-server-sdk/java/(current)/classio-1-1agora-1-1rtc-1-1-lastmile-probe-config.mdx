@@ -47,22 +47,34 @@ LastmileProbeConfig 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="probeUplink">
 
-| probeUplink | 是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测：0: 探测 1: 不探测 |
-| --- | --- |
-| probeDownlink | <Slot name="api-center-table-0" /> |
-| expectedUplinkBitrate | 用户期望的最高发送码率，单位为 bps，范围为 [100000, 5000000]。声网推荐参考 setVideoEncoderConfiguration 中的码率值设置该参数的值。 |
-| expectedDownlinkBitrate | 用户期望的最高接收码率，单位为 bps，范围为 [100000, 5000000]。 |
+是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测：
 
-<Slot for="api-center-table-0">
+- 0: 探测
+- 1: 不探测
+
+</Parameter>
+<Parameter name="probeDownlink">
 
 是否探测下行网络：
 
 - 0: 探测
 - 1: 不探测
 
-</Slot>
+</Parameter>
+<Parameter name="expectedUplinkBitrate">
+
+用户期望的最高发送码率，单位为 bps，范围为 [100000, 5000000]。声网推荐参考 setVideoEncoderConfiguration 中的码率值设置该参数的值。
+
+</Parameter>
+<Parameter name="expectedDownlinkBitrate">
+
+用户期望的最高接收码率，单位为 bps，范围为 [100000, 5000000]。
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

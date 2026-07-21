@@ -2481,11 +2481,18 @@ RTM 消息的发送状态。
 
 配置 SDK 的日志文件。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="size_per_file" direction="[in]">
 
-| [in] | size_per_file | 每份日志文件的大小（字节）。取值范围为 [0,10 × 1024 × 1024]。默认值为 1 × 1024 × 1024，即 1 MB。如果你将此参数设为 0，则代表关闭日志功能。 |
-| --- | --- | --- |
-| [in] | max_file_count | 日志文件数。取值范围为 [0,100]。默认值为 10。如果你将此参数设为 0，则代表关闭日志功能。 |
+每份日志文件的大小（字节）。取值范围为 [0,10 × 1024 × 1024]。默认值为 1 × 1024 × 1024，即 1 MB。如果你将此参数设为 0，则代表关闭日志功能。
+
+</Parameter>
+<Parameter name="max_file_count" direction="[in]">
+
+日志文件数。取值范围为 [0,100]。默认值为 10。如果你将此参数设为 0，则代表关闭日志功能。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -2503,10 +2510,13 @@ RTM 消息的发送状态。
 
 你需要在加入频道前调用该方法创建 Connection。如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要多次调用该方法创建多个 Connection，然后再使用对应的 Connection ID 加入频道。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[out]">
 
-| [out] | conn_id | Connection ID。 |
-| --- | --- | --- |
+Connection ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -2533,31 +2543,34 @@ v1.9.5
 - SDK 不支持 reliable 设为 true，且 ordered 设为 false 的参数组合。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [out] | stream_id | 数据流 ID 指针。 |
-| [in] | reliable | <Slot name="api-center-table-316" /> |
-| [in] | ordered | <Slot name="api-center-table-317" /> |
+Connection ID。
 
-<Slot for="api-center-table-316">
+</Parameter>
+<Parameter name="stream_id" direction="[out]">
+
+数据流 ID 指针。
+
+</Parameter>
+<Parameter name="reliable" direction="[in]">
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
 - true: 是。SDK 提供有限度的可靠保证，在发送后的 5 秒内会有丢包检测和重传。
 - false: 否。SDK 不做丢包检测和重传。
 
-</Slot>
-
-<Slot for="api-center-table-317">
+</Parameter>
+<Parameter name="ordered" direction="[in]">
 
 是否保证接收方需要收到有序的数据流：
 
 - true: 接收方按照发送方发送的顺序收到数据流。
 - false: 接收方不按照发送方发送的顺序收到数据流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -2573,10 +2586,13 @@ v1.9.5
 
 销毁 Connection。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -2596,10 +2612,13 @@ v1.9.5
 使用后不必释放。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="err" direction="[in]">
 
-| [in] | err | 错误码。 |
-| --- | --- | --- |
+错误码。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -2628,11 +2647,18 @@ v1.9.5
 
 获取 Connection 信息。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [out] | conn_info | Connection 信息。详见 [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t)。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="conn_info" direction="[out]">
+
+Connection 信息。详见 [connection_info_t](/zh-CN/api-reference/rtsa/c/structconnection-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -2654,12 +2680,23 @@ v1.9.2
 
 该方法可以获取当前 RDT 通道的连接状态和缓冲区长度，从而判断远端用户是否成功接收 RDT 消息、本地用户是否可以继续发送 RDT 消息。例如，发送缓冲区长度 (send_queue_size) 为 0 表示远端用户已接收完 RDT 消息。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户的用户 ID。 |
-| [out] | info | RDT 通道的信息。详见 [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info)。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="info" direction="[out]">
+
+RDT 通道的信息。详见 [rdt_status_info](/zh-CN/api-reference/rtsa/c/structrdt-status-info) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -2679,12 +2716,23 @@ v1.9.2
 v1.9.5
 :::
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | uid | 用户 ID。 |
-| [out] | user | 用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="uid" direction="[in]">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="user" direction="[out]">
+
+用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -2704,12 +2752,23 @@ v1.9.5
 v1.9.5
 :::
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | user_account | 用户 User account。 |
-| [out] | user | 用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="user_account" direction="[in]">
+
+用户 User account。
+
+</Parameter>
+<Parameter name="user" direction="[out]">
+
+用户信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -2743,12 +2802,23 @@ v1.9.5
 - SDK 每次初始化时会在指定的目录下自动创建一个新文件夹（随机命名），用于存放此次运行的日志。 SDK 不负责回收上一次初始化时创建的文件夹。为了避免日志占用过多空间，建议每次初始化之前先清空日志文件夹。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="app_id" direction="[in]">
 
-| [in] | app_id | 声网为 App 开发者签发的 APP ID。 |
-| --- | --- | --- |
-| [in] | event_handler | 用于处理 SDK 事件的一系列回调。详见 [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t)。 |
-| [in] | option | 服务配置选项，如果不需要设置则请置空。详见 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t)。 |
+声网为 App 开发者签发的 APP ID。
+
+</Parameter>
+<Parameter name="event_handler" direction="[in]">
+
+用于处理 SDK 事件的一系列回调。详见 [agora_rtc_event_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t) 。
+
+</Parameter>
+<Parameter name="option" direction="[in]">
+
+服务配置选项，如果不需要设置则请置空。详见 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -2771,16 +2841,13 @@ v1.9.5
 - 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel 方法时填入对应的 Connection ID。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | channel_name | <Slot name="api-center-table-318" /> |
-| [in] | uid | 用户 ID。 |
-| [in] | token | <Slot name="api-center-table-319" /> |
-| [in] | options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
-<Slot for="api-center-table-318">
+</Parameter>
+<Parameter name="channel_name" direction="[in]">
 
 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：
 
@@ -2790,16 +2857,26 @@ v1.9.5
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+<Parameter name="uid" direction="[in]">
 
-<Slot for="api-center-table-319">
+用户 ID。
+
+</Parameter>
+<Parameter name="token" direction="[in]">
 
 用于鉴权的 RTC Token。
 
 - 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。
 - 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。
 
-</Slot>
+</Parameter>
+<Parameter name="options" direction="[in]">
+
+频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -2826,16 +2903,13 @@ v1.9.5
 - 如需使用同一个用户 User account 加入不同频道，或者使用不同用户 User account 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel_with_user_account 方法时填入对应的 Connection ID。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | channel_name | <Slot name="api-center-table-320" /> |
-| [in] | user_account | 用户 User account。 |
-| [in] | token | <Slot name="api-center-table-321" /> |
-| [in] | options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
+Connection ID。
 
-<Slot for="api-center-table-320">
+</Parameter>
+<Parameter name="channel_name" direction="[in]">
 
 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：
 
@@ -2845,16 +2919,26 @@ v1.9.5
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+<Parameter name="user_account" direction="[in]">
 
-<Slot for="api-center-table-321">
+用户 User account。
+
+</Parameter>
+<Parameter name="token" direction="[in]">
 
 用于鉴权的 RTC Token。
 
 - 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。
 - 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。
 
-</Slot>
+</Parameter>
+<Parameter name="options" direction="[in]">
+
+频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -2872,10 +2956,13 @@ v1.9.5
 
 停止在某频道传输数据后需要离开该频道。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
@@ -2899,20 +2986,21 @@ v1.9.5
 该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="credential" direction="[out]">
 
-| [out] | credential | 用于存放 Credential 的缓冲区。 |
-| --- | --- | --- |
-| [in,out] | credential_len | <Slot name="api-center-table-322" /> |
+用于存放 Credential 的缓冲区。
 
-<Slot for="api-center-table-322">
+</Parameter>
+<Parameter name="credential_len" direction="[in,out]">
 
 缓冲区大小（字节）。
 
 - 输入值用于确认缓冲区的可用长度（字节），需大于 AGORA_CREDENTIAL_MAX_LEN。
 - 输出值为 Credential 的实际长度（字节）。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
@@ -2928,10 +3016,13 @@ v1.9.5
 
 获取 Licence 错误描述。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="err" direction="[in]">
 
-| [in] | err | 错误码。 |
-| --- | --- | --- |
+错误码。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
@@ -2957,13 +3048,28 @@ v1.9.5
 - 该方法必须在 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="certificate" direction="[in]">
 
-| [in] | certificate | 许可证 Certificate。 |
-| --- | --- | --- |
-| [in] | certificate_len | 许可证长度。 |
-| [in] | credential | 凭证 Credential。 |
-| [in] | credential_len | 凭证长度。 |
+许可证 Certificate。
+
+</Parameter>
+<Parameter name="certificate_len" direction="[in]">
+
+许可证长度。
+
+</Parameter>
+<Parameter name="credential" direction="[in]">
+
+凭证 Credential。
+
+</Parameter>
+<Parameter name="credential_len" direction="[in]">
+
+凭证长度。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
 
@@ -2979,12 +3085,29 @@ v1.9.5
 
 登录 RTM。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
 
-| [in] | rtm_uid | RTM 用户 ID。该字符串不可超过 64 字节。不可设为空、NULL 或 "NULL"。以下为支持的字符集范围\:26 个小写英文字母 a-z 26 个大写英文字母 A-Z 10 个数字 0-9 空格 "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \\\{", "\\\}", "\|", "~", "," |
-| --- | --- | --- |
-| [in] | rtm_token | 用于登录 RTM 系统的动态密钥。详见《校验用户权限》。如果你没有开启 Token 鉴权，此参数可设为 NULL。 |
-| [in] | handler | RTM 回调。详见 [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t)。 |
+RTM 用户 ID。该字符串不可超过 64 字节。不可设为空、NULL 或 "NULL"。以下为支持的字符集范围:
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+<Parameter name="rtm_token" direction="[in]">
+
+用于登录 RTM 系统的动态密钥。详见《校验用户权限》。如果你没有开启 Token 鉴权，此参数可设为 NULL。
+
+</Parameter>
+<Parameter name="handler" direction="[in]">
+
+RTM 回调。详见 [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
@@ -3014,20 +3137,21 @@ v1.9.5
 
 对指定 Connection 所关联的 RTC 频道暂停/恢复发送本地音频流。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | mute | <Slot name="api-center-table-323" /> |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
-<Slot for="api-center-table-323">
+</Parameter>
+<Parameter name="mute" direction="[in]">
 
 暂停/恢复发送本地音频流：
 
 - 0:（默认）发送本地音频流。
 - 其他值: 暂停发送本地音频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-20"}>返回值</h4>
 
@@ -3043,20 +3167,21 @@ v1.9.5
 
 指定 Connection 所关联的 RTC 频道暂停/恢复发送本地视频流。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | mute | <Slot name="api-center-table-324" /> |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
-<Slot for="api-center-table-324">
+</Parameter>
+<Parameter name="mute" direction="[in]">
 
 暂停/恢复发送本地视频流：
 
 - 0:（默认）发送本地视频流。
 - 其他值: 暂停发送本地视频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-21"}>返回值</h4>
 
@@ -3072,21 +3197,26 @@ v1.9.5
 
 暂停/恢复接收指定 Connection 所关联的 RTC 频道内的指定远端用户的音频流。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户 ID。设为 0 则停止接收频道内所有用户的音频流。 |
-| [in] | mute | <Slot name="api-center-table-325" /> |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
-<Slot for="api-center-table-325">
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户 ID。设为 0 则停止接收频道内所有用户的音频流。
+
+</Parameter>
+<Parameter name="mute" direction="[in]">
 
 暂停/恢复接收远端音频流：
 
 - false:（默认）接收远端音频流。
 - true: 暂停接收远端音频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-22"}>返回值</h4>
 
@@ -3104,21 +3234,26 @@ v1.9.5
 
 可以先暂停接收所有频道的视频流，然后恢复接收指定频道的视频流。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户 ID。设为 0 则停止接收频道内所有用户的视频流。 |
-| [in] | mute | <Slot name="api-center-table-326" /> |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
-<Slot for="api-center-table-326">
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户 ID。设为 0 则停止接收频道内所有用户的视频流。
+
+</Parameter>
+<Parameter name="mute" direction="[in]">
 
 暂停/恢复接收远端视频流：
 
 - 0: （默认）接收远端视频流。
 - 其他值: 暂停接收远端视频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-23"}>返回值</h4>
 
@@ -3134,11 +3269,18 @@ v1.9.5
 
 更新指定 Connection 所关联的 RTC 频道的 RTC Token。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | token | 声网 RTC Token。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="token" direction="[in]">
+
+声网 RTC Token。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-24"}>返回值</h4>
 
@@ -3154,12 +3296,23 @@ v1.9.5
 
 请求指定 Connection 所关联的 RTC 频道内的指定远端用户为指定远端视频流生成关键帧。
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户 ID。如果为频道内的所有用户，则设为 0。 |
-| [in] | stream_type | 视频流类型。详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed)。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户 ID。如果为频道内的所有用户，则设为 0。
+
+</Parameter>
+<Parameter name="stream_type" direction="[in]">
+
+视频流类型。详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-25"}>返回值</h4>
 
@@ -3175,13 +3328,28 @@ v1.9.5
 
 向指定 Connection 所关联的 RTC 频道发送音频帧。
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | data_ptr | 音频包数据。 |
-| [in] | data_len | 音频包数据大小（字节）。 |
-| [in] | info_ptr | 音频帧配置，详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="data_ptr" direction="[in]">
+
+音频包数据。
+
+</Parameter>
+<Parameter name="data_len" direction="[in]">
+
+音频包数据大小（字节）。
+
+</Parameter>
+<Parameter name="info_ptr" direction="[in]">
+
+音频帧配置，详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-26"}>返回值</h4>
 
@@ -3207,13 +3375,28 @@ v1.9.5
 调用该方法时，你需要明确指定发送的频道；否则 SDK 会将消息发送到所有你加入的频道。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-24"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户 ID；如果 remote_uid 设为 0，表示所有远端用户。 |
-| [in] | payload | 消息的 Payload。 |
-| [in] | length | 消息的 Payload 长度。最大不能超过 1 KB。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户 ID；如果 remote_uid 设为 0，表示所有远端用户。
+
+</Parameter>
+<Parameter name="payload" direction="[in]">
+
+消息的 Payload。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+消息的 Payload 长度。最大不能超过 1 KB。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-27"}>返回值</h4>
 
@@ -3251,14 +3434,33 @@ v1.9.2
 - [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-25"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。 |
-| --- | --- | --- |
-| [in] | remote_uid | 远端用户的用户 ID。 |
-| [in] | type | RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955)。 |
-| [in] | msg | RDT 消息负载。 |
-| [in] | length | RDT 消息长度。 |
+Connection ID。
+
+</Parameter>
+<Parameter name="remote_uid" direction="[in]">
+
+远端用户的用户 ID。
+
+</Parameter>
+<Parameter name="type" direction="[in]">
+
+RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955) 。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+RDT 消息负载。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+RDT 消息长度。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-28"}>返回值</h4>
 
@@ -3268,7 +3470,7 @@ v1.9.2
   - RTC_ERR_RDT_USER_NOT_EXIST(600): 频道内不存在该远端用户。
   - RTC_ERR_RDT_USER_NOT_READY(601): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
   - RTC_ERR_RDT_DATA_BLOCKED(602): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
-  - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。 . - [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
+  - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。. - [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
 
 <a id="a1eaa46ebfb4613c624eef98ae7275319"></a>
 
@@ -3285,13 +3487,28 @@ RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
 成功登录 RTM 服务并收到 [`on_rtm_event`](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a25c73cac37a00ac748fa41869838f623) 回调时才可以发送消息。发送频率不能超过每秒 60 条。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-26"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
 
-| [in] | rtm_uid | RTM 用户 ID。 |
-| --- | --- | --- |
-| [in] | msg | 消息内容。仅支持 UTF-8 编码。 |
-| [in] | msg_len | 消息长度，单位是字节，取值至多为 31 KB。 |
-| [in] | msg_id | 消息 ID。 |
+RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+消息内容。仅支持 UTF-8 编码。
+
+</Parameter>
+<Parameter name="msg_len" direction="[in]">
+
+消息长度，单位是字节，取值至多为 31 KB。
+
+</Parameter>
+<Parameter name="msg_id" direction="[in]">
+
+消息 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-29"}>返回值</h4>
 
@@ -3329,12 +3546,23 @@ v1.9.5
 
 成功调用该方法后，远端会触发 [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a) 回调，远端用户可以在该回调中获取接收到的流消息。
 
-<h4 data-toc-hidden="true" id={"参数-27"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stream_id" direction="[in]">
 
-| [in] | stream_id | 发送的数据流 ID，在 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 方法的输出参数中返回。 |
-| --- | --- | --- |
-| [in] | data | 待发送的数据的指针。 |
-| [in] | length | 发送数据的大小。 |
+发送的数据流 ID，在 [agora_rtc_create_data_stream](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed) 方法的输出参数中返回。
+
+</Parameter>
+<Parameter name="data" direction="[in]">
+
+待发送的数据的指针。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+发送数据的大小。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-30"}>返回值</h4>
 
@@ -3350,13 +3578,28 @@ v1.9.5
 
 向指定 Connection 所关联的 RTC 频道发送视频帧。
 
-<h4 data-toc-hidden="true" id={"参数-28"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | data_ptr | 视频包数据。 |
-| [in] | data_len | 视频包数据大小（字节）。 |
-| [in] | info_ptr | 视频帧配置，详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t)。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="data_ptr" direction="[in]">
+
+视频包数据。
+
+</Parameter>
+<Parameter name="data_len" direction="[in]">
+
+视频包数据大小（字节）。
+
+</Parameter>
+<Parameter name="info_ptr" direction="[in]">
+
+视频帧配置，详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-31"}>返回值</h4>
 
@@ -3372,13 +3615,28 @@ v1.9.5
 
 设置 bandwidth estimation (BWE) 参数。
 
-<h4 data-toc-hidden="true" id={"参数-29"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="conn_id" direction="[in]">
 
-| [in] | conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
-| --- | --- | --- |
-| [in] | min_bps | 最小码率，单位为 bps。 |
-| [in] | max_bps | 最大码率，单位为 bps。 |
-| [in] | start_bps | 起始码率，单位为 bps。 |
+Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+
+</Parameter>
+<Parameter name="min_bps" direction="[in]">
+
+最小码率，单位为 bps。
+
+</Parameter>
+<Parameter name="max_bps" direction="[in]">
+
+最大码率，单位为 bps。
+
+</Parameter>
+<Parameter name="start_bps" direction="[in]">
+
+起始码率，单位为 bps。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-32"}>返回值</h4>
 
@@ -3396,10 +3654,13 @@ v1.9.5
 
 设置一个级别后，你可以看到该级别及之前所有级别的日志信息。
 
-<h4 data-toc-hidden="true" id={"参数-30"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="level" direction="[in]">
 
-| [in] | level | 日志输出等级。详见 [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868)。 |
-| --- | --- | --- |
+日志输出等级。详见 [rtc_log_level_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abccb8cb27efdca58bafccf4092ccc868) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-33"}>返回值</h4>
 
@@ -3417,11 +3678,18 @@ v1.9.5
 
 JSON 选项默认不公开。声网工程师正在努力寻求以标准化方式公开 JSON 选项。
 
-<h4 data-toc-hidden="true" id={"参数-31"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connid" direction="[in]">
 
-| [in] | connid | Connection ID。如果设为 [CONNECTION_ID_ALL(0)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 则表示所有 Connection。 |
-| --- | --- | --- |
-| [in] | params | JSON 字符串形式的参数。 |
+Connection ID。如果设为 [CONNECTION_ID_ALL(0)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 则表示所有 Connection。
+
+</Parameter>
+<Parameter name="params" direction="[in]">
+
+JSON 字符串形式的参数。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-34"}>返回值</h4>
 

@@ -32,33 +32,51 @@ ReportParams: \{cid?:number;id:number;payload:string;qos:number;requestId?:strin
 
 #### Type declaration
 
-- Optional cid?:number
-- id:number
+<ParameterList title="Type declaration">
+<Parameter name="cid" type="number" optional />
+<Parameter name="id" type="number" required>
 
-  协议ID
-- payload:string
+协议ID
 
-  上报内容, base64(pb二进制内容)
-- qos:number
+</Parameter>
+<Parameter name="payload" type="string" required>
 
-  消息级别
-  1: 默认, 101: 测试
-- Optional requestId?:string
+上报内容, base64(pb二进制内容)
 
-  上报唯一id
-- sign:string
+</Parameter>
+<Parameter name="qos" type="number" required>
 
-  签名规则: md5(payload=base64(XX)&src=XX&ts=XX)
-  保留字段, XX为字段值 32位小写
-- src:string
+消息级别
+1: 默认, 101: 测试
 
-  来源/请求方
-- ts:number
+</Parameter>
+<Parameter name="requestId" type="string" optional>
 
-  时间戳, 10位, 秒
-- Optional vid?:number
+上报唯一id
 
-  厂商ID
+</Parameter>
+<Parameter name="sign" type="string" required>
+
+签名规则: md5(payload=base64(XX)&src=XX&ts=XX)
+保留字段, XX为字段值 32位小写
+
+</Parameter>
+<Parameter name="src" type="string" required>
+
+来源/请求方
+
+</Parameter>
+<Parameter name="ts" type="number" required>
+
+时间戳, 10位, 秒
+
+</Parameter>
+<Parameter name="vid" type="number" optional>
+
+厂商ID
+
+</Parameter>
+</ParameterList>
 
 <a id="ReportUserParams"></a>
 
@@ -68,45 +86,75 @@ ReportUserParams: \{errorCode?:number;lts?:number;role:string;roomCreateTs:numbe
 
 #### Type declaration
 
-- Optional errorCode?:number
+<ParameterList title="Type declaration">
+<Parameter name="errorCode" type="number" optional>
 
-  异常码，若有
-- Optional lts?:number
+异常码，若有
 
-  时间戳，必须存在
-- role:string
+</Parameter>
+<Parameter name="lts" type="number" optional>
 
-  apaas角色
-- roomCreateTs:number
+时间戳，必须存在
 
-  房间创建的时间戳
-- roomId:string
+</Parameter>
+<Parameter name="role" type="string" required>
 
-  apaas房间id，与rtc/rtm channelName相同
-- rtmSid:string
+apaas角色
 
-  rtm sid
-- scenario:string
+</Parameter>
+<Parameter name="roomCreateTs" type="number" required>
 
-  apaas场景，如education/meeting/entertainment
-- streamSid:string
+房间创建的时间戳
 
-  rtc sid
-- streamSuid:string
+</Parameter>
+<Parameter name="roomId" type="string" required>
 
-  rtc流id
-- streamUid:number
+apaas房间id，与rtc/rtm channelName相同
 
-  rtc流id
-- uid:string
+</Parameter>
+<Parameter name="rtmSid" type="string" required>
 
-  apaas用户id，同RTM uid
-- userName:string
+rtm sid
 
-  用户名，用于显示
-- ver:string
+</Parameter>
+<Parameter name="scenario" type="string" required>
 
-  apaas版本号
-- vid:number
+apaas场景，如education/meeting/entertainment
 
-  vid
+</Parameter>
+<Parameter name="streamSid" type="string" required>
+
+rtc sid
+
+</Parameter>
+<Parameter name="streamSuid" type="string" required>
+
+rtc流id
+
+</Parameter>
+<Parameter name="streamUid" type="number" required>
+
+rtc流id
+
+</Parameter>
+<Parameter name="uid" type="string" required>
+
+apaas用户id，同RTM uid
+
+</Parameter>
+<Parameter name="userName" type="string" required>
+
+用户名，用于显示
+
+</Parameter>
+<Parameter name="ver" type="string" required>
+
+apaas版本号
+
+</Parameter>
+<Parameter name="vid" type="number" required>
+
+vid
+
+</Parameter>
+</ParameterList>

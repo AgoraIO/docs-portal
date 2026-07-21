@@ -36,9 +36,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__return_values"></a>
 
@@ -88,13 +93,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
 
@@ -144,14 +154,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 开启/关闭耳返功能:
 
 - `true`: 开启耳返功能。
 - `false`: （默认）关闭耳返功能。
 
-### includeAudioFilters
+</Parameter>
+<a id="includeaudiofilters"></a>
+<Parameter name="includeAudioFilters">
 
 耳返 Audio filter 类型：
 
@@ -161,11 +175,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS (1 &lt;&lt; 1): 在耳返中添加人声效果 Audio filter。如果你实现了美声、音效等功能，用户可以在耳返中听到添加效果后的声音。该枚举值支持使用按位或运算符（|）进行组合。
 - EAR_MONITORING_FILTER_NOISE_SUPPRESSION (1 &lt;&lt;2)：在耳返中添加降噪 Audio filter。该枚举值支持使用按位或运算符（|）进行组合。
 - EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 &lt;&lt;15)：
-                    复用发送端已进行过音效处理的 Audio filter。通过复用 Audio filter 降低耳返对 CPU 的占用率，但会增加耳返延迟，适用于需要降低 CPU 消耗且对耳返延迟不敏感的场景。该枚举值仅支持单独使用，一旦指定了该选项，其他 Audio filter 配置将自动失效。
+  复用发送端已进行过音效处理的 Audio filter。通过复用 Audio filter 降低耳返对 CPU 的占用率，但会增加耳返延迟，适用于需要降低 CPU 消耗且对耳返延迟不敏感的场景。该枚举值仅支持单独使用，一旦指定了该选项，其他 Audio filter 配置将自动失效。
 
 :::caution
 注意： 该参数仅在 enabled 设为 `true` 时生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 
@@ -232,10 +249,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 - `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
 - `false`: 关闭本地音频功能，即停止本地音频采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -283,7 +305,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集:
 
@@ -292,10 +316,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - `true`: 开启声卡采集；系统**声音 &gt; 输出**界面显示虚拟声卡名称。
 - `false`:（默认）关闭声卡采集；系统**声音 &gt; 输出**界面不显示虚拟声卡名称。
 
-### deviceName
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableloopbackrecording__return_values"></a>
 
@@ -343,11 +372,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
 
-### enabled
+</Parameter>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集：
 
@@ -356,10 +389,15 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - `true`: 开启声卡采集。
 - `false`:（默认）不开启声卡采集。
 
-### deviceName
+</Parameter>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableloopbackrecordingex__return_values"></a>
 
@@ -412,10 +450,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 - `true`: 静音。
 - `false`:（默认）原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
@@ -461,13 +504,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
 

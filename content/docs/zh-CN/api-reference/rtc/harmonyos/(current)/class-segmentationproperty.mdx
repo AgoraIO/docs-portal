@@ -29,17 +29,24 @@ export class SegmentationProperty {
 
 ##
 
-### modelType
+<ParameterList>
+<a id="modeltype"></a>
+<Parameter name="modelType">
 
 进行背景处理的算法。
 
 - AI(1): (默认) 适用于所有场景下的背景处理算法。
 - GREEN(2): 仅适用于绿幕背景下的背景处理算法。
 
-### greenCapacity
+</Parameter>
+<a id="greencapacity"></a>
+<Parameter name="greenCapacity">
 
 对画面中背景颜色识别的精度范围。取值范围为 [0,1]，默认值为 0.5。取值越大，代表可识别的纯色范围越大。当该参数取值过大时，人像边缘和人像范围内的纯色也会被识别。建议你根据实际效果动态调整该参数的值。
 
 :::note
 注： 该参数仅在 modelType 设置为 GREEN 时生效。
 :::
+
+</Parameter>
+</ParameterList>

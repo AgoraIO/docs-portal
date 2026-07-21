@@ -31,13 +31,20 @@ abstract destroyRendererByConfig(sourceType: VideoSourceType, channelId?: string
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -63,9 +70,14 @@ abstract destroyRendererByView(view: any): void;
 
 ### 参数
 
-### view
+<ParameterList>
+<a id="view"></a>
+<Parameter name="view">
 
 需要销毁的 HTMLElement 对象。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -155,17 +167,24 @@ abstract setLocalRenderMode(
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 本地视图显示模式。详见 [RenderModeType](/zh-CN/api-reference/rtc/electron/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 本地视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/electron/enum-videomirrormodetype)。
 
 :::note
 注： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
 
@@ -213,17 +232,24 @@ abstract setLocalRenderTargetFps(
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
 
-### targetFps
+</Parameter>
+<a id="targetfps"></a>
+<Parameter name="targetFps">
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
 :::note
 注： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
 
@@ -260,9 +286,14 @@ abstract setLocalVideoMirrorMode(mirrorMode: VideoMirrorModeType): number;
 
 ### 参数
 
-### mirrorMode
+<ParameterList>
+<a id="mirrormode-1"></a>
+<Parameter name="mirrorMode">
 
 本地视频镜像模式。详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/electron/enum-videomirrormodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
 
@@ -308,17 +339,26 @@ abstract setRemoteRenderMode(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-1"></a>
+<Parameter name="renderMode">
 
 远端用户视图的渲染模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/electron/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-2"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/electron/enum-videomirrormodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoterendermode2__return_values"></a>
 
@@ -358,21 +398,32 @@ abstract setRemoteRenderModeEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-2"></a>
+<Parameter name="renderMode">
 
 远端视图显示模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/electron/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-3"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/electron/enum-videomirrormodetype)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
 
@@ -417,13 +468,18 @@ abstract setRemoteRenderTargetFps(targetFps: number): number;
 
 ### 参数
 
-### targetFps
+<ParameterList>
+<a id="targetfps-1"></a>
+<Parameter name="targetFps">
 
 最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
 
 :::note
 注： 请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoterendertargetfps__return_values"></a>
 
@@ -456,9 +512,14 @@ abstract setRenderMode(renderMode: RenderModeType): number;
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode-3"></a>
+<Parameter name="renderMode">
 
 播放器视图的渲染模式。详见 [RenderModeType](/zh-CN/api-reference/rtc/electron/enum-rendermodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setrendermode__return_values"></a>
 
@@ -513,9 +574,14 @@ abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/electron/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setuplocalvideo__return_values"></a>
 
@@ -560,9 +626,14 @@ abstract setupRemoteVideo(canvas: VideoCanvas): number;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-1"></a>
+<Parameter name="canvas">
 
 远端视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/electron/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setupremotevideo__return_values"></a>
 
@@ -612,13 +683,20 @@ abstract setupRemoteVideoEx(
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-2"></a>
+<Parameter name="canvas">
 
 视频画布信息。详见 [VideoCanvas](/zh-CN/api-reference/rtc/electron/class-videocanvas)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setupremotevideoex__return_values"></a>
 
@@ -710,9 +788,14 @@ abstract startMediaRenderingTracingEx(connection: RtcConnection): number;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
 
@@ -752,21 +835,32 @@ onVideoRenderingTracingResult?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### currentEvent
+</Parameter>
+<a id="currentevent"></a>
+<Parameter name="currentEvent">
 
 当前视频帧渲染事件。详见 [MediaTraceEvent](/zh-CN/api-reference/rtc/electron/enum-mediatraceevent)。
 
-### tracingInfo
+</Parameter>
+<a id="tracinginfo"></a>
+<Parameter name="tracingInfo">
 
 视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/electron/class-videorenderingtracinginfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -261,9 +261,14 @@ virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver__return_values"></a>
 
@@ -320,11 +325,15 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
 
@@ -336,6 +345,9 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 - macOS：I420 或 CVPixelBufferRef
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -380,9 +392,14 @@ virtual void onFrame(const VideoFrame* frame) = 0;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 视频帧信息。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -423,11 +440,15 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
 
@@ -439,6 +460,9 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 - macOS：I420 或 CVPixelBufferRef
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -489,11 +513,15 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送该帧视频的远端用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
 
@@ -506,9 +534,14 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 - Windows：YUV420
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

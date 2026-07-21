@@ -43,7 +43,9 @@ public abstract int AdjustPlayoutVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放音量，取值范围从 0 到 100：
 
@@ -51,6 +53,9 @@ public abstract int AdjustPlayoutVolume(int volume);
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
 
@@ -99,7 +104,9 @@ public abstract int AdjustPublishSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 信号音量，取值范围从 0 到 400：
 
@@ -108,6 +115,9 @@ public abstract int AdjustPublishSignalVolume(int volume);
 - 0: 无声。
 - 100: （默认）媒体文件的原始音量。
 - 400: 原始音量的四倍（自带溢出保护）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
 
@@ -154,7 +164,9 @@ public abstract int Mute(bool muted);
 
 ### 参数
 
-### muted
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 静音选项。
 
@@ -162,6 +174,9 @@ public abstract int Mute(bool muted);
 
 - `true`：静音。
 - `false`：（默认）不静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_mute__return_values"></a>
 
@@ -285,9 +300,14 @@ public abstract int PlayPreloadedSrc(string src);
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 播放列表中的媒体资源 URL 地址，必须与 PreloadSrc 方法设置的 src 一致，否则无法播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
@@ -366,9 +386,14 @@ public abstract int Seek(Int64 newPos);
 
 ### 参数
 
-### newPos
+<ParameterList>
+<a id="newpos"></a>
+<Parameter name="newPos">
 
 指定的位置（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_seek__return_values"></a>
 
@@ -449,11 +474,15 @@ public virtual Int64 OnSeek(Int64 offset, int whence)
 
 ### 参数
 
-### offset
+<ParameterList>
+<a id="offset"></a>
+<Parameter name="offset">
 
 输入参数。定位位置相对于起点的偏移量，单位为字节。取值可正可负。
 
-### whence
+</Parameter>
+<a id="whence"></a>
+<Parameter name="whence">
 
 输入参数。表示定位的起点位置。可以为如下值：
 
@@ -461,6 +490,9 @@ public virtual Int64 OnSeek(Int64 offset, int whence)
 - 1：起点为当前位置，定位后的实际数据偏移量为当前位置加上 offset。
 - 2：起点为数据的尾，定位后的实际数据偏移量为文件长度加上 offset。
 - 65536：不执行定位操作，返回文件大小。建议在播放 MP3、WAV 等纯音频文件时使用该参数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayercustomdataprovider_onseek__return_values"></a>
 

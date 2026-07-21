@@ -121,9 +121,14 @@ public abstract int destroyMusicPlayer(IAgoraMusicPlayer player);
 
 ### 参数
 
-### player
+<ParameterList>
+<a id="player"></a>
+<Parameter name="player">
 
 音乐播放器对象。详见 [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
 
@@ -187,11 +192,15 @@ public abstract long getInternalSongCode(long songCode, String jsonOption);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。可通过调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 获取，并从这两个方法触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption"></a>
+<Parameter name="jsonOption">
 
 :::note
 注： `sceneType` 会影响计费方式。不同频道场景的计费标准不同，详见计费文档。若需切换频道场景，必须使用新的 `sceneType` 值重新调用该方法。
@@ -201,6 +210,9 @@ public abstract long getInternalSongCode(long songCode, String jsonOption);
 
 - sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`{"sceneType":1}`。
 - highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例：`{"format": {"highpart": 0}}`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -239,16 +251,23 @@ public abstract String getLyric(long songCode, int lyricType);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-1"></a>
+<Parameter name="songCode">
 
 指定音乐资源的标识符。
 
-### lyricType
+</Parameter>
+<a id="lyrictype"></a>
+<Parameter name="lyricType">
 
 歌词格式类型：
 
 - 0：xml 格式。
 - 1：lrc 格式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getlyric__return_values"></a>
 
@@ -318,7 +337,9 @@ public String getMusicCollectionByMusicChartId(int musicChartId, int page, int p
 
 ### 参数
 
-### musicChartId
+<ParameterList>
+<a id="musicchartid"></a>
+<Parameter name="musicChartId">
 
 音乐榜单的 ID，可通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。
 
@@ -326,13 +347,20 @@ public String getMusicCollectionByMusicChartId(int musicChartId, int page, int p
 注： 你也可以使用 RESTful API 获取“音乐库完整歌曲列表”或“增量歌曲列表”。
 :::
 
-### page
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
 
 当前页码，默认从 1 开始。
 
-### pageSize
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
 
 当前音乐资源列表中的总页数，最大值为 50。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -373,19 +401,27 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 ### 参数
 
-### musicChartId
+<ParameterList>
+<a id="musicchartid-1"></a>
+<Parameter name="musicChartId">
 
 音乐榜单的 ID。可通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以使用 RESTful API 获取完整音乐库列表或增量音乐列表。
 
-### page
+</Parameter>
+<a id="page-1"></a>
+<Parameter name="page">
 
 当前页码，从 1 开始。
 
-### pageSize
+</Parameter>
+<a id="pagesize-1"></a>
+<Parameter name="pageSize">
 
 每页返回的音乐资源数量，最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-1"></a>
+<Parameter name="jsonOption">
 
 可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选项：
 
@@ -399,6 +435,9 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
   - false：不需要合唱片段。
 
 示例：`{"pitchType":1}`，`{"needHighPart":true}`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__return_values"></a>
 
@@ -469,9 +508,14 @@ public abstract String getSongSimpleInfo(long songCode);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-2"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符，用于指定要查询的音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
 
@@ -506,9 +550,14 @@ public abstract int initialize(MusicContentCenterConfiguration configuration);
 
 ### 参数
 
-### configuration
+<ParameterList>
+<a id="configuration"></a>
+<Parameter name="configuration">
 
 [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter) 的配置参数。详见 [MusicContentCenterConfiguration](/zh-CN/api-reference/rtc/android/class-musiccontentcenterconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__return_values"></a>
 
@@ -543,9 +592,14 @@ public abstract int isPreloaded(long songCode);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-3"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
 
@@ -590,13 +644,20 @@ int open(String url, long startPos)
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 音乐资源的路径，支持本地文件和在线文件。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 播放起始位置，单位为毫秒。（默认值为 0。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_open2_imusicplayer__return_values"></a>
 
@@ -641,13 +702,20 @@ int open(long songCode, long startPos);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-4"></a>
+<Parameter name="songCode">
 
 音乐资源的资源 ID，用于标识音乐。
 
-### startPos
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
 
 起始播放位置，单位为毫秒。（默认值为 0）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_open_imusicplayer__return_values"></a>
 
@@ -690,11 +758,15 @@ public abstract int preload(long songCode, String jsonOption)
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-5"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-2"></a>
+<Parameter name="jsonOption">
 
 扩展的 JSON 字段。声网会根据你在 `sceneType` 字段中设置的应用场景计费，不同场景的计费标准不同，详见计费文档。
 
@@ -705,6 +777,9 @@ public abstract int preload(long songCode, String jsonOption)
 - 5：VR 场景：在线 K 歌房和背景音乐播放。
 
 如果你需要切换到其他场景，必须重新调用该方法并在该字段中传入新的 `sceneType` 值。示例：`{"sceneType":1}`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 
@@ -743,9 +818,14 @@ public abstract String preload(long songCode);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-6"></a>
+<Parameter name="songCode">
 
 版权音乐资源的标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload2__return_values"></a>
 
@@ -778,9 +858,14 @@ public abstract int registerEventHandler(IMusicContentCenterEventHandler eventHa
 
 ### 参数
 
-### eventHandler
+<ParameterList>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 要注册的回调事件。详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__return_values"></a>
 
@@ -819,9 +904,14 @@ public abstract int removeCache(long songCode);
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-7"></a>
+<Parameter name="songCode">
 
 要删除的音乐资源的标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_removecache__return_values"></a>
 
@@ -856,9 +946,14 @@ public abstract int renewToken(String token);
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 新生成的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__return_values"></a>
 
@@ -893,17 +988,26 @@ public String searchMusic(String keyword, int page, int pageSize)
 
 ### 参数
 
-### keyword
+<ParameterList>
+<a id="keyword"></a>
+<Parameter name="keyword">
 
 搜索关键词。支持按歌曲标题或艺术家名称搜索。
 
-### page
+</Parameter>
+<a id="page-2"></a>
+<Parameter name="page">
 
 要获取的音乐资源列表的页码。
 
-### pageSize
+</Parameter>
+<a id="pagesize-2"></a>
+<Parameter name="pageSize">
 
 每页返回的最大音乐资源数量，最大值为 50。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 
@@ -942,19 +1046,27 @@ public abstract String searchMusic(String keyword, int page, int pageSize, Strin
 
 ### 参数
 
-### keyword
+<ParameterList>
+<a id="keyword-1"></a>
+<Parameter name="keyword">
 
 搜索关键词。支持按歌曲名称或歌手名称搜索。
 
-### page
+</Parameter>
+<a id="page-3"></a>
+<Parameter name="page">
 
 要获取的音乐资源列表的目标页码。
 
-### pageSize
+</Parameter>
+<a id="pagesize-3"></a>
+<Parameter name="pageSize">
 
 每页显示的最大音乐资源数量。最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-3"></a>
+<Parameter name="jsonOption">
 
 可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
@@ -966,6 +1078,9 @@ public abstract String searchMusic(String keyword, int page, int pageSize, Strin
 
   - true：需要副歌片段。
   - false：不需要副歌片段。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic2__return_values"></a>
 
@@ -1016,9 +1131,14 @@ int setPlayMode(MusicPlayMode mode);
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放模式，详见 [MusicPlayMode](/zh-CN/api-reference/rtc/android/enum-musicplaymode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_setplaymode__return_values"></a>
 
@@ -1115,19 +1235,27 @@ public abstract int unregisterEventHandler();
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### songCode
+</Parameter>
+<a id="songcode-8"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载链接。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 来自版权音乐内容中心的请求状态码：
 
@@ -1143,6 +1271,9 @@ public abstract int unregisterEventHandler();
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：HTTP 内部错误。请稍后重试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1176,15 +1307,21 @@ public abstract int unregisterEventHandler();
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-1"></a>
+<Parameter name="requestId">
 
 请求 ID，用于标识此次请求的唯一标识符。
 
-### list
+</Parameter>
+<a id="list"></a>
+<Parameter name="list">
 
 当前可播放的音乐排行榜列表，详见 [MusicChartInfo](/zh-CN/api-reference/rtc/android/class-musicchartinfo)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 来自音乐内容中心的请求状态码：
 
@@ -1200,6 +1337,9 @@ public abstract int unregisterEventHandler();
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：内部 HTTP 错误。请稍后重试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1227,27 +1367,39 @@ void onMusicCollectionResult(String requestId, int page, int pageSize, int total
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-2"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### page
+</Parameter>
+<a id="page-4"></a>
+<Parameter name="page">
 
 当前页码，从 1 开始。
 
-### pageSize
+</Parameter>
+<a id="pagesize-4"></a>
+<Parameter name="pageSize">
 
 每页最多返回的音乐资源数量，最大为 50。
 
-### total
+</Parameter>
+<a id="total"></a>
+<Parameter name="total">
 
 音乐资源列表中的总资源数。
 
-### list
+</Parameter>
+<a id="list-1"></a>
+<Parameter name="list">
 
 音乐资源列表的详细信息，详见 [Music](/zh-CN/api-reference/rtc/android/class-music)。
 
-### reason
+</Parameter>
+<a id="reason-2"></a>
+<Parameter name="reason">
 
 来自声网音乐内容中心的请求状态码：
 
@@ -1263,6 +1415,9 @@ void onMusicCollectionResult(String requestId, int page, int pageSize, int total
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)`：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)`：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)`：HTTP 内部错误。请稍后重试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1296,23 +1451,33 @@ void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUr
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-3"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### songCode
+</Parameter>
+<a id="songcode-9"></a>
+<Parameter name="songCode">
 
 音乐资源的 ID，用于标识一个音乐资源。
 
-### percent
+</Parameter>
+<a id="percent"></a>
+<Parameter name="percent">
 
 音乐资源的当前加载进度，取值范围为 [0, 100]。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl-1"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载地址。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐资源的当前加载状态：
 
@@ -1320,7 +1485,9 @@ void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUr
 - 1：加载失败。
 - 2：加载中。
 
-### reason
+</Parameter>
+<a id="reason-3"></a>
+<Parameter name="reason">
 
 来自 Music Content Center 的请求状态码：
 
@@ -1336,6 +1503,9 @@ void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUr
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：HTTP 内部错误。请稍后重试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1367,15 +1537,21 @@ void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, 
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-4"></a>
+<Parameter name="requestId">
 
 请求 ID，用于标识此次请求的唯一标识符。
 
-### songCode
+</Parameter>
+<a id="songcode-10"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。
 
-### simpleInfo
+</Parameter>
+<a id="simpleinfo"></a>
+<Parameter name="simpleInfo">
 
 音乐资源的相关信息，包括：
 
@@ -1385,7 +1561,9 @@ void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, 
 - 歌曲标题。
 - 艺术家名称。
 
-### reason
+</Parameter>
+<a id="reason-4"></a>
+<Parameter name="reason">
 
 来自音乐内容中心的请求状态码：
 
@@ -1401,6 +1579,9 @@ void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, 
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
 - `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：内部 HTTP 错误。请稍后重试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

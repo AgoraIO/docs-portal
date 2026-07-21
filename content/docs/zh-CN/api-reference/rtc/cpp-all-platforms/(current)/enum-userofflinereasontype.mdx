@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### USER_OFFLINE_QUIT
+<ParameterList>
+<a id="user_offline_quit"></a>
+<Parameter name="USER_OFFLINE_QUIT">
 
 （0）：用户主动退出通话。
 
-### USER_OFFLINE_DROPPED
+</Parameter>
+<a id="user_offline_dropped"></a>
+<Parameter name="USER_OFFLINE_DROPPED">
 
 （1）：在一定时间内未收到数据包，SDK 超时，用户掉线。
 
@@ -26,6 +30,11 @@ _migration:
 注： 如果用户退出通话但未将消息传递给 SDK（由于信道不可靠），SDK 会认为用户掉线。
 :::
 
-### USER_OFFLINE_BECOME_AUDIENCE
+</Parameter>
+<a id="user_offline_become_audience"></a>
+<Parameter name="USER_OFFLINE_BECOME_AUDIENCE">
 
 （2）：用户将客户端角色从主播切换为观众。
+
+</Parameter>
+</ParameterList>

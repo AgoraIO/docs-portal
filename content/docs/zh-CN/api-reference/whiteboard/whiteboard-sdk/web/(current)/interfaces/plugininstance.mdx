@@ -12,8 +12,10 @@ _migration:
 
 ### Type parameters
 
-- C
-- A
+<ParameterList>
+<Parameter name="C" />
+<Parameter name="A" />
+</ParameterList>
 
 ### Hierarchy
 
@@ -209,15 +211,17 @@ width: number
 
 - Defined in [index-zh.d.ts\:3415](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3415)
 
-  修改组件插件属性中的部分字段。
+修改组件插件属性中的部分字段。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="attributes" type="Partial &amp; lt;A &amp; gt;" required>
 
-  - attributes: Partial&lt;A&gt;
+要修改的字段。
 
-    要修改的字段。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="remove"></a>
 
@@ -227,9 +231,9 @@ width: number
 
 - Defined in [index-zh.d.ts\:3432](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3432)
 
-  删除组件插件对象。
+删除组件插件对象。
 
-  Returns void
+Returns void
 
 <a id="removeattributekeys"></a>
 
@@ -239,19 +243,21 @@ width: number
 
 - Defined in [index-zh.d.ts\:3421](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3421)
 
-  删除组件插件属性中的部分字段。
+删除组件插件属性中的部分字段。
 
-  Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="K" type="string" />
+</ParameterList>
 
-  - K:string
+<ParameterList title="Parameters">
+<Parameter name="...keys" type="K[]" required>
 
-  Parameters
+要删除的字段。
 
-  - Rest...keys: K[]
+</Parameter>
+</ParameterList>
 
-    要删除的字段。
-
-  Returns void
+Returns void
 
 <a id="update"></a>
 
@@ -261,12 +267,20 @@ width: number
 
 - Defined in [index-zh.d.ts\:3427](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3427)
 
-  修改组件插件对象的描述。
+修改组件插件对象的描述。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="description" required>
 
-  - description: [PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)&lt;A&gt;
+<ParameterType>
 
-    要修改的描述。
+[PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription) & lt;A & gt;
 
-  Returns void
+</ParameterType>
+
+要修改的描述。
+
+</Parameter>
+</ParameterList>
+
+Returns void

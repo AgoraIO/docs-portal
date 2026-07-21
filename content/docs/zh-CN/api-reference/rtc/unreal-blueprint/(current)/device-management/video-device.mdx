@@ -67,16 +67,23 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启多摄像头视频采集模式：
 
 - `true`：开启多摄像头采集模式，SDK 使用多路摄像头采集视频。
 - `false`：关闭多摄像头采集模式，SDK 仅使用单路摄像头采集视频。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 第二个摄像头的采集配置。详见 [FCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablemulticamera__return_values"></a>
 
@@ -190,17 +197,26 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
 
-### deviceCapabilityNumber
+</Parameter>
+<a id="devicecapabilitynumber"></a>
+<Parameter name="deviceCapabilityNumber">
 
 视频格式的索引号。如果 NumberOfCapabilities 的返回值为 i，则该参数取值范围为[0,i)。
 
-### capability
+</Parameter>
+<a id="capability"></a>
+<Parameter name="capability">
 
 输出参数。表示指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [FVideoFormat](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoformat)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getcapability__return_values"></a>
 
@@ -257,17 +273,26 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 指定的索引值，必须小于 [GetCount](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicecollection_getcount) 方法的返回值。
 
-### deviceName
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 设备名称。
 
-### deviceId
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 视频设备的设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicecollection_getdevice__return_values"></a>
 
@@ -639,9 +664,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-1"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
 
@@ -683,12 +713,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### focalLengthInfos
+<ParameterList>
+<a id="focallengthinfos"></a>
+<Parameter name="focalLengthInfos">
 
 输入和输出参数。指向 [FFocalLengthInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-focallengthinfo) 对象数组的指针：
 
 - 输入值：指向一个 [FFocalLengthInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-focallengthinfo) 对象数组，用于存储焦距信息。
 - 输出值：方法执行后，输出查询到的焦距信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
 
@@ -724,19 +759,26 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### codecInfo
+<ParameterList>
+<a id="codecinfo"></a>
+<Parameter name="codecInfo">
 
 输入和输出参数，表示 SDK 的视频编码能力数组。详见 [FCodecCapInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-codeccapinfo)。
 
 - 输入值：用户执行该方法时定义的 FCodecCapInfo，表示待查询的视频编解码能力。
 - 输出值：方法执行完毕后输出的 FCodecCapInfo，表示 SDK 实际支持的视频编解码能力。
 
-### size
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 输入和输出参数，表示 FCodecCapInfo 数组的大小。
 
 - 输入值：用户执行该方法时定义的 FCodecCapInfo 的大小。
 - 输出值：方法执行完毕后输出的 FCodecCapInfo 的大小。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 
@@ -825,12 +867,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启自动曝光：
 
 - `true`: 开启自动曝光。
 - `false`: 关闭自动曝光。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
 
@@ -882,12 +929,17 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启人脸对焦：
 
 - `true`: 开启人脸对焦功能。
 - `false`: 关闭人脸对焦功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -935,13 +987,18 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 摄像头采集配置，详见 [FCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-cameracapturerconfiguration)。
 
 :::caution
 注意： 在该方法中，不需要设置 deviceId 参数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -985,15 +1042,25 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 视频源类型，详见 [EUABT_VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videosourcetype)。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setcameradeviceorientation__parml_ejw_j4f_3qb"></a>
 
-### orientation
+<ParameterList>
+<a id="orientation"></a>
+<Parameter name="orientation">
 
 顺时针旋转角度，详见 [FENUMWRAP_VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videoorientation)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameradeviceorientation__return_values"></a>
 
@@ -1040,11 +1107,16 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor"></a>
+<Parameter name="factor">
 
 摄像头的曝光系数。默认值为 0，表示使用摄像头的默认曝光量。取值越大，曝光量越大。视频图像过曝时，你可以降低曝光系数；视频图像欠曝且暗部细节丢失时，你可以增加曝光系数。如果你指定的曝光系数超出设备支持的范围，SDK 会自动调节为设备实际支持的范围。
 
 在 Android 平台上，取值范围为 [-20.0,20.0]；在 iOS 平台上，取值范围为 [-8.0,8.0]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
@@ -1088,13 +1160,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### positionXinView
+<ParameterList>
+<a id="positionxinview"></a>
+<Parameter name="positionXinView">
 
 触摸点相对于视图的横坐标。
 
-### positionYinView
+</Parameter>
+<a id="positionyinview"></a>
+<Parameter name="positionYinView">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -1138,13 +1217,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### positionX
+<ParameterList>
+<a id="positionx"></a>
+<Parameter name="positionX">
 
 触摸点相对于视图的横坐标。
 
-### positionY
+</Parameter>
+<a id="positiony"></a>
+<Parameter name="positionY">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -1187,12 +1273,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### isOn
+<ParameterList>
+<a id="ison"></a>
+<Parameter name="isOn">
 
 是否打开闪光灯：
 
 - `true`: 打开闪光灯。
 - `false`:（默认）关闭闪光灯。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -1237,9 +1328,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor-1"></a>
+<Parameter name="factor">
 
 摄像头缩放比例。对不支持超广角的设备，取值范围从 1.0 到最大缩放比例；对支持超广角的设备，取值范围从 0.5 到最大缩放比例。你可以通过 [GetCameraMaxZoomFactor](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大缩放比例。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -1271,9 +1367,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceCollection")
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-1"></a>
+<Parameter name="deviceId">
 
 设备 ID。插拔设备不会影响 deviceId。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicecollection_setdevice__return_values"></a>
 
@@ -1363,21 +1464,32 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x"></a>
+<Parameter name="x">
 
 发生改变的曝光区域的 x 坐标。
 
-### y
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 发生改变的曝光区域的 y 坐标。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 发生改变的曝光区域的宽度。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 发生改变的曝光区域的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1410,21 +1522,32 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x-1"></a>
+<Parameter name="x">
 
 发生改变的对焦区域的 x 坐标。
 
-### y
+</Parameter>
+<a id="y-1"></a>
+<Parameter name="y">
 
 发生改变的对焦区域的 y 坐标。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 发生改变的对焦区域的宽度。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 发生改变的对焦区域的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1492,17 +1615,26 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-2"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型。详见 [FENUMWRAP_MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态。详见 [EMEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediadevicestatetype) 。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

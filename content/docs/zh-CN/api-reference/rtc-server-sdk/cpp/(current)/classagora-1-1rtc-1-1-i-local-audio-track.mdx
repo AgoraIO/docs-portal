@@ -45,11 +45,21 @@ _migration:
 
 本地音频轨道开启之后，SDK 可以采集、处理和编码本地音频。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enable">
 
-| enable | 是否开启音频轨道：`true`: 开启音频轨道。 `false`: 关闭音频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+是否开启音频轨道：
+
+- `true`: 开启音频轨道。
+- `false`: 关闭音频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <a id="a103aa5dd48b949e735101e0c2825376a"></a>
 
@@ -102,11 +112,18 @@ _migration:
 
 调整音频发布音量。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音频发布音量。 取值范围 0 ~ 100 (默认)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频发布音量。 取值范围 0 ~ 100 (默认)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -122,10 +139,13 @@ _migration:
 
 获取音频发布音量。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音频发布音量。 |
-| --- | --- |
+音频发布音量。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -153,11 +173,18 @@ SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最�
 该方法需要在 [publishAudio](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#a5e5cc962971f99f07a692d82ac02ff1d) 方法之前调用。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="number">
 
-| number | 缓冲区存放的最大音频帧数。例如，填入 `6000` 则表示 6000 帧音频数据。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+缓冲区存放的最大音频帧数。例如，填入 `6000` 则表示 6000 帧音频数据。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <a id="a8e1c4f96b49e21c972e15344642453ec"></a>
 
@@ -199,7 +226,10 @@ SDK 默认允许发送的最小数据时长为 160 ms，即 SDK 会等音频发�
 
 你可以根据实际业务需求，调用该方法调整缓冲区允许发送的最小数据时长。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="delay_ms">
 
-| delay_ms | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a0f1adbf17ef048ba5c10d5dbbb4f8631) 方法中 `number` 参数值的 10 倍。 |
-| --- | --- |
+缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a0f1adbf17ef048ba5c10d5dbbb4f8631) 方法中 `number` 参数值的 10 倍。
+
+</Parameter>
+</ParameterList>

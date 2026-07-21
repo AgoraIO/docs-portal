@@ -31,9 +31,14 @@ public void addExtension(String providerName)
 
 ### 参数
 
-### providerName
+<ParameterList>
+<a id="providername"></a>
+<Parameter name="providerName">
 
 要添加的扩展名称。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -65,20 +70,29 @@ public abstract int enableExtension(String provider, String extension, boolean e
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider"></a>
+<Parameter name="provider">
 
 扩展功能提供方的名称，例如 `agora.io`。
 
-### extension
+</Parameter>
+<a id="extension"></a>
+<Parameter name="extension">
 
 扩展功能的名称，例如 `agora.beauty`。
 
-### enable
+</Parameter>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用该扩展功能：
 
 - true：（默认）启用扩展功能。
 - false：禁用扩展功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableextension__return_values"></a>
 
@@ -117,17 +131,26 @@ public abstract String getExtensionProperty(String provider, String extension, S
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-1"></a>
+<Parameter name="provider">
 
 扩展组件提供方的名称。
 
-### extension
+</Parameter>
+<a id="extension-1"></a>
+<Parameter name="extension">
 
 扩展组件的名称。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 扩展组件的键值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getextensionproperty__return_values"></a>
 
@@ -166,21 +189,32 @@ public abstract String getExtensionProperty(String provider, String extension, S
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-2"></a>
+<Parameter name="provider">
 
 扩展组件提供方的名称。
 
-### extension
+</Parameter>
+<a id="extension-2"></a>
+<Parameter name="extension">
 
 扩展组件的名称。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 扩展组件的键值。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 扩展组件的来源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getextensionproperty2__return_values"></a>
 
@@ -232,17 +266,26 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-3"></a>
+<Parameter name="provider">
 
 扩展提供方的名称。
 
-### extension
+</Parameter>
+<a id="extension-3"></a>
+<Parameter name="extension">
 
 扩展的名称。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 扩展的数据源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerextension__return_values"></a>
 
@@ -289,21 +332,32 @@ public abstract int setExtensionProperty(String provider, String extension, Stri
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-4"></a>
+<Parameter name="provider">
 
 扩展组件提供方的名称。
 
-### extension
+</Parameter>
+<a id="extension-4"></a>
+<Parameter name="extension">
 
 扩展组件的名称。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 扩展组件属性的键。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 扩展组件属性键对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproperty__return_values"></a>
 
@@ -348,17 +402,26 @@ public abstract int setExtensionProviderProperty(String provider, String key, St
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-5"></a>
+<Parameter name="provider">
 
 扩展提供方的名称。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 扩展属性的键名。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 扩展属性键对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
 
@@ -397,17 +460,26 @@ default void onErrorWithContext(ExtensionContext extContext, int error, String m
 
 ### 参数
 
-### extContext
+<ParameterList>
+<a id="extcontext"></a>
+<Parameter name="extContext">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-extensioncontext)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 错误原因。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -435,17 +507,26 @@ default void onEventWithContext(ExtensionContext extContext, String key, String 
 
 ### 参数
 
-### extContext
+<ParameterList>
+<a id="extcontext-1"></a>
+<Parameter name="extContext">
 
 扩展的上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-extensioncontext)。
 
-### key
+</Parameter>
+<a id="key-4"></a>
+<Parameter name="key">
 
 扩展事件的键。
 
-### value
+</Parameter>
+<a id="value-2"></a>
+<Parameter name="value">
 
 扩展事件键对应的值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -477,9 +558,14 @@ default void onStartedWithContext(ExtensionContext extContext)
 
 ### 参数
 
-### extContext
+<ParameterList>
+<a id="extcontext-2"></a>
+<Parameter name="extContext">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -511,9 +597,14 @@ default void onStoppedWithContext(ExtensionContext extContext)
 
 ### 参数
 
-### extContext
+<ParameterList>
+<a id="extcontext-3"></a>
+<Parameter name="extContext">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

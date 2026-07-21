@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### userOfflineQuit
+<ParameterList>
+<a id="userofflinequit"></a>
+<Parameter name="userOfflineQuit">
 
 0: 用户主动离开。
 
-### userOfflineDropped
+</Parameter>
+<a id="userofflinedropped"></a>
+<Parameter name="userOfflineDropped">
 
 1: 因过长时间收不到对方数据包，超时掉线。
 
@@ -26,6 +30,11 @@ _migration:
 注： 由于 SDK 使用的是不可靠通道，也有可能对方主动离开频道，但是本地没收到对方离开消息而误判为超时掉线。
 :::
 
-### userOfflineBecomeAudience
+</Parameter>
+<a id="userofflinebecomeaudience"></a>
+<Parameter name="userOfflineBecomeAudience">
 
 2: 用户身份从主播切换为观众。
+
+</Parameter>
+</ParameterList>

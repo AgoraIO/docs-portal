@@ -82,12 +82,17 @@ public abstract int setDefaultAudioRoutetoSpeakerphone(boolean defaultToSpeaker)
 
 ### 参数
 
-### defaultToSpeaker
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否将扬声器设置为默认音频路由：
 
 - true：将扬声器设置为默认音频路由。
 - false：将听筒设置为默认音频路由。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
@@ -143,12 +148,17 @@ public abstract int setEnableSpeakerphone(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用扬声器：
 
 - true：启用设备状态监测，音频路由为扬声器。
 - false：关闭设备状态监测，音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
@@ -199,7 +209,9 @@ public abstract int setRouteInCommunicationMode(int route);
 
 ### 参数
 
-### route
+<ParameterList>
+<a id="route"></a>
+<Parameter name="route">
 
 你希望使用的音频播放路由：
 
@@ -211,6 +223,9 @@ public abstract int setRouteInCommunicationMode(int route);
 - 4：（尚不支持）外部扬声器。
 - 5：蓝牙耳机。
 - 6：USB 设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
 
@@ -249,7 +264,9 @@ public void onAudioRouteChanged(int routing) {}
 
 ### 参数
 
-### routing
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
 
 当前的音频路由。
 
@@ -261,6 +278,9 @@ public void onAudioRouteChanged(int routing) {}
 - `AUDIO_ROUTE_LOUDSPEAKER`（4）：音频路由为外接扬声器（预留）。
 - `AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP`（5）：音频路由为使用 HFP 协议的蓝牙设备。
 - `AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP`（10）：音频路由为使用 A2DP 协议的蓝牙设备。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

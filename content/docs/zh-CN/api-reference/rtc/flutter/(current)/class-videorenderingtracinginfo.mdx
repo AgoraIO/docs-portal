@@ -56,19 +56,27 @@ class VideoRenderingTracingInfo {
 
 ## 属性
 
-### elapsedTime
+<ParameterList>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到触发 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/flutter/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔 (ms)。建议在加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
 
-### start2JoinChannel
+</Parameter>
+<a id="start2joinchannel"></a>
+<Parameter name="start2JoinChannel">
 
 从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 的时间间隔 (ms)。负数表示在调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
 
-### join2JoinSuccess
+</Parameter>
+<a id="join2joinsuccess"></a>
+<Parameter name="join2JoinSuccess">
 
 从调用 `joinChannel1` 或 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 到成功加入频道的时间间隔 (ms)。
 
-### joinSuccess2RemoteJoined
+</Parameter>
+<a id="joinsuccess2remotejoined"></a>
+<Parameter name="joinSuccess2RemoteJoined">
 
 :::note
 注：
@@ -80,7 +88,9 @@ class VideoRenderingTracingInfo {
 - 如果本地用户成功加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从本地用户成功加入频道到远端用户加入频道的时间间隔 (ms)。
 - 如果本地用户成功加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔 (ms)。
 
-### remoteJoined2SetView
+</Parameter>
+<a id="remotejoined2setview"></a>
+<Parameter name="remoteJoined2SetView">
 
 :::note
 注：
@@ -92,7 +102,9 @@ class VideoRenderingTracingInfo {
 - 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到本地用户设置远端视图的时间间隔 (ms)。
 - 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔 (ms)。
 
-### remoteJoined2UnmuteVideo
+</Parameter>
+<a id="remotejoined2unmutevideo"></a>
+<Parameter name="remoteJoined2UnmuteVideo">
 
 :::note
 注：
@@ -104,7 +116,9 @@ class VideoRenderingTracingInfo {
 - 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到订阅远端视频流的时间间隔 (ms)。
 - 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔 (ms)。
 
-### remoteJoined2PacketReceived
+</Parameter>
+<a id="remotejoined2packetreceived"></a>
+<Parameter name="remoteJoined2PacketReceived">
 
 :::note
 注：
@@ -115,3 +129,6 @@ class VideoRenderingTracingInfo {
 
 - 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到本地用户接收到首个远端数据包的时间间隔 (ms)。
 - 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收到首个远端数据包的时间间隔 (ms)。
+
+</Parameter>
+</ParameterList>

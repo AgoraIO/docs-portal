@@ -39,13 +39,18 @@ abstract adjustPlaybackSignalVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
@@ -86,17 +91,24 @@ abstract adjustUserPlaybackSignalVolume(uid: number, volume: number): number;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__return_values"></a>
 
@@ -141,11 +153,15 @@ abstract adjustUserPlaybackSignalVolumeEx(
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
@@ -153,9 +169,14 @@ abstract adjustUserPlaybackSignalVolumeEx(
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__return_values"></a>
 
@@ -298,21 +319,30 @@ abstract enableAudioVolumeIndication(
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval"></a>
+<Parameter name="interval">
 
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
 - &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
-### smooth
+</Parameter>
+<a id="smooth"></a>
+<Parameter name="smooth">
 
 平滑系数，指定音量提示的灵敏度。取值范围为 [0,10]，建议值为 3。数字越大，波动越灵敏；数字越小，波动越平滑。
 
-### reportVad
+</Parameter>
+<a id="reportvad"></a>
+<Parameter name="reportVad">
 
 - true：开启本地人声检测功能。开启后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
 - false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -364,25 +394,36 @@ abstract enableAudioVolumeIndicationEx(
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval-1"></a>
+<Parameter name="interval">
 
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
 - &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
-### smooth
+</Parameter>
+<a id="smooth-1"></a>
+<Parameter name="smooth">
 
 平滑系数，指定音量提示的灵敏度。取值范围为 [0,10]，建议值为 3。数字越大，波动越灵敏；数字越小，波动越平滑。
 
-### reportVad
+</Parameter>
+<a id="reportvad-1"></a>
+<Parameter name="reportVad">
 
 - true：开启本地人声检测功能。开启后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
 - false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__return_values"></a>
 
@@ -430,14 +471,21 @@ abstract setAudioProfile(
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 音频编码属性，包含采样率、码率、编码模式和声道数。详见 [AudioProfileType](/zh-CN/api-reference/rtc/electron/enum-audioprofiletype)。
 
-### scenario
+</Parameter>
+<a id="scenario"></a>
+<Parameter name="scenario">
 
 音频场景。不同的音频场景下，设备的音量类型是不同的。
 详见 [AudioScenarioType](/zh-CN/api-reference/rtc/electron/enum-audioscenariotype) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile__return_values"></a>
 
@@ -482,10 +530,15 @@ abstract setAudioScenario(scenario: AudioScenarioType): number;
 
 ### 参数
 
-### scenario
+<ParameterList>
+<a id="scenario-1"></a>
+<Parameter name="scenario">
 
 音频场景。不同的音频场景下，设备的音量类型是不同的。
 详见 [AudioScenarioType](/zh-CN/api-reference/rtc/electron/enum-audioscenariotype) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioscenario__return_values"></a>
 
@@ -524,13 +577,20 @@ onActiveSpeaker?(connection: RtcConnection, uid: number): void;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 远端最活跃用户的 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -568,25 +628,38 @@ onAudioQuality?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是谁发的音频流。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 语音质量。详见 [QualityType](/zh-CN/api-reference/rtc/electron/enum-qualitytype)。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 音频包从发送端到接收端的延迟（毫秒），包括声音采样前处理、网络传输、网络抖动缓冲引起的延迟。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 音频包从发送端到接收端的丢包率 (%)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -619,27 +692,38 @@ onAudioVolumeIndication?(connection: RtcConnection, speakers: AudioVolumeInfo[],
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### speakers
+</Parameter>
+<a id="speakers"></a>
+<Parameter name="speakers">
 
 用户音量信息，详见 [AudioVolumeInfo](/zh-CN/api-reference/rtc/electron/class-audiovolumeinfo) 数组。如果 `speakers` 为空，则表示远端用户不发流或没有远端用户。
 
-### speakerNumber
+</Parameter>
+<a id="speakernumber"></a>
+<Parameter name="speakerNumber">
 
 用户数量。
 
 - 在本地用户的回调中，只要本地用户在发流，`speakerNumber` 始终为 1。
 - 在远端用户的回调中，`speakerNumber` 取值范围为 [0,3]。如果远端发流用户数量大于 3，则此回调中 `speakerNumber` 值为 3。
 
-### totalVolume
+</Parameter>
+<a id="totalvolume"></a>
+<Parameter name="totalVolume">
 
 混音后的总音量，取值范围为 [0,255]。
 
 - 在本地用户的回调中，`totalVolume` 为本地发流用户的音量。
 - 在远端用户的回调中，`totalVolume` 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -674,13 +758,20 @@ SDK 会在以下时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -724,17 +815,26 @@ SDK 会在以下时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 直至该回调触发的延迟，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -768,17 +868,26 @@ onFirstRemoteAudioFrame?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### userId
+</Parameter>
+<a id="userid"></a>
+<Parameter name="userId">
 
 发送音频帧的远端用户的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 直至该回调触发的延迟，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -814,17 +923,26 @@ onLocalAudioStateChanged?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的本地音频状态。详见 [LocalAudioStreamState](/zh-CN/api-reference/rtc/electron/enum-localaudiostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地音频状态改变原因。详见 [LocalAudioStreamReason](/zh-CN/api-reference/rtc/electron/enum-localaudiostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -852,13 +970,20 @@ SDK 每 2 秒触发该回调一次。
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地音频统计数据。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/electron/class-localaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -896,25 +1021,38 @@ onRemoteAudioStateChanged?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 发生音频状态改变的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端音频流状态，详见 [RemoteAudioState](/zh-CN/api-reference/rtc/electron/enum-remoteaudiostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端音频流状态改变的具体原因，详见 [RemoteAudioStateReason](/zh-CN/api-reference/rtc/electron/enum-remoteaudiostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 方法到发生本事件经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -942,13 +1080,20 @@ onRemoteAudioStats?(connection: RtcConnection, stats: RemoteAudioStats): void;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 接收到的远端音频统计数据，详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/electron/class-remoteaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -984,25 +1129,38 @@ onRemoteAudioTransportStats?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-12"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-2"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户/主播的音频包。
 
-### delay
+</Parameter>
+<a id="delay-1"></a>
+<Parameter name="delay">
 
 音频包从发送端到接收端的延时（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost-1"></a>
+<Parameter name="lost">
 
 音频包从发送端到接收端的丢包率 (%)。
 
-### rxKBitrate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitrate">
 
 远端音频包的接收码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1038,20 +1196,29 @@ onUserMuteAudio?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-13"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-3"></a>
+<Parameter name="remoteUid">
 
 用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 该用户是否静音：
 
 - true: 该用户已将音频静音。
 - false: 该用户取消了音频静音。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

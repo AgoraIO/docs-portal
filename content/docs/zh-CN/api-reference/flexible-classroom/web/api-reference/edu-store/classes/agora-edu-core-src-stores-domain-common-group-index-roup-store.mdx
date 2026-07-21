@@ -74,9 +74,9 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - get currentSubRoom():undefined|string
 
-- 当前所在小组
+当前所在小组
 
-  Returns undefined|string
+Returns undefined|string
 
 <a id="groupUuidByUserUuid"></a>
 
@@ -84,9 +84,9 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - get groupUuidByUserUuid():Map&lt;string,string&gt;
 
-- 用户所在组 ID 映射关系
+用户所在组 ID 映射关系
 
-  Returns Map&lt;string,string&gt;
+Returns Map&lt;string,string&gt;
 
 <a id="userByUuid"></a>
 
@@ -94,9 +94,9 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - get userByUuid():Map&lt;string,[GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
 
-- 返回 userUuid 组成的 map 数据
+返回 userUuid 组成的 map 数据
 
-  Returns Map&lt;string,[GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
+Returns Map&lt;string,[GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
 
 ## Methods
 
@@ -106,15 +106,17 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - acceptGroupInvite(groupUuid:string):Promise&lt;void&gt;
 
-- 接受加入小组的邀请
+接受加入小组的邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
 
-  - groupUuid: string
+组 ID
 
-    组 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="addGroups"></a>
 
@@ -122,14 +124,22 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - addGroups(groupDetails:([GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&\{groupUuid?:string\})[], inProgress?:boolean):Promise&lt;void&gt;
 
-- 新建小组
+新建小组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groupDetails" required>
 
-  - groupDetails: ([GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&\{groupUuid?:string\})[]
-  - Optional inProgress: boolean
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+([GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail) & \{groupUuid?:string\})[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" optional />
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="broadcastMessage"></a>
 
@@ -137,15 +147,17 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - broadcastMessage(messageText:string):void
 
-- 发送全体消息
+发送全体消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="messageText" type="string" required>
 
-  - messageText: string
+消息
 
-    消息
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="joinSubRoom"></a>
 
@@ -153,15 +165,17 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - joinSubRoom(groupUuid:string):void
 
-- 进入子房间
+进入子房间
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
 
-  - groupUuid: string
+组 ID
 
-    组 ID
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="leaveSubRoom"></a>
 
@@ -169,9 +183,9 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - leaveSubRoom():void
 
-- 离开小组
+离开小组
 
-  Returns void
+Returns void
 
 <a id="moveIntoSubRoom"></a>
 
@@ -179,18 +193,22 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - moveIntoSubRoom(fromGroupUuid:string, toGroupUuid:string):void
 
-- 用户主动从某房间移动至另一房间
+用户主动从某房间移动至另一房间
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
 
-  - fromGroupUuid: string
+原组 ID
 
-    原组 ID
-  - toGroupUuid: string
+</Parameter>
+<Parameter name="toGroupUuid" type="string" required>
 
-    目标组 ID
+目标组 ID
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="moveUsersToGroup"></a>
 
@@ -198,21 +216,27 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - moveUsersToGroup(fromGroupUuid:string, toGroupUuid:string, users:string[]):Promise&lt;void&gt;
 
-- 将用户从某小组移入另一小组
+将用户从某小组移入另一小组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
 
-  - fromGroupUuid: string
+原组 ID
 
-    原组 ID
-  - toGroupUuid: string
+</Parameter>
+<Parameter name="toGroupUuid" type="string" required>
 
-    目标组 ID
-  - users: string[]
+目标组 ID
 
-    用户 ID 列表
+</Parameter>
+<Parameter name="users" type="string[]" required>
 
-  Returns Promise&lt;void&gt;
+用户 ID 列表
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="rejectGroupInvite"></a>
 
@@ -220,15 +244,17 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - rejectGroupInvite(groupUuid:string):Promise&lt;void&gt;
 
-- 拒绝加入小组的邀请
+拒绝加入小组的邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
 
-  - groupUuid: string
+组 ID
 
-    组 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="removeGroupUsers"></a>
 
@@ -236,18 +262,22 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - removeGroupUsers(fromGroupUuid:string, users:string[]):Promise&lt;void&gt;
 
-- 将用户从小组中移除
+将用户从小组中移除
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
 
-  - fromGroupUuid: string
+组 ID
 
-    组 ID
-  - users: string[]
+</Parameter>
+<Parameter name="users" type="string[]" required>
 
-    用户 ID 列表
+用户 ID 列表
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="removeGroups"></a>
 
@@ -255,15 +285,17 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - removeGroups(groups:string[]):Promise&lt;void&gt;
 
-- 移除小组
+移除小组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groups" type="string[]" required>
 
-  - groups: string[]
+小组 ID 列表
 
-    小组 ID 列表
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="startGroup"></a>
 
@@ -271,16 +303,24 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - startGroup(groupDetails:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[], syncBoardScenes?:boolean):Promise&lt;void&gt;
 
-- 开启分组讨论
+开启分组讨论
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groupDetails" required>
 
-  - groupDetails: [GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+<ParameterType>
 
-    分组配置数组
-  - Optional syncBoardScenes: boolean
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+分组配置数组
+
+</Parameter>
+<Parameter name="syncBoardScenes" type="boolean" optional />
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="stopGroup"></a>
 
@@ -288,9 +328,9 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - stopGroup():Promise&lt;void&gt;
 
-- 结束分组讨论
+结束分组讨论
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="updateGroupInfo"></a>
 
@@ -298,15 +338,23 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - updateGroupInfo(groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]):Promise&lt;void&gt;
 
-- 更新分组配置
+更新分组配置
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="groups" required>
 
-  - groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+<ParameterType>
 
-    分组配置数组
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+分组配置数组
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updateGroupUsers"></a>
 
@@ -314,15 +362,25 @@ state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/ed
 
 - updateGroupUsers(patches:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[], sendInvitation?:boolean):Promise&lt;void&gt;
 
-- 更新小组成员列表
+更新小组成员列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="patches" required>
 
-  - patches: [PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+<ParameterType>
 
-    更新配置
-  - Optional sendInvitation: boolean
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
 
-    是否发送邀请
+</ParameterType>
 
-  Returns Promise&lt;void&gt;
+更新配置
+
+</Parameter>
+<Parameter name="sendInvitation" type="boolean" optional>
+
+是否发送邀请
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;

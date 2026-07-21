@@ -76,9 +76,14 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 
 ### 参数
 
-### music_player
+<ParameterList>
+<a id="music_player"></a>
+<Parameter name="music_player">
 
 [IMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusicplayer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
 
@@ -117,16 +122,23 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 
 ### 参数
 
-### cacheInfo
+<ParameterList>
+<a id="cacheinfo"></a>
+<Parameter name="cacheInfo">
 
 输出参数，指向用于存储已缓存音乐资源的内存缓冲区的指针。
 
-### cacheInfoSize
+</Parameter>
+<a id="cacheinfosize"></a>
+<Parameter name="cacheInfoSize">
 
 输入和输出参数。
 
 - 输入值：cacheInfo 数组的长度，即你所分配的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-musiccacheinfo) 结构体的数量。
 - 输出值：方法执行完毕后输出的 MusicCacheInfo 结构体的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
 
@@ -185,9 +197,14 @@ virtual MusicChartInfo* get(int index) = 0;
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 [MusicChartInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-musicchartinfo) 数组的索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_musicchartcollection_get__return_values"></a>
 
@@ -221,11 +238,15 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
 
 音乐资源编号，用于标识音乐资源。你可以通过调用 [getMusicCollectionWithMusicChartId](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。目前支持传入下列值：
 
@@ -250,9 +271,14 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 </Slot>
 
-### internalSongCode
+</Parameter>
+<a id="internalsongcode"></a>
+<Parameter name="internalSongCode">
 
 输出参数，音乐资源的内部歌曲编号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -289,20 +315,29 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-1"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### lyricType
+</Parameter>
+<a id="lyrictype"></a>
+<Parameter name="lyricType">
 
 歌词类型：
 
 - 0：xml 格式。
 - 1：lrc 格式。
 
-### requestId
+</Parameter>
+<a id="requestid"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getlyric__return_values"></a>
 
@@ -337,9 +372,14 @@ virtual Music* getMusic(int32_t index) = 0;
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index-1"></a>
+<Parameter name="index">
 
 [Music](/zh-CN/api-reference/rtc/unreal-cpp/class-music) 数组的索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_musiccollection_getmusic__return_values"></a>
 
@@ -371,9 +411,14 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-1"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
 
@@ -412,23 +457,33 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-2"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### musicChartId
+</Parameter>
+<a id="musicchartid"></a>
+<Parameter name="musicChartId">
 
 音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[获取增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 
-### page
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
 
 当前页面编号，默认从 1 开始。
 
-### pageSize
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
 
 当前音乐资源列表的总页面数量，最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-1"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
@@ -454,6 +509,9 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 - `false`：不需要副歌片段资源。
 
 </Slot>
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -564,13 +622,20 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-2"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### requestId
+</Parameter>
+<a id="requestid-3"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
 
@@ -607,9 +672,14 @@ virtual int initialize(const MusicContentCenterConfiguration & configuration) = 
 
 ### 参数
 
-### configuration
+<ParameterList>
+<a id="configuration"></a>
+<Parameter name="configuration">
 
 IMusicContentCenter 的设置，详见 [MusicContentCenterConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-musiccontentcenterconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_initialize__return_values"></a>
 
@@ -646,9 +716,14 @@ virtual int isPreloaded(int64_t songCode) = 0;
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-3"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
 
@@ -697,11 +772,15 @@ virtual int preload(int64_t songCode, const char* jsonOption = nullptr) = 0;
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-4"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-2"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段。
 
@@ -716,6 +795,9 @@ virtual int preload(int64_t songCode, const char* jsonOption = nullptr) = 0;
 如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 sceneType 的值。
 
 示例：`{"sceneType":1}`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicontentcenter_preload__return_values"></a>
 
@@ -758,13 +840,20 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-5"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### requestId
+</Parameter>
+<a id="requestid-4"></a>
+<Parameter name="requestId">
 
 输出参数，请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicontentcenter_preload2__return_values"></a>
 
@@ -799,9 +888,14 @@ virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) 
 
 ### 参数
 
-### eventHandler
+<ParameterList>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 待注册的回调事件，详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_registereventhandler__return_values"></a>
 
@@ -866,9 +960,14 @@ virtual int removeCache(int64_t songCode) = 0;
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-6"></a>
+<Parameter name="songCode">
 
 待删除的音乐资源的编号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_removecache__return_values"></a>
 
@@ -905,9 +1004,14 @@ virtual int renewToken(const char* token) = 0;
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_renewtoken__return_values"></a>
 
@@ -946,19 +1050,27 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 ### 参数
 
-### keyword
+<ParameterList>
+<a id="keyword"></a>
+<Parameter name="keyword">
 
 搜索关键词，支持歌曲名、歌手搜索。
 
-### page
+</Parameter>
+<a id="page-1"></a>
+<Parameter name="page">
 
 想要获取的音乐资源列表的目标页编号。
 
-### pageSize
+</Parameter>
+<a id="pagesize-1"></a>
+<Parameter name="pageSize">
 
 每页所展示的音乐资源的最大数量，最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-3"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
@@ -985,9 +1097,14 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 </Slot>
 
-### requestId
+</Parameter>
+<a id="requestid-5"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 
@@ -1044,9 +1161,14 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放模式，详见 [MusicPlayMode](/zh-CN/api-reference/rtc/unreal-cpp/enum-musicplaymode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_setplaymode__return_values"></a>
 
@@ -1114,17 +1236,26 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-6"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载地址。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1154,17 +1285,26 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-7"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
 
-### result
+</Parameter>
+<a id="result"></a>
+<Parameter name="result">
 
 当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-musicchartinfo)[MusicChartCollection](/zh-CN/api-reference/rtc/unreal-cpp/class-musicchartcollection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1194,17 +1334,26 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-8"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### reason
+</Parameter>
+<a id="reason-2"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
 
-### result
+</Parameter>
+<a id="result-1"></a>
+<Parameter name="result">
 
 音乐资源列表的详细信息。详见 [MusicCollection](/zh-CN/api-reference/rtc/unreal-cpp/class-musiccollection)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1234,29 +1383,44 @@ virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-9"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### songCode
+</Parameter>
+<a id="songcode-7"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
 
-### percent
+</Parameter>
+<a id="percent"></a>
+<Parameter name="percent">
 
 音乐资源当前的加载进度，取值范围为 [0,100]。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl-1"></a>
+<Parameter name="lyricUrl">
 
 歌词下载地址。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前音乐资源的加载状态。详见 [PreloadState](/zh-CN/api-reference/rtc/unreal-cpp/enum-preloadstate)。
 
-### reason
+</Parameter>
+<a id="reason-3"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1286,15 +1450,21 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-10"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-### songCode
+</Parameter>
+<a id="songcode-8"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### simpleInfo
+</Parameter>
+<a id="simpleinfo"></a>
+<Parameter name="simpleInfo">
 
 音乐资源的相关信息，包含下列内容：
 
@@ -1304,9 +1474,14 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 - 歌曲名称
 - 歌手名
 
-### reason
+</Parameter>
+<a id="reason-4"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1344,13 +1519,20 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-9"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 设置起始播放位置（毫秒），默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_open__return_values"></a>
 

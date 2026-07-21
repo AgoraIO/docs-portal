@@ -39,55 +39,80 @@ struct ScreenCaptureSourceInfo {
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/unreal-cpp/enum-screencapturesourcetype)。
 
-### sourceId
+</Parameter>
+<a id="sourceid"></a>
+<Parameter name="sourceId">
 
 对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
 
-### sourceName
+</Parameter>
+<a id="sourcename"></a>
+<Parameter name="sourceName">
 
 窗口或屏幕的名称。UTF-8 编码。
 
-### thumbImage
+</Parameter>
+<a id="thumbimage"></a>
+<Parameter name="thumbImage">
 
 缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
 
-### iconImage
+</Parameter>
+<a id="iconimage"></a>
+<Parameter name="iconImage">
 
 图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
 
-### processPath
+</Parameter>
+<a id="processpath"></a>
+<Parameter name="processPath">
 
 窗口所属的进程。UTF-8 编码。
 
-### sourceTitle
+</Parameter>
+<a id="sourcetitle"></a>
+<Parameter name="sourceTitle">
 
 窗口标题。UTF-8 编码。
 
-### primaryMonitor
+</Parameter>
+<a id="primarymonitor"></a>
+<Parameter name="primaryMonitor">
 
 屏幕是否为主显示屏：
 
 - `true`: 屏幕为主显示屏。
 - `false`: 屏幕不是主显示屏。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
 
-### minimizeWindow
+</Parameter>
+<a id="minimizewindow"></a>
+<Parameter name="minimizeWindow">
 
 (仅适用于 Windows)  窗口是否已最小化：
 
 - `true`: 窗口已最小化。
 - `false`: 窗口未最小化。
 
-### sourceDisplayId
+</Parameter>
+<a id="sourcedisplayid"></a>
+<Parameter name="sourceDisplayId">
 
 (仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

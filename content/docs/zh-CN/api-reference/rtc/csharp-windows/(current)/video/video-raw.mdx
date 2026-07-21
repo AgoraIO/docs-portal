@@ -56,13 +56,20 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 
 ### 参数
 
-### videoFrameObserver
+<ParameterList>
+<a id="videoframeobserver"></a>
+<Parameter name="videoFrameObserver">
 
 接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-observermode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver__return_values"></a>
 
@@ -163,11 +170,15 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
@@ -176,6 +187,9 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -215,7 +229,7 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 :::caution
 注意：
 
-- 你需要通过  设置观测 POSITION_PRE_ENCODER(1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+- 你需要通过 设置观测 POSITION_PRE_ENCODER(1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
 - 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
@@ -224,11 +238,15 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
@@ -237,6 +255,9 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -277,11 +298,15 @@ public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFr
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送该帧视频的远端用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/csharp-windows/class-videoframe)。
 
@@ -291,9 +316,14 @@ public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFr
 - Windows：YUV420
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

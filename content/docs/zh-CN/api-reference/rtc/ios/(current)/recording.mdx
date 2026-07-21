@@ -35,9 +35,14 @@ _migration:
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 要录制的音视频流的信息，详见 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -72,9 +77,14 @@ _migration:
 
 ### 参数
 
-### mediaRecorder
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 要销毁的 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -109,12 +119,17 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否将回调方法派发到主线程：
 
 - YES：将回调方法派发到主线程。
 - NO：不将回调方法派发到主线程。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__return_values"></a>
 
@@ -155,9 +170,14 @@ _migration:
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 音视频流录制的回调。详见 [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -200,7 +220,9 @@ _migration:
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件保存的本地绝对路径。路径必须包含文件名和扩展名，例如：/var/mobile/Containers/Data/audio.aac。
 
@@ -208,9 +230,14 @@ _migration:
 注： 请确保指定路径存在且可写。
 :::
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AgoraAudioRecordingQuality](/zh-CN/api-reference/rtc/ios/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording1__return_values"></a>
 
@@ -256,9 +283,14 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录制配置，详见 [AgoraAudioRecordingConfiguration](/zh-CN/api-reference/rtc/ios/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -316,9 +348,14 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 用于配置音视频流录制的参数，详见 [AgoraMediaRecorderConfiguration](/zh-CN/api-reference/rtc/ios/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -435,21 +472,32 @@ _migration:
 
 ### 参数
 
-### recorder
+<ParameterList>
+<a id="recorder"></a>
+<Parameter name="recorder">
 
 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息，详见 [AgoraMediaRecorderInfo](/zh-CN/api-reference/rtc/ios/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -485,25 +533,38 @@ _migration:
 
 ### 参数
 
-### recorder
+<ParameterList>
+<a id="recorder-1"></a>
+<Parameter name="recorder">
 
 录制器实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的录制状态，详见 [AgoraMediaRecorderState](/zh-CN/api-reference/rtc/ios/enum-recorderstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态变化的原因，详见 [AgoraMediaRecorderReasonCode](/zh-CN/api-reference/rtc/ios/enum-recorderreasoncode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

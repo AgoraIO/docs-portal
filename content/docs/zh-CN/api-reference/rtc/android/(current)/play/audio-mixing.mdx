@@ -39,12 +39,17 @@ public abstract int adjustAudioMixingPlayoutVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放的混音音量，取值范围为 0 到 100。（默认值为 100）
 
 - 0：静音。
 - 100：原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
@@ -85,9 +90,14 @@ public abstract int adjustAudioMixingPublishVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用于发布的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
@@ -132,9 +142,14 @@ public abstract int adjustAudioMixingVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 混音音量，取值范围为 0 到 100。（默认值为 100，表示原始音量。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
@@ -412,9 +427,14 @@ public abstract int selectAudioTrack(int audioIndex);
 
 ### 参数
 
-### audioIndex
+<ParameterList>
+<a id="audioindex"></a>
+<Parameter name="audioIndex">
 
 你想要指定的音轨索引。该值应大于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -455,13 +475,20 @@ int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex);
 
 ### 参数
 
-### playoutTrackIndex
+<ParameterList>
+<a id="playouttrackindex"></a>
+<Parameter name="playoutTrackIndex">
 
 用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
-### publishTrackIndex
+</Parameter>
+<a id="publishtrackindex"></a>
+<Parameter name="publishTrackIndex">
 
 要发布到频道中的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -518,9 +545,14 @@ public abstract int setAudioMixingDualMonoMode(Constants.AudioMixingDualMonoMode
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AudioMixingDualMonoMode](/zh-CN/api-reference/rtc/android/enum-audiomixingdualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
 
@@ -561,9 +593,14 @@ public abstract int setAudioMixingPitch(int pitch);
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音阶设置本地音乐文件的音调（默认值为 0）。取值范围为 -12 到 12，相邻数值之间的音调差为一个半音。该参数的绝对值越大，音调变化越明显。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
 
@@ -598,13 +635,18 @@ public abstract int setAudioMixingPlaybackSpeed(int speed);
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。建议设置为 50 到 400 之间的值，定义如下：
 
 - 50：原始速度的一半。
 - 100：原始速度。
 - 400：原始速度的 4 倍。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
 
@@ -643,9 +685,14 @@ public abstract int setAudioMixingPosition(int pos);
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
@@ -708,7 +755,9 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 :::note
 注： 如果你已通过调用 `preloadEffect` 将音效预加载到内存中，确保该参数的值与 `preloadEffect` 中的 `filePath` 参数一致。
@@ -723,19 +772,26 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
 
-### loopback
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否仅在本地客户端播放音乐文件：
 
 - true：仅本地播放，只有本地用户能听到音乐。
 - false：发布到远端，远端用户也能听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数：
 
 - &gt; 0：播放指定次数，例如 1 表示播放 1 次。
 - -1：无限循环播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing__return_values"></a>
 
@@ -802,27 +858,38 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 文件路径。路径需精确到文件名和后缀名。支持 URL 地址、绝对路径或以 `/assets/` 开头的路径。使用绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址，例如：`content://com.android.providers.media.documents/document/audio%3A14441`。
 
-### loopback
+</Parameter>
+<a id="loopback-1"></a>
+<Parameter name="loopback">
 
 是否仅在本地播放音乐文件：
 
 - true：仅本地播放，只有本地用户能听到音乐。
 - false：将音乐发布到远端，远端用户也能听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle-1"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数：
 
 - &gt; 0：播放指定次数，例如 1 表示播放 1 次。
 - -1：无限循环播放。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放起始位置（单位：毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -938,9 +1005,14 @@ public void onAudioMixingPositionChanged(long position)
 
 ### 参数
 
-### position
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 播放进度，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -974,7 +1046,9 @@ public void onAudioMixingStateChanged(int state, int reason)
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐文件的播放状态：
 
@@ -983,7 +1057,9 @@ public void onAudioMixingStateChanged(int state, int reason)
 - `AUDIO_MIXING_STATE_STOPPED` (713)：音乐文件停止播放。
 - `AUDIO_MIXING_STATE_FAILED` (714)：播放音乐文件时出现异常，SDK 会通过 `reason` 参数返回具体原因。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 错误码：
 
@@ -994,6 +1070,9 @@ public void onAudioMixingStateChanged(int state, int reason)
 - `AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED` (721)：音乐文件完成一次循环播放。
 - `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED` (723)：音乐文件完成所有循环播放。
 - `AUDIO_MIXING_REASON_STOPPED_BY_USER` (724)：通过调用 [stopAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_stopaudiomixing) 停止音乐文件播放。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

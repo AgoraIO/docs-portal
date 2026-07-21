@@ -345,12 +345,17 @@ public abstract int setCameraAutoFocusFaceModeEnabled(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用人脸自动对焦功能：
 
 - true：启用摄像头人脸自动对焦功能。
 - false：关闭摄像头人脸自动对焦功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -395,9 +400,14 @@ public abstract int setCameraCapturerConfiguration(CameraCapturerConfiguration c
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 摄像头采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -442,9 +452,14 @@ public abstract int setCameraExposureFactor(int factor);
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor"></a>
+<Parameter name="factor">
 
 摄像头曝光值。默认值为 0，表示使用摄像头的默认曝光值。值越大，曝光越强。当视频图像过曝时，可以降低曝光值；当视频图像曝光不足且暗部细节丢失时，可以提高曝光值。如果设置的曝光值超出设备支持的范围，SDK 会自动将其调整为设备实际支持的范围。取值范围为 [-20, 20]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
@@ -485,13 +500,20 @@ public abstract int setCameraExposurePosition(float positionXinView, float posit
 
 ### 参数
 
-### positionXinView
+<ParameterList>
+<a id="positionxinview"></a>
+<Parameter name="positionXinView">
 
 视图中触摸点的水平坐标。
 
-### positionYinView
+</Parameter>
+<a id="positionyinview"></a>
+<Parameter name="positionYinView">
 
 视图中触摸点的垂直坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -528,13 +550,20 @@ public abstract int setCameraFocusPositionInPreview(float positionX, float posit
 
 ### 参数
 
-### positionX
+<ParameterList>
+<a id="positionx"></a>
+<Parameter name="positionX">
 
 视图中触摸点的水平坐标。
 
-### positionY
+</Parameter>
+<a id="positiony"></a>
+<Parameter name="positionY">
 
 视图中触摸点的垂直坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -571,12 +600,17 @@ public abstract int setCameraTorchOn(boolean isOn);
 
 ### 参数
 
-### isOn
+<ParameterList>
+<a id="ison"></a>
+<Parameter name="isOn">
 
 是否打开摄像头闪光灯：
 
 - true：打开闪光灯。
 - false：（默认）关闭闪光灯。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -613,9 +647,14 @@ public abstract int setCameraZoomFactor(float factor);
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor-1"></a>
+<Parameter name="factor">
 
 摄像头缩放因子。你可以通过调用 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 获取设备支持的最大缩放因子。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -699,9 +738,14 @@ public abstract int switchCamera(String cameraId);
 
 ### 参数
 
-### cameraId
+<ParameterList>
+<a id="cameraid"></a>
+<Parameter name="cameraId">
 
 摄像头 ID。你可以通过 Android 原生系统 API 获取摄像头 ID，例如 `Camera.open` 和 `CameraManager.getCameraIdList`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_switchcamera2__return_values"></a>
 
@@ -742,9 +786,14 @@ public void onCameraExposureAreaChanged(Rect rect)
 
 ### 参数
 
-### rect
+<ParameterList>
+<a id="rect"></a>
+<Parameter name="rect">
 
 本地预览中的曝光矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -772,9 +821,14 @@ public void onCameraFocusAreaChanged(Rect rect)
 
 ### 参数
 
-### rect
+<ParameterList>
+<a id="rect-1"></a>
+<Parameter name="rect">
 
 本地预览中的对焦矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

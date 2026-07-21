@@ -249,9 +249,14 @@ virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 观察器实例。若要释放该实例，请将该值设为 NULL。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver_imediaengine__return_values"></a>
 
@@ -300,11 +305,15 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 输出参数，表示视频帧，详见 [VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)。
 
@@ -316,6 +325,9 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 - macOS：I420 或 CVPixelBufferRef
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -356,9 +368,14 @@ virtual void onFrame(const VideoFrame* frame) = 0;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -401,11 +418,15 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 输出参数，表示编码前的视频帧，详见 [VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)。
 
@@ -417,6 +438,9 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 - macOS：I420 或 CVPixelBufferRef。
 - Windows：YUV420。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -471,15 +495,21 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送当前视频帧的远端用户的用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧，详见 [VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe)。
 
@@ -491,6 +521,9 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 - macOS：I420 或 CVPixelBufferRef
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

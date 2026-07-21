@@ -51,19 +51,33 @@ VideoEncoderConfig 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="codecType">
 
-| codecType | 视频编码类型。0：无。 1：VP8。 2：H.264。 3：H.265。 5：VP9。 6：通用。 7：通用 H264。 12：AV1。 20：JPEG。 |
-| --- | --- |
-| dimensions | 视频尺寸。 |
-| frameRate | 视频编码的帧率（fps）。 |
-| bitrate | <Slot name="api-center-table-0" /> |
-| minBitrate | 最低视频编码码率 (bps)。 |
-| orientationMode | <Slot name="api-center-table-1" /> |
-| degradationPreference | <Slot name="api-center-table-2" /> |
-| mirrorMode | <Slot name="api-center-table-3" /> |
+视频编码类型。
 
-<Slot for="api-center-table-0">
+- 0：无。
+- 1：VP8。
+- 2：H.264。
+- 3：H.265。
+- 5：VP9。
+- 6：通用。
+- 7：通用 H264。
+- 12：AV1。
+- 20：JPEG。
+
+</Parameter>
+<Parameter name="dimensions">
+
+视频尺寸。
+
+</Parameter>
+<Parameter name="frameRate">
+
+视频编码的帧率（fps）。
+
+</Parameter>
+<Parameter name="bitrate">
 
 视频码率 (bps)。SDK 在通信和直播场景下采用不同的编码方式，以提升不同场景下的用户体验。 例如，通信场景保证流畅，而直播场景则更注重画面质量，因此直播场景对码率的需求大于通信场景。 建议将该参数的值设置为 0。
 
@@ -73,9 +87,13 @@ VideoEncoderConfig 类。
   - 直播场景下，码率对照基准码率翻倍。
 - -1: 适配码率模式。该模式下，视频在通信和直播场景下的码率均与基准码率一致。直播下如果选择该模式， 视频帧率可能会低于设置的值。
 
-</Slot>
+</Parameter>
+<Parameter name="minBitrate">
 
-<Slot for="api-center-table-1">
+最低视频编码码率 (bps)。
+
+</Parameter>
+<Parameter name="orientationMode">
 
 视频编码的方向模式。
 
@@ -83,9 +101,8 @@ VideoEncoderConfig 类。
 - 1: 横屏布局。
 - 2: 竖屏布局。
 
-</Slot>
-
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="degradationPreference">
 
 带宽受限时。视频编码的降低偏好。
 
@@ -94,9 +111,8 @@ VideoEncoderConfig 类。
 - 2：在视频质量控制流程中维持分辨率不变。带宽受限时，先降低视频质量，然后降低视频帧率。
 - 3：降低视频帧率，维持分辨率不变。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="mirrorMode">
 
 mirrorMode 设置为 1 时，将在编码前对视频帧率做镜像操作。
 
@@ -104,7 +120,8 @@ mirrorMode 设置为 1 时，将在编码前对视频帧率做镜像操作。
 - 1：开启镜像模式。
 - 2：关闭镜像模式。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

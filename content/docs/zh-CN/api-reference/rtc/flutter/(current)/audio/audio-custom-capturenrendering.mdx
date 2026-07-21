@@ -38,13 +38,20 @@ Future<void> adjustCustomAudioPlayoutVolume(
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
 
 自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
 
@@ -85,13 +92,20 @@ Future<void> adjustCustomAudioPublishVolume(
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
 
@@ -136,7 +150,9 @@ Future<int> createCustomAudioTrack(
 
 ### 参数
 
-### trackType
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
 
 自定义音频轨道类型。详见 [AudioTrackType](/zh-CN/api-reference/rtc/flutter/enum-audiotracktype)。
 
@@ -144,9 +160,14 @@ Future<int> createCustomAudioTrack(
 注： 如指定 `audioTrackDirect`，则必须在调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 false，否则加入频道失败并返回错误码 -2。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 自定义音频轨道配置。详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/flutter/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_createcustomaudiotrack__return_values"></a>
 
@@ -179,9 +200,14 @@ Future<void> destroyCustomAudioTrack(int trackId);
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
 
 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_destroycustomaudiotrack__return_values"></a>
 
@@ -221,16 +247,23 @@ Future<void> enableCustomAudioLocalPlayback(
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
-### enabled
+</Parameter>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否在本地播放外部音频源：
 
 - true：在本地播放。
 - false：（默认）不在本地播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
 
@@ -280,9 +313,14 @@ Future<void> pullAudioFrame(AudioFrame frame);
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 指向 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe) 的指针。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pullaudioframe__return_values"></a>
 
@@ -325,13 +363,20 @@ Future<void> pushAudioFrame({required AudioFrame frame, int trackId = 0});
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 外部音频帧。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
-### trackId
+</Parameter>
+<a id="trackid-4"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。如果你要发布自定义的外部音频源，则将该参数设置为你想要发布的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pushaudioframe__return_values"></a>
 
@@ -382,23 +427,32 @@ Future<void> setExternalAudioSink(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 设置是否开启外部音频渲染：
 
 - true：开启外部音频渲染。
 - false：（默认）关闭外部音频渲染。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 外部音频渲染的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 外部音频渲染的声道数:
 
 - 1: 单声道
 - 2: 双声道
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalaudiosink__return_values"></a>
 
@@ -445,34 +499,47 @@ Future<void> setExternalAudioSource(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启使用外部音频源的功能：
 
 - true：开启外部音频源。
 - false：（默认）关闭外部音频源。
 
-### sampleRate
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 外部音频源的采样率 (Hz)，可设置为 `8000`，`16000`，`32000`，`44100` 或 `48000`。
 
-### channels
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 外部音频源的声道数，可设置为 `1`（单声道）或 `2`（双声道）。
 
-### localPlayback
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
 
 是否在本地播放外部音频源：
 
 - true：在本地播放。
 - false：（默认）不在本地播放。
 
-### publish
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否将音频发布到远端：
 
 - true：（默认）发布到远端。
 - false：不发布到远端。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalaudiosource2__return_values"></a>
 

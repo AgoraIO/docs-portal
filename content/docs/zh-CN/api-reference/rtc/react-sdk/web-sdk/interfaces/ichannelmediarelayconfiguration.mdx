@@ -38,7 +38,7 @@ configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 2345
 
 - addDestChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)):void
 
-- 添加目标频道信息。
+添加目标频道信息。
 
 如果你想将流转发到多个目标频道，可以多次调用该方法。该方法支持最多设置 4 个目标频道。
 
@@ -48,13 +48,21 @@ config.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
 config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="info" required>
 
-  - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
+<ParameterType>
 
-    频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。
+[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
 
-  Returns void
+</ParameterType>
+
+频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removedestchannelinfo"></a>
 
@@ -62,15 +70,17 @@ config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
 
 - removeDestChannelInfo(channelName:string):void
 
-- 删除通过 [addDestChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 添加的目标频道。
+删除通过 [addDestChannelInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 添加的目标频道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required>
 
-  - channelName: string
+待删除的目标频道名。
 
-    待删除的目标频道名。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setsrcchannelinfo"></a>
 
@@ -78,17 +88,25 @@ config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
 
 - setSrcChannelInfo(info:[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)):void
 
-- 设置源频道信息。
+设置源频道信息。
 
 ```javascript
 const config = AgoraRTC.createChannelMediaRelayConfiguration();
 config.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 123456 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="info" required>
 
-  - info: [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
+<ParameterType>
 
-    频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。
+[ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)
 
-  Returns void
+</ParameterType>
+
+频道信息，详见 [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/channelmediarelayinfo)。
+
+</Parameter>
+</ParameterList>
+
+Returns void

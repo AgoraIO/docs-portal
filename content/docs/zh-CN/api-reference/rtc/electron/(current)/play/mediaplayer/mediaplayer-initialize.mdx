@@ -36,11 +36,15 @@ addListener?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
 
-### listener
+</Parameter>
+<a id="listener"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。以添加 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 为例：
 
@@ -48,6 +52,9 @@ addListener?<EventType extends keyof IMediaPlayerEvent>(
 const onPlayerSourceStateChanged = (connection: RtcConnection, elapsed: number) => {};
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -81,9 +88,14 @@ abstract createMediaPlayer(): IMediaPlayer;
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediaplayer__return_values"></a>
 
@@ -116,9 +128,14 @@ abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 
 ### 参数
 
-### mediaPlayer
+<ParameterList>
+<a id="mediaplayer"></a>
+<Parameter name="mediaPlayer">
 
 [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediaplayer__return_values"></a>
 
@@ -193,9 +210,14 @@ removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype-1"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -224,11 +246,15 @@ removeListener?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-### eventType
+<ParameterList>
+<a id="eventtype-2"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
 
-### listener
+</Parameter>
+<a id="listener-1"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。必须传入 [addListener](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_addlistener_imediaplayer) 中传入的同一个函数对象。以取消监听 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 为例：
 
@@ -237,6 +263,9 @@ const onPlayerSourceStateChanged = (state: MediaPlayerState, ec: MediaPlayerErro
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 engine.removeListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

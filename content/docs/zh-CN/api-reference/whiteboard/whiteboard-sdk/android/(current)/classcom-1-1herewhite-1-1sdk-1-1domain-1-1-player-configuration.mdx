@@ -41,11 +41,18 @@ _migration:
 
 回放房间的构造方法，用于初始化回放房间实例。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="room">
 
-| room | 房间 UUID，即房间唯一标识符，必须和加入互动白板房间实例时设置的房间 UUID 一致。 |
-| --- | --- |
-| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token，必须是使用上面传入的房间 UUID 生成的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。 |
+房间 UUID，即房间唯一标识符，必须和加入互动白板房间实例时设置的房间 UUID 一致。
+
+</Parameter>
+<Parameter name="roomToken">
+
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token，必须是使用上面传入的房间 UUID 生成的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+</Parameter>
+</ParameterList>
 
 ## 成员函数说明
 
@@ -73,10 +80,13 @@ _migration:
 
 如果你不调用该方法，SDK 默认使用 \{ [com.herewhite.sdk.WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration)\} 中设置的数据中心。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="region">
 
-| region | [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例的数据中心。详见 \\\{ [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)\\\}。 |
-| --- | --- |
+[`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例的数据中心。详见 \{ [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)\}。
+
+</Parameter>
+</ParameterList>
 
 <a id="a87cb77037b45b245e55b09be0da7b0c7"></a>
 
@@ -102,10 +112,13 @@ _migration:
 
 该方法设置的视角边界必须和 \{ [com.herewhite.sdk.RoomParams::setCameraBound(CameraBound)](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a068607b4928ceef7265db739fa4e3cb8)\} 中设置视角边界一致。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="cameraBound">
 
-| cameraBound | 视角边界，详见 \\\{ [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)\\\}。 |
-| --- | --- |
+视角边界，详见 \{ [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)\}。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1319a38a90ada34208465e12ce33aebb"></a>
 
@@ -118,11 +131,18 @@ _migration:
 
 设置 SDK 回调播放进度的频率。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="duration">
 
-| duration | 间隔时长，默认为每隔 0.5 秒回调一次播放进度。 |
-| --- | --- |
-| timeUnit | 时长单位，默认值为毫秒 （`MILLISECONDS`），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。 |
+间隔时长，默认为每隔 0.5 秒回调一次播放进度。
+
+</Parameter>
+<Parameter name="timeUnit">
+
+时长单位，默认值为毫秒 （`MILLISECONDS`），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3fcd9ad7418984031bf1f32fb743946b"></a>
 
@@ -146,10 +166,13 @@ _migration:
 
 设置待回放的互动白板房间的 UUID。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="room">
 
-| room | 房间 UUID，即房间唯一标识符，必须和初始化互动白板房间实例时设置的房间 UUID 一致。 |
-| --- | --- |
+房间 UUID，即房间唯一标识符，必须和初始化互动白板房间实例时设置的房间 UUID 一致。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa7d71bcaa254a7699b6d6e7a4675c7bd"></a>
 
@@ -199,10 +222,13 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。
 
 设置白板回放的起始时间。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="beginTimestamp">
 
-| beginTimestamp | Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，如果要将回放的起始时间设为 2021-03-10 18\:03\:34 GMT+0800，你需要传入 `1615370614269`。 |
-| --- | --- |
+Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，如果要将回放的起始时间设为 2021-03-10 18\:03\:34 GMT+0800，你需要传入 `1615370614269`。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4073facc38a9e9c709b76518f8a008b6"></a>
 
@@ -226,10 +252,13 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。
 
 设置回放的持续时长。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="duration">
 
-| duration | 回放的持续时长，单位为毫秒。 |
-| --- | --- |
+回放的持续时长，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1ef9584bd58a5591070d0e96e8ead143"></a>
 
@@ -253,7 +282,10 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。
 
 设置白板请求 modules 数据的地址。 配置后不会请求白板默认地址。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="modulesOrigin">
 
-| modulesOrigin | modules 地址。示例 [https://modules.example.com。](https://modules.example.com./) |
-| --- | --- |
+modules 地址。示例 [https://modules.example.com。](https://modules.example.com./)
+
+</Parameter>
+</ParameterList>

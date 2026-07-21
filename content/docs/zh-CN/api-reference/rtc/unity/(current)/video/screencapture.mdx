@@ -37,20 +37,29 @@ public abstract ScreenCaptureSourceInfo[] GetScreenCaptureSources(SIZE thumbSize
 
 ### 参数
 
-### thumbSize
+<ParameterList>
+<a id="thumbsize"></a>
+<Parameter name="thumbSize">
 
 屏幕或窗口的缩略图的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300，`thumbSize` 为 100 x 100，缩略图实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，缩略图即为原图，SDK 不进行缩放操作。
 
-### iconSize
+</Parameter>
+<a id="iconsize"></a>
+<Parameter name="iconSize">
 
 程序所对应的图标的目标尺寸（宽高单位为像素）。SDK 会在保证原图不变形的前提下，缩放原图，使图片最长边和目标尺寸的最长边的长度一致。例如，原图宽高为 400 × 300，`iconSize` 为 100 × 100，图标实际尺寸为 100 × 75。如果目标尺寸大于原图尺寸，图标即为原图，SDK 不进行缩放操作。
 
-### includeScreen
+</Parameter>
+<a id="includescreen"></a>
+<Parameter name="includeScreen">
 
 除了窗口信息外，SDK 是否返回屏幕信息：
 
 - true：SDK 返回屏幕和窗口信息。
 - false：SDK 仅返回窗口信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getscreencapturesources__return_values"></a>
 
@@ -138,9 +147,14 @@ public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
 
 ### 参数
 
-### mediaProjection
+<ParameterList>
+<a id="mediaprojection"></a>
+<Parameter name="mediaProjection">
 
 一个 [MediaProjection](https://developer.android.com/reference/android/media/projection/MediaProjection) 对象，用于采集屏幕视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalmediaprojection__return_values"></a>
 
@@ -179,9 +193,14 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 ### 参数
 
-### contentHint
+<ParameterList>
+<a id="contenthint"></a>
+<Parameter name="contentHint">
 
 屏幕共享的内容类型。详见 [VIDEO_CONTENT_HINT](/zh-CN/api-reference/rtc/unity/enum-videocontenthint)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setscreencapturecontenthint__return_values"></a>
 
@@ -223,9 +242,14 @@ public abstract int SetScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario
 
 ### 参数
 
-### screenScenario
+<ParameterList>
+<a id="screenscenario"></a>
+<Parameter name="screenScenario">
 
 屏幕共享的场景，详见 [SCREEN_SCENARIO_TYPE](/zh-CN/api-reference/rtc/unity/enum-screenscenariotype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setscreencapturescenario__return_values"></a>
 
@@ -293,9 +317,14 @@ public abstract int StartScreenCapture(ScreenCaptureParameters2 captureParams);
 
 ### 参数
 
-### captureParams
+<ParameterList>
+<a id="captureparams"></a>
+<Parameter name="captureParams">
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters2)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapture__return_values"></a>
 
@@ -331,7 +360,7 @@ public abstract int StartScreenCapture(VIDEO_SOURCE_TYPE sourceType, ScreenCaptu
 :::note
 注： 该方法仅适用于 macOS 和 Windows 平台。
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture2) 。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture2)。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 - 在 macOS 平台上，最多支持 1 路屏幕采集的视频流。
 :::
@@ -359,7 +388,9 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
@@ -367,9 +398,14 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 注： 在 macOS 平台上，仅支持将该参数设置为 VIDEO_SOURCE_SCREEN (2)。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 屏幕采集配置。详见 [ScreenCaptureConfiguration](/zh-CN/api-reference/rtc/unity/class-screencaptureconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapture2__return_values"></a>
 
@@ -423,7 +459,9 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 
 ### 参数
 
-### displayId
+<ParameterList>
+<a id="displayid"></a>
+<Parameter name="displayId">
 
 指定待共享的屏幕 ID。
 
@@ -431,18 +469,25 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 注： 对于 Windows 平台，如果你需要同时共享两个屏幕（主屏 + 副屏），可以在调用该方法时，将 `displayId` 设置为 `-1`。
 :::
 
-### regionRect
+</Parameter>
+<a id="regionrect"></a>
+<Parameter name="regionRect">
 
 （可选）指定待共享区域相对于整个屏幕的位置。如需共享整个屏幕，则填 `nil`。
 详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。
 
-### captureParams
+</Parameter>
+<a id="captureparams-1"></a>
+<Parameter name="captureParams">
 
 屏幕共享的参数配置。默认的视频编码分辨率为 1920 × 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters)。
 
 :::note
 注： 屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapturebydisplayid__return_values"></a>
 
@@ -493,17 +538,26 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 
 ### 参数
 
-### screenRect
+<ParameterList>
+<a id="screenrect"></a>
+<Parameter name="screenRect">
 
 指定待共享的屏幕相对于虚拟屏的位置。
 
-### regionRect
+</Parameter>
+<a id="regionrect-1"></a>
+<Parameter name="regionRect">
 
 （可选）指定待共享区域相对于整个屏幕的位置。如不填，则表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容；如果将 width 或 height 设为 0 ，则共享整个屏幕。
 
-### captureParams
+</Parameter>
+<a id="captureparams-2"></a>
+<Parameter name="captureParams">
 
 屏幕共享的编码参数配置。默认的分辨率为 1920 x 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__return_values"></a>
 
@@ -589,17 +643,26 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 
 ### 参数
 
-### windowId
+<ParameterList>
+<a id="windowid"></a>
+<Parameter name="windowId">
 
 指定待共享的窗口 ID。
 
-### regionRect
+</Parameter>
+<a id="regionrect-2"></a>
+<Parameter name="regionRect">
 
 （可选）指定待共享区域相对于整个屏幕的位置。如不填，则表示共享整个屏幕。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。如果设置的共享区域超出了窗口的边界，则只共享窗口内的内容；如果宽或高为 0，则共享整个窗口。
 
-### captureParams
+</Parameter>
+<a id="captureparams-3"></a>
+<Parameter name="captureParams">
 
 屏幕共享的参数配置。默认的分辨率为 1920 x 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapturebywindowid__return_values"></a>
 
@@ -690,9 +753,14 @@ public abstract int StopScreenCapture(VIDEO_SOURCE_TYPE sourceType);
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopscreencapture2__return_values"></a>
 
@@ -737,9 +805,14 @@ public abstract int UpdateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 ### 参数
 
-### captureParams
+<ParameterList>
+<a id="captureparams-4"></a>
+<Parameter name="captureParams">
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters2)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencapture__return_values"></a>
 
@@ -782,13 +855,18 @@ public abstract int UpdateScreenCaptureParameters(ScreenCaptureParameters captur
 
 ### 参数
 
-### captureParams
+<ParameterList>
+<a id="captureparams-5"></a>
+<Parameter name="captureParams">
 
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters)。
 
 :::note
 注： 屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
 
@@ -828,9 +906,14 @@ public abstract int UpdateScreenCaptureRegion(Rectangle regionRect);
 
 ### 参数
 
-### regionRect
+<ParameterList>
+<a id="regionrect-3"></a>
+<Parameter name="regionRect">
 
 待共享区域相对于整个屏幕或窗口的位置，如不填，则表示共享整个屏幕或窗口。详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。如果设置的共享区域超出了屏幕或窗口的边界，则只共享屏幕或窗口内的内容；如果将 width 或 height 设为 0，则共享整个屏幕或窗口。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencaptureregion1__return_values"></a>
 

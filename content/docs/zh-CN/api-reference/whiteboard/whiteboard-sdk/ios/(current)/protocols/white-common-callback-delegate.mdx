@@ -29,10 +29,13 @@ SDK 出现未捕获的全局错误回调。
 
 `- (void)throwError:(NSError *)*error*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="error">
 
-| `error` | 错误信息。 |
-| --- | --- |
+错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -46,10 +49,13 @@ SDK 出现未捕获的全局错误回调。
 
 `- (NSString *)urlInterrupter:(NSString *)*url*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="url">
 
-| `url` | 图片原地址。 |
-| --- | --- |
+图片原地址。
+
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -98,10 +104,13 @@ SDK 初始化失败回调。
 
 `- (void)sdkSetupFail:(NSError *)*error*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="error">
 
-| `error` | 错误信息。 |
-| --- | --- |
+错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Availability
 
@@ -126,10 +135,13 @@ SDK 初始化失败可能由以下原因导致：
 
 `- (void)customMessage:(NSDictionary *)*dict*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="dict">
 
-| `dict` | 字典格式的消息。只有当消息为字典格式时，本地用户才能收到。 |
-| --- | --- |
+字典格式的消息。只有当消息为字典格式时，本地用户才能收到。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -153,10 +165,18 @@ SDK 初始化失败可能由以下原因导致：
 
 `- (void)logger:(NSDictionary *)*dict*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="dict">
 
-| `dict` | 字典结构的日志消息，每条日志消息包含以下 key： `funName`：功能名称。 `params`：具体的参数设置。 例如，`{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。 |
-| --- | --- |
+字典结构的日志消息，每条日志消息包含以下 key：
+
+- `funName`：功能名称。
+- `params`：具体的参数设置。
+
+例如，`{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。
+
+</Parameter>
+</ParameterList>
 
 #### Availability
 
@@ -195,10 +215,13 @@ v2.13.19
 
 `- (void)endRecoveringFromMemoryIssues:(BOOL)*success*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="success">
 
-| `success` | 本次恢复是否成功。 |
-| --- | --- |
+本次恢复是否成功。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 

@@ -92,12 +92,17 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 
 ### 参数
 
-### defaultToSpeaker
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否将扬声器设置为默认音频路由：
 
 - true：将扬声器设置为默认音频路由。
 - false：将听筒设置为默认音频路由。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
@@ -154,12 +159,17 @@ virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 
 ### 参数
 
-### speakerOn
+<ParameterList>
+<a id="speakeron"></a>
+<Parameter name="speakerOn">
 
 是否启用扬声器：
 
 - true：启用设备状态监测，音频路由为扬声器。
 - false：禁用设备状态监测，音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
@@ -208,7 +218,9 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 
 ### 参数
 
-### route
+<ParameterList>
+<a id="route"></a>
+<Parameter name="route">
 
 你希望使用的音频播放路由：
 
@@ -220,6 +232,9 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 - `4`：（尚不支持）外部扬声器。
 - `5`：蓝牙耳机。
 - `6`：USB 设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
 
@@ -256,9 +271,14 @@ virtual void onAudioRoutingChanged(int routing) { (void)routing; }
 
 ### 参数
 
-### routing
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
 
 当前的音频路由，详见 [AudioRoute](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioroute)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

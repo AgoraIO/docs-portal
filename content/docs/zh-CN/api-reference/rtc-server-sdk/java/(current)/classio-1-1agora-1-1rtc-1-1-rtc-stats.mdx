@@ -76,43 +76,178 @@ RtcStats 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionId">
 
-| connectionId | 连接 ID。 |
-| --- | --- |
-| duration | 本地用户的通话时长，单位为秒，累计值。 |
-| txBytes | 发送字节数（bytes），累计值。 |
-| rxBytes | 接收字节数（bytes），累计值。 |
-| txAudioBytes | 发送音频字节数（bytes），累计值。 |
-| txVideoBytes | 发送视频字节数（bytes），累计值。 |
-| rxAudioBytes | 接收音频字节数（bytes），累计值。 |
-| rxVideoBytes | 接收视频字节数（bytes），累计值。 |
-| txKBitRate | 发送码率（Kbps），瞬时值。 |
-| rxKBitRate | 接收码率（Kbps），瞬时值。 |
-| rxAudioKBitRate | 音频接收码率（Kbps），瞬时值。 |
-| txAudioKBitRate | 音频包的发送码率（Kbps），瞬时值。 |
-| rxVideoKBitRate | 视频接收码率（Kbps），瞬时值。 |
-| txVideoKBitRate | 视频发送码率（Kbps），瞬时值。 |
-| lastmileDelay | 客户端到服务器的延迟（毫秒）。 |
-| userCount | 当前频道内的人数。 |
-| cpuAppUsage | 当前 App 的 CPU 使用率 (%)。 |
-| cpuTotalUsage | 当前系统的 CPU 使用率 (%)。 |
-| gatewayRtt | 客户端到本地路由器的往返时延 (ms)。 |
-| memoryAppUsageRatio | 当前 App 的内存占比 (%)。 |
-| memoryTotalUsageRatio | 当前系统的内存占比 (%)。 |
-| memoryAppUsageInKbytes | 当前 App 的内存大小 (KB)。 |
-| connectTimeMs | 从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。 |
-| firstAudioPacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个音频包的时间（毫秒）。 |
-| firstVideoPacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个视频包的时间（毫秒）。 |
-| firstVideoKeyFramePacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个视频关键帧的时间（毫秒）。 |
-| packetsBeforeFirstKeyFramePacket | 在收到第一个视频关键帧之前收到的视频包数量。 |
-| firstAudioPacketDurationAfterUnmute | 从最后一次恢复发送音频到接收到第一个音频包的时间（毫秒）。 |
-| firstVideoPacketDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频包的时间（毫秒）。 |
-| firstVideoKeyFramePacketDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频关键帧的时间（毫秒）。 |
-| firstVideoKeyFrameDecodedDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频关键帧解码的时间（毫秒）。 |
-| firstVideoKeyFrameRenderedDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频帧关键帧渲染的时间（毫秒）。 |
-| txPacketLossRate | 发送端的丢包率。 |
-| rxPacketLossRate | 接收端的丢包率。 |
+连接 ID。
+
+</Parameter>
+<Parameter name="duration">
+
+本地用户的通话时长，单位为秒，累计值。
+
+</Parameter>
+<Parameter name="txBytes">
+
+发送字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="rxBytes">
+
+接收字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="txAudioBytes">
+
+发送音频字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="txVideoBytes">
+
+发送视频字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="rxAudioBytes">
+
+接收音频字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="rxVideoBytes">
+
+接收视频字节数（bytes），累计值。
+
+</Parameter>
+<Parameter name="txKBitRate">
+
+发送码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="rxKBitRate">
+
+接收码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="rxAudioKBitRate">
+
+音频接收码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="txAudioKBitRate">
+
+音频包的发送码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="rxVideoKBitRate">
+
+视频接收码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="txVideoKBitRate">
+
+视频发送码率（Kbps），瞬时值。
+
+</Parameter>
+<Parameter name="lastmileDelay">
+
+客户端到服务器的延迟（毫秒）。
+
+</Parameter>
+<Parameter name="userCount">
+
+当前频道内的人数。
+
+</Parameter>
+<Parameter name="cpuAppUsage">
+
+当前 App 的 CPU 使用率 (%)。
+
+</Parameter>
+<Parameter name="cpuTotalUsage">
+
+当前系统的 CPU 使用率 (%)。
+
+</Parameter>
+<Parameter name="gatewayRtt">
+
+客户端到本地路由器的往返时延 (ms)。
+
+</Parameter>
+<Parameter name="memoryAppUsageRatio">
+
+当前 App 的内存占比 (%)。
+
+</Parameter>
+<Parameter name="memoryTotalUsageRatio">
+
+当前系统的内存占比 (%)。
+
+</Parameter>
+<Parameter name="memoryAppUsageInKbytes">
+
+当前 App 的内存大小 (KB)。
+
+</Parameter>
+<Parameter name="connectTimeMs">
+
+从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。
+
+</Parameter>
+<Parameter name="firstAudioPacketDuration">
+
+从 SDK 开始连接 RTC 频道到接收到第一个音频包的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoPacketDuration">
+
+从 SDK 开始连接 RTC 频道到接收到第一个视频包的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoKeyFramePacketDuration">
+
+从 SDK 开始连接 RTC 频道到接收到第一个视频关键帧的时间（毫秒）。
+
+</Parameter>
+<Parameter name="packetsBeforeFirstKeyFramePacket">
+
+在收到第一个视频关键帧之前收到的视频包数量。
+
+</Parameter>
+<Parameter name="firstAudioPacketDurationAfterUnmute">
+
+从最后一次恢复发送音频到接收到第一个音频包的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoPacketDurationAfterUnmute">
+
+从最后一次恢复发送视频到接收到第一个视频包的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoKeyFramePacketDurationAfterUnmute">
+
+从最后一次恢复发送视频到接收到第一个视频关键帧的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoKeyFrameDecodedDurationAfterUnmute">
+
+从最后一次恢复发送视频到接收到第一个视频关键帧解码的时间（毫秒）。
+
+</Parameter>
+<Parameter name="firstVideoKeyFrameRenderedDurationAfterUnmute">
+
+从最后一次恢复发送视频到接收到第一个视频帧关键帧渲染的时间（毫秒）。
+
+</Parameter>
+<Parameter name="txPacketLossRate">
+
+发送端的丢包率。
+
+</Parameter>
+<Parameter name="rxPacketLossRate">
+
+接收端的丢包率。
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

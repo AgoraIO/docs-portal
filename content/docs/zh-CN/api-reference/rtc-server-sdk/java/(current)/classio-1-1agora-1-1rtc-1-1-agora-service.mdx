@@ -57,10 +57,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 创建一个 [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) 对象。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtc_conn_config">
 
-| rtc_conn_config | 连接设置。 |
-| --- | --- |
+连接设置。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -78,11 +81,18 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 该轨道对象可用于发送来已编码的音频数据，例如 Opus 编码格式的音频数据。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_audio_encoded_frame_sender">
 
-| agora_audio_encoded_frame_sender | 发送已编码的音频数据的音频源，详见 [AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender)。 |
-| --- | --- |
-| mix_mode | 已编码音频数据的混音模式。 |
+发送已编码的音频数据的音频源，详见 [AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender)。
+
+</Parameter>
+<Parameter name="mix_mode">
+
+已编码音频数据的混音模式。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -99,10 +109,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 该轨道对象可用于发送来 PCM 格式的音频数据。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_audio_pcm_data_sender">
 
-| agora_audio_pcm_data_sender | 发送 PCM 格式音频数据的音频源。 |
-| --- | --- |
+发送 PCM 格式音频数据的音频源。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -120,11 +133,18 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 该轨道对象可用于发送编码的视频数据，例如 H.264 或 VP8 格式的视频数据。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_video_encoded_image_sender">
 
-| agora_video_encoded_image_sender | 发送编码视频数据的视频源。 |
-| --- | --- |
-| options | 视频轨道设置。 |
+发送编码视频数据的视频源。
+
+</Parameter>
+<Parameter name="options">
+
+视频轨道设置。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -141,10 +161,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 该轨道对象可用于发送 YUV 格式视频数据。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_video_frame_sender">
 
-| agora_video_frame_sender | 发送 YUV 格式视频数据的视频源。 |
-| --- | --- |
+发送 YUV 格式视频数据的视频源。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -240,10 +263,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 初始化 AgoraService 对象。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 初始化配置。详见 [AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config)。 |
-| --- | --- |
+初始化配置。详见 [AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -259,10 +285,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 自定义音效设置。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 音效设置。 |
-| --- | --- |
+音效设置。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -278,10 +307,13 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 设置预设音效。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audio_scenario">
 
-| audio_scenario | 预设音效场景。 |
-| --- | --- |
+预设音效场景。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -304,11 +336,18 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 为保证输出日志的完成性，声网建议你在调用 [initialize](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#a822287e735267b7c8f1c9aee77cbb1c9) 方法后立即调用此方法。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="file_path">
 
-| file_path | 指向日志文件的指针。请确保指定的目录存在而且可写。 |
-| --- | --- |
-| file_size | SDK 日志文件的大小（KB）。 |
+指向日志文件的指针。请确保指定的目录存在而且可写。
+
+</Parameter>
+<Parameter name="file_size">
+
+SDK 日志文件的大小（KB）。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -328,10 +367,19 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 选择一个级别，你就可以看到在该级别之前所有级别的日志信息。 例如，你选择 WARNING 级别，就可以看到在 CRITICAL、ERROR 和 WARNING 级别上的所有日志信息。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="filters">
 
-| filters | 日志输出等级：LOG_LEVEL_NONE (0x0000): 不输出任何日志。 LOG_LEVEL_INFO (0x0001): （推荐）输出 INFO 级别的日志信息。 LOG_LEVEL_WARN (0x0002): 输出 WARN 级别的日志信息。 LOG_LEVEL_ERROR (0x0004): 输出 ERROR 级别的日志信息。 LOG_LEVEL_FATAL (0x0008): 输出 FATAL 级别的日志信息。 |
-| --- | --- |
+日志输出等级：
+
+- LOG_LEVEL_NONE (0x0000): 不输出任何日志。
+- LOG_LEVEL_INFO (0x0001): （推荐）输出 INFO 级别的日志信息。
+- LOG_LEVEL_WARN (0x0002): 输出 WARN 级别的日志信息。
+- LOG_LEVEL_ERROR (0x0004): 输出 ERROR 级别的日志信息。
+- LOG_LEVEL_FATAL (0x0008): 输出 FATAL 级别的日志信息。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 

@@ -39,9 +39,14 @@ abstract registerAudioFrameObserver(observer: IAudioFrameObserver): number;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 接口对象实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserver)。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onleavechannel) 后调用，来释放音频观测器对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registeraudioframeobserver__return_values"></a>
 
@@ -88,24 +93,35 @@ abstract setEarMonitoringAudioFrameParameters(
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/electron/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告的音频的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -150,20 +166,29 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
@@ -208,20 +233,29 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -267,24 +301,35 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 24000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/electron/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
@@ -330,24 +375,35 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/electron/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
@@ -380,9 +436,14 @@ abstract unregisterAudioFrameObserver(observer: IAudioFrameObserver): number;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudioframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine__return_values"></a>
 
@@ -417,9 +478,14 @@ onEarMonitoringAudioFrame?(audioFrame: AudioFrame): void;
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -447,13 +513,20 @@ onMixedAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe-1"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -481,13 +554,20 @@ onPlaybackAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe-2"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -521,17 +601,26 @@ onPlaybackAudioFrameBeforeMixing?(
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 订阅的远端用户的 ID。
 
-### audioFrame
+</Parameter>
+<a id="audioframe-3"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -559,13 +648,20 @@ onRecordAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe-4"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

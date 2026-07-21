@@ -21,7 +21,9 @@ Agora 支持的自定义插件包括组件插件和不可见插件。二者的�
 
 ### Type parameters
 
-- A:Object
+<ParameterList>
+<Parameter name="A" type="Object" />
+</ParameterList>
 
 ### Hierarchy
 
@@ -58,15 +60,23 @@ Agora 支持的自定义插件包括组件插件和不可见插件。二者的�
 
 - Defined in [index-zh.d.ts\:643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L643)
 
-  不可见插件的构造函数。
+不可见插件的构造函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="context" required>
 
-  - context: [InvisiblePluginContext](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisibleplugincontext)
+<ParameterType>
 
-    不可见插件的上下文。
+[InvisiblePluginContext](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisibleplugincontext)
 
-  Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)
+</ParameterType>
+
+不可见插件的上下文。
+
+</Parameter>
+</ParameterList>
+
+Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)
 
 ## Properties
 
@@ -110,9 +120,9 @@ displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interf
 
 - Defined in [index-zh.d.ts\:688](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L688)
 
-  删除不可见插件。
+删除不可见插件。
 
-  Returns void
+Returns void
 
 <a id="getattributesvalue"></a>
 
@@ -128,11 +138,13 @@ displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interf
 2.13.7
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string[] | string" required>
 
-- key: string[]|string
+属性对应的 key。
 
-  属性对应的 key。
+</Parameter>
+</ParameterList>
 
 Returns any
 
@@ -144,15 +156,17 @@ Returns any
 
 - Defined in [index-zh.d.ts\:655](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L655)
 
-  不可见插件属性更新的回调。
+不可见插件属性更新的回调。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="attributes" type="A" required>
 
-  - attributes: A
+更新的 attributes。
 
-    更新的 attributes。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="ondestroy"></a>
 
@@ -162,9 +176,9 @@ Returns any
 
 - Defined in [index-zh.d.ts\:660](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L660)
 
-  不可见插件删除的回调。
+不可见插件删除的回调。
 
-  Returns void
+Returns void
 
 <a id="setattributes"></a>
 
@@ -174,15 +188,17 @@ Returns any
 
 - Defined in [index-zh.d.ts\:674](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L674)
 
-  设置不可见插件的属性。
+设置不可见插件的属性。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="modifyAttributes" type="Partial &amp; lt;A &amp; gt;" required>
 
-  - modifyAttributes: Partial&lt;A&gt;
+不可见插件的属性。
 
-    不可见插件的属性。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="updateattributes"></a>
 
@@ -198,13 +214,17 @@ Returns any
 2.13.7
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="keys" type="string | string[]" required>
 
-- keys: string|string[]
+单个或多个属性对应的 key。
 
-  单个或多个属性对应的 key。
-- value: any
+</Parameter>
+<Parameter name="value" type="any" required>
 
-  属性的值。
+属性的值。
+
+</Parameter>
+</ParameterList>
 
 Returns void

@@ -53,9 +53,14 @@ virtual int setCameraStabilizationMode(CAMERA_STABILIZATION_MODE mode) = 0;
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 摄像头防抖模式，详见 [CAMERA_STABILIZATION_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-camerastabilizationmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerastabilizationmode__return_values"></a>
 
@@ -94,7 +99,9 @@ virtual int startCameraCapture(VIDEO_SOURCE_TYPE sourceType, const CameraCapture
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
@@ -106,13 +113,18 @@ virtual int startCameraCapture(VIDEO_SOURCE_TYPE sourceType, const CameraCapture
 - 在桌面平台上，最多可同时采集 4 路视频。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 视频采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cameracapturerconfiguration)。
 
 :::note
 注： 在 iOS 平台上，该参数无实际作用。请使用 [enableMultiCamera](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_irtcengine_enablemulticamera) 方法中的 `config` 参数设置视频采集配置。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startcameracapture__return_values"></a>
 
@@ -152,9 +164,14 @@ virtual int stopCameraCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopcameracapture__return_values"></a>
 

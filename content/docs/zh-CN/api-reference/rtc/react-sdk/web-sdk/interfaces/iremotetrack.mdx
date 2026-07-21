@@ -125,9 +125,9 @@ _migration:
 
 - first-frame-decoded():void
 
-- 首帧音频或视频解码时触发。
+首帧音频或视频解码时触发。
 
-  Returns void
+Returns void
 
 <a id="event_transceiver_updated_2"></a>
 
@@ -135,15 +135,17 @@ _migration:
 
 - transceiver-updated(transceiver:RTCRtpTransceiver):void
 
-- 当前轨道的 `RTCRtpTransceiver` 实例更新回调。
+当前轨道的 `RTCRtpTransceiver` 实例更新回调。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="transceiver" type="RTCRtpTransceiver" required>
 
-  - transceiver: RTCRtpTransceiver
+新的 `RTCRtpTransceiver` 实例。
 
-    新的 `RTCRtpTransceiver` 实例。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="event_video_state_changed"></a>
 
@@ -151,13 +153,21 @@ _migration:
 
 - video-state-changed(videoState:[VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)):void
 
-- 视频状态发生变化时触发。
+视频状态发生变化时触发。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="videoState" required>
 
-  - videoState: [VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)
+<ParameterType>
 
-  Returns void
+[VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 ## Properties
 
@@ -195,17 +205,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getListeners(event:string):Function[]
 
-- Inherited from EventEmitter.getListeners
+Inherited from EventEmitter.getListeners
 
-  指定一个事件名，获取当前所有监听这个事件的回调函数。
+指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+事件名称。
 
-    事件名称。
+</Parameter>
+</ParameterList>
 
-  Returns Function[]
+Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -213,13 +225,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getMediaStreamTrack():MediaStreamTrack
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
-  获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-  Returns MediaStreamTrack
+Returns MediaStreamTrack
 
-  一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
 <a id="getrtcrtptransceiver"></a>
 
@@ -227,28 +239,34 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)):RTCRtpTransceiver|undefined
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
-  获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
+获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
 
-  该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
+该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-  > 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
-  >
-  > - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
-  > - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+>
+> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
+> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" optional>
 
-  - Optional type: [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)
+<ParameterType>
 
-    视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)。
+[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)
 
-  Returns RTCRtpTransceiver
-   |
-   undefined
+</ParameterType>
 
-  当前轨道的 `RTCRtpTransceiver` 实例。
+视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)。
+
+</Parameter>
+</ParameterList>
+
+Returns RTCRtpTransceiver | undefined
+
+当前轨道的 `RTCRtpTransceiver` 实例。
 
 <a id="getstats"></a>
 
@@ -256,17 +274,15 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getStats():[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats)|[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
 
-- 获取远端轨道相关信息。
+获取远端轨道相关信息。
 
 ### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getremotevideostats) 和 [AgoraRTCClient.getRemoteAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getremoteaudiostats)。
 
-  Returns [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats)
-   |
-   [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+Returns [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) | [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
 
-  [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) 或 [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats) 对象。
+[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) 或 [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats) 对象。
 
 <a id="gettrackid"></a>
 
@@ -274,13 +290,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getTrackId():string
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettrackid)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettrackid)
 
-  获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
+获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-  Returns string
+Returns string
 
-  媒体轨道 ID。
+媒体轨道 ID。
 
 <a id="getuserid"></a>
 
@@ -288,11 +304,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - getUserId():[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
 
-- 获取发布远端轨道的远端用户 ID。
+获取发布远端轨道的远端用户 ID。
 
-  Returns [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+Returns [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
 
-  远端轨道对应的 `uid`。
+远端轨道对应的 `uid`。
 
 <a id="off"></a>
 
@@ -300,20 +316,24 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - off(event:string, listener:Function):void
 
-- Inherited from EventEmitter.off
+Inherited from EventEmitter.off
 
-  取消一个指定事件的监听。
+取消一个指定事件的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    监听事件时传入的回调函数。
+监听事件时传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -323,44 +343,58 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 - on(event:"first-frame-decoded", listener:typeof event_first_frame_decoded):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated_2):void
 
-- Overrides EventEmitter.on
+Overrides EventEmitter.on
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-updated&quot;" required>
 
-  - event: "track-updated"
+事件名称。
 
-    事件名称。
-  - listener: typeof event_track_updated
+</Parameter>
+<Parameter name="listener" type="typeof event_track_updated" required>
 
-    详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
+详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
 
-  Returns void
-- Overrides EventEmitter.on
+</Parameter>
+</ParameterList>
 
-  Parameters
+Returns void
 
-  - event: "first-frame-decoded"
+Overrides EventEmitter.on
 
-    事件名称。
-  - listener: typeof event_first_frame_decoded
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;first-frame-decoded&quot;" required>
 
-    详见 [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。
+事件名称。
 
-  Returns void
-- Overrides EventEmitter.on
+</Parameter>
+<Parameter name="listener" type="typeof event_first_frame_decoded" required>
 
-  添加事件监听器。
+详见 [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。
 
-  Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "transceiver-updated"
+Returns void
 
-    事件名称。
-  - listener: typeof event_transceiver_updated_2
+Overrides EventEmitter.on
 
-    详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)。
+添加事件监听器。
 
-  Returns void
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;transceiver-updated&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_transceiver_updated_2" required>
+
+详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -368,22 +402,26 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - once(event:string, listener:Function):void
 
-- Inherited from EventEmitter.once
+Inherited from EventEmitter.once
 
-  监听一个指定的事件，当事件触发时会调用传入的回调函数。
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
-  当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    传入的回调函数。
+传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="play"></a>
 
@@ -391,20 +429,22 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - play(element?:string|HTMLElement):void
 
-- Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
-  在页面上播放媒体轨道。
+在页面上播放媒体轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="element" type="string | HTMLElement" optional>
 
-  - Optional element: string|HTMLElement
+指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
 
-    指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
+- `string`: 指定该 DOM 元素的 ID 值。
+- `HTMLElement`: 直接传入一个 DOM 元素对象。
 
-    - `string`: 指定该 DOM 元素的 ID 值。
-    - `HTMLElement`: 直接传入一个 DOM 元素对象。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="removealllisteners"></a>
 
@@ -412,17 +452,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - removeAllListeners(event?:string):void
 
-- Inherited from EventEmitter.removeAllListeners
+Inherited from EventEmitter.removeAllListeners
 
-  指定一个事件，取消其所有的监听。
+指定一个事件，取消其所有的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
 
-  - Optional event: string
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
-    指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -430,8 +472,8 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 - stop():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
-  停止播放。
+停止播放。
 
-  Returns void
+Returns void

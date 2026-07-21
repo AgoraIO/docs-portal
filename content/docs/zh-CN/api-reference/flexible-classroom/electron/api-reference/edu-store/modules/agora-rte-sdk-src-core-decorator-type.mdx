@@ -34,11 +34,11 @@ AnyFunction: (...args:any)=&gt;any
 
 - - (...args:any):any
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...args" type="any" required />
+  </ParameterList>
 
-    - Rest...args: any
-
-    Returns any
+  Returns any
 
 <a id="InvocationEvent"></a>
 
@@ -48,13 +48,23 @@ InvocationEvent: \{arguments?:any[];class:string;context:Record&lt;string,any&gt
 
 #### Type declaration
 
-- Optional arguments?:any[]
-- class:string
-- context:Record&lt;string,any&gt;
-- Optional error?:Error
-- method:string
-- Optional return?:any
-- type:[InvocationEventType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-decorator-type-nvocation-event-type)
+<ParameterList title="Type declaration">
+<Parameter name="arguments" type="any[]" optional />
+<Parameter name="class" type="string" required />
+<Parameter name="context" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="error" type="Error" optional />
+<Parameter name="method" type="string" required />
+<Parameter name="return" type="any" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[InvocationEventType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-decorator-type-nvocation-event-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 <a id="InvocationHandler"></a>
 

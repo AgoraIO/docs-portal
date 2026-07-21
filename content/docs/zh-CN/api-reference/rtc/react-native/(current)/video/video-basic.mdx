@@ -104,12 +104,17 @@ abstract enableLocalVideo(enabled: boolean): number;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启本地视频采集。
 
 - true:（默认）开启本地视频采集。
 - false: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 false 时，该方法不需要本地有摄像头。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -215,9 +220,14 @@ abstract setVideoEncoderConfiguration(
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
@@ -265,13 +275,20 @@ abstract setVideoEncoderConfigurationEx(
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/class-videoencoderconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
@@ -310,7 +327,9 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 
 ### 参数
 
-### scenarioType
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 视频业务场景。详见 [VideoApplicationScenarioType](/zh-CN/api-reference/rtc/react-native/enum-videoapplicationscenariotype)。
 `ApplicationScenarioMeeting` (1) 适用于会议场景。如果用户已调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (`DisableSimulcastStream`)，会议场景对小流的动态开关不生效。
@@ -335,6 +354,9 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
     - 码率：500 Kbps
 
 `ApplicationScenario1v1` (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。`ApplicationScenarioLiveshow` (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -428,9 +450,14 @@ abstract startPreview(sourceType?: VideoSourceType): number;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
@@ -475,9 +502,14 @@ abstract stopPreview(sourceType?: VideoSourceType): number;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
@@ -517,21 +549,32 @@ onFirstLocalVideoFrame?(
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 本地渲染视频的宽 (px) 。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地渲染视频的高 (px)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview)/[startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview) 或 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 开启本地视频预览到发生此事件过去的时间。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -566,13 +609,20 @@ SDK 会在以下三种时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -613,25 +663,38 @@ SDK 会在以下时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 开始到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -667,25 +730,38 @@ onFirstRemoteVideoFrame?(
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### width
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-### height
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -717,13 +793,20 @@ onLocalVideoEvent?(source: VideoSourceType, event: LocalVideoEventType): void;
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
 
 视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 本地视频事件类型，详见 [LocalVideoEventType](/zh-CN/api-reference/rtc/react-native/enum-localvideoeventtype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -774,17 +857,26 @@ onLocalVideoStateChanged?(
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-2"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频状态，详见 [LocalVideoStreamState](/zh-CN/api-reference/rtc/react-native/enum-localvideostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态改变原因，详见 [LocalVideoStreamReason](/zh-CN/api-reference/rtc/react-native/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -812,13 +904,20 @@ onLocalVideoStats?(connection: RtcConnection, stats: LocalVideoStats): void;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/react-native/class-localvideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -854,25 +953,38 @@ onRemoteVideoStateChanged?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-2"></a>
+<Parameter name="remoteUid">
 
 发生视频状态改变的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频流状态，详见 [RemoteVideoState](/zh-CN/api-reference/rtc/react-native/enum-remotevideostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频流状态改变的具体原因，详见 [RemoteVideoStateReason](/zh-CN/api-reference/rtc/react-native/enum-remotevideostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 方法到发生本事件经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -900,13 +1012,20 @@ onRemoteVideoStats?(connection: RtcConnection, stats: RemoteVideoStats): void;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/react-native/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -945,25 +1064,38 @@ onRemoteVideoTransportStats?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-3"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户/主播的视频包。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 视频包从发送端到接收端的延时（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 视频包从发送端到接收端的丢包率 (%)。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 远端视频包的接收码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1002,20 +1134,29 @@ onUserEnableLocalVideo?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-4"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 远端用户是否启用视频采集：
 
 - true: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
 - false: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1048,18 +1189,27 @@ onUserEnableVideo?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-5"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-### enabled
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 - true: 该用户已启用视频功能。
 - false: 该用户已关闭视频功能。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1095,20 +1245,29 @@ onUserMuteVideo?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-6"></a>
+<Parameter name="remoteUid">
 
 远端用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否取消发布视频流：
 
 - true: 取消发布视频流。
 - false: 发布视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1140,25 +1299,38 @@ onVideoPublishStateChanged?(
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### source
+</Parameter>
+<a id="source-3"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1191,33 +1363,48 @@ onVideoSizeChanged?(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 图像尺寸和旋转信息发生变化的用户 ID（本地用户的 `uid` 为 0。此时视频为本地用户的视频预览）。
 
-### width
+</Parameter>
+<a id="width-3"></a>
+<Parameter name="width">
 
 视频流的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height-3"></a>
+<Parameter name="height">
 
 视频流的高度（像素）。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 旋转信息，取值范围 [0,360)。
 
 :::note
 注： 在 iOS 平台上，该参数值始终为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

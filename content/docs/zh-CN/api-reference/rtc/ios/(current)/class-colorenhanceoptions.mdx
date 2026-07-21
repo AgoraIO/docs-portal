@@ -23,7 +23,9 @@ __attribute__((visibility("default"))) @interface AgoraColorEnhanceOptions : NSO
 
 ## 属性
 
-### strengthLevel
+<ParameterList>
+<a id="strengthlevel"></a>
+<Parameter name="strengthLevel">
 
 色彩增强等级。取值范围为 [0.0, 1.0]。
 
@@ -32,7 +34,9 @@ __attribute__((visibility("default"))) @interface AgoraColorEnhanceOptions : NSO
 
 默认值为 0.5。
 
-### skinProtectLevel
+</Parameter>
+<a id="skinprotectlevel"></a>
+<Parameter name="skinProtectLevel">
 
 :::note
 注： 当色彩增强等级较高时，人像肤色可能会出现明显失真，因此需要设置肤色保护等级。肤色保护等级越高，色彩增强效果可能会略有降低。为获得最佳色彩增强效果，声网建议你同时调整 `strengthLevel` 和 `skinProtectLevel`，以获得最合适的取值。
@@ -44,3 +48,6 @@ __attribute__((visibility("default"))) @interface AgoraColorEnhanceOptions : NSO
 - `1.0`：肤色保护效果最强。
 
 默认值为 1.0。
+
+</Parameter>
+</ParameterList>

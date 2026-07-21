@@ -40,7 +40,9 @@ _migration:
 
 ## 属性
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 音频采样率（Hz），可设置为以下值之一：
 
@@ -50,17 +52,26 @@ _migration:
 - 44100。
 - 48000。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为以下值之一：
 
 - 1：（默认）单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频数据的使用模式。详见 [AgoraAudioRawFrameOperationMode](/zh-CN/api-reference/rtc/macos/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的采样点数量，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>

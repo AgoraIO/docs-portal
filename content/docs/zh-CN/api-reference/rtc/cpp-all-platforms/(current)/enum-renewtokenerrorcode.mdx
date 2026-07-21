@@ -20,30 +20,47 @@ _migration:
 
 ## 枚举值
 
-### RENEW_TOKEN_SUCCESS
+<ParameterList>
+<a id="renew_token_success"></a>
+<Parameter name="RENEW_TOKEN_SUCCESS">
 
 （0）：Token 更新成功。
 
-### RENEW_TOKEN_FAILURE
+</Parameter>
+<a id="renew_token_failure"></a>
+<Parameter name="RENEW_TOKEN_FAILURE">
 
 （1）：由于未知的服务器错误，Token 更新失败。建议检查用于生成 Token 的参数，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)。
 
-### RENEW_TOKEN_TOKEN_EXPIRED
+</Parameter>
+<a id="renew_token_token_expired"></a>
+<Parameter name="RENEW_TOKEN_TOKEN_EXPIRED">
 
 （2）：由于提供的 Token 已过期，Token 更新失败。建议生成一个过期时间更长的新 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)。
 
-### RENEW_TOKEN_INVALID_TOKEN
+</Parameter>
+<a id="renew_token_invalid_token"></a>
+<Parameter name="RENEW_TOKEN_INVALID_TOKEN">
 
 （3）：由于提供的 Token 无效，Token 更新失败。常见原因包括：项目在声网控制台启用了 App 证书但加入频道时未使用 Token；`joinChannel` 中指定的 uid 与生成 Token 时使用的 uid 不一致；`joinChannel` 中指定的频道名与生成 Token 时使用的频道名不一致。建议检查 Token 的生成流程，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)。
 
-### RENEW_TOKEN_INVALID_CHANNEL_NAME
+</Parameter>
+<a id="renew_token_invalid_channel_name"></a>
+<Parameter name="RENEW_TOKEN_INVALID_CHANNEL_NAME">
 
 （4）：由于 Token 中的频道名与当前频道不一致，Token 更新失败。建议检查频道名，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)。
 
-### RENEW_TOKEN_INCONSISTENT_APPID
+</Parameter>
+<a id="renew_token_inconsistent_appid"></a>
+<Parameter name="RENEW_TOKEN_INCONSISTENT_APPID">
 
 （5）：由于 Token 中的 App ID 与当前 App ID 不一致，Token 更新失败。建议检查 App ID，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)。
 
-### RENEW_TOKEN_CANCELED_BY_NEW_REQUEST
+</Parameter>
+<a id="renew_token_canceled_by_new_request"></a>
+<Parameter name="RENEW_TOKEN_CANCELED_BY_NEW_REQUEST">
 
 （6）：由于发起了新的请求，之前的 Token 更新请求被取消。
+
+</Parameter>
+</ParameterList>

@@ -862,9 +862,18 @@ function reportToMarkdown(report) {
       ? typeEntries.map(([type, count]) => `- \`${type}\`: ${count}`)
       : ['- None.']),
     '',
-    '## Warning explanations',
-    '',
   );
+  const structuredParameters = report.details?.structuredParameters;
+  if (structuredParameters) {
+    lines.push('## Structured parameter rendering', '');
+    for (const [generator, counts] of Object.entries(structuredParameters)) {
+      lines.push(
+        `- \`${generator}\`: ${counts.lists} lists, ${counts.fields} fields`,
+      );
+    }
+    lines.push('');
+  }
+  lines.push('## Warning explanations', '');
   const warningEntries = Object.entries(report.warningSummary);
   lines.push(
     ...(warningEntries.length > 0
@@ -888,7 +897,13 @@ function reportToMarkdown(report) {
   return `${lines.join('\n')}\n`;
 }
 
-function buildReport({ manifest, inputHash, results, removedOwnedFiles }) {
+function buildReport({
+  manifest,
+  inputHash,
+  results,
+  removedOwnedFiles,
+  details,
+}) {
   const warnings = results.flatMap((result) => result.warnings ?? []);
   const warningSummary = {};
   for (const warning of warnings) {
@@ -934,6 +949,7 @@ function buildReport({ manifest, inputHash, results, removedOwnedFiles }) {
       errors: warnings.filter((warning) => warning.severity === 'error').length,
     },
     migrationTypes,
+    ...(details && Object.keys(details).length > 0 ? { details } : {}),
     warningSummary,
     results: orderedResults,
   });
@@ -972,6 +988,7 @@ export class ApiCenterMigrationRun {
     Object.assign(this, options);
     this.planned = new Map();
     this.auditResults = [];
+    this.reportDetails = {};
     this.inputHash = sha256(JSON.stringify(this.manifest));
     this.previousOwned = new Map(
       (this.previous.files ?? []).map((file) => [file.targetPath, file]),
@@ -980,6 +997,10 @@ export class ApiCenterMigrationRun {
 
   ownsTarget(targetPath) {
     return this.previousOwned.has(targetPath);
+  }
+
+  setReportDetail(key, value) {
+    this.reportDetails[key] = value;
   }
 
   planFile({
@@ -1178,6 +1199,7 @@ export class ApiCenterMigrationRun {
       inputHash: this.inputHash,
       results,
       removedOwnedFiles,
+      details: this.reportDetails,
     });
     const ownership = stableJson({
       schemaVersion: 1,

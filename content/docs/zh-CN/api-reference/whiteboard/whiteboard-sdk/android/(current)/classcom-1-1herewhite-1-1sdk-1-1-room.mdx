@@ -102,10 +102,13 @@ _migration:
 
 实时房间的 `globalState` 属性为公共全局变量，房间内所有用户都可以读取 `globalState`，互动模式用户可以修改 `globalState`。 修改后的 `globalState` 会立即同步给所有用户。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="globalState">
 
-| globalState | 房间公共全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state). |
-| --- | --- |
+房间公共全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state).
+
+</Parameter>
+</ParameterList>
 
 <a id="ab2d72aca8bef76ded5aa3c3ee873902f"></a>
 
@@ -118,10 +121,13 @@ _migration:
 
 调用该方法会立刻更新房间的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 你可以调用 [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) 获取最新设置的白板工具状态。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="memberState">
 
-| memberState | 需要修改的白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 |
-| --- | --- |
+需要修改的白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
+
+</Parameter>
+</ParameterList>
 
 <a id="ad06f67470a69830938a901baa8cab2bd"></a>
 
@@ -224,10 +230,16 @@ _migration:
 - Android SDK 2.9.3 或之后版本
 - iOS SDK 2.9.3 或之后版本
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disable">
 
-| disable | 是否禁止本地序列化：`true`：（默认）禁止开启本地序列化； `false`： 开启本地序列化，即可以对本地操作进行解析。 |
-| --- | --- |
+是否禁止本地序列化：
+
+- `true`：（默认）禁止开启本地序列化；
+- `false`： 开启本地序列化，即可以对本地操作进行解析。
+
+</Parameter>
+</ParameterList>
 
 <a id="a9ad047897d74af1590316cc5d338408c"></a>
 
@@ -286,10 +298,13 @@ _migration:
 
 该方法是异步操作。调用该方法后，你可以使用 [`getBroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d)[2/2] 获取最新设置的视角模式。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="viewMode">
 
-| viewMode | 视角模式，详见 [`ViewMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-view-mode)。 |
-| --- | --- |
+视角模式，详见 [`ViewMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-view-mode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac10c063697e5224ef05d341bb3987004"></a>
 
@@ -319,10 +334,16 @@ _migration:
 
 你可以在该方法中传入 `Promise<Object>` 接口实例，以获取方法调用结果。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `disconnect` 的调用结果：如果方法调用成功，则返回房间的全局状态。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `disconnect` 的调用结果：
+
+- 如果方法调用成功，则返回房间的全局状态。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a195049bf53b03d538c847e0eecf9b679"></a>
 
@@ -339,10 +360,13 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 你也可以调用 [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6c85af35615b4d4696717b862fb428bc) 方法同时传入图片信息和图片的 Url 地址，在白板中插入并展示图片。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="imageInfo">
 
-| imageInfo | 图片信息，详见 [`ImageInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information)。 |
-| --- | --- |
+图片信息，详见 [`ImageInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a355bbeefe466ac0c2c5b2cdc420ce5dc"></a>
 
@@ -361,11 +385,18 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 调用该方法前，请确保你已经调用 [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) 方法在白板上插入了图片的显示区域。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uuid">
 
-| uuid | 图片显示区域的 UUID, 即在 [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) 方法的 [`ImageInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information) 中传入的图片 UUID。 |
-| --- | --- |
-| url | 图片的 URL 地址。必须确保 app 客户端能访问该 URL，否则无法正常展示图片。 |
+图片显示区域的 UUID, 即在 [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) 方法的 [`ImageInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information) 中传入的图片 UUID。
+
+</Parameter>
+<Parameter name="url">
+
+图片的 URL 地址。必须确保 app 客户端能访问该 URL，否则无法正常展示图片。
+
+</Parameter>
+</ParameterList>
 
 <a id="a6c85af35615b4d4696717b862fb428bc"></a>
 
@@ -378,10 +409,13 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 该方法封装了 [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) 和 [`completeImageUpload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a355bbeefe466ac0c2c5b2cdc420ce5dc) 方法。 你可以在该方法中同时传入图片信息和图片的 URL，直接在白板中插入图片的显示区域并展示图片。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="imageInformationWithUrl">
 
-| imageInformationWithUrl | 图片信息及图片的 URL 地址，详见 [`ImageInformationWithUrl`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information-with-url)。 |
-| --- | --- |
+图片信息及图片的 URL 地址，详见 [`ImageInformationWithUrl`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information-with-url)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a6ed25a156436b44b6405a279aeac6e6d"></a>
 
@@ -396,22 +430,31 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 在指定位置插入文字。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="x">
 
-| x | 第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。 |
-| --- | --- |
-| y | 第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。 |
-| text | 初始的文字内容，不传则为空。 |
-| promise | <Slot name="api-center-table-0" /> |
+第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="y">
+
+第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="text">
+
+初始的文字内容，不传则为空。
+
+</Parameter>
+<Parameter name="promise">
 
 `Promise<String>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则返回文字标识符。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a6f3389698783fc57286518b370a80357"></a>
 
@@ -424,11 +467,18 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 更新指定文本的内容。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="id">
 
-| id | 文字标识符，即 `insertText` 方法的回调值。 |
-| --- | --- |
-| text | 文字内容。 |
+文字标识符，即 `insertText` 方法的回调值。
+
+</Parameter>
+<Parameter name="text">
+
+文字内容。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac21ea599028066b2c54caece51372b77"></a>
 
@@ -471,10 +521,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 对于通过 [`setCustomGlobalStateClass`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-displayer-state#aaa54cefb8939135f2e47985dca839d85) 方法设置的自定义 `GlobalState`，在获取后，可以直接进行强转。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<GlobalState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getGlobalState` 的调用结果：如果方法调用成功，则返回 `GlobalState` 对象，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<GlobalState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getGlobalState` 的调用结果：
+
+- 如果方法调用成功，则返回 `GlobalState` 对象，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="adb7d0a6430be84c8ff5ce5ae67aeb5ca"></a>
 
@@ -511,10 +567,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 该方法为异步调用。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<MemberState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getMemberState` 的调用结果：如果方法调用成功，则返回白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<MemberState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getMemberState` 的调用结果：
+
+- 如果方法调用成功，则返回白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a2388307121c075620ba48f71fa970483"></a>
 
@@ -548,10 +610,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 房间的用户列表仅包含互动模式（具有读写权限）的用户，不包含订阅模式（只读权限）的用户。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<RoomMember[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomMembers` 的调用结果：如果方法调用成功，则返回用户列表，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<RoomMember[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomMembers` 的调用结果：
+
+- 如果方法调用成功，则返回用户列表，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="af6f8d5c76a3d331cd1cd9d6f15565976"></a>
 
@@ -589,10 +657,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 调用 [`setViewMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a62f41d229dee8d67211b3eeaaa46ef6e) 修改用户视角模式后，无法立刻通过 [`getBroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af6f8d5c76a3d331cd1cd9d6f15565976)[1/2] 获取最新的用户视角状态。如果需要 立即获取最新的用户视角状态，可以调用 [`getBroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d)[2/2]。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<BroadcastState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getBroadcastState` 的调用结果：如果方法调用成功，则返回用户视角状态，详见 [`BroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<BroadcastState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getBroadcastState` 的调用结果：
+
+- 如果方法调用成功，则返回用户视角状态，详见 [`BroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a8a708f07fc9914a6a54a6c18e696ce2d"></a>
 
@@ -638,10 +712,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
   - `[putScenes(String, Scene[], int)](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)`
 :::
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<SceneState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneState` 的调用结果：如果方法调用成功，则返回场景状态，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<SceneState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneState` 的调用结果：
+
+- 如果方法调用成功，则返回场景状态，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a5a9590e60683101fc8715c606180cd19"></a>
 
@@ -687,10 +767,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
   - [`putScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)
 :::
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<Scene[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenes` 的调用结果：如果方法调用成功，则返回场景列表，详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<Scene[]>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenes` 的调用结果：
+
+- 如果方法调用成功，则返回场景列表，详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac287ed3712b957412281f1330f7df32c"></a>
 
@@ -736,10 +822,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 调用 [`zoomChange`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a81fddb80f2f65a70f2f5fe1e5652a5d0) 或 [`moveCamera`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) 调整视角缩放比例后，如果需要立即获取最新的缩放比例，可以调用 [`getZoomScale`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#aff289f9e1bac68426d93fdfd8f7486e7)[2/2]。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<Number>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getZoomScale` 的调用结果：如果方法调用成功，则返回视角缩放比例。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<Number>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getZoomScale` 的调用结果：
+
+- 如果方法调用成功，则返回视角缩放比例。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a2c0ef694235dccda2fb92b3ba141880d"></a>
 
@@ -777,10 +869,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 调用 [`disconnect`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac10c063697e5224ef05d341bb3987004)[1/2] 或 [`disconnect`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad8aa1d2ce5b8e6d78094c2a9a3836dfa)[2/2] 断开 SDK 与实时房间的连接后，无法立即通过 [`getRoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2c0ef694235dccda2fb92b3ba141880d)[1/2] 获取最新的房间连接状态。 此时，你可以调用 [`getRoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6759ad742065c0e82592e8a0ed8aabee)[2/2] 立即获取最新的房间连接状态。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<RoomPhase>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomPhase` 的调用结果：如果方法调用成功，则返回房间连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<RoomPhase>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomPhase` 的调用结果：
+
+- 如果方法调用成功，则返回房间连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a9578a9ae744eb64d8bd939e3af3b68db"></a>
 
@@ -818,10 +916,16 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 修改房间的状态属性后，无法立即通过 [`getRoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9578a9ae744eb64d8bd939e3af3b68db) 获取最新的房间状态。此时，如果需要立即获取最新的房间状态，可以调用 [`getRoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c00f3eb5374d153b594fb772cf7339f)[2/2] 获取。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<RoomState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomState` 的调用结果：如果方法调用成功，则返回房间所有状态，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<RoomState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getRoomState` 的调用结果：
+
+- 如果方法调用成功，则返回房间所有状态，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4dfb1c0aac90cd2678aa773629198b1e"></a>
 
@@ -845,10 +949,13 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 场景路径对应的场景不存在。
 - 传入的路径是场景目录的路径，而不是场景路径。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="path">
 
-| path | 想要切换到的场景的场景路径，请确保场景路径以 `/` 开头，由场景目录和场景名构成，例如，`/math/classA`. |
-| --- | --- |
+想要切换到的场景的场景路径，请确保场景路径以 `/` 开头，由场景目录和场景名构成，例如，`/math/classA`.
+
+</Parameter>
+</ParameterList>
 
 <a id="afb89dfcb412caf3377c75522aa3ab6c0"></a>
 
@@ -873,20 +980,21 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 - 场景路径对应的场景不存在。
 - 传入的路径是场景目录的路径，而不是场景路径。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="path">
 
-| path | 想要切换到的场景的场景路径，请确保场景路径以 "/"，由场景目录和场景名构成，例如，`/math/classA`. |
-| --- | --- |
-| promise | <Slot name="api-center-table-1" /> |
+想要切换到的场景的场景路径，请确保场景路径以 "/"，由场景目录和场景名构成，例如，`/math/classA`.
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setScenePath` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`.
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a003fc53c0744799200fbac3ac6128e1a"></a>
 
@@ -901,20 +1009,21 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。 指定的场景必须在当前场景目录中，否则，方法调用会失败。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="index">
 
-| index | 目标场景在当前场景目录下的索引号。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-2" /> |
+目标场景在当前场景目录下的索引号。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setSceneIndex` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="ae2b7a63167b67f28d6a689d618184e4d"></a>
 
@@ -932,12 +1041,23 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 `setScenePath`。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="dir">
 
-| dir | 场景目录的名称，必须以 `/` 开头。不能为场景路径。 |
-| --- | --- |
-| scenes | 由多个场景构成的数组。单个场景的字段详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。 |
-| index | 待插入的多个场景中，第一个场景在该场景目录的索引号。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。 |
+场景目录的名称，必须以 `/` 开头。不能为场景路径。
+
+</Parameter>
+<Parameter name="scenes">
+
+由多个场景构成的数组。单个场景的字段详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。
+
+</Parameter>
+<Parameter name="index">
+
+待插入的多个场景中，第一个场景在该场景目录的索引号。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。
+
+</Parameter>
+</ParameterList>
 
 **示例代码**
 
@@ -965,20 +1085,21 @@ room.setScenePath("ppt" + "/page1");
 - 该方法支持改变指定场景在当前所属场景目录下的位置，也支持将指定场景移至其他场景目录。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="sourcePath">
 
-| sourcePath | 需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。 |
-| --- | --- |
-| targetDirOrPath | <Slot name="api-center-table-3" /> |
+需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。
 
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="targetDirOrPath">
 
 目标场景目录的路径或目标场景的路径：
 
 - 当 `targetDirOrPath` 设置为场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。
 - 当 `targetDirOrPath` 设置为场景时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="affd9982f863d1e91168428fa2df1053a"></a>
 
@@ -1000,10 +1121,13 @@ room.setScenePath("ppt" + "/page1");
   3. 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。 SDK 会继续向上递归执行该逻辑，直到找到新的场景。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-24"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="dirOrPath">
 
-| dirOrPath | 场景目录路径或者场景路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。 |
-| --- | --- |
+场景目录路径或者场景路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。
+
+</Parameter>
+</ParameterList>
 
 <a id="ad051bd3599948c161bcb2c983d80ef5a"></a>
 
@@ -1014,10 +1138,16 @@ room.setScenePath("ppt" + "/page1");
 
 清除当前场景的所有内容。
 
-<h4 data-toc-hidden="true" id={"参数-25"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="retainPpt">
 
-| retainPpt | 是否保留 PPT 内容：`true`：保留 PPT。 `false`：连 PPT 一起清空。 |
-| --- | --- |
+是否保留 PPT 内容：
+
+- `true`：保留 PPT。
+- `false`：连 PPT 一起清空。
+
+</Parameter>
+</ParameterList>
 
 <a id="a2f0b17c6af0f8c2bcaef84ad600e51af"></a>
 
@@ -1077,10 +1207,13 @@ room.setScenePath("ppt" + "/page1");
 2.16.23
 :::
 
-<h4 data-toc-hidden="true" id={"参数-26"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="index">
 
-| index | 指定页面索引号。 |
-| --- | --- |
+指定页面索引号。
+
+</Parameter>
+</ParameterList>
 
 <a id="a81fddb80f2f65a70f2f5fe1e5652a5d0"></a>
 
@@ -1095,10 +1228,13 @@ room.setScenePath("ppt" + "/page1");
 
 该方法已经废弃。请使用 [`moveCamera(CameraConfig)`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a)。
 
-<h4 data-toc-hidden="true" id={"参数-27"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="scale">
 
-| scale | 视角的缩放比例。 |
-| --- | --- |
+视角的缩放比例。
+
+</Parameter>
+</ParameterList>
 
 <a id="a78cb9ef60e7a4e61696dfc5e8301d064"></a>
 
@@ -1113,10 +1249,16 @@ room.setScenePath("ppt" + "/page1");
 2.6.2
 :::
 
-<h4 data-toc-hidden="true" id={"参数-28"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<JSONObject>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `debugInfo` 的调用结果：如果方法调用成功，则返回调试日志信息。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+`Promise<JSONObject>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `debugInfo` 的调用结果：
+
+- 如果方法调用成功，则返回调试日志信息。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a6b265bdee91f2d961373d172bb969fe0"></a>
 
@@ -1132,10 +1274,16 @@ room.setScenePath("ppt" + "/page1");
 - `CameraTransform`：移动、缩放视角。
 - `DeviceInputs`：使用白板工具输入。
 
-<h4 data-toc-hidden="true" id={"参数-29"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableOperations">
 
-| disableOperations | 允许/禁止白板响应用户任何操作。`true`：不响应用户操作。 `false`：（默认）响应用户操作。 |
-| --- | --- |
+允许/禁止白板响应用户任何操作。
+
+- `true`：不响应用户操作。
+- `false`：（默认）响应用户操作。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1cea527622d0cdf3d6eb0b01835b1370"></a>
 
@@ -1152,20 +1300,24 @@ room.setScenePath("ppt" + "/page1");
 2.6.1
 :::
 
-<h4 data-toc-hidden="true" id={"参数-30"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="writable">
 
-| writable | 用户在房间中是否为互动模式：`true`：互动模式，即具有读写权限。 `false`：订阅模式，即具有只读权限。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-4" /> |
+用户在房间中是否为互动模式：
 
-<Slot for="api-center-table-4">
+- `true`：互动模式，即具有读写权限。
+- `false`：订阅模式，即具有只读权限。
+
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Boolean>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `setWritable` 的调用结果：
 
 - 如果方法调用成功，则返回用户在房间中的读写状态。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a4f860e53b4cab0f574b22a2e8fdf235d"></a>
 
@@ -1180,10 +1332,16 @@ room.setScenePath("ppt" + "/page1");
 2.9.3
 :::
 
-<h4 data-toc-hidden="true" id={"参数-31"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disable">
 
-| disable | 是否关闭橡皮擦擦除图片功能：`true`：禁止橡皮擦擦除图片。 `false`：（默认）允许橡皮擦擦除图片。 |
-| --- | --- |
+是否关闭橡皮擦擦除图片功能：
+
+- `true`：禁止橡皮擦擦除图片。
+- `false`：（默认）允许橡皮擦擦除图片。
+
+</Parameter>
+</ParameterList>
 
 <a id="a0cadc59b5eb670a2361f5befedc90f4f"></a>
 
@@ -1198,10 +1356,16 @@ room.setScenePath("ppt" + "/page1");
 2.2.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-32"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableCameraTransform">
 
-| disableCameraTransform | 是否禁止用户调整视角：`true`：禁止用户调整视角。 `false`：（默认）允许用户调整视角。 |
-| --- | --- |
+是否禁止用户调整视角：
+
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
+
+</Parameter>
+</ParameterList>
 
 <a id="a468b0fa46f8cea857e6857b9f2945101"></a>
 
@@ -1216,10 +1380,16 @@ room.setScenePath("ppt" + "/page1");
 2.2.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-33"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableOperations">
 
-| disableOperations | 是否禁止用户操作白板工具：`true`：禁止用户操作白板工具操作。 `false`：（默认）允许用户操作白板工具输入操作。 |
-| --- | --- |
+是否禁止用户操作白板工具：
+
+- `true`：禁止用户操作白板工具操作。
+- `false`：（默认）允许用户操作白板工具输入操作。
+
+</Parameter>
+</ParameterList>
 
 <a id="ae4fe2b66cc439a1f3822728a1a92ff94"></a>
 
@@ -1234,10 +1404,13 @@ room.setScenePath("ppt" + "/page1");
 
 在音视频传输延时较大的场景中，如使用 CDN 推送音视频流时，你可以使用该参数延迟显示接收到的远端白板内容，以确保白板内容与音视频同步。
 
-<h4 data-toc-hidden="true" id={"参数-34"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="delaySec">
 
-| delaySec | 延时时长，单位为秒。取值必须大于等于 0。默认值为 0。 |
-| --- | --- |
+延时时长，单位为秒。取值必须大于等于 0。默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac35dafcef0ed29d406a29d7fccf0e7e1"></a>
 
@@ -1269,10 +1442,13 @@ room.setScenePath("ppt" + "/page1");
 
 在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息， 并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
 
-<h4 data-toc-hidden="true" id={"参数-35"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="utcMs">
 
-| utcMs | 远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。 |
-| --- | --- |
+远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="ae1518bd8a09077367b2b4d21e32c00d1"></a>
 
@@ -1287,10 +1463,13 @@ room.setScenePath("ppt" + "/page1");
 所有注册监听该事件的用户都会收到通知。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-36"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="eventEntry">
 
-| eventEntry | 自定义事件内容，详见 [`AkkoEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-akko-event)。 |
-| --- | --- |
+自定义事件内容，详见 [`AkkoEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-akko-event)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a45539d0e6e928c2eaa16d97ba50717bd"></a>
 
@@ -1305,20 +1484,21 @@ room.setScenePath("ppt" + "/page1");
 
 多窗口模式下，PPT 或自定义插件等可以作为小窗应用插入白板，在一个新的窗口中展示。
 
-<h4 data-toc-hidden="true" id={"参数-37"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appParam">
 
-| appParam | 小窗应用属性，详见 [`WindowAppParam`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-param)。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-5" /> |
+小窗应用属性，详见 [`WindowAppParam`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-param)。
 
-<Slot for="api-center-table-5">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<String>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则返回小窗应用 ID。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 :::info[注解]
 多次插入同一个小窗应用会导致插入失败，返回的 `appId` 为 `nil` 。
@@ -1337,20 +1517,21 @@ room.setScenePath("ppt" + "/page1");
 
 该方法仅在多窗口模式下有效, 无论应用 ID 是否有效都会触发回调。
 
-<h4 data-toc-hidden="true" id={"参数-38"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 小窗应用 ID。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-6" /> |
+小窗应用 ID。
 
-<Slot for="api-center-table-6">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Boolean>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
 
 - 如果方法调用成功，则窗口关闭。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="afb5c3bcd1384aedd25821f9450fa403c"></a>
 
@@ -1363,10 +1544,13 @@ room.setScenePath("ppt" + "/page1");
 
 该方法仅在多窗口模式下有效。
 
-<h4 data-toc-hidden="true" id={"参数-39"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 小窗应用 ID。 |
-| --- | --- |
+小窗应用 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4716222443f7501be43292b5a8682aa3"></a>
 
@@ -1381,11 +1565,18 @@ room.setScenePath("ppt" + "/page1");
 
 该方法仅在多窗口下有效。
 
-<h4 data-toc-hidden="true" id={"参数-40"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 小窗应用 ID。 |
-| --- | --- |
-| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
+小窗应用 ID。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+
+</Parameter>
+</ParameterList>
 
 - 如果方法调用成功，则返回小窗应用相关信息，详见 [`WindowAppSyncAttrs`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-sync-attrs)。
 - 如果方法调用失败，则返回错误信息。
@@ -1401,10 +1592,13 @@ room.setScenePath("ppt" + "/page1");
 
 该方法仅在多窗口下有效。
 
-<h4 data-toc-hidden="true" id={"参数-41"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果： |
-| --- | --- |
+`Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+
+</Parameter>
+</ParameterList>
 
 - 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 `WhiteAppSyncAttributes`。
 - 如果方法调用失败，则返回错误信息。
@@ -1420,20 +1614,21 @@ room.setScenePath("ppt" + "/page1");
 
 发送文档操作事件。
 
-<h4 data-toc-hidden="true" id={"参数-42"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="docsEvent">
 
-| docsEvent | 事件内容，详见 [`WindowDocsEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-7" /> |
+事件内容，详见 [`WindowDocsEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)。
 
-<Slot for="api-center-table-7">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：
 
 - 如果方法调用成功，则返回 `true`.
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a6c417c79b6bccd7eb07b88b04ef8c4eb"></a>
 
@@ -1444,10 +1639,16 @@ room.setScenePath("ppt" + "/page1");
 
 默认情况下，所有同步消息会按比较平滑的速度处理，以此保证观感的流畅性。 如果设置此项为 `true`，则所有消息一经收到立刻处理，从而保证同步的实时性。
 
-<h4 data-toc-hidden="true" id={"参数-43"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="useSyncMode">
 
-| useSyncMode | 是否开启同步模式：`true`：开启。 `false`：关闭。 |
-| --- | --- |
+是否开启同步模式：
+
+- `true`：开启。
+- `false`：关闭。
+
+</Parameter>
+</ParameterList>
 
 <a id="a42157e1f6d64d9676c17b3b94c1c5bbe"></a>
 
@@ -1467,7 +1668,11 @@ room.setScenePath("ppt" + "/page1");
 
 禁止初始化状态回调。
 
-<h4 data-toc-hidden="true" id={"参数-44"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableInitialStateCallback">
 
-| disableInitialStateCallback | `true`：禁止。 `false`：（默认）不禁止。 |
-| --- | --- |
+- `true`：禁止。
+- `false`：（默认）不禁止。
+
+</Parameter>
+</ParameterList>

@@ -52,12 +52,17 @@ public abstract int EnableDualStreamMode(bool enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启双流模式。
 
 - `true`: 开启双流模式。
 - `false`: (默认) 关闭双流模式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode__return_values"></a>
 
@@ -115,20 +120,27 @@ public abstract int EnableDualStreamMode(bool enabled, SimulcastStreamConfig str
 
 <a id="api_irtcengine_enabledualstreammode3__parml_mfj_z3z_hqb"></a>
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
 - `true`: 开启双流模式。
 - `false`: (默认) 关闭双流模式。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-simulcaststreamconfig)。
 
 :::note
 注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
 
@@ -178,14 +190,18 @@ public abstract int EnableDualStreamModeEx(bool enabled, SimulcastStreamConfig s
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
 - `true`: 开启双流模式。
 - `false`: (默认) 关闭双流模式。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-1"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-simulcaststreamconfig)。
 
@@ -193,9 +209,14 @@ public abstract int EnableDualStreamModeEx(bool enabled, SimulcastStreamConfig s
 注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
 
@@ -247,9 +268,14 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-simulcaststreammode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode__return_values"></a>
 
@@ -297,17 +323,24 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-2"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-simulcaststreamconfig)。
 
 :::note
 注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
 
@@ -361,11 +394,15 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-3"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/csharp-windows/class-simulcaststreamconfig)。
 
@@ -373,9 +410,14 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
 
@@ -428,9 +470,14 @@ public abstract int SetRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType
 
 ### 参数
 
-### streamType
+<ParameterList>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 默认订阅的视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
 
@@ -486,13 +533,20 @@ public abstract int SetRemoteVideoStreamType(uint uid, VIDEO_STREAM_TYPE streamT
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-1"></a>
+<Parameter name="streamType">
 
 视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
 
@@ -541,17 +595,26 @@ public abstract int SetRemoteVideoStreamTypeEx(uint uid, VIDEO_STREAM_TYPE strea
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-2"></a>
+<Parameter name="streamType">
 
 视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videostreamtype)。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
 

@@ -270,6 +270,11 @@ export async function runHtmlGenerators({
   );
   const selected = canonicalSelection.selected;
   const drafts = [];
+  const structuredParameterCounts = Object.fromEntries(
+    [...requestedGenerators]
+      .sort()
+      .map((generator) => [generator, { fields: 0, lists: 0 }]),
+  );
 
   for (const page of manifest.pageEvidence.filter((page) => !page.aliasOf)) {
     const resolution = page.sourceResolution;
@@ -305,6 +310,14 @@ export async function runHtmlGenerators({
       onAsset: assetHandler({ run, sourceAbsolutePath, oldRoot }),
       ...API_CENTER_GENERATOR_CONVERSION_OPTIONS[resolution.generator],
     });
+    for (const [generator, counts] of Object.entries(
+      converted.structuredParameters,
+    )) {
+      const aggregate = structuredParameterCounts[generator];
+      if (!aggregate) continue;
+      aggregate.fields += counts.fields;
+      aggregate.lists += counts.lists;
+    }
     const warnings = converted.warnings.map((warning) =>
       warning.code === 'unresolved-link'
         ? createWarning(
@@ -417,9 +430,11 @@ export async function runHtmlGenerators({
       adoptExisting: true,
     });
   }
+  run.setReportDetail('structuredParameters', structuredParameterCounts);
   const report = await run.finish();
   return {
     report,
+    structuredParameterCounts,
     selectedCount: selected.size,
     matchedCount: matched.length,
   };
@@ -491,7 +506,7 @@ Options:
     generators: [generator],
   });
   console.log(
-    `${generator}: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
+    `${generator}: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, parameter lists ${result.structuredParameterCounts[generator]?.lists ?? 0}, parameter fields ${result.structuredParameterCounts[generator]?.fields ?? 0}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
   );
   return result;
 }

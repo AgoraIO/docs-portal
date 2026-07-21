@@ -46,10 +46,13 @@ _migration:
 
 调整音频在远端播放的音量。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音频的远端播放音量。取值范围为 [1,100]，其中默认值为 100，表示原始音量。 |
-| --- | --- |
+音频的远端播放音量。取值范围为 [1,100]，其中默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -101,10 +104,13 @@ _migration:
 
 获取当前音频在远端播放的音量。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音频在远端的播放音量。 |
-| --- | --- |
+音频在远端的播放音量。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -164,10 +170,16 @@ _migration:
 
 启用本地音频轨道后，SDK 会允许本地音频采集、处理和编码。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enable">
 
-| enable | 是否启用本地音频轨道：true: 是 false: 否 |
-| --- | --- |
+是否启用本地音频轨道：
+
+- true: 是
+- false: 否
+
+</Parameter>
+</ParameterList>
 
 <a id="a3e4526e6402becdd5f25573513ce6a36"></a>
 
@@ -190,10 +202,13 @@ SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最�
 该方法需要在 [publishAudio](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#a30711bbe175b24277d4cd977cb544d4e) 方法之前调用。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="number">
 
-| number | 缓冲区存放的最大音频帧数。例如，填入 6000 则表示 6000 帧音频数据。 |
-| --- | --- |
+缓冲区存放的最大音频帧数。例如，填入 6000 则表示 6000 帧音频数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac16dee95915656c401981f1107183370"></a>
 
@@ -215,10 +230,13 @@ SDK 默认允许发送的最小数据时长为 160 ms，即 SDK 会等音频发�
 
 你可以根据实际业务需求，调用该方法调整缓冲区允许发送的最小数据时长。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="delayMs">
 
-| delayMs | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a3e4526e6402becdd5f25573513ce6a36) 方法中 number 参数值的 10 倍。 |
-| --- | --- |
+缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a3e4526e6402becdd5f25573513ce6a36) 方法中 number 参数值的 10 倍。
+
+</Parameter>
+</ParameterList>
 
 ---
 

@@ -50,13 +50,20 @@ public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObs
 
 ### 参数
 
-### audioFrameObserver
+<ParameterList>
+<a id="audioframeobserver"></a>
+<Parameter name="audioFrameObserver">
 
 接口对象实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudioframeobserver)。如果传入 NULL，则表示取消注册。建议在收到 [OnLeaveChannel](/zh-CN/api-reference/rtc/csharp-windows/channel#callback_irtcengineeventhandler_onleavechannel) 后调用，来释放音频观测器对象。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-observermode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registeraudioframeobserver__return_values"></a>
 
@@ -96,24 +103,35 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 OnEarMonitoringAudioFrame 中报告音频的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 OnEarMonitoringAudioFrame 中报告音频的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 OnEarMonitoringAudioFrame 中报告的音频的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -160,20 +178,29 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
@@ -220,16 +247,23 @@ SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
 
@@ -277,24 +311,35 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
@@ -341,24 +386,35 @@ SDK 会通过该方法中的 samplesPerCall、sampleRate 和 channel 参数计�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-### mode
+</Parameter>
+<a id="mode-3"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
@@ -420,7 +476,7 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 为保证耳返的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置耳返音频数据格式：
 
 - 方法一：调用 [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
-- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在  回调的返回值中设置具体的音频观测位置，然后在  回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__attention"></a>
 
@@ -434,9 +490,14 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__return_values"></a>
 
@@ -467,17 +528,26 @@ public virtual bool OnPlaybackAudioFrameBeforeMixing(string channel_id,
 
 ### 参数
 
-### channel_id
+<ParameterList>
+<a id="channel_id"></a>
+<Parameter name="channel_id">
 
 频道 ID。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 订阅的远端用户的 ID。
 
-### audio_frame
+</Parameter>
+<a id="audio_frame"></a>
+<Parameter name="audio_frame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values"></a>
 
@@ -509,7 +579,7 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 为保证播放的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
-- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在  回调的返回值中设置具体的音频观测位置，然后在  回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__attention"></a>
 
@@ -523,13 +593,20 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 
 ### 参数
 
-### audio_frame
+<ParameterList>
+<a id="audio_frame-1"></a>
+<Parameter name="audio_frame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__return_values"></a>
 
@@ -561,7 +638,7 @@ public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
 为保证采集的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
-- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在  回调的返回值中设置具体的音频观测位置，然后在  回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__attention"></a>
 
@@ -575,13 +652,20 @@ public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe-1"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__return_values"></a>
 
@@ -613,7 +697,7 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
 - 方法一：调用 [SetMixedAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
-- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在  回调的返回值中设置具体的音频观测位置，然后在  回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__attention"></a>
 
@@ -627,13 +711,20 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 
 ### 参数
 
-### audio_frame
+<ParameterList>
+<a id="audio_frame-2"></a>
+<Parameter name="audio_frame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__return_values"></a>
 

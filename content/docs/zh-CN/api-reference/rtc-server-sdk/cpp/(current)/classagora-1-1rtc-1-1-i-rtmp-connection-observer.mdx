@@ -37,10 +37,13 @@ _migration:
 
 SDK 与 CDN 的连接状态变更为 `STATE_CONNECTED(3)` 时触发。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
 
-| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
-| --- | --- |
+连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a676896b8556082f878cb2abfff4f60db"></a>
 
@@ -51,10 +54,13 @@ SDK 与 CDN 的连接状态变更为 `STATE_CONNECTED(3)` 时触发。
 
 SDK 与 CDN 的连接状态变更为 `STATE_DISCONNECTED(1)` 时触发。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
 
-| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
-| --- | --- |
+连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a52b17ca702ecc8c0aad58565313a2280"></a>
 
@@ -65,10 +71,13 @@ SDK 与 CDN 的连接状态变更为 `STATE_DISCONNECTED(1)` 时触发。
 
 SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTING(4)` 时触发。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
 
-| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
-| --- | --- |
+连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a735ef894c2d4e077c3302a248cc42bbf"></a>
 
@@ -79,10 +88,13 @@ SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTING(4)` 时触发。
 
 SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTED(6)` 时触发。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
 
-| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
-| --- | --- |
+连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a86658e80515ca6a85ebde8c230c71f16"></a>
 
@@ -93,11 +105,18 @@ SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTED(6)` 时触发。
 
 SDK 与 CDN 的连接状态变更为 `STATE_FAILED(5)` 时触发。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
 
-| connectionInfo | 连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info)。 |
-| --- | --- |
-| errCode | 连接失败的错误码： [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de)。 |
+连接信息： [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 。
+
+</Parameter>
+<Parameter name="errCode">
+
+连接失败的错误码： [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a8a4b5e4b8b9357a4881284b7f56bf99f"></a>
 
@@ -110,13 +129,40 @@ CDN 推流统计数据回调。
 
 在主播端直接向 CDN 推流的过程中，SDK 每隔 1 秒触发一次该回调。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="video_width">
 
-| video_width | 已推送视频的宽度（px）。 |
-| --- | --- |
-| video_height | 已推送视频的高度（px）。 |
-| video_bitrate | 已推送视频的码率（bps）。 |
-| audio_bitrate | 已推送音频的码率（bps）。 |
-| video_frame_rate | 已推送视频的帧率（fps）。 |
-| push_video_frame_cnt | 已推送的视频帧数。 |
-| pop_video_frame_cnt | 实际推送到 CDN 的视频帧数。 |
+已推送视频的宽度（px）。
+
+</Parameter>
+<Parameter name="video_height">
+
+已推送视频的高度（px）。
+
+</Parameter>
+<Parameter name="video_bitrate">
+
+已推送视频的码率（bps）。
+
+</Parameter>
+<Parameter name="audio_bitrate">
+
+已推送音频的码率（bps）。
+
+</Parameter>
+<Parameter name="video_frame_rate">
+
+已推送视频的帧率（fps）。
+
+</Parameter>
+<Parameter name="push_video_frame_cnt">
+
+已推送的视频帧数。
+
+</Parameter>
+<Parameter name="pop_video_frame_cnt">
+
+实际推送到 CDN 的视频帧数。
+
+</Parameter>
+</ParameterList>

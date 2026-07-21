@@ -45,12 +45,20 @@ _migration:
 
 - new AGOnlineStateSynchronizer(api:[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service), sceneId:string):[AGOnlineStateSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-state-sync-gonline-state-synchronizer)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="api" required>
 
-  - api: [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
-  - sceneId: string
+<ParameterType>
 
-  Returns [AGOnlineStateSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-state-sync-gonline-state-synchronizer)
+[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="sceneId" type="string" required />
+</ParameterList>
+
+Returns [AGOnlineStateSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-state-sync-gonline-state-synchronizer)
 
 ## Properties
 
@@ -68,7 +76,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get isStateNotInSync():boolean
 
-- Returns boolean
+Returns boolean
 
 ## Methods
 
@@ -78,11 +86,19 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - addConnectionStateListeners(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="scene" required>
 
-  - scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-  Returns void
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addMessageEventListeners"></a>
 
@@ -90,11 +106,19 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - addMessageEventListeners(handle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="handle" required>
 
-  - handle: [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+<ParameterType>
 
-  Returns void
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setSyncDelay"></a>
 
@@ -102,11 +126,11 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setSyncDelay(delay:number):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="delay" type="number" required />
+</ParameterList>
 
-  - delay: number
-
-  Returns void
+Returns void
 
 <a id="start"></a>
 
@@ -114,7 +138,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - start():void
 
-- Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -122,4 +146,4 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - stop():void
 
-- Returns void
+Returns void

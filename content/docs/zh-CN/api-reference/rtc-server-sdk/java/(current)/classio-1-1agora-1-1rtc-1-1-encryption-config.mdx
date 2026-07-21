@@ -46,12 +46,32 @@ EncryptionConfig 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="encryptionMode">
 
-| encryptionMode | 加密模式，默认为 ENCRYPTION_MODE_AES_128_GCM2。ENCRYPTION_MODE_AES_128_XTS(1)：128-bit AES 加密， XTS 模式。 ENCRYPTION_MODE_AES_128_ECB(2)：128-bit AES 加密， ECB 模式。 ENCRYPTION_MODE_AES_256_XTS(3)：256-bit AES 加密， XTS 模式。 ENCRYPTION_MODE_SM4_128_ECB(4)：128-bit SM4 加密， ECB 模式。 ENCRYPTION_MODE_AES_128_GCM(5)：128-bit AES 加密， GCM 模式。 ENCRYPTION_MODE_AES_256_GCM(6)：256-bit AES 加密， GCM 模式。 ENCRYPTION_MODE_AES_128_GCM2(7)：（默认）128-bit AES 加密， GCM 模式，带 KDF 盐。 ENCRYPTION_MODE_AES_256_GCM2(8)：256-bit AES 加密， GCM 模式，带 KDF 盐。 |
-| --- | --- |
-| encryptionKey | 内置加密密钥，字符串类型，长度无限制。声网推荐使用 32 字节的密钥。 |
-| encryptionKdfSalt | 长度为 32 字节的盐。声网推荐使用 OpenSSL 在你的服务器生成盐，该参数仅在你的加密模式为 AES_128_GCM2 或 AES_256_GCM2 时有效，在此情况下，请确保该参数不为 0。 |
+加密模式，默认为 ENCRYPTION_MODE_AES_128_GCM2。
+
+- ENCRYPTION_MODE_AES_128_XTS(1)：128-bit AES 加密， XTS 模式。
+- ENCRYPTION_MODE_AES_128_ECB(2)：128-bit AES 加密， ECB 模式。
+- ENCRYPTION_MODE_AES_256_XTS(3)：256-bit AES 加密， XTS 模式。
+- ENCRYPTION_MODE_SM4_128_ECB(4)：128-bit SM4 加密， ECB 模式。
+- ENCRYPTION_MODE_AES_128_GCM(5)：128-bit AES 加密， GCM 模式。
+- ENCRYPTION_MODE_AES_256_GCM(6)：256-bit AES 加密， GCM 模式。
+- ENCRYPTION_MODE_AES_128_GCM2(7)：（默认）128-bit AES 加密， GCM 模式，带 KDF 盐。
+- ENCRYPTION_MODE_AES_256_GCM2(8)：256-bit AES 加密， GCM 模式，带 KDF 盐。
+
+</Parameter>
+<Parameter name="encryptionKey">
+
+内置加密密钥，字符串类型，长度无限制。声网推荐使用 32 字节的密钥。
+
+</Parameter>
+<Parameter name="encryptionKdfSalt">
+
+长度为 32 字节的盐。声网推荐使用 OpenSSL 在你的服务器生成盐，该参数仅在你的加密模式为 AES_128_GCM2 或 AES_256_GCM2 时有效，在此情况下，请确保该参数不为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

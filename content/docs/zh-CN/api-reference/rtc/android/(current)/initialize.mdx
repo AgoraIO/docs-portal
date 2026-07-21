@@ -34,9 +34,14 @@ SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interfa
 
 ### 参数
 
-### handler
+<ParameterList>
+<a id="handler"></a>
+<Parameter name="handler">
 
 要添加的回调事件处理器，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -72,17 +77,26 @@ public static synchronized RtcEngine create(Context context, String appId, IRtcE
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
 
 Android Activity 的上下文。
 
-### appId
+</Parameter>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网为你的项目签发的 App ID。只有使用相同 App ID 的用户才能加入同一个频道并进行通信。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。若需更换 App ID，请调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 销毁当前 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例，然后再创建新的实例。
 
-### handler
+</Parameter>
+<a id="handler-1"></a>
+<Parameter name="handler">
 
 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 的事件处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_create__return_values"></a>
 
@@ -121,12 +135,17 @@ public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback call
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 用于配置引擎的同步或异步销毁方式：
 
 - 非 `null`：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 [onEngineReleased](/zh-CN/api-reference/rtc/android/initialize#callback_irtcenginereleasecallback_onenginereleased) 回调。
 - `null`：同步销毁。方法仅在引擎资源完全释放后才返回。详见 [IRtcEngineReleaseCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcenginereleasecallback)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -164,9 +183,14 @@ public static synchronized RtcEngine create(RtcEngineConfig config) throws Excep
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 用于配置 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例的参数。详见 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-rtcengineconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_initialize__return_values"></a>
 
@@ -227,9 +251,14 @@ public void removeHandler(IRtcEngineEventHandler handler)
 
 ### 参数
 
-### handler
+<ParameterList>
+<a id="handler-2"></a>
+<Parameter name="handler">
 
 要移除的回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

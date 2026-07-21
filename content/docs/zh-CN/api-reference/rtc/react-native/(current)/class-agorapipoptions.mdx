@@ -46,51 +46,67 @@ export class AgoraPipOptions {
 
 ## 属性
 
-### autoEnterEnabled
+<ParameterList>
+<a id="autoenterenabled"></a>
+<Parameter name="autoEnterEnabled">
 
 是否自动进入画中画模式。
 
-### aspectRatioX
+</Parameter>
+<a id="aspectratiox"></a>
+<Parameter name="aspectRatioX">
 
 画中画窗口的水平宽高比。
 
 仅适用于 Android 平台。
 
-### aspectRatioY
+</Parameter>
+<a id="aspectratioy"></a>
+<Parameter name="aspectRatioY">
 
 画中画窗口的垂直宽高比。
 
 仅适用于 Android 平台。
 
-### sourceRectHintLeft
+</Parameter>
+<a id="sourcerecthintleft"></a>
+<Parameter name="sourceRectHintLeft">
 
 源矩形提示的左坐标。
 
 用于指定画中画窗口的初始位置。
 仅适用于 Android 平台。
 
-### sourceRectHintTop
+</Parameter>
+<a id="sourcerecthinttop"></a>
+<Parameter name="sourceRectHintTop">
 
 源矩形提示的上坐标。
 
 用于指定画中画窗口的初始位置。
 仅适用于 Android 平台。
 
-### sourceRectHintRight
+</Parameter>
+<a id="sourcerecthintright"></a>
+<Parameter name="sourceRectHintRight">
 
 源矩形提示的右坐标。
 
 用于指定画中画窗口的初始位置。
 仅适用于 Android 平台。
 
-### sourceRectHintBottom
+</Parameter>
+<a id="sourcerecthintbottom"></a>
+<Parameter name="sourceRectHintBottom">
 
 源矩形提示的下坐标。
 
 用于指定画中画窗口的初始位置。
 仅适用于 Android 平台。
 
-### seamlessResizeEnabled
+</Parameter>
+<a id="seamlessresizeenabled"></a>
+<Parameter name="seamlessResizeEnabled">
 
 是否启用画中画窗口的无缝调整大小。
 
@@ -98,7 +114,9 @@ export class AgoraPipOptions {
 默认为 `false`。
 仅适用于 Android 平台。
 
-### useExternalStateMonitor
+</Parameter>
+<a id="useexternalstatemonitor"></a>
+<Parameter name="useExternalStateMonitor">
 
 是否使用外部状态监控。
 
@@ -106,7 +124,9 @@ export class AgoraPipOptions {
 默认为 `true`。
 仅适用于 Android 平台。
 
-### externalStateMonitorInterval
+</Parameter>
+<a id="externalstatemonitorinterval"></a>
+<Parameter name="externalStateMonitorInterval">
 
 外部状态监控的间隔，单位为毫秒。
 
@@ -114,41 +134,55 @@ export class AgoraPipOptions {
 默认为 100ms。
 仅适用于 Android 平台。
 
-### videoStreams
+</Parameter>
+<a id="videostreams"></a>
+<Parameter name="videoStreams">
 
 视频转码配置。
 
 仅在 contentView 设置为 0 时生效。当用户让 SDK 管理视图时，所有视频流将放置在画中画窗口的根视图中。
 仅适用于 iOS 平台。
 
-### contentViewLayout
+</Parameter>
+<a id="contentviewlayout"></a>
+<Parameter name="contentViewLayout">
 
 画中画视频流的布局配置。
 
 仅在 contentView 设置为 0 时生效。
 仅适用于 iOS 平台。
 
-### sourceContentView
+</Parameter>
+<a id="sourcecontentview"></a>
+<Parameter name="sourceContentView">
 
 sourceContentView 确定画中画动画的源帧和恢复目标。传递 0 以使用应用的根视图。为了获得最佳动画效果，请将此设置为包含视频内容的视图。系统使用此视图进行画中画进入/退出动画，并在返回应用或停止画中画时作为恢复目标。
 
-### contentView
+</Parameter>
+<a id="contentview"></a>
+<Parameter name="contentView">
 
 contentView 确定将在画中画窗口中显示哪个视图。如果传递 0，画中画控制器将自动管理并显示所有视频流。如果传递特定的视图 ID，你需要负责管理画中画窗口中显示的内容。
 
-### preferredContentWidth
+</Parameter>
+<a id="preferredcontentwidth"></a>
+<Parameter name="preferredContentWidth">
 
 画中画内容的首选宽度。
 
 仅适用于 iOS 平台。
 
-### preferredContentHeight
+</Parameter>
+<a id="preferredcontentheight"></a>
+<Parameter name="preferredContentHeight">
 
 画中画内容的首选高度。
 
 仅适用于 iOS 平台。
 
-### controlStyle
+</Parameter>
+<a id="controlstyle"></a>
+<Parameter name="controlStyle">
 
 画中画窗口的控制样式。
 可用样式：
@@ -159,3 +193,6 @@ contentView 确定将在画中画窗口中显示哪个视图。如果传递 0，
 - 3：隐藏所有系统控件，包括关闭和恢复按钮
 
 仅适用于 iOS 平台。
+
+</Parameter>
+</ParameterList>

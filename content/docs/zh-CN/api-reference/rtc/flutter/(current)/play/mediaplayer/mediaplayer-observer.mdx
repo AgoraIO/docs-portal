@@ -34,13 +34,20 @@ void registerAudioFrameObserver(
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频帧观测器，观测每帧音频的接收，详见 [AudioPcmFrameSink](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiopcmframesink)。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
 
@@ -78,9 +85,14 @@ void registerPlayerSourceObserver(MediaPlayerSourceObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 播放观测器，报告播放中的事件，详见 [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
@@ -114,9 +126,14 @@ void registerVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-2"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收。详见 [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__return_values"></a>
 
@@ -148,9 +165,14 @@ void unregisterAudioFrameObserver(AudioPcmFrameSink observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-3"></a>
+<Parameter name="observer">
 
 音频帧观测器，详见 [AudioPcmFrameSink](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__return_values"></a>
 
@@ -182,9 +204,14 @@ void unregisterPlayerSourceObserver(MediaPlayerSourceObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-4"></a>
+<Parameter name="observer">
 
 播放观测器，报告播放中的事件，详见 [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
@@ -216,9 +243,14 @@ void unregisterVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-5"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收，详见 [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__return_values"></a>
 
@@ -252,9 +284,14 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的当前音量，取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -282,9 +319,14 @@ final void Function(AudioPcmFrame frame)? onFrame;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/flutter/class-audiopcmframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -312,13 +354,20 @@ final void Function(Uint8List data, int length)? onMetaData;
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 具体数据，用户自定义格式的数据。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度，单位为 byte。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -349,9 +398,14 @@ final void Function(int playCachedBuffer)? onPlayBufferUpdated;
 
 ### 参数
 
-### playCachedBuffer
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -381,17 +435,26 @@ final void Function(
 
 ### 参数
 
-### eventCode
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerevent)。
 
-### elapsedTime
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 发生事件的时间 (毫秒)。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -419,9 +482,14 @@ final void Function(PlayerUpdatedInfo info)? onPlayerInfoUpdated;
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/flutter/class-playerupdatedinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -450,13 +518,20 @@ final void Function(MediaPlayerState state, MediaPlayerReason reason)?
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -482,13 +557,20 @@ final void Function(SrcInfo from, SrcInfo to)? onPlayerSrcInfoChanged;
 
 ### 参数
 
-### from
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/flutter/class-srcinfo)。
 
-### to
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/flutter/class-srcinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -516,17 +598,24 @@ final void Function(int positionMs, int timestampMs)? onPositionChanged;
 
 ### 参数
 
-### positionMs
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 当前播放进度，单位为 ms。
 
-### timestampMs
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
 :::note
 注： 该参数仅在频道内生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -552,13 +641,20 @@ final void Function(String src, PlayerPreloadEvent event)? onPreloadEvent;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的路径。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [PlayerPreloadEvent](/zh-CN/api-reference/rtc/flutter/enum-playerpreloadevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

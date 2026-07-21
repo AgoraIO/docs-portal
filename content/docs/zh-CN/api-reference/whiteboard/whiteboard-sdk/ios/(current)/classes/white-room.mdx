@@ -151,10 +151,16 @@ _migration:
 
 `- (void)setDrawOnlyApplePencil:(BOOL)*drawOnlyPencil*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="drawOnlyPencil">
 
-| `drawOnlyPencil` | 是否只允许用户使用 Apple Pencil 绘制和书写： `YES`：只允许使用 Apple Pencil 在白板上绘制和书写。 `NO`：（默认）允许使用 Apple Pencil 或手指在白板上绘制和书写。 |
-| --- | --- |
+是否只允许用户使用 Apple Pencil 绘制和书写：
+
+- `YES`：只允许使用 Apple Pencil 在白板上绘制和书写。
+- `NO`：（默认）允许使用 Apple Pencil 或手指在白板上绘制和书写。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -178,10 +184,13 @@ _migration:
 
 `- (void)setGlobalState:(WhiteGlobalState *)*globalState*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="globalState">
 
-| `globalState` | 房间公共全局状态，自定义字段。详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。 |
-| --- | --- |
+房间公共全局状态，自定义字段。详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -201,10 +210,13 @@ _migration:
 
 `- (void)setMemberState:(WhiteMemberState *)*modifyState*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="modifyState">
 
-| `modifyState` | 需要修改的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。 |
-| --- | --- |
+需要修改的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -224,10 +236,13 @@ _migration:
 
 `- (void)setViewMode:(WhiteViewMode)*viewMode*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="viewMode">
 
-| `viewMode` | 视角模式。 |
-| --- | --- |
+视角模式。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -255,10 +270,16 @@ _migration:
 
 `- (void)debugInfo:(void ( ^ _Nullable ) ( NSDictionary *_Nullable dict ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="completionHandler">
 
-| `completionHandler` | 方法调用结果： 如果方法调用成功，则返回调试日志信息。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+方法调用结果：
+
+- 如果方法调用成功，则返回调试日志信息。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -272,10 +293,16 @@ _migration:
 
 `- (void)disconnect:(void ( ^ _Nullable ) ( void ))*completeHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="completeHandler">
 
-| `completeHandler` | 调用结果： 如果方法调用成功，则返回房间的全局状态。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+调用结果：
+
+- 如果方法调用成功，则返回房间的全局状态。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -306,20 +333,24 @@ _migration:
 
 `- (void)setWritable:(BOOL)*writable* completionHandler:(void ( ^ _Nullable ) ( BOOL isWritable , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="writable">
 
-| `writable` | 用户在房间中是否为互动模式： `YES`：互动模式，即具有读写权限。 `NO`：订阅模式，即具有只读权限。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-0" /> |
+用户在房间中是否为互动模式：
 
-<Slot for="api-center-table-0">
+- `YES`：互动模式，即具有读写权限。
+- `NO`：订阅模式，即具有只读权限。
+
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则返回用户在房间中的读写状态。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -350,10 +381,16 @@ _migration:
 
 `- (void)disableCameraTransform:(BOOL)*disableCameraTransform*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disableCameraTransform">
 
-| `disableCameraTransform` | 是否禁止用户调整视角： `YES`：禁止用户调整视角。 `NO`：（默认）允许用户调整视角。 |
-| --- | --- |
+是否禁止用户调整视角：
+
+- `YES`：禁止用户调整视角。
+- `NO`：（默认）允许用户调整视角。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -367,10 +404,16 @@ _migration:
 
 `- (void)disableDeviceInputs:(BOOL)*disable*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disable">
 
-| `disable` | 是否禁止用户操作工具： `YES`：禁止用户操作工具操作。 `NO`：（默认）允许用户操作工具输入操作。 |
-| --- | --- |
+是否禁止用户操作工具：
+
+- `YES`：禁止用户操作工具操作。
+- `NO`：（默认）允许用户操作工具输入操作。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -384,17 +427,18 @@ _migration:
 
 `- (void)dispatchMagixEvent:(NSString *)*eventName* payload:(NSDictionary *)*payload*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="eventName">
 
-| `eventName` | 自定义事件名称，详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。 |
-| --- | --- |
-| `payload` | <Slot name="api-center-table-1" /> |
+自定义事件名称，详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="payload">
 
 自定义事件内容，详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -440,34 +484,31 @@ _migration:
 
 `- (void)insertText:(CGFloat)*x* y:(CGFloat)*y* textContent:(NSString *)*textContent* completionHandler:(void ( ^ ) ( NSString *textId ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="x">
 
-| `x` | 第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。 |
-| --- | --- |
-| `y` | <Slot name="api-center-table-2" /> |
-| `textContent` | <Slot name="api-center-table-3" /> |
-| `completionHandler` | <Slot name="api-center-table-4" /> |
+第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="y">
 
 第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="textContent">
 
 初始的文字内容，不传则为空。
 
-</Slot>
-
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则返回文字的标识符。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -481,17 +522,18 @@ _migration:
 
 `- (void)updateText:(NSString *)*textId* textContent:(NSString *)*textContent*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="textId">
 
-| `textId` | 文字标识符。 |
-| --- | --- |
-| `textContent` | <Slot name="api-center-table-5" /> |
+文字标识符。
 
-<Slot for="api-center-table-5">
+</Parameter>
+<Parameter name="textContent">
 
 文字内容。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -505,17 +547,18 @@ _migration:
 
 `- (void)insertImage:(WhiteImageInformation *)*imageInfo* src:(NSString *)*src*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="imageInfo">
 
-| `imageInfo` | 图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。 |
-| --- | --- |
-| `src` | <Slot name="api-center-table-6" /> |
+图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。
 
-<Slot for="api-center-table-6">
+</Parameter>
+<Parameter name="src">
 
 图片 URL 地址，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -537,10 +580,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)insertImage:(WhiteImageInformation *)*imageInfo*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="imageInfo">
 
-| `imageInfo` | 图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。 |
-| --- | --- |
+图片信息，详见 [WhiteImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -558,17 +604,18 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)completeImageUploadWithUuid:(NSString *)*uuid* src:(NSString *)*src*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="uuid">
 
-| `uuid` | 图片显示区域的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/insertImage:src:) 方法的 `imageInfo` 中传入的图片 UUID。 |
-| --- | --- |
-| `src` | <Slot name="api-center-table-7" /> |
+图片显示区域的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/insertImage:src:) 方法的 `imageInfo` 中传入的图片 UUID。
 
-<Slot for="api-center-table-7">
+</Parameter>
+<Parameter name="src">
 
 图片的 URL 地址。必须确保 app 客户端能访问该 URL，否则无法正常展示图片。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -590,10 +637,16 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)disableEraseImage:(BOOL)*disable*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disable">
 
-| `disable` | 是否关闭橡皮擦擦除图片功能： `YES`：禁止橡皮擦擦除图片。 `NO`：（默认）允许橡皮擦擦除图片。 |
-| --- | --- |
+是否关闭橡皮擦擦除图片功能：
+
+- `YES`：禁止橡皮擦擦除图片。
+- `NO`：（默认）允许橡皮擦擦除图片。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -607,10 +660,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)syncBlockTimestamp:(NSTimeInterval)*timestamp*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="timestamp">
 
-| `timestamp` | 远端白板内容在本地显示的 Unix 时间戳，单位为秒。 |
-| --- | --- |
+远端白板内容在本地显示的 Unix 时间戳，单位为秒。
+
+</Parameter>
+</ParameterList>
 
 #### Availability
 
@@ -632,10 +688,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)setTimeDelay:(NSTimeInterval)*delay*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="delay">
 
-| `delay` | 延时时长，单位为秒，默认值为 0，取值大于等于 0。 |
-| --- | --- |
+延时时长，单位为秒，默认值为 0，取值大于等于 0。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -671,10 +730,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)disableOperations:(BOOL)*disable*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disable">
 
-| `disable` | 是否禁止操作，`true` 为禁止。 |
-| --- | --- |
+是否禁止操作，`true` 为禁止。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -692,10 +754,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)zoomChange:(CGFloat)*scale*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="scale">
 
-| `scale` | 相对于原始大小的比例。 |
-| --- | --- |
+相对于原始大小的比例。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -713,10 +778,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getPptImagesWithResult:(void ( ^ ) ( NSArray<NSString*> *pptPages ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回所有 ppt 图片的地址。 |
-| --- | --- |
+回调。返回所有 ppt 图片的地址。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -738,10 +806,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getSceneStateWithResult:(void ( ^ ) ( WhiteSceneState *state ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前场景目录下的场景状态，详见 [WhiteSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state)。 |
-| --- | --- |
+回调。返回当前场景目录下的场景状态，详见 [WhiteSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -755,10 +826,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getScenesWithResult:(void ( ^ ) ( NSArray<WhiteScene*> *scenes ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前场景目录下的场景列表，详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。 |
-| --- | --- |
+回调。返回当前场景目录下的场景列表，详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -772,10 +846,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)setScenePath:(NSString *)*path*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="path">
 
-| `path` | 想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`。 |
-| --- | --- |
+想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -804,20 +881,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)setScenePath:(NSString *)*dirOrPath* completionHandler:(void ( ^ _Nullable ) ( BOOL success , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="dirOrPath">
 
-| `dirOrPath` | 想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`. |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-8" /> |
+想要切换到的场景的场景路径，请确保场景路径以 “/"，由场景目录和场景名构成，例如，`/math/classA`.
 
-<Slot for="api-center-table-8">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则返回 `YES`.
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -845,20 +923,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)setSceneIndex:(NSUInteger)*index* completionHandler:(void ( ^ _Nullable ) ( BOOL success , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="index">
 
-| `index` | 目标场景在当前场景目录下的索引号。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-9" /> |
+目标场景在当前场景目录下的索引号。
 
-<Slot for="api-center-table-9">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则返回 `YES`.
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -880,24 +959,23 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)putScenes:(NSString *)*dir* scenes:(NSArray<WhiteScene*> *)*scenes* index:(NSUInteger)*index*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="dir">
 
-| `dir` | 场景目录名称，必须以 `/` 开头。不能为场景路径。 |
-| --- | --- |
-| `scenes` | <Slot name="api-center-table-10" /> |
-| `index` | <Slot name="api-center-table-11" /> |
+场景目录名称，必须以 `/` 开头。不能为场景路径。
 
-<Slot for="api-center-table-10">
+</Parameter>
+<Parameter name="scenes">
 
 由多个场景构成的数组。单个场景的字段详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。
 
-</Slot>
-
-<Slot for="api-center-table-11">
+</Parameter>
+<Parameter name="index">
 
 待插入的多个场景中，第一个场景在该场景目录的索引号。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -917,10 +995,16 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)cleanScene:(BOOL)*retainPPT*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="retainPPT">
 
-| `retainPPT` | 是否保留 PPT 内容： `YES`：保留 PPT。 `NO`：连 PPT 一起清空。 |
-| --- | --- |
+是否保留 PPT 内容：
+
+- `YES`：保留 PPT。
+- `NO`：连 PPT 一起清空。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -934,10 +1018,27 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)removeScenes:(NSString *)*dirOrPath*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="dirOrPath">
 
-| `dirOrPath` | 场景目录路径或者场景路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。 **Note:** 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下： 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至 `dirB` 中的第一个场景（index 为 0）。 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。 以上都不满足，则继续向上递归执行该逻辑。 |
-| --- | --- |
+场景目录路径或者场景路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。
+
+**Note:**
+
+- 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。
+- 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景
+- 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。
+- 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
+
+  - 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至
+    `dirB` 中的第一个场景（index 为 0）。
+  - 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景；
+    如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
+  - 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。
+  - 以上都不满足，则继续向上递归执行该逻辑。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -951,20 +1052,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)moveScene:(NSString *)*source* target:(NSString *)*target*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="source">
 
-| `source` | 需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。 |
-| --- | --- |
-| `target` | <Slot name="api-center-table-12" /> |
+需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。
 
-<Slot for="api-center-table-12">
+</Parameter>
+<Parameter name="target">
 
 目标场景目录的路径或目标场景的路径：
 
 - 当 `target` 设置为场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。
 - 当 `target` 设置为场景时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1061,10 +1163,16 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)disableSerialization:(BOOL)*disable*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="disable">
 
-| `disable` | 是否禁止本地序列化： `YES`：（默认）禁止开启本地序列化； `NO`： 开启本地序列化，即可以对本地操作进行解析。 |
-| --- | --- |
+是否禁止本地序列化：
+
+- `YES`：（默认）禁止开启本地序列化；
+- `NO`： 开启本地序列化，即可以对本地操作进行解析。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1136,20 +1244,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)addApp:(WhiteAppParam *)*appParams* completionHandler:(void ( ^ ) ( NSString *appId ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="appParams">
 
-| `appParams` | 小窗应用属性，详见 [WhiteAppParam](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param)。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-13" /> |
+小窗应用属性，详见 [WhiteAppParam](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param)。
 
-<Slot for="api-center-table-13">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则返回 `appId`，即小窗应用 ID。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1171,20 +1280,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)closeApp:(NSString *)*appId* completionHandler:(void ( ^ ) ( void ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId">
 
-| `appId` | 小窗应用 ID。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-14" /> |
+小窗应用 ID。
 
-<Slot for="api-center-table-14">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - 如果方法调用成功，则窗口关闭。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1202,10 +1312,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)focusApp:(NSString *)*appId*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId">
 
-| `appId` | 小窗应用 ID。 |
-| --- | --- |
+小窗应用 ID。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1223,10 +1336,16 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)queryAllAppsWithCompletionHandler:(void ( ^ ) ( NSDictionary<NSString*,WhiteAppSyncAttributes*> *apps , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="completionHandler">
 
-| `completionHandler` | 查询结果回调。 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 [WhiteAppSyncAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-sync-attributes)。 如果方法调用失败，则返回错误信息。 |
-| --- | --- |
+查询结果回调。
+
+- 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 [WhiteAppSyncAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-sync-attributes)。
+- 如果方法调用失败，则返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1244,20 +1363,21 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)queryApp:(NSString *)*appId* completionHandler:(void ( ^ ) ( WhiteAppSyncAttributes *appParam , NSError *_Nullable error ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId">
 
-| `appId` | 小窗应用 ID。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-15" /> |
+小窗应用 ID。
 
-<Slot for="api-center-table-15">
+</Parameter>
+<Parameter name="completionHandler">
 
 查询结果回调。
 
 - 如果方法调用成功，则返回小窗应用相关信息，详见 [WhiteAppSyncAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-sync-attributes)。
 - 如果方法调用失败，则返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1276,24 +1396,28 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)dispatchDocsEvent:(WhiteWindowDocsEventKey)*docsEvent* options:(WhiteWindowDocsEventOptions *_Nullable)*options* completionHandler:(void ( ^ ) ( bool success ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="docsEvent">
 
-| `docsEvent` | 事件类型。可传入以下事件： - `WhiteWindowDocsEventPrevPage`：上一页。 - `WhiteWindowDocsEventNextPage`：下一页。 - `WhiteWindowDocsEventPrevStep`：上一步。 - `WhiteWindowDocsEventNextStep`：下一步。 - `WhiteWindowDocsEventJumpToPage`：跳转到指定页码。需配合 `options` 参数使用。 |
-| --- | --- |
-| `options` | <Slot name="api-center-table-16" /> |
-| `completionHandler` | <Slot name="api-center-table-17" /> |
+事件类型。可传入以下事件：
+- `WhiteWindowDocsEventPrevPage`：上一页。
+- `WhiteWindowDocsEventNextPage`：下一页。
+- `WhiteWindowDocsEventPrevStep`：上一步。
+- `WhiteWindowDocsEventNextStep`：下一步。
+- `WhiteWindowDocsEventJumpToPage`：跳转到指定页码。需配合 `options` 参数使用。
 
-<Slot for="api-center-table-16">
+</Parameter>
+<Parameter name="options">
 
 可选事件参数。该参数仅在设置 `docsEvent` 为 `WhiteWindowDocsEventJumpToPage` 时有效，用于传入跳转的页码。详见 [WhiteWindowDocsEventOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-window-docs-event-options)。
 
-</Slot>
-
-<Slot for="api-center-table-17">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1317,10 +1441,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getGlobalStateWithResult:(void ( ^ ) ( WhiteGlobalState *state ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回房间的全局状态，详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。 |
-| --- | --- |
+回调。返回房间的全局状态，详见 [WhiteGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-global-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1342,10 +1469,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getMemberStateWithResult:(void ( ^ ) ( WhiteMemberState *state ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。 |
-| --- | --- |
+回调。返回当前的工具状态，详见 [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1365,10 +1495,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getRoomMembersWithResult:(void ( ^ ) ( NSArray<WhiteRoomMember*> *roomMembers ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前房间的用户列表，详见 [WhiteRoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-member)。 |
-| --- | --- |
+回调。返回当前房间的用户列表，详见 [WhiteRoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-member)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1389,10 +1522,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getBroadcastStateWithResult:(void ( ^ ) ( WhiteBroadcastState *state ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前用户视角状态，详见 [WhiteBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state)。 |
-| --- | --- |
+回调。返回当前用户视角状态，详见 [WhiteBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1412,10 +1548,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getRoomPhaseWithResult:(void ( ^ ) ( WhiteRoomPhase phase ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前房间连接状态，详见 [WhiteRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-room-phase)。 |
-| --- | --- |
+回调。返回当前房间连接状态，详见 [WhiteRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-room-phase)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -1435,10 +1574,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getZoomScaleWithResult:(void ( ^ ) ( CGFloat scale ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前视角缩放比例。 |
-| --- | --- |
+回调。返回当前视角缩放比例。
+
+</Parameter>
+</ParameterList>
 
 #### Declared In
 
@@ -1452,10 +1594,13 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片的显示
 
 `- (void)getRoomStateWithResult:(void ( ^ ) ( WhiteRoomState *state ))*result*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="result">
 
-| `result` | 回调。返回当前房间状态，详见 [WhiteRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-state)。 |
-| --- | --- |
+回调。返回当前房间状态，详见 [WhiteRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-state)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 

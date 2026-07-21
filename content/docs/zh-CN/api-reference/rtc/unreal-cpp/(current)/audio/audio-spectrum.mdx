@@ -41,9 +41,14 @@ virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver *
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
@@ -88,9 +93,14 @@ virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
@@ -174,9 +184,14 @@ virtual int enableAudioSpectrumMonitor(int intervalInMS = 100) = 0;
 
 ### 参数
 
-### intervalInMS
+<ParameterList>
+<a id="intervalinms"></a>
+<Parameter name="intervalInMS">
 
 SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（毫秒）。 默认值为 100 毫秒。取值不得少于 10 毫秒，否则该方法会调用失败。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
 
@@ -215,9 +230,14 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 本地用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/unreal-cpp/class-audiospectrumdata)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -256,13 +276,20 @@ virtual bool onRemoteAudioSpectrum(const UserAudioSpectrumInfo * spectrums, unsi
 
 ### 参数
 
-### spectrums
+<ParameterList>
+<a id="spectrums"></a>
+<Parameter name="spectrums">
 
 远端用户的音频频谱信息，详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-useraudiospectruminfo)。 数组数量等于 SDK 监测到的远端用户数量，数组为空表示没有监测到远端用户的音频频谱。
 
-### spectrumNumber
+</Parameter>
+<a id="spectrumnumber"></a>
+<Parameter name="spectrumNumber">
 
 远端用户的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
 

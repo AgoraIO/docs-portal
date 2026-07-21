@@ -209,9 +209,14 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频帧观测器实例。设置为 NULL 可释放该实例。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用该方法释放音频帧观测器对象。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine__return_values"></a>
 
@@ -253,24 +258,35 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频通道数。
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中每次报告的采样点数量，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -311,20 +327,29 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率，可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 每次调用的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
@@ -365,16 +390,23 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为：
 
 - 1：单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
 
@@ -415,20 +447,29 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样率。可设置为以下值：8000、16000、32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的声道数。
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -475,24 +516,35 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、24000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
@@ -533,24 +585,35 @@ virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AU
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-5"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、32000、44100 或 48000（Hz）。
 
-### channel
+</Parameter>
+<a id="channel-5"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
@@ -592,9 +655,14 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 ### 参数
 
-### audioFrame
+<ParameterList>
+<a id="audioframe"></a>
+<Parameter name="audioFrame">
 
 原始音频数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase__return_values"></a>
 
@@ -634,13 +702,20 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### audioFrame
+</Parameter>
+<a id="audioframe-1"></a>
+<Parameter name="audioFrame">
 
 输出参数，原始音频数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase__return_values"></a>
 
@@ -680,13 +755,20 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### audioFrame
+</Parameter>
+<a id="audioframe-2"></a>
+<Parameter name="audioFrame">
 
 输出参数，原始音频数据，详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase__return_values"></a>
 
@@ -719,17 +801,26 @@ virtual bool onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### userId
+</Parameter>
+<a id="userid"></a>
+<Parameter name="userId">
 
 订阅远端用户的用户 ID。
 
-### audioFrame
+</Parameter>
+<a id="audioframe-3"></a>
+<Parameter name="audioFrame">
 
 输出参数，原始音频数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase__return_values"></a>
 
@@ -775,13 +866,20 @@ SDK 根据采样间隔触发该回调。
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### audioFrame
+</Parameter>
+<a id="audioframe-4"></a>
+<Parameter name="audioFrame">
 
 输出参数，原始音频数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase__return_values"></a>
 

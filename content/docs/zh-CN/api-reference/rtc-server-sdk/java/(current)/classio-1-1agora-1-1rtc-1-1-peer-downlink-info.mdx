@@ -41,24 +41,21 @@ _migration:
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 远端视频流的用户 ID。 |
-| --- | --- |
-| streamType | <Slot name="api-center-table-0" /> |
-| currentDownscaleLevel | <Slot name="api-center-table-1" /> |
-| expectedBitrateBps | The expected bitrate in bps. |
+远端视频流的用户 ID。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="streamType">
 
 远端视频流类型：
 
 - 0: 大流。分辨率和码率较高。
 - 1: 小流。分辨率和码率较低。
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="currentDownscaleLevel">
 
 远端视频缩小程度。远端视频缩小级别。级别越高，缩小程度越高。
 
@@ -68,7 +65,13 @@ _migration:
 - 3: 级别 3。
 - 4: 级别 4。
 
-</Slot>
+</Parameter>
+<Parameter name="expectedBitrateBps">
+
+The expected bitrate in bps.
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

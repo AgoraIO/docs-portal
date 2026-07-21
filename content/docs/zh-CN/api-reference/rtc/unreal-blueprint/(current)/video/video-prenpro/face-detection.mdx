@@ -58,12 +58,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启人脸检测：
 
 - `true`：开启人脸检测。
 - `false`：（默认）关闭人脸检测。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
@@ -116,15 +121,21 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### imageWidth
+<ParameterList>
+<a id="imagewidth"></a>
+<Parameter name="imageWidth">
 
 摄像头采集画面的宽度 (px)。
 
-### imageHeight
+</Parameter>
+<a id="imageheight"></a>
+<Parameter name="imageHeight">
 
 摄像头采集画面的高度 (px)。
 
-### vecRectangle
+</Parameter>
+<a id="vecrectangle"></a>
+<Parameter name="vecRectangle">
 
 是一个长度为 numFaces 的数组，表示检测到的人脸信息：
 
@@ -133,13 +144,20 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - `width`：人脸在 view 中的宽度 (px)。
 - `height`：人脸在 view 中的高度 (px)。
 
-### vecDistance
+</Parameter>
+<a id="vecdistance"></a>
+<Parameter name="vecDistance">
 
 是一个长度为 numFaces 的数组，表示人脸和设备屏幕之间的距离 (cm)。
 
-### numFaces
+</Parameter>
+<a id="numfaces"></a>
+<Parameter name="numFaces">
 
 检测的人脸数量。如果为 0，则表示没有检测到人脸。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

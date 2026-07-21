@@ -14,15 +14,21 @@ _migration:
 
 ## 枚举值
 
-### LocalVideoStreamReasonOk
+<ParameterList>
+<a id="localvideostreamreasonok"></a>
+<Parameter name="LocalVideoStreamReasonOk">
 
 0：本地视频状态正常。
 
-### LocalVideoStreamReasonFailure
+</Parameter>
+<a id="localvideostreamreasonfailure"></a>
+<Parameter name="LocalVideoStreamReasonFailure">
 
 1：出错原因不明确。
 
-### LocalVideoStreamReasonDeviceNoPermission
+</Parameter>
+<a id="localvideostreamreasondevicenopermission"></a>
+<Parameter name="LocalVideoStreamReasonDeviceNoPermission">
 
 2：没有权限启动本地视频采集设备。请提示用户开启设备权限后再重新加入频道。
 
@@ -30,35 +36,51 @@ _migration:
 注： 弃用：该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/electron/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 `Camera`。
 :::
 
-### LocalVideoStreamReasonDeviceBusy
+</Parameter>
+<a id="localvideostreamreasondevicebusy"></a>
+<Parameter name="LocalVideoStreamReasonDeviceBusy">
 
 3：本地视频采集设备正在使用中。请提示用户检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
 
-### LocalVideoStreamReasonCaptureFailure
+</Parameter>
+<a id="localvideostreamreasoncapturefailure"></a>
+<Parameter name="LocalVideoStreamReasonCaptureFailure">
 
 4：本地视频采集失败。请提示用户检查视频采集设备是否正常工作，检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
 
-### LocalVideoStreamReasonCodecNotSupport
+</Parameter>
+<a id="localvideostreamreasoncodecnotsupport"></a>
+<Parameter name="LocalVideoStreamReasonCodecNotSupport">
 
 5：本地视频编码失败。
 
-### LocalVideoStreamReasonDeviceNotFound
+</Parameter>
+<a id="localvideostreamreasondevicenotfound"></a>
+<Parameter name="LocalVideoStreamReasonDeviceNotFound">
 
 8：找不到本地视频采集设备。需检查摄像头是否与设备正常连接、摄像头是否正常工作，或者尝试重新加入频道。
 
-### LocalVideoStreamReasonDeviceDisconnected
+</Parameter>
+<a id="localvideostreamreasondevicedisconnected"></a>
+<Parameter name="LocalVideoStreamReasonDeviceDisconnected">
 
 9：当前正在使用的视频采集设备已经断开连接（例如，被拔出）。
 
-### LocalVideoStreamReasonDeviceInvalidId
+</Parameter>
+<a id="localvideostreamreasondeviceinvalidid"></a>
+<Parameter name="LocalVideoStreamReasonDeviceInvalidId">
 
 10：SDK 无法在视频设备列表中找到该视频设备。请检查视频设备 ID 是否有效。
 
-### LocalVideoStreamReasonScreenCaptureWindowMinimized
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowminimized"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowMinimized">
 
 11：调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，共享窗口处于最小化的状态。SDK 无法共享被最小化的窗口。请提示用户将共享窗口取消最小化。
 
-### LocalVideoStreamReasonScreenCaptureWindowClosed
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowclosed"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowClosed">
 
 12：通过窗口 ID 共享的窗口已关闭，或通过窗口 ID 共享的全屏窗口已退出全屏。退出全屏模式后，远端用户将无法看到共享的窗口。为避免远端用户看到黑屏，建议你立即结束本次共享。
 报告该错误码的常见场景：
@@ -67,19 +89,27 @@ _migration:
 - 本地用户先播放映幻灯片，然后共享放映中的幻灯片。结束放映时，SDK 会报告该错误码。
 - 本地用户先全屏观看网页视频或网页文档，然后共享网页视频或网页文档。结束全屏时，SDK 会报告该错误码。
 
-### LocalVideoStreamReasonScreenCaptureWindowOccluded
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowoccluded"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowOccluded">
 
 13:（仅适用于 Windows）待共享的窗口被其他窗口遮挡住，被遮挡住的部分在共享时会被 SDK 涂黑。
 
-### LocalVideoStreamReasonScreenCaptureFailure
+</Parameter>
+<a id="localvideostreamreasonscreencapturefailure"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureFailure">
 
 21：（仅适用于 Windows 和 Android）当前采集的窗口无数据。
 
-### LocalVideoStreamReasonScreenCaptureNoPermission
+</Parameter>
+<a id="localvideostreamreasonscreencapturenopermission"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureNoPermission">
 
 22：不具备采集屏幕的权限。
 
-### LocalVideoStreamReasonScreenCaptureAutoFallback
+</Parameter>
+<a id="localvideostreamreasonscreencaptureautofallback"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureAutoFallback">
 
 24：（仅适用于 Windows）屏幕共享过程中发生意外错误（可能由于窗口屏蔽失败），导致屏幕共享策略降级，但屏幕共享过程本身没有受到影响。
 
@@ -87,34 +117,53 @@ _migration:
 注： 屏幕共享过程中，由于设备本身驱动等问题导致屏蔽指定窗口失败时，SDK 也会报告该事件并自动回退到共享整个屏幕。如果你的应用场景需要屏蔽特定窗口以保护隐私，建议监听此事件并在事件触发时添加额外的隐私保护机制。
 :::
 
-### LocalVideoStreamReasonScreenCaptureWindowHidden
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowhidden"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowHidden">
 
 25：（仅适用于 Windows）当前屏幕采集的窗口处于隐藏状态，并且在当前屏幕上不可见。
 
-### LocalVideoStreamReasonScreenCaptureWindowRecoverFromHidden
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowrecoverfromhidden"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowRecoverFromHidden">
 
 26：（仅适用于 Windows）进行屏幕采集的窗口已经从隐藏状态中恢复。
 
-### LocalVideoStreamReasonScreenCaptureWindowRecoverFromMinimized
+</Parameter>
+<a id="localvideostreamreasonscreencapturewindowrecoverfromminimized"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureWindowRecoverFromMinimized">
 
 27：进行屏幕采集的窗口已经从最小化状态恢复正常。
 
-### LocalVideoStreamReasonScreenCapturePaused
+</Parameter>
+<a id="localvideostreamreasonscreencapturepaused"></a>
+<Parameter name="LocalVideoStreamReasonScreenCapturePaused">
 
 28：（仅适用于 Windows）屏幕采集已暂停。报告该错误码的常见场景：当前屏幕可能已切换到安全桌面，例如 UAC 对话框或者 Winlogon 桌面。
 
-### LocalVideoStreamReasonScreenCaptureResumed
+</Parameter>
+<a id="localvideostreamreasonscreencaptureresumed"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureResumed">
 
 29：（仅适用于 Windows）屏幕采集已从暂停状态中恢复。
 
-### LocalVideoStreamReasonScreenCaptureDisplayDisconnected
+</Parameter>
+<a id="localvideostreamreasonscreencapturedisplaydisconnected"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureDisplayDisconnected">
 
 30：进行屏幕采集的显示器已断开连接。当收到该状态时，请提示用户当前屏幕共享已暂停并重启屏幕共享。
 
-### LocalVideoStreamReasonScreenCaptureExcludeWindowFailed
+</Parameter>
+<a id="localvideostreamreasonscreencaptureexcludewindowfailed"></a>
+<Parameter name="LocalVideoStreamReasonScreenCaptureExcludeWindowFailed">
 
 34：（仅适用于 Windows 平台）屏幕共享时，排除窗口列表中的部分窗口排除失败。
 
-### LocalVideoStreamReasonDeviceSystemPressure
+</Parameter>
+<a id="localvideostreamreasondevicesystempressure"></a>
+<Parameter name="LocalVideoStreamReasonDeviceSystemPressure">
 
 101：由于系统压力过大，导致当前视频采集设备不可用。
+
+</Parameter>
+</ParameterList>

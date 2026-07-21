@@ -20,30 +20,47 @@ _migration:
 
 ## 枚举值
 
-### AgoraRenewTokenSuccess
+<ParameterList>
+<a id="agorarenewtokensuccess"></a>
+<Parameter name="AgoraRenewTokenSuccess">
 
 （0）：Token 更新成功。
 
-### AgoraRenewTokenFailure
+</Parameter>
+<a id="agorarenewtokenfailure"></a>
+<Parameter name="AgoraRenewTokenFailure">
 
 （1）：Token 更新失败。建议重新生成新的 Token 并重试 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)。
 
-### AgoraRenewTokenExpiredToken
+</Parameter>
+<a id="agorarenewtokenexpiredtoken"></a>
+<Parameter name="AgoraRenewTokenExpiredToken">
 
 （2）：Token 更新失败，传入的 Token 已过期。建议生成一个过期时间更长的新 Token 并重试 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)。
 
-### AgoraRenewTokenInvalidToken
+</Parameter>
+<a id="agorarenewtokeninvalidtoken"></a>
+<Parameter name="AgoraRenewTokenInvalidToken">
 
 （3）：Token 更新失败，传入的 Token 无效。常见原因包括：项目在声网控制台启用了 App Certificate，但加入频道时未使用 Token；`joinChannel` 中指定的 uid 与生成 Token 时使用的 uid 不一致；`joinChannel` 中指定的频道名与生成 Token 时使用的频道名不一致。建议检查 Token 的生成流程，重新生成 Token 并重试 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)。
 
-### AgoraRenewTokenInvalidChannelName
+</Parameter>
+<a id="agorarenewtokeninvalidchannelname"></a>
+<Parameter name="AgoraRenewTokenInvalidChannelName">
 
 （4）：Token 更新失败，Token 中的频道名与当前频道不一致。建议检查频道名，重新生成 Token 并重试 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)。
 
-### AgoraRenewTokenInconsistentAppId
+</Parameter>
+<a id="agorarenewtokeninconsistentappid"></a>
+<Parameter name="AgoraRenewTokenInconsistentAppId">
 
 （5）：Token 更新失败，Token 中的 App ID 与当前 App ID 不一致。建议检查 App ID，重新生成 Token 并重试 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)。
 
-### AgoraRenewTokenCanceledByNewRequest
+</Parameter>
+<a id="agorarenewtokencanceledbynewrequest"></a>
+<Parameter name="AgoraRenewTokenCanceledByNewRequest">
 
 （6）：Token 更新请求已取消，因为发起了新的请求。
+
+</Parameter>
+</ParameterList>

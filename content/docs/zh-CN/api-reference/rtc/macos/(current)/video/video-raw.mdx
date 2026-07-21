@@ -227,9 +227,14 @@ _migration:
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 观察者实例。要释放该实例，请将该参数设为 nil。详见 [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registervideoframeobserver__return_values"></a>
 
@@ -279,15 +284,22 @@ _migration:
 
 ### 参数
 
-### videoFrame
+<ParameterList>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧。注意：通过该回调获取的视频帧数据格式的默认值如下：
 
 - iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，包括摄像头、屏幕或媒体播放器。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -343,15 +355,22 @@ _migration:
 
 ### 参数
 
-### videoFrame
+<ParameterList>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧。通过该回调获取的视频帧数据格式默认如下：
 
 - iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -406,19 +425,28 @@ _migration:
 
 ### 参数
 
-### videoFrame
+<ParameterList>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧。通过该回调获取的视频帧数据格式默认如下：
 
 - iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID，表示发送当前视频帧的用户。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

@@ -33,10 +33,12 @@ Log: \{content:string;created_at:number;label:string;timestamp:string\}
 
 #### Type declaration
 
-- content:string
-- created_at:number
-- label:string
-- timestamp:string
+<ParameterList title="Type declaration">
+<Parameter name="content" type="string" required />
+<Parameter name="created_at" type="number" required />
+<Parameter name="label" type="string" required />
+<Parameter name="timestamp" type="string" required />
+</ParameterList>
 
 ## Functions
 
@@ -46,13 +48,21 @@ Log: \{content:string;created_at:number;label:string;timestamp:string\}
 
 - collectLogs(self:[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext), callId:number, labels:string[]):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="self" required>
 
-  - self: [WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
-  - callId: number
-  - labels: string[]
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="callId" type="number" required />
+<Parameter name="labels" type="string[]" required />
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="deleteLogs"></a>
 
@@ -60,14 +70,22 @@ Log: \{content:string;created_at:number;label:string;timestamp:string\}
 
 - deleteLogs(self:[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext), callId:number, labels:string[], lastId:number):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="self" required>
 
-  - self: [WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
-  - callId: number
-  - labels: string[]
-  - lastId: number
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="callId" type="number" required />
+<Parameter name="labels" type="string[]" required />
+<Parameter name="lastId" type="number" required />
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="setMaxRecords"></a>
 
@@ -75,13 +93,21 @@ Log: \{content:string;created_at:number;label:string;timestamp:string\}
 
 - setMaxRecords(self:[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext), callId:number, max:number):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="self" required>
 
-  - self: [WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
-  - callId: number
-  - max: number
+<ParameterType>
 
-  Returns void
+[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="callId" type="number" required />
+<Parameter name="max" type="number" required />
+</ParameterList>
+
+Returns void
 
 <a id="writeLog"></a>
 
@@ -89,10 +115,26 @@ Log: \{content:string;created_at:number;label:string;timestamp:string\}
 
 - writeLog(self:[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext), callId:number, log:["agora-rte-sdk/src/core/worker/handler/log"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log).[Log](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log#Log)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="self" required>
 
-  - self: [WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
-  - callId: number
-  - log: ["agora-rte-sdk/src/core/worker/handler/log"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log).[Log](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log#Log)
+<ParameterType>
 
-  Returns void
+[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="callId" type="number" required />
+<Parameter name="log" required>
+
+<ParameterType>
+
+["agora-rte-sdk/src/core/worker/handler/log"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log).[Log](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-log#Log)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

@@ -46,11 +46,18 @@ _migration:
 如果 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a035389095b76329b60b539ca43f24f17) 中的 `token` 与 `role` 参数设置的角色不同，连接会失败，SDK 会返回 [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a33d46c9db2a0cbff4a24aa790a69eec3) 回调。
 :::
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="role">
 
-| role | 用户角色 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+用户角色 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <a id="a910b5120b7db6570999611cc70625d06"></a>
 
@@ -76,11 +83,18 @@ _migration:
 
 SDK 会将配置应用于全部发送的音频轨道。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 音频编码配置：AgoraEncoderConfiguration。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频编码配置：AgoraEncoderConfiguration。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -98,11 +112,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 默认情况下，所有发布的音频轨道都会进行混音。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioTrack">
 
-| audioTrack | 需要发布的本地音频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要发布的本地音频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -120,11 +141,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 停止将本地音频轨道发送到频道。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioTrack">
 
-| audioTrack | 需要停止发布的本地音频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要停止发布的本地音频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -140,11 +168,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 将本地视频轨道发送到频道。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoTrack">
 
-| videoTrack | 需要发布的本地视频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要发布的本地视频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -160,11 +195,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 停止将本地视频轨道发送到频道。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoTrack">
 
-| videoTrack | 需要停止发布的本地视频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要停止发布的本地视频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -180,11 +222,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 订阅频道中特定的远端用户发送的音频流。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 远端用户的 ID。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -204,10 +253,13 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 该方法会自动订阅频道中后续加入的用户发送的音频流。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="ares">
 
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
-| --- | --- |
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -223,11 +275,18 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 停止订阅频道中特定的远端用户发送的音频流。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 远端用户的 ID。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -247,10 +306,13 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [subscribeAudio](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#aa62220796c34b2f809cb07c615a898f0) 或 [subscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#a894d4efd0746016c8e190cee839a798d) 才能恢复订阅音频。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="ares">
 
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
-| --- | --- |
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -268,14 +330,33 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 该方法设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a9956d1aa3b4e18089ef02ee3d782d667) 回调数据的格式。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="numberOfChannels">
 
-| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
-| --- | --- |
-| sampleRateHz | `onPlaybackAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
-| mode | 音频帧的使用模式，详见: [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb)。 |
-| samplesPerCall | `onPlaybackAudioFrame` 中返回数据的采样点数，如直推 CDN 应用中通常为 1024。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频数据声道数，可设置为 1（单声道） 或 2（双声道）。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+`onPlaybackAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<Parameter name="mode">
+
+音频帧的使用模式，详见: [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) 。
+
+</Parameter>
+<Parameter name="samplesPerCall">
+
+`onPlaybackAudioFrame` 中返回数据的采样点数，如直推 CDN 应用中通常为 1024。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -293,14 +374,33 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 该方法设置 [IAudioFrameObserverBase::onRecordAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a607f7a30a058bf7fe2b7ec2492fe9610) 回调的采集音频格式。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="numberOfChannels">
 
-| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
-| --- | --- |
-| sampleRateHz | `onRecordAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
-| mode | 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb)。 |
-| samplesPerCall | `onRecordAudioFrame` 中返回数据的采样点数。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频数据声道数，可设置为 1（单声道） 或 2（双声道）。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+`onRecordAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<Parameter name="mode">
+
+音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) 。
+
+</Parameter>
+<Parameter name="samplesPerCall">
+
+`onRecordAudioFrame` 中返回数据的采样点数。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -316,21 +416,35 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd) 报告的音频数据格式。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="numberOfChannels">
 
-| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
-| --- | --- |
-| sampleRateHz | 音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。 |
-| samplesPerCall | 指定 `onMixedAudioFrame` 中返回数据的采样点数，如 RTMP/RTMPS 推流应用中通常为 1024。 |
+音频数据声道数，可设置为 1（单声道） 或 2（双声道）。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。
+
+</Parameter>
+<Parameter name="samplesPerCall">
+
+指定 `onMixedAudioFrame` 中返回数据的采样点数，如 RTMP/RTMPS 推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 :::info[注解]
 SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFrame` 回调。 采样间隔 = samplesPerCall/(sampleRate x channel)。请确保你的取值能满足采样间隔大于或等于 0.01 秒。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="ares">
 
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
-| --- | --- |
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -346,12 +460,23 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer#a12ad526eb7356640f67137f2cdb6c128) 报告的音频数据格式。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="numberOfChannels">
 
-| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
-| --- | --- |
-| sampleRateHz | 音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频数据声道数，可设置为 1（单声道） 或 2（双声道）。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -374,11 +499,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 - [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a045b317352faf9d64a97b0274a5529ec)
 - [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd)
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 音频帧 observer的指针： IAudioFrameObserverBase。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+音频帧 observer的指针： IAudioFrameObserverBase。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
@@ -394,10 +526,13 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 销毁音频帧 observer。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 音频帧 observer的指针： [IAudioFrameObserverBase](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base)。 |
-| --- | --- |
+音频帧 observer的指针： [IAudioFrameObserverBase](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
@@ -413,11 +548,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 为编码后的视频图像注册视频帧接收 observer。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-video-encoded-frame-observer)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-video-encoded-frame-observer)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
@@ -433,10 +575,13 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 销毁视频帧接收 observer。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-video-encoded-frame-observer)。 |
-| --- | --- |
+视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-video-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
 
@@ -452,11 +597,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 注册 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [`IVideoFrameObserver2`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象的指针。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+[`IVideoFrameObserver2`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象的指针。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
@@ -472,10 +624,13 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 销毁 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [`IVideoFrameObserver2`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象的指针。 |
-| --- | --- |
+[`IVideoFrameObserver2`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象的指针。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
 
@@ -491,12 +646,23 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 订阅频道中指定远端用户发送的视频流。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 用户 ID。 |
-| --- | --- |
-| subscriptionOptions | 订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options)。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+用户 ID。
+
+</Parameter>
+<Parameter name="subscriptionOptions">
+
+订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-20"}>返回值</h4>
 
@@ -516,11 +682,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 该方法会自动订阅频道中后续加入的用户发送的视频流。
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="subscriptionOptions">
 
-| subscriptionOptions | 订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-21"}>返回值</h4>
 
@@ -536,11 +709,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 停止订阅频道中指定远端用户发送的视频流。
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 用户 ID。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+用户 ID。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-22"}>返回值</h4>
 
@@ -560,10 +740,13 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [subscribeVideo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#a9c8a3fcf49db6800e3b7ce955126c45d) 或 [subscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user#a77ee018bedf45f21aa198d697c3774a4) 才能恢复订阅。
 
-<h4 data-toc-hidden="true" id={"参数-24"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="ares">
 
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
-| --- | --- |
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-23"}>返回值</h4>
 
@@ -579,11 +762,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 注册本地用户 observer。
 
-<h4 data-toc-hidden="true" id={"参数-25"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-24"}>返回值</h4>
 
@@ -599,10 +789,13 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 销毁本地用户 observer。
 
-<h4 data-toc-hidden="true" id={"参数-26"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer)。 |
-| --- | --- |
+本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-25"}>返回值</h4>
 
@@ -620,11 +813,18 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 你成功发送请求后，主播会收到 [onIntraRequestReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#abe52ed35277c6c6efc50125b05895859) 回调。
 
-<h4 data-toc-hidden="true" id={"参数-27"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 主播的用户 ID。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+主播的用户 ID。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-26"}>返回值</h4>
 

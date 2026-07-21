@@ -41,9 +41,14 @@ public abstract int SelectAudioTrack(int index);
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 音轨的索引值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectaudiotrack__return_values"></a>
 
@@ -89,9 +94,14 @@ public abstract int SetAudioDualMonoMode(AUDIO_DUAL_MONO_MODE mode);
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AUDIO_DUAL_MONO_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiodualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiodualmonomode__return_values"></a>
 
@@ -130,9 +140,14 @@ public abstract int SetAudioPitch(int pitch);
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiopitch__return_values"></a>
 
@@ -171,12 +186,17 @@ public abstract int SetLoopCount(int loopCount);
 
 ### 参数
 
-### loopCount
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
 
 循环播放的次数。
 
 - ≥0：循环次数。例如，设为 0 表示不循环播放，一共播放一次；设为 1 表示循环播放一次，一共播放 2 次。
 - -1：无限循环播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setloopcount__return_values"></a>
 
@@ -213,13 +233,18 @@ public abstract int SetPlaybackSpeed(int speed);
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。推荐取值范围为 [30,400]，其中：
 
 - 30: 0.3 倍速。
 - 100: 原始速度。
 - 400: 4 倍速。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplaybackspeed__return_values"></a>
 

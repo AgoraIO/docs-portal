@@ -60,17 +60,26 @@ public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumb
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
 
-### deviceCapabilityNumber
+</Parameter>
+<a id="devicecapabilitynumber"></a>
+<Parameter name="deviceCapabilityNumber">
 
 视频格式的索引号。如果 NumberOfCapabilities 的返回值为 i，则该参数取值范围为[0,i)。
 
-### capability
+</Parameter>
+<a id="capability"></a>
+<Parameter name="capability">
 
 输出参数。表示指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/csharp-windows/class-videoformat)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getcapability__return_values"></a>
 
@@ -121,9 +130,14 @@ public abstract int GetDevice(ref string deviceIdUTF8);
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-1"></a>
+<Parameter name="deviceIdUTF8">
 
 输出参数。设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getdevice__return_values"></a>
 
@@ -158,17 +172,26 @@ public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, i
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态。详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicestatetype) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities"></a>
 
@@ -196,9 +219,14 @@ public abstract int NumberOfCapabilities(string deviceIdUTF8);
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-2"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
 
@@ -229,19 +257,26 @@ public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int s
 
 ### 参数
 
-### codecInfo
+<ParameterList>
+<a id="codecinfo"></a>
+<Parameter name="codecInfo">
 
 输入和输出参数，表示 SDK 的视频编码能力数组。详见 [CodecCapInfo](/zh-CN/api-reference/rtc/csharp-windows/class-codeccapinfo)。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo，表示待查询的视频编解码能力。
 - 输出值：方法执行完毕后输出的 CodecCapInfo，表示 SDK 实际支持的视频编解码能力。
 
-### size
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 输入和输出参数，表示 CodecCapInfo 数组的大小。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo 的大小。
 - 输出值：方法执行完毕后输出的 CodecCapInfo 的大小。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 

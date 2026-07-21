@@ -116,7 +116,9 @@ public class ScreenCaptureParameters
 
 ## 属性
 
-### dimensions
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 :::note
 注： 在共享文档的场景（SCREEN_SCENARIO_DOCUMENT）下设置编码分辨率时，选择以下两种方式其中之一。
@@ -133,15 +135,21 @@ public class ScreenCaptureParameters
 - 如果屏幕分辨率小于 `dimensions`，如 1000 × 1000，SDK 直接按 1000 × 1000 进行编码。
 - 如果屏幕分辨率大于 `dimensions`，如 2000 × 1500，SDK 按屏幕分辨率的宽高比，即 4\:3，取 `dimensions` 以内的最大分辨率进行编码，即 1440 × 1080。
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 在 Windows 和 macOS 平台上，表示屏幕共享流的视频编码帧率。单位为 fps；默认值为 5，建议不要超过 15。
 
-### bitrate
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 共享视频的码率。在 Windows 和 macOS 平台上，表示屏幕共享流的视频编码码率。单位为 Kbps；默认值为 0，表示 SDK 根据当前共享屏幕的分辨率计算出一个合理的值。
 
-### captureMouseCursor
+</Parameter>
+<a id="capturemousecursor"></a>
+<Parameter name="captureMouseCursor">
 
 :::note
 注： 受 macOS 系统限制，在共享屏幕时将该参数设置为 false 无效（共享窗口时无影响）。
@@ -152,7 +160,9 @@ public class ScreenCaptureParameters
 - true:（默认）采集鼠标。
 - false: 不采集鼠标。
 
-### windowFocus
+</Parameter>
+<a id="windowfocus"></a>
+<Parameter name="windowFocus">
 
 :::note
 注： 由于 macOS 系统限制，设置该成员将窗口前置时，如果当前的应用存在多个窗口，只会将主窗口前置。
@@ -163,11 +173,15 @@ public class ScreenCaptureParameters
 - true: 前置窗口。
 - false:（默认）不前置窗口。
 
-### excludeWindowList
+</Parameter>
+<a id="excludewindowlist"></a>
+<Parameter name="excludeWindowList">
 
 待屏蔽窗口的 ID 列表。调用 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕共享时，你可以通过该参数屏蔽指定的窗口。你可以在调用 [UpdateScreenCaptureParameters](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享的配置参数时，通过该参数动态屏蔽指定的窗口。
 
-### enableHighLight
+</Parameter>
+<a id="enablehighlight"></a>
+<Parameter name="enableHighLight">
 
 :::note
 注： 当你在共享窗口或屏幕的部分区域时，如果将该参数设置为 true，SDK 会对整个窗口或屏幕进行描边。
@@ -178,14 +192,18 @@ public class ScreenCaptureParameters
 - true: 描边。
 - false: （默认）不描边。
 
-### highLightColor
+</Parameter>
+<a id="highlightcolor"></a>
+<Parameter name="highLightColor">
 
 (仅适用于 macOS 和 Windows)
 
 - 在 Windows 平台上，指描边的 ARGB 颜色。默认值为 0xFF8CBF26。
 - 在 macOS 平台上，`COLOR_CLASS` 指 `NSColor`。
 
-### highLightWidth
+</Parameter>
+<a id="highlightwidth"></a>
+<Parameter name="highLightWidth">
 
 (仅适用于 macOS 和 Windows)描边的宽度 (px)。默认值为 5，取值范围为 (0,50]。
 
@@ -193,10 +211,15 @@ public class ScreenCaptureParameters
 注： 该参数仅在 `highLighted` 设置为 true 时生效。
 :::
 
-### excludeWindowCount
+</Parameter>
+<a id="excludewindowcount"></a>
+<Parameter name="excludeWindowCount">
 
 待屏蔽窗口的数量。
 
 :::note
 注： 在 Windows 平台上，该参数最大值不超过 24，如果超过该值，则屏蔽窗口功能失效。
 :::
+
+</Parameter>
+</ParameterList>

@@ -59,15 +59,49 @@ _migration:
 
 - new AgoraRteWebClientSub(channelName:string, configs:[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config), base:[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), audioRawDataDispatcher:[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
-- Overrides [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#constructor)Parameters
+Overrides [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#constructor)
 
-  - channelName: string
-  - configs: [RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
-  - base: [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
-  - audioRawDataDispatcher: [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="configs" required>
 
-  Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+<ParameterType>
+
+[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="base" required>
+
+<ParameterType>
+
+[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="connectionType" required>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioRawDataDispatcher" required>
+
+<ParameterType>
+
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
 ## Properties
 
@@ -87,7 +121,9 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - get base():[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
 
-- Inherited from AgoraRteWebClientBase.baseReturns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
+Inherited from AgoraRteWebClientBase.base
+
+Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
 
 <a id="ready"></a>
 
@@ -95,7 +131,9 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - get ready():boolean
 
-- Inherited from AgoraRteWebClientBase.readyReturns boolean
+Inherited from AgoraRteWebClientBase.ready
+
+Returns boolean
 
 ## Methods
 
@@ -103,14 +141,16 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+- emit(evt:string,...args:any[]):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#emit)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
 <a id="enableDualStream"></a>
 
@@ -118,11 +158,11 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - enableDualStream(enable:boolean):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+</ParameterList>
 
-  - enable: boolean
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="getClientSessionId"></a>
 
@@ -130,7 +170,9 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - getClientSessionId():any
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[getClientSessionId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#getClientSessionId)Returns any
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[getClientSessionId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#getClientSessionId)
+
+Returns any
 
 <a id="join"></a>
 
@@ -138,13 +180,15 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - join(appId:string, token:string, streamUuid:string):Promise&lt;void&gt;
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[join](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#join)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[join](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#join)
 
-  - appId: string
-  - token: string
-  - streamUuid: string
+<ParameterList title="Parameters">
+<Parameter name="appId" type="string" required />
+<Parameter name="token" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="leave"></a>
 
@@ -152,7 +196,9 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - leave():Promise&lt;void&gt;
 
-- Overrides [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[leave](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#leave)Returns Promise&lt;void&gt;
+Overrides [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[leave](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#leave)
+
+Returns Promise&lt;void&gt;
 
 <a id="muteLocalAudio"></a>
 
@@ -160,11 +206,11 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - muteLocalAudio(mute:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  - mute: boolean
-
-  Returns number
+Returns number
 
 <a id="muteLocalScreenShare"></a>
 
@@ -172,11 +218,11 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - muteLocalScreenShare(mute:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  - mute: boolean
-
-  Returns number
+Returns number
 
 <a id="muteLocalVideo"></a>
 
@@ -184,11 +230,11 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - muteLocalVideo(mute:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="mute" type="boolean" required />
+</ParameterList>
 
-  - mute: boolean
-
-  Returns number
+Returns number
 
 <a id="off"></a>
 
@@ -196,12 +242,14 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - off(evt:string, cb:CallableFunction):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#off)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
 <a id="on"></a>
 
@@ -209,12 +257,14 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - on(evt:string, cb:CallableFunction):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#on)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
 <a id="once"></a>
 
@@ -222,12 +272,14 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - once(evt:string, cb:CallableFunction):[AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#once)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
+Returns [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-sub)
 
 <a id="removeAllEventListeners"></a>
 
@@ -235,7 +287,9 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - removeAllEventListeners():void
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#removeAllEventListeners)Returns void
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#removeAllEventListeners)
+
+Returns void
 
 <a id="setCloudProxy"></a>
 
@@ -243,11 +297,21 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - setCloudProxy(proxyType:[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)):void
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[setCloudProxy](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#setCloudProxy)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[setCloudProxy](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#setCloudProxy)
 
-  - proxyType: [AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+<ParameterList title="Parameters">
+<Parameter name="proxyType" required>
 
-  Returns void
+<ParameterType>
+
+[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setLatencyLevel"></a>
 
@@ -255,11 +319,21 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)):void
 
-- Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[setLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#setLatencyLevel)Parameters
+Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base).[setLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base#setLatencyLevel)
 
-  - level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+<ParameterList title="Parameters">
+<Parameter name="level" required>
 
-  Returns void
+<ParameterType>
+
+[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setLowStreamParameter"></a>
 
@@ -267,11 +341,19 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - setLowStreamParameter(streamParameter:[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamParameter" required>
 
-  - streamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+<ParameterType>
 
-  Returns number
+[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -279,9 +361,17 @@ Inherited from [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/e
 
 - setRemoteVideoStreamType(streamUuid:string, streamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="streamType" required>
 
-  - streamUuid: string
-  - streamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+<ParameterType>
 
-  Returns number
+[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number

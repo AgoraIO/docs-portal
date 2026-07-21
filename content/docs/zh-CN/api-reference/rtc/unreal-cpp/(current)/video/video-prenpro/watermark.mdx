@@ -48,9 +48,14 @@ virtual int addVideoWatermark(const RtcImage& watermark) = 0;
 
 ### 参数
 
-### watermark
+<ParameterList>
+<a id="watermark"></a>
+<Parameter name="watermark">
 
 待添加在本地直播推流中的水印图片：[RtcImage](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcimage)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark__return_values"></a>
 
@@ -105,13 +110,20 @@ virtual int addVideoWatermark(const char* watermarkUrl, const WatermarkOptions& 
 
 ### 参数
 
-### watermarkUrl
+<ParameterList>
+<a id="watermarkurl"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark2__return_values"></a>
 
@@ -166,17 +178,26 @@ virtual int addVideoWatermarkEx(const char* watermarkUrl,
 
 ### 参数
 
-### watermarkUrl
+<ParameterList>
+<a id="watermarkurl-1"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-watermarkoptions)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
 
@@ -232,9 +253,14 @@ virtual int clearVideoWatermarkEx(const RtcConnection& connection) = 0;
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
 

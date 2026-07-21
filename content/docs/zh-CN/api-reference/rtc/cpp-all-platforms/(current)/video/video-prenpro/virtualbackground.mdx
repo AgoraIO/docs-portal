@@ -64,27 +64,38 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用虚拟背景：
 
 - true：启用虚拟背景。
 - false：关闭虚拟背景。
 
-### backgroundSource
+</Parameter>
+<a id="backgroundsource"></a>
+<Parameter name="backgroundSource">
 
 自定义背景。SDK 会对自定义背景图像进行缩放和裁剪，以适配采集的视频分辨率，并确保图像内容不失真。详见 [VirtualBackgroundSource](/zh-CN/api-reference/rtc/cpp-all-platforms/class-virtualbackgroundsource)。
 
-### segproperty
+</Parameter>
+<a id="segproperty"></a>
+<Parameter name="segproperty">
 
 背景图像的处理属性。详见 [SegmentationProperty](/zh-CN/api-reference/rtc/cpp-all-platforms/class-segmentationproperty)。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
 - 若使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 若使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground__return_values"></a>
 

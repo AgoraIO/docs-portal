@@ -25,21 +25,32 @@ struct LocalTranscoderConfiguration {
 
 ## 属性
 
-### streamCount
+<ParameterList>
+<a id="streamcount"></a>
+<Parameter name="streamCount">
 
 本地客户端进行视频合图的视频流数量。
 
-### videoInputStreams
+</Parameter>
+<a id="videoinputstreams"></a>
+<Parameter name="videoInputStreams">
 
 用于本地视频合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/class-transcodingvideostream)。
 
-### videoOutputConfiguration
+</Parameter>
+<a id="videooutputconfiguration"></a>
+<Parameter name="videoOutputConfiguration">
 
 合图后合图视频的编码配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration)。
 
-### syncWithPrimaryCamera
+</Parameter>
+<a id="syncwithprimarycamera"></a>
+<Parameter name="syncWithPrimaryCamera">
 
 是否使用主摄像头采集的视频帧的时间戳作为合图视频的时间戳。
 
 - true：（默认）使用采集的视频帧的时间戳作为合图视频帧的时间戳。
 - false：不使用采集的视频帧的时间戳作为合图视频的时间戳，而是使用构建视频合图时的时间戳。
+
+</Parameter>
+</ParameterList>

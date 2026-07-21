@@ -37,9 +37,14 @@ int selectAudioTrack(int index);
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 音频轨道的索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__return_values"></a>
 
@@ -81,7 +86,9 @@ int setAudioDualMonoMode(int mode);
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式：
 
@@ -89,6 +96,9 @@ int setAudioDualMonoMode(int mode);
 - `AUDIO_DUAL_MONO_L` (1)：左声道模式。该模式用左声道的音频替换右声道，你只能听到左声道的音频。
 - `AUDIO_DUAL_MONO_R` (2)：右声道模式。该模式用右声道的音频替换左声道，你只能听到右声道的音频。
 - `AUDIO_DUAL_MONO_MIX` (3)：混合声道模式。该模式将左右声道的音频混合，你可以同时听到左右声道的音频。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiodualmonomode__return_values"></a>
 
@@ -125,9 +135,14 @@ int setAudioPitch(int pitch);
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音阶设置本地音乐文件的音调。默认值为 0，表示保持原始音调。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，本地音乐文件的音调越高或越低。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiopitch__return_values"></a>
 
@@ -164,12 +179,17 @@ int setLoopCount(int loopCount);
 
 ### 参数
 
-### loopCount
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
 
 音效的循环播放次数：
 
 - ≥ 0：播放的次数。例如，设置为 0 表示不循环播放，仅播放一次；设置为 1 表示循环播放一次，共播放两次。
 - -1：无限循环播放音频文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setloopcount__return_values"></a>
 
@@ -204,13 +224,18 @@ int setPlaybackSpeed(int speed);
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。建议设置为 30 到 400 之间的值，具体如下：
 
 - 30：原始速度的 0.3 倍。
 - 100：原始速度。
 - 400：原始速度的 4 倍。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplaybackspeed__return_values"></a>
 
@@ -257,13 +282,20 @@ int setPlayerOption(String key, int value);
 
 ### 参数
 
-### key
+<ParameterList>
+<a id="key"></a>
+<Parameter name="key">
 
 选项的键。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 选项的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplayeroption__return_values"></a>
 
@@ -310,13 +342,20 @@ int setPlayerOptionString(String key, String value);
 
 ### 参数
 
-### key
+<ParameterList>
+<a id="key-1"></a>
+<Parameter name="key">
 
 参数选项的键。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 参数选项的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplayeroption2__return_values"></a>
 
@@ -355,9 +394,14 @@ int setView(View videoView);
 
 ### 参数
 
-### videoView
+<ParameterList>
+<a id="videoview"></a>
+<Parameter name="videoView">
 
 渲染视图。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setview__return_values"></a>
 

@@ -33,9 +33,14 @@ Future<void> adjustLoopbackSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__return_values"></a>
 
@@ -77,13 +82,18 @@ Future<void> adjustRecordingSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
 
@@ -129,16 +139,23 @@ Future<void> enableInEarMonitoring(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 开启/关闭耳返功能:
 
 - true: 开启耳返功能。
 - false: （默认）关闭耳返功能。
 
-### includeAudioFilters
+</Parameter>
+<a id="includeaudiofilters"></a>
+<Parameter name="includeAudioFilters">
 
 耳返 Audio filter 类型。详见 [EarMonitoringFilterType](/zh-CN/api-reference/rtc/flutter/enum-earmonitoringfiltertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 
@@ -194,10 +211,15 @@ Future<void> enableLocalAudio(bool enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 - true: 重新开启本地音频功能，即开启本地音频采集（默认）；
 - false: 关闭本地音频功能，即停止本地音频采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -240,17 +262,24 @@ Future<void> enableLoopbackRecording(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集:
 
 - true: 开启声卡采集；系统声音 &gt; 输出界面显示虚拟声卡名称。
 - false:（默认）关闭声卡采集；系统声音 &gt; 输出界面不显示虚拟声卡名称。
 
-### deviceName
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableloopbackrecording__return_values"></a>
 
@@ -295,21 +324,30 @@ Future<void> enableLoopbackRecordingEx(
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### enabled
+</Parameter>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集：
 
 - true: 开启声卡采集。
 - false:（默认）不开启声卡采集。
 
-### deviceName
+</Parameter>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableloopbackrecordingex__return_values"></a>
 
@@ -354,10 +392,15 @@ Future<void> muteRecordingSignal(bool mute);
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 - true: 静音。
 - false:（默认）原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
@@ -395,13 +438,18 @@ Future<void> setInEarMonitoringVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
 - 0: 静音。
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
 

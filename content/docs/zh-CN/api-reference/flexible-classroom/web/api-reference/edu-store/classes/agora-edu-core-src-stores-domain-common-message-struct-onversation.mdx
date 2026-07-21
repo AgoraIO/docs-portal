@@ -40,19 +40,45 @@ _migration:
 
 - new Conversation(data:\{lastMessageTs?:number;messages:[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[];role?:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);timestamp?:number;unreadMessageCount:number;userName:string;userUuid:string\}):[Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" required>
 
-  - data: \{lastMessageTs?:number;messages:[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[];role?:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);timestamp?:number;unreadMessageCount:number;userName:string;userUuid:string\}
+<ParameterType>
 
-    - Optional lastMessageTs?:number
-    - messages:[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
-    - Optional role?:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
-    - Optional timestamp?:number
-    - unreadMessageCount:number
-    - userName:string
-    - userUuid:string
+\{lastMessageTs?:number;messages:[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[];role?:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);timestamp?:number;unreadMessageCount:number;userName:string;userUuid:string\}
 
-  Returns [Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+</ParameterType>
+
+<ParameterList>
+<Parameter name="lastMessageTs" type="number" optional />
+<Parameter name="messages" required>
+
+<ParameterType>
+
+[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="role" optional>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="timestamp" type="number" optional />
+<Parameter name="unreadMessageCount" type="number" required />
+<Parameter name="userName" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
 
 ## Properties
 

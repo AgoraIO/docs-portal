@@ -40,17 +40,18 @@ _migration:
 
 `- (instancetype)initWithBridge:(WhiteBoardView *)*bridge* deletegate:(id<WhiteAudioMixerBridgeDelegate>)*delegate*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="bridge">
 
-| `bridge` | 白板界面。详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。 |
-| --- | --- |
-| `delegate` | <Slot name="api-center-table-0" /> |
+白板界面。详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="delegate">
 
 用 RTC SDK 的混音方法播放动态 PPT 中的音频文件。详见 [WhiteAudioMixerBridgeDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-audio-mixer-bridge-delegate)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -68,13 +69,18 @@ _migration:
 
 `- (void)setMediaState:(NSInteger)*stateCode* errorCode:(NSInteger)*errorCode*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="stateCode">
 
-| `stateCode` | 音乐文件播放状态： 710: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。 711: RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。 713: RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。 714: 音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。 |
-| --- | --- |
-| `errorCode` | <Slot name="api-center-table-1" /> |
+音乐文件播放状态：
 
-<Slot for="api-center-table-1">
+- 710: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。
+- 711: RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。
+- 713: RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。
+- 714: 音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。
+
+</Parameter>
+<Parameter name="errorCode">
 
 音乐文件播放失败的原因：
 
@@ -82,7 +88,8 @@ _migration:
 - 702：音乐文件打开太频繁。
 - 703：音乐文件播放异常中断。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 

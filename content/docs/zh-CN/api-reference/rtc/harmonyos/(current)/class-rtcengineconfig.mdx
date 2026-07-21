@@ -26,19 +26,27 @@ export class RtcEngineConfig{
 
 ##
 
-### mEventHandler
+<ParameterList>
+<a id="meventhandler"></a>
+<Parameter name="mEventHandler">
 
 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。
 
-### mAppId
+</Parameter>
+<a id="mappid"></a>
+<Parameter name="mAppId">
 
 声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 RtcEngine。如需更换 App ID，必须先调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 销毁当前 RtcEngine 再重新创建。
 
-### mContext
+</Parameter>
+<a id="mcontext"></a>
+<Parameter name="mContext">
 
 上下文。
 
-### mLogConfig
+</Parameter>
+<a id="mlogconfig"></a>
+<Parameter name="mLogConfig">
 
 设置 SDK 输出的日志文件。详见 [LogConfig](/zh-CN/api-reference/rtc/harmonyos/class-logconfig)。
 
@@ -56,3 +64,6 @@ export class RtcEngineConfig{
   4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
   5. 新建 `agorasdk.log` 文件。
 - `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+</Parameter>
+</ParameterList>

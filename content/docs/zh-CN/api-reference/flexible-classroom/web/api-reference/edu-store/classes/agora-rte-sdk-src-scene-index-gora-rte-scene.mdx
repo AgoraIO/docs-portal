@@ -67,12 +67,22 @@ _migration:
 
 - new AgoraRteScene(sceneId:string, options:[SceneObjects](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-cene-objects)):[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-- Overrides EventEmitter.constructorParameters
+Overrides EventEmitter.constructor
 
-  - sceneId: string
-  - options: [SceneObjects](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-cene-objects)
+<ParameterList title="Parameters">
+<Parameter name="sceneId" type="string" required />
+<Parameter name="options" required>
 
-  Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
+
+[SceneObjects](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-cene-objects)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
 ## Properties
 
@@ -108,7 +118,7 @@ sceneId: string
 
 - get engine():[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
-- Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
 
 <a id="localUser"></a>
 
@@ -116,7 +126,7 @@ sceneId: string
 
 - get localUser():undefined|[AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
 
-- Returns undefined|[AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
+Returns undefined|[AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
 
 <a id="rtcChannel"></a>
 
@@ -124,7 +134,7 @@ sceneId: string
 
 - get rtcChannel():[AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
 
-- Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
+Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
 
 <a id="rtcSid"></a>
 
@@ -132,7 +142,7 @@ sceneId: string
 
 - get rtcSid():string
 
-- Returns string
+Returns string
 
 <a id="rtmSid"></a>
 
@@ -140,7 +150,7 @@ sceneId: string
 
 - get rtmSid():string
 
-- Returns string
+Returns string
 
 <a id="timestampServerLocalGap"></a>
 
@@ -148,7 +158,7 @@ sceneId: string
 
 - get timestampServerLocalGap():number
 
-- Returns number
+Returns number
 
 ## Methods
 
@@ -158,11 +168,19 @@ sceneId: string
 
 - addCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+<ParameterType>
 
-  Returns void
+[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addCustomMessageObserver"></a>
 
@@ -170,11 +188,19 @@ sceneId: string
 
 - addCustomMessageObserver(observer:[AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+<ParameterType>
 
-  Returns void
+[AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="enableDualStream"></a>
 
@@ -182,12 +208,20 @@ sceneId: string
 
 - enableDualStream(enable:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required />
+<Parameter name="connectionType" optional>
 
-  - enable: boolean
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="getApiService"></a>
 
@@ -195,7 +229,7 @@ sceneId: string
 
 - getApiService():[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
 
-- Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
+Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
 
 <a id="joinRTC"></a>
 
@@ -203,11 +237,19 @@ sceneId: string
 
 - joinRTC(options?:[AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="options" optional>
 
-  - Optional options: [AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="joinScene"></a>
 
@@ -215,11 +257,19 @@ sceneId: string
 
 - joinScene(options:[AgoraRteSceneJoinOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-options)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="options" required>
 
-  - options: [AgoraRteSceneJoinOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-options)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AgoraRteSceneJoinOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-options)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="leaveRTC"></a>
 
@@ -227,11 +277,19 @@ sceneId: string
 
 - leaveRTC(connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="connectionType" optional>
 
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="leaveScene"></a>
 
@@ -239,7 +297,7 @@ sceneId: string
 
 - leaveScene():Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="muteRemoteAudioStream"></a>
 
@@ -247,12 +305,12 @@ sceneId: string
 
 - muteRemoteAudioStream(streamUuid:string, muted:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="muted" type="boolean" required />
+</ParameterList>
 
-  - streamUuid: string
-  - muted: boolean
-
-  Returns number
+Returns number
 
 <a id="muteRemoteVideoStream"></a>
 
@@ -260,12 +318,12 @@ sceneId: string
 
 - muteRemoteVideoStream(streamUuid:string, muted:boolean):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="muted" type="boolean" required />
+</ParameterList>
 
-  - streamUuid: string
-  - muted: boolean
-
-  Returns number
+Returns number
 
 <a id="muteRemoteVideoStreamMass"></a>
 
@@ -273,12 +331,12 @@ sceneId: string
 
 - muteRemoteVideoStreamMass(streamUuids:string[], muted:boolean):Promise&lt;string[]&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuids" type="string[]" required />
+<Parameter name="muted" type="boolean" required />
+</ParameterList>
 
-  - streamUuids: string[]
-  - muted: boolean
-
-  Returns Promise&lt;string[]&gt;
+Returns Promise&lt;string[]&gt;
 
 <a id="removeCloudProxyObserver"></a>
 
@@ -286,11 +344,19 @@ sceneId: string
 
 - removeCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+<ParameterType>
 
-  Returns void
+[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="removeCustomMessageObserver"></a>
 
@@ -298,11 +364,19 @@ sceneId: string
 
 - removeCustomMessageObserver(observer:[AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
 
-  - observer: [AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+<ParameterType>
 
-  Returns void
+[AgoraRteCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessageObserver)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setAllRemoteTracksVolume"></a>
 
@@ -310,11 +384,11 @@ sceneId: string
 
 - setAllRemoteTracksVolume(volume:number):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required />
+</ParameterList>
 
-  - volume: number
-
-  Returns void
+Returns void
 
 <a id="setLowStreamParameter"></a>
 
@@ -322,12 +396,28 @@ sceneId: string
 
 - setLowStreamParameter(streamParameter:[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamParameter" required>
 
-  - streamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns number
+[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -335,12 +425,12 @@ sceneId: string
 
 - setRemoteTrackVolume(streamUuid:string, volume:number):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="volume" type="number" required />
+</ParameterList>
 
-  - streamUuid: string
-  - volume: number
-
-  Returns void
+Returns void
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -348,12 +438,20 @@ sceneId: string
 
 - setRemoteVideoStreamType(streamUuid:string, streamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="streamType" required>
 
-  - streamUuid: string
-  - streamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+<ParameterType>
 
-  Returns number
+[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="updateRemoteMediaStreamBatch"></a>
 
@@ -361,8 +459,16 @@ sceneId: string
 
 - updateRemoteMediaStreamBatch(streams:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streams" required>
 
-  - streams: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;

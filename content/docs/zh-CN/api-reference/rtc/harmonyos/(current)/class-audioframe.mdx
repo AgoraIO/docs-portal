@@ -21,15 +21,21 @@ _migration:
 
 ##
 
-### samplesPerChannel
+<ParameterList>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道的采样点数。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
 
-### channelNums
+</Parameter>
+<a id="channelnums"></a>
+<Parameter name="channelNums">
 
 声道数量(如果是立体声，数据是交叉的)。
 
@@ -38,7 +44,9 @@ _migration:
 - 1: 单声道
 - 2: 双声道
 
-### sampleRataHz
+</Parameter>
+<a id="sampleratahz"></a>
+<Parameter name="sampleRataHz">
 
 每声道每秒的采样点数。
 
@@ -46,6 +54,11 @@ _migration:
 
 缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
 
-### timestamp
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
 
 音频帧的时间戳。
+
+</Parameter>
+</ParameterList>

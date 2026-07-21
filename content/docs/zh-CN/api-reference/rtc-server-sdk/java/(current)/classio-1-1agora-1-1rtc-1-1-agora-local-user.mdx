@@ -61,10 +61,13 @@ _migration:
 
 发布音频轨道时，SDK 默认会将所有音频轨道进行混音。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_audio_track">
 
-| agora_local_audio_track | 待发布的本地音频轨道。 |
-| --- | --- |
+待发布的本地音频轨道。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -80,10 +83,13 @@ _migration:
 
 发布本地视频轨道至频道。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_video_track">
 
-| agora_local_video_track | 待发布的本地视频轨道。 |
-| --- | --- |
+待发布的本地视频轨道。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -103,10 +109,13 @@ _migration:
 4.4.32。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 编码后的音频数据观测器对象：[IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer)。 |
-| --- | --- |
+编码后的音频数据观测器对象：[IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -129,10 +138,13 @@ _migration:
 - onPlaybackAudioFrameBeforeMixing: 当 SDK 接收到远端指定用户发送过来尚未混音的音频数据时，会触发该回调。
 - onMixedAudioFrame: 当 SDK 接收到本地采集的和用于播放的混音后的音频数据时，会触发该回调。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。 |
-| --- | --- |
+音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -152,21 +164,26 @@ _migration:
 
 一旦你开启了 VAD 功能，就可以在 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中接收 VAD 相关信息。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 待注册的音频数据观测对象：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。 |
-| --- | --- |
-| enableVad | <Slot name="api-center-table-0" /> |
-| vadConfig | VAD 配置信息：[AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2)。 |
+待注册的音频数据观测对象：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="enableVad">
 
 是否开启 VAD 功能：
 
 - true：开启。
 - false：不开启。
 
-</Slot>
+</Parameter>
+<Parameter name="vadConfig">
+
+VAD 配置信息：[AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -184,10 +201,13 @@ _migration:
 
 你需要在该方法中实现一个 ILocalUserObserver 类。完成注册后，ILocalUserObserver 会接收 AgoraLocalUser 对象的回调事件。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | ILocalUserObserver 对象。 |
-| --- | --- |
+ILocalUserObserver 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -203,10 +223,13 @@ _migration:
 
 注册一个编码后的视频数据观测器。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agoraVideoEncodedFrameObserver">
 
-| agoraVideoEncodedFrameObserver | 编码后的视频数据观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。 |
-| --- | --- |
+编码后的视频数据观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -222,10 +245,13 @@ _migration:
 
 注册视频数据观测器。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agoraVideoFrameObserver2">
 
-| agoraVideoFrameObserver2 | 视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。 |
-| --- | --- |
+视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -243,10 +269,13 @@ _migration:
 
 成功调用该方法后，远端会触发 [onAudioMetaDataReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) 回调，远端用户可以在该回调中获取接收到的音频 Metadata 数据。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="metaData">
 
-| metaData | 音频 Metadata 数据。 |
-| --- | --- |
+音频 Metadata 数据。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -264,10 +293,13 @@ _migration:
 
 你成功发送请求后，主播会收到 onIntraRequestReceived 回调。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 主播的用户 ID。 |
-| --- | --- |
+主播的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -285,10 +317,13 @@ _migration:
 
 完成配置后，SDK 会将音频编码属性应用到所有音频轨道。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 音频编码属性 AudioEncoderConfig。 |
-| --- | --- |
+音频编码属性 AudioEncoderConfig。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -306,10 +341,19 @@ _migration:
 
 该方法适用于各种音频场景，你可以按需选择。例如，在音乐教学等高音质需求的场景中，建议将 scenarioType 设置为 AUDIO_SCENARIO_GAME_STREAMING(3)。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="scenarioType">
 
-| scenarioType | 音频场景。不同的音频场景下，设备的音量类型是不同的。AUDIO_SCENARIO_DEFAULT(0):（默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。 AUDIO_SCENARIO_GAME_STREAMING(3): 高音质场景，适用于音乐为主的场景。 AUDIO_SCENARIO_CHATROOM(5): 聊天室场景，适用于用户需要频繁上下麦的场景。 AUDIO_SCENARIO_CHORUS(7): 合唱场景。适用于网络条件良好，要求极低延时的实时合唱场景。 AUDIO_SCENARIO_MEETING(8): 会议场景，适用于人声为主的多人会议。 |
-| --- | --- |
+音频场景。不同的音频场景下，设备的音量类型是不同的。
+
+- AUDIO_SCENARIO_DEFAULT(0):（默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。
+- AUDIO_SCENARIO_GAME_STREAMING(3): 高音质场景，适用于音乐为主的场景。
+- AUDIO_SCENARIO_CHATROOM(5): 聊天室场景，适用于用户需要频繁上下麦的场景。
+- AUDIO_SCENARIO_CHORUS(7): 合唱场景。适用于网络条件良好，要求极低延时的实时合唱场景。
+- AUDIO_SCENARIO_MEETING(8): 会议场景，适用于人声为主的多人会议。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -337,15 +381,21 @@ _migration:
 
 设置 onMixedAudioFrame 回调中返回的音频数据的参数。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channels">
 
-| channels | onMixedAudioFrame 回调中音频数据的声道数。1: 单声道 2: 双声道 |
-| --- | --- |
-| sample_rate_hz | onMixedAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。 |
-| mode | <Slot name="api-center-table-1" /> |
-| samples_per_call | onMixedAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。 |
+onMixedAudioFrame 回调中音频数据的声道数。
 
-<Slot for="api-center-table-1">
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onMixedAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
 
 onMixedAudioFrame 中音频数据的使用模式：
 
@@ -353,7 +403,13 @@ onMixedAudioFrame 中音频数据的使用模式：
 - 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
 - 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
 
-</Slot>
+</Parameter>
+<Parameter name="samples_per_call">
+
+onMixedAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -370,11 +426,21 @@ onMixedAudioFrame 中音频数据的使用模式：
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中返回的音频数据的参数。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channels">
 
-| channels | onPlaybackAudioFrameBeforeMixing 回调中音频数据的声道数。1: 单声道 2: 双声道 |
-| --- | --- |
-| sample_rate_hz | onPlaybackAudioFrameBeforeMixing 中音频数据的采样率（Hz）。可设为 8000、16000、32000、44100 或 48000。 |
+onPlaybackAudioFrameBeforeMixing 回调中音频数据的声道数。
+
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onPlaybackAudioFrameBeforeMixing 中音频数据的采样率（Hz）。可设为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
@@ -393,15 +459,21 @@ onMixedAudioFrame 中音频数据的使用模式：
 
 设置 onPlaybackAudioFrame 回调中返回的音频数据的参数。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channels">
 
-| channels | onPlaybackAudioFrame 回调中音频数据的声道数。1: 单声道 2: 双声道 |
-| --- | --- |
-| sample_rate_hz | onPlaybackAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。 |
-| mode | <Slot name="api-center-table-2" /> |
-| samples_per_call | onPlaybackAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。 |
+onPlaybackAudioFrame 回调中音频数据的声道数。
 
-<Slot for="api-center-table-2">
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onPlaybackAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
 
 onPlaybackAudioFrame 中音频数据的使用模式：
 
@@ -409,7 +481,13 @@ onPlaybackAudioFrame 中音频数据的使用模式：
 - 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
 - 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
 
-</Slot>
+</Parameter>
+<Parameter name="samples_per_call">
+
+onPlaybackAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
@@ -428,15 +506,21 @@ onPlaybackAudioFrame 中音频数据的使用模式：
 
 设置 onRecordAudioFrame 回调中返回的音频数据的参数。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channels">
 
-| channels | onPlaybackAudioFrame 回调中音频数据的声道数。1: 单声道 2: 双声道 |
-| --- | --- |
-| sample_rate_hz | onRecordAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。 |
-| mode | <Slot name="api-center-table-3" /> |
-| samples_per_call | onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。 |
+onPlaybackAudioFrame 回调中音频数据的声道数。
 
-<Slot for="api-center-table-3">
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onRecordAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
 
 onRecordAudioFrame 中音频数据的使用模式：
 
@@ -444,7 +528,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 - 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
 - 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
 
-</Slot>
+</Parameter>
+<Parameter name="samples_per_call">
+
+onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
@@ -471,10 +561,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 调用 connect 加入频道时，如果填入的 token 与你在该方法中设置的 role 不匹配，则加入 频道失败，SDK 触发 onConnectionFailure 回调。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="role">
 
-| role | 用户角色。 |
-| --- | --- |
+用户角色。
+
+</Parameter>
+</ParameterList>
 
 <a id="a71ea766dd8c040e441966876b697f4ca"></a>
 
@@ -503,10 +596,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 成功调用该方法后，SDK 自动订阅在调用该方法后加入频道的用户的视频。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="options">
 
-| options | 视频订阅选项：VideoSubscriptionOptions。 |
-| --- | --- |
+视频订阅选项：VideoSubscriptionOptions。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
@@ -522,10 +618,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 订阅频道内指定用户的音频。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="user_id">
 
-| user_id | 想要订阅的用户 ID。 |
-| --- | --- |
+想要订阅的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
 
@@ -542,11 +641,18 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 订阅远端指定用户的视频。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="user_id">
 
-| user_id | 带订阅视频的远端用户的 ID。 |
-| --- | --- |
-| options | 视频订阅选项：VideoSubscriptionOptions，例如，仅订阅编码后的视频数据，或仅订阅视频小流。 |
+带订阅视频的远端用户的 ID。
+
+</Parameter>
+<Parameter name="options">
+
+视频订阅选项：VideoSubscriptionOptions，例如，仅订阅编码后的视频数据，或仅订阅视频小流。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-20"}>返回值</h4>
 
@@ -562,10 +668,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 停止向频道内发布本地音频轨道。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_audio_track">
 
-| agora_local_audio_track | 待停止发布的本地音频轨道。 |
-| --- | --- |
+待停止发布的本地音频轨道。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-21"}>返回值</h4>
 
@@ -581,10 +690,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 停止发布本地视频轨道至频道。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_video_track">
 
-| agora_local_video_track | 待停止发布的本地视频轨道。 |
-| --- | --- |
+待停止发布的本地视频轨道。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-22"}>返回值</h4>
 
@@ -604,10 +716,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 4.4.32。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 取消注册的 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) 对象。 |
-| --- | --- |
+取消注册的 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-23"}>返回值</h4>
 
@@ -623,10 +738,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 释放音频数据观测器。
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | 音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。 |
-| --- | --- |
+音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-24"}>返回值</h4>
 
@@ -642,10 +760,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 释放本地用户观测器 ILocalUserObserver 对象。
 
-<h4 data-toc-hidden="true" id={"参数-24"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | ILocalUserObserver 对象。 |
-| --- | --- |
+ILocalUserObserver 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-25"}>返回值</h4>
 
@@ -661,10 +782,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 取消注册编码后的视频数据观测器。
 
-<h4 data-toc-hidden="true" id={"参数-25"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agoraVideoEncodedFrameObserver">
 
-| agoraVideoEncodedFrameObserver | 观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。 |
-| --- | --- |
+观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-26"}>返回值</h4>
 
@@ -680,10 +804,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 取消注册视频数据观测器。
 
-<h4 data-toc-hidden="true" id={"参数-26"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agoraVideoFrameObserver2">
 
-| agoraVideoFrameObserver2 | 视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。 |
-| --- | --- |
+视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-27"}>返回值</h4>
 
@@ -731,10 +858,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 停止订阅频道内指定用户的音频。
 
-<h4 data-toc-hidden="true" id={"参数-27"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="user_id">
 
-| user_id | 待停止订阅的用户 ID。 |
-| --- | --- |
+待停止订阅的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-30"}>返回值</h4>
 
@@ -750,10 +880,13 @@ onRecordAudioFrame 中音频数据的使用模式：
 
 停止订阅频道内指定用户的视频。
 
-<h4 data-toc-hidden="true" id={"参数-28"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="user_id">
 
-| user_id | 待停止订阅视频的用户的 ID。 |
-| --- | --- |
+待停止订阅视频的用户的 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-31"}>返回值</h4>
 

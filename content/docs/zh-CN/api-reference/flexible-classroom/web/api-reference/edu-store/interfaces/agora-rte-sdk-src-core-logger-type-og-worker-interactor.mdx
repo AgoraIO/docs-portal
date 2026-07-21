@@ -36,11 +36,11 @@ _migration:
 
 - collectLogs(labels:string[]):Promise&lt;\{file:File;lastId:number\}&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="labels" type="string[]" required />
+</ParameterList>
 
-  - labels: string[]
-
-  Returns Promise&lt;\{file:File;lastId:number\}&gt;
+Returns Promise&lt;\{file:File;lastId:number\}&gt;
 
 <a id="deleteLogs"></a>
 
@@ -48,12 +48,12 @@ _migration:
 
 - deleteLogs(labels:string[], lastId:number):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="labels" type="string[]" required />
+<Parameter name="lastId" type="number" required />
+</ParameterList>
 
-  - labels: string[]
-  - lastId: number
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="sendLog"></a>
 
@@ -61,12 +61,12 @@ _migration:
 
 - sendLog(message:string, label:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="label" type="string" required />
+</ParameterList>
 
-  - message: string
-  - label: string
-
-  Returns void
+Returns void
 
 <a id="setMaxRecords"></a>
 
@@ -74,8 +74,8 @@ _migration:
 
 - setMaxRecords(maxRecords:number):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="maxRecords" type="number" required />
+</ParameterList>
 
-  - maxRecords: number
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;

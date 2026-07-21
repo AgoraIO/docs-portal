@@ -50,12 +50,23 @@ _migration:
 - 通过实现 [`IMediaNodeFactory`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory) 类中的 `IVideoRenderer` 实现内置视频接收模块。
 - 通过实现 [`IVideoSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 类实现自定义视频接收模块。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoRenderer">
 
-| videoRenderer | 需要添加的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base)。 |
-| --- | --- |
-| position | 视频接收模块添加的位置：VIDEO_MODULE_POSITION。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要添加的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 。
+
+</Parameter>
+<Parameter name="position">
+
+视频接收模块添加的位置：VIDEO_MODULE_POSITION 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -71,12 +82,23 @@ _migration:
 
 从视频轨道中删除视频接收模块。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoRenderer">
 
-| videoRenderer | 需要删除的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base)。 |
-| --- | --- |
-| position | 视频接收模块删除的位置： VIDEO_MODULE_POSITION。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+需要删除的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 。
+
+</Parameter>
+<Parameter name="position">
+
+视频接收模块删除的位置： VIDEO_MODULE_POSITION 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 

@@ -49,13 +49,20 @@ int open(String url, long startPos);
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 媒体文件的路径，支持本地路径和在线路径。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 播放的起始位置（毫秒，默认值为 0）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_open__return_values"></a>
 
@@ -92,13 +99,20 @@ int open(Uri uri, long startPos);
 
 ### 参数
 
-### uri
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 媒体文件的 URI 地址。
 
-### startPos
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
 
 播放的起始位置，单位为毫秒。（默认值为 0）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_open2__return_values"></a>
 
@@ -143,9 +157,14 @@ int openWithMediaSource(MediaPlayerSource source);
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 媒体资源，详见 [MediaPlayerSource](/zh-CN/api-reference/rtc/android/class-mediasource)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_openwithmediasource__return_values"></a>
 
@@ -187,13 +206,20 @@ int preloadSrc(String src, long startPos);
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
 
-### startPos
+</Parameter>
+<a id="startpos-2"></a>
+<Parameter name="startPos">
 
 媒体资源预加载到播放列表后开始播放的位置（单位为毫秒）。预加载直播流时，请将该参数设为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_preloadsrc__return_values"></a>
 
@@ -244,16 +270,23 @@ int switchSrc(String src, boolean syncPts);
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src-1"></a>
+<Parameter name="src">
 
 媒体资源的 URL 地址。
 
-### syncPts
+</Parameter>
+<a id="syncpts"></a>
+<Parameter name="syncPts">
 
 是否在切换前后同步播放位置（毫秒）：
 
 - true：同步切换前后的播放位置。
 - false：（默认）不同步切换前后的播放位置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_switchsrc__return_values"></a>
 
@@ -290,9 +323,14 @@ int unloadSrc(String src);
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src-2"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unloadsrc__return_values"></a>
 

@@ -50,12 +50,20 @@ _migration:
 
 - new Track(context:[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext), _posOnly?:boolean):[Track](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-struct-rack)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="context" required>
 
-  - context: [TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
-  - Optional _posOnly: boolean
+<ParameterType>
 
-  Returns [Track](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-struct-rack)
+[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="_posOnly" type="boolean" optional />
+</ParameterList>
+
+Returns [Track](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-struct-rack)
 
 ## Accessors
 
@@ -65,7 +73,7 @@ _migration:
 
 - get isCovered():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="needTransition"></a>
 
@@ -73,7 +81,7 @@ _migration:
 
 - get needTransition():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="ratioVal"></a>
 
@@ -81,16 +89,26 @@ _migration:
 
 - get ratioVal():\{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
 
-- Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
+Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
 
-  - ratioDimensions:\{height:number;width:number\}
+<ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125;; ratioPosition: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="ratioDimensions" type="\&#123;height:number;width:number\&#125;" required>
 
-    - height:number
-    - width:number
-  - ratioPosition:\{x:number;y:number\}
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
-    - x:number
-    - y:number
+</Parameter>
+<Parameter name="ratioPosition" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="realVal"></a>
 
@@ -98,16 +116,26 @@ _migration:
 
 - get realVal():\{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
 
-- Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
+Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
 
-  - dimensions:\{height:number;width:number\}
+<ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125;; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="dimensions" type="\&#123;height:number;width:number\&#125;" required>
 
-    - height:number
-    - width:number
-  - position:\{x:number;y:number\}
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
-    - x:number
-    - y:number
+</Parameter>
+<Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="trackContext"></a>
 
@@ -115,7 +143,7 @@ _migration:
 
 - get trackContext():[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
 
-- Returns [TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+Returns [TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
 
 <a id="visible"></a>
 
@@ -123,7 +151,7 @@ _migration:
 
 - get visible():boolean
 
-- Returns boolean
+Returns boolean
 
 ## Methods
 
@@ -133,11 +161,11 @@ _migration:
 
 - reposition(needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
 
-  - Optional needTransition: boolean
-
-  Returns void
+Returns void
 
 <a id="setRatio"></a>
 
@@ -145,13 +173,29 @@ _migration:
 
 - setRatio(position:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  - position: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setRatioDimensions"></a>
 
@@ -159,12 +203,20 @@ _migration:
 
 - setRatioDimensions(ratioDimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="ratioDimensions" required>
 
-  - ratioDimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setRatioPos"></a>
 
@@ -172,12 +224,20 @@ _migration:
 
 - setRatioPos(ratioPos:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="ratioPos" required>
 
-  - ratioPos: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setReal"></a>
 
@@ -185,13 +245,29 @@ _migration:
 
 - setReal(position:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  - position: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setRealDimensions"></a>
 
@@ -199,12 +275,20 @@ _migration:
 
 - setRealDimensions(dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="dimensions" required>
 
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setRealPos"></a>
 
@@ -212,12 +296,20 @@ _migration:
 
 - setRealPos(position:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), needTransition?:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  - position: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - Optional needTransition: boolean
+<ParameterType>
 
-  Returns void
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+Returns void
 
 <a id="setVisibility"></a>
 
@@ -225,11 +317,11 @@ _migration:
 
 - setVisibility(visible:boolean):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="visible" type="boolean" required />
+</ParameterList>
 
-  - visible: boolean
-
-  Returns void
+Returns void
 
 <a id="updateContext"></a>
 
@@ -237,8 +329,16 @@ _migration:
 
 - updateContext(context:Partial&lt;[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)&gt;):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="context" required>
 
-  - context: Partial&lt;[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)&gt;
+<ParameterType>
 
-  Returns void
+Partial & lt;[TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

@@ -124,7 +124,9 @@ _migration:
 
 - new EduApiService():[EduApiService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)Returns [EduApiService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+Returns [EduApiService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
 
 ## Properties
 
@@ -184,15 +186,19 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - acceptGroupInvite(roomUuid:string, groupUuid:string, data?:\{leaveGroupUuids:string[]\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="groupUuid" type="string" required />
+<Parameter name="data" type="\&#123;leaveGroupUuids:string[]\&#125;" optional>
 
-  - roomUuid: string
-  - groupUuid: string
-  - Optional data: \{leaveGroupUuids:string[]\}
+<ParameterList>
+<Parameter name="leaveGroupUuids" type="string[]" required />
+</ParameterList>
 
-    - leaveGroupUuids:string[]
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="acceptHandsUp"></a>
 
@@ -200,16 +206,20 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - acceptHandsUp(params:\{roomUuid:string;toUserUuid?:string\}):Promise&lt;any&gt;
 
-- 接受举手上台请求
+接受举手上台请求
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;roomUuid:string;toUserUuid?:string\&#125;" required>
 
-  - params: \{roomUuid:string;toUserUuid?:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
 
-    - roomUuid:string
-    - Optional toUserUuid?:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="addCloudDriveFile"></a>
 
@@ -217,15 +227,23 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - addCloudDriveFile(resourceUuid:string, userUuid:string, resourceInfo:[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)):Promise&lt;any&gt;
 
-- 新增云盘资源
+新增云盘资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
 
-  - resourceUuid: string
-  - userUuid: string
-  - resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="addCloudDriveFileV3"></a>
 
@@ -233,18 +251,26 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - addCloudDriveFileV3(resourceUuid:string, userUuid:string, resourceInfo:[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)):Promise&lt;any&gt;
 
-- ### deprecated
+### deprecated
 
 This API will be removed in near future.
 新增云盘资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
 
-  - resourceUuid: string
-  - userUuid: string
-  - resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="addGroup"></a>
 
@@ -252,17 +278,35 @@ This API will be removed in near future.
 
 - addGroup(roomUuid:string, data:\{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress:boolean\}):Promise&lt;any&gt;
 
-- 新增组
+新增组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress:boolean\}
+<ParameterType>
 
-    - groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
-    - inProgress:boolean
+\{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress:boolean\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="allowHandsUp"></a>
 
@@ -270,17 +314,21 @@ This API will be removed in near future.
 
 - allowHandsUp(params:\{defaultAcceptRole?:""|"audience";roomUuid:string;state:number\}):Promise&lt;any&gt;
 
-- 允许举手上台申请
+允许举手上台申请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;defaultAcceptRole?:&quot;&quot; | &quot;audience&quot;;roomUuid:string;state:number\&#125;" required>
 
-  - params: \{defaultAcceptRole?:""|"audience";roomUuid:string;state:number\}
+<ParameterList>
+<Parameter name="defaultAcceptRole" type="&quot;&quot; | &quot;audience&quot;" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" type="number" required />
+</ParameterList>
 
-    - Optional defaultAcceptRole?:""|"audience"
-    - roomUuid:string
-    - state:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="broadcastHxChatMessage"></a>
 
@@ -288,19 +336,45 @@ This API will be removed in near future.
 
 - broadcastHxChatMessage(roomUuid:string, data:\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}):Promise&lt;any&gt;
 
-- 发送全体消息(AgoraChat)
+发送全体消息(AgoraChat)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
+<ParameterType>
 
-    - msg:string
-    - range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
-    - Optional toGroupUuids?:string[]
-    - type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="broadcastMessage"></a>
 
@@ -308,19 +382,45 @@ This API will be removed in near future.
 
 - broadcastMessage(roomUuid:string, data:\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}):Promise&lt;any&gt;
 
-- 发送全体消息(根据区域判断)
+发送全体消息(根据区域判断)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
+<ParameterType>
 
-    - msg:string
-    - range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
-    - Optional toGroupUuids?:string[]
-    - type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="broadcastRtmChatMessage"></a>
 
@@ -328,19 +428,45 @@ This API will be removed in near future.
 
 - broadcastRtmChatMessage(roomUuid:string, data:\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}):Promise&lt;any&gt;
 
-- 发送全体消息(RTM)
+发送全体消息(RTM)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
+<ParameterType>
 
-    - msg:string
-    - range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
-    - Optional toGroupUuids?:string[]
-    - type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+\{msg:string;range:[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range);toGroupUuids?:string[];type:[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="cancelHandsUp"></a>
 
@@ -348,16 +474,20 @@ This API will be removed in near future.
 
 - cancelHandsUp(params:\{roomUuid:string;toUserUuid?:string\}):Promise&lt;any&gt;
 
-- 取消举手
+取消举手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;roomUuid:string;toUserUuid?:string\&#125;" required>
 
-  - params: \{roomUuid:string;toUserUuid?:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
 
-    - roomUuid:string
-    - Optional toUserUuid?:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="cancelHandsWave"></a>
 
@@ -365,16 +495,20 @@ This API will be removed in near future.
 
 - cancelHandsWave(params:\{roomUuid:string;toUserUuid?:string\}):Promise&lt;any&gt;
 
-- 取消挥手
+取消挥手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;roomUuid:string;toUserUuid?:string\&#125;" required>
 
-  - params: \{roomUuid:string;toUserUuid?:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
 
-    - roomUuid:string
-    - Optional toUserUuid?:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="checkIn"></a>
 
@@ -382,25 +516,79 @@ This API will be removed in near future.
 
 - checkIn(session:Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;, handsUpLimit?:\{maxAccept:number;maxWait:number;timeout:number;type:number\}, stream?:\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}):Promise&lt;any&gt;
 
-- 预检
+预检
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="session" required>
 
-  - session: Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;
-  - Optional handsUpLimit: \{maxAccept:number;maxWait:number;timeout:number;type:number\}
+<ParameterType>
 
-    - maxAccept:number
-    - maxWait:number
-    - timeout:number
-    - type:number
-  - Optional stream: \{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+Partial & lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info) & gt;
 
-    - Optional audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+</ParameterType>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+<Parameter name="handsUpLimit" type="\&#123;maxAccept:number;maxWait:number;timeout:number;type:number\&#125;" optional>
+
+<ParameterList>
+<Parameter name="maxAccept" type="number" required />
+<Parameter name="maxWait" type="number" required />
+<Parameter name="timeout" type="number" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="stream" optional>
+
+<ParameterType>
+
+\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="copyScenes"></a>
 
@@ -408,14 +596,14 @@ This API will be removed in near future.
 
 - copyScenes(roomUuid:string, fromRoomUuid:string):Promise&lt;any&gt;
 
-- 复制房间笔迹
+复制房间笔迹
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="fromRoomUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - fromRoomUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteBatchUserProperties"></a>
 
@@ -423,16 +611,20 @@ This API will be removed in near future.
 
 - deleteBatchUserProperties(param0:\{data:\{cause?:unknown;properties:string[];userUuid:string\}[];roomUuid:string\}):Promise&lt;any&gt;
 
-- 批量删除用户属性
+批量删除用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;data:\&#123;cause?:unknown;properties:string[];userUuid:string\&#125;[];roomUuid:string\&#125;" required>
 
-  - param0: \{data:\{cause?:unknown;properties:string[];userUuid:string\}[];roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;cause?:unknown;properties:string[];userUuid:string\&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - data:\{cause?:unknown;properties:string[];userUuid:string\}[]
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteWidget"></a>
 
@@ -440,14 +632,14 @@ This API will be removed in near future.
 
 - deleteWidget(roomUuid:string, widgetUuid:string):Promise&lt;\{data:any\}&gt;
 
-- 删除房间 widget
+删除房间 widget
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - widgetUuid: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="entry"></a>
 
@@ -455,19 +647,69 @@ This API will be removed in near future.
 
 - entry(session:Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;, stream?:\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}):Promise&lt;any&gt;
 
-- 进入房间
+进入房间
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="session" required>
 
-  - session: Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;
-  - Optional stream: \{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+<ParameterType>
 
-    - Optional audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+Partial & lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info) & gt;
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+</Parameter>
+<Parameter name="stream" optional>
+
+<ParameterType>
+
+\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="fetch"></a>
 
@@ -475,11 +717,21 @@ This API will be removed in near future.
 
 - fetch(params:[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)):Promise&lt;any&gt;
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)Parameters
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
 
-  - params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  Returns Promise&lt;any&gt;
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="fetchFileUploadSts"></a>
 
@@ -487,13 +739,13 @@ This API will be removed in near future.
 
 - fetchFileUploadSts(param0:Partial&lt;\{contentType:string;conversion?:Partial&lt;Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;&gt;;ext:string;resourceName:string;size:number;userUuid:string\}&gt;):Promise&lt;any&gt;
 
-- 获取上传信息
+获取上传信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="Partial &amp; lt;\&#123;contentType:string;conversion?:Partial &amp; lt;Partial &amp; lt;\&#123;canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\&#125; &amp; gt; &amp; gt;;ext:string;resourceName:string;size:number;userUuid:string\&#125; &amp; gt;" required />
+</ParameterList>
 
-  - param0: Partial&lt;\{contentType:string;conversion?:Partial&lt;Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;&gt;;ext:string;resourceName:string;size:number;userUuid:string\}&gt;
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="fetchPersonalResources"></a>
 
@@ -501,24 +753,28 @@ This API will be removed in near future.
 
 - fetchPersonalResources(userUuid:string, options:\{converted?:number;limit?:number;nextId?:string;orderBy?:string;pageNo?:number;pageSize?:number;parentResourceUuid?:string;resourceName?:string;tags?:string[]\}):Promise&lt;any&gt;
 
-- 获取个人资源列表
+获取个人资源列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="options" type="\&#123;converted?:number;limit?:number;nextId?:string;orderBy?:string;pageNo?:number;pageSize?:number;parentResourceUuid?:string;resourceName?:string;tags?:string[]\&#125;" required>
 
-  - userUuid: string
-  - options: \{converted?:number;limit?:number;nextId?:string;orderBy?:string;pageNo?:number;pageSize?:number;parentResourceUuid?:string;resourceName?:string;tags?:string[]\}
+<ParameterList>
+<Parameter name="converted" type="number" optional />
+<Parameter name="limit" type="number" optional />
+<Parameter name="nextId" type="string" optional />
+<Parameter name="orderBy" type="string" optional />
+<Parameter name="pageNo" type="number" optional />
+<Parameter name="pageSize" type="number" optional />
+<Parameter name="parentResourceUuid" type="string" optional />
+<Parameter name="resourceName" type="string" optional />
+<Parameter name="tags" type="string[]" optional />
+</ParameterList>
 
-    - Optional converted?:number
-    - Optional limit?:number
-    - Optional nextId?:string
-    - Optional orderBy?:string
-    - Optional pageNo?:number
-    - Optional pageSize?:number
-    - Optional parentResourceUuid?:string
-    - Optional resourceName?:string
-    - Optional tags?:string[]
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="fetchUserList"></a>
 
@@ -526,20 +782,38 @@ This API will be removed in near future.
 
 - fetchUserList(roomId:string, params:\{count?:number;nextId:undefined|null|string|number;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);type?:"0"|"1";userName?:string\}):Promise&lt;any&gt;
 
-- 获取房间内用户列表
+获取房间内用户列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="params" required>
 
-  - roomId: string
-  - params: \{count?:number;nextId:undefined|null|string|number;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);type?:"0"|"1";userName?:string\}
+<ParameterType>
 
-    - Optional count?:number
-    - nextId:undefined|null|string|number
-    - role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
-    - Optional type?:"0"|"1"
-    - Optional userName?:string
+\{count?:number;nextId:undefined | null | string | number;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);type?:"0" | "1";userName?:string\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="count" type="number" optional />
+<Parameter name="nextId" type="undefined | null | string | number" required />
+<Parameter name="role" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="type" type="&quot;0&quot; | &quot;1&quot;" optional />
+<Parameter name="userName" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="getAgoraChatToken"></a>
 
@@ -547,16 +821,20 @@ This API will be removed in near future.
 
 - getAgoraChatToken(param0:\{roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 获取 AgoraChat 用户登录 Token
+获取 AgoraChat 用户登录 Token
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;roomUuid:string;userUuid:string\&#125;" required>
 
-  - param0: \{roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="getAnswerList"></a>
 
@@ -564,18 +842,22 @@ This API will be removed in near future.
 
 - getAnswerList(roomUuid:string, popupQuizId:string, query:\{count:number;nextId:number\}):Promise&lt;\{data:any\}&gt;
 
-- 获取答题列表
+获取答题列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="query" type="\&#123;count:number;nextId:number\&#125;" required>
 
-  - roomUuid: string
-  - popupQuizId: string
-  - query: \{count:number;nextId:number\}
+<ParameterList>
+<Parameter name="count" type="number" required />
+<Parameter name="nextId" type="number" required />
+</ParameterList>
 
-    - count:number
-    - nextId:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="getConversationHistoryChatMessage"></a>
 
@@ -583,20 +865,28 @@ This API will be removed in near future.
 
 - getConversationHistoryChatMessage(params:\{data:\{nextId:string;sort:number;studentUuid:string\};roomUuid:string\}):Promise&lt;any&gt;
 
-- 获取聊天历史会话信息
+获取聊天历史会话信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;data:\&#123;nextId:string;sort:number;studentUuid:string\&#125;;roomUuid:string\&#125;" required>
 
-  - params: \{data:\{nextId:string;sort:number;studentUuid:string\};roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;nextId:string;sort:number;studentUuid:string\&#125;" required>
 
-    - data:\{nextId:string;sort:number;studentUuid:string\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+<Parameter name="studentUuid" type="string" required />
+</ParameterList>
 
-      - nextId:string
-      - sort:number
-      - studentUuid:string
-    - roomUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="getConversationList"></a>
 
@@ -604,18 +894,26 @@ This API will be removed in near future.
 
 - getConversationList(params:\{data:\{nextId:string\};roomUuid:string\}):Promise&lt;any&gt;
 
-- 获取聊天会话列表
+获取聊天会话列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;data:\&#123;nextId:string\&#125;;roomUuid:string\&#125;" required>
 
-  - params: \{data:\{nextId:string\};roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;nextId:string\&#125;" required>
 
-    - data:\{nextId:string\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+</ParameterList>
 
-      - nextId:string
-    - roomUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="getHistoryChatMessage"></a>
 
@@ -623,20 +921,28 @@ This API will be removed in near future.
 
 - getHistoryChatMessage(params:\{data:\{nextId:string;sort:number\};roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 获取聊天历史记录
+获取聊天历史记录
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;data:\&#123;nextId:string;sort:number\&#125;;roomUuid:string;userUuid:string\&#125;" required>
 
-  - params: \{data:\{nextId:string;sort:number\};roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;nextId:string;sort:number\&#125;" required>
 
-    - data:\{nextId:string;sort:number\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
 
-      - nextId:string
-      - sort:number
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="getRecordList"></a>
 
@@ -644,16 +950,20 @@ This API will be removed in near future.
 
 - getRecordList(param0:\{nextId?:number;roomUuid:string\}):Promise&lt;any&gt;
 
-- 查询房间录制列表
+查询房间录制列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;nextId?:number;roomUuid:string\&#125;" required>
 
-  - param0: \{nextId?:number;roomUuid:string\}
+<ParameterList>
+<Parameter name="nextId" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - Optional nextId?:number
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="getRoomEvents"></a>
 
@@ -661,20 +971,24 @@ This API will be removed in near future.
 
 - getRoomEvents(param0:\{causeDataFilterKeys?:string;causeDataFilterValues?:string;cmd?:number;nextId?:number;roomUuid:string;userUuid?:string\}):Promise&lt;any&gt;
 
-- 查询房间sequences事件
+查询房间sequences事件
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;causeDataFilterKeys?:string;causeDataFilterValues?:string;cmd?:number;nextId?:number;roomUuid:string;userUuid?:string\&#125;" required>
 
-  - param0: \{causeDataFilterKeys?:string;causeDataFilterValues?:string;cmd?:number;nextId?:number;roomUuid:string;userUuid?:string\}
+<ParameterList>
+<Parameter name="causeDataFilterKeys" type="string" optional />
+<Parameter name="causeDataFilterValues" type="string" optional />
+<Parameter name="cmd" type="number" optional />
+<Parameter name="nextId" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" optional />
+</ParameterList>
 
-    - Optional causeDataFilterKeys?:string
-    - Optional causeDataFilterValues?:string
-    - Optional cmd?:number
-    - Optional nextId?:number
-    - roomUuid:string
-    - Optional userUuid?:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="getWindowManagerAttributes"></a>
 
@@ -682,13 +996,13 @@ This API will be removed in near future.
 
 - getWindowManagerAttributes(roomUuid:string):Promise&lt;any&gt;
 
-- 获取白板windowManager属性（课件）
+获取白板windowManager属性（课件）
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="handsUp"></a>
 
@@ -696,19 +1010,23 @@ This API will be removed in near future.
 
 - handsUp(params:\{payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\}):Promise&lt;any&gt;
 
-- 举手
+举手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\&#125;" required>
 
-  - params: \{payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\}
+<ParameterList>
+<Parameter name="payload" type="unknown" optional />
+<Parameter name="retry" type="boolean" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="timout" type="number" optional />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
 
-    - Optional payload?:unknown
-    - Optional retry?:boolean
-    - roomUuid:string
-    - Optional timout?:number
-    - toUserUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="handsWave"></a>
 
@@ -716,19 +1034,23 @@ This API will be removed in near future.
 
 - handsWave(params:\{payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\}):Promise&lt;any&gt;
 
-- 挥手
+挥手
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\&#125;" required>
 
-  - params: \{payload?:unknown;retry?:boolean;roomUuid:string;timout?:number;toUserUuid:string\}
+<ParameterList>
+<Parameter name="payload" type="unknown" optional />
+<Parameter name="retry" type="boolean" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="timout" type="number" optional />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
 
-    - Optional payload?:unknown
-    - Optional retry?:boolean
-    - roomUuid:string
-    - Optional timout?:number
-    - toUserUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="kickOutOnceOrBan"></a>
 
@@ -736,15 +1058,15 @@ This API will be removed in near future.
 
 - kickOutOnceOrBan(userUuid:string, isBan:boolean, roomUuid:string):Promise&lt;any&gt;
 
-- 踢出房间
+踢出房间
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="isBan" type="boolean" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  - userUuid: string
-  - isBan: boolean
-  - roomUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="muteChat"></a>
 
@@ -752,16 +1074,20 @@ This API will be removed in near future.
 
 - muteChat(params:\{muteChat:number;roomUuid:string\}):Promise&lt;any&gt;
 
-- 聊天禁言
+聊天禁言
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;muteChat:number;roomUuid:string\&#125;" required>
 
-  - params: \{muteChat:number;roomUuid:string\}
+<ParameterList>
+<Parameter name="muteChat" type="number" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - muteChat:number
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="pauseCountdownTimer"></a>
 
@@ -769,14 +1095,14 @@ This API will be removed in near future.
 
 - pauseCountdownTimer(roomUuid:string, countdownTimerId:string):Promise&lt;\{data:any\}&gt;
 
-- 暂停倒计时
+暂停倒计时
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - countdownTimerId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="rejectGroupInvite"></a>
 
@@ -784,14 +1110,14 @@ This API will be removed in near future.
 
 - rejectGroupInvite(roomUuid:string, groupUuid:string):Promise&lt;any&gt;
 
-- 拒绝进入分组邀请
+拒绝进入分组邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="groupUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - groupUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlGetTokens"></a>
 
@@ -799,14 +1125,14 @@ This API will be removed in near future.
 
 - remoteControlGetTokens(roomUuid:string, userUuid:string):Promise&lt;any&gt;
 
-- 远程控制-获取远程控制需要的token
+远程控制-获取远程控制需要的token
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlStudentAcceptInvite"></a>
 
@@ -814,14 +1140,14 @@ This API will be removed in near future.
 
 - remoteControlStudentAcceptInvite(roomUuid:string, userUuid:string):Promise&lt;any&gt;
 
-- 远程控制-学生同意邀请
+远程控制-学生同意邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlTeacherAuthorization"></a>
 
@@ -829,14 +1155,14 @@ This API will be removed in near future.
 
 - remoteControlTeacherAuthorization(roomUuid:string, userUuid:string):Promise&lt;any&gt;
 
-- 远程控制授权
+远程控制授权
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlTeacherInvite"></a>
 
@@ -844,16 +1170,20 @@ This API will be removed in near future.
 
 - remoteControlTeacherInvite(roomUuid:string, data:\{toUserUuid:string\}):Promise&lt;any&gt;
 
-- 远程控制-老师发起邀请
+远程控制-老师发起邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123;toUserUuid:string\&#125;" required>
 
-  - roomUuid: string
-  - data: \{toUserUuid:string\}
+<ParameterList>
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
 
-    - toUserUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlTeacherStopInvite"></a>
 
@@ -861,14 +1191,14 @@ This API will be removed in near future.
 
 - remoteControlTeacherStopInvite(roomUuid:string, toUserUuid:string):Promise&lt;any&gt;
 
-- 远程控制-老师结束邀请
+远程控制-老师结束邀请
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - toUserUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="remoteControlTeacherUnauthorization"></a>
 
@@ -876,14 +1206,14 @@ This API will be removed in near future.
 
 - remoteControlTeacherUnauthorization(roomUuid:string, userUuid:string):Promise&lt;any&gt;
 
-- 远程控制取消授权
+远程控制取消授权
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="removeGroup"></a>
 
@@ -891,16 +1221,20 @@ This API will be removed in near future.
 
 - removeGroup(roomUuid:string, data:\{removeGroupUuids:string[]\}):Promise&lt;any&gt;
 
-- 删除分组
+删除分组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123;removeGroupUuids:string[]\&#125;" required>
 
-  - roomUuid: string
-  - data: \{removeGroupUuids:string[]\}
+<ParameterList>
+<Parameter name="removeGroupUuids" type="string[]" required />
+</ParameterList>
 
-    - removeGroupUuids:string[]
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="removeMaterials"></a>
 
@@ -908,14 +1242,14 @@ This API will be removed in near future.
 
 - removeMaterials(resourceUuids:string[], userUuid:string):Promise&lt;any&gt;
 
-- 删除个人资源
+删除个人资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuids" type="string[]" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - resourceUuids: string[]
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="removeWidgetExtraProperties"></a>
 
@@ -923,15 +1257,15 @@ This API will be removed in near future.
 
 - removeWidgetExtraProperties(roomUuid:string, widgetUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 移除 extra 中的属性
+移除 extra 中的属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - widgetUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -939,16 +1273,16 @@ This API will be removed in near future.
 
 - removeWidgetUserProperties(roomUuid:string, widgetUuid:string, userUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 移除用户 widget 属性
+移除用户 widget 属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - widgetUuid: string
-  - userUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="reportMicCameraStateLeagcy"></a>
 
@@ -956,17 +1290,21 @@ This API will be removed in near future.
 
 - reportMicCameraStateLeagcy(payload:\{data:unknown;roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 上报麦克风设备状态（兼容历史版本）
+上报麦克风设备状态（兼容历史版本）
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123;data:unknown;roomUuid:string;userUuid:string\&#125;" required>
 
-  - payload: \{data:unknown;roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="data" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - data:unknown
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="resumeCountdownTimer"></a>
 
@@ -974,14 +1312,14 @@ This API will be removed in near future.
 
 - resumeCountdownTimer(roomUuid:string, countdownTimerId:string):Promise&lt;\{data:any\}&gt;
 
-- 恢复倒计时
+恢复倒计时
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - countdownTimerId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="revokeAllCoVideo"></a>
 
@@ -989,15 +1327,19 @@ This API will be removed in near future.
 
 - revokeAllCoVideo(params:\{roomUuid:string\}):Promise&lt;any&gt;
 
-- 所有成员下台，停止连麦
+所有成员下台，停止连麦
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;roomUuid:string\&#125;" required>
 
-  - params: \{roomUuid:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="revokeCoVideo"></a>
 
@@ -1005,16 +1347,20 @@ This API will be removed in near future.
 
 - revokeCoVideo(params:\{roomUuid:string;toUserUuid?:string\}):Promise&lt;any&gt;
 
-- 下台，停止连麦
+下台，停止连麦
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;roomUuid:string;toUserUuid?:string\&#125;" required>
 
-  - params: \{roomUuid:string;toUserUuid?:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
 
-    - roomUuid:string
-    - Optional toUserUuid?:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendChat"></a>
 
@@ -1022,20 +1368,28 @@ This API will be removed in near future.
 
 - sendChat(params:\{data:\{message:string;type:number\};roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 发送聊天信息
+发送聊天信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;data:\&#123;message:string;type:number\&#125;;roomUuid:string;userUuid:string\&#125;" required>
 
-  - params: \{data:\{message:string;type:number\};roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;message:string;type:number\&#125;" required>
 
-    - data:\{message:string;type:number\}
+<ParameterList>
+<Parameter name="message" type="string" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
 
-      - message:string
-      - type:number
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="sendConversationChat"></a>
 
@@ -1043,20 +1397,28 @@ This API will be removed in near future.
 
 - sendConversationChat(params:\{data:\{message:string;type:number\};roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 发送聊天会话信息
+发送聊天会话信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;data:\&#123;message:string;type:number\&#125;;roomUuid:string;userUuid:string\&#125;" required>
 
-  - params: \{data:\{message:string;type:number\};roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;message:string;type:number\&#125;" required>
 
-    - data:\{message:string;type:number\}
+<ParameterList>
+<Parameter name="message" type="string" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
 
-      - message:string
-      - type:number
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="sendNotificationMessage"></a>
 
@@ -1064,24 +1426,28 @@ This API will be removed in near future.
 
 - sendNotificationMessage(roomUuid:string, data:\{msg:string;rang:number;toGroupUuids:string[];type:string\}):Promise&lt;any&gt;
 
-- 发送全体消息
+发送全体消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123;msg:string;rang:number;toGroupUuids:string[];type:string\&#125;" required>
 
-  - roomUuid: string
-  - data: \{msg:string;rang:number;toGroupUuids:string[];type:string\}
+rang: 1.大房间 2.指定组 3.全体（大房间+所有组）
+toGroupUuids: 当type=2时，传入指定小组id
+type: 消息类型；txt\:文本消息，img：图片消息，loc：位置消息，audio：语音消息，video：视频消息，file：文件消息
+msg: 消息
 
-    rang: 1.大房间 2.指定组 3.全体（大房间+所有组）
-    toGroupUuids: 当type=2时，传入指定小组id
-    type: 消息类型；txt\:文本消息，img：图片消息，loc：位置消息，audio：语音消息，video：视频消息，file：文件消息
-    msg: 消息
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="rang" type="number" required />
+<Parameter name="toGroupUuids" type="string[]" required />
+<Parameter name="type" type="string" required />
+</ParameterList>
 
-    - msg:string
-    - rang:number
-    - toGroupUuids:string[]
-    - type:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendRewards"></a>
 
@@ -1089,17 +1455,21 @@ This API will be removed in near future.
 
 - sendRewards(params:\{rewards:\{changeReward:number;userUuid:string\}[];roomUuid:string\}, isBatch?:boolean):Promise&lt;any&gt;
 
-- 发送奖励
+发送奖励
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;rewards:\&#123;changeReward:number;userUuid:string\&#125;[];roomUuid:string\&#125;" required>
 
-  - params: \{rewards:\{changeReward:number;userUuid:string\}[];roomUuid:string\}
+<ParameterList>
+<Parameter name="rewards" type="\&#123;changeReward:number;userUuid:string\&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - rewards:\{changeReward:number;userUuid:string\}[]
-    - roomUuid:string
-  - Optional isBatch: boolean
+</Parameter>
+<Parameter name="isBatch" type="boolean" optional />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="setWindowManagerAttributes"></a>
 
@@ -1107,14 +1477,14 @@ This API will be removed in near future.
 
 - setWindowManagerAttributes(roomUuid:string, data:unknown):Promise&lt;any&gt;
 
-- 保存白板windowManager属性（课件）
+保存白板windowManager属性（课件）
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - data: unknown
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="startAnswer"></a>
 
@@ -1122,14 +1492,14 @@ This API will be removed in near future.
 
 - startAnswer(roomUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 开启选择题
+开启选择题
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="startCarousel"></a>
 
@@ -1137,19 +1507,23 @@ This API will be removed in near future.
 
 - startCarousel(payload:\{count?:number;interval?:number;range?:number;roomUuid:string;type?:number\}):Promise&lt;any&gt;
 
-- 开启轮播
+开启轮播
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123;count?:number;interval?:number;range?:number;roomUuid:string;type?:number\&#125;" required>
 
-  - payload: \{count?:number;interval?:number;range?:number;roomUuid:string;type?:number\}
+<ParameterList>
+<Parameter name="count" type="number" optional />
+<Parameter name="interval" type="number" optional />
+<Parameter name="range" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="type" type="number" optional />
+</ParameterList>
 
-    - Optional count?:number
-    - Optional interval?:number
-    - Optional range?:number
-    - roomUuid:string
-    - Optional type?:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="startCountdownTimer"></a>
 
@@ -1157,14 +1531,14 @@ This API will be removed in near future.
 
 - startCountdownTimer(roomUuid:string, duration:number):Promise&lt;\{data:any\}&gt;
 
-- 开启倒计时
+开启倒计时
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="duration" type="number" required />
+</ParameterList>
 
-  - roomUuid: string
-  - duration: number
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="startPolling"></a>
 
@@ -1172,14 +1546,14 @@ This API will be removed in near future.
 
 - startPolling(roomUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 开启投票
+开启投票
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="startShareScreen"></a>
 
@@ -1187,15 +1561,23 @@ This API will be removed in near future.
 
 - startShareScreen(roomId:string, userUuid:string, audioOptions?:Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;):Promise&lt;any&gt;
 
-- 开启屏幕共享
+开启屏幕共享
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="audioOptions" optional>
 
-  - roomId: string
-  - userUuid: string
-  - Optional audioOptions: Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+Partial & lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="startShareScreenStateless"></a>
 
@@ -1203,14 +1585,14 @@ This API will be removed in near future.
 
 - startShareScreenStateless(roomId:string, userUuid:string):Promise&lt;any&gt;
 
-- 开启屏幕共享
+开启屏幕共享
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomId: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="stopAnswer"></a>
 
@@ -1218,14 +1600,14 @@ This API will be removed in near future.
 
 - stopAnswer(roomUuid:string, popupQuizId:string):Promise&lt;\{data:any\}&gt;
 
-- 停止选择
+停止选择
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - popupQuizId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="stopCarousel"></a>
 
@@ -1233,15 +1615,19 @@ This API will be removed in near future.
 
 - stopCarousel(payload:\{roomUuid:string\}):Promise&lt;any&gt;
 
-- 关闭轮播
+关闭轮播
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123;roomUuid:string\&#125;" required>
 
-  - payload: \{roomUuid:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="stopCountdownTimer"></a>
 
@@ -1249,14 +1635,14 @@ This API will be removed in near future.
 
 - stopCountdownTimer(roomUuid:string, countdownTimerId:string):Promise&lt;\{data:any\}&gt;
 
-- 结束倒计时
+结束倒计时
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - countdownTimerId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="stopPolling"></a>
 
@@ -1264,14 +1650,14 @@ This API will be removed in near future.
 
 - stopPolling(roomUuid:string, pollId:string):Promise&lt;\{data:any\}&gt;
 
-- 结束投票
+结束投票
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="pollId" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - pollId: string
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="stopShareScreen"></a>
 
@@ -1279,14 +1665,14 @@ This API will be removed in near future.
 
 - stopShareScreen(roomId:string, userUuid:string):Promise&lt;any&gt;
 
-- 停止屏幕共享
+停止屏幕共享
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomId: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="stopShareScreenStateless"></a>
 
@@ -1294,14 +1680,14 @@ This API will be removed in near future.
 
 - stopShareScreenStateless(roomId:string, userUuid:string):Promise&lt;any&gt;
 
-- 停止屏幕共享
+停止屏幕共享
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - roomId: string
-  - userUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="submitAnswer"></a>
 
@@ -1309,16 +1695,16 @@ This API will be removed in near future.
 
 - submitAnswer(roomUuid:string, popupQuizId:string, userUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 提交答案
+提交答案
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - popupQuizId: string
-  - userUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="submitResult"></a>
 
@@ -1326,20 +1712,24 @@ This API will be removed in near future.
 
 - submitResult(roomUuid:string, pollId:string, userUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 投票
+投票
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="pollId" type="string" required>
 
-  - roomUuid: string
-  - pollId: string
+投票id
 
-    投票id
-  - userUuid: string
+</Parameter>
+<Parameter name="userUuid" type="string" required>
 
-    用户ID
-  - properties: unknown
+用户ID
 
-  Returns Promise&lt;\{data:any\}&gt;
+</Parameter>
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="updateAnswerCorrectItems"></a>
 
@@ -1347,15 +1737,15 @@ This API will be removed in near future.
 
 - updateAnswerCorrectItems(roomUuid:string, popupQuizId:string, correctItems:string[]):Promise&lt;\{data:any\}&gt;
 
-- 修改答题正确选项
+修改答题正确选项
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="correctItems" type="string[]" required />
+</ParameterList>
 
-  - roomUuid: string
-  - popupQuizId: string
-  - correctItems: string[]
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="updateBatchUserProperties"></a>
 
@@ -1363,16 +1753,20 @@ This API will be removed in near future.
 
 - updateBatchUserProperties(param0:\{data:\{cause?:unknown;properties:unknown;userUuid:string\}[];roomUuid:string\}):Promise&lt;any&gt;
 
-- 批量更新用户属性
+批量更新用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;data:\&#123;cause?:unknown;properties:unknown;userUuid:string\&#125;[];roomUuid:string\&#125;" required>
 
-  - param0: \{data:\{cause?:unknown;properties:unknown;userUuid:string\}[];roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;cause?:unknown;properties:unknown;userUuid:string\&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - data:\{cause?:unknown;properties:unknown;userUuid:string\}[]
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateClassState"></a>
 
@@ -1380,16 +1774,34 @@ This API will be removed in near future.
 
 - updateClassState(params:\{roomUuid:string;state:[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)\}):Promise&lt;any&gt;
 
-- 更新教室状态
+更新教室状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: \{roomUuid:string;state:[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)\}
+<ParameterType>
 
-    - roomUuid:string
-    - state:[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+\{roomUuid:string;state:[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" required>
+
+<ParameterType>
+
+[ClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateCloudDriveFile"></a>
 
@@ -1397,15 +1809,23 @@ This API will be removed in near future.
 
 - updateCloudDriveFile(resourceUuid:string, userUuid:string, resourceInfo:Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;):Promise&lt;any&gt;
 
-- 修改云盘资源
+修改云盘资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
 
-  - resourceUuid: string
-  - userUuid: string
-  - resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+Pick & lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateExpandedScopeAndStreams"></a>
 
@@ -1413,26 +1833,34 @@ This API will be removed in near future.
 
 - updateExpandedScopeAndStreams(roomUuid:string, state:0|1, data:\{userUuids:string[]\}):Promise&lt;any&gt;
 
-- 更新视频墙开关状态和发流用户列表
+更新视频墙开关状态和发流用户列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required>
 
-  - roomUuid: string
+课堂 ID
 
-    课堂 ID
-  - state: 0|1
+</Parameter>
+<Parameter name="state" type="0 | 1" required>
 
-    ：视频墙开关状态
+：视频墙开关状态
 
-    - 1：开启视频墙功能
-    - 0：关闭视频墙功能
-  - data: \{userUuids:string[]\}
+- 1：开启视频墙功能
+- 0：关闭视频墙功能
 
-    想要控制发流权限的用户 ID 列表
+</Parameter>
+<Parameter name="data" type="\&#123;userUuids:string[]\&#125;" required>
 
-    - userUuids:string[]
+想要控制发流权限的用户 ID 列表
 
-  Returns Promise&lt;any&gt;
+<ParameterList>
+<Parameter name="userUuids" type="string[]" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateFlexProperties"></a>
 
@@ -1440,19 +1868,23 @@ This API will be removed in near future.
 
 - updateFlexProperties(roomUuid:string, params:\{cause?:unknown;increments?:unknown;properties?:unknown;throttleTime?:number\}):Promise&lt;any&gt;
 
-- 更新用户属性
+更新用户属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="params" type="\&#123;cause?:unknown;increments?:unknown;properties?:unknown;throttleTime?:number\&#125;" required>
 
-  - roomUuid: string
-  - params: \{cause?:unknown;increments?:unknown;properties?:unknown;throttleTime?:number\}
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="increments" type="unknown" optional />
+<Parameter name="properties" type="unknown" optional />
+<Parameter name="throttleTime" type="number" optional />
+</ParameterList>
 
-    - Optional cause?:unknown
-    - Optional increments?:unknown
-    - Optional properties?:unknown
-    - Optional throttleTime?:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateGroupInfo"></a>
 
@@ -1460,16 +1892,34 @@ This API will be removed in near future.
 
 - updateGroupInfo(roomUuid:string, data:\{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]\}):Promise&lt;any&gt;
 
-- 修改分组信息
+修改分组信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]\}
+<ParameterType>
 
-    - groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+\{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateGroupState"></a>
 
@@ -1477,19 +1927,45 @@ This API will be removed in near future.
 
 - updateGroupState(roomUuid:string, data:\{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress?:boolean;syncBoardScenes?:boolean\}, state?:[GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)):Promise&lt;any&gt;
 
-- 开启/关闭分组
+开启/关闭分组
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress?:boolean;syncBoardScenes?:boolean\}
+<ParameterType>
 
-    - groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
-    - Optional inProgress?:boolean
-    - Optional syncBoardScenes?:boolean
-  - Optional state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+\{groups:[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[];inProgress?:boolean;syncBoardScenes?:boolean\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" optional />
+<Parameter name="syncBoardScenes" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+<Parameter name="state" optional>
+
+<ParameterType>
+
+[GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateGroupUsers"></a>
 
@@ -1497,19 +1973,37 @@ This API will be removed in near future.
 
 - updateGroupUsers(roomUuid:string, data:\{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[];inProgress:boolean\}):Promise&lt;any&gt;
 
-- 更新分组成员
+更新分组成员
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
 
-  - roomUuid: string
-  - data: \{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[];inProgress:boolean\}
+<ParameterType>
 
-    🔢 inProgress 是否邀请，true 发送邀请 false 直接加入
+\{groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[];inProgress:boolean\}
 
-    - groups:[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
-    - inProgress:boolean
+</ParameterType>
 
-  Returns Promise&lt;any&gt;
+🔢 inProgress 是否邀请，true 发送邀请 false 直接加入
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateRecordingState"></a>
 
@@ -1517,18 +2011,22 @@ This API will be removed in near future.
 
 - updateRecordingState(params:\{args?:unknown;backupCount?:number;roomUuid:string;state:number\}):Promise&lt;any&gt;
 
-- 更新录制状态
+更新录制状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;args?:unknown;backupCount?:number;roomUuid:string;state:number\&#125;" required>
 
-  - params: \{args?:unknown;backupCount?:number;roomUuid:string;state:number\}
+<ParameterList>
+<Parameter name="args" type="unknown" optional />
+<Parameter name="backupCount" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" type="number" required />
+</ParameterList>
 
-    - Optional args?:unknown
-    - Optional backupCount?:number
-    - roomUuid:string
-    - state:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateRecordingStateOngoing"></a>
 
@@ -1536,18 +2034,26 @@ This API will be removed in near future.
 
 - updateRecordingStateOngoing(params:\{opts:\{onHold:boolean\};roomUuid:string\}):Promise&lt;any&gt;
 
-- 更新录制状态(录制中)
+更新录制状态(录制中)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123;opts:\&#123;onHold:boolean\&#125;;roomUuid:string\&#125;" required>
 
-  - params: \{opts:\{onHold:boolean\};roomUuid:string\}
+<ParameterList>
+<Parameter name="opts" type="\&#123;onHold:boolean\&#125;" required>
 
-    - opts:\{onHold:boolean\}
+<ParameterList>
+<Parameter name="onHold" type="boolean" required />
+</ParameterList>
 
-      - onHold:boolean
-    - roomUuid:string
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateUserTags"></a>
 
@@ -1555,18 +2061,22 @@ This API will be removed in near future.
 
 - updateUserTags(param0:\{data:unknown;key:string;roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- 更新用户tag属性
+更新用户tag属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123;data:unknown;key:string;roomUuid:string;userUuid:string\&#125;" required>
 
-  - param0: \{data:unknown;key:string;roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="data" type="unknown" required />
+<Parameter name="key" type="string" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - data:unknown
-    - key:string
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateWidgetProperties"></a>
 
@@ -1574,15 +2084,15 @@ This API will be removed in near future.
 
 - updateWidgetProperties(roomUuid:string, widgetUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 更新房间 widget 属性
+更新房间 widget 属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - widgetUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -1590,13 +2100,13 @@ This API will be removed in near future.
 
 - updateWidgetUserProperties(roomUuid:string, widgetUuid:string, userUuid:string, properties:unknown):Promise&lt;\{data:any\}&gt;
 
-- 设置用户 widget 属性
+设置用户 widget 属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
 
-  - roomUuid: string
-  - widgetUuid: string
-  - userUuid: string
-  - properties: unknown
-
-  Returns Promise&lt;\{data:any\}&gt;
+Returns Promise&lt;\{data:any\}&gt;

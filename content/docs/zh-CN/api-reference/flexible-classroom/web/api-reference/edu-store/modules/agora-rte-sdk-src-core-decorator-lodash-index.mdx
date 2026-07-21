@@ -30,46 +30,52 @@ Lodash: \{debounced:any;throttled:any\}
 
 #### Type declaration
 
-- debounced:function
+<ParameterList title="Type declaration">
+<Parameter name="debounced" type="function" required>
 
-  - debounced(wait?:number, options?:DebounceSettings):(proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
+- debounced(wait?:number, options?:DebounceSettings):(proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
 
-  - Parameters
+<ParameterList title="Parameters">
+<Parameter name="wait" type="number" optional />
+<Parameter name="options" type="DebounceSettings" optional />
+</ParameterList>
 
-    - Optional wait: number
-    - Optional options: DebounceSettings
+Returns (proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
 
-    Returns (proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
+- - (proto:any, propertyName:string, descriptor:PropertyDescriptor):void
 
-    - - (proto:any, propertyName:string, descriptor:PropertyDescriptor):void
+  <ParameterList title="Parameters">
+  <Parameter name="proto" type="any" required />
+  <Parameter name="propertyName" type="string" required />
+  <Parameter name="descriptor" type="PropertyDescriptor" required />
+  </ParameterList>
 
-      - Parameters
+  Returns void
 
-        - proto: any
-        - propertyName: string
-        - descriptor: PropertyDescriptor
+</Parameter>
+<Parameter name="throttled" type="function" required>
 
-        Returns void
-- throttled:function
+- throttled(wait?:number, options?:ThrottleSettings):(proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
 
-  - throttled(wait?:number, options?:ThrottleSettings):(proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="wait" type="number" optional />
+<Parameter name="options" type="ThrottleSettings" optional />
+</ParameterList>
 
-  - Parameters
+Returns (proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
 
-    - Optional wait: number
-    - Optional options: ThrottleSettings
+- - (proto:any, propertyName:string, descriptor:PropertyDescriptor):void
 
-    Returns (proto:any, propertyName:string, descriptor:PropertyDescriptor)=&gt;void
+  <ParameterList title="Parameters">
+  <Parameter name="proto" type="any" required />
+  <Parameter name="propertyName" type="string" required />
+  <Parameter name="descriptor" type="PropertyDescriptor" required />
+  </ParameterList>
 
-    - - (proto:any, propertyName:string, descriptor:PropertyDescriptor):void
+  Returns void
 
-      - Parameters
-
-        - proto: any
-        - propertyName: string
-        - descriptor: PropertyDescriptor
-
-        Returns void
+</Parameter>
+</ParameterList>
 
 ## Functions
 
@@ -79,4 +85,4 @@ Lodash: \{debounced:any;throttled:any\}
 
 - cleanup():void
 
-- Returns void
+Returns void

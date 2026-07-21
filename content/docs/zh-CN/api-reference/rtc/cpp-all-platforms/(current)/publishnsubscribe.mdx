@@ -50,12 +50,17 @@ virtual int enableDualStreamMode(bool enabled) __deprecated = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用双流模式：
 
 - true：启用双流模式。
 - false：（默认）关闭双流模式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode__return_values"></a>
 
@@ -107,20 +112,27 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用双流模式：
 
 - true：启用双流模式。
 - false：（默认）关闭双流模式。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-simulcaststreamconfig)。
 
 :::note
 注： 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置 `streamConfig` 不生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
 
@@ -174,14 +186,18 @@ virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& st
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用不同质量层级的视频流：
 
 - true：启用不同质量层级的视频流。
 - false：（默认）关闭不同质量层级的视频流。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-1"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-simulcaststreamconfig)。
 
@@ -189,9 +205,14 @@ virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& st
 注： 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置 `streamConfig` 无效。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
 
@@ -230,12 +251,17 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否停止接收所有远端音频流：
 
 - true：停止接收所有远端音频流。
 - false：恢复接收所有远端音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -280,16 +306,23 @@ virtual int muteAllRemoteAudioStreamsEx(bool mute, const RtcConnection& connecti
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否停止订阅所有远端用户的音频流：
 
 - true：停止订阅所有远端用户的音频流。
 - false：（默认）订阅所有远端用户的音频流。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
 
@@ -328,12 +361,17 @@ virtual int muteAllRemoteVideoStreams(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 是否停止接收所有远端视频流：
 
 - true：停止接收所有远端视频流。
 - false：恢复接收所有远端视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
@@ -374,16 +412,23 @@ virtual int muteAllRemoteVideoStreamsEx(bool mute, const RtcConnection& connecti
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-3"></a>
+<Parameter name="mute">
 
 是否停止订阅所有远端用户的视频流。
 
 - true：停止订阅所有远端用户的视频流。
 - false：（默认）订阅所有远端用户的视频流。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
 
@@ -430,12 +475,17 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-4"></a>
+<Parameter name="mute">
 
 是否停止发布本地音频流：
 
 - true：停止发布本地音频流。
 - false：（默认）恢复发布本地音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
@@ -484,16 +534,23 @@ virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-5"></a>
+<Parameter name="mute">
 
 是否停止发布本地音频流：
 
 - true：停止发布本地音频流。
 - false：（默认）恢复发布本地音频流。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
 
@@ -541,12 +598,17 @@ virtual int muteLocalVideoStream(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-6"></a>
+<Parameter name="mute">
 
 是否停止发布本地视频流。
 
 - true：停止发布本地视频流。
 - false：（默认）发布本地视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
@@ -593,16 +655,23 @@ virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-7"></a>
+<Parameter name="mute">
 
 是否停止发布本地视频流。
 
 - true：停止发布本地视频流。
 - false：（默认）发布本地视频流。
 
-### connection
+</Parameter>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
 
@@ -647,16 +716,23 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 指定远端用户的用户 ID。
 
-### mute
+</Parameter>
+<a id="mute-8"></a>
+<Parameter name="mute">
 
 是否订阅指定远端用户的音频流。
 
 - true：停止订阅该用户的音频流。
 - false：（默认）订阅该用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
@@ -697,20 +773,29 @@ virtual int muteRemoteAudioStreamEx(uid_t uid, bool mute, const RtcConnection& c
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 指定用户的 ID。
 
-### mute
+</Parameter>
+<a id="mute-9"></a>
+<Parameter name="mute">
 
 是否停止接收指定用户的音频流：
 
 - true：停止接收指定用户的音频流。
 - false：（默认）恢复接收指定用户的音频流。
 
-### connection
+</Parameter>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
 
@@ -755,16 +840,23 @@ virtual int muteRemoteVideoStream(uid_t uid, bool mute) = 0;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 指定远端用户的用户 ID。
 
-### mute
+</Parameter>
+<a id="mute-10"></a>
+<Parameter name="mute">
 
 是否订阅指定远端用户的视频流：
 
 - true：停止订阅该用户的视频流。
 - false：（默认）订阅该用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
@@ -809,20 +901,29 @@ virtual int muteRemoteVideoStreamEx(uid_t uid, bool mute, const RtcConnection& c
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### mute
+</Parameter>
+<a id="mute-11"></a>
+<Parameter name="mute">
 
 是否停止接收指定用户的视频流：
 
 - true：停止接收该用户的视频流。
 - false：（默认）恢复接收该用户的视频流。
 
-### connection
+</Parameter>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
 
@@ -869,9 +970,14 @@ SDK 默认在发送端开启视频小流的自适应模式（`AUTO_SIMULCAST_STR
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-simulcaststreammode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode__return_values"></a>
 
@@ -919,17 +1025,24 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 视频流的发送模式，详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-2"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-simulcaststreamconfig)。
 
 :::note
 注： 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置 `streamConfig` 不生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
 
@@ -982,11 +1095,15 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 视频流的发送模式，详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-simulcaststreammode)。
 
-### streamConfig
+</Parameter>
+<a id="streamconfig-3"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-simulcaststreamconfig)。
 
@@ -994,9 +1111,14 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 注： 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置该参数无效。
 :::
 
-### connection
+</Parameter>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
 
@@ -1047,9 +1169,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 ### 参数
 
-### streamType
+<ParameterList>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 默认订阅的视频流类型，详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
 
@@ -1100,13 +1227,20 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-1"></a>
+<Parameter name="streamType">
 
 视频流类型，详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
 
@@ -1157,17 +1291,26 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### streamType
+</Parameter>
+<a id="streamtype-2"></a>
+<Parameter name="streamType">
 
 视频流类型，详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。
 
-### connection
+</Parameter>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
 
@@ -1208,13 +1351,20 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 视频订阅选项。详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videosubscriptionoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
 
@@ -1255,17 +1405,26 @@ virtual int setRemoteVideoSubscriptionOptionsEx(uid_t uid, const VideoSubscripti
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 视频订阅选项。详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videosubscriptionoptions)。
 
-### connection
+</Parameter>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
 
@@ -1307,13 +1466,20 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist"></a>
+<Parameter name="uidList">
 
 你希望订阅的用户 ID 列表。如果你想订阅某个用户的音频流，请将该用户的用户 ID 添加到该列表中。如果你想将某个用户从白名单中移除，需要调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新该列表，即仅保留你希望订阅的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
 
@@ -1361,17 +1527,26 @@ virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-1"></a>
+<Parameter name="uidList">
 
 你希望订阅的用户 ID 列表。如果你想订阅某个用户的音频流，请将该用户的 ID 添加到该列表中。如果你想将某个用户从白名单中移除，需要调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新用户 ID 列表；也就是说，你只需在新的用户 ID 列表中添加你希望订阅的用户的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-1"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
 
@@ -1413,13 +1588,20 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-2"></a>
+<Parameter name="uidList">
 
 不希望订阅其音频流的用户 ID 列表。要将某个用户从黑名单中移除，需要调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新该列表，即仅在新的列表中保留不希望订阅的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-2"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
 
@@ -1467,17 +1649,26 @@ virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-3"></a>
+<Parameter name="uidList">
 
 不希望订阅其音频流的用户 ID 列表。如果你希望将某个用户从黑名单中移除，需要调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新用户 ID 列表。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-3"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
 
@@ -1519,13 +1710,20 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-4"></a>
+<Parameter name="uidList">
 
 希望订阅的视频流用户的用户 ID 列表。如果你想移除某个用户，需要调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 更新该列表，仅保留你希望订阅的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-4"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
 
@@ -1575,17 +1773,26 @@ virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-5"></a>
+<Parameter name="uidList">
 
 你希望订阅的视频流所属用户的用户 ID 列表。如果你希望订阅某个用户的视频流，请将该用户的用户 ID 添加到此列表中。如果你希望将某个用户从白名单中移除，需要调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新用户 ID 列表。这意味着你只需在新的用户 ID 列表中添加你希望订阅的用户的 `uid`。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-5"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-12"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
 
@@ -1627,13 +1834,20 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-6"></a>
+<Parameter name="uidList">
 
 不希望订阅其视频流的用户 ID 列表。如果你希望将某个用户从黑名单中移除，需要调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 更新该列表，即只需在新的用户 ID 列表中添加不希望订阅的用户的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-6"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
 
@@ -1681,17 +1895,26 @@ virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-### uidList
+<ParameterList>
+<a id="uidlist-7"></a>
+<Parameter name="uidList">
 
 不希望订阅其视频流的用户 ID 列表。若要将某个用户从阻止名单中移除，需要调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新用户 ID 列表，即在新的列表中仅包含你仍希望阻止的视频流用户的用户 ID。
 
-### uidNumber
+</Parameter>
+<a id="uidnumber-7"></a>
+<Parameter name="uidNumber">
 
 用户 ID 列表中的用户数量。
 
-### connection
+</Parameter>
+<a id="connection-13"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
 
@@ -1724,21 +1947,32 @@ virtual void onAudioPublishStateChanged(const char* channel, STREAM_PUBLISH_STAT
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的音频发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的音频发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streampublishstate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 从上一个状态切换到当前状态所经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1764,25 +1998,38 @@ virtual void onAudioSubscribeStateChanged(const char* channel, uid_t uid, STREAM
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### oldState
+</Parameter>
+<a id="oldstate-1"></a>
+<Parameter name="oldState">
 
 之前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamsubscribestate)。
 
-### newState
+</Parameter>
+<a id="newstate-1"></a>
+<Parameter name="newState">
 
 当前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamsubscribestate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate-1"></a>
+<Parameter name="elapseSinceLastState">
 
 从前一个状态到当前状态所经历的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1808,25 +2055,38 @@ virtual void onVideoSubscribeStateChanged(const char* channel, uid_t uid, STREAM
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-9"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### oldState
+</Parameter>
+<a id="oldstate-2"></a>
+<Parameter name="oldState">
 
 之前的视频订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamsubscribestate)。
 
-### newState
+</Parameter>
+<a id="newstate-2"></a>
+<Parameter name="newState">
 
 当前的视频订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamsubscribestate)。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate-2"></a>
+<Parameter name="elapseSinceLastState">
 
 从上一个状态变更到当前状态所经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

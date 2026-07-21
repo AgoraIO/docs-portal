@@ -37,7 +37,17 @@ EduUserStruct: \{userName:string;userProperties:any;userRole:[EduRoleTypeEnum](/
 
 #### Type declaration
 
-- userName:string
-- userProperties:any
-- userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
-- userUuid:string
+<ParameterList title="Type declaration">
+<Parameter name="userName" type="string" required />
+<Parameter name="userProperties" type="any" required />
+<Parameter name="userRole" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="userUuid" type="string" required />
+</ParameterList>

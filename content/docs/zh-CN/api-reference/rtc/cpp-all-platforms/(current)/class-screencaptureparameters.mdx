@@ -33,7 +33,9 @@ struct ScreenCaptureParameters {
 
 ## 属性
 
-### dimensions
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 :::note
 注： 在文档共享场景中设置编码分辨率时，请参考建议设置方式。
@@ -46,15 +48,21 @@ struct ScreenCaptureParameters {
 
 详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 在 Windows 和 macOS 上，表示屏幕共享视频流的编码帧率（fps）。默认值为 5。声网不建议设置超过 15 的值。
 
-### bitrate
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 在 Windows 和 macOS 上，表示屏幕共享视频流的编码码率（Kbps）。默认值为 0，表示 SDK 会根据当前屏幕的分辨率自动计算码率。
 
-### captureMouseCursor
+</Parameter>
+<a id="capturemousecursor"></a>
+<Parameter name="captureMouseCursor">
 
 :::note
 注： 由于 macOS 系统限制，在屏幕共享时设置为 false 无效（共享窗口时不受影响）。
@@ -65,7 +73,9 @@ struct ScreenCaptureParameters {
 - true：（默认）捕获鼠标。
 - false：不捕获鼠标。
 
-### windowFocus
+</Parameter>
+<a id="windowfocus"></a>
+<Parameter name="windowFocus">
 
 :::note
 注： 由于 macOS 系统限制，当设置该参数将窗口置于前台时，如果当前应用有多个窗口，只有主窗口会被置于前台。
@@ -76,11 +86,15 @@ struct ScreenCaptureParameters {
 - true：将窗口置于前台。
 - false：（默认）不将窗口置于前台。
 
-### excludeWindowList
+</Parameter>
+<a id="excludewindowlist"></a>
+<Parameter name="excludeWindowList">
 
 要屏蔽的窗口 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕共享时，可使用该参数屏蔽指定窗口。调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享配置时，也可使用该参数动态屏蔽指定窗口。
 
-### excludeWindowCount
+</Parameter>
+<a id="excludewindowcount"></a>
+<Parameter name="excludeWindowCount">
 
 要排除的窗口数量。
 
@@ -88,7 +102,9 @@ struct ScreenCaptureParameters {
 注： 在 Windows 平台上，该参数的最大值为 24；若超过此值，窗口排除将失败。
 :::
 
-### highLightWidth
+</Parameter>
+<a id="highlightwidth"></a>
+<Parameter name="highLightWidth">
 
 （仅适用于 macOS 和 Windows）边框的宽度（像素）。默认值为 5，取值范围为 (0, 50]。
 
@@ -96,14 +112,18 @@ struct ScreenCaptureParameters {
 注： 仅当 `highLighted` 设置为 true 时该参数才生效。
 :::
 
-### highLightColor
+</Parameter>
+<a id="highlightcolor"></a>
+<Parameter name="highLightColor">
 
 （仅适用于 macOS 和 Windows）
 
 - 在 Windows 平台上，边框颜色为 ARGB 格式。默认值为 0xFF8CBF26。
 - 在 macOS 上，`COLOR_CLASS` 表示 `NSColor`。
 
-### enableHighLight
+</Parameter>
+<a id="enablehighlight"></a>
+<Parameter name="enableHighLight">
 
 :::note
 注： 当共享窗口或屏幕的部分区域时，若设置该参数为 true，SDK 会在整个窗口或屏幕周围显示边框。
@@ -113,3 +133,6 @@ struct ScreenCaptureParameters {
 
 - true：显示边框。
 - false：（默认）不显示边框。
+
+</Parameter>
+</ParameterList>

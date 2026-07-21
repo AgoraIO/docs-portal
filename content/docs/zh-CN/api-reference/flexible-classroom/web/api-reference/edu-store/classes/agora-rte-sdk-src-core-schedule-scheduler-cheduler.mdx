@@ -34,7 +34,7 @@ _migration:
 
 - new Scheduler():[Scheduler](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-schedule-scheduler-cheduler)
 
-- Returns [Scheduler](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-schedule-scheduler-cheduler)
+Returns [Scheduler](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-schedule-scheduler-cheduler)
 
 ## Methods
 
@@ -44,16 +44,18 @@ _migration:
 
 - addDelayTask(runnable:()=&gt;void, delayInMs:number):[Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="runnable" type="()= &amp; gt;void" required>
 
-  - runnable: ()=&gt;void
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - delayInMs: number
+</Parameter>
+<Parameter name="delayInMs" type="number" required />
+</ParameterList>
 
-  Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
 <a id="addIntervalTask"></a>
 
@@ -61,22 +63,32 @@ _migration:
 
 - addIntervalTask(runnable:()=&gt;void, intervalInMs:number, immediate?:boolean, onFail?:()=&gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)):[Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="runnable" type="()= &amp; gt;void" required>
 
-  - runnable: ()=&gt;void
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - intervalInMs: number
-  - Optional immediate: boolean
-  - Optional onFail: ()=&gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+</Parameter>
+<Parameter name="intervalInMs" type="number" required />
+<Parameter name="immediate" type="boolean" optional />
+<Parameter name="onFail" optional>
 
-    - - ():[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+<ParameterType>
 
-      - Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+()= & gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
 
-  Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+</ParameterType>
+
+- - ():[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+  Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+</Parameter>
+</ParameterList>
+
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
 <a id="addPollingTask"></a>
 
@@ -84,19 +96,29 @@ _migration:
 
 - addPollingTask(runnable:()=&gt;void, intervalInMs:number, immediate?:boolean, onFail?:()=&gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)):[Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="runnable" type="()= &amp; gt;void" required>
 
-  - runnable: ()=&gt;void
+- - ():void
 
-    - - ():void
+  Returns void
 
-      - Returns void
-  - intervalInMs: number
-  - Optional immediate: boolean
-  - Optional onFail: ()=&gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+</Parameter>
+<Parameter name="intervalInMs" type="number" required />
+<Parameter name="immediate" type="boolean" optional />
+<Parameter name="onFail" optional>
 
-    - - ():[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+<ParameterType>
 
-      - Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+()= & gt;[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
 
-  Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+</ParameterType>
+
+- - ():[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+  Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+</Parameter>
+</ParameterList>
+
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)

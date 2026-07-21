@@ -37,24 +37,35 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider"></a>
+<Parameter name="provider">
 
 插件提供方的名称，例如 `agora.io`。
 
-### extension
+</Parameter>
+<a id="extension"></a>
+<Parameter name="extension">
 
 插件名称，例如 `agora.beauty`。
 
-### extensionInfo
+</Parameter>
+<a id="extensioninfo"></a>
+<Parameter name="extensionInfo">
 
 `ExtensionInfo` 对象，表示插件的信息。
 
-### enable
+</Parameter>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用插件：
 
 - true：（默认）启用插件。
 - false：禁用插件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableextension__return_values"></a>
 
@@ -87,29 +98,44 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-1"></a>
+<Parameter name="provider">
 
 扩展提供方的名称，例如声网（agora.io）。
 
-### extension
+</Parameter>
+<a id="extension-1"></a>
+<Parameter name="extension">
 
 扩展的名称，例如 `agora.beauty`。
 
-### extensionInfo
+</Parameter>
+<a id="extensioninfo-1"></a>
+<Parameter name="extensionInfo">
 
 扩展信息。详见 `ExtensionInfo`。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 扩展属性的键名。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 输出参数，表示扩展属性键对应的值。
 
-### buf_len
+</Parameter>
+<a id="buf_len"></a>
+<Parameter name="buf_len">
 
 扩展属性值的最大长度（以 JSON 字符串形式表示）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getextensionproperty2__return_values"></a>
 
@@ -154,16 +180,23 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 ### 参数
 
-### path
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 扩展库的路径和名称。例如：`/library/libagora_segmentation_extension.dll`。
 
-### unload_after_use
+</Parameter>
+<a id="unload_after_use"></a>
+<Parameter name="unload_after_use">
 
 是否在不再使用当前扩展时卸载该扩展：
 
 - true：当 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 被销毁时卸载该扩展。
 - false：（推荐）直到进程终止前都不卸载该扩展。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
 
@@ -214,17 +247,26 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-2"></a>
+<Parameter name="provider">
 
 扩展提供方的名称。
 
-### extension
+</Parameter>
+<a id="extension-2"></a>
+<Parameter name="extension">
 
 扩展的名称。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 扩展的数据源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerextension__return_values"></a>
 
@@ -259,25 +301,38 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-3"></a>
+<Parameter name="provider">
 
 插件提供方的名称，例如 `agora.io`。
 
-### extension
+</Parameter>
+<a id="extension-3"></a>
+<Parameter name="extension">
 
 插件名称，例如 `agora.beauty`。
 
-### extensionInfo
+</Parameter>
+<a id="extensioninfo-2"></a>
+<Parameter name="extensionInfo">
 
 插件信息，详见 `ExtensionInfo`。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 插件属性的键名。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 插件属性键对应的值，采用 JSON 格式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproperty__return_values"></a>
 
@@ -322,17 +377,26 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-4"></a>
+<Parameter name="provider">
 
 扩展提供方的名称。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 扩展属性的键名。
 
-### value
+</Parameter>
+<a id="value-2"></a>
+<Parameter name="value">
 
 扩展属性键对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
 
@@ -367,17 +431,26 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。详见扩展提供方的扩展文档。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 错误原因。详见扩展提供方的扩展文档。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -405,17 +478,26 @@ virtual void onExtensionEventWithContext(const ExtensionContext &context, const 
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-1"></a>
+<Parameter name="context">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 扩展事件的键。
 
-### value
+</Parameter>
+<a id="value-3"></a>
+<Parameter name="value">
 
 扩展事件键对应的值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -441,9 +523,14 @@ virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-2"></a>
+<Parameter name="context">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -475,9 +562,14 @@ virtual void onExtensionStoppedWithContext(const ExtensionContext &context)
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context-3"></a>
+<Parameter name="context">
 
 扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-extensioncontext)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

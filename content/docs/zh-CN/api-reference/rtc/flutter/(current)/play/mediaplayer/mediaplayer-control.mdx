@@ -37,12 +37,17 @@ Future<void> adjustPlayoutVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放音量，取值范围从 0 到 100：
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
 
@@ -82,13 +87,18 @@ Future<void> adjustPublishSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 信号音量，取值范围从 0 到 400：
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始音量。
 - 400: 原始音量的四倍（自带溢出保护）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
 
@@ -126,12 +136,17 @@ Future<void> mute(bool muted);
 
 ### 参数
 
-### muted
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 静音选项。
 
 - true：静音。
 - false：（默认）不静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_mute__return_values"></a>
 
@@ -235,9 +250,14 @@ Future<void> playPreloadedSrc(String src);
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 播放列表中的媒体资源 URL 地址，必须与 [preloadSrc](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法设置的 `src` 一致，否则无法播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
@@ -310,9 +330,14 @@ Future<void> seek(int newPos);
 
 ### 参数
 
-### newPos
+<ParameterList>
+<a id="newpos"></a>
+<Parameter name="newPos">
 
 指定的位置（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_seek__return_values"></a>
 

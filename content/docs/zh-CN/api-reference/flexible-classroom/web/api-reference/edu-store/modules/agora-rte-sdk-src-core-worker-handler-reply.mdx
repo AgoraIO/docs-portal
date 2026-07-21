@@ -24,12 +24,28 @@ _migration:
 
 - reply(self:[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext), callId:number, type:[WorkerDirectives](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-worker-constants-orker-directives), data:unknown, transfer?:Transferable[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="self" required>
 
-  - self: [WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
-  - callId: number
-  - type: [WorkerDirectives](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-worker-constants-orker-directives)
-  - data: unknown
-  - Optional transfer: Transferable[]
+<ParameterType>
 
-  Returns void
+[WorkerContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-type#WorkerContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="callId" type="number" required />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[WorkerDirectives](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-worker-constants-orker-directives)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="data" type="unknown" required />
+<Parameter name="transfer" type="Transferable[]" optional />
+</ParameterList>
+
+Returns void

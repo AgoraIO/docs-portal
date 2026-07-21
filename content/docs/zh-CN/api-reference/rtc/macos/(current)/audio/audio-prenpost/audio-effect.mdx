@@ -45,16 +45,23 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用语音 AI 调音器：
 
 - YES：启用语音 AI 调音器。
 - NO：（默认）关闭语音 AI 调音器。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 语音 AI 调音器的音效类型，详见 [AgoraVoiceAITunerType](/zh-CN/api-reference/rtc/macos/enum-voiceaitunertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevoiceaituner__return_values"></a>
 
@@ -93,9 +100,14 @@ _migration:
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 音频的高级选项，详见 [AgoraAdvancedAudioOptions](/zh-CN/api-reference/rtc/macos/class-advancedaudiooptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
 
@@ -157,16 +169,23 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用 AI 降噪功能：
 
 - YES：启用 AI 降噪功能。
 - NO：（默认）关闭 AI 降噪功能。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/macos/enum-audioainsmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setainsmode__return_values"></a>
 
@@ -227,7 +246,9 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/macos/enum-a
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference/rtc/macos/enum-audioeffectpreset)：
 
@@ -237,7 +258,9 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
   - 启用 3D 人声效果后，用户需使用立体声播放设备才能听到预期效果。
 - `AgoraAudioEffectPresetPitchCorrection`（11）：音高修正效果。
 
-### param1
+</Parameter>
+<a id="param1"></a>
+<Parameter name="param1">
 
 - 如果将 `preset` 设置为 `AgoraAudioEffectPresetRoomAcous3DVoice`，该参数表示 3D 人声效果的循环周期，单位为秒，取值范围为 [1, 60]。默认值为 10，表示声音每 10 秒环绕一次。
 - 如果将 `preset` 设置为 `AgoraAudioEffectPresetPitchCorrection`，该参数表示音高修正效果的基本调式：
@@ -246,7 +269,9 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
   - `2`：自然小调。
   - `3`：日本五声音阶。
 
-### param2
+</Parameter>
+<a id="param2"></a>
+<Parameter name="param2">
 
 - 如果将 `preset` 设置为 `AgoraAudioEffectPresetRoomAcous3DVoice`，你需要将该参数设置为 `0`。
 - 如果将 `preset` 设置为 `AgoraAudioEffectPresetPitchCorrection`，该参数表示音高修正效果的主音：
@@ -263,6 +288,9 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
   - `10`：F#
   - `11`：G
   - `12`：G#
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
 
@@ -323,9 +351,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-1"></a>
+<Parameter name="preset">
 
 声网预设的音效选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference/rtc/macos/enum-audioeffectpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
 
@@ -364,13 +397,20 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### bandFrequency
+<ParameterList>
+<a id="bandfrequency"></a>
+<Parameter name="bandFrequency">
 
 频段频率，详见 [AgoraAudioEqualizationBandFrequency](/zh-CN/api-reference/rtc/macos/enum-audioequalizationbandfrequency)。取值范围为 0 到 9，分别对应语音特效的 10 个中心频率段：31、62、125、250、500、1k、2k、4k、8k 和 16k Hz。
 
-### gain
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 每个频段的增益值，单位为 dB。取值范围为 -15 到 15，默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
 
@@ -417,13 +457,18 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### formantRatio
+<ParameterList>
+<a id="formantratio"></a>
+<Parameter name="formantRatio">
 
 共振峰比例。取值范围为 [-1.0, 1.0]。默认值为 0.0，表示不改变声音的音色。
 
 :::note
 注： 声网建议将该值设置在 [-0.4, 0.6] 范围内，否则声音可能会严重失真。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
 
@@ -462,9 +507,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 本地语音的音调。取值范围为 [0.5, 2.0]，值越小，音调越低。默认值为 1.0（默认），表示不改变音调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
 
@@ -499,13 +549,20 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### reverbType
+<ParameterList>
+<a id="reverbtype"></a>
+<Parameter name="reverbType">
 
 混响键。详见 [AgoraAudioReverbType](/zh-CN/api-reference/rtc/macos/enum-audioreverbtype)。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 混响键的取值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
 
@@ -561,26 +618,35 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-2"></a>
+<Parameter name="preset">
 
 预设音效选项。详见 [AgoraVoiceBeautifierPreset](/zh-CN/api-reference/rtc/macos/enum-voicebeautifierpreset)。
 
 - `SINGING_BEAUTIFIER`：美声特效。
 
-### param1
+</Parameter>
+<a id="param1-1"></a>
+<Parameter name="param1">
 
 歌声的性别特征选项：
 
 - `1`：男性音色。
 - `2`：女性音色。
 
-### param2
+</Parameter>
+<a id="param2-1"></a>
+<Parameter name="param2">
 
 歌声的混响效果选项：
 
 - `1`：小房间混响效果。
 - `2`：大房间混响效果。
 - `3`：大厅混响效果。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
 
@@ -638,9 +704,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-3"></a>
+<Parameter name="preset">
 
 预设的美声特效选项，详见 [AgoraVoiceBeautifierPreset](/zh-CN/api-reference/rtc/macos/enum-voicebeautifierpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
 
@@ -702,9 +773,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-4"></a>
+<Parameter name="preset">
 
 预设的变声效果选项，详见 [AgoraVoiceConversionPreset](/zh-CN/api-reference/rtc/macos/enum-voiceconversionpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
 

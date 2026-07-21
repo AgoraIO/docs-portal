@@ -58,7 +58,9 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -70,7 +72,9 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel__channelID_desc"></a>
 
@@ -83,13 +87,20 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### optionalInfo
+</Parameter>
+<a id="optionalinfo"></a>
+<Parameter name="optionalInfo">
 
 (非必选项) 预留参数。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位有符号整数。取值范围为：-231 到 231-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel__return_values"></a>
 
@@ -157,7 +168,9 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -169,7 +182,9 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel2__channelID_desc"></a>
 
@@ -182,13 +197,20 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位有符号整数。取值范围为：-231 到 231-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -264,7 +286,9 @@ public abstract joinChannelEx(token: string, connection: RtcConnection, options:
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
 
 在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -276,17 +300,26 @@ public abstract joinChannelEx(token: string, connection: RtcConnection, options:
 - 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
 :::
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -358,9 +391,14 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 
 <a id="api_irtcengine_leavechannel2__parml_jsr_dky_hqb"></a>
 
-### options
+<ParameterList>
+<a id="options-2"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -431,17 +469,24 @@ public abstract leaveChannelEx(connection: RtcConnection, options?:LeaveChannelO
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
 
 :::note
 注： 该参数仅支持设置 LeaveChannelOptions 中的 stopMicrophoneRecording 成员，设置其他成员均不生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
 
@@ -492,9 +537,14 @@ public abstract renewToken(token: string): number;
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
 
 新生成的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_renewtoken__return_values"></a>
 
@@ -548,7 +598,9 @@ public abstract setChannelProfile(profile: number): number;
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 频道使用场景。
 
@@ -564,6 +616,9 @@ public abstract setChannelProfile(profile: number): number;
   ### 废弃：
 
   请改用 LIVE_BROADCASTING。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setchannelprofile__return_values"></a>
 
@@ -638,7 +693,9 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role"></a>
+<Parameter name="role">
 
 用户角色。
 
@@ -649,9 +706,14 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
 :::
 
-### options
+</Parameter>
+<a id="options-4"></a>
+<Parameter name="options">
 
 用户具体设置，包含用户级别。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -687,9 +749,14 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-5"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -724,13 +791,20 @@ public abstract updateChannelMediaOptionsEx(options:ChannelMediaOptions,connecti
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-6"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -782,17 +856,26 @@ onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole
 
 ### 参数
 
-### oldRole
+<ParameterList>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
 
 切换前的角色：[ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
 
-### newRole
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
 
 切换后的角色：[ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
 
-### newRoleOptions
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -832,7 +915,9 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 
 ### 参数
 
-### reason
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
 
 切换用户角色失败的原因。
 
@@ -853,9 +938,14 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 
   该枚举值自 v4.4.0 起废弃，不建议使用。
 
-### currentRole
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
 
 当前用户角色。详见 [ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -887,9 +977,14 @@ onError?:(err:Constants.ErrorCode,message:string) => void
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err"></a>
+<Parameter name="err">
 
 错误码。详见 [ErrorCode](/zh-CN/api-reference/rtc/harmonyos/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -933,17 +1028,26 @@ onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地调用 joinChannelWithOptions 开始到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -983,9 +1087,14 @@ onLeaveChannel?:(stats: RtcStats ) => void;
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1025,17 +1134,26 @@ onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 重新加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1117,9 +1235,14 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1167,9 +1290,14 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
 
 即将过期的 Token。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1216,13 +1344,20 @@ onUserJoined?:(uid:number, elapse:number) => void;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 新加入频道的远端用户/主播 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 joinChannelWithOptions 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1267,17 +1402,24 @@ onUserOffline?:(uid:number, reason:number) => void;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 离线的远端用户或主播的 ID。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端用户（通信场景）或主播（直播场景）离线的原因：
 
 - USER_OFFLINE_QUIT(0)：用户主动离开。此时离开频道的用户会发送一个类似“再见”的消息。
 - USER_OFFLINE_DROPPED(1)：因过长时间收不到对方数据包，SDK 判定该远端用户超时掉线。注意：在网络连接不稳定时，该判定可能会有误。建议使用 RTM SDK 来做可靠的掉线检测。
 - USER_OFFLINE_BECOME_AUDIENCE(2)：用户的角色从主播切换为观众。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

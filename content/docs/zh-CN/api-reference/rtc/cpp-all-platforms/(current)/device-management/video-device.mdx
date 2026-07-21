@@ -57,16 +57,23 @@ virtual int enableMultiCamera(bool enabled, const CameraCapturerConfiguration& c
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用多摄像头视频采集模式：
 
 - true：启用多摄像头采集模式，SDK 使用多个摄像头进行视频采集。
 - false：关闭多摄像头采集模式，SDK 使用单个摄像头进行视频采集。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 第二个摄像头的采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablemulticamera__return_values"></a>
 
@@ -168,17 +175,26 @@ virtual int getCapability(const char* deviceIdUTF8, const uint32_t deviceCapabil
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
 
-### deviceCapabilityNumber
+</Parameter>
+<a id="devicecapabilitynumber"></a>
+<Parameter name="deviceCapabilityNumber">
 
 视频格式的索引号。若 [numberOfCapabilities](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 的返回值为 i，则该参数的取值范围为 [0, i)。
 
-### capability
+</Parameter>
+<a id="capability"></a>
+<Parameter name="capability">
 
 输出参数，表示指定视频格式的详细信息，包括宽度（px）、高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoformat)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getcapability__return_values"></a>
 
@@ -237,17 +253,26 @@ virtual int getDevice(int index, char deviceNameUTF8[MAX_DEVICE_ID_LENGTH], char
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 视频设备的索引值。该值必须小于 [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_ivideodevicecollection_getcount_ivideodevicecollection) 返回的值。
 
-### deviceNameUTF8
+</Parameter>
+<a id="devicenameutf8"></a>
+<Parameter name="deviceNameUTF8">
 
 输出参数，表示设备名称。最大长度为 `MAX_DEVICE_ID_LENGTH`。
 
-### deviceIdUTF8
+</Parameter>
+<a id="deviceidutf8-1"></a>
+<Parameter name="deviceIdUTF8">
 
 输出参数，表示视频设备的设备 ID。最大长度为 `MAX_DEVICE_ID_LENGTH`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicecollection_getdevice_ivideodevicecollection__return_values"></a>
 
@@ -284,9 +309,14 @@ virtual int getDevice(char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-2"></a>
+<Parameter name="deviceIdUTF8">
 
 输出参数，当前视频采集设备的设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__return_values"></a>
 
@@ -592,9 +622,14 @@ virtual int numberOfCapabilities(const char* deviceIdUTF8) = 0;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-3"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
 
@@ -633,13 +668,20 @@ virtual int queryCameraFocalLengthCapability(agora::rtc::FocalLengthInfo* focalL
 
 ### 参数
 
-### focalLengthInfos
+<ParameterList>
+<a id="focallengthinfos"></a>
+<Parameter name="focalLengthInfos">
 
 输入和输出参数，表示 [FocalLengthInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-focallengthinfo) 对象数组的指针。方法执行后，填充查询到的焦距信息。详见 [FocalLengthInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-focallengthinfo)。
 
-### size
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 输入和输出参数，表示焦距信息项的数量。输入时指定 `focalLengthInfos` 可容纳的最大焦距信息项数量，该值应不小于 8。输出时返回实际获取的焦距信息项数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
 
@@ -672,13 +714,20 @@ virtual int queryCodecCapability(CodecCapInfo* codecInfo, int& size) = 0;
 
 ### 参数
 
-### codecInfo
+<ParameterList>
+<a id="codecinfo"></a>
+<Parameter name="codecInfo">
 
 输入和输出参数，表示 SDK 支持的视频编解码器能力数组。你在调用该方法时传入一个 [CodecCapInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-codeccapinfo) 数组，表示要查询的视频编解码器能力。方法执行完毕后，该数组将被填充为 SDK 实际支持的视频编解码器能力。详见 [CodecCapInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-codeccapinfo)。
 
-### size
+</Parameter>
+<a id="size-1"></a>
+<Parameter name="size">
 
 输入和输出参数，表示 `codecInfo` 数组的大小。你在调用该方法时传入 `codecInfo` 的大小。方法执行完毕后，该值将被更新为实际返回的 `codecInfo` 数组大小。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 
@@ -759,12 +808,17 @@ virtual int setCameraAutoExposureFaceModeEnabled(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用自动曝光：
 
 - true：启用自动曝光。
 - false：关闭自动曝光。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
 
@@ -809,12 +863,17 @@ virtual int setCameraAutoFocusFaceModeEnabled(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用人脸自动对焦功能：
 
 - true：启用摄像头人脸自动对焦功能。
 - false：关闭人脸自动对焦功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -859,13 +918,18 @@ virtual int setCameraCapturerConfiguration(const CameraCapturerConfiguration& co
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 摄像头采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cameracapturerconfiguration)。
 
 :::note
 注： 在该方法中，无需设置 `deviceId` 参数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -902,13 +966,20 @@ virtual int setCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORIENTATION
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 视频源类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
 
-### orientation
+</Parameter>
+<a id="orientation"></a>
+<Parameter name="orientation">
 
 顺时针旋转角度，详见 [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoorientation)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameradeviceorientation__return_values"></a>
 
@@ -954,7 +1025,9 @@ virtual int setCameraExposureFactor(float factor) = 0;
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor"></a>
+<Parameter name="factor">
 
 摄像头曝光值。默认值为 0，表示使用摄像头的默认曝光值。值越大，曝光越强。当视频图像过曝时，可以降低曝光值；当视频图像曝光不足且暗部细节丢失时，可以提高曝光值。如果设置的曝光值超出设备支持的范围，SDK 会自动将其调整为设备实际支持的范围。
 
@@ -964,6 +1037,9 @@ virtual int setCameraExposureFactor(float factor) = 0;
 - 在 Android 上，取值范围为 [-20.0, 20.0]。
 - 在 iOS 上，取值范围为 [-8.0, 8.0]。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
@@ -1014,13 +1090,20 @@ virtual int setCameraExposurePosition(float positionXinView, float positionYinVi
 
 ### 参数
 
-### positionXinView
+<ParameterList>
+<a id="positionxinview"></a>
+<Parameter name="positionXinView">
 
 视图中触摸点的水平坐标。
 
-### positionYinView
+</Parameter>
+<a id="positionyinview"></a>
+<Parameter name="positionYinView">
 
 视图中触摸点的垂直坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -1065,13 +1148,20 @@ virtual int setCameraFocusPositionInPreview(float positionX, float positionY) = 
 
 ### 参数
 
-### positionX
+<ParameterList>
+<a id="positionx"></a>
+<Parameter name="positionX">
 
 视图中触摸点的水平坐标。
 
-### positionY
+</Parameter>
+<a id="positiony"></a>
+<Parameter name="positionY">
 
 视图中触摸点的垂直坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -1108,12 +1198,17 @@ virtual int setCameraTorchOn(bool isOn) = 0;
 
 ### 参数
 
-### isOn
+<ParameterList>
+<a id="ison"></a>
+<Parameter name="isOn">
 
 是否打开摄像头闪光灯：
 
 - true：打开闪光灯。
 - false：（默认）关闭闪光灯。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -1155,13 +1250,18 @@ virtual int setCameraZoomFactor(float factor) = 0;
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor-1"></a>
+<Parameter name="factor">
 
 摄像头变焦倍数。你可以调用 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大变焦倍数。
 
 :::note
 注： 对于不支持超广角的设备，该值范围为 1.0 到设备支持的最大变焦倍数；对于支持超广角的设备，该值范围为 0.5 到设备支持的最大变焦倍数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -1194,9 +1294,14 @@ virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-4"></a>
+<Parameter name="deviceIdUTF8">
 
 设备 ID。插拔音频设备不会改变该值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicecollection_setdevice__return_values"></a>
 
@@ -1229,9 +1334,14 @@ virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-5"></a>
+<Parameter name="deviceIdUTF8">
 
 `设备 ID`。你可以通过调用 [enumerateVideoDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 获取该值。最大长度为 `MAX_DEVICE_ID_LENGTH`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__return_values"></a>
 
@@ -1312,21 +1422,32 @@ virtual void onCameraExposureAreaChanged(int x, int y, int width, int height)
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x"></a>
+<Parameter name="x">
 
 更改后曝光区域的 x 坐标。
 
-### y
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 更改后曝光区域的 y 坐标。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 更改后曝光区域的宽度。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 更改后曝光区域的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1356,21 +1477,32 @@ virtual void onCameraFocusAreaChanged(int x, int y, int width, int height)
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x-1"></a>
+<Parameter name="x">
 
 对焦区域变化后的 x 坐标。
 
-### y
+</Parameter>
+<a id="y-1"></a>
+<Parameter name="y">
 
 对焦区域变化后的 y 坐标。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 对焦区域变化后的宽度。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 对焦区域变化后的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1426,17 +1558,26 @@ virtual void onVideoDeviceStateChanged(const char* deviceId, int deviceType, int
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 媒体设备类型，详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 媒体设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediadevicestatetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

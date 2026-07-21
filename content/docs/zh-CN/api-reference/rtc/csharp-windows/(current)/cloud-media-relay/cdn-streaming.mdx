@@ -29,9 +29,14 @@ public abstract int SetDirectCdnStreamingAudioConfiguration(AUDIO_PROFILE_TYPE p
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 音频编码属性，包含采样率、码率、编码模式和声道数。详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audioprofiletype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__return_values"></a>
 
@@ -70,13 +75,18 @@ public abstract int SetDirectCdnStreamingVideoConfiguration(VideoEncoderConfigur
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/class-videoencoderconfiguration)。
 
 :::note
 注： 在直接向 CDN 推流时，SDK 目前仅支持将 ORIENTATION_MODE 设为横屏模式（ORIENTATION_MODE_FIXED_LANDSCAPE）或竖屏模式（ORIENTATION_MODE_FIXED_PORTRAIT）。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__return_values"></a>
 
@@ -130,13 +140,20 @@ SDK 不支持 publishCameraTrack 和 publishCustomVideoTrack 同时为 `true`，
 
 ### 参数
 
-### publishUrl
+<ParameterList>
+<a id="publishurl"></a>
+<Parameter name="publishUrl">
 
 CDN 推流 URL。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 主播端的媒体选项。详见 [DirectCdnStreamingMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-directcdnstreamingmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startdirectcdnstreaming__return_values"></a>
 
@@ -202,17 +219,26 @@ public virtual void OnDirectCdnStreamingStateChanged(DIRECT_CDN_STREAMING_STATE 
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 当前推流状态。详见 [DIRECT_CDN_STREAMING_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-directcdnstreamingstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 推流状态改变的原因。详见 [DIRECT_CDN_STREAMING_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-directcdnstreamingreason)。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 状态改变对应的信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats"></a>
 
@@ -238,6 +264,11 @@ public virtual void OnDirectCdnStreamingStats(DirectCdnStreamingStats stats) { }
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 当前推流的统计数据。详见 [DirectCdnStreamingStats](/zh-CN/api-reference/rtc/csharp-windows/class-directcdnstreamingstats)。
+
+</Parameter>
+</ParameterList>

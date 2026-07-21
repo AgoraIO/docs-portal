@@ -168,12 +168,17 @@ public abstract int EnableLocalVideo(bool enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启本地视频采集。
 
 - `true`:（默认）开启本地视频采集。
 - `false`: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 `false` 时，该方法不需要本地有摄像头。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -208,19 +213,26 @@ public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int s
 
 ### 参数
 
-### codecInfo
+<ParameterList>
+<a id="codecinfo"></a>
+<Parameter name="codecInfo">
 
 输入和输出参数，表示 SDK 的视频编码能力数组。详见 [CodecCapInfo](/zh-CN/api-reference/rtc/csharp-windows/class-codeccapinfo)。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo，表示待查询的视频编解码能力。
 - 输出值：方法执行完毕后输出的 CodecCapInfo，表示 SDK 实际支持的视频编解码能力。
 
-### size
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 输入和输出参数，表示 CodecCapInfo 数组的大小。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo 的大小。
 - 输出值：方法执行完毕后输出的 CodecCapInfo 的大小。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 
@@ -265,9 +277,14 @@ public abstract int SetVideoEncoderConfiguration(VideoEncoderConfiguration confi
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
@@ -316,13 +333,20 @@ public abstract int SetVideoEncoderConfigurationEx(VideoEncoderConfiguration con
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/class-videoencoderconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
@@ -363,7 +387,9 @@ public abstract int SetVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioTyp
 
 ### 参数
 
-### scenarioType
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 视频业务场景。详见 [VIDEO_APPLICATION_SCENARIO_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videoapplicationscenariotype)。
 
@@ -404,6 +430,9 @@ APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/p
 <a id="api_irtcengine_setvideoscenario__liveshow"></a>
 
 APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -447,7 +476,7 @@ public abstract int StartPreview();
 ### 调用限制
 
 - 本地预览默认开启镜像功能。
-- 在离开频道后，本地预览依然处于开启状态。你需要调用  关闭本地预览。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 关闭本地预览。
 
 <a id="api_irtcengine_startpreview__return_values"></a>
 
@@ -483,15 +512,20 @@ public abstract int StartPreview(VIDEO_SOURCE_TYPE sourceType);
 ### 调用限制
 
 - 本地预览默认开启镜像功能。
-- 在离开频道后，本地预览依然处于开启状态。你需要调用  关闭本地预览。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 关闭本地预览。
 
 <a id="api_irtcengine_startpreview2__parameters"></a>
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
@@ -583,9 +617,14 @@ public abstract int StopPreview(VIDEO_SOURCE_TYPE sourceType);
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
@@ -624,21 +663,32 @@ public virtual void OnFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, 
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 本地渲染视频的宽 (px) 。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地渲染视频的高 (px)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel) 或[JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [StartPreview [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_startpreview)/[StartPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 StartPreview [1/2] 或StartPreview [2/2] 开启本地视频预览到发生此事件过去的时间。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
 
@@ -668,13 +718,20 @@ SDK 会在以下三种时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 JoinChannel [1/2] 或JoinChannel [2/2] 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -713,25 +770,38 @@ SDK 会在以下时机触发该回调：
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地调用 JoinChannel [1/2] 或JoinChannel [2/2] 开始到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -763,25 +833,38 @@ public virtual void OnFirstRemoteVideoFrame(RtcConnection connection, uint remot
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### width
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-### height
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地调用 JoinChannel [1/2] 或JoinChannel [2/2] 到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -834,17 +917,26 @@ public virtual void OnLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VID
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频状态，详见 [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-localvideostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态改变原因，详见 [LOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -876,13 +968,20 @@ public virtual void OnLocalVideoStats(RtcConnection connection, LocalVideoStats 
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/csharp-windows/class-localvideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -916,25 +1015,38 @@ public virtual void OnRemoteVideoStateChanged(RtcConnection connection, uint rem
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-2"></a>
+<Parameter name="remoteUid">
 
 发生视频状态改变的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频流状态，详见 [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-remotevideostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频流状态改变的具体原因，详见 [REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc/csharp-windows/enum-remotevideostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 JoinChannel [2/2] 方法到发生本事件经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -966,13 +1078,20 @@ public virtual void OnRemoteVideoStats(RtcConnection connection, RemoteVideoStat
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/csharp-windows/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1012,25 +1131,38 @@ public virtual void OnRemoteVideoTransportStats(RtcConnection connection, uint r
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-3"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户/主播的视频包。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 视频包从发送端到接收端的延时（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 视频包从发送端到接收端的丢包率 (%)。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 远端视频包的接收码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1064,18 +1196,27 @@ public virtual void OnUserEnableVideo(RtcConnection connection, uint remoteUid, 
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-4"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 - `true`: 该用户已启用视频功能。
 - `false`: 该用户已关闭视频功能。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1114,20 +1255,29 @@ public virtual void OnUserEnableLocalVideo(RtcConnection connection, uint remote
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-5"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-### enabled
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 远端用户是否启用视频采集：
 
 - `true`: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
 - `false`: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1161,20 +1311,29 @@ public virtual void OnUserMuteVideo(RtcConnection connection, uint remoteUid, bo
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid-6"></a>
+<Parameter name="remoteUid">
 
 远端用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否取消发布视频流：
 
 - `true`: 取消发布视频流。
 - `false`: 发布视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1200,25 +1359,38 @@ public virtual void OnVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, string 
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### source
+</Parameter>
+<a id="source-2"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### oldState
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 STREAM_PUBLISH_STATE。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1242,29 +1414,44 @@ public virtual void OnVideoSizeChanged(RtcConnection connection, VIDEO_SOURCE_TY
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 图像尺寸和旋转信息发生变化的用户 ID（本地用户的 uid 为 0。此时视频为本地用户的视频预览）。
 
-### width
+</Parameter>
+<a id="width-3"></a>
+<Parameter name="width">
 
 视频流的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height-3"></a>
+<Parameter name="height">
 
 视频流的高度（像素）。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 旋转信息，取值范围 [0,360)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -44,15 +44,49 @@ _migration:
 
 - new AgoraRteMediaTrack(rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager), __namedParameters:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}):[AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="rtc" required>
 
-  - rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
-  - __namedParameters: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
+<ParameterType>
 
-    - Optional audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
-    - Optional videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
 
-  Returns [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track)
+</ParameterType>
+
+</Parameter>
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track)
 
 ## Properties
 
@@ -76,7 +110,7 @@ videoSourceType: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classro
 
 - start():number
 
-- Returns number
+Returns number
 
 <a id="stop"></a>
 
@@ -84,4 +118,4 @@ videoSourceType: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classro
 
 - stop():number
 
-- Returns number
+Returns number

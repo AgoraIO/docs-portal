@@ -39,13 +39,18 @@ _migration:
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 用户的音量。取值范围为 [0,400]。
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
@@ -86,17 +91,24 @@ _migration:
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0,400]。
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__return_values"></a>
 
@@ -145,11 +157,15 @@ _migration:
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0,400]。
 
@@ -157,9 +173,14 @@ _migration:
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__return_values"></a>
 
@@ -294,23 +315,32 @@ _migration:
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（单位为毫秒）：
 
 - ≤ 0：关闭音量提示功能。
 - &gt; 0：两次音量提示之间的时间间隔。确保该参数值大于 10，否则你将无法收到 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-### smooth
+</Parameter>
+<a id="smooth"></a>
+<Parameter name="smooth">
 
 设置音量提示的灵敏度平滑系数，取值范围为 0 到 10，推荐值为 3。数值越大，音量提示越灵敏。
 
-### reportVad
+</Parameter>
+<a id="reportvad"></a>
+<Parameter name="reportVad">
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
 - YES：启用语音活动检测。启用后，[rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
 - NO：（默认）关闭语音活动检测。关闭后，除非引擎自动检测本地用户的语音活动，否则 `vad` 参数不会报告本地用户的语音活动状态。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -366,27 +396,38 @@ _migration:
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval-1"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示功能。
 - &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。确保该参数值大于 10，否则你将无法收到 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。声网建议将该值设置为大于 100。
 
-### smooth
+</Parameter>
+<a id="smooth-1"></a>
+<Parameter name="smooth">
 
 设置音量提示灵敏度的平滑系数，取值范围为 [0, 10]，推荐值为 3。值越大，提示越灵敏。
 
-### reportVad
+</Parameter>
+<a id="reportvad-1"></a>
+<Parameter name="reportVad">
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
 - YES：启用本地用户的语音活动检测。启用后，[rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
 - NO：（默认）关闭本地用户的语音活动检测。关闭后，[rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到本地用户的语音活动。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__return_values"></a>
 
@@ -441,13 +482,20 @@ _migration:
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 音频配置，包括采样率、码率、编码模式和声道数。详见 [AgoraAudioProfile](/zh-CN/api-reference/rtc/ios/enum-audioprofiletype)。
 
-### scenario
+</Parameter>
+<a id="scenario"></a>
+<Parameter name="scenario">
 
 音频场景。在不同的音频场景下，设备使用不同的音量类型。详见 [AgoraAudioScenario](/zh-CN/api-reference/rtc/ios/enum-audioscenariotype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile__return_values"></a>
 
@@ -494,9 +542,14 @@ _migration:
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile-1"></a>
+<Parameter name="profile">
 
 音频配置，包括采样率、码率、编码模式和声道数。详见 [AgoraAudioProfile](/zh-CN/api-reference/rtc/ios/enum-audioprofiletype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile2__return_values"></a>
 
@@ -547,9 +600,14 @@ _migration:
 
 ### 参数
 
-### scenario
+<ParameterList>
+<a id="scenario-1"></a>
+<Parameter name="scenario">
 
 音频场景。在不同的音频场景下，设备使用不同的音量类型。详见 [AgoraAudioScenario](/zh-CN/api-reference/rtc/ios/enum-audioscenariotype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioscenario__return_values"></a>
 
@@ -588,9 +646,14 @@ _migration:
 
 ### 参数
 
-### restriction
+<ParameterList>
+<a id="restriction"></a>
+<Parameter name="restriction">
 
 SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对应一个权限。详见 [AgoraAudioSessionOperationRestriction](/zh-CN/api-reference/rtc/ios/enum-audiosessionoperationrestriction)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -627,13 +690,20 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 引擎实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### speakerUid
+</Parameter>
+<a id="speakeruid"></a>
+<Parameter name="speakerUid">
 
 最活跃远端说话用户的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -663,7 +733,9 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### audioQualityBlock
+<ParameterList>
+<a id="audioqualityblock"></a>
+<Parameter name="audioQualityBlock">
 
 回调 block，包含以下内容：
 
@@ -671,6 +743,9 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 - `quality`：网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/ios/enum-qualitytype)。
 - `delay`：时延，单位为毫秒。
 - `lost`：丢包率，单位为 %。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -708,20 +783,29 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### speakers
+</Parameter>
+<a id="speakers"></a>
+<Parameter name="speakers">
 
 用户的音量信息。详见 [AgoraRtcAudioVolumeInfo](/zh-CN/api-reference/rtc/ios/class-audiovolumeinfo)。当该数组为空时，表示频道中没有远端用户或远端用户未发送音频流。
 
-### totalVolume
+</Parameter>
+<a id="totalvolume"></a>
+<Parameter name="totalVolume">
 
 扬声器的音量，取值范围为 [0, 255]。
 
 - 对于本地用户的回调，`totalVolume` 是发送音频流的本地用户的音量。
 - 对于远端用户的回调，`totalVolume` 是瞬时音量最高的最多三位远端用户的音量总和。如果你调用了 `startAudioMixing`，则 `totalVolume` 是混音后的音量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -760,13 +844,20 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -802,17 +893,26 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-3"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -844,17 +944,26 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-4"></a>
+<Parameter name="engine">
 
 声网引擎实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannelByToken` 到该回调被触发的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -892,17 +1001,26 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-5"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地音频的状态。详见 [AgoraAudioLocalState](/zh-CN/api-reference/rtc/ios/enum-localaudiostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地音频状态变化的原因。详见 [AgoraAudioLocalReason](/zh-CN/api-reference/rtc/ios/enum-localaudiostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -934,13 +1052,20 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-6"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地音频统计信息，详见 [AgoraRtcLocalAudioStats](/zh-CN/api-reference/rtc/ios/class-localaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -978,25 +1103,38 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-7"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 音频状态发生变化的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端音频的状态，详见 [AgoraAudioRemoteState](/zh-CN/api-reference/rtc/ios/enum-remoteaudiostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端音频状态变化的原因，详见 [AgoraAudioRemoteReason](/zh-CN/api-reference/rtc/ios/enum-remoteaudiostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 方法到 SDK 触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1030,13 +1168,20 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-8"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 接收的远端音频流的统计信息，详见 [AgoraRtcRemoteAudioStats](/zh-CN/api-reference/rtc/ios/class-remoteaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1072,25 +1217,38 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-9"></a>
+<Parameter name="engine">
 
 引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 发送音频流的远端用户 ID。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 从远端用户到接收端的网络时延（毫秒）。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 从远端用户到接收端的音频包丢包率（%）。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收到的音频码率（Kbps）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1128,20 +1286,29 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-10"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户的音频流是否被静音：
 
 - YES：用户的音频流被静音。
 - NO：用户的音频流未被静音。
 
-### uid
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

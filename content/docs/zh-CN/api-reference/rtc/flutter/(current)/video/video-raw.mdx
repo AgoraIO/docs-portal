@@ -53,9 +53,14 @@ void registerVideoFrameObserver(VideoFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 接口对象实例。详见 [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver__return_values"></a>
 
@@ -89,9 +94,14 @@ void unregisterVideoFrameObserver(VideoFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收, 详见 [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine__return_values"></a>
 
@@ -140,11 +150,15 @@ final void Function(VideoSourceType sourceType, VideoFrame videoFrame)?
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
 
@@ -156,6 +170,9 @@ final void Function(VideoSourceType sourceType, VideoFrame videoFrame)?
 - macOS：I420
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -183,9 +200,14 @@ final void Function(VideoFrame frame)? onFrame;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -221,11 +243,15 @@ final void Function(VideoFrame videoFrame)? onPreEncodeVideoFrame;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
 
@@ -237,6 +263,9 @@ final void Function(VideoFrame videoFrame)? onPreEncodeVideoFrame;
 - macOS：I420
 - Windows：YUV420
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -273,11 +302,15 @@ final void Function(String channelId, int remoteUid, VideoFrame videoFrame)?
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送该帧视频的远端用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
 
@@ -290,9 +323,14 @@ final void Function(String channelId, int remoteUid, VideoFrame videoFrame)?
 - Windows：YUV420
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

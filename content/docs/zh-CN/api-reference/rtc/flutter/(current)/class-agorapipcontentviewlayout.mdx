@@ -34,18 +34,29 @@ class AgoraPipContentViewLayout {
 
 ## 属性
 
-### padding
+<ParameterList>
+<a id="padding"></a>
+<Parameter name="padding">
 
 整个布局周围的内边距，单位为像素。用于在布局边缘和视频流之间创建空间。如果为 null，则不应用内边距。
 
-### spacing
+</Parameter>
+<a id="spacing"></a>
+<Parameter name="spacing">
 
 视频流之间的水平和垂直间距，单位为像素。用于在相邻视频流之间创建一致的间距。如果为 null，视频流将直接相邻放置。
 
-### row
+</Parameter>
+<a id="row"></a>
+<Parameter name="row">
 
 布局中允许的最大行数。达到最大行数后，即使存在更多视频流，也不会创建新行。如果为 null，将根据需要创建行以容纳所有视频流。必须大于 0 或为 null。
 
-### column
+</Parameter>
+<a id="column"></a>
+<Parameter name="column">
 
 每行的最大视频流数量。达到最大数量后，将开始新行。如果为 null，视频流将流动填充可用宽度。必须大于 0 或为 null。
+
+</Parameter>
+</ParameterList>

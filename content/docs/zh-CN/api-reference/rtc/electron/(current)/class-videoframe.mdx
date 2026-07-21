@@ -63,19 +63,27 @@ export class VideoFrame {
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 像素格式。详见 [VideoPixelFormat](/zh-CN/api-reference/rtc/electron/enum-videopixelformat)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频像素宽度。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频像素高度。
 
-### yStride
+</Parameter>
+<a id="ystride"></a>
+<Parameter name="yStride">
 
 对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
 
@@ -83,7 +91,9 @@ export class VideoFrame {
 注： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
-### uStride
+</Parameter>
+<a id="ustride"></a>
+<Parameter name="uStride">
 
 对 YUV 数据，表示 U 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
@@ -91,7 +101,9 @@ export class VideoFrame {
 注： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
-### vStride
+</Parameter>
+<a id="vstride"></a>
+<Parameter name="vStride">
 
 对 YUV 数据，表示 V 缓冲区的行跨度；对 RGBA 数据，值为 0。
 
@@ -99,51 +111,75 @@ export class VideoFrame {
 注： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
 :::
 
-### yBuffer
+</Parameter>
+<a id="ybuffer"></a>
+<Parameter name="yBuffer">
 
 对 YUV 数据，表示 Y 缓冲区的指针；对 RGBA 数据，表示数据缓冲区。
 
-### uBuffer
+</Parameter>
+<a id="ubuffer"></a>
+<Parameter name="uBuffer">
 
 对 YUV 数据，表示 U 缓冲区的指针；对 RGBA 数据，值为空。
 
-### vBuffer
+</Parameter>
+<a id="vbuffer"></a>
+<Parameter name="vBuffer">
 
 对 YUV 数据，表示 V 缓冲区的指针；对 RGBA 数据，值为空。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 在渲染视频前设置该帧的顺时针旋转角度，目前支持 0 度、90 度、180 度，和 270 度。
 
-### renderTimeMs
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 视频帧被渲染时的 Unix 时间戳（毫秒）。该时间戳可用于指导渲染视频帧。该参数为必填。
 
-### avsync_type
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
 
 保留参数。
 
-### metadata_buffer
+</Parameter>
+<a id="metadata_buffer"></a>
+<Parameter name="metadata_buffer">
 
 该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 `NULL`。
 
-### metadata_size
+</Parameter>
+<a id="metadata_size"></a>
+<Parameter name="metadata_size">
 
 该参数仅适用于 Texture 格式的视频数据。指 MetaData 的大小，默认值为 `0`。
 
-### textureId
+</Parameter>
+<a id="textureid"></a>
+<Parameter name="textureId">
 
 该参数仅适用于 Texture 格式的视频数据。Texture ID。
 
-### matrix
+</Parameter>
+<a id="matrix"></a>
+<Parameter name="matrix">
 
 该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。
 
-### colorSpace
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
 
 视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [VideoColorSpace](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
 
-### alphaBuffer
+</Parameter>
+<a id="alphabuffer"></a>
+<Parameter name="alphaBuffer">
 
 采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
 你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
@@ -155,10 +191,17 @@ export class VideoFrame {
 - 请务必确保 `alphaBuffer` 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
 :::
 
-### alphaStitchMode
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
 
 当视频帧中包含 Alpha 通道数据时，设置 `alphaBuffer` 和视频帧的相对位置。详见 [AlphaStitchMode](/zh-CN/api-reference/rtc/electron/enum-alphastitchmode)。
 
-### metaInfo
+</Parameter>
+<a id="metainfo"></a>
+<Parameter name="metaInfo">
 
 视频帧中的元信息。该参数需要[联系技术支持](https://ticket.shengwang.cn/)使用。
+
+</Parameter>
+</ParameterList>

@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### VOICE_BEAUTIFIER_OFF
+<ParameterList>
+<a id="voice_beautifier_off"></a>
+<Parameter name="VOICE_BEAUTIFIER_OFF">
 
 原声，即关闭美声效果。
 
-### CHAT_BEAUTIFIER_MAGNETIC
+</Parameter>
+<a id="chat_beautifier_magnetic"></a>
+<Parameter name="CHAT_BEAUTIFIER_MAGNETIC">
 
 磁性（男）。
 
@@ -26,7 +30,9 @@ _migration:
 注意： 该设置仅对男声有效，请勿用于设置女声，否则音频会失真。
 :::
 
-### CHAT_BEAUTIFIER_FRESH
+</Parameter>
+<a id="chat_beautifier_fresh"></a>
+<Parameter name="CHAT_BEAUTIFIER_FRESH">
 
 清新（女）。
 
@@ -34,7 +40,9 @@ _migration:
 注意： 该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
 :::
 
-### CHAT_BEAUTIFIER_VITALITY
+</Parameter>
+<a id="chat_beautifier_vitality"></a>
+<Parameter name="CHAT_BEAUTIFIER_VITALITY">
 
 活力（女）。
 
@@ -42,7 +50,9 @@ _migration:
 注意： 该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
 :::
 
-### SINGING_BEAUTIFIER
+</Parameter>
+<a id="singing_beautifier"></a>
+<Parameter name="SINGING_BEAUTIFIER">
 
 歌唱美声。
 
@@ -51,41 +61,62 @@ _migration:
 - 如果调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)(SINGING_BEAUTIFIER)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
 - 如果调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)(SINGING_BEAUTIFIER, param1, param2)，你可以美化男声或女声并添加混响效果。
 
-### TIMBRE_TRANSFORMATION_VIGOROUS
+</Parameter>
+<a id="timbre_transformation_vigorous"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_VIGOROUS">
 
 浑厚。
 
-### TIMBRE_TRANSFORMATION_DEEP
+</Parameter>
+<a id="timbre_transformation_deep"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_DEEP">
 
 低沉。
 
-### TIMBRE_TRANSFORMATION_MELLOW
+</Parameter>
+<a id="timbre_transformation_mellow"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_MELLOW">
 
 圆润。
 
-### TIMBRE_TRANSFORMATION_FALSETTO
+</Parameter>
+<a id="timbre_transformation_falsetto"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_FALSETTO">
 
 假音。
 
-### TIMBRE_TRANSFORMATION_FULL
+</Parameter>
+<a id="timbre_transformation_full"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_FULL">
 
 饱满。
 
-### TIMBRE_TRANSFORMATION_CLEAR
+</Parameter>
+<a id="timbre_transformation_clear"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_CLEAR">
 
 清澈。
 
-### TIMBRE_TRANSFORMATION_RESOUNDING
+</Parameter>
+<a id="timbre_transformation_resounding"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_RESOUNDING">
 
 高亢。
 
-### TIMBRE_TRANSFORMATION_RINGING
+</Parameter>
+<a id="timbre_transformation_ringing"></a>
+<Parameter name="TIMBRE_TRANSFORMATION_RINGING">
 
 嘹亮。
 
-### ULTRA_HIGH_QUALITY_VOICE
+</Parameter>
+<a id="ultra_high_quality_voice"></a>
+<Parameter name="ULTRA_HIGH_QUALITY_VOICE">
 
 超高音质，即让音频更清晰、细节更丰富。
 
 - 为达到更好的效果，建议在调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前将 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2) 的 profile 参数设置为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)，且 scenario 参数设置为 AUDIO_SCENARIO_GAME_STREAMING(3)。
 - 如果用户的音频采集设备可以高度还原音频细节，建议你不要开启超高音质，否则 SDK 会过度还原音频细节，达不到预期效果。
+
+</Parameter>
+</ParameterList>

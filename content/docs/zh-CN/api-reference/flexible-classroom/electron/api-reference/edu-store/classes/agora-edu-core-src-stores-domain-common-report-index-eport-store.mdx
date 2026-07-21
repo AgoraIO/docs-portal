@@ -38,7 +38,7 @@ _migration:
 
 - get currentTime():number
 
-- Returns number
+Returns number
 
 <a id="screenShareStreamAccessor"></a>
 
@@ -46,10 +46,20 @@ _migration:
 
 - get screenShareStreamAccessor():\{localShareStreamUuid:undefined|string;rtcState:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)\}
 
-- Returns \{localShareStreamUuid:undefined|string;rtcState:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)\}
+Returns \{localShareStreamUuid:undefined|string;rtcState:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)\}
 
-  - localShareStreamUuid:undefined|string
-  - rtcState:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+<ParameterList title="Returns &#123; localShareStreamUuid: undefined | string; rtcState: AGRtcState &#125;">
+<Parameter name="localShareStreamUuid" type="undefined | string" required />
+<Parameter name="rtcState" required>
+
+<ParameterType>
+
+[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 ## Methods
 
@@ -59,7 +69,9 @@ _migration:
 
 - onDestroy():void
 
-- Overrides EduStoreBase.onDestroyReturns void
+Overrides EduStoreBase.onDestroy
+
+Returns void
 
 <a id="onInstall"></a>
 
@@ -67,4 +79,6 @@ _migration:
 
 - onInstall():void
 
-- Overrides EduStoreBase.onInstallReturns void
+Overrides EduStoreBase.onInstall
+
+Returns void

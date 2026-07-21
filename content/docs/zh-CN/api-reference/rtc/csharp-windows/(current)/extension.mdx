@@ -50,15 +50,21 @@ public abstract int EnableExtension(string provider, string extension, bool enab
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### enable
+</Parameter>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用插件：
 
@@ -67,9 +73,14 @@ public abstract int EnableExtension(string provider, string extension, bool enab
 - `true`: 启用插件。
 - `false`: 禁用插件。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableextension__return_values"></a>
 
@@ -116,29 +127,44 @@ public abstract int GetExtensionProperty(string provider, string extension, stri
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-1"></a>
+<Parameter name="provider">
 
 输出参数。提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-1"></a>
+<Parameter name="extension">
 
 输出参数。插件的名称。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 输出参数。插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 输出参数。插件属性 Key 对应的值。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
 
-### buf_len
+</Parameter>
+<a id="buf_len"></a>
+<Parameter name="buf_len">
 
 插件属性 JSON 字符串的最大长度。最大值为 512 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getextensionproperty2__return_values"></a>
 
@@ -185,16 +211,23 @@ public abstract int LoadExtensionProvider(string path, bool unload_after_use = f
 
 ### 参数
 
-### path
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 插件的动态库路径和名称。例如：`/library/libagora_segmentation_extension.dll`。
 
-### unload_after_use
+</Parameter>
+<a id="unload_after_use"></a>
+<Parameter name="unload_after_use">
 
 是否在插件使用完毕后自动卸载：
 
 - `true`: 当 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
 - `false`: 不自动卸载插件，直到进程退出（推荐）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
 
@@ -244,17 +277,26 @@ public abstract int RegisterExtension(string provider, string extension, MEDIA_S
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-2"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-2"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### type
+</Parameter>
+<a id="type-2"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerextension__return_values"></a>
 
@@ -309,25 +351,38 @@ public abstract int SetExtensionProperty(string provider, string extension, stri
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-3"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### extension
+</Parameter>
+<a id="extension-3"></a>
+<Parameter name="extension">
 
 插件的名称。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 插件属性 Key 对应的值。
 
-### type
+</Parameter>
+<a id="type-3"></a>
+<Parameter name="type">
 
 插件的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproperty__return_values"></a>
 
@@ -374,17 +429,26 @@ public abstract int SetExtensionProviderProperty(string provider, string key, st
 
 ### 参数
 
-### provider
+<ParameterList>
+<a id="provider-4"></a>
+<Parameter name="provider">
 
 提供插件的服务商名称。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 插件属性的 Key。
 
-### value
+</Parameter>
+<a id="value-2"></a>
+<Parameter name="value">
 
 插件属性 Key 对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
 

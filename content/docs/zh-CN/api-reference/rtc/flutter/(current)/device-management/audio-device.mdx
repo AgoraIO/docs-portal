@@ -95,12 +95,17 @@ Future<void> followSystemLoopbackDevice(bool enable);
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的播放设备：
 
 - true：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
 - false：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__return_values"></a>
 
@@ -136,12 +141,17 @@ Future<void> followSystemPlaybackDevice(bool enable);
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频播放设备：
 
 - true：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
 - false：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__return_values"></a>
 
@@ -177,12 +187,17 @@ Future<void> followSystemRecordingDevice(bool enable);
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-2"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频采集设备：
 
 - true：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
 - false：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__return_values"></a>
 
@@ -629,10 +644,15 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/flutter/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -670,9 +690,14 @@ Future<void> setPlaybackDevice(String deviceId);
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-1"></a>
+<Parameter name="deviceId">
 
 指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -704,12 +729,17 @@ Future<void> setPlaybackDeviceMute(bool mute);
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否设置播放设备为静音：
 
 - true: 播放设备设为静音。
 - false: 播放设备不设为静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__return_values"></a>
 
@@ -745,9 +775,14 @@ Future<void> setPlaybackDeviceVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放设备音量。取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__return_values"></a>
 
@@ -785,9 +820,14 @@ Future<void> setRecordingDevice(String deviceId);
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-2"></a>
+<Parameter name="deviceId">
 
 音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -819,12 +859,17 @@ Future<void> setRecordingDeviceMute(bool mute);
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否设置音频采集设备静音：
 
 - true: 采集设备静音。
 - false: 采集设备为非静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__return_values"></a>
 
@@ -858,9 +903,14 @@ Future<void> setRecordingDeviceVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音频采集设备音量。取值范围 [0,255]。0 代表无声，255 代表最大音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__return_values"></a>
 
@@ -904,9 +954,14 @@ Future<void> startAudioDeviceLoopbackTest(int indicationInterval);
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -946,12 +1001,17 @@ Future<void> startPlaybackDeviceTest(String testAudioFilePath);
 
 ### 参数
 
-### testAudioFilePath
+<ParameterList>
+<a id="testaudiofilepath"></a>
+<Parameter name="testAudioFilePath">
 
 音频文件的绝对路径，路径字符串使用 UTF-8 编码格式。
 
 - 支持文件格式: wav、mp3、m4a、aac。
 - 支持文件采样率: 8000、16000、32000、44100、48000。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__return_values"></a>
 
@@ -990,9 +1050,14 @@ Future<void> startRecordingDeviceTest(int indicationInterval);
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval-1"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -1134,17 +1199,26 @@ final void Function(String deviceId, MediaDeviceType deviceType,
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-3"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MediaDeviceType](/zh-CN/api-reference/rtc/flutter/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态，详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/flutter/enum-mediadevicestatetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1177,20 +1251,29 @@ final void Function(MediaDeviceType deviceType, int volume, bool muted)?
 
 ### 参数
 
-### deviceType
+<ParameterList>
+<a id="devicetype-1"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MediaDeviceType](/zh-CN/api-reference/rtc/flutter/enum-mediadevicetype)。
 
-### volume
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量。范围为 [0,255]。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 音频设备是否为静音状态：
 
 - true: 音频设备已静音。
 - false: 音频设备未被静音。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

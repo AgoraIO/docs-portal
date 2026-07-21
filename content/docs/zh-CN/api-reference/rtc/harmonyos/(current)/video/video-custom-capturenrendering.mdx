@@ -64,9 +64,14 @@ public abstract destroyCustomVideoTrack(videoTrackId: number): number;
 
 ### 参数
 
-### videoTrackId
+<ParameterList>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -118,17 +123,24 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 待推送的外部原始视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/harmonyos/class-videoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid-1"></a>
+<Parameter name="videoTrackId">
 
 调用 createCustomVideoTrack 方法返回的视频轨道 ID。
 
 :::note
 注： 如果你只需推送一路外部视频流，videoTrackId 设置为 0 即可。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe3__return_values"></a>
 
@@ -165,9 +177,14 @@ public abstract pushExternalVideoFrame(frame: VideoFrame): boolean;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 待推送的外部原始视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/harmonyos/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe4__return_values"></a>
 
@@ -214,23 +231,32 @@ public abstract setExternalVideoSource(enable: boolean, useTexture: boolean, sou
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用外部视频源：
 
 - `true`: 启用外部视频源。SDK 准备接收外部视频帧。
 - `false`:（默认）不启用外部视频源。
 
-### useTexture
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
 
 是否使用 Texture 格式的外部视频帧：
 
 - `true`: 使用 Texture 格式的外部视频帧。
 - `false`: 不使用 Texture 格式的外部视频帧。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 外部视频帧是否编码，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-externalvideosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalvideosource__return_values"></a>
 

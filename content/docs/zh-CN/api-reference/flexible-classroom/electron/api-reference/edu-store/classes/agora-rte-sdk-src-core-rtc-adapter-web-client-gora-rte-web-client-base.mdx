@@ -56,15 +56,49 @@ _migration:
 
 - new AgoraRteWebClientBase(channelName:string, configs:[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config), base:[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), audioRawDataDispatcher:[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
 
-  - channelName: string
-  - configs: [RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
-  - base: [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
-  - audioRawDataDispatcher: [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="configs" required>
 
-  Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+<ParameterType>
+
+[RtcAdapterWebConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="base" required>
+
+<ParameterType>
+
+[RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-adapter-base)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="connectionType" required>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioRawDataDispatcher" required>
+
+<ParameterType>
+
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
 ## Properties
 
@@ -82,7 +116,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get base():[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
 
-- Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
+Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
 
 <a id="ready"></a>
 
@@ -90,7 +124,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get ready():boolean
 
-- Returns boolean
+Returns boolean
 
 ## Methods
 
@@ -98,14 +132,16 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+- emit(evt:string,...args:any[]):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
 <a id="getClientSessionId"></a>
 
@@ -113,7 +149,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - getClientSessionId():any
 
-- Returns any
+Returns any
 
 <a id="join"></a>
 
@@ -121,13 +157,13 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - join(appId:string, token:string, streamUuid:string):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId" type="string" required />
+<Parameter name="token" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
-  - appId: string
-  - token: string
-  - streamUuid: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="leave"></a>
 
@@ -135,7 +171,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - leave():Promise&lt;void&gt;
 
-- Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="off"></a>
 
@@ -143,12 +179,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - off(evt:string, cb:CallableFunction):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
 <a id="on"></a>
 
@@ -156,12 +194,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - on(evt:string, cb:CallableFunction):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
 <a id="once"></a>
 
@@ -169,12 +209,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - once(evt:string, cb:CallableFunction):[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-client-gora-rte-web-client-base)
 
 <a id="removeAllEventListeners"></a>
 
@@ -182,7 +224,9 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void
 
 <a id="setCloudProxy"></a>
 
@@ -190,11 +234,19 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setCloudProxy(proxyType:[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="proxyType" required>
 
-  - proxyType: [AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+<ParameterType>
 
-  Returns void
+[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setLatencyLevel"></a>
 
@@ -202,8 +254,16 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="level" required>
 
-  - level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+<ParameterType>
 
-  Returns void
+[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

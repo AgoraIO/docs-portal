@@ -39,13 +39,18 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0,400]。
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
@@ -86,17 +91,24 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0, 400]。
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__return_values"></a>
 
@@ -143,11 +155,15 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### volume
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0, 400]。
 
@@ -155,9 +171,14 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__return_values"></a>
 
@@ -295,21 +316,30 @@ public abstract int enableAudioVolumeIndication(int interval, int smooth, boolea
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示。
 - &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-### smooth
+</Parameter>
+<a id="smooth"></a>
+<Parameter name="smooth">
 
 设置音量提示的灵敏度平滑系数。取值范围为 0 到 10，推荐值为 3。数值越大，提示越灵敏。
 
-### reportVad
+</Parameter>
+<a id="reportvad"></a>
+<Parameter name="reportVad">
 
 - true：启用本地用户的语音活动检测。启用后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
 - false：（默认）关闭本地用户的语音活动检测。关闭后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -362,27 +392,38 @@ public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 ### 参数
 
-### interval
+<ParameterList>
+<a id="interval-1"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（单位为毫秒）：
 
 - ≤ 0：关闭音量提示功能。
 - &gt; 0：两次音量提示之间的时间间隔。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-### smooth
+</Parameter>
+<a id="smooth-1"></a>
+<Parameter name="smooth">
 
 设置音量提示的灵敏度平滑系数，取值范围为 [0, 10]，推荐值为 3。数值越大，提示越灵敏。
 
-### reportVad
+</Parameter>
+<a id="reportvad-1"></a>
+<Parameter name="reportVad">
 
 是否启用本地用户的语音活动检测（VAD）：
 
 - true：启用语音活动检测，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
 - false：（默认）关闭语音活动检测，`vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__return_values"></a>
 
@@ -431,7 +472,9 @@ public abstract int setAudioProfile(int profile, int scenario);
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 音频配置，包括采样率、码率、编码模式和声道数，详见 `profile`：
 
@@ -445,7 +488,9 @@ public abstract int setAudioProfile(int profile, int scenario);
 - `MUSIC_HIGH_QUALITY` (4)：采样率 48 kHz，音乐编码，单声道，码率最高 96 Kbps。
 - `MUSIC_HIGH_QUALITY_STEREO` (5)：采样率 48 kHz，音乐编码，立体声，码率最高 128 Kbps。
 
-### scenario
+</Parameter>
+<a id="scenario"></a>
+<Parameter name="scenario">
 
 音频场景，不同场景下设备使用不同的音量类型，详见 `scenario`：
 
@@ -455,6 +500,9 @@ public abstract int setAudioProfile(int profile, int scenario);
 - `AUDIO_SCENARIO_CHORUS` (7)：实时合唱场景，适用于网络状况良好且对延迟要求极高的场景。使用该枚举前需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true）。
 - `AUDIO_SCENARIO_MEETING` (8)：会议场景，以人声为主。
 - `AUDIO_SCENARIO_AI_CLIENT` (10)：AI 对话场景，仅适用于用户与由 `Conversational AI Engine` 创建的对话式智能体交互的场景。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile__return_values"></a>
 
@@ -501,7 +549,9 @@ public abstract int setAudioProfile(int profile);
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile-1"></a>
+<Parameter name="profile">
 
 音频配置文件，包括采样率、码率、编码模式和声道数：
 
@@ -514,6 +564,9 @@ public abstract int setAudioProfile(int profile);
 - `MUSIC_STANDARD_STEREO`（3）：采样率为 48 kHz，音乐编码，立体声，码率最高为 80 Kbps。
 - `MUSIC_HIGH_QUALITY`（4）：采样率为 48 kHz，音乐编码，单声道，码率最高为 96 Kbps。
 - `MUSIC_HIGH_QUALITY_STEREO`（5）：采样率为 48 kHz，音乐编码，立体声，码率最高为 128 Kbps。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile2__return_values"></a>
 
@@ -558,7 +611,9 @@ public abstract int setAudioScenario(int scenario);
 
 ### 参数
 
-### scenario
+<ParameterList>
+<a id="scenario-1"></a>
+<Parameter name="scenario">
 
 音频场景。在不同的音频场景下，设备使用不同的音量类型：
 
@@ -568,6 +623,9 @@ public abstract int setAudioScenario(int scenario);
 - `AUDIO_SCENARIO_CHORUS`（7）：实时合唱场景，适用于网络状况良好且对超低延迟有要求的场景。在使用该枚举值前，你需要调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true）。
 - `AUDIO_SCENARIO_MEETING`（8）：会议场景，主要以人声为主。
 - `AUDIO_SCENARIO_AI_CLIENT`（10）：AI 对话场景，仅适用于用户与由 `Conversational AI Engine` 创建的对话式智能体交互的场景。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioscenario__return_values"></a>
 
@@ -611,9 +669,14 @@ public void onActiveSpeaker(int uid)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 最活跃远端说话用户的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -645,11 +708,15 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 发送音频流的远端用户 ID。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 用户的音频质量：
 
@@ -662,13 +729,20 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 - `QUALITY_DOWN` (6)：网络连接中断，完全无法沟通。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 网络探测。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 从发送端到接收端的网络延迟（毫秒），包括音频采样预处理、网络传输和网络抖动缓冲造成的延迟。
 
-### lost
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 从远端用户发送到接收端的音频数据包的丢包率（%）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -703,17 +777,24 @@ public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 
 ### 参数
 
-### speakers
+<ParameterList>
+<a id="speakers"></a>
+<Parameter name="speakers">
 
 用户的音量信息。当该数组为空时，表示频道中没有远端用户或远端用户未发送音频流。详见 [AudioVolumeInfo](/zh-CN/api-reference/rtc/android/class-audiovolumeinfo)。
 
-### totalVolume
+</Parameter>
+<a id="totalvolume"></a>
+<Parameter name="totalVolume">
 
 说话者的音量，取值范围为 [0, 255]。
 
 - 对于本地用户的回调，`totalVolume` 是发送音频流的本地用户的音量。
 - 对于远端用户的回调，`totalVolume` 是瞬时音量最高的最多三位远端用户的音量总和。
 - 如果调用了 `startAudioMixing`，则 `totalVolume` 是混音后的音量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -752,9 +833,14 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 ### 参数
 
-### elapsed
+<ParameterList>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -793,13 +879,20 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -835,13 +928,20 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -879,7 +979,9 @@ public void onLocalAudioStateChanged(int state, int reason)
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 本地音频的状态：
 
@@ -888,7 +990,9 @@ public void onLocalAudioStateChanged(int state, int reason)
 - `LOCAL_AUDIO_STREAM_STATE_ENCODING`（2）：首帧音频编码成功。
 - `LOCAL_AUDIO_STREAM_STATE_FAILED`（3）：本地音频启动失败。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地音频状态变化的原因：
 
@@ -899,6 +1003,9 @@ public void onLocalAudioStateChanged(int state, int reason)
 - `LOCAL_AUDIO_STREAM_REASON_CAPTURE_FAILURE`（4）：本地音频采集失败。
 - `LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE`（5）：本地音频编码失败。
 - `LOCAL_AUDIO_STREAM_REASON_INTERRUPTED`（8）：本地音频采集被系统电话、智能助手或闹钟中断。如果需要继续采集本地音频，提示用户结束电话、智能助手或闹钟。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -932,9 +1039,14 @@ public void onLocalAudioStats(LocalAudioStats stats) {}
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地音频统计信息。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/android/class-localaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -972,11 +1084,15 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 音频状态发生变化的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端音频状态：
 
@@ -986,7 +1102,9 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 - `REMOTE_AUDIO_STATE_FROZEN`（3）：远端音频卡顿。SDK 在 `REMOTE_AUDIO_REASON_NETWORK_CONGESTION` 的情况下报告该状态。
 - `REMOTE_AUDIO_STATE_FAILED`（4）：远端音频启动失败。SDK 在 `REMOTE_AUDIO_REASON_INTERNAL` 的情况下报告该状态。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端音频状态变化的原因：
 
@@ -999,9 +1117,14 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 - `REMOTE_AUDIO_REASON_REMOTE_UNMUTED`（6）：远端用户恢复发送音频流或开启音频模块。
 - `REMOTE_AUDIO_REASON_REMOTE_OFFLINE`（7）：远端用户离开频道。
 
-### elapsed
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1029,9 +1152,14 @@ public void onRemoteAudioStats(RemoteAudioStats stats) {}
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端音频流的统计信息。详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/android/class-remoteaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1069,21 +1197,32 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户 ID，即发送音频流的用户。
 
-### delay
+</Parameter>
+<a id="delay-1"></a>
+<Parameter name="delay">
 
 从远端用户到接收端的网络时延，单位为毫秒。
 
-### lost
+</Parameter>
+<a id="lost-1"></a>
+<Parameter name="lost">
 
 从远端用户到接收端的音频包丢包率，单位为百分比（%）。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收到的音频码率，单位为 Kbps。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1121,16 +1260,23 @@ public void onUserMuteAudio(int uid, boolean muted)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户的音频流是否被静音：
 
 - true：音频流被静音。
 - false：音频流未被静音。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

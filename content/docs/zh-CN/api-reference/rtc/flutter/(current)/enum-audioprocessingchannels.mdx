@@ -17,7 +17,7 @@ _migration:
 通过该类，你可以设置双声道处理，实现立体声。建议按如下步骤设置：
 
 1. 前处理：调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/flutter/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `audioProcessingStereo` (2)。
-2. 后处理：调用 `setAudioProfile2`  并将 `profile` 设为 `audioProfileMusicStandardStereo` (3) 或 `audioProfileMusicHighQualityStereo` (5)。
+2. 后处理：调用 `setAudioProfile2` 并将 `profile` 设为 `audioProfileMusicStandardStereo` (3) 或 `audioProfileMusicHighQualityStereo` (5)。
 
 :::note
 注：
@@ -43,10 +43,17 @@ _migration:
 
 ## 枚举值
 
-### audioProcessingMono
+<ParameterList>
+<a id="audioprocessingmono"></a>
+<Parameter name="audioProcessingMono">
 
 1: （默认）单声道。
 
-### audioProcessingStereo
+</Parameter>
+<a id="audioprocessingstereo"></a>
+<Parameter name="audioProcessingStereo">
 
 2: 双声道。
+
+</Parameter>
+</ParameterList>

@@ -111,12 +111,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### defaultToSpeaker
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否使用扬声器作为默认的音频路由：
 
 - `true`: 设置默认音频路由为扬声器。
 - `false`: 设置默认音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
@@ -179,12 +184,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### speakerOn
+<ParameterList>
+<a id="speakeron"></a>
+<Parameter name="speakerOn">
 
 设置是否开启扬声器播放：
 
 - `true`: 开启。音频路由为扬声器。
 - `false`: 关闭。音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
@@ -242,7 +252,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### route
+<ParameterList>
+<a id="route"></a>
+<Parameter name="route">
 
 期望使用的音频路由:
 
@@ -254,6 +266,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 4：（暂不支持）外接的扬声器。
 - 5：蓝牙耳机。
 - 6：USB 设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
 
@@ -290,7 +305,9 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### routing
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
 
 当前的音频路由：
 
@@ -302,6 +319,9 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - ROUTE_LOUDSPEAKER (4)：（暂不支持）音频路由为外接的扬声器。
 - ROUTE_BLUETOOTH_DEVICE_HFP (5)：音频路由为使用 HFP 协议的蓝牙耳机。
 - ROUTE_BLUETOOTH_DEVICE_A2DP (10)：音频路由为使用 A2DP 协议的蓝牙耳机或蓝牙音箱。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

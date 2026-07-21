@@ -43,29 +43,31 @@ debug: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPar
 #### Type declaration
 
 - - (...data:any[]):void
-- (...data:any[]):void
-- (message?:any, ...optionalParams:any[]):void
+  - (...data:any[]):void
+  - (message?:any,...optionalParams:any[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - :::info[since]
+  :::info[since]
   v8.0.0
   :::
 
-    Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="message" type="any" optional />
+  <Parameter name="...optionalParams" type="any[]" required />
+  </ParameterList>
 
-    - Optional message: any
-    - Rest...optionalParams: any[]
-
-    Returns void
+  Returns void
 
 <a id="error"></a>
 
@@ -76,20 +78,22 @@ error: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPar
 #### Type declaration
 
 - - (...data:any[]):void
-- (...data:any[]):void
-- (message?:any, ...optionalParams:any[]):void
+  - (...data:any[]):void
+  - (message?:any,...optionalParams:any[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - Prints to `stderr` with newline. Multiple arguments can be passed, with the
+  Prints to `stderr` with newline. Multiple arguments can be passed, with the
   first used as the primary message and all additional used as substitution
   values similar to [`printf(3)`](http://man7.org/linux/man-pages/man3/printf.3.html) (the arguments are all passed to `util.format()`).
 
@@ -104,12 +108,12 @@ error: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPar
   v0.1.100
   :::
 
-    Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="message" type="any" optional />
+  <Parameter name="...optionalParams" type="any[]" required />
+  </ParameterList>
 
-    - Optional message: any
-    - Rest...optionalParams: any[]
-
-    Returns void
+  Returns void
 
 <a id="info"></a>
 
@@ -120,31 +124,33 @@ info: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 #### Type declaration
 
 - - (...data:any[]):void
-- (...data:any[]):void
-- (message?:any, ...optionalParams:any[]):void
+  - (...data:any[]):void
+  - (message?:any,...optionalParams:any[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - The `console.info()` function is an alias for \{@link log\}.
+  The `console.info()` function is an alias for \{@link log\}.
 
   :::info[since]
   v0.1.100
   :::
 
-    Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="message" type="any" optional />
+  <Parameter name="...optionalParams" type="any[]" required />
+  </ParameterList>
 
-    - Optional message: any
-    - Rest...optionalParams: any[]
-
-    Returns void
+  Returns void
 
 <a id="warn"></a>
 
@@ -155,31 +161,33 @@ warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 #### Type declaration
 
 - - (...data:any[]):void
-- (...data:any[]):void
-- (message?:any, ...optionalParams:any[]):void
+  - (...data:any[]):void
+  - (message?:any,...optionalParams:any[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...data" type="any[]" required />
+  </ParameterList>
 
-    - Rest...data: any[]
+  Returns void
 
-    Returns void
-  - The `console.warn()` function is an alias for [error](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error).
+  The `console.warn()` function is an alias for [error](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error).
 
   :::info[since]
   v0.1.100
   :::
 
-    Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="message" type="any" optional />
+  <Parameter name="...optionalParams" type="any[]" required />
+  </ParameterList>
 
-    - Optional message: any
-    - Rest...optionalParams: any[]
-
-    Returns void
+  Returns void
 
 ## Methods
 
@@ -189,8 +197,16 @@ warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 
 - setLogLevel(logLevel:[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="logLevel" required>
 
-  - logLevel: [LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+<ParameterType>
 
-  Returns void
+[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

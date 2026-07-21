@@ -26,48 +26,60 @@ Log: \{attach:any;silence:any;trace:any\}
 
 #### Type declaration
 
-- attach:function
+<ParameterList title="Type declaration">
+<Parameter name="attach" type="function" required>
 
-  - attach(options?:\{label?:string;proxyMethods?:boolean\}):&lt;T&gt;(constructor:T)=&gt;T
+- attach(options?:\{label?:string;proxyMethods?:boolean\}):&lt;T&gt;(constructor:T)=&gt;T
 
-  - Parameters
+<ParameterList title="Parameters">
+<Parameter name="options" type="\&#123;label?:string;proxyMethods?:boolean\&#125;" optional>
 
-    - Optional options: \{label?:string;proxyMethods?:boolean\}
+<ParameterList>
+<Parameter name="label" type="string" optional />
+<Parameter name="proxyMethods" type="boolean" optional />
+</ParameterList>
 
-      - Optional label?:string
-      - Optional proxyMethods?:boolean
+</Parameter>
+</ParameterList>
 
-    Returns &lt;T&gt;(constructor:T)=&gt;T
+Returns &lt;T&gt;(constructor:T)=&gt;T
 
-    - - &lt;T&gt;(constructor:T):T
+- - &lt;T&gt;(constructor:T):T
 
-      - Type parameters
+  <ParameterList title="Type parameters">
+  <Parameter name="T" type="new(...args:any[])= &amp; gt;void" />
+  </ParameterList>
 
-        - T:new(...args:any[])=&gt;void
+  <ParameterList title="Parameters">
+  <Parameter name="constructor" type="T" required />
+  </ParameterList>
 
-        Parameters
+  Returns T
 
-        - constructor: T
+</Parameter>
+<Parameter name="silence" type="function" required>
 
-        Returns T
-- silence:function
+- silence(proto:any, propertyName:string):void
 
-  - silence(proto:any, propertyName:string):void
+<ParameterList title="Parameters">
+<Parameter name="proto" type="any" required />
+<Parameter name="propertyName" type="string" required />
+</ParameterList>
 
-  - Parameters
+Returns void
 
-    - proto: any
-    - propertyName: string
+</Parameter>
+<Parameter name="trace" type="function" required>
 
-    Returns void
-- trace:function
+- trace(proto:any, propertyName:string, descriptor:PropertyDescriptor):void
 
-  - trace(proto:any, propertyName:string, descriptor:PropertyDescriptor):void
+<ParameterList title="Parameters">
+<Parameter name="proto" type="any" required />
+<Parameter name="propertyName" type="string" required />
+<Parameter name="descriptor" type="PropertyDescriptor" required />
+</ParameterList>
 
-  - Parameters
+Returns void
 
-    - proto: any
-    - propertyName: string
-    - descriptor: PropertyDescriptor
-
-    Returns void
+</Parameter>
+</ParameterList>

@@ -37,16 +37,23 @@ virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音频源的音量，取值范围为 0 到 100。
 
 - 0：静音。
 - 100：原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
 
@@ -85,16 +92,23 @@ virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
 
 音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音频源的音量，取值范围为 0 到 100。
 
 - 0：静音。
 - 100：原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
 
@@ -139,7 +153,9 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 
 ### 参数
 
-### trackType
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
 
 自定义音频轨道的类型，详见 [AUDIO_TRACK_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiotracktype)。
 
@@ -147,9 +163,14 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 注： 如果该参数设置为 `AUDIO_TRACK_DIRECT`，则在调用 `joinChannel` 加入频道时，必须将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 false，否则加入频道会失败并返回错误码 -2。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 自定义音频轨道的配置，详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_createcustomaudiotrack_imediaengine__return_values"></a>
 
@@ -182,9 +203,14 @@ virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
 
 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_destroycustomaudiotrack_imediaengine__return_values"></a>
 
@@ -223,16 +249,23 @@ virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
 
 音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
 
-### enabled
+</Parameter>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否播放外部音频源：
 
 - true：播放外部音频源。
 - false：（默认）不播放外部音频源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
 
@@ -282,9 +315,14 @@ virtual int pullAudioFrame(IAudioFrameObserverBase::AudioFrame* frame) = 0;
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 输出参数，指向 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe) 的指针。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pullaudioframe_imediaengine__return_values"></a>
 
@@ -326,13 +364,20 @@ virtual int pushAudioFrame(IAudioFrameObserverBase::AudioFrame* frame, rtc::trac
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 外部音频帧。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
 
-### trackId
+</Parameter>
+<a id="trackid-4"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。如果你希望发布自定义音频源，请将该参数设置为对应的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pushaudioframe__return_values"></a>
 
@@ -377,23 +422,32 @@ virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用外部音频渲染器：
 
 - true：启用外部音频渲染器。
 - false：（默认）禁用外部音频渲染器。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 外部音频渲染器的采样率（Hz），可设置为 16000、32000、44100 或 48000。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 外部音频渲染器的声道数：
 
 - 1：单声道。
 - 2：双声道。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalaudiosink_imediaengine__return_values"></a>
 
@@ -436,34 +490,47 @@ virtual int setExternalAudioSource(bool enabled, int sampleRate, int channels, b
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用外部音频源：
 
 - true：启用外部音频源。
 - false：（默认）不启用外部音频源。
 
-### sampleRate
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
 
-### channels
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 外部音频源的声道数，可设置为 1（单声道）或 2（立体声）。
 
-### localPlayback
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
 
 是否播放外部音频源：
 
 - true：播放外部音频源。
 - false：（默认）不播放外部音频源。
 
-### publish
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否向远端用户发布音频：
 
 - true：（默认）发布音频到远端用户。
 - false：不发布音频到远端用户。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalaudiosource_imediaengine__return_values"></a>
 

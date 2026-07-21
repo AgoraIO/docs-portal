@@ -30,11 +30,15 @@ __attribute__((visibility("default"))) @interface AgoraCameraCapturerConfigurati
 
 ## 属性
 
-### cameraDirection
+<ParameterList>
+<a id="cameradirection"></a>
+<Parameter name="cameraDirection">
 
 摄像头方向，仅适用于 iOS。详见 `AgoraCameraDirection`。
 
-### cameraFocalLengthType
+</Parameter>
+<a id="camerafocallengthtype"></a>
+<Parameter name="cameraFocalLengthType">
 
 摄像头焦距类型，仅适用于 iOS。详见 `AgoraFocalLength`。
 
@@ -47,21 +51,32 @@ __attribute__((visibility("default"))) @interface AgoraCameraCapturerConfigurati
 两种方法的区别在于，方法一的超广角尺寸不可调节，而方法二支持自由调节摄像头的缩放因子。
 :::
 
-### deviceId
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 摄像头设备 ID，仅适用于 macOS。
 
-### dimensions
+</Parameter>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 视频帧的尺寸（单位：像素）。默认值为 960 × 540。
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 视频帧的帧率（单位：fps）。默认值为 15。
 
-### followEncodeDimensionRatio
+</Parameter>
+<a id="followencodedimensionratio"></a>
+<Parameter name="followEncodeDimensionRatio">
 
 是否遵循通过 `setVideoEncoderConfiguration` 设置的视频宽高比。
 
 - YES：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频宽高比裁剪采集的视频，并同步更新本地预览画面以及 `onCaptureVideoFrame` 和 `onPreEncodeVideoFrame` 中的视频帧。
 - NO：不遵循设置的视频宽高比。SDK 不会更改采集视频帧的宽高比。
+
+</Parameter>
+</ParameterList>

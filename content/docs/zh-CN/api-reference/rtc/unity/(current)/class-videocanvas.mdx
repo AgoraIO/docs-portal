@@ -35,15 +35,21 @@ public class VideoCanvas
 
 ## 属性
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 对于 Android 和 iOS 平台，当视频源为合图视频流 (`VIDEO_SOURCE_TRANSCODED`) 时，该参数表示发布合图视频流的用户 ID。
 
-### subviewUid
+</Parameter>
+<a id="subviewuid"></a>
+<Parameter name="subviewUid">
 
 发布某一路合图子视频流的用户 ID。
 
-### view
+</Parameter>
+<a id="view"></a>
+<Parameter name="view">
 
 视频显示窗口。
 
@@ -51,11 +57,15 @@ public class VideoCanvas
 注： 在一个 [VideoCanvas](/zh-CN/api-reference/rtc/unity/class-videocanvas) 中，你只能选择 `view` 或 `surfaceTexture` 其中一个进行设置，如果同时设置，只有 `view` 中的设置会生效。
 :::
 
-### renderMode
+</Parameter>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 视频渲染模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-rendermodetype)。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 视图镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videomirrormodetype)。
 
@@ -66,27 +76,39 @@ public class VideoCanvas
 - 远端用户视图镜像模式：默认关闭远端用户的镜像模式。
 :::
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
-### setupMode
+</Parameter>
+<a id="setupmode"></a>
+<Parameter name="setupMode">
 
 视图设置模式。详见 [VIDEO_VIEW_SETUP_MODE](/zh-CN/api-reference/rtc/unity/enum-videoviewsetupmode)。
 
-### mediaPlayerId
+</Parameter>
+<a id="mediaplayerid"></a>
+<Parameter name="mediaPlayerId">
 
 媒体播放器 ID。可通过 [GetId](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
 
-### cropArea
+</Parameter>
+<a id="croparea"></a>
+<Parameter name="cropArea">
 
 （可选）视频帧的展示区域，详见 [Rectangle](/zh-CN/api-reference/rtc/unity/class-rectangle)。其中，`width` 和 `height` 表示该区域的视频像素宽度和高度。默认值为空值 (宽或高为 0)，表示展示实际分辨率的视频帧。
 
-### backgroundColor
+</Parameter>
+<a id="backgroundcolor"></a>
+<Parameter name="backgroundColor">
 
 视频画布的背景颜色，格式为 RGBA。默认值为 0x00000000，代表黑色。
 
-### enableAlphaMask
+</Parameter>
+<a id="enablealphamask"></a>
+<Parameter name="enableAlphaMask">
 
 :::note
 注：
@@ -102,6 +124,11 @@ public class VideoCanvas
 
 Alpha 遮罩渲染可以创建具有透明效果的图像，还可以提取视频中的人像。与其他方法结合使用时，可以实现人像画中画、添加水印等效果。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 视频帧在视频链路中的位置。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/unity/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

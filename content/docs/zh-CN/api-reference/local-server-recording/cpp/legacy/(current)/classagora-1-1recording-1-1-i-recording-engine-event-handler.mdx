@@ -39,11 +39,18 @@ _migration:
 
 通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="error">
 
-| error | [错误代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a5f37e3fa14fad2982f248d247d76996b)。 |
-| --- | --- |
-| stat_code | [状态代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a467894afed372a4fe76594a6223869a0)。 |
+[错误代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a5f37e3fa14fad2982f248d247d76996b)。
+
+</Parameter>
+<Parameter name="stat_code">
+
+[状态代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a467894afed372a4fe76594a6223869a0)。
+
+</Parameter>
+</ParameterList>
 
 <a id="abc0569a84c34c367bdf738954b0b8e28"></a>
 
@@ -56,10 +63,13 @@ _migration:
 
 通常情况下，SDK 上报的警告信息应用程序可以忽略，SDK 会自动恢复。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="warn">
 
-| warn | [警告代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a11cab69078db26c1f166c68e469dcfcf)。 |
-| --- | --- |
+[警告代码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a11cab69078db26c1f166c68e469dcfcf)。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac08c2b0774684e1b5ce667d68c3a946d"></a>
 
@@ -70,11 +80,18 @@ _migration:
 
 该回调表示录制端成功加入了指定的频道。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channelId">
 
-| channelId | 和调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 时设置的频道名一致。 |
-| --- | --- |
-| uid | 用户的 UID。 |
+和调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 时设置的频道名一致。
+
+</Parameter>
+<Parameter name="uid">
+
+用户的 UID。
+
+</Parameter>
+</ParameterList>
 
 <a id="a16e7584fc2bc1c9bb82a3b7471a8a2d1"></a>
 
@@ -85,10 +102,13 @@ _migration:
 
 该回调表示录制端成功离开了频道。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="code">
 
-| code | 录制端离开频道的原因，详见 [LEAVE_PATH_CODE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9bed76add2c986c154d0ab761a7a07ac)。 |
-| --- | --- |
+录制端离开频道的原因，详见 [LEAVE_PATH_CODE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9bed76add2c986c154d0ab761a7a07ac)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a2ca947993a8c8d9ae23fc0545ae1a05d"></a>
 
@@ -101,11 +121,18 @@ _migration:
 
 如果在录制端加入之前，已经有用户在频道中，SDK 也会上报这些已在频道中的用户 UID。频道内有多少用户，该回调就会调用几次。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户的 UID。 |
-| --- | --- |
-| infos | 用户加入频道信息。详见 [UserJoinInfos](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-join-infos)。 |
+用户的 UID。
+
+</Parameter>
+<Parameter name="infos">
+
+用户加入频道信息。详见 [UserJoinInfos](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-join-infos)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a98fe264a24974fb7b6ae46d2ddce3661"></a>
 
@@ -118,12 +145,23 @@ _migration:
 
 该回调在远端用户视频流状态发生变化时触发，并报告该用户当前的视频流状态和引起变化的原因。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 远端用户的 UID。 |
-| --- | --- |
-| state | 该用户当前的视频流状态，详见 [RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3)。 |
-| reason | 引起远端视频流状态变化的原因，详见 [RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44)。 |
+远端用户的 UID。
+
+</Parameter>
+<Parameter name="state">
+
+该用户当前的视频流状态，详见 [RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3)。
+
+</Parameter>
+<Parameter name="reason">
+
+引起远端视频流状态变化的原因，详见 [RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a6ba41d8f2ba7ccb06695ed6ef6037159"></a>
 
@@ -136,12 +174,23 @@ _migration:
 
 该回调在远端用户音频流状态发生变化时触发，并报告该用户当前的音频流状态和引起变化的原因。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 远端用户的 UID。 |
-| --- | --- |
-| state | 该用户当前的音频流状态，详见 [RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3)。 |
-| reason | 引起远端音频流状态变化的原因，详见 [RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44)。 |
+远端用户的 UID。
+
+</Parameter>
+<Parameter name="state">
+
+该用户当前的音频流状态，详见 [RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3)。
+
+</Parameter>
+<Parameter name="reason">
+
+引起远端音频流状态变化的原因，详见 [RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1e5fab78574027b2fc86e2da30f3c49d"></a>
 
@@ -154,11 +203,18 @@ _migration:
 
 SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒）没有收到对方的任何数据包。在网络较差的情况下，可能会有误报。建议可靠的掉线检测应该由信令来做。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户的 UID。 |
-| --- | --- |
-| reason | 用户离开当前频道或掉线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a0e6e9d00d96e6ae8da87bffa12a675f4)。 |
+用户的 UID。
+
+</Parameter>
+<Parameter name="reason">
+
+用户离开当前频道或掉线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a0e6e9d00d96e6ae8da87bffa12a675f4)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a0e14a008e6a8829d8e30ff71b1238f82"></a>
 
@@ -171,11 +227,18 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 当你将 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [decodeAudio](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#ae33efa98ee00667f2e568612ecfd2a69) 设置为 `1`、`2` 或 `3` 时，可通过该回调接收原始音频数据。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户的 UID。 |
-| --- | --- |
-| frame | 收到的原始音频数据，格式为 PCM 或 AAC。详见 [AudioFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-frame)。 |
+用户的 UID。
+
+</Parameter>
+<Parameter name="frame">
+
+收到的原始音频数据，格式为 PCM 或 AAC。详见 [AudioFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-frame)。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac1121a1af126872bbbe2cb2767c311d4"></a>
 
@@ -192,11 +255,18 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 该回调可用于实现高级功能，如鉴黄。这些功能可以通过采集并分析 I 帧实现。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户的 UID。 |
-| --- | --- |
-| frame | 收到的视频帧，格式为 YUV、H.264、H.265、JPG 或 JPG 文件。详见 [VideoFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-frame)。 |
+用户的 UID。
+
+</Parameter>
+<Parameter name="frame">
+
+收到的视频帧，格式为 YUV、H.264、H.265、JPG 或 JPG 文件。详见 [VideoFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-frame)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a06e7c77ee7a3da76882922c11a1421c8"></a>
 
@@ -209,10 +279,13 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 [`RecordingConfig`](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [audioIndicationInterval](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a611f4c05d64eafcc5e304b10d58b3477) 大于 0 时（建议设置时间间隔大于 200 ms），如果 SDK 监测到频道内有新的活跃用户说话时，会触发该回调，返回活跃用户的 UID。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 当前时间段声音最大的用户的 UID。 |
-| --- | --- |
+当前时间段声音最大的用户的 UID。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac07a64cb066c596c2d826c955dc1a543"></a>
 
@@ -225,11 +298,18 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 `RecordingConfi` 中的 [audioIndicationInterval](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a611f4c05d64eafcc5e304b10d58b3477) 大于 0 时（建议设置时间间隔大于 200 ms），该回调会返回在时间间隔内所有说话者的 UID 和音量。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="speakers">
 
-| speakers | 每个说话者的 UID 和音量信息的数组，详见 [AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-volume-info)。 |
-| --- | --- |
-| speakerNum | 频道内说话者人数。 |
+每个说话者的 UID 和音量信息的数组，详见 [AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-volume-info)。
+
+</Parameter>
+<Parameter name="speakerNum">
+
+频道内说话者人数。
+
+</Parameter>
+</ParameterList>
 
 <a id="a8d49dac69b2587a9f401fcde9199f24b"></a>
 
@@ -242,13 +322,28 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 本地收到首帧远端视频流并解码成功时，触发此回调。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户的 UID，指定是哪个用户的视频流。 |
-| --- | --- |
-| width | 视频流宽（像素）。 |
-| height | 视频流高（像素）。 |
-| elapsed | 从本地用户调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 到该回调触发的延迟（毫秒）。 |
+用户的 UID，指定是哪个用户的视频流。
+
+</Parameter>
+<Parameter name="width">
+
+视频流宽（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频流高（像素）。
+
+</Parameter>
+<Parameter name="elapsed">
+
+从本地用户调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1d854682fb794b376661d0db50077acb"></a>
 
@@ -259,11 +354,18 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 该回调提示本地已接收到首帧远端音频流。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 发送音频帧的远端用户的 UID。 |
-| --- | --- |
-| elapsed | 从本地用户调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 到该回调触发的延迟（毫秒）。 |
+发送音频帧的远端用户的 UID。
+
+</Parameter>
+<Parameter name="elapsed">
+
+从本地用户调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a011ff5c4a47816050be60b26ba0fb431) 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a9b483f7394103d8138c4953d594e8796"></a>
 
@@ -274,11 +376,18 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 该回调提示接收音频流或视频流的状态发生改变。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="receivingAudio">
 
-| receivingAudio | 录制端是否在接收音频流。 |
-| --- | --- |
-| receivingVideo | 录制端是否在接收视频流。 |
+录制端是否在接收音频流。
+
+</Parameter>
+<Parameter name="receivingVideo">
+
+录制端是否在接收视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="a0cf0383f0b6f841682a3ec3a588a9b18"></a>
 
@@ -327,11 +436,18 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 有时由于网络原因，录制客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channelId">
 
-| channelId | 频道名。 |
-| --- | --- |
-| uid | 录制端的 UID。 |
+频道名。
+
+</Parameter>
+<Parameter name="uid">
+
+录制端的 UID。
+
+</Parameter>
+</ParameterList>
 
 <a id="a08d04dd3d5f82ca0ab9cdadff20367b0"></a>
 
@@ -344,11 +460,18 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调在网络连接状态发生改变的时候触发，并告知用户当前的网络连接状态和网络状态改变的原因。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="state">
 
-| state | 当前的网络连接状态，详见 [ConnectionStateType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7bb6c960800fca3b10effe482080f018)。 |
-| --- | --- |
-| reason | 网络连接状态发生改变的原因，详见 [ConnectionChangedReasonType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7b099b2f12ca92293f38b7b18c4239c9)。 |
+当前的网络连接状态，详见 [ConnectionStateType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7bb6c960800fca3b10effe482080f018)。
+
+</Parameter>
+<Parameter name="reason">
+
+网络连接状态发生改变的原因，详见 [ConnectionChangedReasonType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7b099b2f12ca92293f38b7b18c4239c9)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a427c17ccc456444159c977aeec04a895"></a>
 
@@ -361,11 +484,18 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调报告远端用户端到端的视频流统计信息，针对每个发送视频流的远端用户（通信模式）/主播（直播模式）每 2 秒触发一次。如果远端有多个用户/主播发送视频流，该回调每 2 秒会被触发多次。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户 ID，指定是哪个用户的视频流。 |
-| --- | --- |
-| stats | 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-video-stats)。 |
+用户 ID，指定是哪个用户的视频流。
+
+</Parameter>
+<Parameter name="stats">
+
+远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-video-stats)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a151091f21f514baf78b005031b382f8b"></a>
 
@@ -378,11 +508,18 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 该回调描述远端用户端到端的音频流统计信息，针对每个发送音频流的远端用户（通信模式）/主播（直播模式）每 2 秒触发一次。如果远端有多个用户/主播发送音频流，该回调每 2 秒会被触发多次。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户 ID，指定是哪个用户的音频流。 |
-| --- | --- |
-| stats | 远端音频统计数据。详见 [RemoteAudioStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-audio-stats)。 |
+用户 ID，指定是哪个用户的音频流。
+
+</Parameter>
+<Parameter name="stats">
+
+远端音频统计数据。详见 [RemoteAudioStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-audio-stats)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a870ab8a3d043f6c3910aa89121e83f33"></a>
 
@@ -395,10 +532,13 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 录制 SDK 定期向录制端报告当前录制的统计信息，每两秒触发一次。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stats">
 
-| stats | 详见 [RecordingStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-recording-stats)。 |
-| --- | --- |
+详见 [RecordingStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-recording-stats)。
+
+</Parameter>
+</ParameterList>
 
 <a id="aef3b0afc5469c74686775d13fe1b58be"></a>
 
@@ -411,11 +551,18 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 录制端调用 [joinChannelWithUserAccount](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#a1567ba5fbd049cbbbcdf99613cfbc661) 方法成功注册 User Account 后，SDK 会触发该回调，并报告录制端的 UID 和 User Account。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 录制端的 UID。 |
-| --- | --- |
-| userAccount | 录制端的 User Account。 |
+录制端的 UID。
+
+</Parameter>
+<Parameter name="userAccount">
+
+录制端的 User Account。
+
+</Parameter>
+</ParameterList>
 
 <a id="a6e87e98275ee9324c185fe62fee30d41"></a>
 
@@ -428,8 +575,15 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的 Mapping 表，并在本地触发 `onUserInfoUpdated`。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 远端用户的 UID。 |
-| --- | --- |
-| info | 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象，包含用户 UID 和 User Account。 |
+远端用户的 UID。
+
+</Parameter>
+<Parameter name="info">
+
+标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象，包含用户 UID 和 User Account。
+
+</Parameter>
+</ParameterList>

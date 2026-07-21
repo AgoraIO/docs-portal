@@ -42,13 +42,20 @@ _migration:
 
 ### 参数
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网为你的项目签发的 App ID。只有使用相同 App ID 的用户才能加入同一个频道并进行通信。一个 App ID 只能用于创建一个 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例。若需更换 App ID，你需要先调用 [destroy](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_release) 方法销毁当前实例，然后再创建新的实例。
 
-### delegate
+</Parameter>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 的事件回调处理器。详见 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_create__return_values"></a>
 
@@ -87,12 +94,17 @@ _migration:
 
 ### 参数
 
-### engineReleasedBlock
+<ParameterList>
+<a id="enginereleasedblock"></a>
+<Parameter name="engineReleasedBlock">
 
 当 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例被销毁时触发的回调，用于配置同步或异步销毁：
 
 - 非 nil：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 `engineReleasedBlock` 回调。
 - nil：同步销毁。方法仅在引擎资源完全释放后才返回。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -131,13 +143,20 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 用于配置 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例的参数。详见 [AgoraRtcEngineConfig](/zh-CN/api-reference/rtc/macos/class-rtcengineconfig)。
 
-### delegate
+</Parameter>
+<a id="delegate-1"></a>
+<Parameter name="delegate">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 的事件回调处理器。详见 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_initialize__return_values"></a>
 

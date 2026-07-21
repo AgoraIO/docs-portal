@@ -47,7 +47,9 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID::FILTER, "template name");
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectnodeid)。
 示例：
@@ -55,9 +57,14 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID::FILTER, "template name");
 - 单一特效：`VIDEO_EFFECT_NODE_ID::BEAUTY`
 - 组合特效：`VIDEO_EFFECT_NODE_ID::BEAUTY | VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP`
 
-### templateName
+</Parameter>
+<a id="templatename"></a>
+<Parameter name="templateName">
 
 特效模板名称。如果设置为 NULL 或空字符串，SDK 会从资源包中加载默认配置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__return_values"></a>
 
@@ -94,13 +101,20 @@ virtual agora_refptr<IVideoEffectObject> createVideoEffectObject(const char* bun
 
 ### 参数
 
-### bundlePath
+<ParameterList>
+<a id="bundlepath"></a>
+<Parameter name="bundlePath">
 
 视频特效资源包的路径。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createvideoeffectobject__return_values"></a>
 
@@ -137,9 +151,14 @@ virtual int destroyVideoEffectObject(agora_refptr<IVideoEffectObject> videoEffec
 
 ### 参数
 
-### videoEffectObject
+<ParameterList>
+<a id="videoeffectobject"></a>
+<Parameter name="videoEffectObject">
 
 要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
 
@@ -184,15 +203,21 @@ virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE
 
 ### 参数
 
-### shapeArea
+<ParameterList>
+<a id="shapearea"></a>
+<Parameter name="shapeArea">
 
 美型增强区域，详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-faceshapearea)。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 输出参数，表示美型增强区域的选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapeareaoptions)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -202,6 +227,9 @@ virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
 
@@ -246,11 +274,15 @@ virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::me
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-1"></a>
+<Parameter name="options">
 
 输出参数，表示美型风格选项。详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapebeautyoptions)。
 
-### type
+</Parameter>
+<a id="type-2"></a>
+<Parameter name="type">
 
 应用滤镜特效的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -260,6 +292,9 @@ virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::me
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
 
@@ -296,13 +331,20 @@ virtual bool getVideoEffectBoolParam(const char* option, const char* key) = 0;
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 参数所属的选项类别。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__return_values"></a>
 
@@ -339,13 +381,20 @@ virtual float getVideoEffectFloatParam(const char* option, const char* key) = 0;
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-1"></a>
+<Parameter name="option">
 
 参数所属选项的类别。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__return_values"></a>
 
@@ -382,13 +431,20 @@ virtual int getVideoEffectIntParam(const char* option, const char* key) = 0;
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-2"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__return_values"></a>
 
@@ -425,13 +481,20 @@ virtual int performVideoEffectAction(uint32_t nodeId, VIDEO_EFFECT_ACTION action
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-1"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符。
 
-### actionId
+</Parameter>
+<a id="actionid"></a>
+<Parameter name="actionId">
 
 要执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectaction)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
 
@@ -468,9 +531,14 @@ virtual int removeVideoEffect(uint32_t nodeId) = 0;
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-2"></a>
+<Parameter name="nodeId">
 
 要移除的视频特效节点的唯一标识符，详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectnodeid)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_removevideoeffect__return_values"></a>
 
@@ -516,23 +584,32 @@ virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, a
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用美颜特效功能：
 
 - true：启用美颜特效功能。
 - false：（默认）禁用美颜特效功能。
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 美颜特效选项。详见 [BeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-beautyoptions)。
 
-### type
+</Parameter>
+<a id="type-3"></a>
+<Parameter name="type">
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
 
@@ -583,23 +660,32 @@ virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& opti
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启色彩增强功能：
 
 - true：开启色彩增强。
 - false：（默认）关闭色彩增强。
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-colorenhanceoptions)。
 
-### type
+</Parameter>
+<a id="type-4"></a>
+<Parameter name="type">
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
 - 使用摄像头采集本地视频时，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 使用自定义视频源时，设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
 
@@ -648,11 +734,15 @@ virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 面部增强区域，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapeareaoptions)。
 
-### type
+</Parameter>
+<a id="type-5"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -662,6 +752,9 @@ virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
 
@@ -713,24 +806,33 @@ virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用美型特效：
 
 - true：启用美型特效。
 - false：（默认）关闭美型特效。
 
-### options
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapebeautyoptions)。
 
-### type
+</Parameter>
+<a id="type-6"></a>
+<Parameter name="type">
 
 要应用滤镜特效的媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 该参数仅支持以下两种设置：
 
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
 
@@ -783,23 +885,32 @@ virtual int setFilterEffectOptions(bool enabled, const FilterEffectOptions& opti
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否启用滤镜特效：
 
 - true：启用。
 - false：（默认）不启用。
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 滤镜特效选项。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-filtereffectoptions)。
 
-### type
+</Parameter>
+<a id="type-7"></a>
+<Parameter name="type">
 
 应用滤镜特效的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
 
@@ -861,18 +972,24 @@ virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-4"></a>
+<Parameter name="enabled">
 
 是否启用暗光增强功能：
 
 - true：启用暗光增强功能。
 - false：（默认）关闭暗光增强功能。
 
-### options
+</Parameter>
+<a id="options-7"></a>
+<Parameter name="options">
 
 暗光增强选项，详见 [LowlightEnhanceOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lowlightenhanceoptions)。
 
-### type
+</Parameter>
+<a id="type-8"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -882,6 +999,9 @@ virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
 
@@ -944,18 +1064,24 @@ virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& op
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-5"></a>
+<Parameter name="enabled">
 
 是否启用视频降噪功能：
 
 - true：启用视频降噪。
 - false：（默认）关闭视频降噪。
 
-### options
+</Parameter>
+<a id="options-8"></a>
+<Parameter name="options">
 
 视频降噪选项，详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodenoiseroptions)。
 
-### type
+</Parameter>
+<a id="type-9"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
@@ -965,6 +1091,9 @@ virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& op
 - 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果使用自定义视频源，设置该参数为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
 
@@ -1001,20 +1130,29 @@ virtual int setVideoEffectBoolParam(const char* option, const char* key, bool pa
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-3"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param"></a>
+<Parameter name="param">
 
 要设置的布尔值：
 
 - true：启用该选项。
 - false：禁用该选项。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__return_values"></a>
 
@@ -1051,17 +1189,26 @@ virtual int setVideoEffectFloatParam(const char* option, const char* key, float 
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-4"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-4"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param-1"></a>
+<Parameter name="param">
 
 要设置的浮点值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__return_values"></a>
 
@@ -1098,17 +1245,26 @@ virtual int setVideoEffectIntParam(const char* option, const char* key, int para
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-5"></a>
+<Parameter name="option">
 
 参数所属选项的类别。
 
-### key
+</Parameter>
+<a id="key-5"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param-2"></a>
+<Parameter name="param">
 
 要设置的整数参数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__return_values"></a>
 

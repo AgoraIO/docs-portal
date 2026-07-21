@@ -37,9 +37,14 @@ virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInf
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -76,9 +81,14 @@ virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0
 
 ### 参数
 
-### mediaRecorder
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 待销毁的 [IMediaRecorder](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediarecorder) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -116,9 +126,14 @@ virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制回调，详见 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -164,7 +179,9 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\music\audio.aac`。
 
@@ -176,9 +193,14 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 请确保你指定的路径存在并且可写。
 :::
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording__return_values"></a>
 
@@ -217,14 +239,16 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 - 请确保你在该方法中指定的路径存在并且可写。
 - 该接口需在 joinChannel [2/2] 之后调用。如果调用 [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel2) 时还在录音，录音会自动停止。
-- 为保证录音效果，当 sampleRate 设为 44.1 kHz 或 48 kHz 时，建议将 quality 设为 AUDIO_RECORDING_QUALITY_MEDIUM 或 AUDIO_RECORDING_QUALITY_HIGH 。
+- 为保证录音效果，当 sampleRate 设为 44.1 kHz 或 48 kHz 时，建议将 quality 设为 AUDIO_RECORDING_QUALITY_MEDIUM 或 AUDIO_RECORDING_QUALITY_HIGH。
 :::
 
 <a id="api_irtcengine_startaudiorecording2__parameters"></a>
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\music\audio.aac`。
 
@@ -236,7 +260,9 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 请确保你指定的路径存在并且可写。
 :::
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz），可以设为以下值：
 
@@ -245,9 +271,14 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - 44100
 - 48000
 
-### quality
+</Parameter>
+<a id="quality-1"></a>
+<Parameter name="quality">
 
 录音音质。详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audiorecordingqualitytype) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording2__return_values"></a>
 
@@ -295,9 +326,14 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -356,9 +392,14 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -465,17 +506,26 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -505,21 +555,32 @@ virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, Recor
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/unreal-cpp/enum-recorderstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态出错的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/unreal-cpp/enum-recorderreasoncode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

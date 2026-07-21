@@ -54,11 +54,18 @@ _migration:
 - 连接成功：连接状态变更为 `STATE_CONNECTED(3)`，SDK 会触发 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a4048ee1d38dff83649d33bfef93a30f6) 回调。
 - 连接失败：连接状态变更为 `STATE_FAILED(5)`，SDK 会触发 [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a86658e80515ca6a85ebde8c230c71f16) 回调。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="url">
 
-| url | CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -79,10 +86,13 @@ _migration:
 
 成功调用该方法后，连接状态变更为 `STATE_DISCONNECTED(1)`，同时 SDK 会触发 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a676896b8556082f878cb2abfff4f60db) 回调。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="ares">
 
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
-| --- | --- |
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -128,11 +138,18 @@ _migration:
 
 你必须先创建 [`IRtmpConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+[IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -148,10 +165,13 @@ _migration:
 
 销毁 CDN 连接 observer。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。 |
-| --- | --- |
+[IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 

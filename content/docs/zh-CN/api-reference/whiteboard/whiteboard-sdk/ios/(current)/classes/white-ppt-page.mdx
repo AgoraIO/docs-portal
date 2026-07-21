@@ -32,17 +32,21 @@ _migration:
 
 `- (instancetype)initWithSrc:(NSString *)*src* size:(CGSize)*size*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="src">
 
-| `src` | [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。 |
-| --- | --- |
-| `size` | <Slot name="api-center-table-0" /> |
+[src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下：
 
-<Slot for="api-center-table-0">
+- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。
+- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。
+
+</Parameter>
+<Parameter name="size">
 
 图片或动态 PPT 在白板中的尺寸，单位为像素。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -67,24 +71,26 @@ _migration:
 
 `- (instancetype)initWithSrc:(NSString *)*src* preview:(NSString *)*url* size:(CGSize)*size*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="src">
 
-| `src` | [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。 |
-| --- | --- |
-| `url` | <Slot name="api-center-table-1" /> |
-| `size` | <Slot name="api-center-table-2" /> |
+[src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-page#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下：
 
-<Slot for="api-center-table-1">
+- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"`https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg`"`。
+- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即[动态文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中 `conversionFileUrl` 字段的值。
+
+</Parameter>
+<Parameter name="url">
 
 图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[文档转换任务的查询结果](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中的 `preview` 字段获取，例如，"[https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png](https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png)“。
 
-</Slot>
-
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="size">
 
 图片或动态 PPT 在白板中的尺寸，单位为像素。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 

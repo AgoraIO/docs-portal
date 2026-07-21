@@ -35,23 +35,33 @@ public class RtcEngineConfig {
 
 ## 属性
 
-### mEventHandler
+<ParameterList>
+<a id="meventhandler"></a>
+<Parameter name="mEventHandler">
 
 事件回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
 
-### mContext
+</Parameter>
+<a id="mcontext"></a>
+<Parameter name="mContext">
 
 Android Activity 的上下文对象。
 
-### mAppId
+</Parameter>
+<a id="mappid"></a>
+<Parameter name="mAppId">
 
 由声网为项目颁发的 App ID。只有使用相同 App ID 的用户才能加入同一频道进行音视频通话。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。更换 App ID 时需调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 销毁原实例后再创建新实例。
 
-### mAreaCode
+</Parameter>
+<a id="mareacode"></a>
+<Parameter name="mAreaCode">
 
 连接区域，适用于有区域限制的场景。支持按位或运算组合多个区域码。详见 [AreaCode](/zh-CN/api-reference/rtc/android/class-areacode)。
 
-### mChannelProfile
+</Parameter>
+<a id="mchannelprofile"></a>
+<Parameter name="mChannelProfile">
 
 频道场景类型：
 
@@ -60,11 +70,15 @@ Android Activity 的上下文对象。
 - `CHANNEL_PROFILE_GAME` (2)：游戏场景。自 v4.x.x 版本废弃，请改用 `CHANNEL_PROFILE_LIVE_BROADCASTING`。
 - `CHANNEL_PROFILE_CLOUD_GAMING` (3)：互动场景，针对低延迟优化，适用于用户频繁互动的场景。自 v4.x.x 版本废弃，请改用 `CHANNEL_PROFILE_LIVE_BROADCASTING`。
 
-### mLicense
+</Parameter>
+<a id="mlicense"></a>
+<Parameter name="mLicense">
 
 用于频道连接验证的许可证，按许可证计费。
 
-### mAudioScenario
+</Parameter>
+<a id="maudioscenario"></a>
+<Parameter name="mAudioScenario">
 
 :::note
 注： 在使用此枚举前，需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 检查音频设备是否支持超低延迟采集与播放。若需体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true）。
@@ -79,22 +93,30 @@ Android Activity 的上下文对象。
 - `AUDIO_SCENARIO_MEETING` (8)：会议场景，主要传输人声。
 - `AUDIO_SCENARIO_AI_CLIENT` (10)：AI 对话场景，仅适用于与通过 `Conversational AI Engine` 创建的智能体交互的场景。
 
-### mAutoRegisterAgoraExtensions
+</Parameter>
+<a id="mautoregisteragoraextensions"></a>
+<Parameter name="mAutoRegisterAgoraExtensions">
 
 是否在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
 
 - true：（默认）自动注册插件。
 - false：不自动注册插件，需调用 [enableExtension](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_enableextension) 手动注册。
 
-### mExtensionList
+</Parameter>
+<a id="mextensionlist"></a>
+<Parameter name="mExtensionList">
 
 插件库名称列表。
 
-### mExtensionObserver
+</Parameter>
+<a id="mextensionobserver"></a>
+<Parameter name="mExtensionObserver">
 
 [IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaextensionobserver) 实例。详见 [IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaextensionobserver)。
 
-### mLogConfig
+</Parameter>
+<a id="mlogconfig"></a>
+<Parameter name="mLogConfig">
 
 日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/android/class-logconfig)。
 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 日志文件：
@@ -106,11 +128,15 @@ Android Activity 的上下文对象。
 - 当 `agorasdk.log` 写满时，SDK 会依次删除旧文件并重命名，生成新的日志文件。
 - `agoraapi.log` 遵循相同的覆盖规则。
 
-### mThreadPriority
+</Parameter>
+<a id="mthreadpriority"></a>
+<Parameter name="mThreadPriority">
 
 线程优先级类型。详见 `ThreadPriorityType`。
 
-### mNativeLibPath
+</Parameter>
+<a id="mnativelibpath"></a>
+<Parameter name="mNativeLibPath">
 
 :::note
 注： 适用于手动集成 SDK。通过 Maven Central 或 JitPack 集成时不适用。请确保该目录存在，否则 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化会失败。
@@ -121,9 +147,14 @@ Android Activity 的上下文对象。
 - 设置该参数后，SDK 会从指定目录加载 `.so` 文件，实现动态加载以减小包体积。
 - 若不设置或设为 `null`，SDK 会从默认编译路径加载 `.so` 文件，包体积会增大。
 
-### mDomainLimit
+</Parameter>
+<a id="mdomainlimit"></a>
+<Parameter name="mDomainLimit">
 
 是否启用域名限制：
 
 - true：启用域名限制，适用于物联网设备使用 IoT 卡接入的场景。SDK 仅连接运营商白名单中报备的域名或 IP。
 - false：（默认）不启用域名限制，适用于大多数通用场景。
+
+</Parameter>
+</ParameterList>

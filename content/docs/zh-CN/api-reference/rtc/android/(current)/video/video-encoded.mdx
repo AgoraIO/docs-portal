@@ -37,9 +37,14 @@ public abstract int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 ### 参数
 
-### receiver
+<ParameterList>
+<a id="receiver"></a>
+<Parameter name="receiver">
 
 编码后视频帧的观察器对象，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registervideoencodedframeobserver__return_values"></a>
 
@@ -78,21 +83,32 @@ boolean onEncodedVideoFrameReceived(String channelId, int remoteUid, ByteBuffer 
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### remoteUid
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 远端用户 ID。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 编码后的视频图像缓冲区。
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 编码视频帧的信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/android/class-encodedvideoframeinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
 

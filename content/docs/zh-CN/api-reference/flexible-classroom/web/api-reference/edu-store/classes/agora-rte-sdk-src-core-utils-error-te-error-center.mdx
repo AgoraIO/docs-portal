@@ -44,7 +44,9 @@ _migration:
 
 - new RteErrorCenter():[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#constructor)Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#constructor)
+
+Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
 ## Properties
 
@@ -60,14 +62,16 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+- emit(evt:string,...args:any[]):[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#emit)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
 <a id="handleNonThrowableError"></a>
 
@@ -75,13 +79,23 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - handleNonThrowableError(code:[AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code), error:Error, extra?:any):void
 
-- Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleNonThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleNonThrowableError)Parameters
+Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleNonThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleNonThrowableError)
 
-  - code: [AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code)
-  - error: Error
-  - Optional extra: any
+<ParameterList title="Parameters">
+<Parameter name="code" required>
 
-  Returns void
+<ParameterType>
+
+[AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="error" type="Error" required />
+<Parameter name="extra" type="any" optional />
+</ParameterList>
+
+Returns void
 
 <a id="handleThrowableError"></a>
 
@@ -89,13 +103,23 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - handleThrowableError(code:[AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code), error:Error, extra?:any):never
 
-- Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleThrowableError)Parameters
+Overrides [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[handleThrowableError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#handleThrowableError)
 
-  - code: [AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code)
-  - error: Error
-  - Optional extra: any
+<ParameterList title="Parameters">
+<Parameter name="code" required>
 
-  Returns never
+<ParameterType>
+
+[AGRteErrorCode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-utils-error-grte-error-code)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="error" type="Error" required />
+<Parameter name="extra" type="any" optional />
+</ParameterList>
+
+Returns never
 
 <a id="off"></a>
 
@@ -103,12 +127,14 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - off(evt:string, cb:CallableFunction):[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#off)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
 <a id="on"></a>
 
@@ -116,12 +142,14 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - on(evt:string, cb:CallableFunction):[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#on)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
 <a id="once"></a>
 
@@ -129,12 +157,14 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - once(evt:string, cb:CallableFunction):[RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#once)Parameters
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
+Returns [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-te-error-center)
 
 <a id="removeAllEventListeners"></a>
 
@@ -142,4 +172,6 @@ shared: [RteErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - removeAllEventListeners():void
 
-- Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#removeAllEventListeners)Returns void
+Inherited from [AbstractErrorCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-bstract-error-center#removeAllEventListeners)
+
+Returns void

@@ -43,9 +43,14 @@ public abstract createDataStream(config: DataStreamConfig): number;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/harmonyos/class-datastreamconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
@@ -90,13 +95,20 @@ public abstract createDataStreamEx(config:DataStreamConfig,connection:RtcConnect
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 数据流设置。详见 [DataStreamConfig](/zh-CN/api-reference/rtc/harmonyos/class-datastreamconfig)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
@@ -152,13 +164,20 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid"></a>
+<Parameter name="streamId">
 
 数据流 ID。可以通过 createDataStream 获取。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 待发送的数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendstreammessage__return_values"></a>
 
@@ -195,17 +214,26 @@ onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送消息的用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-1"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 接收到的数据。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -235,25 +263,38 @@ onStreamMessageError? : (uid:number,streamId:number,error:number,missed:number,c
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 发送消息的用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-2"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。详见 [错误码](/zh-CN/api-reference/rtc/error-code)。
 
-### missed
+</Parameter>
+<a id="missed"></a>
+<Parameter name="missed">
 
 丢失的消息数量。
 
-### cached
+</Parameter>
+<a id="cached"></a>
+<Parameter name="cached">
 
 数据流中断时，后面缓存的消息数量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

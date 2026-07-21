@@ -71,13 +71,20 @@ virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadata
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 metadata 观测器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 metadata 类型。目前仅支持 VIDEO_METADATA。详见 [METADATA_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-metadatatype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registermediametadataobserver__return_values"></a>
 
@@ -108,13 +115,20 @@ virtual int unregisterMediaMetadataObserver(IMetadataObserver* observer, IMetada
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 metadata 观测器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 metadata 类型。目前仅支持 VIDEO_METADATA。详见 [METADATA_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-metadatatype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
 
@@ -145,9 +159,14 @@ virtual void onMetadataReceived(const Metadata &metadata) = 0;
 
 ### 参数
 
-### metadata
+<ParameterList>
+<a id="metadata"></a>
+<Parameter name="metadata">
 
 接收到的 metadata，详见 [Metadata](/zh-CN/api-reference/rtc/unreal-cpp/class-metadata)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -181,13 +200,20 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 
 ### 参数
 
-### source_Type
+<ParameterList>
+<a id="source_type"></a>
+<Parameter name="source_Type">
 
 视频数据类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
 
-### metadata
+</Parameter>
+<a id="metadata-1"></a>
+<Parameter name="metadata">
 
 用户想要发送的 metadata。详见 [Metadata](/zh-CN/api-reference/rtc/unreal-cpp/class-metadata)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
 

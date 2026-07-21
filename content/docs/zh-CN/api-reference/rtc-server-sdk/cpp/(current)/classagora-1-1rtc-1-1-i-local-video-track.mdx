@@ -42,11 +42,21 @@ _migration:
 
 本地视频轨道开启之后，SDK 可以对采集、处理和编码本地视频。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enable">
 
-| enable | 开启或关闭本地视频轨道。`true`: 开启本地视频轨道。 `false`: 关闭本地视频轨道。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+开启或关闭本地视频轨道。
+
+- `true`: 开启本地视频轨道。
+- `false`: 关闭本地视频轨道。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <a id="a0c5423ecd9dcde4fda0ac56d329f456d"></a>
 
@@ -57,11 +67,18 @@ _migration:
 
 设置视频编码属性。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -77,12 +94,23 @@ _migration:
 
 在发送端设置双流模式并设置视频小流。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="mode">
 
-| mode | 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4)。 |
-| --- | --- |
-| config | 视频小流的配置。详见 [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal)。当设置 `mode` 参数为 `DISABLE_SIMULCAST_STREAM` 时，`config` 参数不会生效。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) 。
+
+</Parameter>
+<Parameter name="config">
+
+视频小流的配置。详见 [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) 。当设置 `mode` 参数为 `DISABLE_SIMULCAST_STREAM` 时，`config` 参数不会生效。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -111,10 +139,13 @@ _migration:
 
 获取本地视频轨道的统计信息。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stats" direction="[out]">
 
-| [out] | stats | 统计信息： [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats)。 |
-| --- | --- | --- |
+统计信息： [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 

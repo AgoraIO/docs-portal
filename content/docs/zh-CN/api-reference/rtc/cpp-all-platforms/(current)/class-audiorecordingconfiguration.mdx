@@ -27,7 +27,9 @@ struct AudioRecordingConfiguration {
 
 ## 属性
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件的绝对路径（包含文件扩展名），例如：C:\\music\\audio.aac。
 
@@ -35,14 +37,18 @@ struct AudioRecordingConfiguration {
 注： 请确保日志文件目录存在且可写。
 :::
 
-### encode
+</Parameter>
+<a id="encode"></a>
+<Parameter name="encode">
 
 是否对音频数据进行编码：
 
 - true：以 AAC 格式编码音频数据。
 - false：不编码音频数据，直接保存录制的音频数据。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 :::note
 注： 如果将该参数设置为 44100 或 48000，声网建议录制 WAV 文件，或将 `quality` 设置为 `AUDIO_RECORDING_QUALITY_MEDIUM` 或 `AUDIO_RECORDING_QUALITY_HIGH` 的 AAC 文件，以获得更好的录音质量。
@@ -55,11 +61,15 @@ struct AudioRecordingConfiguration {
 - 44100
 - 48000
 
-### fileRecordingType
+</Parameter>
+<a id="filerecordingtype"></a>
+<Parameter name="fileRecordingType">
 
 录音内容类型，详见 [AUDIO_FILE_RECORDING_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiofilerecordingtype)。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
 
@@ -67,7 +77,9 @@ struct AudioRecordingConfiguration {
 注： 该参数仅适用于 AAC 文件。
 :::
 
-### recordingChannel
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
 
 :::note
 注： 实际录制的音频声道与采集的音频声道有关：
@@ -82,3 +94,6 @@ struct AudioRecordingConfiguration {
 
 - 1：单声道（默认）。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>

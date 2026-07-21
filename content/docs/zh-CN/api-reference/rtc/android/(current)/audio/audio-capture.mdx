@@ -39,13 +39,18 @@ public abstract int adjustRecordingSignalVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0,400]：
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
 
@@ -88,12 +93,17 @@ public abstract int enableInEarMonitoring(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用耳返监听（默认值为 false）：
 
 - true：启用耳返监听。
 - false：关闭耳返监听。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring__return_values"></a>
 
@@ -138,14 +148,18 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用耳返监听功能。
 
 - true：启用耳返监听。
 - false：（默认）关闭耳返监听。
 
-### includeAudioFilters
+</Parameter>
+<a id="includeaudiofilters"></a>
+<Parameter name="includeAudioFilters">
 
 :::note
 注： 该参数仅在 `enabled` 为 true 时生效。
@@ -157,6 +171,9 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 - `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS (1 << 1)`：（2）在耳返监听中添加人声特效音频滤镜。如果你实现了美声、音效等功能，用户可以听到添加这些效果后的声音。该枚举值支持使用按位或运算符（|）组合使用。
 - `EAR_MONITORING_FILTER_NOISE_SUPPRESSION (1 << 2)`：（4）在耳返监听中添加降噪音频滤镜。该枚举值支持使用按位或运算符（|）组合使用。
 - `EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 << 15)`：复用发送端已处理的音频滤镜用于耳返监听。该枚举值可降低 CPU 使用率，但会增加耳返监听延迟，适用于对延迟不敏感但要求低 CPU 消耗的场景。该枚举值仅支持单独使用，选中后其他音频滤镜配置将自动失效。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 
@@ -215,12 +232,17 @@ public abstract int enableLocalAudio(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用本地音频功能：
 
 - true：（默认）重新启用本地音频功能，即启动本地音频采集设备（如麦克风）。
 - false：关闭本地音频功能，即停止本地音频采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -266,12 +288,17 @@ public abstract int muteRecordingSignal(boolean muted);
 
 ### 参数
 
-### muted
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 是否静音录制信号：
 
 - true：静音录制信号。
 - false：（默认）不静音录制信号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
@@ -310,9 +337,14 @@ public abstract int setInEarMonitoringVolume(int volume);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0, 400]。0 表示静音，100（默认）表示原始音量，400 表示原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
 

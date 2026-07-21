@@ -14,66 +14,101 @@ _migration:
 
 ## 枚举值
 
-### OK
+<ParameterList>
+<a id="ok"></a>
+<Parameter name="OK">
 
 0：推流成功。
 
-### INVALID_ARGUMENT
+</Parameter>
+<a id="invalid_argument"></a>
+<Parameter name="INVALID_ARGUMENT">
 
 1：参数无效。请检查输入参数是否正确。
 
-### ENCRYPTED_STREAM_NOT_ALLOWED
+</Parameter>
+<a id="encrypted_stream_not_allowed"></a>
+<Parameter name="ENCRYPTED_STREAM_NOT_ALLOWED">
 
 2：推流已加密，不能推流。
 
-### CONNECTION_TIMEOUT
+</Parameter>
+<a id="connection_timeout"></a>
+<Parameter name="CONNECTION_TIMEOUT">
 
 3：推流超时未成功。
 
-### INTERNAL_SERVER_ERROR
+</Parameter>
+<a id="internal_server_error"></a>
+<Parameter name="INTERNAL_SERVER_ERROR">
 
 4：推流服务器出现错误。
 
-### RTMP_SERVER_ERROR
+</Parameter>
+<a id="rtmp_server_error"></a>
+<Parameter name="RTMP_SERVER_ERROR">
 
 5：CDN 服务器出现错误。
 
-### TOO_OFTEN
+</Parameter>
+<a id="too_often"></a>
+<Parameter name="TOO_OFTEN">
 
 6：推流请求过于频繁。
 
-### REACH_LIMIT
+</Parameter>
+<a id="reach_limit"></a>
+<Parameter name="REACH_LIMIT">
 
 7：单个主播的推流地址数目达到上限 10。请删掉一些不用的推流地址再增加推流地址。
 
-### NOT_AUTHORIZED
+</Parameter>
+<a id="not_authorized"></a>
+<Parameter name="NOT_AUTHORIZED">
 
 8：主播操作不属于自己的流。例如更新其他主播的流参数、停止其他主播的流。请检查 App 逻辑。
 
-### STREAM_NOT_FOUND
+</Parameter>
+<a id="stream_not_found"></a>
+<Parameter name="STREAM_NOT_FOUND">
 
 9：服务器未找到这个流。
 
-### FORMAT_NOT_SUPPORTED
+</Parameter>
+<a id="format_not_supported"></a>
+<Parameter name="FORMAT_NOT_SUPPORTED">
 
 10：推流地址格式有错误。请检查推流地址格式是否正确。
 
-### NOT_BROADCASTER
+</Parameter>
+<a id="not_broadcaster"></a>
+<Parameter name="NOT_BROADCASTER">
 
 11：用户角色不是主播，该用户无法使用推流功能。请检查你的应用代码逻辑。
 
-### TRANSCODING_NO_MIX_STREAM
+</Parameter>
+<a id="transcoding_no_mix_stream"></a>
+<Parameter name="TRANSCODING_NO_MIX_STREAM">
 
 13：非转码推流情况下，调用了 [updateRtmpTranscoding](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) 方法更新转码属性。请检查你的应用代码逻辑。
 
-### NET_DOWN
+</Parameter>
+<a id="net_down"></a>
+<Parameter name="NET_DOWN">
 
 14：主播的网络出错。
 
-### INVALID_PRIVILEGE
+</Parameter>
+<a id="invalid_privilege"></a>
+<Parameter name="INVALID_PRIVILEGE">
 
 16：你的项目没有使用推流服务的权限。
 
-### RTMP_STREAM_UNPUBLISH_REASON_OK
+</Parameter>
+<a id="rtmp_stream_unpublish_reason_ok"></a>
+<Parameter name="RTMP_STREAM_UNPUBLISH_REASON_OK">
 
 100：推流已正常结束。当你结束推流后，SDK 会返回该值。
+
+</Parameter>
+</ParameterList>

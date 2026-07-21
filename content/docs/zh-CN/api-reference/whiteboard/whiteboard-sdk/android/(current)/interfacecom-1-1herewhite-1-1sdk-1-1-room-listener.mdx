@@ -38,10 +38,13 @@ _migration:
 
 房间连接状态变化回调。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="phase">
 
-| phase | 房间的连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。 |
-| --- | --- |
+房间的连接状态，详见 [`RoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#a99cd28c3beb26991d82667046ba580c4) 内被实现.
 
@@ -54,10 +57,13 @@ _migration:
 
 白板 SDK 与白板服务器连接中断回调。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="e">
 
-| e | 错误信息。 |
-| --- | --- |
+错误信息。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#a7e9b52c6a9b5ed4f2be40002f519e99d) 内被实现.
 
@@ -70,10 +76,13 @@ _migration:
 
 用户被服务器移出房间回调。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="reason">
 
-| reason | 用户被移除房间的原因。 |
-| --- | --- |
+用户被移除房间的原因。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#af133346a411515cc0dd52b07765a7f48) 内被实现.
 
@@ -88,10 +97,13 @@ _migration:
 
 该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段，均未空。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="modifyState">
 
-| modifyState | 发生变化的房间状态属性，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。 |
-| --- | --- |
+发生变化的房间状态属性，详见 [`RoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#a250e6883fbe05965dbe72c0d9b1a2bf9) 内被实现.
 
@@ -106,10 +118,13 @@ _migration:
 
 当本地用户调用 [`undo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cd3966f1df8de10f2bb5759fa28998b) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="canUndoSteps">
 
-| canUndoSteps | 剩余的可撤销次数。 |
-| --- | --- |
+剩余的可撤销次数。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#aae420ad231b354677f4516d67e67d52c) 内被实现.
 
@@ -124,10 +139,13 @@ _migration:
 
 当本地用户调用 [`redo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9ad047897d74af1590316cc5d338408c) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="canRedoSteps">
 
-| canRedoSteps | 剩余的可重做次数。 |
-| --- | --- |
+剩余的可重做次数。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#a176bd3ba52faf404434191aa0e54e5fb) 内被实现.
 
@@ -142,10 +160,17 @@ _migration:
 
 同步用户操作发生错误回调。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId">
 
-| userId | 用户 ID，表明在同步哪个用户的操作时发生了错误。 |
-| --- | --- |
-| error | 错误原因。 |
+用户 ID，表明在同步哪个用户的操作时发生了错误。
+
+</Parameter>
+<Parameter name="error">
+
+错误原因。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractRoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-room-callbacks#a9ed51525a523c043a2b955622d8f3c02) 内被实现.

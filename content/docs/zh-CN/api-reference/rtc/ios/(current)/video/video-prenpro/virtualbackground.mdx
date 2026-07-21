@@ -59,20 +59,29 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用虚拟背景：
 
 - YES：启用虚拟背景。
 - NO：关闭虚拟背景。
 
-### backData
+</Parameter>
+<a id="backdata"></a>
+<Parameter name="backData">
 
 自定义背景。为适配 SDK 采集的视频分辨率，SDK 会对自定义背景图像进行缩放和裁剪，确保图像内容不失真。详见 [AgoraVirtualBackgroundSource](/zh-CN/api-reference/rtc/ios/class-virtualbackgroundsource)。
 
-### segData
+</Parameter>
+<a id="segdata"></a>
+<Parameter name="segData">
 
 背景图像的处理属性，详见 [AgoraSegmentationProperty](/zh-CN/api-reference/rtc/ios/class-segmentationproperty)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground__return_values"></a>
 
@@ -135,27 +144,38 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否启用虚拟背景：
 
 - YES：启用虚拟背景。
 - NO：关闭虚拟背景。
 
-### backData
+</Parameter>
+<a id="backdata-1"></a>
+<Parameter name="backData">
 
 自定义背景。SDK 会对背景图像进行缩放和裁剪，以适配采集视频的分辨率，并确保图像内容不被拉伸变形。详见 [AgoraVirtualBackgroundSource](/zh-CN/api-reference/rtc/ios/class-virtualbackgroundsource)。
 
-### segData
+</Parameter>
+<a id="segdata-1"></a>
+<Parameter name="segData">
 
 背景图像的处理属性。详见 [AgoraSegmentationProperty](/zh-CN/api-reference/rtc/ios/class-segmentationproperty)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 媒体源类型。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/ios/enum-mediasourcetype)。
 
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 若使用自定义视频源，请设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground2__return_values"></a>
 

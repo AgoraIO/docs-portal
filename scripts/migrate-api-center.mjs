@@ -62,6 +62,7 @@ Options:
   --reconcile         Delete unchanged stale files in the complete selected run
 `);
         process.exit(0);
+        break;
       default:
         throw new Error(`Unknown argument: ${argv[index]}`);
     }
@@ -78,16 +79,24 @@ export async function runApiCenterMigration(options) {
 
 const isMain =
   process.argv[1] &&
-  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+  path.resolve(process.argv[1]) ===
+    path.resolve(fileURLToPath(import.meta.url));
 if (isMain) {
   try {
-    const result = await runApiCenterMigration(parseArgs(process.argv.slice(2)));
+    const result = await runApiCenterMigration(
+      parseArgs(process.argv.slice(2)),
+    );
+    const parameterLists = Object.values(
+      result.structuredParameterCounts,
+    ).reduce((sum, counts) => sum + counts.lists, 0);
+    const parameterFields = Object.values(
+      result.structuredParameterCounts,
+    ).reduce((sum, counts) => sum + counts.fields, 0);
     console.log(
-      `API Center HTML: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, existing ${result.report.counts.preservedExistingFiles}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
+      `API Center HTML: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, parameter lists ${parameterLists}, parameter fields ${parameterFields}, existing ${result.report.counts.preservedExistingFiles}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
     );
   } catch (error) {
     console.error(`migrate-api-center: ${error.message}`);
     process.exitCode = 1;
   }
 }
-

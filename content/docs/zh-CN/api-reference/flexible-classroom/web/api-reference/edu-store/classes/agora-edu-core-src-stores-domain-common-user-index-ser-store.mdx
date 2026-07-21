@@ -44,9 +44,9 @@ _migration:
 
 - get assistantList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
-- 助教列表
+助教列表
 
-  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
 <a id="localUser"></a>
 
@@ -54,9 +54,9 @@ _migration:
 
 - get localUser():undefined|[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
 
-- 本地用户
+本地用户
 
-  Returns undefined|[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
+Returns undefined|[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
 
 <a id="rewards"></a>
 
@@ -64,11 +64,11 @@ _migration:
 
 - get rewards():Map&lt;string,number&gt;
 
-- 奖励信息字典
+奖励信息字典
 key: 用户UUID
 value: 用户获得的奖励数
 
-  Returns Map&lt;string,number&gt;
+Returns Map&lt;string,number&gt;
 
 <a id="studentList"></a>
 
@@ -76,9 +76,9 @@ value: 用户获得的奖励数
 
 - get studentList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
-- 学生列表
+学生列表
 
-  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
 <a id="teacherList"></a>
 
@@ -86,9 +86,9 @@ value: 用户获得的奖励数
 
 - get teacherList():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
-- 老师列表
+老师列表
 
-  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
 <a id="userCount"></a>
 
@@ -96,9 +96,9 @@ value: 用户获得的奖励数
 
 - get userCount():number
 
-- 房间内用户数
+房间内用户数
 
-  Returns number
+Returns number
 
 <a id="users"></a>
 
@@ -106,9 +106,9 @@ value: 用户获得的奖励数
 
 - get users():Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
-- 房间内所有用户
+房间内所有用户
 
-  Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
+Returns Map&lt;string,[EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)&gt;
 
 ## Methods
 
@@ -118,17 +118,25 @@ value: 用户获得的奖励数
 
 - fetchUserList(params:[FetchUserParam](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-user-type-etch-user-param)):Promise&lt;\{count:any;list:any;nextId:any;total:any\}&gt;
 
-- 获取用户列表
+获取用户列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [FetchUserParam](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-user-type-etch-user-param)
+<ParameterType>
 
-    查询条件
+[FetchUserParam](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-user-type-etch-user-param)
 
-  Returns Promise&lt;\{count:any;list:any;nextId:any;total:any\}&gt;
+</ParameterType>
 
-  用户列表
+查询条件
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;\{count:any;list:any;nextId:any;total:any\}&gt;
+
+用户列表
 
 <a id="kickOutOnceOrBan"></a>
 
@@ -136,18 +144,22 @@ value: 用户获得的奖励数
 
 - kickOutOnceOrBan(userUuid:string, isBan:boolean):Promise&lt;undefined&gt;
 
-- 将用户踢出房间
+将用户踢出房间
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+用户 ID
 
-    用户 ID
-  - isBan: boolean
+</Parameter>
+<Parameter name="isBan" type="boolean" required>
 
-    是否永久封禁该用户
+是否永久封禁该用户
 
-  Returns Promise&lt;undefined&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;undefined&gt;
 
 <a id="updateUserProperties"></a>
 
@@ -155,15 +167,25 @@ value: 用户获得的奖励数
 
 - updateUserProperties(users:\{cause?:any;properties:any;userUuid:string\}[], fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 更新用户自定属性
+更新用户自定属性
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="users" type="\&#123;cause?:any;properties:any;userUuid:string\&#125;[]" required>
 
-  - users: \{cause?:any;properties:any;userUuid:string\}[]
+要更新的用户属性信息
 
-    要更新的用户属性信息
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</Parameter>
+<Parameter name="fromScene" optional>
 
-    要更新的用户所在的房间对象，不传默认为当前房间
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+要更新的用户所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;

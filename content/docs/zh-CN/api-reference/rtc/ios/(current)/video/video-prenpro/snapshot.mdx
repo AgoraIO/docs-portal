@@ -46,16 +46,23 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用本地截图上传功能：
 
 - YES：启用本地截图上传功能。
 - NO：关闭本地截图上传功能。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 截图和上传的配置，详见 [AgoraContentInspectConfig](/zh-CN/api-reference/rtc/ios/class-contentinspectconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablecontentinspect__return_values"></a>
 
@@ -106,20 +113,29 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用本地截图上传功能：
 
 - YES：启用本地截图上传功能。
 - NO：关闭本地截图上传功能。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 截图和上传的配置。详见 [AgoraContentInspectConfig](/zh-CN/api-reference/rtc/ios/class-contentinspectconfig)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enablecontentinspectex__return_values"></a>
 
@@ -174,11 +190,15 @@ _migration:
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。如果你要截取本地用户的视频快照，请将 `uid` 设置为 0。
 
-### filePath
+</Parameter>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 :::note
 注： 请确保指定的路径存在且可写。
@@ -188,6 +208,9 @@ _migration:
 
 - iOS: `/App Sandbox/Library/Caches/example.jpg`
 - macOS: `～/Library/Logs/example.jpg`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
@@ -241,13 +264,20 @@ _migration:
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。如果你想截取本地用户的视频，请将 `uid` 设置为 0。
 
-### config
+</Parameter>
+<a id="config-2"></a>
+<Parameter name="config">
 
 截图的配置，详见 [AgoraSnapshotConfig](/zh-CN/api-reference/rtc/ios/class-snapshotconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_takesnapshot2__return_values"></a>
 
@@ -304,15 +334,21 @@ _migration:
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。如果要对本地用户的视频进行截图，请将 `uid` 设置为 0。
 
-### filePath
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 截图的本地路径（包含文件扩展名）。例如：
 
@@ -320,6 +356,9 @@ _migration:
 - macOS: `～/Library/Logs/example.jpg`
 
 请确保指定路径存在且可写。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
@@ -372,17 +411,26 @@ _migration:
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。如果要截取本地用户的视频，设置 `uid` 为 0。
 
-### config
+</Parameter>
+<a id="config-3"></a>
+<Parameter name="config">
 
 截图的配置信息。详见 [AgoraSnapshotConfig](/zh-CN/api-reference/rtc/ios/class-snapshotconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_takesnapshotex2__return_values"></a>
 
@@ -423,27 +471,39 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 引擎实例，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。0 表示本地用户。
 
-### filePath
+</Parameter>
+<a id="filepath-2"></a>
+<Parameter name="filePath">
 
 截图的本地路径。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 截图的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 截图的高度（像素）。
 
-### errCode
+</Parameter>
+<a id="errcode"></a>
+<Parameter name="errCode">
 
 截图操作的状态码：
 
@@ -453,6 +513,9 @@ _migration:
   - -1：SDK 无法将数据写入文件或编码 JPEG 图像失败。
   - -2：在调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后的一秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
   - -3：调用 [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法过于频繁。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

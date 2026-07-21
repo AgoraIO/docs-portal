@@ -50,16 +50,43 @@ _migration:
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="sourceId">
 
-| sourceId | 本地音频轨道的 source ID。 |
-| --- | --- |
-| bufferedPcmDataListSize | 缓冲区中的音频帧数量。发送 PCM 数据时，数据首先暂存在缓冲区， SDK 会启动一个线程发送缓冲区的音频帧。 |
-| missedAudioFrames | 线程在发送缓冲区的音频帧时丢失的音频帧数量。 |
-| sentAudioFrames | 线程从缓冲区发送的音频帧数量。 |
-| pushedAudioFrames | 用户发送的音频帧数量。 |
-| droppedAudioFrames | 由于缓冲区容量不足放弃的音频帧数量。 |
-| enabled | 是否允许本地音频轨道。 |
+本地音频轨道的 source ID。
+
+</Parameter>
+<Parameter name="bufferedPcmDataListSize">
+
+缓冲区中的音频帧数量。发送 PCM 数据时，数据首先暂存在缓冲区， SDK 会启动一个线程发送缓冲区的音频帧。
+
+</Parameter>
+<Parameter name="missedAudioFrames">
+
+线程在发送缓冲区的音频帧时丢失的音频帧数量。
+
+</Parameter>
+<Parameter name="sentAudioFrames">
+
+线程从缓冲区发送的音频帧数量。
+
+</Parameter>
+<Parameter name="pushedAudioFrames">
+
+用户发送的音频帧数量。
+
+</Parameter>
+<Parameter name="droppedAudioFrames">
+
+由于缓冲区容量不足放弃的音频帧数量。
+
+</Parameter>
+<Parameter name="enabled">
+
+是否允许本地音频轨道。
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

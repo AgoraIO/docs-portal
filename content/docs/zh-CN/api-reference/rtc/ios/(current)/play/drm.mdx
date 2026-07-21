@@ -33,9 +33,14 @@ _migration:
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 播放器事件回调接口，详见 [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_createmusicplayer__return_values"></a>
 
@@ -98,9 +103,14 @@ _migration:
 
 ### 参数
 
-### musicPlayer
+<ParameterList>
+<a id="musicplayer"></a>
+<Parameter name="musicPlayer">
 
 音乐播放器对象。详见 [AgoraMusicPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusicplayer)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
 
@@ -135,10 +145,15 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 YES：将回调方法派发到主线程。
 NO：（默认）不将回调方法派发到主线程。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -195,11 +210,15 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
 
 音乐资源的唯一标识。你可以通过调用 [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法，并从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption"></a>
+<Parameter name="jsonOption">
 
 :::note
 注： 声网会根据你在 `sceneType` 中指定的频道场景计费。不同的频道场景对应不同的计费标准，详见计费文档。若需切换频道场景，必须重新调用该方法并传入新的 `sceneType` 值。
@@ -216,6 +235,9 @@ NO：（默认）不将回调方法派发到主线程。
   - 5：VR 场景：在线 K 歌房和背景音乐播放。示例：`{"sceneType":1}`
 
 - `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例：`{"format": {"highpart": 0}}`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -256,16 +278,23 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-1"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符，用于指定音乐资源。
 
-### lyricType
+</Parameter>
+<a id="lyrictype"></a>
+<Parameter name="lyricType">
 
 歌词的类型：
 
 - 0：XML 格式。
 - 1：LRC 格式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getlyric__return_values"></a>
 
@@ -338,19 +367,27 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### musicChartId
+<ParameterList>
+<a id="musicchartid"></a>
+<Parameter name="musicChartId">
 
 音乐榜单的 ID，可通过 `onMusicChartsResult` 回调获取。你也可以使用 RESTful API 获取完整的音乐库或增量音乐列表。
 
-### page
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
 
 当前页码，默认从 1 开始。
 
-### pageSize
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
 
 每页返回的音乐资源数量，最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-1"></a>
+<Parameter name="jsonOption">
 
 可选的 JSON 扩展字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
@@ -362,6 +399,9 @@ NO：（默认）不将回调方法派发到主线程。
 
   - `true`：需要副歌片段资源。
   - `false`：不需要副歌片段资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -399,9 +439,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-2"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符，用于指定音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
 
@@ -435,9 +480,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 用于初始化 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter) 的配置，详见 [AgoraMusicContentCenterConfig](/zh-CN/api-reference/rtc/ios/class-musiccontentcenterconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__return_values"></a>
 
@@ -472,9 +522,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-3"></a>
+<Parameter name="songCode">
 
 用于指定特定音乐资源的音乐资源标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
 
@@ -515,13 +570,20 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-4"></a>
+<Parameter name="songCode">
 
 音乐资源的 ID，用于标识音乐内容。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 播放起始位置，单位为毫秒。（默认值为 0。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_open_imusicplayer__return_values"></a>
 
@@ -570,11 +632,15 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-5"></a>
+<Parameter name="songCode">
 
 音乐资源的 ID，用于标识音乐。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-2"></a>
+<Parameter name="jsonOption">
 
 扩展的 JSON 字段。声网会根据你在 `sceneType` 字段中传入的应用场景进行计费。不同的应用场景对应不同的计费标准。
 
@@ -585,6 +651,9 @@ NO：（默认）不将回调方法派发到主线程。
 - 5：频道场景：VR 中的在线 K 歌和背景音乐播放。
 
 如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。示例：`{"sceneType":1}`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 
@@ -629,9 +698,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-6"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload2__return_values"></a>
 
@@ -664,9 +738,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### eventDelegate
+<ParameterList>
+<a id="eventdelegate"></a>
+<Parameter name="eventDelegate">
 
 要注册的回调事件。如果你想移除之前注册的回调事件，请传入 nil。详见 [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__return_values"></a>
 
@@ -705,9 +784,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### songCode
+<ParameterList>
+<a id="songcode-7"></a>
+<Parameter name="songCode">
 
 要删除的音乐资源的标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_removecache__return_values"></a>
 
@@ -742,9 +826,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__return_values"></a>
 
@@ -779,19 +868,27 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### keyWord
+<ParameterList>
+<a id="keyword"></a>
+<Parameter name="keyWord">
 
 搜索关键词。支持按歌曲标题或歌手名搜索。
 
-### page
+</Parameter>
+<a id="page-1"></a>
+<Parameter name="page">
 
 要获取的音乐资源列表的目标页码。
 
-### pageSize
+</Parameter>
+<a id="pagesize-1"></a>
+<Parameter name="pageSize">
 
 每页显示的最大音乐资源数量，最大值为 50。
 
-### jsonOption
+</Parameter>
+<a id="jsonoption-3"></a>
+<Parameter name="jsonOption">
 
 可选的扩展 JSON 字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
@@ -808,6 +905,9 @@ NO：（默认）不将回调方法派发到主线程。
   - NO：不需要合唱片段资源。
 
 示例：`{"needHighPart":true}`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 
@@ -858,9 +958,14 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放模式，详见 [AgoraMusicPlayMode](/zh-CN/api-reference/rtc/ios/enum-musicplaymode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_setplaymode__return_values"></a>
 
@@ -903,21 +1008,32 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### songCode
+</Parameter>
+<a id="songcode-8"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符，用于指定音乐资源。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载链接。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -951,17 +1067,26 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-1"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### result
+</Parameter>
+<a id="result"></a>
+<Parameter name="result">
 
 当前可播放的音乐排行榜列表。详见 [AgoraMusicChartInfo](/zh-CN/api-reference/rtc/ios/class-musicchartinfo)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 请求的状态码。详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -995,17 +1120,26 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-2"></a>
+<Parameter name="requestId">
 
 请求 ID。此请求的唯一标识符。
 
-### result
+</Parameter>
+<a id="result-1"></a>
+<Parameter name="result">
 
 音乐内容列表的详细信息。详见 [AgoraMusicCollection](/zh-CN/api-reference/rtc/ios/class-musiccollection)。
 
-### reason
+</Parameter>
+<a id="reason-2"></a>
+<Parameter name="reason">
 
 请求状态码。详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1039,29 +1173,44 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-3"></a>
+<Parameter name="requestId">
 
 请求 ID，用于唯一标识该请求。
 
-### songCode
+</Parameter>
+<a id="songcode-9"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识特定的音乐资源。
 
-### percent
+</Parameter>
+<a id="percent"></a>
+<Parameter name="percent">
 
 音乐资源当前的加载进度，取值范围为 [0, 100]。
 
-### lyricUrl
+</Parameter>
+<a id="lyricurl-1"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载地址。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐资源当前的加载状态，详见 [AgoraMusicContentCenterPreloadState](/zh-CN/api-reference/rtc/ios/enum-preloadstate)。
 
-### reason
+</Parameter>
+<a id="reason-3"></a>
+<Parameter name="reason">
 
 来自音乐内容中心的请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1095,15 +1244,21 @@ NO：（默认）不将回调方法派发到主线程。
 
 ### 参数
 
-### requestId
+<ParameterList>
+<a id="requestid-4"></a>
+<Parameter name="requestId">
 
 请求 ID。该请求的唯一标识符。
 
-### songCode
+</Parameter>
+<a id="songcode-10"></a>
+<Parameter name="songCode">
 
 音乐资源的标识符。
 
-### simpleInfo
+</Parameter>
+<a id="simpleinfo"></a>
+<Parameter name="simpleInfo">
 
 音乐资源的相关信息，包括：
 
@@ -1113,9 +1268,14 @@ NO：（默认）不将回调方法派发到主线程。
 - 歌曲名称。
 - 歌手名称。
 
-### reason
+</Parameter>
+<a id="reason-4"></a>
+<Parameter name="reason">
 
 请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

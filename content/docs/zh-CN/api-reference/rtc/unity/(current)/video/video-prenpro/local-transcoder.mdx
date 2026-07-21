@@ -69,7 +69,9 @@ public abstract int StartLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 本地合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/unity/class-localtranscoderconfiguration)。
 
@@ -79,6 +81,9 @@ public abstract int StartLocalVideoTranscoder(LocalTranscoderConfiguration confi
 - 参与本地合图的每一路视频流的分辨率最大为 4096 × 2160，如果超出此限制，会导致合图不生效。
 - 合图后的视频流最大分辨率为 4096 × 2160。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
 
@@ -146,9 +151,14 @@ public abstract int UpdateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 本地合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/unity/class-localtranscoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
 
@@ -183,13 +193,20 @@ public virtual void OnLocalVideoTranscoderError(TranscodingVideoStream stream, V
 
 ### 参数
 
-### stream
+<ParameterList>
+<a id="stream"></a>
+<Parameter name="stream">
 
 合图失败的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/unity/class-transcodingvideostream)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 本地合图出错原因。详见 [VIDEO_TRANSCODER_ERROR](/zh-CN/api-reference/rtc/unity/enum-videotranscodererror)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

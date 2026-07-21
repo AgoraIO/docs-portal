@@ -44,16 +44,43 @@ _migration:
 
 将 PCM 格式的音频数据发送到本地音频轨道。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audio_data">
 
-| audio_data | 需要发送的 PCM 音频数据。 |
-| --- | --- |
-| capture_timestamp | 音频数据采集时间戳（毫秒）。 |
-| presentation_ms | 音频数据发送时间戳（毫秒）。如果没有灵活控制音画同步时间戳的需求，你可以将该参数设置为 0。 |
-| samples_per_channel | 对于每个声道，10 毫秒内采集的音频样本数。 |
-| bytes_per_sample | 每个样本的字节数。 |
-| number_of_channels | 每个样本的声道数。 |
-| sample_rate | 采样率 (Hz)。最小值是 8000。 |
+需要发送的 PCM 音频数据。
+
+</Parameter>
+<Parameter name="capture_timestamp">
+
+音频数据采集时间戳（毫秒）。
+
+</Parameter>
+<Parameter name="presentation_ms">
+
+音频数据发送时间戳（毫秒）。如果没有灵活控制音画同步时间戳的需求，你可以将该参数设置为 0。
+
+</Parameter>
+<Parameter name="samples_per_channel">
+
+对于每个声道，10 毫秒内采集的音频样本数。
+
+</Parameter>
+<Parameter name="bytes_per_sample">
+
+每个样本的字节数。
+
+</Parameter>
+<Parameter name="number_of_channels">
+
+每个样本的声道数。
+
+</Parameter>
+<Parameter name="sample_rate">
+
+采样率 (Hz)。最小值是 8000。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 

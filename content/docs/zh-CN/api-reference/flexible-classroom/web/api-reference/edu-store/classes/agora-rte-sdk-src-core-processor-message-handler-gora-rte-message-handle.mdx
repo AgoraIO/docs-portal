@@ -49,16 +49,30 @@ _migration:
 
 - new AgoraRteMessageHandle(dataStore:[AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store), __namedParameters:\{sceneId:string;streamUuid:string;userUuid:string\}):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
 
-  - dataStore: [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
-  - __namedParameters: \{sceneId:string;streamUuid:string;userUuid:string\}
+<ParameterList title="Parameters">
+<Parameter name="dataStore" required>
 
-    - sceneId:string
-    - streamUuid:string
-    - userUuid:string
+<ParameterType>
 
-  Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+[AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="__namedParameters" type="\&#123;sceneId:string;streamUuid:string;userUuid:string\&#125;" required>
+
+<ParameterList>
+<Parameter name="sceneId" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 ## Properties
 
@@ -92,14 +106,16 @@ userUuid: string
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+- emit(evt:string,...args:any[]):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 <a id="handleNonSeqMessage"></a>
 
@@ -107,11 +123,19 @@ userUuid: string
 
 - handleNonSeqMessage(message:[AgoraRteNonSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-non-sequence-message)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" required>
 
-  - message: [AgoraRteNonSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-non-sequence-message)
+<ParameterType>
 
-  Returns void
+[AgoraRteNonSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-non-sequence-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="handleSeqMessage"></a>
 
@@ -119,11 +143,19 @@ userUuid: string
 
 - handleSeqMessage(message:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" required>
 
-  - message: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+<ParameterType>
 
-  Returns void
+[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="handleSnapshot"></a>
 
@@ -131,11 +163,19 @@ userUuid: string
 
 - handleSnapshot(snapshot:[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="snapshot" required>
 
-  - snapshot: [AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+<ParameterType>
 
-  Returns void
+[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="off"></a>
 
@@ -143,12 +183,14 @@ userUuid: string
 
 - off(evt:string, cb:CallableFunction):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 <a id="on"></a>
 
@@ -156,12 +198,14 @@ userUuid: string
 
 - on(evt:string, cb:CallableFunction):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 <a id="once"></a>
 
@@ -169,12 +213,14 @@ userUuid: string
 
 - once(evt:string, cb:CallableFunction):[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 <a id="removeAllEventListeners"></a>
 
@@ -182,4 +228,6 @@ userUuid: string
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void

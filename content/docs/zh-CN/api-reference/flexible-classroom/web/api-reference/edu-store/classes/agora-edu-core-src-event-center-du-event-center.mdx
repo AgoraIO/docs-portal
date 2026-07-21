@@ -46,7 +46,9 @@ _migration:
 
 - new EduEventCenter():[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
+
+Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
 ## Properties
 
@@ -64,33 +66,43 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - cleanup():void
 
-- Returns void
+Returns void
 
 <a id="emit"></a>
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+- emit(evt:string,...args:any[]):[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
 <a id="emitClasroomEvents"></a>
 
 ### emitClasroomEvents
 
-- emitClasroomEvents(type:[AgoraEduClassroomEvent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-gora-edu-classroom-event), ...args:any[]):void
+- emitClasroomEvents(type:[AgoraEduClassroomEvent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-gora-edu-classroom-event),...args:any[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" required>
 
-  - type: [AgoraEduClassroomEvent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-gora-edu-classroom-event)
-  - Rest...args: any[]
+<ParameterType>
 
-  Returns void
+[AgoraEduClassroomEvent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-gora-edu-classroom-event)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
+
+Returns void
 
 <a id="off"></a>
 
@@ -98,12 +110,14 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - off(evt:string, cb:CallableFunction):[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
 <a id="offClassroomEvents"></a>
 
@@ -111,11 +125,19 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - offClassroomEvents(cb:[EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)
+<ParameterType>
 
-  Returns void
+[EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -123,12 +145,14 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - on(evt:string, cb:CallableFunction):[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
 <a id="onClassroomEvents"></a>
 
@@ -136,11 +160,19 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - onClassroomEvents(cb:[EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  - cb: [EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)
+<ParameterType>
 
-  Returns void
+[EventCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-event-center#EventCallback)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -148,12 +180,14 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - once(evt:string, cb:CallableFunction):[EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
+Returns [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-event-center-du-event-center)
 
 <a id="removeAllEventListeners"></a>
 
@@ -161,4 +195,6 @@ shared: [EduEventCenter](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void

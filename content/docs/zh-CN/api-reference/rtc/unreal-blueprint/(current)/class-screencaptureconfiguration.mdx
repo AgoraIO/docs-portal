@@ -59,7 +59,9 @@ public:
 
 ## 属性
 
-### isCaptureWindow
+<ParameterList>
+<a id="iscapturewindow"></a>
+<Parameter name="isCaptureWindow">
 
 是否采集屏幕上的窗口：
 
@@ -68,7 +70,9 @@ public:
 - `true`：采集窗口。
 - `false`：（默认）采集屏幕，不采集窗口。
 
-### displayId
+</Parameter>
+<a id="displayid"></a>
+<Parameter name="displayId">
 
 （仅适用于 macOS 平台）屏幕的 display ID。
 
@@ -76,7 +80,9 @@ public:
 注意： 请仅在 Mac 设备上采集屏幕时使用该参数。
 :::
 
-### screenRect
+</Parameter>
+<a id="screenrect"></a>
+<Parameter name="screenRect">
 
 （仅适用于 Windows 平台）待共享的屏幕相对于虚拟屏的位置。
 
@@ -86,7 +92,9 @@ public:
 注意： 请仅在 Windows 设备上采集屏幕时使用该参数。
 :::
 
-### windowId
+</Parameter>
+<a id="windowid"></a>
+<Parameter name="windowId">
 
 （仅适用于 Windows 和 macOS 平台）窗口 ID。
 
@@ -94,10 +102,17 @@ public:
 注意： 请仅在采集窗口时使用该参数。
 :::
 
-### params
+</Parameter>
+<a id="params"></a>
+<Parameter name="params">
 
 （仅适用于 Windows 和 macOS 平台）屏幕共享流的编码参数配置。详见 [FScreenCaptureParameters](/zh-CN/api-reference/rtc/unreal-blueprint/class-screencaptureparameters)。
 
-### regionRect
+</Parameter>
+<a id="regionrect"></a>
+<Parameter name="regionRect">
 
 （仅适用于 Windows 和 macOS 平台）待共享区域相对于整个屏幕的位置。详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。如不填，则表示共享整个屏幕。如果设置的共享区域超出了屏幕的边界，则只共享屏幕内的内容。 如果将 FRectangle 中的 width 或 height 设为 0 ，则共享整个屏幕。
+
+</Parameter>
+</ParameterList>

@@ -66,34 +66,118 @@ _migration:
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="numberOfStreams">
 
-| numberOfStreams | 流的数量。 |
-| --- | --- |
-| bytesMajorStream | 视频大流的字节数。 |
-| bytesMinorStream | 视频小流的字节数。 |
-| framesEncoded | 已编码视频帧的数量。 |
-| ssrcMajorStream | 视频大流的 SSRC (synchronization source)。 |
-| ssrcMinorStream | 视频小流的 SSRC (synchronization source)。 |
-| captureFrameRate | 视频的采集帧率。 |
-| regulatedCaptureFrameRate | 根据视频编码器配置调整的视频采集帧率。 |
-| inputFrameRate | 编码器的输入帧率。 |
-| encodeFrameRate | 编码器的输出帧率。 |
-| renderFrameRate | 渲染帧率。 |
-| targetMediaBitrateBps | 目标码率（bps）。 |
-| mediaBitrateBps | 码率（不包含 FEC）。 |
-| totalBitrateBps | 目标码率（bps）。 |
-| captureWidth | 采集视频帧的宽度（像素）。 |
-| captureHeight | 采集视频帧的高度（像素）。 |
-| regulatedCaptureWidth | 根据视频编码器配置调整的视频帧宽度。 |
-| regulatedCaptureHeight | 根据视频编码器配置调整的视频帧高度。 |
-| width | 视频帧的宽度（像素）。 |
-| height | 视频帧的高度（像素）。 |
-| encoderType | 视频编码类型。 |
-| uplinkCostTimeMs | 从视频帧采集到视频帧编码的平均时差（毫秒）。 |
-| qualityAdaptIndication | <Slot name="api-center-table-0" /> |
+流的数量。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="bytesMajorStream">
+
+视频大流的字节数。
+
+</Parameter>
+<Parameter name="bytesMinorStream">
+
+视频小流的字节数。
+
+</Parameter>
+<Parameter name="framesEncoded">
+
+已编码视频帧的数量。
+
+</Parameter>
+<Parameter name="ssrcMajorStream">
+
+视频大流的 SSRC (synchronization source)。
+
+</Parameter>
+<Parameter name="ssrcMinorStream">
+
+视频小流的 SSRC (synchronization source)。
+
+</Parameter>
+<Parameter name="captureFrameRate">
+
+视频的采集帧率。
+
+</Parameter>
+<Parameter name="regulatedCaptureFrameRate">
+
+根据视频编码器配置调整的视频采集帧率。
+
+</Parameter>
+<Parameter name="inputFrameRate">
+
+编码器的输入帧率。
+
+</Parameter>
+<Parameter name="encodeFrameRate">
+
+编码器的输出帧率。
+
+</Parameter>
+<Parameter name="renderFrameRate">
+
+渲染帧率。
+
+</Parameter>
+<Parameter name="targetMediaBitrateBps">
+
+目标码率（bps）。
+
+</Parameter>
+<Parameter name="mediaBitrateBps">
+
+码率（不包含 FEC）。
+
+</Parameter>
+<Parameter name="totalBitrateBps">
+
+目标码率（bps）。
+
+</Parameter>
+<Parameter name="captureWidth">
+
+采集视频帧的宽度（像素）。
+
+</Parameter>
+<Parameter name="captureHeight">
+
+采集视频帧的高度（像素）。
+
+</Parameter>
+<Parameter name="regulatedCaptureWidth">
+
+根据视频编码器配置调整的视频帧宽度。
+
+</Parameter>
+<Parameter name="regulatedCaptureHeight">
+
+根据视频编码器配置调整的视频帧高度。
+
+</Parameter>
+<Parameter name="width">
+
+视频帧的宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频帧的高度（像素）。
+
+</Parameter>
+<Parameter name="encoderType">
+
+视频编码类型。
+
+</Parameter>
+<Parameter name="uplinkCostTimeMs">
+
+从视频帧采集到视频帧编码的平均时差（毫秒）。
+
+</Parameter>
+<Parameter name="qualityAdaptIndication">
 
 基于目标帧率和目标码率的本地视频质量改变：
 
@@ -101,7 +185,8 @@ _migration:
 - 1: 由于网络带宽增加导致质量提升。
 - 2: 由于网络带宽降低导致质量下降。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

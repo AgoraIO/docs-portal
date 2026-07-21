@@ -29,12 +29,16 @@ export class ContentInspectConfig {
 
 ## 属性
 
-### extraInfo
+<ParameterList>
+<a id="extrainfo"></a>
+<Parameter name="extraInfo">
 
 附加信息，最大长度为 1024 字节。
 SDK 会将附加信息和截图一起上传至声网服务器；截图完成后，声网服务器会将附加信息随回调通知一起发送给你的服务器。
 
-### modules
+</Parameter>
+<a id="modules"></a>
+<Parameter name="modules">
 
 功能模块。详见 [ContentInspectModule](/zh-CN/api-reference/rtc/electron/class-contentinspectmodule)。
 最多支持配置 32 个 [ContentInspectModule](/zh-CN/api-reference/rtc/electron/class-contentinspectmodule) 实例，`MAX_CONTENT_INSPECT_MODULE_COUNT` 的取值范围为 [1,32] 中的整数。
@@ -43,6 +47,11 @@ SDK 会将附加信息和截图一起上传至声网服务器；截图完成后�
 注： 一个功能模块最多只能配置一个实例。目前仅支持截图上传功能。
 :::
 
-### moduleCount
+</Parameter>
+<a id="modulecount"></a>
+<Parameter name="moduleCount">
 
 功能模块数，即配置的 [ContentInspectModule](/zh-CN/api-reference/rtc/electron/class-contentinspectmodule) 实例的数量，必须与 `modules` 中配置的实例个数一致。最大值为 32。
+
+</Parameter>
+</ParameterList>

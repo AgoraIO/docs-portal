@@ -33,9 +33,14 @@ virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInf
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 音视频流信息。详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -70,9 +75,14 @@ virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0
 
 ### 参数
 
-### mediaRecorder
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 要销毁的录制器实例。详见 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -115,9 +125,14 @@ virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制的回调。详见 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -162,7 +177,9 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 本地保存录音文件的绝对路径，包括文件名和扩展名。例如：C:\\music\\audio.aac。
 
@@ -170,9 +187,14 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 注： 确保指定的路径存在且可写。
 :::
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording1__return_values"></a>
 
@@ -218,7 +240,9 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 本地保存录音文件的绝对路径，包括文件名和扩展名。例如：C:\\music\\audio.aac。
 
@@ -226,7 +250,9 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 注： 请确保指定的路径存在且可写。
 :::
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz）。你可以设置为以下值之一：
 
@@ -235,9 +261,14 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 - 44100
 - 48000
 
-### quality
+</Parameter>
+<a id="quality-1"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording2__return_values"></a>
 
@@ -283,9 +314,14 @@ virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -348,9 +384,14 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -467,17 +508,26 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -509,21 +559,32 @@ virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, Recor
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-recorderstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态变化的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-recorderreasoncode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

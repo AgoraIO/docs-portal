@@ -106,7 +106,9 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的播放设备：
 
@@ -114,6 +116,9 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 
 - `true`：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
 - `false`：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__return_values"></a>
 
@@ -152,7 +157,9 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频播放设备：
 
@@ -160,6 +167,9 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 - `true`：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
 - `false`：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__return_values"></a>
 
@@ -200,7 +210,9 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__parml_ywj_tf3_5sb"></a>
 
-### enable
+<ParameterList>
+<a id="enable-2"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频采集设备：
 
@@ -208,6 +220,9 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 
 - `true`：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
 - `false`：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__return_values"></a>
 
@@ -238,9 +253,14 @@ virtual int getApplicationVolume(int& volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 App 当前的音量，取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_getapplicationvolume__return_values"></a>
 
@@ -284,12 +304,17 @@ virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 
 ### 参数
 
-### deviceInfo
+<ParameterList>
+<a id="deviceinfo"></a>
+<Parameter name="deviceInfo">
 
 输入和输出参数。标识音频设备信息的 [DeviceInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-deviceinfo) 对象。
 
 - 输入值：一个 DeviceInfo 对象。
 - 输出值：一个包含了音频设备信息的 DeviceInfo 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getaudiodeviceinfo__return_values"></a>
 
@@ -357,13 +382,20 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 
 ### 参数
 
-### deviceName
+<ParameterList>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 输出参数，系统默认的音频设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceId
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 输出参数，系统默认的音频设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_getdefaultdevice__return_values"></a>
 
@@ -401,17 +433,26 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceT
 
 ### 参数
 
-### deviceName
+<ParameterList>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 输出参数，系统默认的音频设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceTypeName
+</Parameter>
+<a id="devicetypename"></a>
+<Parameter name="deviceTypeName">
 
 输出参数，音频设备类型，如：built-in、USB、HDMI 等。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceId
+</Parameter>
+<a id="deviceid-1"></a>
+<Parameter name="deviceId">
 
 输出参数，系统默认的音频设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2__return_values"></a>
 
@@ -450,17 +491,26 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 输入参数，指定想查询的设备信息。
 
-### deviceName
+</Parameter>
+<a id="devicename-2"></a>
+<Parameter name="deviceName">
 
 输出参数，设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceId
+</Parameter>
+<a id="deviceid-2"></a>
+<Parameter name="deviceId">
 
 输出参数，设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_getdevice__return_values"></a>
 
@@ -502,21 +552,32 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index-1"></a>
+<Parameter name="index">
 
 输入参数，指定想查询的设备信息。
 
-### deviceId
+</Parameter>
+<a id="deviceid-3"></a>
+<Parameter name="deviceId">
 
 输出参数，设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceName
+</Parameter>
+<a id="devicename-3"></a>
+<Parameter name="deviceName">
 
 输出参数，设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceTypeName
+</Parameter>
+<a id="devicetypename-1"></a>
+<Parameter name="deviceTypeName">
 
 输出参数，音频设备类型，如：built-in、USB、HDMI 等。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_getdevice2__return_values"></a>
 
@@ -553,11 +614,16 @@ virtual int getLoopbackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-4"></a>
+<Parameter name="deviceId">
 
 输出参数，当前声卡采集设备的 ID。
 
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__return_values"></a>
 
@@ -596,9 +662,14 @@ virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-5"></a>
+<Parameter name="deviceId">
 
 输出参数，当前音频播放设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__return_values"></a>
 
@@ -637,13 +708,20 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-6"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceName
+</Parameter>
+<a id="devicename-4"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo__return_values"></a>
 
@@ -680,17 +758,26 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-7"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceName
+</Parameter>
+<a id="devicename-5"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceTypeName
+</Parameter>
+<a id="devicetypename-2"></a>
+<Parameter name="deviceTypeName">
 
 输出参数，音频播放设备类型，如：built-in、USB、HDMI 等。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2__return_values"></a>
 
@@ -717,12 +804,17 @@ virtual int getPlaybackDeviceMute(bool *mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 播放设备静音状态：
 
 - `true`: 播放设备为静音状态。
 - `false`: 播放设备为非静音状态。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__return_values"></a>
 
@@ -753,9 +845,14 @@ virtual int getPlaybackDeviceVolume(int *volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 输出参数。播放设备音量。取值范围 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume__return_values"></a>
 
@@ -790,9 +887,14 @@ virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-8"></a>
+<Parameter name="deviceId">
 
 输出参数。当前采集设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__return_values"></a>
 
@@ -831,13 +933,20 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-9"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceName
+</Parameter>
+<a id="devicename-6"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo__return_values"></a>
 
@@ -874,17 +983,26 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-10"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceName
+</Parameter>
+<a id="devicename-7"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
 
-### deviceTypeName
+</Parameter>
+<a id="devicetypename-3"></a>
+<Parameter name="deviceTypeName">
 
 输出参数，音频采集设备类型，如：built-in、USB、HDMI 等。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__return_values"></a>
 
@@ -911,12 +1029,17 @@ virtual int getRecordingDeviceMute(bool *mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 音频采集设备静音状态：
 
 - `true`: 采集设备为静音状态。
 - `false`: 采集设备为非静音状态。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__return_values"></a>
 
@@ -955,9 +1078,14 @@ virtual int getRecordingDeviceVolume(int *volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 输出参数，音频采集设备音量，取值范围 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__return_values"></a>
 
@@ -988,12 +1116,17 @@ virtual int isApplicationMute(bool &mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 App 当前是否静音：
 
 - `true`: App 为静音状态。
 - `false`: App 为非静音状态。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_isapplicationmute__return_values"></a>
 
@@ -1060,12 +1193,17 @@ virtual int setApplicationMute(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-3"></a>
+<Parameter name="mute">
 
 是否将 App 设置为静音。
 
 - `true`: 将 App 静音。
 - `false`: 将 App 解除静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_setapplicationmute__return_values"></a>
 
@@ -1096,9 +1234,14 @@ virtual int setApplicationVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-3"></a>
+<Parameter name="volume">
 
 App 的音量，取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_setapplicationvolume__return_values"></a>
 
@@ -1135,9 +1278,14 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-11"></a>
+<Parameter name="deviceId">
 
 设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicecollection_setdevice__return_values"></a>
 
@@ -1190,11 +1338,16 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-12"></a>
+<Parameter name="deviceId">
 
 指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -1235,11 +1388,16 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-13"></a>
+<Parameter name="deviceId">
 
 指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -1270,12 +1428,17 @@ virtual int setPlaybackDeviceMute(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-4"></a>
+<Parameter name="mute">
 
 是否设置播放设备为静音：
 
 - `true`: 播放设备设为静音。
 - `false`: 播放设备不设为静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__return_values"></a>
 
@@ -1314,9 +1477,14 @@ virtual int setPlaybackDeviceVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-4"></a>
+<Parameter name="volume">
 
 播放设备音量。取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__return_values"></a>
 
@@ -1357,11 +1525,16 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-14"></a>
+<Parameter name="deviceId">
 
 音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 deviceId。
 
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -1392,12 +1565,17 @@ virtual int setRecordingDeviceMute(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-5"></a>
+<Parameter name="mute">
 
 是否设置音频采集设备静音：
 
 - `true`: 采集设备静音。
 - `false`: 采集设备为非静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__return_values"></a>
 
@@ -1434,9 +1612,14 @@ virtual int setRecordingDeviceVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-5"></a>
+<Parameter name="volume">
 
 音频采集设备音量。取值范围 [0,255]。0 代表无声，255 代表最大音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__return_values"></a>
 
@@ -1483,9 +1666,14 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 onAudioVolumeIndication 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 onAudioVolumeIndication 回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -1530,12 +1718,17 @@ virtual int startPlaybackDeviceTest(const char* testAudioFilePath) = 0;
 
 ### 参数
 
-### testAudioFilePath
+<ParameterList>
+<a id="testaudiofilepath"></a>
+<Parameter name="testAudioFilePath">
 
 音频文件的绝对路径，路径字符串使用 UTF-8 编码格式。
 
 - 支持文件格式: wav、mp3、m4a、aac。
 - 支持文件采样率: 8000、16000、32000、44100、48000。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__return_values"></a>
 
@@ -1578,9 +1771,14 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval-1"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 onAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -1739,17 +1937,26 @@ virtual void onAudioDeviceStateChanged(const char* deviceId,
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid-15"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediadevicestatetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1787,20 +1994,29 @@ virtual void onAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume
 
 ### 参数
 
-### deviceType
+<ParameterList>
+<a id="devicetype-1"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediadevicetype)。
 
-### volume
+</Parameter>
+<a id="volume-6"></a>
+<Parameter name="volume">
 
 音量。范围为 [0,255]。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 音频设备是否为静音状态：
 
 - `true`: 音频设备已静音。
 - `false`: 音频设备未被静音。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

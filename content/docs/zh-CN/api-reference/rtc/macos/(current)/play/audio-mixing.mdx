@@ -39,9 +39,14 @@ _migration:
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
@@ -82,9 +87,14 @@ _migration:
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用于本地播放的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
@@ -129,9 +139,14 @@ _migration:
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 混音音量。取值范围为 0 到 100。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
@@ -411,9 +426,14 @@ _migration:
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 你想要指定的音轨索引。该值应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -454,13 +474,20 @@ _migration:
 
 ### 参数
 
-### playoutTrackIndex
+<ParameterList>
+<a id="playouttrackindex"></a>
+<Parameter name="playoutTrackIndex">
 
 用于本地播放的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
-### publishTrackIndex
+</Parameter>
+<a id="publishtrackindex"></a>
+<Parameter name="publishTrackIndex">
 
 要发布到频道中的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -517,9 +544,14 @@ _migration:
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AgoraAudioMixingDualMonoMode](/zh-CN/api-reference/rtc/macos/enum-audiomixingdualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
 
@@ -560,9 +592,14 @@ _migration:
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音阶设置本地音乐文件的音调（默认值为 0，表示保持原始音调）。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，本地音乐文件的音调越高或越低。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
 
@@ -597,13 +634,18 @@ _migration:
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。声网建议设置为 50 到 400 之间的值，定义如下：
 
 - 50：原始速度的一半。
 - 100：原始速度。
 - 400：原始速度的 4 倍。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
 
@@ -644,9 +686,14 @@ _migration:
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 播放位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
@@ -696,25 +743,34 @@ _migration:
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 文件路径：
 
 - iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
 
-### loopback
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否只在本地客户端播放音乐文件：
 
 - YES：只在本地客户端播放音乐文件，只有本地用户可以听到音乐。
 - NO：将音乐文件发布到远端客户端，本地用户和远端用户都可以听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数：
 
 - &gt; 0：播放的次数。例如，1 表示播放 1 次。
 - -1：无限循环播放该音频文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing__return_values"></a>
 
@@ -779,29 +835,40 @@ _migration:
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 文件路径：
 
 - iOS 或 macOS：音频文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
 
-### loopback
+</Parameter>
+<a id="loopback-1"></a>
+<Parameter name="loopback">
 
 是否只在本地客户端播放音乐文件：
 
 - YES：只在本地客户端播放音乐文件，只有本地用户可以听到音乐。
 - NO：将音乐文件发布到远端客户端，本地用户和远端用户都可以听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle-1"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt; 0：播放的次数。例如，1 表示播放 1 次。
 - -1：无限循环播放音频文件。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -889,9 +956,14 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -925,13 +997,20 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 播放进度，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -966,17 +1045,26 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐文件的播放状态，详见 [AgoraAudioMixingStateType](/zh-CN/api-reference/rtc/macos/enum-audiomixingstatetype)。
 
-### reasonCode
+</Parameter>
+<a id="reasoncode"></a>
+<Parameter name="reasonCode">
 
 错误码，详见 [AgoraAudioMixingReasonCode](/zh-CN/api-reference/rtc/macos/enum-audiomixingreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

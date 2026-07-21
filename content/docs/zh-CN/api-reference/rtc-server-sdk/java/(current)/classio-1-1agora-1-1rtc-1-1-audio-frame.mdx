@@ -36,16 +36,45 @@ AudioFrame 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="type">
 
-| type | 音频帧类型。0: PCM（16 bit）。 |
-| --- | --- |
-| samplesPerChannel | 每个声道的采样点数。 |
-| bytesPerSample | 每个采样点的字节数: 对于 PCM 来说，一般使用 16 bit，即两个字节。 |
-| channels | 声道数量(如果是立体声，数据是交叉的)。 |
-| samplesPerSec | 每声道每秒的采样点数。 |
-| buffer | 声音数据缓冲区。 |
-| renderTimeMs | 外部音频帧的渲染时间戳，你可以使用该时间戳还原音频帧顺序。你可以将其设为 0。 |
+音频帧类型。
+
+- 0: PCM（16 bit）。
+
+</Parameter>
+<Parameter name="samplesPerChannel">
+
+每个声道的采样点数。
+
+</Parameter>
+<Parameter name="bytesPerSample">
+
+每个采样点的字节数: 对于 PCM 来说，一般使用 16 bit，即两个字节。
+
+</Parameter>
+<Parameter name="channels">
+
+声道数量(如果是立体声，数据是交叉的)。
+
+</Parameter>
+<Parameter name="samplesPerSec">
+
+每声道每秒的采样点数。
+
+</Parameter>
+<Parameter name="buffer">
+
+声音数据缓冲区。
+
+</Parameter>
+<Parameter name="renderTimeMs">
+
+外部音频帧的渲染时间戳，你可以使用该时间戳还原音频帧顺序。你可以将其设为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="a06507a7869fc7b93a23ee5f4ec466622"></a>
 

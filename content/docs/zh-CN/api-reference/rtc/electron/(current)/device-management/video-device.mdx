@@ -63,13 +63,20 @@ abstract getCapability(
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
 
-### deviceCapabilityNumber
+</Parameter>
+<a id="devicecapabilitynumber"></a>
+<Parameter name="deviceCapabilityNumber">
 
 视频格式的索引号。如果 [numberOfCapabilities](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 的返回值为 i，则该参数取值范围为[0,i)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getcapability__return_values"></a>
 
@@ -156,9 +163,14 @@ abstract numberOfCapabilities(deviceIdUTF8: string): number;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-1"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
 
@@ -229,9 +241,14 @@ abstract setCameraCapturerConfiguration(
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/electron/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -274,9 +291,14 @@ abstract setCameraDeviceOrientation(
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameradeviceorientation__return_values"></a>
 
@@ -315,10 +337,15 @@ abstract setDevice(deviceIdUTF8: string): number;
 
 ### 参数
 
-### deviceIdUTF8
+<ParameterList>
+<a id="deviceidutf8-2"></a>
+<Parameter name="deviceIdUTF8">
 
 设备 ID。可通过调用 [enumerateVideoDevices](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 方法获取。
 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__return_values"></a>
 
@@ -383,17 +410,26 @@ onVideoDeviceStateChanged?(
 
 ### 参数
 
-### deviceId
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-### deviceType
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型。详见 [MediaDeviceType](/zh-CN/api-reference/rtc/electron/enum-mediadevicetype)。
 
-### deviceState
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态。详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/electron/enum-mediadevicestatetype) 。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

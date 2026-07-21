@@ -50,17 +50,26 @@ RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，�
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
 
 上下文。
 
-### appId
+</Parameter>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 RtcEngine。如需更换 App ID，必须先调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 销毁当前 RtcEngine 再重新创建。
 
-### handler
+</Parameter>
+<a id="handler"></a>
+<Parameter name="handler">
 
 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_create__return_values"></a>
 
@@ -107,9 +116,14 @@ SDK 只支持每个 App 创建一个 RtcEngine 实例。
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 实例的配置。详见 [RtcEngineConfig](/zh-CN/api-reference/rtc/harmonyos/class-rtcengineconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_initialize__return_values"></a>
 

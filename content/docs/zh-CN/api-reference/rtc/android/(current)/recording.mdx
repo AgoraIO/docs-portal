@@ -35,9 +35,14 @@ public abstract AgoraMediaRecorder createMediaRecorder(RecorderStreamInfo info);
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 要录制的音视频流的信息。详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/android/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -72,9 +77,14 @@ public abstract void destroyMediaRecorder(AgoraMediaRecorder mediaRecorder);
 
 ### 参数
 
-### mediaRecorder
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 要销毁的录制器实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -118,9 +128,14 @@ public int setMediaRecorderObserver(IMediaRecorderCallback callback)
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制的回调。详见 [IMediaRecorderCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -161,7 +176,9 @@ public abstract int startAudioRecording(String filePath, int quality);
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 本地保存录音文件的绝对路径，包括文件名和扩展名。例如：/sdcard/emulated/0/audio.aac。
 
@@ -169,13 +186,18 @@ public abstract int startAudioRecording(String filePath, int quality);
 注： 请确保指定路径存在且可写。
 :::
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量：
 
 - 0：低质量。采样率为 32 kHz，录制 10 分钟的文件大小约为 1.2 MB。
 - 1：中等质量。采样率为 32 kHz，录制 10 分钟的文件大小约为 2 MB。
 - 2：高质量。采样率为 32 kHz，录制 10 分钟的文件大小约为 3.75 MB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording1__return_values"></a>
 
@@ -221,9 +243,14 @@ public abstract int startAudioRecording(AudioRecordingConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录制配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/android/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -277,9 +304,14 @@ public int startRecording(MediaRecorderConfiguration config)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制的配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/android/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -388,17 +420,26 @@ void onRecorderInfoUpdated(String channelId, int uid, RecorderInfo info)
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息，详见 [RecorderInfo](/zh-CN/api-reference/rtc/android/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -426,15 +467,21 @@ SDK 在音视频流的录制状态发生变化时会触发该回调，报告当�
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前录制状态：
 
@@ -442,7 +489,9 @@ SDK 在音视频流的录制状态发生变化时会触发该回调，报告当�
 - `RECORDER_STATE_START`（2）：开始录制音视频流。
 - `RECORDER_STATE_STOP`（3）：停止录制音视频流。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态变化的原因：
 
@@ -451,6 +500,9 @@ SDK 在音视频流的录制状态发生变化时会触发该回调，报告当�
 - `RECORDER_REASON_NO_STREAM`（2）：无可用音视频流，或音视频流中断超过 5 秒。
 - `RECORDER_REASON_OVER_MAX_DURATION`（3）：录制时长超过最大限制。
 - `RECORDER_REASON_CONFIG_CHANGED`（4）：录制配置发生变化。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

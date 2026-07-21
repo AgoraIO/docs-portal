@@ -38,13 +38,20 @@ public abstract int complain(String callId, String description);
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
 
 当前通话的 Call ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcallid) 获取。
 
-### description
+</Parameter>
+<a id="description"></a>
+<Parameter name="description">
 
 （可选）对通话的描述。字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_complain__return_values"></a>
 
@@ -102,16 +109,23 @@ public abstract int enableEncryption(boolean enabled, EncryptionConfig config);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用内置加密功能：
 
 - true：启用内置加密功能。
 - false：（默认）关闭内置加密功能。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/android/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableencryption__return_values"></a>
 
@@ -169,20 +183,29 @@ public abstract int enableEncryptionEx(boolean enabled, EncryptionConfig config,
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用内置加密：
 
 - true：启用内置加密。
 - false：（默认）关闭内置加密。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/android/class-encryptionconfig)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableencryptionex__return_values"></a>
 
@@ -221,12 +244,17 @@ public abstract int enableWebSdkInteroperability(boolean enabled);
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用互通功能：
 
 - true：启用互通功能。
 - false：（默认）关闭互通功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
 
@@ -308,9 +336,14 @@ public abstract String getCallIdEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getcallidex__return_values"></a>
 
@@ -387,9 +420,14 @@ public abstract int getConnectionStateEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getconnectionstateex__return_values"></a>
 
@@ -457,9 +495,14 @@ public static String getErrorDescription(int error)
 
 ### 参数
 
-### error
+<ParameterList>
+<a id="error"></a>
+<Parameter name="error">
 
 SDK 报告的错误码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geterrordescription__return_values"></a>
 
@@ -624,12 +667,17 @@ public abstract boolean isFeatureAvailableOnDevice(int type);
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 高级功能的类型：
 
 - `FEATURE_VIDEO_VIRTUAL_BACKGROUND`（1）：虚拟背景。
 - `FEATURE_VIDEO_BEAUTY_EFFECT`（2）：美颜特效。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
 
@@ -695,17 +743,26 @@ public abstract int rate(String callId, int rating, String description);
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid-1"></a>
+<Parameter name="callId">
 
 当前通话的 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcallid) 获取该 ID。
 
-### rating
+</Parameter>
+<a id="rating"></a>
+<Parameter name="rating">
 
 评分值，范围为 1（最低分）到 5（最高分）。
 
-### description
+</Parameter>
+<a id="description-1"></a>
+<Parameter name="description">
 
 （可选）对通话的描述。字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_rate__return_values"></a>
 
@@ -743,25 +800,38 @@ public abstract int sendCustomReportMessage(String id, String category, String e
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
 
 自定义消息的 ID。
 
-### category
+</Parameter>
+<a id="category"></a>
+<Parameter name="category">
 
 自定义消息的类别。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 自定义消息的事件名称。
 
-### label
+</Parameter>
+<a id="label"></a>
+<Parameter name="label">
 
 自定义消息的标签。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 自定义消息的数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendcustomreportmessage__return_values"></a>
 
@@ -802,29 +872,44 @@ public abstract int sendCustomReportMessageEx(String id, String category, String
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id-1"></a>
+<Parameter name="id">
 
 自定义消息的 ID。
 
-### category
+</Parameter>
+<a id="category-1"></a>
+<Parameter name="category">
 
 自定义消息的类别。
 
-### event
+</Parameter>
+<a id="event-1"></a>
+<Parameter name="event">
 
 自定义消息的事件名称。
 
-### label
+</Parameter>
+<a id="label-1"></a>
+<Parameter name="label">
 
 自定义消息的标签。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 自定义消息的数值。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 连接信息，适用于多频道场景。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_sendcustomreportmessageex__return_values"></a>
 
@@ -863,13 +948,20 @@ public abstract int setAVSyncSource(String channelId, int uid);
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 音频发布设备所在频道的频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 音频发布设备的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setavsyncsource__return_values"></a>
 
@@ -915,13 +1007,18 @@ public abstract int setCloudProxy(int proxyType);
 
 ### 参数
 
-### proxyType
+<ParameterList>
+<a id="proxytype"></a>
+<Parameter name="proxyType">
 
 云代理的类型：
 
 - `TRANSPORT_TYPE_NONE_PROXY` (0)：自动模式。SDK 默认启用该模式。在此模式下，SDK 会尝试直接连接 SD-RTN™，若失败则自动切换至 TCP/TLS 443。
 - `TRANSPORT_TYPE_UDP_PROXY` (1)：UDP 协议的云代理，即强制 UDP 云代理模式。在此模式下，SDK 始终通过 UDP 传输数据。
 - `TRANSPORT_TYPE_TCP_PROXY` (2)：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在此模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcloudproxy__return_values"></a>
 
@@ -969,9 +1066,14 @@ public abstract int setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
 
 本地接入点配置。详见 LocalAccessPointConfiguration。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -1020,9 +1122,14 @@ public abstract int setLogFile(String filePath);
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 日志文件的完整路径，日志文件使用 UTF-8 编码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfile__return_values"></a>
 
@@ -1078,12 +1185,17 @@ public abstract int setLogFileSize(long fileSizeInKBytes);
 
 ### 参数
 
-### fileSizeInKBytes
+<ParameterList>
+<a id="filesizeinkbytes"></a>
+<Parameter name="fileSizeInKBytes">
 
 `agorasdk.log` 文件的大小，单位为 KB。取值范围为 [128, 20480]，默认值为 2,048 KB。
 
 - 如果设置值小于 128 KB，SDK 会自动调整为 128 KB。
 - 如果设置值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilesize__return_values"></a>
 
@@ -1122,7 +1234,9 @@ public abstract int setLogFilter(int filter);
 
 ### 参数
 
-### filter
+<ParameterList>
+<a id="filter"></a>
+<Parameter name="filter">
 
 SDK 的日志输出等级。
 
@@ -1132,6 +1246,9 @@ SDK 的日志输出等级。
 - `LOG_FILTER_WARN` (0x0e)：输出 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志信息。
 - `LOG_FILTER_ERROR` (0x0c)：输出 `LOG_FILTER_CRITICAL` 和 `LOG_FILTER_ERROR` 等级的日志信息。
 - `LOG_FILTER_CRITICAL` (0x08)：仅输出 `LOG_FILTER_CRITICAL` 等级的日志信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilter__return_values"></a>
 
@@ -1170,9 +1287,14 @@ public abstract int setLogLevel(int level);
 
 ### 参数
 
-### level
+<ParameterList>
+<a id="level"></a>
+<Parameter name="level">
 
 日志等级。详见 [LogLevel](/zh-CN/api-reference/rtc/android/enum-loglevel)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setloglevel__return_values"></a>
 
@@ -1205,9 +1327,14 @@ public abstract int setParameters(String parameters);
 
 ### 参数
 
-### parameters
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
 
 用于设置参数的 JSON 字符串。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setparameters__return_values"></a>
 
@@ -1246,9 +1373,14 @@ public abstract int setRemoteSubscribeFallbackOption(Constants.StreamFallbackOpt
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 订阅流的回退选项。详见 [StreamFallbackOptions](/zh-CN/api-reference/rtc/android/enum-streamfallbackoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
 
@@ -1291,13 +1423,18 @@ public abstract int setRemoteSubscribeFallbackOption(int option)
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-1"></a>
+<Parameter name="option">
 
 已订阅流的回退选项：
 
 - `STREAM_FALLBACK_OPTION_DISABLED`（0）：不对音视频流进行回退处理，无法保证音视频质量。
 - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW`（1）：（默认）在下行网络较差时，订阅的远端视频流回退为低质量（低分辨率、低码率）的视频流。
 - `STREAM_FALLBACK_OPTION_AUDIO_ONLY`（2）：在网络条件较差时，优先尝试接收视频小流；若因网络极差无法显示视频，则回退为仅接收音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotesubscribefallbackoption2__return_values"></a>
 
@@ -1346,9 +1483,14 @@ public abstract int startEchoTest(EchoTestConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
 
 音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/android/class-echotestconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startechotest3__return_values"></a>
 
@@ -1391,9 +1533,14 @@ public abstract int startLastmileProbeTest(LastmileProbeConfig config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
 
 Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/android/class-lastmileprobeconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlastmileprobetest__return_values"></a>
 
@@ -1592,7 +1739,9 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的连接状态：
 
@@ -1602,7 +1751,9 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 - `CONNECTION_STATE_RECONNECTING` (4)：SDK 尝试重新连接声网边缘服务器。
 - `CONNECTION_STATE_FAILED` (5)：SDK 连接声网边缘服务器失败。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 连接状态变化的原因：
 
@@ -1644,6 +1795,9 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 - `CONNECTION_CHANGED_SAME_UID_LOGIN` (19)：用户在不同设备上以相同的 `uid` 加入同一频道。注意：以相同 `uid` 加入同一 RTC 频道属于未定义行为，声网不保证在相同情况下始终触发该错误码。
 - `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` (20)：频道中的主播数量已达上限。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
 
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1676,7 +1830,9 @@ public void onEncryptionError(int errorType)
 
 ### 参数
 
-### errorType
+<ParameterList>
+<a id="errortype"></a>
+<Parameter name="errorType">
 
 错误类型：
 
@@ -1685,6 +1841,9 @@ public void onEncryptionError(int errorType)
 - `ENCRYPTION_ERROR_ENCRYPTION_FAILURE`（2）：媒体流加密错误。
 - `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE`（3）：数据流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
 - `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE`（4）：数据流加密错误。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1718,9 +1877,14 @@ public void onLastmileProbeResult(LastmileProbeResult result) {}
 
 ### 参数
 
-### result
+<ParameterList>
+<a id="result"></a>
+<Parameter name="result">
 
 上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/android/class-lastmileproberesult)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1754,7 +1918,9 @@ public void onLastmileQuality(int quality)
 
 ### 参数
 
-### quality
+<ParameterList>
+<a id="quality"></a>
+<Parameter name="quality">
 
 Last-mile 网络质量：
 
@@ -1766,6 +1932,9 @@ Last-mile 网络质量：
 - `QUALITY_VBAD` (5)：网络质量极差，几乎无法通信。
 - `QUALITY_DOWN` (6)：网络连接已断，无法通信。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1801,9 +1970,14 @@ public void onMultipathStats(MultipathStats stats) {}
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/android/class-multipathstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1841,13 +2015,17 @@ public void onNetworkQuality(int uid, int txQuality, int rxQuality)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID，用于标识被报告网络质量的用户。
 
 - 0：表示本地用户。
 
-### txQuality
+</Parameter>
+<a id="txquality"></a>
+<Parameter name="txQuality">
 
 用户上行网络质量评分，依据传输码率、丢包率、平均往返时延（RTT）和抖动等指标评估。
 
@@ -1860,7 +2038,9 @@ public void onNetworkQuality(int uid, int txQuality, int rxQuality)
 - `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
 
-### rxQuality
+</Parameter>
+<a id="rxquality"></a>
+<Parameter name="rxQuality">
 
 用户下行网络质量评分，依据丢包率、平均往返时延（RTT）和抖动等指标评估。
 
@@ -1872,6 +2052,9 @@ public void onNetworkQuality(int uid, int txQuality, int rxQuality)
 - `QUALITY_VBAD` (5)：质量极差，用户几乎无法通信。
 - `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
 - `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1905,7 +2088,9 @@ public void onNetworkTypeChanged(int type)
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type-1"></a>
+<Parameter name="type">
 
 网络类型：
 
@@ -1917,6 +2102,9 @@ public void onNetworkTypeChanged(int type)
 - `NETWORK_TYPE_MOBILE_3G`（4）：网络类型为移动 3G。
 - `NETWORK_TYPE_MOBILE_4G`（5）：网络类型为移动 4G。
 - `NETWORK_TYPE_MOBILE_5G`（6）：网络类型为移动 5G。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1950,13 +2138,18 @@ public void onPermissionError(int permission)
 
 ### 参数
 
-### permission
+<ParameterList>
+<a id="permission"></a>
+<Parameter name="permission">
 
 设备权限的类型：
 
 - `RECORD_AUDIO`（0）：音频采集设备的权限。
 - `CAMERA`（1）：摄像头的权限。
 - `SCREEN_CAPTURE`（2）：屏幕共享的权限。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1982,13 +2175,18 @@ public void onPermissionGranted(int permission)
 
 ### 参数
 
-### permission
+<ParameterList>
+<a id="permission-1"></a>
+<Parameter name="permission">
 
 权限类型。包括：
 
 - `RECORD_AUDIO`：录音权限。
 - `CAMERA`：摄像头权限。
 - `SCREEN_CAPTURE`：屏幕采集权限。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2022,15 +2220,21 @@ public void onProxyConnected(String channel, int uid, int proxyType, String loca
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### proxyType
+</Parameter>
+<a id="proxytype-1"></a>
+<Parameter name="proxyType">
 
 连接的代理类型：
 
@@ -2040,13 +2244,20 @@ public void onProxyConnected(String channel, int uid, int proxyType, String loca
 - `PROXY_TYPE_LOCAL_PROXY`（3）：预留参数。
 - `PROXY_TYPE_TCP_AUTO_FALLBACK`（4）：自动模式。在该模式下，SDK 会尝试直接连接 SD-RTN™，如果失败则自动切换到 TCP/TLS 443。
 
-### localProxyIp
+</Parameter>
+<a id="localproxyip"></a>
+<Parameter name="localProxyIp">
 
 预留参数。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannel` 到触发该回调所经历的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2087,16 +2298,23 @@ public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRe
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### isFallbackOrRecover
+</Parameter>
+<a id="isfallbackorrecover"></a>
+<Parameter name="isFallbackOrRecover">
 
 是否因网络变化触发音视频切换：
 
 - true：由于网络条件差，已订阅的媒体流降级为纯音频流。
 - false：网络条件改善后，已订阅的媒体流恢复为视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2132,9 +2350,14 @@ public void onUplinkNetworkInfoUpdated(UplinkNetworkInfo info) {}
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/android/class-uplinknetworkinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

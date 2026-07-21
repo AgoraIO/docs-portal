@@ -106,12 +106,17 @@ public abstract enableLocalVideo(enabled: boolean): number;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启本地视频采集。
 
 - `true`:（默认）开启本地视频采集。
 - `false`: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 `false` 时，该方法不需要本地有摄像头。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -217,9 +222,14 @@ public abstract setVideoEncoderConfiguration(configuration: VideoEncoderConfigur
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
@@ -268,13 +278,20 @@ public abstract setVideoEncoderConfigurationEx(configuration: VideoEncoderConfig
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-videoencoderconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
@@ -322,9 +339,14 @@ public abstract startPreview(sourceType?: Constants.VideoSourceType): number;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
@@ -375,9 +397,14 @@ public abstract stopPreview(sourceType?: Constants.VideoSourceType): number;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
@@ -416,21 +443,32 @@ onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:nu
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 本地渲染视频的宽 (px) 。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地渲染视频的高 (px)。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel) 或[joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 startPreview 开启本地视频预览到发生此事件过去的时间。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -462,21 +500,32 @@ onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) 
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地调用 joinChannel 或joinChannelWithOptions 到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -528,17 +577,26 @@ onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.Lo
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频状态，详见 [LocalVideoStreamState](/zh-CN/api-reference/rtc/harmonyos/enum-localvideostreamstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态改变原因，详见 [LocalVideoStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -570,13 +628,20 @@ onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) =
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-2"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-localvideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -610,21 +675,32 @@ onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamSta
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 发生视频状态改变的远端用户 ID。
 
-### state
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频流状态，详见 [RemoteVideoStreamState](/zh-CN/api-reference/rtc/harmonyos/enum-remotevideostate)。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频流状态改变的具体原因，详见 [RemoteVideoStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-remotevideostatereason)。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 joinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -656,9 +732,14 @@ onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -692,14 +773,21 @@ onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID，提示是哪个用户的视频流。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 - `true`: 该用户已启用视频功能。
 - `false`: 该用户已关闭视频功能。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -733,16 +821,23 @@ onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### muted
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否取消发布视频流：
 
 - `true`: 取消发布视频流。
 - `false`: 发布视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -768,21 +863,30 @@ onVideoPublishStateChanged?:(source:Constants.VideoSourceType, channel:string, o
 
 ### 参数
 
-频道名。
-
-视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
-
-### oldState
+<ParameterList>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/harmonyos/enum-streampublishstate)。
 
-### newState
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 StreamPublishState。
 
-### elapseSinceLastState
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+频道名。
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
 
 ### 所属接口类
 
@@ -806,25 +910,38 @@ onVideoSizeChanged?:(source:Constants.VideoSourceType, uid:number, width:number,
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source-3"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 图像尺寸和旋转信息发生变化的用户 ID（本地用户的 uid 为 0。此时视频为本地用户的视频预览）。
 
-### width
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
 
 视频流的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
 
 视频流的高度（像素）。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 旋转信息，取值范围 [0,360)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

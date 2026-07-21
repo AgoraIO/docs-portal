@@ -14,14 +14,23 @@ _migration:
 
 ## 枚举值
 
-### PreferAuto
+<ParameterList>
+<a id="preferauto"></a>
+<Parameter name="PreferAuto">
 
 -1：自适应偏好。SDK 根据平台、设备类型等因素自动选择最优的编码类型进行编码。
 
-### PreferSoftware
+</Parameter>
+<a id="prefersoftware"></a>
+<Parameter name="PreferSoftware">
 
 0：软件编码偏好。SDK 优先使用软件编码器进行视频编码。
 
-### PreferHardware
+</Parameter>
+<a id="preferhardware"></a>
+<Parameter name="PreferHardware">
 
 1：硬件编码偏好。SDK 优先使用硬件编码器进行视频编码。当设备不支持硬件编码时，SDK 会自动使用软件编码，并通过 [onLocalVideoStats](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `hwEncoderAccelerating` 报告当前使用的视频编码器类型。
+
+</Parameter>
+</ParameterList>

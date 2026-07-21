@@ -220,21 +220,25 @@ _migration:
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="currState" type="AudioContextState | &quot;interrupted&quot;" required>
 
-- currState: AudioContextState|"interrupted"
+当前的状态，取值如下：
 
-  当前的状态，取值如下：
+- `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
+- `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。你可以调用 [resumeAudioContext](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#resumeaudiocontext) 方法恢复音视频播放。
 
-  - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
-  - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。你可以调用 [resumeAudioContext](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#resumeaudiocontext) 方法恢复音视频播放。
-- prevState: AudioContextState|"interrupted"|undefined
+</Parameter>
+<Parameter name="prevState" type="AudioContextState | &quot;interrupted&quot; | undefined" required>
 
-  之前的状态，取值如下：
+之前的状态，取值如下：
 
-  - `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
-  - `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
-  - `undefined`：无先前状态。
+- `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。
+- `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。
+- `undefined`：无先前状态。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -276,11 +280,19 @@ AgoraRTC.on("camera-changed", (info) => {
 ```
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceInfo" required>
 
-- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+<ParameterType>
 
-  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+</ParameterType>
+
+设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -302,11 +314,19 @@ AgoraRTC.on("microphone-changed", (info) => {
 ```
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceInfo" required>
 
-- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+<ParameterType>
 
-  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+</ParameterType>
+
+设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -328,11 +348,19 @@ AgoraRTC.on("playback-device-changed", (info) => {
 ```
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceInfo" required>
 
-- deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+<ParameterType>
 
-  设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+</ParameterType>
+
+设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -405,7 +433,7 @@ onAudioAutoplayFailed: function
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 <a id="onautoplayfailed"></a>
 
@@ -449,7 +477,7 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 <a id="oncamerachanged"></a>
 
@@ -477,11 +505,19 @@ AgoraRTC.onCameraChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="deviceInfo" required>
 
-    - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+  <ParameterType>
 
-    Returns void
+  [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="onmicrophonechanged"></a>
 
@@ -509,11 +545,19 @@ AgoraRTC.onMicrophoneChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="deviceInfo" required>
 
-    - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+  <ParameterType>
 
-    Returns void
+  [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="onplaybackdevicechanged"></a>
 
@@ -543,11 +587,19 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 
 - - (deviceInfo:[DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="deviceInfo" required>
 
-    - deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+  <ParameterType>
 
-    Returns void
+  [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="onsecuritypolicyviolation"></a>
 
@@ -568,11 +620,11 @@ onSecurityPolicyViolation: function
 
 - - (event:SecurityPolicyViolationEvent):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="event" type="SecurityPolicyViolationEvent" required />
+  </ParameterList>
 
-    - event: SecurityPolicyViolationEvent
-
-    Returns void
+  Returns void
 
 ## Other Properties
 
@@ -592,15 +644,23 @@ Agora Web SDK 的版本信息。
 
 - createClient(config:[ClientConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig)):[IAgoraRTCClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient)
 
-- 创建一个客户端对象用于通话/直播管理，通常来说这是使用 Agora Web SDK 的第一步。
+创建一个客户端对象用于通话/直播管理，通常来说这是使用 Agora Web SDK 的第一步。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [ClientConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig)
+<ParameterType>
 
-    客户端的配置，包括通话场景、编码格式等，默认使用 `vp8` 编码，`rtc` 通话场景。详见 [ClientConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig)。
+[ClientConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig)
 
-  Returns [IAgoraRTCClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient)
+</ParameterType>
+
+客户端的配置，包括通话场景、编码格式等，默认使用 `vp8` 编码，`rtc` 通话场景。详见 [ClientConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig)。
+
+</Parameter>
+</ParameterList>
+
+Returns [IAgoraRTCClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient)
 
 ## Local Track Methods
 
@@ -610,7 +670,7 @@ Agora Web SDK 的版本信息。
 
 - createBufferSourceAudioTrack(config:[BufferSourceAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig)):Promise&lt;[IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack)&gt;
 
-- 通过音频文件或者 [AudioBuffer](https://developer.mozilla.org/zh-CN/docs/Web/API/AudioBuffer) 对象创建一个音频轨道。
+通过音频文件或者 [AudioBuffer](https://developer.mozilla.org/zh-CN/docs/Web/API/AudioBuffer) 对象创建一个音频轨道。
 
 该方法支持本地和在线音频文件。音频文件支持以下音频格式：
 
@@ -618,15 +678,23 @@ Agora Web SDK 的版本信息。
 - AAC
 - 浏览器支持的其他音频格式
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [BufferSourceAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig)
+<ParameterType>
 
-    通过该配置指定文件路径、缓存策略和编码配置。
+[BufferSourceAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig)
 
-  Returns Promise&lt;[IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack)&gt;
+</ParameterType>
 
-  返回的音频轨道对象相对于普通的音频轨道对象增加了一些控制音频播放流程的方法。包括播放、暂停、跳转、实时播放状态获取等。
+通过该配置指定文件路径、缓存策略和编码配置。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack)&gt;
+
+返回的音频轨道对象相对于普通的音频轨道对象增加了一些控制音频播放流程的方法。包括播放、暂停、跳转、实时播放状态获取等。
 
 <a id="createcameravideotrack"></a>
 
@@ -634,15 +702,23 @@ Agora Web SDK 的版本信息。
 
 - createCameraVideoTrack(config?:[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)):Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)&gt;
 
-- 通过摄像头采集的视频创建一个视频轨道。
+通过摄像头采集的视频创建一个视频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" optional>
 
-  - Optional config: [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)
+<ParameterType>
 
-    采集视频的配置，包括采集设备、编码配置等。详见 [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)。
+[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)
 
-  Returns Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)&gt;
+</ParameterType>
+
+采集视频的配置，包括采集设备、编码配置等。详见 [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)&gt;
 
 <a id="createcustomaudiotrack"></a>
 
@@ -650,17 +726,25 @@ Agora Web SDK 的版本信息。
 
 - createCustomAudioTrack(config:[CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig)):[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)
 
-- 创建一个自定义的音频轨道。
+创建一个自定义的音频轨道。
 
 你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的音频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig)
+<ParameterType>
 
-    自定义音频的配置，详见 [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig)。
+[CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig)
 
-  Returns [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)
+</ParameterType>
+
+自定义音频的配置，详见 [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig)。
+
+</Parameter>
+</ParameterList>
+
+Returns [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)
 
 <a id="createcustomvideotrack"></a>
 
@@ -668,19 +752,27 @@ Agora Web SDK 的版本信息。
 
 - createCustomVideoTrack(config:[CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig)):[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)
 
-- 创建一个自定义的视频轨道。
+创建一个自定义的视频轨道。
 
 你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的视频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig)
+<ParameterType>
 
-    自定义视频轨道的配置，详见 [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig)。
+[CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig)
 
-    > 自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig) 除了支持设置码率，还支持设置分辨率和帧率。
+</ParameterType>
 
-  Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)
+自定义视频轨道的配置，详见 [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig)。
+
+> 自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customvideotrackinitconfig) 除了支持设置码率，还支持设置分辨率和帧率。
+
+</Parameter>
+</ParameterList>
+
+Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)
 
 <a id="createmicrophoneandcameratracks"></a>
 
@@ -688,7 +780,7 @@ Agora Web SDK 的版本信息。
 
 - createMicrophoneAndCameraTracks(audioConfig?:[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig), videoConfig?:[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)):Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)]&gt;
 
-- 同时创建麦克风音频轨道和摄像头视频轨道。
+同时创建麦克风音频轨道和摄像头视频轨道。
 
 通过麦克风采集的音频创建一个音频轨道，同时通过摄像头采集的视频创建一个视频轨道。
 
@@ -697,16 +789,32 @@ Agora Web SDK 的版本信息。
 > - 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。
 > - 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="audioConfig" optional>
 
-  - Optional audioConfig: [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)
+<ParameterType>
 
-    采集音频的配置，包括采集设备、编码配置等。
-  - Optional videoConfig: [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)
+[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)
 
-    采集视频的配置，包括采集设备、编码配置等。
+</ParameterType>
 
-  Returns Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)]&gt;
+采集音频的配置，包括采集设备、编码配置等。
+
+</Parameter>
+<Parameter name="videoConfig" optional>
+
+<ParameterType>
+
+[CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)
+
+</ParameterType>
+
+采集视频的配置，包括采集设备、编码配置等。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack),[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)]&gt;
 
 <a id="createmicrophoneaudiotrack"></a>
 
@@ -714,15 +822,23 @@ Agora Web SDK 的版本信息。
 
 - createMicrophoneAudioTrack(config?:[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)):Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack)&gt;
 
-- 通过麦克风采集的音频创建一个音频轨道。
+通过麦克风采集的音频创建一个音频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" optional>
 
-  - Optional config: [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)
+<ParameterType>
 
-    麦克风采集音频的配置，包括采集设备、音频编码配置等，详见 [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)。
+[MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)
 
-  Returns Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack)&gt;
+</ParameterType>
+
+麦克风采集音频的配置，包括采集设备、音频编码配置等，详见 [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack)&gt;
 
 <a id="createscreenvideotrack"></a>
 
@@ -732,105 +848,137 @@ Agora Web SDK 的版本信息。
 - createScreenVideoTrack(config:[ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio:"disable"):Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
 - createScreenVideoTrack(config:[ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio?:"enable"|"disable"|"auto"):Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack),[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]|[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
 
-- 创建用于屏幕共享的视频轨道。
+创建用于屏幕共享的视频轨道。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
+<ParameterType>
 
-    屏幕共享的视频配置，包括编码配置、采集配置等。
-  - withAudio: "enable"
+[ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
 
-    屏幕共享时是否同时分享**屏幕共享输入源**的音频。
+</ParameterType>
 
-    - `enable`: 分享音频。
-    - `disable`: （默认）不分享音频。
-    - `auto`: 根据浏览器是否支持决定是否分享音频。
+屏幕共享的视频配置，包括编码配置、采集配置等。
 
-      > 注意事项：
-      >
-      > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-      > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-      >
-      >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-      > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+</Parameter>
+<Parameter name="withAudio" type="&quot;enable&quot;" required>
 
-  Returns Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack),[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]&gt;
+屏幕共享时是否同时分享**屏幕共享输入源**的音频。
 
-  - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
-  - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
-  - 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
+- `enable`: 分享音频。
+- `disable`: （默认）不分享音频。
+- `auto`: 根据浏览器是否支持决定是否分享音频。
 
-    - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
-    - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
-- 创建用于屏幕共享的视频轨道。
+  > 注意事项：
+  >
+  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+  >
+  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
 
-  Parameters
+</Parameter>
+</ParameterList>
 
-  - config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
+Returns Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack),[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]&gt;
 
-    屏幕共享的视频配置，包括编码配置、采集配置等。
-  - withAudio: "disable"
+- 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
+- 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
+- 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
 
-    屏幕共享时是否同时分享**屏幕共享输入源**的音频。
+  - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
+  - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
 
-    - `enable`: 分享音频。
-    - `disable`: （默认）不分享音频。
-    - `auto`: 根据浏览器是否支持决定是否分享音频。
+创建用于屏幕共享的视频轨道。
 
-      > 注意事项：
-      >
-      > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-      > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-      >
-      >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-      > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  Returns Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
+<ParameterType>
 
-  - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
-  - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
-  - 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
+[ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
 
-    - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
-    - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
-- 创建用于屏幕共享的视频轨道。
+</ParameterType>
 
-  Parameters
+屏幕共享的视频配置，包括编码配置、采集配置等。
 
-  - config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
+</Parameter>
+<Parameter name="withAudio" type="&quot;disable&quot;" required>
 
-    屏幕共享的视频配置，包括编码配置、采集配置等。
-  - Optional withAudio: "enable"|"disable"|"auto"
+屏幕共享时是否同时分享**屏幕共享输入源**的音频。
 
-    屏幕共享时是否同时分享**屏幕共享输入源**的音频。
+- `enable`: 分享音频。
+- `disable`: （默认）不分享音频。
+- `auto`: 根据浏览器是否支持决定是否分享音频。
 
-    - `enable`: 分享音频。
-    - `disable`: （默认）不分享音频。
-    - `auto`: 根据浏览器是否支持决定是否分享音频。
+  > 注意事项：
+  >
+  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+  >
+  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
 
-      > 注意事项：
-      >
-      > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-      > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-      >
-      >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-      >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-      > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack),[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]|[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
+Returns Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
 
-  - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
-  - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
-  - 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
+- 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
+- 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
+- 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
 
-    - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
-    - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
+  - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
+  - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
+
+创建用于屏幕共享的视频轨道。
+
+<ParameterList title="Parameters">
+<Parameter name="config" required>
+
+<ParameterType>
+
+[ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)
+
+</ParameterType>
+
+屏幕共享的视频配置，包括编码配置、采集配置等。
+
+</Parameter>
+<Parameter name="withAudio" type="&quot;enable&quot; | &quot;disable&quot; | &quot;auto&quot;" optional>
+
+屏幕共享时是否同时分享**屏幕共享输入源**的音频。
+
+- `enable`: 分享音频。
+- `disable`: （默认）不分享音频。
+- `auto`: 根据浏览器是否支持决定是否分享音频。
+
+  > 注意事项：
+  >
+  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+  >
+  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack),[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]|[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
+
+- 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选**分享音频**，SDK 会抛出错误。
+- 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
+- 如果 `withAudio` 设为 `auto`，在支持屏幕共享音频的浏览器上 SDK 会默认尝试分享音频。
+
+  - 如果用户勾选了**分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
+  - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
 
 ## Logger Methods
 
@@ -840,11 +988,11 @@ Agora Web SDK 的版本信息。
 
 - disableLogUpload():void
 
-- 关闭日志上传。
+关闭日志上传。
 
 日志上传默认是关闭状态，如果你调用了开启日志上传（[enableLogUpload](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#enablelogupload))，可以通过本方法停止上传日志。
 
-  Returns void
+Returns void
 
 <a id="enablelogupload"></a>
 
@@ -852,13 +1000,13 @@ Agora Web SDK 的版本信息。
 
 - enableLogUpload():void
 
-- 开启日志上传。开启后 SDK 的日志会上传到声网的服务器。
+开启日志上传。开启后 SDK 的日志会上传到声网的服务器。
 
 日志上传功能默认为关闭状态，如果你需要开启此功能，请确保在所有方法之前调用本方法。
 
 > 如果没有成功加入频道，则服务器上无法查看日志信息。
 
-  Returns void
+Returns void
 
 <a id="setloglevel"></a>
 
@@ -866,25 +1014,27 @@ Agora Web SDK 的版本信息。
 
 - setLogLevel(level:number):void
 
-- 设置 SDK 的日志输出级别。
+设置 SDK 的日志输出级别。
 
 选择一个级别，你就可以看到在该级别及该级别以上所有级别的日志信息。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="level" type="number" required>
 
-  - level: number
+SDK 日志输出级别。按照输出日志最全到最少排列：
 
-    SDK 日志输出级别。按照输出日志最全到最少排列：
+- 0: DEBUG。输出所有的 SDK 日志。
+- 1: INFO。输出 INFO、WARNING 和 ERROR 级别的日志。
+- 2: WARNING。输出 WARNING 和 ERROR 级别的日志。
+- 3: ERROR。输出 ERROR 级别的日志。
+- 4: NONE。不输出日志。
 
-    - 0: DEBUG。输出所有的 SDK 日志。
-    - 1: INFO。输出 INFO、WARNING 和 ERROR 级别的日志。
-    - 2: WARNING。输出 WARNING 和 ERROR 级别的日志。
-    - 3: ERROR。输出 ERROR 级别的日志。
-    - 4: NONE。不输出日志。
+例如，如果你输入代码 `AgoraRTC.setLogLevel(1);`，就可以看到 INFO，WARNING 和 ERROR 级别的日志信息。
 
-    例如，如果你输入代码 `AgoraRTC.setLogLevel(1);`，就可以看到 INFO，WARNING 和 ERROR 级别的日志信息。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 ## Media Devices Methods
 
@@ -894,22 +1044,24 @@ Agora Web SDK 的版本信息。
 
 - getCameras(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- 该方法枚举可用的视频输入设备，比如摄像头。
+该方法枚举可用的视频输入设备，比如摄像头。
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的视频输入设备。
 
 > 调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="skipPermissionCheck" type="boolean" optional>
 
-  - Optional skipPermissionCheck: boolean
+是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
 
-    是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
+- `true`: 跳过权限检查。
+- `false`:（默认）不跳过权限检查。
 
-    - `true`: 跳过权限检查。
-    - `false`:（默认）不跳过权限检查。
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;MediaDeviceInfo[]&gt;
+Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getdevices"></a>
 
@@ -917,7 +1069,7 @@ Agora Web SDK 的版本信息。
 
 - getDevices(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- 该方法枚举可用的媒体输入和输出设备，比如麦克风、摄像头、耳机等。
+该方法枚举可用的媒体输入和输出设备，比如麦克风、摄像头、耳机等。
  调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的媒体设备。
 
 > 注意事项：
@@ -933,16 +1085,18 @@ getDevices().then(devices => {
 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="skipPermissionCheck" type="boolean" optional>
 
-  - Optional skipPermissionCheck: boolean
+是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
 
-    是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
+- `true`: 跳过权限检查。
+- `false`:（默认）不跳过权限检查。
 
-    - `true`: 跳过权限检查。
-    - `false`:（默认）不跳过权限检查。
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;MediaDeviceInfo[]&gt;
+Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getelectronscreensources"></a>
 
@@ -950,7 +1104,7 @@ getDevices().then(devices => {
 
 - getElectronScreenSources(type?:[ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)):Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/electrondesktopcapturersource)[]&gt;
 
-- 在 Electron 环境下获取屏幕共享源。
+在 Electron 环境下获取屏幕共享源。
 
 调用成功后 SDK 会返回一组 [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/electrondesktopcapturersource) 对象。
 
@@ -980,13 +1134,21 @@ contextBridge.exposeInMainWorld(
 })()
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" optional>
 
-  - Optional type: [ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)
+<ParameterType>
 
-    需要获取的共享源类型（窗口/应用/屏幕），详见 [ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)。如果为空则获取所有可以获取的共享源。
+[ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)
 
-  Returns Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/electrondesktopcapturersource)[]&gt;
+</ParameterType>
+
+需要获取的共享源类型（窗口/应用/屏幕），详见 [ScreenSourceType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#screensourcetype)。如果为空则获取所有可以获取的共享源。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/electrondesktopcapturersource)[]&gt;
 
 <a id="getmicrophones"></a>
 
@@ -994,22 +1156,24 @@ contextBridge.exposeInMainWorld(
 
 - getMicrophones(skipPermissionCheck?:boolean):Promise&lt;MediaDeviceInfo[]&gt;
 
-- 该方法枚举可用的音频输入设备，比如麦克风。
+该方法枚举可用的音频输入设备，比如麦克风。
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频输入设备。
 
 > 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="skipPermissionCheck" type="boolean" optional>
 
-  - Optional skipPermissionCheck: boolean
+是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
 
-    是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
+- `true`: 跳过权限检查。
+- `false`:（默认）不跳过权限检查。
 
-    - `true`: 跳过权限检查。
-    - `false`:（默认）不跳过权限检查。
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;MediaDeviceInfo[]&gt;
+Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 <a id="getplaybackdevices"></a>
 
@@ -1028,14 +1192,16 @@ contextBridge.exposeInMainWorld(
 > - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="skipPermissionCheck" type="boolean" optional>
 
-- Optional skipPermissionCheck: boolean
+是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
 
-  是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。
+- `true`: 跳过权限检查。
+- `false`:（默认）不跳过权限检查。
 
-  - `true`: 跳过权限检查。
-  - `false`:（默认）不跳过权限检查。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;MediaDeviceInfo[]&gt;
 
@@ -1047,7 +1213,7 @@ Returns Promise&lt;MediaDeviceInfo[]&gt;
 
 - checkAudioTrackIsActive(track:[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)|[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack), timeout?:number):Promise&lt;boolean&gt;
 
-- 检测音频轨道是否活跃。
+检测音频轨道是否活跃。
 
 SDK 通过检测指定时间范围内音量是否发生变化来判断音频轨道是否活跃。
 
@@ -1068,21 +1234,31 @@ AgoraRTC.checkAudioTrackIsActive(audioTrack).then(result => {
 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" required>
 
-  - track: [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)|[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)
+<ParameterType>
 
-    需要进行检测的本地或远端音频轨道。
-  - Optional timeout: number
+[ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack) | [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)
 
-    音频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。
+</ParameterType>
 
-  Returns Promise&lt;boolean&gt;
+需要进行检测的本地或远端音频轨道。
 
-  传入该方法的音频轨道中的音量大小是否发生了变化：
+</Parameter>
+<Parameter name="timeout" type="number" optional>
 
-  - `true`: 音量大小有变化。对于麦克风音频轨道，说明音频采集设备采集到了声音。
-  - `false`: 音量大小未变化，说明音频采集设备没有采集到声音，或自定义音频轨道中没有音量变化，或音频轨道被 mute。
+音频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;boolean&gt;
+
+传入该方法的音频轨道中的音量大小是否发生了变化：
+
+- `true`: 音量大小有变化。对于麦克风音频轨道，说明音频采集设备采集到了声音。
+- `false`: 音量大小未变化，说明音频采集设备没有采集到声音，或自定义音频轨道中没有音量变化，或音频轨道被 mute。
 
 <a id="checksystemrequirements"></a>
 
@@ -1090,16 +1266,16 @@ AgoraRTC.checkAudioTrackIsActive(audioTrack).then(result => {
 
 - checkSystemRequirements():boolean
 
-- 检查 Agora Web SDK 对正在使用的浏览器的适配情况。
+检查 Agora Web SDK 对正在使用的浏览器的适配情况。
 
 该方法必须在创建客户端对象 [createClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 之前调用。
 
-  Returns boolean
+Returns boolean
 
-  是否支持当前浏览器。
+是否支持当前浏览器。
 
-  - `true`: 支持。
-  - `false`: 不支持。
+- `true`: 支持。
+- `false`: 不支持。
 
 <a id="checkvideotrackisactive"></a>
 
@@ -1107,7 +1283,7 @@ AgoraRTC.checkAudioTrackIsActive(audioTrack).then(result => {
 
 - checkVideoTrackIsActive(track:[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)|[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack), timeout?:number):Promise&lt;boolean&gt;
 
-- 检测视频轨道是否活跃。
+检测视频轨道是否活跃。
 
 SDK 通过检测指定时间范围内视频图像是否发生变动来判断视频轨道是否活跃。
 
@@ -1127,21 +1303,31 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 });
 ```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" required>
 
-  - track: [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)|[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)
+<ParameterType>
 
-    需要进行检测的本地或远端视频轨道。
-  - Optional timeout: number
+[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack) | [IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)
 
-    视频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。
+</ParameterType>
 
-  Returns Promise&lt;boolean&gt;
+需要进行检测的本地或远端视频轨道。
 
-  传入该方法的视频轨道中的图像是否发生了变动：
+</Parameter>
+<Parameter name="timeout" type="number" optional>
 
-  - `true`: 视频画面发生变动。对于摄像头视频轨道，说明视频采集设备采集到了画面。
-  - `false`: 视频画面未变动，说明视频采集设备异常或被完全遮挡，或视频轨道被 mute。
+视频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;boolean&gt;
+
+传入该方法的视频轨道中的图像是否发生了变动：
+
+- `true`: 视频画面发生变动。对于摄像头视频轨道，说明视频采集设备采集到了画面。
+- `false`: 视频画面未变动，说明视频采集设备异常或被完全遮挡，或视频轨道被 mute。
 
 <a id="createchannelmediarelayconfiguration"></a>
 
@@ -1149,9 +1335,9 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 
 - createChannelMediaRelayConfiguration():[IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration)
 
-- 创建跨频道媒体流转发的配置对象。
+创建跨频道媒体流转发的配置对象。
 
-  Returns [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration)
+Returns [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ichannelmediarelayconfiguration)
 
 <a id="getlisteners"></a>
 
@@ -1159,17 +1345,19 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 
 - getListeners(event:string):Function[]
 
-- Inherited from EventEmitter.getListeners
+Inherited from EventEmitter.getListeners
 
-  指定一个事件名，获取当前所有监听这个事件的回调函数。
+指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+事件名称。
 
-    事件名称。
+</Parameter>
+</ParameterList>
 
-  Returns Function[]
+Returns Function[]
 
 <a id="getsupportedcodec"></a>
 
@@ -1177,7 +1365,7 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 
 - getSupportedCodec():Promise&lt;object&gt;
 
-- 获取 Agora Web SDK 对当前浏览器支持的编解码格式。
+获取 Agora Web SDK 对当前浏览器支持的编解码格式。
 
 调用该方法会返回声网服务与当前浏览器同时支持的编解码格式。目前而言，视频支持 VP8 及 H.264 格式，音频支持 OPUS 格式。
 
@@ -1194,12 +1382,12 @@ AgoraRTC.getSupportedCodec().then(result => {
 });
 ```
 
-  Returns Promise&lt;object&gt;
+Returns Promise&lt;object&gt;
 
-  调用该方法会返回一个 `Promise` 对象，在 `.then(function(result){})` 回调中，`result` 包含以下属性：
+调用该方法会返回一个 `Promise` 对象，在 `.then(function(result){})` 回调中，`result` 包含以下属性：
 
-  - `video`: 数组类型，支持的视频编解码格式。可能含有 `"H264"`、`"VP8"` 两种取值，或为空数组。
-  - `audio`: 数组类型，支持的音频编解码格式。可能含有 `"OPUS"`，或为空数组。
+- `video`: 数组类型，支持的视频编解码格式。可能含有 `"H264"`、`"VP8"` 两种取值，或为空数组。
+- `audio`: 数组类型，支持的音频编解码格式。可能含有 `"OPUS"`，或为空数组。
 
 <a id="off"></a>
 
@@ -1207,20 +1395,24 @@ AgoraRTC.getSupportedCodec().then(result => {
 
 - off(event:string, listener:Function):void
 
-- Inherited from EventEmitter.off
+Inherited from EventEmitter.off
 
-  取消一个指定事件的监听。
+取消一个指定事件的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    监听事件时传入的回调函数。
+监听事件时传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -1239,31 +1431,18 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;camera-changed&quot;" required>
 
-- event: "camera-changed"
+事件名称。
 
-  事件名称。
-- listener: typeof event_camera_changed
+</Parameter>
+<Parameter name="listener" type="typeof event_camera_changed" required>
 
-  详见 [event_camera_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_camera_changed)。
+详见 [event_camera_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_camera_changed)。
 
-Returns void
-
-Overrides EventEmitter.on
-
-:::info[自从]
-*4.18.0*
-:::
-
-Parameters
-
-- event: "microphone-changed"
-
-  事件名称。
-- listener: typeof event_microphone_changed
-
-  详见 [event_microphone_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_microphone_changed)。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1273,31 +1452,18 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;microphone-changed&quot;" required>
 
-- event: "playback-device-changed"
+事件名称。
 
-  事件名称。
-- listener: typeof event_playback_device_changed
+</Parameter>
+<Parameter name="listener" type="typeof event_microphone_changed" required>
 
-  详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_playback_device_changed)。
+详见 [event_microphone_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_microphone_changed)。
 
-Returns void
-
-Overrides EventEmitter.on
-
-:::info[自从]
-*4.18.0*
-:::
-
-Parameters
-
-- event: "autoplay-failed"
-
-  事件名称。
-- listener: typeof event_autoplay_failed
-
-  详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_autoplay_failed)。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1307,14 +1473,60 @@ Overrides EventEmitter.on
 *4.18.0*
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;playback-device-changed&quot;" required>
 
-- event: "security-policy-violation"
+事件名称。
 
-  事件名称。
-- listener: typeof event_security_policy_violation
+</Parameter>
+<Parameter name="listener" type="typeof event_playback_device_changed" required>
 
-  详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_security_policy_violation)。
+详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_playback_device_changed)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+Overrides EventEmitter.on
+
+:::info[自从]
+*4.18.0*
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;autoplay-failed&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_autoplay_failed" required>
+
+详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_autoplay_failed)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+Overrides EventEmitter.on
+
+:::info[自从]
+*4.18.0*
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;security-policy-violation&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_security_policy_violation" required>
+
+详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_security_policy_violation)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1324,14 +1536,18 @@ Overrides EventEmitter.on
 *4.20.0*
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;audio-context-state-changed&quot;" required>
 
-- event: "audio-context-state-changed"
+事件名称。
 
-  事件名称。
-- listener: typeof event_audio_context_state_changed
+</Parameter>
+<Parameter name="listener" type="typeof event_audio_context_state_changed" required>
 
-  详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_audio_context_state_changed)。
+详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#event_audio_context_state_changed)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1341,22 +1557,26 @@ Returns void
 
 - once(event:string, listener:Function):void
 
-- Inherited from EventEmitter.once
+Inherited from EventEmitter.once
 
-  监听一个指定的事件，当事件触发时会调用传入的回调函数。
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
-  当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    传入的回调函数。
+传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="preload"></a>
 
@@ -1364,7 +1584,7 @@ Returns void
 
 - preload(appid:string, channel:string, token:string|null, uid?:[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)|null):Promise&lt;void&gt;
 
-- 使用`appid`、`channel`、`token`、`uid` 预加载频道。
+使用`appid`、`channel`、`token`、`uid` 预加载频道。
 
 调用该方法可以减少观众频繁切换频道时加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的视频体验。
 
@@ -1375,45 +1595,59 @@ Returns void
 > - 系统最多缓存 10 条最新的不同预加载数据。
 > - 目前此方法不支持通过 proxy 代理进行转发。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="appid" type="string" required>
 
-  - appid: string
+你的声网项目的 [App ID](/zh-CN/introduction/glossary)。
 
-    你的声网项目的 [App ID](/zh-CN/introduction/glossary)。
-  - channel: string
+</Parameter>
+<Parameter name="channel" type="string" required>
 
-    标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
-    - 26 个小写字母 a-z。
-    - 26 个大写字母 A-Z。
-    - 10 个数字 0-9。
-    - 空格。
-    - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
-  - token: string|null
+- 26 个小写字母 a-z。
+- 26 个大写字母 A-Z。
+- 10 个数字 0-9。
+- 空格。
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-    用于鉴权的 token。
+</Parameter>
+<Parameter name="token" type="string | null" required>
 
-    - 如果你的项目没有开启 token 鉴权，这里填 `null`。
-    - 安全要求不高: 你可以使用控制台生成的临时 token，详见[获取 RTC 临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
-    - 安全要求高：传入从你的服务端获得的正式 token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
-  - Optional uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)|null
+用于鉴权的 token。
 
-    标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。
+- 如果你的项目没有开启 token 鉴权，这里填 `null`。
+- 安全要求不高: 你可以使用控制台生成的临时 token，详见[获取 RTC 临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 安全要求高：传入从你的服务端获得的正式 token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-    - 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。
-    - 如果使用字符串作为用户 ID，长度不超过 255 个字符。
+</Parameter>
+<Parameter name="uid" optional>
 
-    :::caution
-    为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。
-    :::
+<ParameterType>
 
-    > 注意事项：
-    >
-    > - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
-    > - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/api-reference/faq/integration/string_uid)。
-    > - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid) | null
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。
+
+- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。
+- 如果使用字符串作为用户 ID，长度不超过 255 个字符。
+
+:::caution
+为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。
+:::
+
+> 注意事项：
+>
+> - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
+> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/api-reference/faq/integration/string_uid)。
+> - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="processexternalmediaaec"></a>
 
@@ -1439,11 +1673,13 @@ Returns void
 > 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="element" type="HTMLMediaElement" required>
 
-- element: HTMLMediaElement
+需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
 
-  需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1465,11 +1701,13 @@ Returns void
 - 美颜插件
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="extensions" type="IExtension &amp; lt;any &amp; gt;[]" required>
 
-- extensions: IExtension&lt;any&gt;[]
+插件实例。
 
-  插件实例。
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -1479,17 +1717,19 @@ Returns void
 
 - removeAllListeners(event?:string):void
 
-- Inherited from EventEmitter.removeAllListeners
+Inherited from EventEmitter.removeAllListeners
 
-  指定一个事件，取消其所有的监听。
+指定一个事件，取消其所有的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
 
-  - Optional event: string
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
-    指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="resumeaudiocontext"></a>
 
@@ -1497,7 +1737,7 @@ Returns void
 
 - resumeAudioContext():void
 
-- 恢复音视频播放。
+恢复音视频播放。
 
 在某些版本的 iOS 设备上，App 通话被微信通话或系统电话打断后有概率无法自动恢复。你可以调用该方法恢复 App 通话。
 
@@ -1506,7 +1746,7 @@ Returns void
 - 当状态变为 `"interrupted"` 时，弹窗提示用户 App 通话被打断，需要点击按钮恢复通话。用户点击按钮后，调用 `resumeAudioContext`。
 - 当状态变为 `"running"` 时，关闭弹窗。
 
-  Returns void
+Returns void
 
 <a id="setarea"></a>
 
@@ -1531,10 +1771,18 @@ AgoraRTC.setArea({
 ```
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="area" required>
 
-- area: [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[]|object
+<ParameterType>
 
-  服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
+[AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[] | object
+
+</ParameterType>
+
+服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。
+
+</Parameter>
+</ParameterList>
 
 Returns void

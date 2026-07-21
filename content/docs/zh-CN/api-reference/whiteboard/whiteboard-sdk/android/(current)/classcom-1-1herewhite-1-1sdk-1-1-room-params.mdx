@@ -68,12 +68,23 @@ _migration:
 
 初始化房间配置参数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uuid">
 
-| uuid | 房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。 |
-| --- | --- |
-| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。 |
-| uid | 自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。 |
+房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。
+
+</Parameter>
+<Parameter name="roomToken">
+
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+</Parameter>
+<Parameter name="uid">
+
+自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。
+
+</Parameter>
+</ParameterList>
 
 <a id="a5aa8c28b510f899e97cf2b26c56e5f48"></a>
 
@@ -92,13 +103,28 @@ _migration:
 
 该方法已经废弃。请使用 [`RoomParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a625545247367efb54b7d799dd19bffc2)[3/3]。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uuid">
 
-| uuid | 房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。 |
-| --- | --- |
-| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。 |
-| uid | 自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。 |
-| memberInfo | 自定义用户信息，详见 [`MemberInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information)。 |
+房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。
+
+</Parameter>
+<Parameter name="roomToken">
+
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+</Parameter>
+<Parameter name="uid">
+
+自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。
+
+</Parameter>
+<Parameter name="memberInfo">
+
+自定义用户信息，详见 [`MemberInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a625545247367efb54b7d799dd19bffc2"></a>
 
@@ -117,13 +143,28 @@ _migration:
 2.0.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uuid">
 
-| uuid | 房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。 |
-| --- | --- |
-| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。 |
-| uid | 自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。 |
-| userPayload | 自定义用户信息，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 子类。 |
+房间 UUID， 即房间唯一标识符。传入的房间 UUID 必须和生成 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 时填入的房间 UUID 一致。
+
+</Parameter>
+<Parameter name="roomToken">
+
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+</Parameter>
+<Parameter name="uid">
+
+自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。 请确保同一房间内每个用户 `uid` 的唯一性。
+
+</Parameter>
+<Parameter name="userPayload">
+
+自定义用户信息，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 子类。
+
+</Parameter>
+</ParameterList>
 
 ## 成员函数说明
 
@@ -141,10 +182,13 @@ _migration:
 - 该方法与 [`WhiteSdkConfiguration`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的 [`setRegion`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a26095c960c0c25f4e5d07ac7dcea3b9d) 方法作用相同，两个方法只需要调用其中的一个。如果同时调用，该方法会覆盖 [`WhiteSdkConfiguration`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的 [`setRegion`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a26095c960c0c25f4e5d07ac7dcea3b9d)。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="region">
 
-| region | 数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。 |
-| --- | --- |
+数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a7b068e0e3ab5e20b3ba216d2e6156124"></a>
 
@@ -189,10 +233,16 @@ _migration:
 - 互动模式：对白板具有读写权限，会出现在房间的成员列表中，对其他用户可见。
 - 订阅模式：对白板具有只读权限，不会出现在房间的成员列表中，对其他用户不可见。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="writable">
 
-| writable | 用户是否以互动模式加入白板房间：`true`：（默认）以互动模式加入白板房间。 `false`：以订阅模式加入白板房间。 |
-| --- | --- |
+用户是否以互动模式加入白板房间：
+
+- `true`：（默认）以互动模式加入白板房间。
+- `false`：以订阅模式加入白板房间。
+
+</Parameter>
+</ParameterList>
 
 <a id="a35f2724130ce493f7bbbdaa8665e28de"></a>
 
@@ -221,10 +271,16 @@ _migration:
 
 默认情况下，橡皮擦可以擦除白板上的所有内容，包括图片。你可以调用 `setDisableEraseImage(true)` 设置橡皮擦不能擦除图片。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableEraseImage">
 
-| disableEraseImage | 是否关闭橡皮擦擦除图片功能：`true`：橡皮擦不可以擦除图片。 `false`：（默认）橡皮擦可以擦除图片。 |
-| --- | --- |
+是否关闭橡皮擦擦除图片功能：
+
+- `true`：橡皮擦不可以擦除图片。
+- `false`：（默认）橡皮擦可以擦除图片。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3f7054556c1f72ac03f754538b55e5c0"></a>
 
@@ -237,11 +293,18 @@ _migration:
 
 设置加入房间的超时时间。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="timeout">
 
-| timeout | 超时时长，默认值为 45000 毫秒。 |
-| --- | --- |
-| timeUnit | 时长单位，默认值为毫秒 （`MILLISECONDS`），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。 |
+超时时长，默认值为 45000 毫秒。
+
+</Parameter>
+<Parameter name="timeUnit">
+
+时长单位，默认值为毫秒 （`MILLISECONDS`），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a02b980237de8d8e9d91b4ebc5bf63887"></a>
 
@@ -272,10 +335,16 @@ _migration:
 2.5.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableDeviceInputs">
 
-| disableDeviceInputs | 是否禁止白板工具响应用户输入：`true`：禁止白板工具响应用户输入。 `false`：（默认）允许白板工具响应用户输入。 |
-| --- | --- |
+是否禁止白板工具响应用户输入：
+
+- `true`：禁止白板工具响应用户输入。
+- `false`：（默认）允许白板工具响应用户输入。
+
+</Parameter>
+</ParameterList>
 
 <a id="a94cc0f493d873a3ba55caffb70b0f0cf"></a>
 
@@ -312,10 +381,16 @@ _migration:
 
 禁止白板响应用户任何操作后，用户无法使用白板工具输入内容，也无法对白板进行视角缩放和视角移动。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableOperations">
 
-| disableOperations | 是否禁止白板响应用户的操作：`true`：禁止白板响应用户的操作。 `false`：（默认）允许白板响应用户的操作。 |
-| --- | --- |
+是否禁止白板响应用户的操作：
+
+- `true`：禁止白板响应用户的操作。
+- `false`：（默认）允许白板响应用户的操作。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac4ed37a313c3087cb24170ca6435ff2f"></a>
 
@@ -346,10 +421,16 @@ _migration:
 2.5.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableBezier">
 
-| disableBezier | 是否关闭贝塞尔曲线优化：`true`: 关闭贝塞尔曲线优化。 `false`: （默认）开启贝塞尔曲线优化。 |
-| --- | --- |
+是否关闭贝塞尔曲线优化：
+
+- `true`: 关闭贝塞尔曲线优化。
+- `false`: （默认）开启贝塞尔曲线优化。
+
+</Parameter>
+</ParameterList>
 
 <a id="ade13f69996cb32fd94120c46d8b0af0c"></a>
 
@@ -376,10 +457,16 @@ _migration:
 
 禁止/允许本地用户操作白板的视角，包括缩放和移动视角。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableCameraTransform">
 
-| disableCameraTransform | 是否禁止本地用户操作白板视角：`true`：禁止本地用户操作白板视角。 `false`：（默认）允许本地用户操作白板视角。 |
-| --- | --- |
+是否禁止本地用户操作白板视角：
+
+- `true`：禁止本地用户操作白板视角。
+- `false`：（默认）允许本地用户操作白板视角。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3b6b4fd252c282c685e217109eeb60c5"></a>
 
@@ -419,10 +506,16 @@ _migration:
   - Web SDK 2.12.5 版或之后
 :::
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disableNewPencil">
 
-| disableNewPencil | 是否关闭新铅笔工具：`true`: （默认）关闭新铅笔工具。关闭后，SDK 对铅笔工具（`pencil`）应用旧版笔迹平滑算法。 `false`: 开启新铅笔工具。开启后，SDK 对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。 |
-| --- | --- |
+是否关闭新铅笔工具：
+
+- `true`: （默认）关闭新铅笔工具。关闭后，SDK 对铅笔工具（`pencil`）应用旧版笔迹平滑算法。
+- `false`: 开启新铅笔工具。开启后，SDK 对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
+
+</Parameter>
+</ParameterList>
 
 <a id="afd4fb99429b98be70014888b7a9286b6"></a>
 
@@ -450,10 +543,13 @@ _migration:
 2.5.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="cameraBound">
 
-| cameraBound | 视角边界，详见 [`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)。 |
-| --- | --- |
+视角边界，详见 [`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a9b6f02c4298339cc91ce8f88576f3049"></a>
 
@@ -487,10 +583,13 @@ _migration:
 为确保传入的 `userPayload` 格式正确，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 的子类。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userPayload">
 
-| userPayload | 自定义的用户信息，必须为 key-value 结构，例如，`"avatar", "https://example.com/user.png")`。 |
-| --- | --- |
+自定义的用户信息，必须为 key-value 结构，例如，`"avatar", "https://example.com/user.png")`。
+
+</Parameter>
+</ParameterList>
 
 <a id="abb2f190ee04cbfcb95001ee3cd29c1d1"></a>
 
@@ -522,10 +621,13 @@ _migration:
 
 该方法已废弃。请使用 [`getUserPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a9b6f02c4298339cc91ce8f88576f3049)。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="memberInfo">
 
-| memberInfo | 用户信息，详见 [`MemberInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information)。 |
-| --- | --- |
+用户信息，详见 [`MemberInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a0f9c1507ca1f9e7c35d0b11f6801eb60"></a>
 
@@ -549,10 +651,13 @@ _migration:
 
 设置房间 UUID。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uuid">
 
-| uuid | 房间 UUID，即房间的唯一标识符。 |
-| --- | --- |
+房间 UUID，即房间的唯一标识符。
+
+</Parameter>
+</ParameterList>
 
 <a id="a5752788874ff70d8e732c3105be828fb"></a>
 
@@ -576,10 +681,13 @@ _migration:
 
 设置 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="roomToken">
 
-| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。生成该 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 的房间 UUID 必须和上面传入的房间 UUID 一致。 |
-| --- | --- |
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。生成该 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 的房间 UUID 必须和上面传入的房间 UUID 一致。
+
+</Parameter>
+</ParameterList>
 
 <a id="a366cbea6a84e8c73e8425153fd40fe16"></a>
 
@@ -592,10 +700,16 @@ _migration:
 
 Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成 Agora Whiteboard SDK 后，你只需调用 `setUseNativeWebSocket(true)`，即可在互动白板应用中开启全链路加速服务，提升传输质量。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="nativeWebSocket">
 
-| nativeWebSocket | 是否开启全链路加速：`true`：开启全链路加速。 `false`：（默认）关闭全链路加速。 |
-| --- | --- |
+是否开启全链路加速：
+
+- `true`：开启全链路加速。
+- `false`：（默认）关闭全链路加速。
+
+</Parameter>
+</ParameterList>
 
 <a id="ad5a9e486b8d4729382f3e4b4d8895859"></a>
 
@@ -638,10 +752,16 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 设置是否开启开启浮动条功能。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="floatBar">
 
-| floatBar | 是否开启浮动条：`true`：开启浮动条功能。 `false`：（默认）关闭浮动条功能。 |
-| --- | --- |
+是否开启浮动条：
+
+- `true`：开启浮动条功能。
+- `false`：（默认）关闭浮动条功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa8e1d1c2aa0e00f942d91c01e1bc751a"></a>
 
@@ -665,9 +785,12 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 设置白板请求 modules 数据的地址。 配置后不会请求白板默认地址。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="modulesOrigin">
 
-| modulesOrigin | modules 地址。示例 [https://modules.example.com。](https://modules.example.com./) |
-| --- | --- |
+modules 地址。示例 [https://modules.example.com。](https://modules.example.com./)
+
+</Parameter>
+</ParameterList>
 
 白板渲染优化配置项。详见 [`RoomOptimizeOptions`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-optimize-options)。

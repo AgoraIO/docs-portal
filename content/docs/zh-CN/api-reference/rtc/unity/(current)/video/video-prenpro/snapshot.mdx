@@ -46,16 +46,23 @@ public abstract int EnableContentInspect(bool enabled, ContentInspectConfig conf
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 设置是否开启本地截图上传：
 
 - true：开启本地截图上传。
 - false：关闭本地截图上传。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 本地截图上传配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/unity/class-contentinspectconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablecontentinspect__return_values"></a>
 
@@ -100,20 +107,29 @@ public abstract int EnableContentInspectEx(bool enabled, ContentInspectConfig co
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 设置是否开启本地截图上传：
 
 - true：开启本地截图上传。
 - false：关闭本地截图上传。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 本地截图上传配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/unity/class-contentinspectconfig)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enablecontentinspectex__return_values"></a>
 
@@ -168,11 +184,15 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-### filePath
+</Parameter>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 :::note
 注： 请确保目录存在且可写。
@@ -184,6 +204,9 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 - iOS: `/App Sandbox/Library/Caches/example.jpg`
 - macOS: `～/Library/Logs/example.jpg`
 - Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
@@ -237,13 +260,20 @@ public abstract int TakeSnapshot(uint uid, SnapshotConfig config);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-### config
+</Parameter>
+<a id="config-2"></a>
+<Parameter name="config">
 
 截图设置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/unity/class-snapshotconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_takesnapshot2__return_values"></a>
 
@@ -298,15 +328,21 @@ public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, string fi
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-### filePath
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 :::note
 注： 请确保目录存在且可写。
@@ -318,6 +354,9 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - iOS: `/App Sandbox/Library/Caches/example.jpg`
 - macOS: `～/Library/Logs/example.jpg`
 - Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
@@ -372,17 +411,26 @@ public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, SnapshotC
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。如果要对本地用户的视频截图，则设为 0。
 
-### config
+</Parameter>
+<a id="config-3"></a>
+<Parameter name="config">
 
 截图设置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/unity/class-snapshotconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_takesnapshotex2__return_values"></a>
 
@@ -417,27 +465,39 @@ public virtual void OnSnapshotTaken(RtcConnection connection, uint uid, string f
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。如果 `uid` 为 0，表示本地用户。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
 
-### filePath
+</Parameter>
+<a id="filepath-2"></a>
+<Parameter name="filePath">
 
 截图的本地保存路径。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 图片宽度（px）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 图片高度（px）。
 
-### errCode
+</Parameter>
+<a id="errcode"></a>
+<Parameter name="errCode">
 
 截图成功的提示或失败的原因。
 
@@ -447,6 +507,9 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
   - -1：写入文件失败或 JPEG 编码失败。
   - -2：[TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
   - -3：[TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用过于频繁。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

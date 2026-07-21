@@ -49,16 +49,23 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符或标识符组合。例如：
 
 - 单个特效：`AgoraVideoEffectNodeBeauty`。
 - 组合特效：`AgoraVideoEffectNodeBeauty ｜ AgoraVideoEffectNodeStyleMakeup ｜ AgoraVideoEffectNodeFilter`。
 
-### templateName
+</Parameter>
+<a id="templatename"></a>
+<Parameter name="templateName">
 
 特效模板名称。如果设置为 nil 或空字符串，SDK 会自动从资源包中加载默认参数配置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__return_values"></a>
 
@@ -99,13 +106,20 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### bundlePath
+<ParameterList>
+<a id="bundlepath"></a>
+<Parameter name="bundlePath">
 
 视频特效 bundle 的路径。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 媒体源类型，例如 `AgoraMediaSourceTypePrimaryCamera`。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createvideoeffectobject__return_values"></a>
 
@@ -142,9 +156,14 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### videoEffectObject
+<ParameterList>
+<a id="videoeffectobject"></a>
+<Parameter name="videoEffectObject">
 
 要销毁的 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoeffectobject) 实例的指针。详见 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoeffectobject)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
 
@@ -189,16 +208,23 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### area
+<ParameterList>
+<a id="area"></a>
+<Parameter name="area">
 
 美型增强区域。详见 [AgoraFaceShapeArea](/zh-CN/api-reference/rtc/macos/enum-faceshapearea)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 应用滤镜特效的媒体源类型。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
 
@@ -243,9 +269,14 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### area
+<ParameterList>
+<a id="area-1"></a>
+<Parameter name="area">
 
 美型增强区域。参见 [AgoraFaceShapeArea](/zh-CN/api-reference/rtc/macos/enum-faceshapearea)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapeareaoptions2__return_values"></a>
 
@@ -290,12 +321,17 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 应用滤镜特效的媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。在此方法中，该参数仅支持以下两种设置：
 
 - 如果你使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
 
@@ -373,13 +409,20 @@ NS_SWIFT_NAME(getVideoEffectBoolParam(option:key:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 参数类别的标识符。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 参数的键值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__return_values"></a>
 
@@ -420,13 +463,20 @@ NS_SWIFT_NAME(getVideoEffectFloatParam(option:key:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-1"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__return_values"></a>
 
@@ -465,13 +515,20 @@ NS_SWIFT_NAME(getVideoEffectIntParam(option:key:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-2"></a>
+<Parameter name="option">
 
 参数类别的标识符。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 参数的键值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__return_values"></a>
 
@@ -510,13 +567,20 @@ NS_SWIFT_NAME(performVideoEffectAction(nodeId:actionId:));
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-1"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符。
 
-### actionId
+</Parameter>
+<a id="actionid"></a>
+<Parameter name="actionId">
 
 要执行的操作，详见 [AgoraVideoEffectAction](/zh-CN/api-reference/rtc/macos/enum-videoeffectaction)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
 
@@ -554,9 +618,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-2"></a>
+<Parameter name="nodeId">
 
 要移除的视频特效节点的唯一标识符。详见 [AgoraVideoEffectNodeId](/zh-CN/api-reference/rtc/macos/enum-videoeffectnodeid)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_removevideoeffect__return_values"></a>
 
@@ -604,16 +673,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用美颜特效功能：
 
 - YES：启用美颜特效功能。
 - NO：（默认）禁用美颜特效功能。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 美颜特效选项，详见 [AgoraBeautyOptions](/zh-CN/api-reference/rtc/macos/class-beautyoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
 
@@ -658,18 +734,24 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否启用美颜特效功能：
 
 - YES：启用美颜特效功能。
 - NO：（默认）禁用美颜特效功能。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 美颜特效选项。详见 [AgoraBeautyOptions](/zh-CN/api-reference/rtc/macos/class-beautyoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-3"></a>
+<Parameter name="sourceType">
 
 媒体源类型。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
@@ -679,6 +761,9 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setbeautyeffectoptions2__return_values"></a>
 
@@ -729,16 +814,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-2"></a>
+<Parameter name="enable">
 
 是否开启色彩增强功能：
 
 - YES：开启色彩增强。
 - NO：（默认）关闭色彩增强。
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 色彩增强参数，详见 [AgoraColorEnhanceOptions](/zh-CN/api-reference/rtc/macos/class-colorenhanceoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
 
@@ -785,23 +877,32 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-3"></a>
+<Parameter name="enable">
 
 是否开启色彩增强功能：
 
 - YES：开启色彩增强功能。
 - NO：（默认）关闭色彩增强功能。
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 色彩增强选项，详见 [AgoraColorEnhanceOptions](/zh-CN/api-reference/rtc/macos/class-colorenhanceoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-4"></a>
+<Parameter name="sourceType">
 
 媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcolorenhanceoptions2__return_values"></a>
 
@@ -849,16 +950,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 面部增强区域，详见 [AgoraFaceShapeAreaOptions](/zh-CN/api-reference/rtc/macos/class-faceshapeareaoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-5"></a>
+<Parameter name="sourceType">
 
 媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
 
@@ -910,9 +1018,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-5"></a>
+<Parameter name="options">
 
 面部增强区域。详见 [AgoraFaceShapeAreaOptions](/zh-CN/api-reference/rtc/macos/class-faceshapeareaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapeareaoptions2__return_values"></a>
 
@@ -964,23 +1077,32 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-4"></a>
+<Parameter name="enable">
 
 是否开启美型特效：
 
 - YES：开启美型特效。
 - NO：（默认）关闭美型特效。
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/macos/class-faceshapebeautyoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-6"></a>
+<Parameter name="sourceType">
 
 要应用滤镜特效的媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
 
@@ -1032,16 +1154,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-5"></a>
+<Parameter name="enable">
 
 是否启用美型效果：
 
 - YES：启用美型效果。
 - NO：（默认）关闭美型效果。
 
-### options
+</Parameter>
+<a id="options-7"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/macos/class-faceshapebeautyoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapebeautyoptions2__return_values"></a>
 
@@ -1097,23 +1226,32 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-6"></a>
+<Parameter name="enable">
 
 是否启用滤镜特效：
 
 - YES：启用。
 - NO：（默认）不启用。
 
-### options
+</Parameter>
+<a id="options-8"></a>
+<Parameter name="options">
 
 滤镜特效参数，详见 [AgoraFilterEffectOptions](/zh-CN/api-reference/rtc/macos/class-filtereffectoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-7"></a>
+<Parameter name="sourceType">
 
 滤镜特效应用的媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
 
@@ -1165,16 +1303,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-7"></a>
+<Parameter name="enable">
 
 是否启用滤镜特效：
 
 - YES：启用。
 - NO：（默认）不启用。
 
-### options
+</Parameter>
+<a id="options-9"></a>
+<Parameter name="options">
 
 滤镜特效选项，详见 [AgoraFilterEffectOptions](/zh-CN/api-reference/rtc/macos/class-filtereffectoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfiltereffectoptions2__return_values"></a>
 
@@ -1236,16 +1381,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-8"></a>
+<Parameter name="enable">
 
 是否开启暗光增强功能：
 
 - YES：开启暗光增强。
 - NO：（默认）关闭暗光增强。
 
-### options
+</Parameter>
+<a id="options-10"></a>
+<Parameter name="options">
 
 暗光增强选项，详见 [AgoraLowlightEnhanceOptions](/zh-CN/api-reference/rtc/macos/class-lowlightenhanceoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
 
@@ -1303,24 +1455,33 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-9"></a>
+<Parameter name="enable">
 
 是否启用低光增强：
 
 - YES：启用低光增强。
 - NO：（默认）关闭低光增强。
 
-### options
+</Parameter>
+<a id="options-11"></a>
+<Parameter name="options">
 
 低光增强选项，详见 [AgoraLowlightEnhanceOptions](/zh-CN/api-reference/rtc/macos/class-lowlightenhanceoptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-8"></a>
+<Parameter name="sourceType">
 
 媒体源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 注意：在该方法中，该参数仅支持以下两种设置：
 
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlowlightenhanceoptions2__return_values"></a>
 
@@ -1385,16 +1546,23 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-10"></a>
+<Parameter name="enable">
 
 是否启用视频降噪功能：
 
 - YES：启用视频降噪。
 - NO：（默认）关闭视频降噪。
 
-### options
+</Parameter>
+<a id="options-12"></a>
+<Parameter name="options">
 
 视频降噪选项，详见 [AgoraVideoDenoiserOptions](/zh-CN/api-reference/rtc/macos/class-videodenoiseroptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
 
@@ -1459,23 +1627,32 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-11"></a>
+<Parameter name="enable">
 
 是否启用视频降噪功能：
 
 - YES：启用视频降噪。
 - NO：（默认）关闭视频降噪。
 
-### options
+</Parameter>
+<a id="options-13"></a>
+<Parameter name="options">
 
 视频降噪选项。详见 [AgoraVideoDenoiserOptions](/zh-CN/api-reference/rtc/macos/class-videodenoiseroptions)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype-9"></a>
+<Parameter name="sourceType">
 
 媒体源类型。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
 
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideodenoiseroptions2__return_values"></a>
 
@@ -1515,20 +1692,29 @@ NS_SWIFT_NAME(setVideoEffectBoolParam(option:key:boolValue:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-3"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### boolValue
+</Parameter>
+<a id="boolvalue"></a>
+<Parameter name="boolValue">
 
 要设置的布尔值。
 
 - YES：设置为启用。
 - NO：设置为禁用。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__return_values"></a>
 
@@ -1568,17 +1754,26 @@ NS_SWIFT_NAME(setVideoEffectFloatParam(option:key:floatValue:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-4"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-4"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### floatValue
+</Parameter>
+<a id="floatvalue"></a>
+<Parameter name="floatValue">
 
 要设置的浮点值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__return_values"></a>
 
@@ -1618,17 +1813,26 @@ NS_SWIFT_NAME(setVideoEffectIntParam(option:key:intValue:));
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-5"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-5"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### intValue
+</Parameter>
+<a id="intvalue"></a>
+<Parameter name="intValue">
 
 要设置的整数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__return_values"></a>
 

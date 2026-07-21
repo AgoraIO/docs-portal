@@ -42,11 +42,11 @@ LocalAudioPlaybackVolumeIndicatorEvent: (volume:number)=&gt;void
 
 - - (volume:number):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="volume" type="number" required />
+  </ParameterList>
 
-    - volume: number
-
-    Returns void
+  Returns void
 
 <a id="LocalAudioTrackStateEvent"></a>
 
@@ -58,12 +58,28 @@ LocalAudioTrackStateEvent: (state:[AgoraRteMediaSourceState](/zh-CN/api-referenc
 
 - - (state:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state), type:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="state" required>
 
-    - state: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - type: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+  <ParameterType>
 
-    Returns void
+  [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="type" required>
+
+  <ParameterType>
+
+  [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="LocalCameraDeviceListEvent"></a>
 
@@ -75,13 +91,29 @@ LocalCameraDeviceListEvent: (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](
 
 - - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="addNewDevice" type="boolean" required />
+  <Parameter name="newDevices" required>
 
-    - addNewDevice: boolean
-    - newDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
-    - allDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+  <ParameterType>
 
-    Returns void
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="allDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="LocalLoopbackDeviceStateEvent"></a>
 
@@ -93,11 +125,19 @@ LocalLoopbackDeviceStateEvent: (state:[AgoraRteMediaSourceState](/zh-CN/api-refe
 
 - - (state:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="state" required>
 
-    - state: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+  <ParameterType>
 
-    Returns void
+  [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="LocalPlaybackDeviceListEvent"></a>
 
@@ -109,13 +149,29 @@ LocalPlaybackDeviceListEvent: (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo
 
 - - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="addNewDevice" type="boolean" required />
+  <Parameter name="newDevices" required>
 
-    - addNewDevice: boolean
-    - newDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
-    - allDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+  <ParameterType>
 
-    Returns void
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="allDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="LocalRecordingDeviceListEvent"></a>
 
@@ -127,13 +183,29 @@ LocalRecordingDeviceListEvent: (addNewDevice:boolean, newDevices:[AGRtcDeviceInf
 
 - - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="addNewDevice" type="boolean" required />
+  <Parameter name="newDevices" required>
 
-    - addNewDevice: boolean
-    - newDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
-    - allDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+  <ParameterType>
 
-    Returns void
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="allDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="LocalVideoTrackStateEvent"></a>
 
@@ -145,13 +217,29 @@ LocalVideoTrackStateEvent: (state:[AgoraRteMediaSourceState](/zh-CN/api-referenc
 
 - - (state:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state), type:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type), withAudio:boolean):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="state" required>
 
-    - state: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - type: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
-    - withAudio: boolean
+  <ParameterType>
 
-    Returns void
+  [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="type" required>
+
+  <ParameterType>
+
+  [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="withAudio" type="boolean" required />
+  </ParameterList>
+
+  Returns void
 
 <a id="RecordingDeviceStateEvent"></a>
 
@@ -163,9 +251,25 @@ RecordingDeviceStateEvent: (state:[AgoraRteMediaSourceState](/zh-CN/api-referenc
 
 - - (state:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state), connType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="state" required>
 
-    - state: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+  <ParameterType>
 
-    Returns void
+  [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="connType" required>
+
+  <ParameterType>
+
+  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void

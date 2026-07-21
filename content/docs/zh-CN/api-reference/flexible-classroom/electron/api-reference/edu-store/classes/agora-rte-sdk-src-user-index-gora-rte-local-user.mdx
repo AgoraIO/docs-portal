@@ -59,21 +59,47 @@ _migration:
 
 - new AgoraRteLocalUser(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), __namedParameters:\{rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager);rtcToken:string;sceneId:string;streamUuid:string;userName:string;userProperties:any;userRole:string;userUuid:string\}):[AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="scene" required>
 
-  - scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
-  - __namedParameters: \{rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager);rtcToken:string;sceneId:string;streamUuid:string;userName:string;userProperties:any;userRole:string;userUuid:string\}
+<ParameterType>
 
-    - rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
-    - rtcToken:string
-    - sceneId:string
-    - streamUuid:string
-    - userName:string
-    - userProperties:any
-    - userRole:string
-    - userUuid:string
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
+</ParameterType>
+
+</Parameter>
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager);rtcToken:string;sceneId:string;streamUuid:string;userName:string;userProperties:any;userRole:string;userUuid:string\}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="rtc" required>
+
+<ParameterType>
+
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="rtcToken" type="string" required />
+<Parameter name="sceneId" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="userName" type="string" required />
+<Parameter name="userProperties" type="any" required />
+<Parameter name="userRole" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
 
 ## Properties
 
@@ -109,7 +135,9 @@ subStream?: \{streamUuid:string\}
 
 #### Type declaration
 
-- streamUuid:string
+<ParameterList title="Type declaration">
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
 <a id="userName"></a>
 
@@ -143,7 +171,7 @@ userUuid: string
 
 - deleteLocalMediaStream():Promise&lt;any&gt;
 
-- Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteLocalScreenStream"></a>
 
@@ -151,7 +179,7 @@ userUuid: string
 
 - deleteLocalScreenStream():Promise&lt;any&gt;
 
-- Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteSceneProperties"></a>
 
@@ -159,12 +187,12 @@ userUuid: string
 
 - deleteSceneProperties(properties:string[], cause:any):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="properties" type="string[]" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
 
-  - properties: string[]
-  - cause: any
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteUserProperties"></a>
 
@@ -172,12 +200,12 @@ userUuid: string
 
 - deleteUserProperties(properties:string[], cause:any):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="properties" type="string[]" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
 
-  - properties: string[]
-  - cause: any
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="destroy"></a>
 
@@ -185,7 +213,7 @@ userUuid: string
 
 - destroy():void
 
-- Returns void
+Returns void
 
 <a id="publishStreamToCdn"></a>
 
@@ -193,11 +221,19 @@ userUuid: string
 
 - publishStreamToCdn(videoEncoderConfg?:[AGVideoEncoderConfigurations](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gvideo-encoder-configurations)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="videoEncoderConfg" optional>
 
-  - Optional videoEncoderConfg: [AGVideoEncoderConfigurations](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gvideo-encoder-configurations)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[AGVideoEncoderConfigurations](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gvideo-encoder-configurations)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="sendCustomChannelMessage"></a>
 
@@ -205,13 +241,13 @@ userUuid: string
 
 - sendCustomChannelMessage(cmd:string, data:Record&lt;string,any&gt;, sync?:boolean):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="sync" type="boolean" optional />
+</ParameterList>
 
-  - cmd: string
-  - data: Record&lt;string,any&gt;
-  - Optional sync: boolean
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendCustomPeerMessage"></a>
 
@@ -219,14 +255,14 @@ userUuid: string
 
 - sendCustomPeerMessage(cmd:string, data:Record&lt;string,any&gt;, toUserUuid:string, ack?:boolean):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="toUserUuid" type="string" required />
+<Parameter name="ack" type="boolean" optional />
+</ParameterList>
 
-  - cmd: string
-  - data: Record&lt;string,any&gt;
-  - toUserUuid: string
-  - Optional ack: boolean
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendRoomMessage"></a>
 
@@ -234,11 +270,11 @@ userUuid: string
 
 - sendRoomMessage(message:string):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+</ParameterList>
 
-  - message: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="setSceneProperties"></a>
 
@@ -246,12 +282,12 @@ userUuid: string
 
 - setSceneProperties(properties:any, cause:any):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="properties" type="any" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
 
-  - properties: any
-  - cause: any
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="setUserProperties"></a>
 
@@ -259,12 +295,12 @@ userUuid: string
 
 - setUserProperties(properties:any, cause:any):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="properties" type="any" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
 
-  - properties: any
-  - cause: any
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="setupRemoteVideo"></a>
 
@@ -272,11 +308,19 @@ userUuid: string
 
 - setupRemoteVideo(canvas:[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+<ParameterType>
 
-  Returns void
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="toData"></a>
 
@@ -284,7 +328,7 @@ userUuid: string
 
 - toData():[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
 
-- Returns [AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+Returns [AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
 
 <a id="updateLocalMediaState"></a>
 
@@ -292,15 +336,49 @@ userUuid: string
 
 - updateLocalMediaState(__namedParameters:\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" required>
 
-  - __namedParameters: \{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
+<ParameterType>
 
-    - Optional audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateLocalMediaStream"></a>
 
@@ -308,17 +386,67 @@ userUuid: string
 
 - updateLocalMediaStream(__namedParameters:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" required>
 
-  - __namedParameters: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
+<ParameterType>
 
-    - Optional audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
-    - Optional publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateRemoteMediaStream"></a>
 
@@ -326,14 +454,48 @@ userUuid: string
 
 - updateRemoteMediaStream(userUuid:string, streamUuid:string, __namedParameters:\{publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
 
-  - userUuid: string
-  - streamUuid: string
-  - __namedParameters: \{publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+<ParameterType>
 
-    - Optional publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-  - Optional connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+\{publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;

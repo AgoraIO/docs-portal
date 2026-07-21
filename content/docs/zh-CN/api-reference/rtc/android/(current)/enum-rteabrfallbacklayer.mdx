@@ -27,38 +27,59 @@ _migration:
 
 ## 枚举值
 
-### DISABLED
+<ParameterList>
+<a id="disabled"></a>
+<Parameter name="DISABLED">
 
 （0）：不进行音视频流的回退处理，但无法保证音视频流的质量。
 
-### LOW
+</Parameter>
+<a id="low"></a>
+<Parameter name="LOW">
 
 （1）：（默认）回退至视频小流，该层级具有最低分辨率。
 
-### AUDIO_ONLY
+</Parameter>
+<a id="audio_only"></a>
+<Parameter name="AUDIO_ONLY">
 
 （2）：优先尝试接收视频小流；若因网络状况差无法显示视频，则回退为仅接收已订阅的远端音频流。
 
-### LAYER1
+</Parameter>
+<a id="layer1"></a>
+<Parameter name="LAYER1">
 
 （3）：回退至视频质量层级 1，该层级的分辨率和码率仅低于所订阅的最视频大流。
 
-### LAYER2
+</Parameter>
+<a id="layer2"></a>
+<Parameter name="LAYER2">
 
 （4）：回退至视频质量层级 2，该层级的分辨率仅低于层级 1。
 
-### LAYER3
+</Parameter>
+<a id="layer3"></a>
+<Parameter name="LAYER3">
 
 （5）：回退至视频质量层级 3，该层级的分辨率略低于层级 2。
 
-### LAYER4
+</Parameter>
+<a id="layer4"></a>
+<Parameter name="LAYER4">
 
 （6）：回退至视频质量层级 4，该层级的分辨率仅低于层级 3。
 
-### LAYER5
+</Parameter>
+<a id="layer5"></a>
+<Parameter name="LAYER5">
 
 （7）：回退至视频质量层级 5，该层级的分辨率略低于层级 4。
 
-### LAYER6
+</Parameter>
+<a id="layer6"></a>
+<Parameter name="LAYER6">
 
 （8）：回退至视频质量层级 6，该层级的分辨率略低于层级 5。
+
+</Parameter>
+</ParameterList>

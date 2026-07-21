@@ -77,15 +77,38 @@ AgoraAudioPcmDataSender 类。
 
 请改用 [sendAudioPcmData](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#a1a109d7059fdffdfebfa9dc476957ab4)。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audio_data">
 
-| audio_data | 待发送的 PCM 音频数据。 |
-| --- | --- |
-| capture_timestamp | 音频帧的采集时间。 |
-| samples_per_channel | 每个声道 10 ms 内的采样点数。 |
-| bytes_per_sample | 每个采样点的字节数 (byte)。 |
-| number_of_channels | 声道数。 |
-| sample_rate | 采样率 (Hz)。最小值为 8000。 |
+待发送的 PCM 音频数据。
+
+</Parameter>
+<Parameter name="capture_timestamp">
+
+音频帧的采集时间。
+
+</Parameter>
+<Parameter name="samples_per_channel">
+
+每个声道 10 ms 内的采样点数。
+
+</Parameter>
+<Parameter name="bytes_per_sample">
+
+每个采样点的字节数 (byte)。
+
+</Parameter>
+<Parameter name="number_of_channels">
+
+声道数。
+
+</Parameter>
+<Parameter name="sample_rate">
+
+采样率 (Hz)。最小值为 8000。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -101,10 +124,13 @@ AgoraAudioPcmDataSender 类。
 
 发送 PCM 音频数据至音频轨道。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioFrame">
 
-| audioFrame | 音频数据：[AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame)。 |
-| --- | --- |
+音频数据：[AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 

@@ -33,35 +33,51 @@ struct RtcEngineContext {
 
 ## 属性
 
-### eventHandler
+<ParameterList>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 用于 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 的事件处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)。
 
-### appId
+</Parameter>
+<a id="appid"></a>
+<Parameter name="appId">
 
 由声网为你的项目签发的 App ID。只有在相同 App ID 下的用户才能加入同一个频道并互相通信。一个 App ID 只能用于创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例。若需更换 App ID，需调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_release) 销毁当前的 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例，然后创建一个新的实例。
 
-### context
+</Parameter>
+<a id="context"></a>
+<Parameter name="context">
 
 在 Windows 平台，该参数为应用窗口句柄。设置后可在设备通电状态下连接或断开视频设备。
 
-### channelProfile
+</Parameter>
+<a id="channelprofile"></a>
+<Parameter name="channelProfile">
 
 频道场景类型。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-channelprofiletype)。
 
-### license
+</Parameter>
+<a id="license"></a>
+<Parameter name="license">
 
 用于连接频道时验证的 License，根据 License 收费。
 
-### audioScenario
+</Parameter>
+<a id="audioscenario"></a>
+<Parameter name="audioScenario">
 
 音频场景类型，不同场景下设备使用不同的音量类型。详见 [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioscenariotype)。
 
-### areaCode
+</Parameter>
+<a id="areacode"></a>
+<Parameter name="areaCode">
 
 连接区域。该高级功能适用于有区域限制的场景，支持的区域详见 [AREA_CODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-areacode)。区域码支持按位操作。
 
-### logConfig
+</Parameter>
+<a id="logconfig"></a>
+<Parameter name="logConfig">
 
 日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-logconfig)。
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
@@ -79,11 +95,15 @@ struct RtcEngineContext {
   5. 创建新的 `agorasdk.log` 文件。
 - `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
 
-### threadPriority
+</Parameter>
+<a id="threadpriority"></a>
+<Parameter name="threadPriority">
 
 SDK 通用线程的线程优先级。详见 `THREAD_PRIORITY_TYPE`。
 
-### useExternalEglContext
+</Parameter>
+<a id="useexternaleglcontext"></a>
+<Parameter name="useExternalEglContext">
 
 :::note
 注： 该属性仅适用于 Android 平台。
@@ -94,16 +114,23 @@ SDK 通用线程的线程优先级。详见 `THREAD_PRIORITY_TYPE`。
 - true：使用当前线程中的 EGL 上下文。
 - false：（默认）不使用当前线程中的 EGL 上下文。
 
-### domainLimit
+</Parameter>
+<a id="domainlimit"></a>
+<Parameter name="domainLimit">
 
 是否启用域名限制：
 
 - true：启用域名限制。适用于 IoT 设备使用物联网卡接入网络的场景。SDK 仅连接已上报给运营商的域名或 IP 白名单中的服务器。
 - false：（默认）不启用域名限制。适用于大多数常见场景。
 
-### autoRegisterAgoraExtensions
+</Parameter>
+<a id="autoregisteragoraextensions"></a>
+<Parameter name="autoRegisterAgoraExtensions">
 
 是否在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
 
 - true：（默认）自动注册插件。
 - false：不自动注册插件。你需要调用 [enableExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_enableextension) 手动注册插件。
+
+</Parameter>
+</ParameterList>

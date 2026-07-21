@@ -68,9 +68,14 @@ public abstract int startPlaybackDeviceTest(String audioFileName);
 
 ### 参数
 
-### audioFileName
+<ParameterList>
+<a id="audiofilename"></a>
+<Parameter name="audioFileName">
 
 音频文件的路径，UTF-8 编码的字符串。支持的文件格式包括：wav、mp3、m4a 和 aac。支持的采样率包括：8000、16000、32000、44100 和 48000 Hz。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startplaybackdevicetest__return_values"></a>
 
@@ -109,9 +114,14 @@ public abstract int startRecordingDeviceTest(int indicationInterval);
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则将无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。建议设置为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startrecordingdevicetest__return_values"></a>
 

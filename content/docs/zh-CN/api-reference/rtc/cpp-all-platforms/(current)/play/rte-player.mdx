@@ -87,17 +87,26 @@ bool AddView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 
 ### 参数
 
-### view
+<ParameterList>
+<a id="view"></a>
+<Parameter name="view">
 
 `HWND` 窗口句柄。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 `View` 对象的设置，当前传入 NULL。
 
-### err
+</Parameter>
+<a id="err"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_addview__return_values"></a>
 
@@ -232,13 +241,20 @@ Canvas(Rte *rte, CanvasInitialConfig *initial_config = nullptr)
 
 ### 参数
 
-### rte
+<ParameterList>
+<a id="rte"></a>
+<Parameter name="rte">
 
 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)。
 
-### initial_config
+</Parameter>
+<a id="initial_config"></a>
+<Parameter name="initial_config">
 
 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 的配置对象。该参数可传入 NULL。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -335,9 +351,14 @@ bool Destroy(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-1"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_destroy_rte__return_values"></a>
 
@@ -414,9 +435,14 @@ AbrFallbackLayer GetAbrFallbackLayer(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-2"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getabrfallbacklayer__return_values"></a>
 
@@ -458,9 +484,14 @@ AbrSubscriptionLayer GetAbrSubscriptionLayer(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-3"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getabrsubscriptionlayer__return_values"></a>
 
@@ -496,9 +527,14 @@ std::string GetAppId(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-4"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_config_getappid__return_values"></a>
 
@@ -541,9 +577,14 @@ bool GetAutoPlay(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-5"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getautoplay__return_values"></a>
 
@@ -588,13 +629,20 @@ bool GetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 输出参数，表示 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 对象的设置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)。
 
-### err
+</Parameter>
+<a id="err-6"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_getconfigs_canvas__return_values"></a>
 
@@ -637,13 +685,20 @@ bool GetConfigs(PlayerConfig* config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
 
 输出参数，播放器配置对象。详见 [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)。
 
-### err
+</Parameter>
+<a id="err-7"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_getconfigs_player__return_values"></a>
 
@@ -686,13 +741,20 @@ bool GetConfigs(Config *config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
 
 输出参数，表示 `RTE` 对象的配置信息。详见 [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)。
 
-### err
+</Parameter>
+<a id="err-8"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_getconfigs_rte__return_values"></a>
 
@@ -737,9 +799,14 @@ static Rte GetFromBridge(Error* err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-9"></a>
+<Parameter name="err">
 
 输出参数，用于接收状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_getfrombridge__return_values"></a>
 
@@ -784,13 +851,20 @@ bool GetInfo(PlayerInfo *info, Error *err = nullptr)
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 输出参数，表示播放器和媒体流的信息。详见 [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)。
 
-### err
+</Parameter>
+<a id="err-10"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_getinfo__return_values"></a>
 
@@ -835,9 +909,14 @@ std::string GetJsonParameter(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-11"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_config_getjsonparameter_config__return_values"></a>
 
@@ -874,9 +953,14 @@ int32_t GetLoopCount(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-12"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getloopcount__return_values"></a>
 
@@ -918,9 +1002,14 @@ VideoMirrorMode GetMirrorMode(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-13"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvasconfig_getmirrormode__return_values"></a>
 
@@ -956,9 +1045,14 @@ int32_t GetPlaybackSpeed(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-14"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getplaybackspeed__return_values"></a>
 
@@ -994,9 +1088,14 @@ int32_t GetPlayoutVolume(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-15"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_getplayoutvolume__return_values"></a>
 
@@ -1032,7 +1131,9 @@ uint64_t GetPosition(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-16"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1041,6 +1142,9 @@ uint64_t GetPosition(Error *err = nullptr)
 
   - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
   - 打开的 URL 是 RTE URL，不支持调用 [GetPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_getposition)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_getposition__return_values"></a>
 
@@ -1082,9 +1186,14 @@ VideoRenderMode GetRenderMode(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-17"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvasconfig_getrendermode__return_values"></a>
 
@@ -1128,12 +1237,17 @@ void GetStats(std::function<void(rte::PlayerStats *stats, rte::Error *err)> cb)
 
 ### 参数
 
-### cb
+<ParameterList>
+<a id="cb"></a>
+<Parameter name="cb">
 
 异步通知获取播放器媒体资源统计信息结果的回调。你可以通过该回调的参数获取以下信息：
 
 - `stats`：播放器当前播放媒体资源的统计数据，详见 [RtePlayerStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rteplayerstats)。
 - `err`：状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1231,13 +1345,20 @@ bool InitMediaEngine(std::function<void(rte::Error *err)> cb, Error *err = nullp
 
 ### 参数
 
-### cb
+<ParameterList>
+<a id="cb-1"></a>
+<Parameter name="cb">
 
 异步通知初始化结果的回调。你可以通过该回调的 `err` 参数获取初始化结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
-### err
+</Parameter>
+<a id="err-18"></a>
+<Parameter name="err">
 
 输出参数，表示初始化过程中产生的状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。调用 [InitMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_initmediaengine) 时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_initmediaengine__return_values"></a>
 
@@ -1391,16 +1512,23 @@ bool MuteAudio(bool mute, Error *err = nullptr)
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否接收音频流：
 
 - true：不接收音频流。
 - false：接收音频流。
 
-### err
+</Parameter>
+<a id="err-19"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_muteaudio__return_values"></a>
 
@@ -1448,16 +1576,23 @@ bool MuteVideo(bool mute, Error *err = nullptr)
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否接收视频流：
 
 - true：不接收视频流。
 - false：接收视频流。
 
-### err
+</Parameter>
+<a id="err-20"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_mutevideo__return_values"></a>
 
@@ -1511,17 +1646,26 @@ void OpenWithUrl(const char* url, uint64_t start_time, std::function<void(rte::E
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 要打开的 URL，可以是 CDN 推流 URL、本地媒体文件，或以 `rte://` 开头的 URL。
 
-### start_time
+</Parameter>
+<a id="start_time"></a>
+<Parameter name="start_time">
 
 开始播放的位置，单位为毫秒。
 
-### cb
+</Parameter>
+<a id="cb-2"></a>
+<Parameter name="cb">
 
 异步通知 URL 资源打开结果的回调。你可以通过该回调的 `err` 参数获取操作结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1565,9 +1709,14 @@ bool Pause(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-21"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_pause_player__return_values"></a>
 
@@ -1614,9 +1763,14 @@ bool Play(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-22"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_play_player__return_values"></a>
 
@@ -1661,13 +1815,20 @@ explicit Player(Rte *self, PlayerInitialConfig *config = nullptr)
 
 ### 参数
 
-### self
+<ParameterList>
+<a id="self"></a>
+<Parameter name="self">
 
 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rte)。
 
-### config
+</Parameter>
+<a id="config-4"></a>
+<Parameter name="config">
 
 播放器的初始配置。你可以传入 NULL。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1715,13 +1876,20 @@ static bool PreloadWithUrl(const char* url, Error *err = nullptr)
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-1"></a>
+<Parameter name="url">
 
 以 `rte://` 开头的 URL。
 
-### err
+</Parameter>
+<a id="err-23"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_preloadwithurl__return_values"></a>
 
@@ -1768,13 +1936,20 @@ bool RegisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver) 接口对象的实例。详见 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)。
 
-### err
+</Parameter>
+<a id="err-24"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_registerobserver_player__return_values"></a>
 
@@ -1825,17 +2000,26 @@ bool RemoveView(View *view, ViewConfig *config, rte::Error *err = nullptr)
 
 ### 参数
 
-### view
+<ParameterList>
+<a id="view-1"></a>
+<Parameter name="view">
 
 要移除的视图对象。
 
-### config
+</Parameter>
+<a id="config-5"></a>
+<Parameter name="config">
 
 视图对象的设置，目前传入 NULL。
 
-### err
+</Parameter>
+<a id="err-25"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_removeview__return_values"></a>
 
@@ -1878,9 +2062,14 @@ explicit Rte(InitialConfig *config = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-6"></a>
+<Parameter name="config">
 
 初始化设置。你可以传入 NULL。详见 `InitialConfig`。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1910,11 +2099,15 @@ bool Seek(uint64_t new_time, Error *err = nullptr)
 
 ### 参数
 
-### new_time
+<ParameterList>
+<a id="new_time"></a>
+<Parameter name="new_time">
 
 要跳转到的新播放位置。
 
-### err
+</Parameter>
+<a id="err-26"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
@@ -1923,6 +2116,9 @@ bool Seek(uint64_t new_time, Error *err = nullptr)
 
   - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
   - 打开的 URL 是 RTE URL，不支持跳转。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_seek__return_values"></a>
 
@@ -1979,7 +2175,9 @@ void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullp
 
 ### 参数
 
-### abr_fallback_layer
+<ParameterList>
+<a id="abr_fallback_layer"></a>
+<Parameter name="abr_fallback_layer">
 
 视频流的回退质量层，详见 [RteAbrFallbackLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrfallbacklayer)。当自定义 `kRteAbrFallbackLayer1` 到 `kRteAbrFallbackLayer6` 的分辨率时，可参考下表：
 
@@ -1996,9 +2194,14 @@ void SetAbrFallbackLayer(AbrFallbackLayer abr_fallback_layer, Error *err = nullp
 | `kRteAbrSubscriptionLayer5` | 540p (SD) |
 | `kRteAbrSubscriptionLayer6` | 480p (SD) |
 
-### err
+</Parameter>
+<a id="err-27"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2046,7 +2249,9 @@ void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error 
 
 ### 参数
 
-### abr_subscription_layer
+<ParameterList>
+<a id="abr_subscription_layer"></a>
+<Parameter name="abr_subscription_layer">
 
 要订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer)。当自定义 `kRteAbrSubscriptionLayer1` 到 `kRteAbrSubscriptionLayer6` 的分辨率时，可参考下表或根据实际需求设置：
 
@@ -2061,9 +2266,14 @@ void SetAbrSubscriptionLayer(AbrSubscriptionLayer abr_subscription_layer, Error 
 | `kRteAbrSubscriptionLayer5` | 540p (SD) |
 | `kRteAbrSubscriptionLayer6` | 480p (SD) |
 
-### err
+</Parameter>
+<a id="err-28"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2099,13 +2309,20 @@ void SetAppId(const char *app_id, Error *err = nullptr)
 
 ### 参数
 
-### app_id
+<ParameterList>
+<a id="app_id"></a>
+<Parameter name="app_id">
 
 你的项目的声网 App ID，可从声网控制台获取。
 
-### err
+</Parameter>
+<a id="err-29"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2143,16 +2360,23 @@ void SetAutoPlay(bool auto_play, Error *err = nullptr)
 
 ### 参数
 
-### auto_play
+<ParameterList>
+<a id="auto_play"></a>
+<Parameter name="auto_play">
 
 是否启用自动播放：
 
 - true：（默认）启用自动播放。
 - false：不启用自动播放。
 
-### err
+</Parameter>
+<a id="err-30"></a>
+<Parameter name="err">
 
 输出参数，表示状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2190,13 +2414,20 @@ bool SetCanvas(Canvas *canvas, Error *err = nullptr)
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas) 对象，用于渲染视频帧，详见 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvas)。
 
-### err
+</Parameter>
+<a id="err-31"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_setcanvas__return_values"></a>
 
@@ -2239,13 +2470,20 @@ bool SetConfigs(CanvasConfig *config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-7"></a>
+<Parameter name="config">
 
 用于设置 [Canvas](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_canvas_canvas_canvas) 对象的配置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_canvasconfig)。
 
-### err
+</Parameter>
+<a id="err-32"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_setconfigs_canvas__return_values"></a>
 
@@ -2292,13 +2530,20 @@ bool SetConfigs(PlayerConfig* config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-8"></a>
+<Parameter name="config">
 
 播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerconfig)。
 
-### err
+</Parameter>
+<a id="err-33"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_setconfigs_player__return_values"></a>
 
@@ -2345,13 +2590,20 @@ bool SetConfigs(Config *config, Error *err = nullptr)
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-9"></a>
+<Parameter name="config">
 
 `RTE` 对象的设置信息，详见 [Config](/zh-CN/api-reference/rtc/cpp-all-platforms/class-config)。
 
-### err
+</Parameter>
+<a id="err-34"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_setconfigs_rte__return_values"></a>
 
@@ -2402,13 +2654,20 @@ void SetJsonParameter(const char *json_parameter, Error *err = nullptr)
 
 ### 参数
 
-### json_parameter
+<ParameterList>
+<a id="json_parameter"></a>
+<Parameter name="json_parameter">
 
 JSON 字符串格式的参数。
 
-### err
+</Parameter>
+<a id="err-35"></a>
+<Parameter name="err">
 
 输出参数，表示状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2438,7 +2697,9 @@ void SetLoopCount(int32_t count, Error *err = nullptr)
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 媒体文件的循环播放次数。
 
@@ -2446,12 +2707,17 @@ void SetLoopCount(int32_t count, Error *err = nullptr)
 - `2`：播放两次。
 - `-1`：无限循环播放，直到调用 [Stop](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_stop_player)。
 
-### err
+</Parameter>
+<a id="err-36"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
 - `kRteOk`：调用成功。
 - `kRteErrorInvalidArgument`：`count` 参数设置为无效值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2487,16 +2753,23 @@ void SetMirrorMode(VideoMirrorMode mode, Error *err = nullptr)
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 镜像模式，详见 [RteVideoMirrorMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideomirrormode)。
 
 - 默认值为 `kRteVideoMirrorModeAuto`，由 SDK 自动决定镜像模式。
 - 默认情况下，远端用户的镜像模式为关闭状态。
 
-### err
+</Parameter>
+<a id="err-37"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2530,16 +2803,23 @@ void SetPlaybackSpeed(int32_t speed, Error *err = nullptr)
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。有效范围为 [50, 400]。
 
-### err
+</Parameter>
+<a id="err-38"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
 - `kRteOk`：调用成功。
 - `kRteErrorInvalidArgument`：`speed` 参数设置为无效值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2569,16 +2849,23 @@ void SetPlayoutVolume(int32_t volume, Error *err = nullptr)
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 要设置的播放音量，取值范围为 [0, 400]。
 
-### err
+</Parameter>
+<a id="err-39"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 
 - `kRteOk`：设置成功。
 - `kRteErrorInvalidArgument`：音量参数设置为无效值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2614,13 +2901,20 @@ void SetRenderMode(VideoRenderMode mode, Error *err = nullptr)
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 渲染模式，详见 [RteVideoRenderMode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtevideorendermode)。默认值为 `kRteVideoRenderModeHidden`，该模式按比例缩放视频并优先填满视图窗口。
 
-### err
+</Parameter>
+<a id="err-40"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2694,9 +2988,14 @@ bool Stop(Error *err = nullptr)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err-41"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_stop_player__return_values"></a>
 
@@ -2771,18 +3070,24 @@ void SwitchWithUrl(const char* url, bool sync_pts, std::function<void(rte::Error
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-2"></a>
+<Parameter name="url">
 
 要切换到的新 URL。
 
-### sync_pts
+</Parameter>
+<a id="sync_pts"></a>
+<Parameter name="sync_pts">
 
 是否同步播放位置：
 
 - true：同步播放位置。
 - false：（默认）不同步播放位置。
 
-### cb
+</Parameter>
+<a id="cb-3"></a>
+<Parameter name="cb">
 
 异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
 `err` 的可能取值包括：
@@ -2794,6 +3099,9 @@ void SwitchWithUrl(const char* url, bool sync_pts, std::function<void(rte::Error
 
   - 对应的内部 [Player](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_player_player) 对象已被销毁或无效。
   - 当前打开的 URL 是 `RTE` URL，不支持切换。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2831,13 +3139,20 @@ bool UnregisterObserver(PlayerObserver *observer, Error *err = nullptr)
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 播放器事件观察者对象实例，详见 [PlayerObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_playerobserver)。
 
-### err
+</Parameter>
+<a id="err-42"></a>
+<Parameter name="err">
 
 输出参数，状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_unregisterobserver_player__return_values"></a>
 
@@ -2940,9 +3255,14 @@ virtual void onAudioVolumeIndication(int32_t volume) {}
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 播放器当前的音量，取值范围为 [0, 225]。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2980,9 +3300,14 @@ virtual void onEvent(PlayerEvent event) {}
 
 ### 参数
 
-### event
+<ParameterList>
+<a id="event"></a>
+<Parameter name="event">
 
 播放器事件，详见 [RtePlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3020,17 +3345,26 @@ virtual void onMetadata(PlayerMetadataType type, const uint8_t *data, size_t len
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 元数据类型，详见 [RtePlayerMetadataType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayermetadatatype)。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 解析后的元数据内容。
 
-### length
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据的字节大小。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3068,9 +3402,14 @@ virtual void onPlayerInfoUpdated(const PlayerInfo *info) {}
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info-1"></a>
+<Parameter name="info">
 
 播放器和媒体流的信息。详见 [PlayerInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_rteplayerinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3106,13 +3445,20 @@ virtual void onPositionChanged(uint64_t curr_time, uint64_t utc_time) {}
 
 ### 参数
 
-### curr_time
+<ParameterList>
+<a id="curr_time"></a>
+<Parameter name="curr_time">
 
 当前播放进度，单位为毫秒。
 
-### utc_time
+</Parameter>
+<a id="utc_time"></a>
+<Parameter name="utc_time">
 
 当前 NTP（网络时间协议）时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3150,13 +3496,20 @@ virtual void onResolutionChanged(int width, int height) {}
 
 ### 参数
 
-### width
+<ParameterList>
+<a id="width"></a>
+<Parameter name="width">
 
 视频帧的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度（像素）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3194,17 +3547,26 @@ virtual void onStateChanged(PlayerState old_state, PlayerState new_state, rte::E
 
 ### 参数
 
-### old_state
+<ParameterList>
+<a id="old_state"></a>
+<Parameter name="old_state">
 
 播放器之前的状态，详见 [RtePlayerState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerstate)。
 
-### new_state
+</Parameter>
+<a id="new_state"></a>
+<Parameter name="new_state">
 
 播放器当前的状态，详见 [RtePlayerState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteplayerstate)。如果当前状态为 `kRtePlayerStateFailed`，你可以通过 `err` 参数获取详细的错误信息。
 
-### err
+</Parameter>
+<a id="err-43"></a>
+<Parameter name="err">
 
 状态或错误信息，详见 [Error](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

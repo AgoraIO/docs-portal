@@ -34,7 +34,9 @@ public class ScreenCaptureParameters2
 
 ## 属性
 
-### captureAudio
+<ParameterList>
+<a id="captureaudio"></a>
+<Parameter name="captureAudio">
 
 :::note
 注：
@@ -48,7 +50,9 @@ public class ScreenCaptureParameters2
 - true: 采集系统音频。
 - false: （默认）不采集系统音频。
 
-### audioParams
+</Parameter>
+<a id="audioparams"></a>
+<Parameter name="audioParams">
 
 共享屏幕流的音频配置。详见 [ScreenAudioParameters](/zh-CN/api-reference/rtc/unity/class-screenaudioparameters)。
 
@@ -56,7 +60,9 @@ public class ScreenCaptureParameters2
 注： 该参数仅在 `captureAudio` 为 true 时生效。
 :::
 
-### captureVideo
+</Parameter>
+<a id="capturevideo"></a>
+<Parameter name="captureVideo">
 
 :::note
 注： 受系统限制，采集屏幕仅适用于 Android API 级别为 21 及以上，即 Android 5 及以上。
@@ -67,10 +73,15 @@ public class ScreenCaptureParameters2
 - true:（默认）采集屏幕。
 - false: 不采集屏幕。
 
-### videoParams
+</Parameter>
+<a id="videoparams"></a>
+<Parameter name="videoParams">
 
 共享屏幕流的视频编码配置。详见 [ScreenVideoParameters](/zh-CN/api-reference/rtc/unity/class-screenvideoparameters)。
 
 :::note
 注： 该参数仅在 `captureVideo` 为 true 时生效。
 :::
+
+</Parameter>
+</ParameterList>

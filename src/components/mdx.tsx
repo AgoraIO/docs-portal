@@ -120,12 +120,16 @@ type ParameterListProps = ComponentProps<'div'> & {
 type ParameterProps = ComponentProps<'div'> & {
   children?: ReactNode;
   defaultValue?: ReactNode;
+  direction?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
   possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
+};
+type ParameterTypeProps = ComponentProps<'div'> & {
+  children?: ReactNode;
 };
 type TabValueElement = ReactElement<{
   children?: ReactNode;
@@ -780,6 +784,7 @@ function Parameter({
   children,
   className,
   defaultValue,
+  direction,
   name,
   nullable,
   optional,
@@ -791,9 +796,13 @@ function Parameter({
   const requiredState = getRequiredState({ optional, required });
   const childNodes = Children.toArray(children);
   const descriptionChildren = childNodes.filter(
-    (child) => !isNestedParameterBlock(child) && !isBlankTextNode(child),
+    (child) =>
+      !isNestedParameterBlock(child) &&
+      !isParameterTypeBlock(child) &&
+      !isBlankTextNode(child),
   );
   const nestedParameters = childNodes.filter(isNestedParameterBlock);
+  const richType = childNodes.find(isParameterTypeBlock);
   const parameterLabel = getPlainTextLabel(name);
 
   return (
@@ -817,8 +826,15 @@ function Parameter({
               <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
                 {type}
               </span>
-            ) : null}
+            ) : (
+              richType
+            )}
           </div>
+          {direction ? (
+            <span className="inline-flex w-fit rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 font-mono text-[0.68rem] text-fd-muted-foreground">
+              {direction}
+            </span>
+          ) : null}
           <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
         <div
@@ -871,6 +887,21 @@ function Parameter({
           </div>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+function ParameterType({ children, className, ...props }: ParameterTypeProps) {
+  return (
+    <div
+      className={cn(
+        'prose-no-margin min-w-0 rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground [&_a]:text-fd-primary [&_p]:m-0',
+        className,
+      )}
+      data-parameter-type=""
+      {...props}
+    >
+      {children}
     </div>
   );
 }
@@ -941,6 +972,12 @@ function isNestedParameterBlock(
   );
 }
 
+function isParameterTypeBlock(
+  child: ReactNode,
+): child is ReactElement<ParameterTypeProps> {
+  return isValidElement(child) && child.type === ParameterType;
+}
+
 function isBlankTextNode(child: ReactNode) {
   return typeof child === 'string' && child.trim().length === 0;
 }
@@ -953,7 +990,7 @@ function getPlainTextLabel(value: ReactNode) {
   return undefined;
 }
 
-export { Parameter, ParameterList };
+export { Parameter, ParameterList, ParameterType };
 
 function getRequiredState({
   optional,
@@ -1165,6 +1202,7 @@ export function getMDXComponents(
     pre: Pre,
     ParameterList,
     Parameter,
+    ParameterType,
     Accordion,
     Accordions,
     File,

@@ -53,12 +53,22 @@ _migration:
 
 - new RtcAudioDeviceManagerWeb(adapter:[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web), noDevicePermission?:boolean):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#constructor)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#constructor)
 
-  - adapter: [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
-  - Optional noDevicePermission: boolean
+<ParameterList title="Parameters">
+<Parameter name="adapter" required>
 
-  Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+<ParameterType>
+
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-index-tc-adapter-web)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="noDevicePermission" type="boolean" optional />
+</ParameterList>
+
+Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
 ## Accessors
 
@@ -68,7 +78,7 @@ _migration:
 
 - get microphoneList():[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
-- Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
 <a id="speakerList"></a>
 
@@ -76,7 +86,7 @@ _migration:
 
 - get speakerList():[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
-- Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
 ## Methods
 
@@ -84,14 +94,16 @@ _migration:
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+- emit(evt:string,...args:any[]):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
-- Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#emit)Parameters
+Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[emit](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
 <a id="getAudioPlaybackDevices"></a>
 
@@ -99,7 +111,9 @@ _migration:
 
 - getAudioPlaybackDevices():[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[getAudioPlaybackDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#getAudioPlaybackDevices)Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[getAudioPlaybackDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#getAudioPlaybackDevices)
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
 <a id="getAudioRecordingDevices"></a>
 
@@ -107,7 +121,9 @@ _migration:
 
 - getAudioRecordingDevices():[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[getAudioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#getAudioRecordingDevices)Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[getAudioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#getAudioRecordingDevices)
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
 
 <a id="off"></a>
 
@@ -115,12 +131,14 @@ _migration:
 
 - off(evt:string, cb:CallableFunction):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
-- Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#off)Parameters
+Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[off](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
 <a id="on"></a>
 
@@ -128,12 +146,14 @@ _migration:
 
 - on(evt:string, cb:CallableFunction):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
-- Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#on)Parameters
+Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[on](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
 <a id="onLocalAudioPlaybackTestVolumeChanged"></a>
 
@@ -141,11 +161,21 @@ _migration:
 
 - onLocalAudioPlaybackTestVolumeChanged(cb:[LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioPlaybackTestVolumeChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioPlaybackTestVolumeChanged)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioPlaybackTestVolumeChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioPlaybackTestVolumeChanged)
 
-  - cb: [LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  Returns number
+<ParameterType>
+
+[LocalAudioPlaybackVolumeIndicatorEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioPlaybackVolumeIndicatorEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalAudioTrackStateChanged"></a>
 
@@ -153,11 +183,21 @@ _migration:
 
 - onLocalAudioTrackStateChanged(cb:[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioTrackStateChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioTrackStateChanged)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioTrackStateChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioTrackStateChanged)
 
-  - cb: [LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  Returns number
+<ParameterType>
+
+[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalAudioVolume"></a>
 
@@ -165,19 +205,23 @@ _migration:
 
 - onLocalAudioVolume(cb:(volume:number)=&gt;void):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioVolume)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalAudioVolume)
 
-  - cb: (volume:number)=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(volume:number)= &amp; gt;void" required>
 
-    - - (volume:number):void
+- - (volume:number):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="volume" type="number" required />
+  </ParameterList>
 
-        - volume: number
+  Returns void
 
-        Returns void
+</Parameter>
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="onLocalPlaybackDeviceListChanged"></a>
 
@@ -185,21 +229,47 @@ _migration:
 
 - onLocalPlaybackDeviceListChanged(cb:(addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])=&gt;void):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPlaybackDeviceListChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPlaybackDeviceListChanged)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPlaybackDeviceListChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPlaybackDeviceListChanged)
 
-  - cb: (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
+<ParameterType>
 
-      - Parameters
+(addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])= & gt;void
 
-        - addNewDevice: boolean
-        - newDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
-        - allDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+</ParameterType>
 
-        Returns void
+- - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="addNewDevice" type="boolean" required />
+  <Parameter name="newDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="allDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalPreviewAudioTrackStateChanged"></a>
 
@@ -207,11 +277,21 @@ _migration:
 
 - onLocalPreviewAudioTrackStateChanged(cb:[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPreviewAudioTrackStateChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPreviewAudioTrackStateChanged)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPreviewAudioTrackStateChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPreviewAudioTrackStateChanged)
 
-  - cb: [LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-  Returns number
+<ParameterType>
+
+[LocalAudioTrackStateEvent](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-base#LocalAudioTrackStateEvent)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="onLocalPreviewAudioVolume"></a>
 
@@ -219,19 +299,23 @@ _migration:
 
 - onLocalPreviewAudioVolume(cb:(volume:number)=&gt;void):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPreviewAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPreviewAudioVolume)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalPreviewAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalPreviewAudioVolume)
 
-  - cb: (volume:number)=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(volume:number)= &amp; gt;void" required>
 
-    - - (volume:number):void
+- - (volume:number):void
 
-      - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="volume" type="number" required />
+  </ParameterList>
 
-        - volume: number
+  Returns void
 
-        Returns void
+</Parameter>
+</ParameterList>
 
-  Returns number
+Returns number
 
 <a id="onLocalRecordingDeviceListChanged"></a>
 
@@ -239,21 +323,47 @@ _migration:
 
 - onLocalRecordingDeviceListChanged(cb:(addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])=&gt;void):number
 
-- Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalRecordingDeviceListChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalRecordingDeviceListChanged)Parameters
+Overrides [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[onLocalRecordingDeviceListChanged](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#onLocalRecordingDeviceListChanged)
 
-  - cb: (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])=&gt;void
+<ParameterList title="Parameters">
+<Parameter name="cb" required>
 
-    - - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
+<ParameterType>
 
-      - Parameters
+(addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[])= & gt;void
 
-        - addNewDevice: boolean
-        - newDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
-        - allDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+</ParameterType>
 
-        Returns void
+- - (addNewDevice:boolean, newDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[], allDevices:[AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]):void
 
-  Returns number
+  <ParameterList title="Parameters">
+  <Parameter name="addNewDevice" type="boolean" required />
+  <Parameter name="newDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="allDevices" required>
+
+  <ParameterType>
+
+  [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="once"></a>
 
@@ -261,12 +371,14 @@ _migration:
 
 - once(evt:string, cb:CallableFunction):[RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
-- Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#once)Parameters
+Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[once](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
+Returns [RtcAudioDeviceManagerWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-device-tc-audio-device-manager-web)
 
 <a id="removeAllEventListeners"></a>
 
@@ -274,4 +386,6 @@ _migration:
 
 - removeAllEventListeners():void
 
-- Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#removeAllEventListeners)Returns void
+Inherited from [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-audio-device-manager-base#removeAllEventListeners)
+
+Returns void

@@ -35,11 +35,15 @@ class VirtualBackgroundSource {
 
 ## 属性
 
-### backgroundSourceType
+<ParameterList>
+<a id="backgroundsourcetype"></a>
+<Parameter name="backgroundSourceType">
 
 自定义的背景。详见 [backgroundSourceType](/zh-CN/api-reference/rtc/flutter/enum-backgroundsourcetype)。
 
-### color
+</Parameter>
+<a id="color"></a>
+<Parameter name="color">
 
 自定义的背景图颜色。格式为 RGB 定义下的十六进制整数，不带 # 号，如 0xFFB6C1 表示浅粉色。 默认值为 0xFFFFFF，表示白色。 取值范围为 [0x000000，0xffffff]。如果取值非法，SDK 会用白色背景图替换原背景图。
 
@@ -50,7 +54,9 @@ class VirtualBackgroundSource {
 - backgroundImg：如果 `source` 中的图片使用了透明背景，则会使用该参数传入的颜色填充透明背景。
 :::
 
-### source
+</Parameter>
+<a id="source"></a>
+<Parameter name="source">
 
 自定义背景的本地绝对路径。支持 PNG、JPG、MP4、 AVI、 MKV 和 FLV 格式。如果路径无效，SDK 会使用原背景图或 `color` 指定的纯色背景。
 
@@ -58,10 +64,15 @@ class VirtualBackgroundSource {
 注： 该参数仅在自定义背景图类型为 backgroundImg 或 backgroundVideo 时生效。
 :::
 
-### blurDegree
+</Parameter>
+<a id="blurdegree"></a>
+<Parameter name="blurDegree">
 
 自定义背景图的模糊程度。
 
 :::note
 注： 该参数仅在自定义背景图类型为 backgroundBlur 时生效。
 :::
+
+</Parameter>
+</ParameterList>

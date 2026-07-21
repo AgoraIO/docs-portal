@@ -34,7 +34,9 @@ _migration:
 
 ## 属性
 
-### ordered
+<ParameterList>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 是否保证接收端按发送顺序接收数据。
 
@@ -43,9 +45,14 @@ _migration:
 
 如果你希望接收端立即接收数据包，请不要将该参数设置为 YES。
 
-### syncWithAudio
+</Parameter>
+<a id="syncwithaudio"></a>
+<Parameter name="syncWithAudio">
 
 是否将数据包与发布的音频包同步。
 
 - YES：将数据包与音频包同步，适用于歌词同步等特殊场景。
 - NO：不与音频包同步，适用于需要数据包立即到达接收端的场景。
+
+</Parameter>
+</ParameterList>

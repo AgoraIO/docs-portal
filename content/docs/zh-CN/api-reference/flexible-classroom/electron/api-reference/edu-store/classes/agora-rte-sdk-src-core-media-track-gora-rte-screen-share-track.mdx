@@ -43,11 +43,21 @@ _migration:
 
 - new AgoraRteScreenShareTrack(rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)):[AgoraRteScreenShareTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-screen-share-track)
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#constructor)Parameters
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#constructor)
 
-  - rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+<ParameterList title="Parameters">
+<Parameter name="rtc" required>
 
-  Returns [AgoraRteScreenShareTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-screen-share-track)
+<ParameterType>
+
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteScreenShareTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-screen-share-track)
 
 ## Properties
 
@@ -75,11 +85,19 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/elec
 
 - setView(canvas:[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
 
-  - canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+<ParameterType>
 
-  Returns void
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="start"></a>
 
@@ -87,7 +105,9 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/elec
 
 - start():number
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[start](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#start)Returns number
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[start](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#start)
+
+Returns number
 
 <a id="startWithParams"></a>
 
@@ -95,15 +115,33 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/elec
 
 - startWithParams(params?:\{id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
 
-  - Optional params: \{id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
+<ParameterType>
 
-    - Optional id?:string
-    - Optional type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
-    - Optional withAudio?:boolean
+\{id?:string;type?:[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type);withAudio?:boolean\}
 
-  Returns number
+</ParameterType>
+
+<ParameterList>
+<Parameter name="id" type="string" optional />
+<Parameter name="type" optional>
+
+<ParameterType>
+
+[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns number
 
 <a id="stop"></a>
 
@@ -111,4 +149,6 @@ Inherited from [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/elec
 
 - stop():number
 
-- Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[stop](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#stop)Returns number
+Overrides [AgoraRteMediaTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track).[stop](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-track-gora-rte-media-track#stop)
+
+Returns number

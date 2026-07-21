@@ -45,7 +45,7 @@ _migration:
 
 - new WorkerInteractor():[WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
 
-- Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
+Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
 
 ## Methods
 
@@ -55,7 +55,9 @@ _migration:
 
 - clearTempLogs():Promise&lt;void&gt;
 
-- Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[clearTempLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#clearTempLogs)Returns Promise&lt;void&gt;
+Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[clearTempLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#clearTempLogs)
+
+Returns Promise&lt;void&gt;
 
 <a id="collectLogs"></a>
 
@@ -63,11 +65,13 @@ _migration:
 
 - collectLogs(labels:string[]):Promise&lt;\{file:File;lastId:number\}&gt;
 
-- Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[collectLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#collectLogs)Parameters
+Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[collectLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#collectLogs)
 
-  - labels: string[]
+<ParameterList title="Parameters">
+<Parameter name="labels" type="string[]" required />
+</ParameterList>
 
-  Returns Promise&lt;\{file:File;lastId:number\}&gt;
+Returns Promise&lt;\{file:File;lastId:number\}&gt;
 
 <a id="deleteLogs"></a>
 
@@ -75,12 +79,14 @@ _migration:
 
 - deleteLogs(labels:string[], lastId:number):Promise&lt;void&gt;
 
-- Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[deleteLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#deleteLogs)Parameters
+Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[deleteLogs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#deleteLogs)
 
-  - labels: string[]
-  - lastId: number
+<ParameterList title="Parameters">
+<Parameter name="labels" type="string[]" required />
+<Parameter name="lastId" type="number" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="getBinary"></a>
 
@@ -88,11 +94,13 @@ _migration:
 
 - getBinary(id:number):Promise&lt;null|Buffer&gt;
 
-- Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[getBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#getBinary)Parameters
+Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[getBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#getBinary)
 
-  - id: number
+<ParameterList title="Parameters">
+<Parameter name="id" type="number" required />
+</ParameterList>
 
-  Returns Promise&lt;null|Buffer&gt;
+Returns Promise&lt;null|Buffer&gt;
 
 <a id="persistBinary"></a>
 
@@ -100,12 +108,14 @@ _migration:
 
 - persistBinary(id:number, buffer:Buffer):Promise&lt;void&gt;
 
-- Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[persistBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#persistBinary)Parameters
+Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[persistBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#persistBinary)
 
-  - id: number
-  - buffer: Buffer
+<ParameterList title="Parameters">
+<Parameter name="id" type="number" required />
+<Parameter name="buffer" type="Buffer" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="sendLog"></a>
 
@@ -113,12 +123,14 @@ _migration:
 
 - sendLog(message:string, label:string):void
 
-- Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[sendLog](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#sendLog)Parameters
+Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[sendLog](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#sendLog)
 
-  - message: string
-  - label: string
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="label" type="string" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setMaxRecords"></a>
 
@@ -126,11 +138,13 @@ _migration:
 
 - setMaxRecords(maxRecords:number):Promise&lt;void&gt;
 
-- Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[setMaxRecords](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#setMaxRecords)Parameters
+Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[setMaxRecords](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#setMaxRecords)
 
-  - maxRecords: number
+<ParameterList title="Parameters">
+<Parameter name="maxRecords" type="number" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="unpersistBinary"></a>
 
@@ -138,8 +152,10 @@ _migration:
 
 - unpersistBinary(id:number):Promise&lt;void&gt;
 
-- Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[unpersistBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#unpersistBinary)Parameters
+Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[unpersistBinary](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#unpersistBinary)
 
-  - id: number
+<ParameterList title="Parameters">
+<Parameter name="id" type="number" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;

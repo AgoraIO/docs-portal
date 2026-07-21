@@ -53,7 +53,7 @@ _migration:
 
 - new AgoraRteSyncDataStore():[AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
 
-- Returns [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
+Returns [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
 
 ## Accessors
 
@@ -63,7 +63,7 @@ _migration:
 
 - get messages():List&lt;[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)&gt;
 
-- Returns List&lt;[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)&gt;
+Returns List&lt;[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)&gt;
 
 <a id="roomInfo"></a>
 
@@ -71,7 +71,7 @@ _migration:
 
 - get roomInfo():Map&lt;unknown,unknown&gt;
 
-- Returns Map&lt;unknown,unknown&gt;
+Returns Map&lt;unknown,unknown&gt;
 
 <a id="roomProperties"></a>
 
@@ -79,7 +79,7 @@ _migration:
 
 - get roomProperties():Map&lt;string,unknown&gt;
 
-- Returns Map&lt;string,unknown&gt;
+Returns Map&lt;string,unknown&gt;
 
 <a id="streams"></a>
 
@@ -87,7 +87,7 @@ _migration:
 
 - get streams():Map&lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
 
-- Returns Map&lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
+Returns Map&lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
 
 <a id="users"></a>
 
@@ -95,7 +95,7 @@ _migration:
 
 - get users():Map&lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
 
-- Returns Map&lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
+Returns Map&lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
 
 ## Methods
 
@@ -105,11 +105,19 @@ _migration:
 
 - addMessage(message:[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" required>
 
-  - message: [AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)
+<ParameterType>
 
-  Returns void
+[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="deleteStream"></a>
 
@@ -117,11 +125,11 @@ _migration:
 
 - deleteStream(key:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+</ParameterList>
 
-  - key: string
-
-  Returns void
+Returns void
 
 <a id="deleteStreams"></a>
 
@@ -129,11 +137,11 @@ _migration:
 
 - deleteStreams(keys:string[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="keys" type="string[]" required />
+</ParameterList>
 
-  - keys: string[]
-
-  Returns void
+Returns void
 
 <a id="deleteUser"></a>
 
@@ -141,11 +149,11 @@ _migration:
 
 - deleteUser(key:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+</ParameterList>
 
-  - key: string
-
-  Returns void
+Returns void
 
 <a id="findStream"></a>
 
@@ -153,11 +161,11 @@ _migration:
 
 - findStream(streamUuid:string):undefined|[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
-  - streamUuid: string
-
-  Returns undefined|[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+Returns undefined|[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
 
 <a id="findUser"></a>
 
@@ -165,11 +173,11 @@ _migration:
 
 - findUser(userUuid:string):undefined|[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - userUuid: string
-
-  Returns undefined|[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+Returns undefined|[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
 
 <a id="findUserStreams"></a>
 
@@ -177,11 +185,11 @@ _migration:
 
 - findUserStreams(userUuid:string):[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)[]
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-  - userUuid: string
-
-  Returns [AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)[]
+Returns [AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)[]
 
 <a id="setRoomInfo"></a>
 
@@ -189,11 +197,19 @@ _migration:
 
 - setRoomInfo(roomInfo:[AgoraRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-room)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomInfo" required>
 
-  - roomInfo: [AgoraRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-room)
+<ParameterType>
 
-  Returns void
+[AgoraRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-room)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setRoomProperties"></a>
 
@@ -201,11 +217,11 @@ _migration:
 
 - setRoomProperties(roomProperties:any):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomProperties" type="any" required />
+</ParameterList>
 
-  - roomProperties: any
-
-  Returns void
+Returns void
 
 <a id="setStream"></a>
 
@@ -213,12 +229,20 @@ _migration:
 
 - setStream(key:string, stream:[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+<Parameter name="stream" required>
 
-  - key: string
-  - stream: [AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+<ParameterType>
 
-  Returns void
+[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setStreams"></a>
 
@@ -226,11 +250,19 @@ _migration:
 
 - setStreams(streams:Map&lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="streams" required>
 
-  - streams: Map&lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
+<ParameterType>
 
-  Returns void
+Map & lt;string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setUser"></a>
 
@@ -238,12 +270,20 @@ _migration:
 
 - setUser(key:string, user:[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+<Parameter name="user" required>
 
-  - key: string
-  - user: [AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+<ParameterType>
 
-  Returns void
+[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setUsers"></a>
 
@@ -251,8 +291,16 @@ _migration:
 
 - setUsers(users:Map&lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="users" required>
 
-  - users: Map&lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
+<ParameterType>
 
-  Returns void
+Map & lt;string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

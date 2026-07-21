@@ -48,7 +48,9 @@ _migration:
 
 - new AGRtmManager():[AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
 
-- Overrides EventEmitter.constructorReturns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+Overrides EventEmitter.constructor
+
+Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
 
 ## Accessors
 
@@ -58,7 +60,7 @@ _migration:
 
 - get client():RtmClient
 
-- Returns RtmClient
+Returns RtmClient
 
 <a id="connectionState"></a>
 
@@ -66,7 +68,7 @@ _migration:
 
 - get connectionState():[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
 
-- Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
 
 <a id="logFilter"></a>
 
@@ -74,13 +76,15 @@ _migration:
 
 - get logFilter():\{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
 
-- Returns \{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
+Returns \{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
 
-  - debug:boolean
-  - error:boolean
-  - info:boolean
-  - track:boolean
-  - warn:boolean
+<ParameterList title="Returns &#123; debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean &#125;">
+<Parameter name="debug" type="boolean" required />
+<Parameter name="error" type="boolean" required />
+<Parameter name="info" type="boolean" required />
+<Parameter name="track" type="boolean" required />
+<Parameter name="warn" type="boolean" required />
+</ParameterList>
 
 <a id="sessionId"></a>
 
@@ -88,7 +92,7 @@ _migration:
 
 - get sessionId():string
 
-- Returns string
+Returns string
 
 ## Methods
 
@@ -98,11 +102,11 @@ _migration:
 
 - createObserverChannel(channelName:string):[RtmChannel,EventEmitter]
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+</ParameterList>
 
-  - channelName: string
-
-  Returns [RtmChannel,EventEmitter]
+Returns [RtmChannel,EventEmitter]
 
 <a id="destroyRtm"></a>
 
@@ -110,7 +114,7 @@ _migration:
 
 - destroyRtm():void
 
-- Returns void
+Returns void
 
 <a id="join"></a>
 
@@ -118,13 +122,13 @@ _migration:
 
 - join(channel:RtmChannel, bus:EventEmitter, channelName:string):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channel" type="RtmChannel" required />
+<Parameter name="bus" type="EventEmitter" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
 
-  - channel: RtmChannel
-  - bus: EventEmitter
-  - channelName: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="leave"></a>
 
@@ -132,11 +136,11 @@ _migration:
 
 - leave(channelName:string):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+</ParameterList>
 
-  - channelName: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="login"></a>
 
@@ -144,13 +148,21 @@ _migration:
 
 - login(token:string, uid:string, configs:[AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="token" type="string" required />
+<Parameter name="uid" type="string" required />
+<Parameter name="configs" required>
 
-  - token: string
-  - uid: string
-  - configs: [AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="reset"></a>
 
@@ -158,7 +170,7 @@ _migration:
 
 - reset():void
 
-- Returns void
+Returns void
 
 <a id="sendChannelMessage"></a>
 
@@ -166,13 +178,13 @@ _migration:
 
 - sendChannelMessage(channelName:string, message:any, options:any):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="message" type="any" required />
+<Parameter name="options" type="any" required />
+</ParameterList>
 
-  - channelName: string
-  - message: any
-  - options: any
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="sendPeerMessage"></a>
 
@@ -180,10 +192,10 @@ _migration:
 
 - sendPeerMessage(peerId:string, message:any, options:any):Promise&lt;boolean&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="peerId" type="string" required />
+<Parameter name="message" type="any" required />
+<Parameter name="options" type="any" required />
+</ParameterList>
 
-  - peerId: string
-  - message: any
-  - options: any
-
-  Returns Promise&lt;boolean&gt;
+Returns Promise&lt;boolean&gt;

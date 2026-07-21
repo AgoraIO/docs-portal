@@ -34,9 +34,14 @@ Future<MediaRecorder?> createMediaRecorder(RecorderStreamInfo info);
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -71,9 +76,14 @@ Future<void> destroyMediaRecorder(MediaRecorder mediaRecorder);
 
 ### 参数
 
-### mediaRecorder
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 待销毁的 [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -113,9 +123,14 @@ Future<void> setMediaRecorderObserver(
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制回调，详见 [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -160,9 +175,14 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/flutter/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -215,9 +235,14 @@ Future<void> startRecording(MediaRecorderConfiguration config);
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/flutter/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -308,17 +333,26 @@ final void Function(String channelId, int uid, RecorderInfo info)?
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/flutter/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -347,21 +381,32 @@ final void Function(String channelId, int uid, RecorderState state,
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/flutter/enum-recorderstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态出错的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/flutter/enum-recorderreasoncode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

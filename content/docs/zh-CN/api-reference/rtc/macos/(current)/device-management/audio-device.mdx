@@ -33,12 +33,17 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否跟随系统默认音频播放设备：
 
 - YES：跟随系统默认音频播放设备。当系统默认音频播放设备发生变化时，SDK 会立即切换音频播放设备。
 - NO：不跟随系统默认音频播放设备。仅当当前使用的音频播放设备断开连接时，SDK 才会切换到系统默认音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_followsystemplaybackdevice_irtcengine__return_values"></a>
 
@@ -71,12 +76,17 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否跟随系统默认音频录制设备：
 
 - YES：跟随系统默认音频录制设备。当系统默认音频录制设备发生变化时，SDK 会立即切换音频录制设备。
 - NO：不跟随系统默认音频录制设备。仅当当前使用的音频录制设备断开连接时，SDK 才会切换到系统默认音频录制设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_followsystemrecordingdevice_irtcengine__return_values"></a>
 
@@ -109,9 +119,14 @@ _migration:
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 设备类型，详见 [AgoraMediaDeviceType](/zh-CN/api-reference/rtc/macos/enum-mediadevicetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getdefaultaudiodevice__return_values"></a>
 
@@ -155,9 +170,14 @@ _migration:
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。声网建议设置大于 200 毫秒的值。该值不能小于 10 毫秒，否则你将无法收到 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__return_values"></a>
 
@@ -202,12 +222,17 @@ SDK 触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-
 
 ### 参数
 
-### audioFileName
+<ParameterList>
+<a id="audiofilename"></a>
+<Parameter name="audioFileName">
 
 音频文件的路径。数据格式为 UTF-8 编码的字符串。
 
 - 支持的文件格式：wav、mp3、m4a 和 aac。
 - 支持的采样率：8000、16000、32000、44100 和 48000 Hz。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startplaybackdevicetest__return_values"></a>
 
@@ -246,9 +271,14 @@ SDK 触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-
 
 ### 参数
 
-### indicationInterval
+<ParameterList>
+<a id="indicationinterval-1"></a>
+<Parameter name="indicationInterval">
 
 触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则你将无法收到 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。声网建议设置为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startrecordingdevicetest__return_values"></a>
 

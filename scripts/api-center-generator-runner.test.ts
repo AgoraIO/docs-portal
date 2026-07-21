@@ -28,7 +28,10 @@ describe('API Center generated HTML runner', () => {
     await fs.writeFile(
       path.join(oldRoot, sourcePath),
       `<header><div class="tsd-page-title"><h1>Interface Client</h1></div></header>
-       <div class="col-content"><p>Client body.</p><a name="join"></a><h2>Join</h2></div>`,
+       <div class="col-content"><p>Client body.</p><a name="join"></a><h2>Join</h2>
+         <h4 class="tsd-parameters-title">Parameters</h4>
+         <ul class="tsd-parameters"><li><h5>uid: <span class="tsd-signature-type">string</span></h5><p>User ID.</p></li></ul>
+       </div>`,
     );
     const manifest = {
       schemaVersion: 1,
@@ -77,11 +80,27 @@ describe('API Center generated HTML runner', () => {
       generatedFiles: 1,
       errors: 0,
     });
+    expect(result.structuredParameterCounts.typedoc).toEqual({
+      fields: 1,
+      lists: 1,
+    });
+    expect(result.report.details.structuredParameters.typedoc).toEqual({
+      fields: 1,
+      lists: 1,
+    });
     expect(output).toContain('title: Interface Client');
     expect(output).toContain('Client body.');
     expect(output).toContain('<a id="join"></a>');
     expect(output).toContain('## Join');
+    expect(output).toContain('<ParameterList title="Parameters">');
+    expect(output).toContain('<Parameter name="uid" type="string" required>');
     expect(output).not.toContain('<header');
+    expect(
+      await fs.readFile(
+        path.join(repoRoot, 'docs/migration/api-center-migration-report.md'),
+        'utf8',
+      ),
+    ).toContain('`typedoc`: 1 lists, 1 fields');
   });
 
   it('overwrites an existing zh-CN MDX target from its authoritative HTML source', async () => {

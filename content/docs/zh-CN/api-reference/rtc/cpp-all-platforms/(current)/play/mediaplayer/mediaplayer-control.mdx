@@ -37,9 +37,14 @@ virtual int adjustPlayoutVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放音量，取值范围为 0 到 100。0 表示静音，100（默认）表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
 
@@ -78,13 +83,18 @@ virtual int adjustPublishSignalVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音量，范围为 0 到 400：
 
 - 0：静音。
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
 
@@ -123,12 +133,17 @@ virtual int mute(bool muted) = 0;
 
 ### 参数
 
-### muted
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 是否将媒体文件静音：
 
 - true：静音媒体文件。
 - false：（默认）取消静音媒体文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_mute__return_values"></a>
 
@@ -238,9 +253,14 @@ virtual int playPreloadedSrc(const char* src) = 0;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 播放列表中媒体资源的 URL，必须与通过 [preloadSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 设置的 `src` 保持一致，否则无法播放该媒体资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
@@ -315,9 +335,14 @@ virtual int seek(int64_t newPos) = 0;
 
 ### 参数
 
-### newPos
+<ParameterList>
+<a id="newpos"></a>
+<Parameter name="newPos">
 
 新的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_seek__return_values"></a>
 
@@ -387,11 +412,15 @@ virtual int64_t onSeek(int64_t offset, int whence) = 0;
 
 ### 参数
 
-### offset
+<ParameterList>
+<a id="offset"></a>
+<Parameter name="offset">
 
 目标位置相对于起始点的偏移量，单位为字节。该值可以为正数或负数。
 
-### whence
+</Parameter>
+<a id="whence"></a>
+<Parameter name="whence">
 
 起始点，可设置为以下值之一：
 
@@ -399,6 +428,9 @@ virtual int64_t onSeek(int64_t offset, int whence) = 0;
 - 1：起始点为当前位置，定位后的实际数据偏移量为当前位置加 `offset`。
 - 2：起始点为数据末尾，定位后的实际数据偏移量为整个数据长度加 `offset`。
 - 65536：不执行定位操作，返回文件大小。建议在播放 MP3、WAV 等纯音频文件时使用该值。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayercustomdataprovider_onseek__return_values"></a>
 

@@ -227,6 +227,185 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('### [VideoParameters]');
   });
 
+  it('renders TypeDoc parameters as structured MDX fields', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>HandUpStore</h1>
+        <ul class="tsd-descriptions"><li class="tsd-description"><p>同意学生上讲台。</p>
+          <h4 class="tsd-parameters-title">Parameters</h4>
+          <ul class="tsd-parameters">
+            <li><h5>state: <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span></h5><div class="tsd-comment tsd-typography"><p>是否允许举手，0 不允许，1 允许。</p></div></li>
+            <li><h5><span class="tsd-flag ts-flagOptional">Optional</span> source: <a href="../enums/podium-source.html" class="tsd-signature-type">PodiumSource</a></h5><div class="tsd-comment tsd-typography"><p>邀请来源：</p><ul><li>老师邀请</li><li>学生举手</li></ul></div></li>
+          </ul>
+        </li></ul>
+        <h4 class="tsd-type-parameters-title">Type parameters</h4>
+        <ul class="tsd-type-parameters"><li><h4>T</h4></li></ul>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/hand-up-store.html',
+      sourcePath:
+        'html-docs/flexible-classroom/Electron/classes/hand-up-store.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/enums/podium-source.html',
+          '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/podium-source',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain('<ParameterList title="Parameters">');
+    expect(result.body).toContain(
+      '<Parameter name="state" type="0 | 1" required>',
+    );
+    expect(result.body).toContain('<Parameter name="source" optional>');
+    expect(result.body).toContain(
+      '[PodiumSource](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/podium-source)',
+    );
+    expect(result.body).toContain('- 老师邀请\n- 学生举手');
+    expect(result.body).toContain('同意学生上讲台。');
+    expect(result.body).not.toContain('- 同意学生上讲台。');
+    expect(result.body).toContain(
+      '<ParameterList title="Type parameters">\n<Parameter name="T" />\n</ParameterList>',
+    );
+    expect(result.body).not.toContain('\nParameters\n\n- state:');
+    expect(result.structuredParameters.typedoc).toEqual({
+      fields: 3,
+      lists: 2,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ParameterList',
+    );
+  });
+
+  it('renders Oxygen parameter definition lists as structured MDX fields', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Channel relay</h1><section id="set-destination__parameters"><h2>参数</h2>
+        <dl class="dl parml"><dt class="dt pt dlterm">channelName</dt><dd class="dd pd">目标频道名称。</dd><dt class="dt pt dlterm">destInfo</dt><dd class="dd pd"><p>目标频道信息，包括：</p><ul><li>频道名称</li><li>用户 ID</li></ul></dd><dd class="dd pd ddexpand">最多配置四个目标频道。</dd><dt class="dt pt dlterm"><span></span></dt><dd class="dd pd">源文档未提供该成员名称。</dd></dl>
+      </section></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/set-destination',
+      sourcePath: 'html-docs/rtc/Android/API/set-destination.html',
+    });
+
+    expect(result.body).toContain('## 参数');
+    expect(result.body).toContain('<ParameterList>');
+    expect(result.body).toContain(
+      '<a id="channelname"></a>\n<Parameter name="channelName">',
+    );
+    expect(result.body).toContain(
+      '<a id="destinfo"></a>\n<Parameter name="destInfo">',
+    );
+    expect(result.body).toContain('- 频道名称\n- 用户 ID');
+    expect(result.body).toContain('最多配置四个目标频道。');
+    expect(result.body).toContain('源文档未提供该成员名称。');
+    expect(result.body).not.toContain('### channelName');
+    expect(result.structuredParameters.oxygen).toEqual({ fields: 2, lists: 1 });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ParameterList',
+    );
+  });
+
+  it('keeps unique Oxygen parameter anchors from the former heading output', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>DRM</h1>
+        <section><dl class="dl parml"><dt>songCode</dt><dd>第一个方法的音乐资源 ID。</dd></dl></section>
+        <section><dl class="dl parml"><dt>songCode</dt><dd>第二个方法的音乐资源 ID。</dd></dl></section>
+      </article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_drm',
+      sourcePath: 'html-docs/rtc/iOS/API/toc_drm.html',
+    });
+
+    expect(result.body).toContain(
+      '<a id="songcode"></a>\n<Parameter name="songCode">',
+    );
+    expect(result.body).toContain(
+      '<a id="songcode-1"></a>\n<Parameter name="songCode">',
+    );
+  });
+
+  it('preserves TypeDoc callback signature containers around nested parameters', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Client</h1><ul class="tsd-parameters"><li class="tsd-parameter-siganture">
+        <ul class="tsd-signatures"><li class="tsd-signature">(event: object): void</li></ul>
+        <ul class="tsd-descriptions"><li class="tsd-description"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>event: <span class="tsd-signature-type">object</span></h5><p>事件对象。</p></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul>
+      </li></ul></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/client',
+      sourcePath: 'html-docs/rtc/Web/interfaces/client.html',
+    });
+
+    expect(result.body).toContain('(event: object): void');
+    expect(result.body).toContain('<ParameterList title="Parameters">');
+    expect(result.body).toContain(
+      '<Parameter name="event" type="object" required>',
+    );
+    expect(result.body).toContain('Returns void');
+    expect(result.structuredParameters.typedoc).toEqual({
+      fields: 1,
+      lists: 1,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ParameterList',
+    );
+  });
+
+  it('normalizes source indentation inside TypeDoc list item text', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Room</h1><ul class="tsd-descriptions"><li class="tsd-description"><p>删除场景。</p><ol><li>切换至
+\t\t\t\t<code>dirB</code> 中的第一个场景。</li><li>继续
+\t\t\t\t向上递归。</li></ol></li></ul></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/web/interfaces/room',
+      sourcePath: 'html-docs/whiteboard/Web/interfaces/room.html',
+    });
+
+    expect(result.body).toContain(
+      '1. 切换至\n   `dirB` 中的第一个场景。\n2. 继续\n   向上递归。',
+    );
+    expect(result.body).not.toContain('\t');
+  });
+
+  it('renders Doxygen parameter tables as structured MDX fields', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Recording engine</h1><div class="memdoc"><dl class="params"><dt>参数</dt><dd><table class="params"><tr><td class="paramname">appId</td><td>项目的 App ID。</td></tr><tr><td class="paramname">eventHandler</td><td><p>事件回调。</p></td></tr></table></dd></dl></div></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/recording/cpp/recording-engine',
+      sourcePath: 'html-docs/recording/cpp/recording-engine.html',
+    });
+
+    expect(result.body).toContain('<ParameterList title="参数">');
+    expect(result.body).toContain('<Parameter name="appId">');
+    expect(result.body).toContain('<Parameter name="eventHandler">');
+    expect(result.body).not.toContain('| appId |');
+    expect(result.structuredParameters.doxygen).toEqual({
+      fields: 2,
+      lists: 1,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ParameterList',
+    );
+  });
+
+  it('renders Appledoc argument tables as structured MDX fields', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>WhiteSlideDelegate</h1><div class="method-subsection arguments-section parameters"><h4 class="method-subtitle parameter-title">Parameters</h4><table class="argument-def parameter-def"><tr><th scope="row" class="argument-name"><code>url</code></th><td><p>原始 PPT 资源地址。</p></td></tr><tr><th scope="row" class="argument-name"><code>completionHandler</code></th><td><p>替换完成后的回调。</p></td></tr></table></div></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteSlideDelegate',
+      sourcePath: 'html-docs/whiteboard/iOS/Protocols/WhiteSlideDelegate.html',
+    });
+
+    expect(result.body).toContain('<ParameterList title="Parameters">');
+    expect(result.body).toContain('<Parameter name="url">');
+    expect(result.body).toContain('<Parameter name="completionHandler">');
+    expect(result.body).not.toContain('| `url` |');
+    expect(result.structuredParameters.appledoc).toEqual({
+      fields: 2,
+      lists: 1,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ParameterList',
+    );
+  });
+
   it('renders Oxygen, Doxygen, and TypeDoc since definitions as info callouts', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>API</h1>
@@ -259,7 +438,8 @@ describe('API Center shared HTML to MDX converter', () => {
     );
     expect(result.body).not.toContain('#### Returns');
     expect(result.body).toContain('Following content.');
-    expect(result.body).toContain('- Plain TypeDoc description.');
+    expect(result.body).toContain('Plain TypeDoc description.');
+    expect(result.body).not.toContain('- Plain TypeDoc description.');
     expect(result.body).not.toContain('### 自从');
     expect(result.body).not.toContain('- :::info[自从]');
   });

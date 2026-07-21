@@ -66,14 +66,13 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 根据连接是否成功，连接状态会变更为 CONNECTION_STATE_CONNECTED(3) 或 CONNECTION_STATE_FAILED(5)。SDK 会触发 onConnected 或 onDisconnected 提醒连接状态变更。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="token">
 
-| token | RTC token。 |
-| --- | --- |
-| chan_id | <Slot name="api-center-table-0" /> |
-| user_id | <Slot name="api-center-table-1" /> |
+RTC token。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="chan_id">
 
 频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
 
@@ -83,9 +82,8 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 - 空格
 - 标点符号和其他特殊符号： "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="user_id">
 
 本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 null， SDK 在 [onConnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a4077abc157aa8be3c0060c97f394f48a) 回调中自动返回一个 user ID。你必须自行记录并管理此 ID。根据你在 initialize 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
 
@@ -100,7 +98,8 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
   - 空格
   - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -125,30 +124,29 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 - 当需要数据包立刻到达接收端时，不能将 ordered 参数设置为 0。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stream_id">
 
-| stream_id | 输出参数，数据流 ID。 |
-| --- | --- |
-| reliable | <Slot name="api-center-table-2" /> |
-| ordered | <Slot name="api-center-table-3" /> |
+输出参数，数据流 ID。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="reliable">
 
 该数据流是否可靠：
 
 - 0: 接收方 5 秒内会收到发送方所发送的数据。
 - 1: 接收方不保证收到，就算数据丢失也不会报错。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="ordered">
 
 该数据流是否有序：
 
 - 0: 接收方会按照发送方发送的顺序收到数据包。
 - 1: 接收方不保证按照发送方发送的顺序收到数据包。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -213,11 +211,21 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 在安全要求较高的场景下，声网建议你在加入频道前，调用本方法开启内置加密。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enabled">
 
-| enabled | 是否开启内置加密：true: 开启内置加密。 false: 关闭内置加密。 |
-| --- | --- |
-| config | 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config)。 |
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false: 关闭内置加密。
+
+</Parameter>
+<Parameter name="config">
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -302,10 +310,13 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 获取频道中指定远端用户的信息。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="user_id">
 
-| user_id | 用户 ID。 |
-| --- | --- |
+用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -320,10 +331,13 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 注册网络状态 observer。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | INetworkObserver 对象。 |
-| --- | --- |
+INetworkObserver 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -339,10 +353,13 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 注册 RTC 连接 observer。你必须先创建 IRtcConnection 对象。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | IRtcConnObserver 对象。 |
-| --- | --- |
+IRtcConnObserver 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -360,10 +377,13 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2e51cc9d7a69266ed6efdd2709b8bd26) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="token">
 
-| token | 新 Token。 |
-| --- | --- |
+新 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="a453af56f9b421e1427e0a0e0f582ddf1"></a>
 
@@ -378,14 +398,33 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 
 发送自定义上报消息。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="id">
 
-| id | 自定义事件的 ID。 |
-| --- | --- |
-| category | 自定义事件的类型。 |
-| event | 需要上报的自定义事件。 |
-| label | 自定义事件的标签。 |
-| value | 自定义事件的值。 |
+自定义事件的 ID。
+
+</Parameter>
+<Parameter name="category">
+
+自定义事件的类型。
+
+</Parameter>
+<Parameter name="event">
+
+需要上报的自定义事件。
+
+</Parameter>
+<Parameter name="label">
+
+自定义事件的标签。
+
+</Parameter>
+<Parameter name="value">
+
+自定义事件的值。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -420,12 +459,23 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stream_id">
 
-| stream_id | 数据流 ID。可以通过 createDataStream 获取。 |
-| --- | --- |
-| data | 待发送的数据。 |
-| length | 数据长度。 |
+数据流 ID。可以通过 createDataStream 获取。
+
+</Parameter>
+<Parameter name="data">
+
+待发送的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -455,11 +505,18 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stream_id">
 
-| stream_id | 数据流 ID。可以通过 createDataStream 获取。 |
-| --- | --- |
-| messageData | 待发送的数据。 |
+数据流 ID。可以通过 createDataStream 获取。
+
+</Parameter>
+<Parameter name="messageData">
+
+待发送的数据。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
@@ -487,10 +544,13 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config)。 |
-| --- | --- |
+Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 

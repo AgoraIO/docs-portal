@@ -25,11 +25,15 @@ struct VirtualBackgroundSource {
 
 ## 属性
 
-### background_source_type
+<ParameterList>
+<a id="background_source_type"></a>
+<Parameter name="background_source_type">
 
 自定义背景类型。详见 [BACKGROUND_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-backgroundsourcetype)。
 
-### color
+</Parameter>
+<a id="color"></a>
+<Parameter name="color">
 
 自定义背景图像的颜色。颜色格式为 RGB 定义的十六进制整数，不带 # 符号，例如 0xFFB6C1 表示浅粉色。默认值为 0xFFFFFF（白色）。取值范围为 [0x000000, 0xFFFFFF]。如果取值无效，SDK 会将原始背景图像替换为白色背景图像。
 
@@ -40,7 +44,9 @@ struct VirtualBackgroundSource {
 - `BACKGROUND_IMG`：如果 `source` 中的图像具有透明背景，则透明部分将使用该参数指定的颜色填充。
 :::
 
-### source
+</Parameter>
+<a id="source"></a>
+<Parameter name="source">
 
 自定义背景图像的本地绝对路径。支持 PNG、JPG、MP4、AVI、MKV 和 FLV 格式。如果路径无效，SDK 将使用原始背景图像或由 `color` 指定的纯色图像。
 
@@ -48,10 +54,15 @@ struct VirtualBackgroundSource {
 注： 该参数仅在自定义背景类型为 `BACKGROUND_IMG` 或 `BACKGROUND_VIDEO` 时生效。
 :::
 
-### blur_degree
+</Parameter>
+<a id="blur_degree"></a>
+<Parameter name="blur_degree">
 
 背景图像的模糊程度。详见 [BACKGROUND_BLUR_DEGREE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-backgroundblurdegree)。
 
 :::note
 注： 该参数仅在自定义背景类型为 `BACKGROUND_BLUR` 时生效。
 :::
+
+</Parameter>
+</ParameterList>

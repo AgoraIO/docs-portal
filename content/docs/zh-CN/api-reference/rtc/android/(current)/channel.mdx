@@ -39,13 +39,20 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 `uid`，表示用户 ID。
 
-### userInfo
+</Parameter>
+<a id="userinfo"></a>
+<Parameter name="userInfo">
 
 输入和输出参数，用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuid__return_values"></a>
 
@@ -86,17 +93,26 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### userInfo
+</Parameter>
+<a id="userinfo-1"></a>
+<Parameter name="userInfo">
 
 用于标识用户信息的对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getuserinfobyuidex__return_values"></a>
 
@@ -131,13 +147,20 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
 
-### userInfo
+</Parameter>
+<a id="userinfo-2"></a>
+<Parameter name="userInfo">
 
 用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
 
@@ -178,17 +201,26 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
 
-### userInfo
+</Parameter>
+<a id="userinfo-3"></a>
+<Parameter name="userInfo">
 
 输入和输出参数，用于标识用户信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__return_values"></a>
 
@@ -248,7 +280,9 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -260,7 +294,9 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样每次加入频道时无需重新申请 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -269,13 +305,20 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### optionalInfo
+</Parameter>
+<a id="optionalinfo"></a>
+<Parameter name="optionalInfo">
 
 （可选）预留参数。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 -2^31 到 2^31-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你的应用需记录并维护该返回的用户 ID，SDK 不会保存。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel1__return_values"></a>
 
@@ -343,7 +386,9 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -355,7 +400,9 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样每次加入频道时无需重新申请 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -364,13 +411,20 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。用于标识频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道中每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 -2³¹ 到 2³¹-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护该返回的用户 ID，SDK 不会保存。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -443,7 +497,9 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
 
 用于鉴权的 Token。
 
@@ -455,17 +511,26 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
 - 如果你需要同时加入不同频道或在频道之间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
 :::
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -531,7 +596,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -543,7 +610,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 如果你需要同时加入不同频道或在频道间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
 :::
 
-### channelName
+</Parameter>
+<a id="channelname"></a>
+<Parameter name="channelName">
 
 频道名。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -552,7 +621,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### userAccount
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
 
 用户 User Account。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 User Account，并确保同一频道中的每个用户 User Account 唯一。该参数的最大长度为 255 字节，不能为空。支持的字符如下（共 89 个）：
 
@@ -561,6 +632,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 所有数字字符：0 到 9。
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__return_values"></a>
 
@@ -629,7 +703,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -641,7 +717,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
 :::
 
-### channelName
+</Parameter>
+<a id="channelname-1"></a>
+<Parameter name="channelName">
 
 频道名。在相同 App ID 前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -650,7 +728,9 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### userAccount
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
 
 用户 User Account。你需要自行设置和管理用户 User Account，并确保同一频道内的每个用户 User Account 唯一。该参数最大长度为 255 字节，不能为空。支持的字符如下（共 89 个）：
 
@@ -660,9 +740,14 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
 
@@ -735,7 +820,9 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-5"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -747,7 +834,9 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你无需每次加入频道时都申请新的 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道名。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -756,7 +845,9 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### userAccount
+</Parameter>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
 
 用户 User Account。你需要自行设置和管理用户 User Account，并确保同一频道中的每个用户 User Account 唯一。该参数的最大长度为 255 字节，不能为空。支持的字符如下（共 89 个）：
 
@@ -766,13 +857,20 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler-1"></a>
+<Parameter name="eventHandler">
 
 [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex) 的回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__return_values"></a>
 
@@ -890,9 +988,14 @@ public abstract int leaveChannel(LeaveChannelOptions options);
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-leavechanneloptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -956,9 +1059,14 @@ public abstract int leaveChannelEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex__return_values"></a>
 
@@ -1026,17 +1134,24 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
 
 离开频道的选项。
 
 :::note
 注： 该参数仅支持 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-leavechanneloptions) 中的 `stopMicrophoneRecording` 成员，设置其他成员无效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
 
@@ -1080,7 +1195,9 @@ public abstract int preloadChannel(String token, String channelName, int optiona
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-6"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。当用于预加载频道的 Token 过期时，你可以根据预加载的频道数量更新 Token：
 
@@ -1090,7 +1207,9 @@ public abstract int preloadChannel(String token, String channelName, int optiona
   - 如果你为所有预加载频道使用通配符 Token，调用 [updatePreloadChannelToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatepreloadchanneltoken) 更新 Token。注意：生成通配符 Token 时，确保用户 ID 不为 0。
   - 如果你为不同频道使用不同的 Token，调用该方法传入你的用户 ID、频道名和新的 Token。
 
-### channelName
+</Parameter>
+<a id="channelname-2"></a>
+<Parameter name="channelName">
 
 你想要预加载的频道名。该参数表示用户进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -1099,9 +1218,14 @@ public abstract int preloadChannel(String token, String channelName, int optiona
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### optionalUid
+</Parameter>
+<a id="optionaluid"></a>
+<Parameter name="optionalUid">
 
 用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 -2^31 到 2^31-1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannel__return_values"></a>
 
@@ -1154,7 +1278,9 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-7"></a>
+<Parameter name="token">
 
 你在服务器上生成的用于鉴权的 Token。当用于预加载频道的 Token 过期时，你可以根据预加载的频道数量更新 Token：
 
@@ -1164,7 +1290,9 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
   - 如果你为所有预加载频道使用通配符 Token，调用 [updatePreloadChannelToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatepreloadchanneltoken) 更新 Token。注意：生成通配符 Token 时，确保用户 ID 不为 0。
   - 如果你为不同频道使用不同的 Token，调用该方法传入用户 User Account、频道名和新的 Token。
 
-### channelName
+</Parameter>
+<a id="channelname-3"></a>
+<Parameter name="channelName">
 
 你想要预加载的频道名。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -1173,7 +1301,9 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### userAccount
+</Parameter>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
 
 用户 User Account，用于标识频道中的用户。你需要自行设置和管理用户 User Account，并确保同一频道中的每个用户 User Account 唯一。该参数最大长度为 255 字节，不能为空。支持的字符如下（共 89 个）：
 
@@ -1182,6 +1312,9 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
 - 所有数字字符：0 到 9。
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
 
@@ -1229,11 +1362,15 @@ public abstract int registerLocalUserAccount(String appId, String userAccount);
 
 ### 参数
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网控制台中项目的 App ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-6"></a>
+<Parameter name="userAccount">
 
 用户 User Account，用于在频道中标识用户身份以实现实时音视频互动。你需要自行设置并管理用户 User Account，并确保同一频道内的每个用户 User Account 唯一。该参数的最大长度为 255 字节，不能为空。支持的字符共 89 个，包括：
 
@@ -1242,6 +1379,9 @@ public abstract int registerLocalUserAccount(String appId, String userAccount);
 - 所有数字字符：0 到 9。
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
 
@@ -1279,9 +1419,14 @@ public abstract int renewToken(String token);
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-8"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_renewtoken__return_values"></a>
 
@@ -1333,7 +1478,9 @@ SDK 会根据不同的频道场景采用不同的优化策略，例如在直播�
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 频道场景：
 
@@ -1341,6 +1488,9 @@ SDK 会根据不同的频道场景采用不同的优化策略，例如在直播�
 - `CHANNEL_PROFILE_LIVE_BROADCASTING`（1）：（默认）直播场景。
 - `CHANNEL_PROFILE_GAME`（2）：游戏场景。已废弃，请使用 `CHANNEL_PROFILE_LIVE_BROADCASTING`。
 - `CHANNEL_PROFILE_CLOUD_GAMING`（3）：互动场景。该场景对延迟进行了优化，适用于用户之间需要频繁互动的场景。已废弃，请使用 `CHANNEL_PROFILE_LIVE_BROADCASTING`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setchannelprofile__return_values"></a>
 
@@ -1403,7 +1553,9 @@ public abstract int setClientRole(int role);
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role"></a>
+<Parameter name="role">
 
 :::note
 注： 如果你将用户角色设置为观众，则无法在频道中发布音视频流。
@@ -1413,6 +1565,9 @@ public abstract int setClientRole(int role);
 
 - `CLIENT_ROLE_BROADCASTER` (1)：主播。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole1__return_values"></a>
 
@@ -1478,7 +1633,9 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role-1"></a>
+<Parameter name="role">
 
 :::note
 注： 如果你将用户角色设置为观众，则无法在频道中发布音视频流。如果你希望在直播过程中发布媒体流，请确保将用户角色设置为主播。
@@ -1489,9 +1646,14 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
 - `CLIENT_ROLE_BROADCASTER` (1)：主播。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众（默认）。
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 用户的详细选项，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -1529,9 +1691,14 @@ public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-7"></a>
+<Parameter name="options">
 
 频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -1574,13 +1741,20 @@ public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, Rtc
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-8"></a>
+<Parameter name="options">
 
 频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
-### connection
+</Parameter>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -1625,9 +1799,14 @@ public abstract int updatePreloadChannelToken(String token);
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-9"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatepreloadchanneltoken__return_values"></a>
 
@@ -1676,23 +1855,32 @@ public void onClientRoleChanged(int oldRole, int newRole, ClientRoleOptions newR
 
 ### 参数
 
-### oldRole
+<ParameterList>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
 
 用户切换前的角色：
 
 - `CLIENT_ROLE_BROADCASTER` (1)：主播。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众。
 
-### newRole
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
 
 用户切换后的角色：
 
 - `CLIENT_ROLE_BROADCASTER` (1)：主播。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众。
 
-### newRoleOptions
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
 
 用户切换后的角色属性，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1726,7 +1914,9 @@ public void onClientRoleChangeFailed(int reason, int currentRole)
 
 ### 参数
 
-### reason
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
 
 :::note
 注： 仅在启用 128 人功能时会返回该枚举值。主播数量上限取决于启用 128 人功能时配置的实际主播数量。
@@ -1739,12 +1929,17 @@ public void onClientRoleChangeFailed(int reason, int currentRole)
 - `CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT` (3)：请求超时。建议提示用户检查网络连接并重试切换用户角色。自 v4.4.0 版本废弃，不建议使用。
 - `CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED` (4)：SDK 连接失败。你可以通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中报告的 `reason` 进行排查。自 v4.4.0 版本废弃，不建议使用。
 
-### currentRole
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
 
 当前的用户角色。
 
 - `CLIENT_ROLE_BROADCASTER` (1)：主播，可以发送和接收音视频流。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众，只能接收音视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1778,9 +1973,14 @@ public void onError(int err)
 
 ### 参数
 
-### err
+<ParameterList>
+<a id="err"></a>
+<Parameter name="err">
 
 错误码。详见[错误码](/zh-CN/api-reference/rtc/error-code)文档。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1812,17 +2012,26 @@ public void onJoinChannelSuccess(String channel, int uid, int elapsed)
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间间隔，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1854,9 +2063,14 @@ public void onLeaveChannel(RtcStats stats) {}
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 通话统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1894,13 +2108,20 @@ public void onLocalUserRegistered(int uid, String userAccount)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 本地用户的用户 ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-7"></a>
+<Parameter name="userAccount">
 
 本地用户的用户 User Account。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1934,17 +2155,26 @@ public void onRejoinChannelSuccess(String channel, int uid, int elapsed)
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 重新加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1982,13 +2212,20 @@ public void onRenewTokenResult(String token, Constants.RenewTokenErrorCode code)
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-10"></a>
+<Parameter name="token">
 
 用于鉴权的 Token。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 错误码。详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/android/enum-renewtokenerrorcode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2054,9 +2291,14 @@ public void onRtcStats(RtcStats stats) {}
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 RTC 引擎的统计信息，详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2096,9 +2338,14 @@ public void onTokenPrivilegeWillExpire(String token)
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-11"></a>
+<Parameter name="token">
 
 即将过期的 Token。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2136,13 +2383,20 @@ public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### userInfo
+</Parameter>
+<a id="userinfo-4"></a>
+<Parameter name="userInfo">
 
 包含远端用户的用户 ID 和用户 User Account 信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2180,13 +2434,20 @@ public void onUserJoined(int uid, int elapsed)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到该回调被触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2223,17 +2484,24 @@ public void onUserOffline(int uid, int reason)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-9"></a>
+<Parameter name="uid">
 
 离开频道或掉线的用户 ID。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端用户（在通信场景中）或主播（在直播场景中）离线的原因：
 
 - `USER_OFFLINE_QUIT` (0)：用户主动退出通话，发送离开消息。
 - `USER_OFFLINE_DROPPED` (1)：SDK 超时未收到任何数据包，用户掉线。网络连接不佳可能导致误判，建议使用声网 RTM SDK 进行可靠的离线检测。
 - `USER_OFFLINE_BECOME_AUDIENCE` (2)：用户将角色从主播切换为观众。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

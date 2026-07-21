@@ -44,17 +44,25 @@ _migration:
 
 - Defined in [index-zh.d.ts\:4294](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4294)
 
-  `WhiteWebSdk` 的构造函数。
+`WhiteWebSdk` 的构造函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration)
+<ParameterType>
 
-    构造参数。
+[WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration)
 
-  Returns [WhiteWebSdk](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk)
+</ParameterType>
 
-  构造的 `WhiteWebSdk` 对象。
+构造参数。
+
+</Parameter>
+</ParameterList>
+
+Returns [WhiteWebSdk](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk)
+
+构造的 `WhiteWebSdk` 对象。
 
 ## Properties
 
@@ -134,18 +142,26 @@ version: string
 
 - Defined in [index-zh.d.ts\:4336](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4336)
 
-  查看房间是否有回放数据。
+查看房间是否有回放数据。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)
+<ParameterType>
 
-    检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)。
+[PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)
 
-  Returns Promise&lt;boolean&gt;
+</ParameterType>
 
-  - 如果方法调用成功，则返回 `true`。
-  - 如果方法调用失败，则返回 `false`。
+检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;boolean&gt;
+
+- 如果方法调用成功，则返回 `true`。
+- 如果方法调用失败，则返回 `false`。
 
 <a id="joinroom"></a>
 
@@ -155,36 +171,52 @@ version: string
 
 - Defined in [index-zh.d.ts\:4326](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4326)
 
-  加入互动白板实时房间。
+加入互动白板实时房间。
 
-  ### example
+### example
 
-  ```ts
-  const joinRoomParams = {...};
-  const roomCallbacks = {...};
+```ts
+const joinRoomParams = {...};
+const roomCallbacks = {...};
 
-  whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
-             .then(function (room) {
-                 // 加入房间成功，拿到 room 对象
-             })
-             .catch(function (error) {
-                 // 加入房间失败，拿到 error 对象
-             });
-  ```
+whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
+           .then(function (room) {
+               // 加入房间成功，拿到 room 对象
+           })
+           .catch(function (error) {
+               // 加入房间失败，拿到 error 对象
+           });
+```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)
+<ParameterType>
 
-    互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)。
-  - Optional callbacks: Partial&lt;[RoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks)&gt;
+[JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)
 
-    实时房间的事件回调。
+</ParameterType>
 
-  Returns Promise&lt;[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)&gt;
+互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)。
 
-  - 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)。
-  - 如果方法调用失败，则返回错误信息。
+</Parameter>
+<Parameter name="callbacks" optional>
+
+<ParameterType>
+
+Partial & lt;[RoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks) & gt;
+
+</ParameterType>
+
+实时房间的事件回调。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)&gt;
+
+- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)。
+- 如果方法调用失败，则返回错误信息。
 
 <a id="replayroom"></a>
 
@@ -194,33 +226,49 @@ version: string
 
 - Defined in [index-zh.d.ts\:4361](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4361)
 
-  创建 `Player` 对象，用于互动白板实时房间的回放。
+创建 `Player` 对象，用于互动白板实时房间的回放。
 
-  ### example
+### example
 
-  ```ts
-  const replayRoomParams = {...};
-  const replayCallbacks = {...};
+```ts
+const replayRoomParams = {...};
+const replayCallbacks = {...};
 
-  whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
-             .then(function (player) {
-                 // 回放成功，拿到 player 对象
-             })
-             .catch(function (error) {
-                 // 回放失败，拿到 error 对象
-             });
-  ```
+whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
+           .then(function (player) {
+               // 回放成功，拿到 player 对象
+           })
+           .catch(function (error) {
+               // 回放失败，拿到 error 对象
+           });
+```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)
+<ParameterType>
 
-    `Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)。
-  - Optional callbacks: Partial&lt;[PlayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playercallbacks)&gt;
+[ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)
 
-    `Player` 对象的事件回调。
+</ParameterType>
 
-  Returns Promise&lt;[Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)&gt;
+`Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)。
 
-  - 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)。
-  - 如果方法调用失败，则返回错误信息。
+</Parameter>
+<Parameter name="callbacks" optional>
+
+<ParameterType>
+
+Partial & lt;[PlayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playercallbacks) & gt;
+
+</ParameterType>
+
+`Player` 对象的事件回调。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)&gt;
+
+- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)。
+- 如果方法调用失败，则返回错误信息。

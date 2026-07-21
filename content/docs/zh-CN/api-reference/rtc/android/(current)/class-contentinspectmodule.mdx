@@ -28,7 +28,9 @@ public static class ContentInspectModule {
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 功能模块的类型：
 
@@ -36,10 +38,17 @@ public static class ContentInspectModule {
 - `CONTENT_INSPECT_TYPE_SUPERVISE` (2)：通过声网自研扩展进行本地截图上传，SDK 将对频道中的视频流进行截图并上传。
 - `CONTENT_INSPECT_TYPE_IMAGE_MODERATION` (3)：通过声网扩展市场中的扩展进行本地截图上传，SDK 使用声网扩展市场中的视频审核扩展对频道中的视频流进行截图并上传。
 
-### interval
+</Parameter>
+<a id="interval"></a>
+<Parameter name="interval">
 
 视频截图和上传的时间间隔（单位为秒）。取值应大于 0。默认值为 0，表示 SDK 不进行截图。声网建议设为 10，亦可根据业务需求进行调整。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 视频观察器的位置，详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

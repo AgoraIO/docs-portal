@@ -41,9 +41,14 @@ virtual int initialize(const LocalSpatialAudioConfig& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 ILocalSpatialAudioEngine 的配置。详见 [LocalSpatialAudioConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-localspatialaudioconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_initialize__return_values"></a>
 
@@ -88,12 +93,17 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的音频流：
 
 - `true`: 取消订阅所有远端用户的音频流。
 - `false`: 订阅所有远端用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -137,12 +147,17 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否取消发布本地音频流。
 
 - `true`: 取消发布本地音频流。
 - `false`: 发布本地音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__return_values"></a>
 
@@ -184,16 +199,23 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。需与用户加入频道时填写的用户 ID 一致。
 
-### mute
+</Parameter>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 是否取消订阅指定远端用户的音频流。
 
 - `true`: 取消订阅指定用户的音频流。
 - `false`:（默认）订阅指定用户的音频流，SDK 根据本地用户和远端用户的距离决定是否订阅。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream__return_values"></a>
 
@@ -234,13 +256,20 @@ virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posIn
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。需与用户加入频道时填写的用户 ID 一致。
 
-### posInfo
+</Parameter>
+<a id="posinfo"></a>
+<Parameter name="posInfo">
 
 远端用户的空间位置信息。详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__return_values"></a>
 
@@ -279,21 +308,32 @@ virtual int updateSelfPosition(float position[3], float axisForward[3], float ax
 
 ### 参数
 
-### position
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 在世界坐标系中的坐标。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
 
-### axisForward
+</Parameter>
+<a id="axisforward"></a>
+<Parameter name="axisForward">
 
 在世界坐标系前轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
 
-### axisRight
+</Parameter>
+<a id="axisright"></a>
+<Parameter name="axisRight">
 
 在世界坐标系右轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
 
-### axisUp
+</Parameter>
+<a id="axisup"></a>
+<Parameter name="axisUp">
 
 在世界坐标系上轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_updateselfposition__return_values"></a>
 
@@ -395,9 +435,14 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__return_values"></a>
 
@@ -434,9 +479,14 @@ virtual int setAudioRecvRange(float range) = 0;
 
 ### 参数
 
-### range
+<ParameterList>
+<a id="range"></a>
+<Parameter name="range">
 
 可接收音频的最大范围，单位为游戏引擎中的距离单位。该参数取值需大于 0，默认值为 20。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__return_values"></a>
 
@@ -473,11 +523,16 @@ virtual int setDistanceUnit(float unit) = 0;
 
 ### 参数
 
-### unit
+<ParameterList>
+<a id="unit"></a>
+<Parameter name="unit">
 
 每单位游戏引擎距离转换后的米数。该参数取值需大于 0.00，默认值为 1.00。例如，将 unit 设为 2.00，表示每单位的游戏引擎距离等于 2 米。
 
 该值越大，当远端用户远离本地用户时，本地用户听到的声音衰减速度越快。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__return_values"></a>
 
@@ -514,13 +569,20 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
 ### 参数
 
-### lowGain
+<ParameterList>
+<a id="lowgain"></a>
+<Parameter name="lowGain">
 
 耳机均衡器的低频参数。取值范围为 [-10,10]，取值越大，声音越低沉。
 
-### highGain
+</Parameter>
+<a id="highgain"></a>
+<Parameter name="highGain">
 
 耳机均衡器的高频参数。取值范围为 [-10,10]，取值越大，声音越尖锐。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setheadphoneeqparameters__return_values"></a>
 
@@ -563,9 +625,14 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 预设的耳机均衡效果。详见 [HEADPHONE_EQUALIZER_PRESET](/zh-CN/api-reference/rtc/unreal-cpp/enum-headphoneequalizerpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
 
@@ -604,9 +671,14 @@ virtual int setMaxAudioRecvCount(int maxCount) = 0;
 
 ### 参数
 
-### maxCount
+<ParameterList>
+<a id="maxcount"></a>
+<Parameter name="maxCount">
 
 音频接收范围内最多可接收的音频流数。该参数取值需 ≤ 16，默认值为 10。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values"></a>
 
@@ -641,11 +713,15 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
 ### 参数
 
-### playerId
+<ParameterList>
+<a id="playerid"></a>
+<Parameter name="playerId">
 
 媒体播放器 ID。可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
 
-### attenuation
+</Parameter>
+<a id="attenuation"></a>
+<Parameter name="attenuation">
 
 媒体播放器的声音衰减系数，取值范围为[0,1]。其中：
 
@@ -656,7 +732,9 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 - 0.5：（默认）模拟音量在真实环境下的衰减，效果等同于不设置 attenuation 参数。
 - (0.5,1]：强衰减模式，即音量和音色在传播过程中发生迅速衰减。
 
-### forceSet
+</Parameter>
+<a id="forceset"></a>
+<Parameter name="forceSet">
 
 是否强制设定媒体播放器的声音衰减效果：
 
@@ -665,6 +743,9 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
   - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
   - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
 
@@ -699,11 +780,15 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。需与用户加入频道时填写的用户 ID 一致。
 
-### attenuation
+</Parameter>
+<a id="attenuation-1"></a>
+<Parameter name="attenuation">
 
 针对该用户的声音衰减系数，取值范围为[0,1]。其中：
 
@@ -712,7 +797,9 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 - 0.5：（默认）模拟音量在真实环境下的衰减，效果等同于不设置 attenuation 参数。
 - (0.5,1]：强衰减模式，即音量和音色在传播过程中发生迅速衰减。
 
-### forceSet
+</Parameter>
+<a id="forceset-1"></a>
+<Parameter name="forceSet">
 
 是否强制设定该用户的声音衰减效果：
 
@@ -721,6 +808,9 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 
   - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
   - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
 
@@ -757,13 +847,20 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。需与用户加入频道时填写的用户 ID 一致。
 
-### params
+</Parameter>
+<a id="params"></a>
+<Parameter name="params">
 
 空间音频参数。详见 [SpatialAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__return_values"></a>
 
@@ -802,9 +899,14 @@ virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 
 ### 参数
 
-### params
+<ParameterList>
+<a id="params-1"></a>
+<Parameter name="params">
 
 媒体播放器的空间音频参数。详见 [SpatialAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setspatialaudioparams__return_values"></a>
 
@@ -849,7 +951,9 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 
 ### 参数
 
-### zones
+<ParameterList>
+<a id="zones"></a>
+<Parameter name="zones">
 
 隔声区域的设置。详见 [SpatialAudioZone](/zh-CN/api-reference/rtc/unreal-cpp/class-spatialaudiozone)。当你将该参数设置为 `NULL` 时，表示清除所有隔声区域。
 
@@ -857,9 +961,14 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 注意： 在 Windows 平台上，需确保 zones 数组中的成员个数与 zoneCount 的值相等，否则会导致崩溃。
 :::
 
-### zoneCount
+</Parameter>
+<a id="zonecount"></a>
+<Parameter name="zoneCount">
 
 隔声区域的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setzones__return_values"></a>
 
@@ -906,13 +1015,20 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 
 ### 参数
 
-### playerId
+<ParameterList>
+<a id="playerid-1"></a>
+<Parameter name="playerId">
 
 媒体播放器 ID。可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
 
-### positionInfo
+</Parameter>
+<a id="positioninfo"></a>
+<Parameter name="positionInfo">
 
 媒体播放器的空间位置信息。详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__return_values"></a>
 
@@ -956,12 +1072,17 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启空间音频：
 
 - `true`: 开启空间音频。
 - `false`: 关闭空间音频。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablespatialaudio__return_values"></a>
 

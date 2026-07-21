@@ -37,9 +37,14 @@ abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
@@ -80,9 +85,14 @@ abstract adjustAudioMixingPublishVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
@@ -127,9 +137,14 @@ abstract adjustAudioMixingVolume(volume: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
@@ -413,9 +428,14 @@ abstract selectAudioTrack(index: number): number;
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 指定的播放音轨。取值范围应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -460,13 +480,20 @@ abstract selectMultiAudioTrack(
 
 ### 参数
 
-### playoutTrackIndex
+<ParameterList>
+<a id="playouttrackindex"></a>
+<Parameter name="playoutTrackIndex">
 
 用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
-### publishTrackIndex
+</Parameter>
+<a id="publishtrackindex"></a>
+<Parameter name="publishTrackIndex">
 
 用于发送至远端的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -520,9 +547,14 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AudioMixingDualMonoMode](/zh-CN/api-reference/rtc/electron/enum-audiomixingdualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
 
@@ -563,9 +595,14 @@ abstract setAudioMixingPitch(pitch: number): number;
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
 
@@ -600,13 +637,18 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 音乐文件的播放速度。推荐取值范围为 [50,400]，其中：
 
 - 50: 0.5 倍速。
 - 100: 原始速度。
 - 400: 4 倍速。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
 
@@ -647,9 +689,14 @@ abstract setAudioMixingPosition(pos: number): number;
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
@@ -708,30 +755,41 @@ abstract startAudioMixing(
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 文件路径：
 
 - Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
 - macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
 
-### loopback
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否只在本地播放音乐文件：
 
 - true：只在本地播放音乐文件，只有本地用户能听到音乐。
 - false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
-### cycle
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt; 0: 播放次数。例如，1 表示播放 1 次。
 - -1: 无限循环播放。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -835,9 +893,14 @@ onAudioMixingPositionChanged?(position: number): void;
 
 ### 参数
 
-### position
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 音乐文件当前的播放进度，单位为 ms。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__return_values"></a>
 
@@ -875,13 +938,20 @@ onAudioMixingStateChanged?(
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐文件播放状态。详见 [AudioMixingStateType](/zh-CN/api-reference/rtc/electron/enum-audiomixingstatetype)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 错误码。详见 [AudioMixingReasonType](/zh-CN/api-reference/rtc/electron/enum-audiomixingreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

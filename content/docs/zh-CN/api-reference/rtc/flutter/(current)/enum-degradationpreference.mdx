@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### maintainAuto
+<ParameterList>
+<a id="maintainauto"></a>
+<Parameter name="maintainAuto">
 
 -1：（默认）自动模式。SDK 会根据你设置的视频场景，自动选择 maintainFramerate、maintainBalanced 或 maintainResolution，以获得最优的综合质量体验 (QoE)。
 
-### maintainQuality
+</Parameter>
+<a id="maintainquality"></a>
+<Parameter name="maintainQuality">
 
 0：带宽受限时，视频编码时优先降低视频帧率，维持分辨率不变。该降级偏好适用于画质优先的场景。
 
@@ -26,11 +30,15 @@ _migration:
 注： 弃用：该枚举已废弃。请改用其他枚举。
 :::
 
-### maintainFramerate
+</Parameter>
+<a id="maintainframerate"></a>
+<Parameter name="maintainFramerate">
 
 1：带宽受限时，视频编码时优先降低视频分辨率，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
 
-### maintainBalanced
+</Parameter>
+<a id="maintainbalanced"></a>
+<Parameter name="maintainBalanced">
 
 2：带宽受限时，视频编码时同时降低视频帧率和视频分辨率。maintainBalanced 的降幅比 maintainQuality 和 maintainFramerate 降幅更低，适用于流畅性和画质均有限的场景。
 
@@ -38,6 +46,11 @@ _migration:
 注： 本地发送的视频分辨率可能改变，远端用户需能处理这种情况，详见 [onVideoSizeChanged](/zh-CN/api-reference/rtc/flutter/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
 :::
 
-### maintainResolution
+</Parameter>
+<a id="maintainresolution"></a>
+<Parameter name="maintainResolution">
 
 3: 带宽受限时，视频编码时优先降低视频帧率，维持分辨率保持不变。该降级偏好适用于画质优先的场景。
+
+</Parameter>
+</ParameterList>

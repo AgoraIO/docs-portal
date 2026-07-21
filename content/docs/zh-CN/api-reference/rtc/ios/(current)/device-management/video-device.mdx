@@ -57,16 +57,23 @@ _migration:
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用多摄像头视频采集模式：
 
 - YES：启用多摄像头采集模式，SDK 使用多个摄像头进行视频采集。
 - NO：关闭多摄像头采集模式，SDK 使用单个摄像头进行视频采集。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 第二个摄像头的采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablemulticamera__return_values"></a>
 
@@ -416,12 +423,17 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用自动曝光：
 
 - YES：启用自动曝光。
 - NO：关闭自动曝光。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
 
@@ -462,12 +474,17 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否启用摄像头人像自动对焦功能：
 
 - YES：启用摄像头人像自动对焦功能。
 - NO：关闭人像自动对焦功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -512,13 +529,18 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 摄像头采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
 
 :::note
 注： 在此方法中，无需设置 `deviceId` 参数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -565,9 +587,14 @@ _migration:
 
 ### 参数
 
-### exposureFactor
+<ParameterList>
+<a id="exposurefactor"></a>
+<Parameter name="exposureFactor">
 
 摄像头曝光值（默认值为 0）。值越大，曝光越强。当视频图像过曝时，可以降低曝光值；当视频图像曝光不足且暗部细节丢失时，可以提高曝光值。如果设置的曝光值超出设备支持的范围，SDK 会自动将其调整为设备实际支持的范围。取值范围为 [-8.0, 8.0]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
@@ -603,9 +630,14 @@ _migration:
 
 ### 参数
 
-### positionInView
+<ParameterList>
+<a id="positioninview"></a>
+<Parameter name="positionInView">
 
 视图中触摸点的横坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -642,9 +674,14 @@ _migration:
 
 ### 参数
 
-### position
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 视图中触摸点的坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -681,12 +718,17 @@ _migration:
 
 ### 参数
 
-### isOn
+<ParameterList>
+<a id="ison"></a>
+<Parameter name="isOn">
 
 是否打开摄像头闪光灯：
 
 - YES：打开闪光灯。
 - NO：（默认）关闭闪光灯。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -725,9 +767,14 @@ _migration:
 
 ### 参数
 
-### zoomFactor
+<ParameterList>
+<a id="zoomfactor"></a>
+<Parameter name="zoomFactor">
 
 摄像头缩放因子。对于不支持超广角的设备，该值范围为 1.0 到最大缩放因子；对于支持超广角的设备，该值范围为 0.5 到最大缩放因子。你可以通过调用 [cameraMaxZoomFactor](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大缩放因子。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -807,13 +854,20 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### rect
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
 
 本地预览中的曝光矩形区域。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -847,13 +901,20 @@ _migration:
 
 ### 参数
 
-### rect
+<ParameterList>
+<a id="rect-1"></a>
+<Parameter name="rect">
 
 本地预览画面中的对焦矩形区域。
 
-### engine
+</Parameter>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -889,9 +950,14 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

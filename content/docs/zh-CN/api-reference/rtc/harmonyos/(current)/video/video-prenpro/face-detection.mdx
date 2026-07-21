@@ -53,12 +53,17 @@ public abstract enableFaceDetection(enabled: boolean): number;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启人脸检测：
 
 - `true`：开启人脸检测。
 - `false`：（默认）关闭人脸检测。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
@@ -105,14 +110,23 @@ onFacePositionChanged?:(
 
 ### 参数
 
-### imageWidth
+<ParameterList>
+<a id="imagewidth"></a>
+<Parameter name="imageWidth">
 
 摄像头采集画面的宽度 (px)。
 
-### imageHeight
+</Parameter>
+<a id="imageheight"></a>
+<Parameter name="imageHeight">
 
 摄像头采集画面的高度 (px)。
 
-### faceRectArr
+</Parameter>
+<a id="facerectarr"></a>
+<Parameter name="faceRectArr">
 
 检测到的人脸信息，详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/harmonyos/class-agorafacepositioninfo)。检测到几张人脸，就会报告几个 AgoraFacePositionInfo 数组。数组长度可以为 0，表示没有检测到摄像头前出现人脸。
+
+</Parameter>
+</ParameterList>

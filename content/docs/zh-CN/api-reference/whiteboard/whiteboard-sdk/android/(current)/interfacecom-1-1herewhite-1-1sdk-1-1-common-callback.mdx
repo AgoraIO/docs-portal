@@ -44,10 +44,13 @@ _migration:
 
 SDK 出现未捕获的全局错误回调。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="args">
 
-| args | 错误信息。 |
-| --- | --- |
+错误信息。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#aaceb1faaeaa59ec93dce1c88bcd8e7f6) 内被实现.
 
@@ -72,10 +75,13 @@ SDK 出现未捕获的全局错误回调。
 开启后，SDK 会频繁触发该回调，因此 Agora 不推荐开启该回调；在 Android 平台，你可以使用 WebView 的拦截功能进行图片拦截。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="sourceUrl">
 
-| sourceUrl | 原 URL 地址。 |
-| --- | --- |
+原 URL 地址。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -132,10 +138,13 @@ SDK 出现未捕获的全局错误回调。
 不保证所有用户都能接收到该回调。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="object">
 
-| object | JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收到。 |
-| --- | --- |
+JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收到。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a569de82a2548a7fb84c80845cae67767) 内被实现.
 
@@ -157,10 +166,13 @@ SDK 初始化失败回调。
 - 初始化 SDK 时候，网络异常，导致获取配置信息失败。
 - 传入了不合法的 App Identifier。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="error">
 
-| error | 错误信息。 |
-| --- | --- |
+错误信息。
+
+</Parameter>
+</ParameterList>
 
 在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#abbcf9b3946c0bf5ff20f1d3ba9cebdce) 内被实现.
 
@@ -185,9 +197,15 @@ SDK 初始化失败回调。
 设置 `setLog(false)` 后，SDK 会停止通过 `onLogger` 回调发送本地调试日志，但仍然会通过该回调发送 [`video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 插件的日志信息。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="object">
 
-| object | JSON 对象格式的日志消息，每条日志消息包含以下 key：`funName`：功能名称。 `params`：具体的参数设置。 |
-| --- | --- |
+JSON 对象格式的日志消息，每条日志消息包含以下 key：
+
+- `funName`：功能名称。
+- `params`：具体的参数设置。
+
+</Parameter>
+</ParameterList>
 
 例如，`{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。

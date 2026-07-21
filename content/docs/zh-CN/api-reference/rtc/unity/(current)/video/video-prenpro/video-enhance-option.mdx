@@ -42,13 +42,20 @@ public abstract int AddOrUpdateVideoEffect(uint nodeId, string templateName);
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/unity/enum-videoeffectnodeid)。
 
-### templateName
+</Parameter>
+<a id="templatename"></a>
+<Parameter name="templateName">
 
 特效模板名称。如果设置为 `NULL` 或空字符串，SDK 会从资源包中加载默认配置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__return_values"></a>
 
@@ -85,13 +92,20 @@ public abstract IVideoEffectObject CreateVideoEffectObject(string bundlePath, ME
 
 ### 参数
 
-### bundlePath
+<ParameterList>
+<a id="bundlepath"></a>
+<Parameter name="bundlePath">
 
 视频特效资源包的路径。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createvideoeffectobject__return_values"></a>
 
@@ -128,9 +142,14 @@ public abstract int DestroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 
 ### 参数
 
-### videoEffectObject
+<ParameterList>
+<a id="videoeffectobject"></a>
+<Parameter name="videoEffectObject">
 
 要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoeffectobject)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
 
@@ -177,15 +196,21 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 
 ### 参数
 
-### shapeArea
+<ParameterList>
+<a id="shapearea"></a>
+<Parameter name="shapeArea">
 
 美型部位。详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unity/enum-faceshapearea)。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 美型部位选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/unity/class-faceshapeareaoptions)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -195,6 +220,9 @@ public abstract int GetFaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, ref FaceS
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
 
@@ -241,11 +269,15 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-1"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unity/class-faceshapebeautyoptions)。
 
-### type
+</Parameter>
+<a id="type-2"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -255,6 +287,9 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
 
@@ -291,13 +326,20 @@ public abstract bool GetVideoEffectBoolParam(string option, string key);
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 参数所属的选项类别。
 
-### key
+</Parameter>
+<a id="key"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__return_values"></a>
 
@@ -334,13 +376,20 @@ public abstract float GetVideoEffectFloatParam(string option, string key);
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-1"></a>
+<Parameter name="option">
 
 参数所属选项的类别。
 
-### key
+</Parameter>
+<a id="key-1"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__return_values"></a>
 
@@ -377,13 +426,20 @@ public abstract int GetVideoEffectIntParam(string option, string key);
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-2"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-2"></a>
+<Parameter name="key">
 
 参数的键名。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__return_values"></a>
 
@@ -420,13 +476,20 @@ public abstract int PerformVideoEffectAction(uint nodeId, VIDEO_EFFECT_ACTION ac
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-1"></a>
+<Parameter name="nodeId">
 
 视频特效节点的唯一标识符。
 
-### actionId
+</Parameter>
+<a id="actionid"></a>
+<Parameter name="actionId">
 
 要执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/unity/enum-videoeffectaction)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
 
@@ -463,9 +526,14 @@ public abstract int RemoveVideoEffect(uint nodeId);
 
 ### 参数
 
-### nodeId
+<ParameterList>
+<a id="nodeid-2"></a>
+<Parameter name="nodeId">
 
 要移除的视频特效节点的唯一标识符，详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/unity/enum-videoeffectnodeid)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_removevideoeffect__return_values"></a>
 
@@ -513,18 +581,24 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启美颜功能：
 
 - true: 开启美颜功能。
 - false:（默认）关闭美颜功能。
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 美颜选项，详细定义见 [BeautyOptions](/zh-CN/api-reference/rtc/unity/class-beautyoptions)。
 
-### type
+</Parameter>
+<a id="type-3"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -534,6 +608,9 @@ public abstract int SetBeautyEffectOptions(bool enabled, BeautyOptions options, 
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
 
@@ -582,18 +659,24 @@ public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions opt
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启色彩增强功能：
 
 - true：开启色彩增强功能。
 - false：（默认）关闭色彩增强功能。
 
-### options
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
 
 色彩增强选项，用于设置色彩增强的效果。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/unity/class-colorenhanceoptions)。
 
-### type
+</Parameter>
+<a id="type-4"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -603,6 +686,9 @@ public abstract int SetColorEnhanceOptions(bool enabled, ColorEnhanceOptions opt
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
 
@@ -651,11 +737,15 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
 
 美型部位选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/unity/class-faceshapeareaoptions)。
 
-### type
+</Parameter>
+<a id="type-5"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -665,6 +755,9 @@ public abstract int SetFaceShapeAreaOptions(FaceShapeAreaOptions options, MEDIA_
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
 
@@ -718,18 +811,24 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启美型效果：
 
 - true: 开启美型功能。
 - false:（默认）关闭美型功能。
 
-### options
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unity/class-faceshapebeautyoptions)。
 
-### type
+</Parameter>
+<a id="type-6"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -739,6 +838,9 @@ public abstract int SetFaceShapeBeautyOptions(bool enabled, FaceShapeBeautyOptio
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
 
@@ -789,18 +891,24 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否开启滤镜效果：
 
 - true: 开启滤镜功能。
 - false:（默认）关闭滤镜功能。
 
-### options
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
 
 滤镜选项，详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/unity/class-filtereffectoptions)。
 
-### type
+</Parameter>
+<a id="type-7"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -810,6 +918,9 @@ public abstract int SetFilterEffectOptions(bool enabled, FilterEffectOptions opt
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
 
@@ -867,18 +978,24 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-4"></a>
+<Parameter name="enabled">
 
 是否开启暗光增强功能：
 
 - true: 开启暗光增强功能。
 - false:（默认）关闭暗光增强功能。
 
-### options
+</Parameter>
+<a id="options-7"></a>
+<Parameter name="options">
 
 暗光增强选项，用于设置暗光增强的效果。详见 [LowlightEnhanceOptions](/zh-CN/api-reference/rtc/unity/class-lowlightenhanceoptions)。
 
-### type
+</Parameter>
+<a id="type-8"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -888,6 +1005,9 @@ public abstract int SetLowlightEnhanceOptions(bool enabled, LowlightEnhanceOptio
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
 
@@ -946,18 +1066,24 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-5"></a>
+<Parameter name="enabled">
 
 是否开启视频降噪功能：
 
 - true: 开启视频降噪功能。
 - false:（默认）关闭视频降噪功能。
 
-### options
+</Parameter>
+<a id="options-8"></a>
+<Parameter name="options">
 
 视频降噪选项，用于设置视频降噪的效果。详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/unity/class-videodenoiseroptions)。
 
-### type
+</Parameter>
+<a id="type-9"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediasourcetype)。
 
@@ -967,6 +1093,9 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 - 使用摄像头采集本地视频时，请保持默认值 `PRIMARY_CAMERA_SOURCE`。
 - 如果要使用自定义采集的视频，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
 
@@ -1003,20 +1132,29 @@ public abstract int SetVideoEffectBoolParam(string option, string key, bool para
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-3"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-3"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param"></a>
+<Parameter name="param">
 
 要设置的布尔值：
 
 - true：启用该选项。
 - false：禁用该选项。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__return_values"></a>
 
@@ -1053,17 +1191,26 @@ public abstract int SetVideoEffectFloatParam(string option, string key, float pa
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-4"></a>
+<Parameter name="option">
 
 参数选项的类别。
 
-### key
+</Parameter>
+<a id="key-4"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param-1"></a>
+<Parameter name="param">
 
 要设置的浮点值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__return_values"></a>
 
@@ -1100,17 +1247,26 @@ public abstract int SetVideoEffectIntParam(string option, string key, int param)
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option-5"></a>
+<Parameter name="option">
 
 参数所属选项的类别。
 
-### key
+</Parameter>
+<a id="key-5"></a>
+<Parameter name="key">
 
 参数的键名。
 
-### param
+</Parameter>
+<a id="param-2"></a>
+<Parameter name="param">
 
 要设置的整数参数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__return_values"></a>
 

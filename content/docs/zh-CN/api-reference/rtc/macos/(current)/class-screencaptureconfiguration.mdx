@@ -26,14 +26,18 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureConfiguratio
 
 ## 属性
 
-### isCaptureWindow
+<ParameterList>
+<a id="iscapturewindow"></a>
+<Parameter name="isCaptureWindow">
 
 是否采集屏幕上的窗口：
 
 - YES：采集窗口。
 - NO：（默认）采集整个屏幕，而非窗口。
 
-### displayId
+</Parameter>
+<a id="displayid"></a>
+<Parameter name="displayId">
 
 屏幕的显示 ID。
 
@@ -41,7 +45,9 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureConfiguratio
 注： 该参数仅在 macOS 上采集屏幕时生效。
 :::
 
-### windowId
+</Parameter>
+<a id="windowid"></a>
+<Parameter name="windowId">
 
 窗口 ID。
 
@@ -49,10 +55,17 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureConfiguratio
 注： 该参数仅在采集窗口时生效。
 :::
 
-### params
+</Parameter>
+<a id="params"></a>
+<Parameter name="params">
 
 屏幕采集的配置参数，详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
 
-### regionRect
+</Parameter>
+<a id="regionrect"></a>
+<Parameter name="regionRect">
 
 共享区域相对于整个屏幕的位置。
+
+</Parameter>
+</ParameterList>

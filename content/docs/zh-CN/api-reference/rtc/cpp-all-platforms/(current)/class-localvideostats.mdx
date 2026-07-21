@@ -46,104 +46,155 @@ struct LocalVideoStats {
 
 ## 属性
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 本地用户的用户 ID。
 
-### sentBitrate
+</Parameter>
+<a id="sentbitrate"></a>
+<Parameter name="sentBitrate">
 
 发送本地视频流的实际码率（Kbps）。
 
-### sentFrameRate
+</Parameter>
+<a id="sentframerate"></a>
+<Parameter name="sentFrameRate">
 
 发送本地视频流的实际帧率（fps）。
 
-### captureFrameRate
+</Parameter>
+<a id="captureframerate"></a>
+<Parameter name="captureFrameRate">
 
 采集本地视频流的帧率（fps）。
 
-### captureFrameWidth
+</Parameter>
+<a id="captureframewidth"></a>
+<Parameter name="captureFrameWidth">
 
 采集本地视频流的宽度（px）。
 
-### captureFrameHeight
+</Parameter>
+<a id="captureframeheight"></a>
+<Parameter name="captureFrameHeight">
 
 采集本地视频流的高度（px）。
 
-### regulatedCaptureFrameRate
+</Parameter>
+<a id="regulatedcaptureframerate"></a>
+<Parameter name="regulatedCaptureFrameRate">
 
 SDK 内置视频采集调节器调节后的本地视频采集帧率（fps）。
 
-### regulatedCaptureFrameWidth
+</Parameter>
+<a id="regulatedcaptureframewidth"></a>
+<Parameter name="regulatedCaptureFrameWidth">
 
 SDK 内置视频采集调节器调节后的本地视频采集宽度（px）。
 
-### regulatedCaptureFrameHeight
+</Parameter>
+<a id="regulatedcaptureframeheight"></a>
+<Parameter name="regulatedCaptureFrameHeight">
 
 SDK 内置视频采集调节器调节后的本地视频采集高度（px）。
 
-### encoderOutputFrameRate
+</Parameter>
+<a id="encoderoutputframerate"></a>
+<Parameter name="encoderOutputFrameRate">
 
 本地视频编码器的输出帧率（fps）。
 
-### encodedFrameWidth
+</Parameter>
+<a id="encodedframewidth"></a>
+<Parameter name="encodedFrameWidth">
 
 编码后视频的宽度（px）。
 
-### encodedFrameHeight
+</Parameter>
+<a id="encodedframeheight"></a>
+<Parameter name="encodedFrameHeight">
 
 编码后视频的高度（px）。
 
-### rendererOutputFrameRate
+</Parameter>
+<a id="rendereroutputframerate"></a>
+<Parameter name="rendererOutputFrameRate">
 
 本地视频渲染器的输出帧率（fps）。
 
-### targetBitrate
+</Parameter>
+<a id="targetbitrate"></a>
+<Parameter name="targetBitrate">
 
 当前编码器的目标码率（Kbps），由 SDK 根据当前网络状况估算得出。
 
-### targetFrameRate
+</Parameter>
+<a id="targetframerate"></a>
+<Parameter name="targetFrameRate">
 
 当前编码器的目标帧率（fps）。
 
-### qualityAdaptIndication
+</Parameter>
+<a id="qualityadaptindication"></a>
+<Parameter name="qualityAdaptIndication">
 
 本地视频流在上报时间间隔内的质量自适应情况（基于目标帧率和目标码率）。详见 [QUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualityadaptindication)。
 
-### encodedBitrate
+</Parameter>
+<a id="encodedbitrate"></a>
+<Parameter name="encodedBitrate">
 
 编码本地视频流时的码率（Kbps）。
 
-### encodedFrameCount
+</Parameter>
+<a id="encodedframecount"></a>
+<Parameter name="encodedFrameCount">
 
 发送的视频帧总数（聚合值）。
 
-### codecType
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 本地视频的编解码器类型。详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocodectype)。
 
-### txPacketLossRate
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 在应用抗丢包策略前，从本地客户端到声网服务器的视频丢包率（%）。
 
-### captureBrightnessLevel
+</Parameter>
+<a id="capturebrightnesslevel"></a>
+<Parameter name="captureBrightnessLevel">
 
 本地摄像头采集的视频图像的亮度等级。详见 [CAPTURE_BRIGHTNESS_LEVEL_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-capturebrightnessleveltype)。
 
-### dualStreamEnabled
+</Parameter>
+<a id="dualstreamenabled"></a>
+<Parameter name="dualStreamEnabled">
 
 是否启用了双流模式。
 
 - true：启用双流模式。
 - false：未启用双流模式。
 
-### hwEncoderAccelerating
+</Parameter>
+<a id="hwencoderaccelerating"></a>
+<Parameter name="hwEncoderAccelerating">
 
 本地视频编码加速类型：
 
 - 0：使用软件编码，无加速。
 - 1：使用硬件编码进行加速。
 
-### simulcastDimensions
+</Parameter>
+<a id="simulcastdimensions"></a>
+<Parameter name="simulcastDimensions">
 
 不同质量层级的视频流的编码帧尺寸。详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
+
+</Parameter>
+</ParameterList>

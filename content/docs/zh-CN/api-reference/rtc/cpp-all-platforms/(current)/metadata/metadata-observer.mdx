@@ -65,13 +65,20 @@ virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadata
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 元数据观察器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 元数据类型。详见 [METADATA_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-metadatatype)。SDK 当前仅支持 `VIDEO_METADATA`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registermediametadataobserver__return_values"></a>
 
@@ -104,13 +111,20 @@ virtual int unregisterMediaMetadataObserver(IMetadataObserver* observer, IMetada
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 元数据观察器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)。
 
-### type
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 元数据类型。SDK 当前仅支持 `VIDEO_METADATA`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
 
@@ -143,9 +157,14 @@ virtual void onMetadataReceived(const Metadata& metadata) = 0;
 
 ### 参数
 
-### metadata
+<ParameterList>
+<a id="metadata"></a>
+<Parameter name="metadata">
 
 接收到的元数据。详见 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -181,13 +200,20 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 
 ### 参数
 
-### metadata
+<ParameterList>
+<a id="metadata-1"></a>
+<Parameter name="metadata">
 
 用户希望发送的元数据。详见 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata)。
 
-### source_type
+</Parameter>
+<a id="source_type"></a>
+<Parameter name="source_type">
 
 视频数据类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
 

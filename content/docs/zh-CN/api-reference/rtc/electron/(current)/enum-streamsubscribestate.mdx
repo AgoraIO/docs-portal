@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### SubStateIdle
+<ParameterList>
+<a id="substateidle"></a>
+<Parameter name="SubStateIdle">
 
 0: 加入频道后的初始订阅状态。
 
-### SubStateNoSubscribed
+</Parameter>
+<a id="substatenosubscribed"></a>
+<Parameter name="SubStateNoSubscribed">
 
 1: 订阅失败。可能是因为：
 
@@ -33,10 +37,17 @@ _migration:
   - 调用 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremoteaudiostream)(true)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)(true) 停止接收远端音频流。
   - 调用 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremotevideostream)(true)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremotevideostreams)(true) 停止接收远端视频流。
 
-### SubStateSubscribing
+</Parameter>
+<a id="substatesubscribing"></a>
+<Parameter name="SubStateSubscribing">
 
 2: 正在订阅。
 
-### SubStateSubscribed
+</Parameter>
+<a id="substatesubscribed"></a>
+<Parameter name="SubStateSubscribed">
 
 3: 收到了远端流，订阅成功。
+
+</Parameter>
+</ParameterList>

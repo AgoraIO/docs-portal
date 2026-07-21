@@ -64,9 +64,14 @@ virtual int destroyCustomVideoTrack(video_track_id_t video_track_id) = 0;
 
 ### 参数
 
-### video_track_id
+<ParameterList>
+<a id="video_track_id"></a>
+<Parameter name="video_track_id">
 
 视频轨道 ID，由调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -119,17 +124,24 @@ virtual int pushVideoFrame(base::ExternalVideoFrame* frame, unsigned int videoTr
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 要推送的外部原始视频帧。详见 [ExternalVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-externalvideoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::note
 注： 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pushvideoframe_imediaengine__return_values"></a>
 
@@ -174,9 +186,14 @@ virtual int setExternalRemoteEglContext(void* eglContext) = 0;
 
 ### 参数
 
-### eglContext
+<ParameterList>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
 
 用于渲染远端视频流的 EGL 上下文。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalremoteeglcontext_imediaengine__return_values"></a>
 
@@ -221,31 +238,42 @@ virtual int setExternalVideoSource(bool enabled, bool useTexture, EXTERNAL_VIDEO
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否使用外部视频源：
 
 - true：使用外部视频源，SDK 会准备接收外部视频帧。
 - false：（默认）不使用外部视频源。
 
-### useTexture
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
 
 是否使用 Texture 格式的外部视频帧：
 
 - true：使用 Texture 格式的视频帧。
 - false：（默认）不使用 Texture 格式的视频帧。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 外部视频帧类型，是否为编码格式。详见 [EXTERNAL_VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-externalvideosourcetype)。
 
-### encodedVideoOption
+</Parameter>
+<a id="encodedvideooption"></a>
+<Parameter name="encodedVideoOption">
 
 视频编码选项。仅当 `sourceType` 为 `ENCODED_VIDEO_FRAME` 时需设置该参数。
 
 :::note
 注： 设置该参数请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalvideosource_imediaengine__return_values"></a>
 

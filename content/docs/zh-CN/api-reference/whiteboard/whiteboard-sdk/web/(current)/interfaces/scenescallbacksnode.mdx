@@ -96,9 +96,9 @@ scenesCount: number
 
 - Defined in [index-zh.d.ts\:4681](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4681)
 
-  释放监听器对象。
+释放监听器对象。
 
-  Returns void
+Returns void
 
 <a id="forwardto"></a>
 
@@ -106,25 +106,36 @@ scenesCount: number
 
 - forwardTo&lt;NAME&gt;(name:NAME, toCallbacks:[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;):any
 
-- Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#forwardto)
- Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L963)
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#forwardto)
 
-  将注册的回调转到另一个 `Callbacks` 对象。
+- Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L963)
 
-  Type parameters
+将注册的回调转到另一个 `Callbacks` 对象。
 
-  - NAME:string
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  - name: NAME
+注册回调的名称。
 
-    注册回调的名称。
-  - toCallbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;
+</Parameter>
+<Parameter name="toCallbacks" required>
 
-    转到的 `Callbacks` 对象。
+<ParameterType>
 
-  Returns any
+[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks) & lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) & gt;
+
+</ParameterType>
+
+转到的 `Callbacks` 对象。
+
+</Parameter>
+</ParameterList>
+
+Returns any
 
 <a id="off"></a>
 
@@ -132,25 +143,30 @@ scenesCount: number
 
 - off&lt;NAME&gt;(name?:NAME, listener?:any):void
 
-- Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#off)
- Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L956)
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#off)
 
-  注销回调。
+- Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L956)
 
-  Type parameters
+注销回调。
 
-  - NAME:string
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" optional>
 
-  - Optional name: NAME
+回调名。
 
-    回调名。
-  - Optional listener: any
+</Parameter>
+<Parameter name="listener" type="any" optional>
 
-    回调函数。
+回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -158,25 +174,30 @@ scenesCount: number
 
 - on&lt;NAME&gt;(name:NAME, listener:any):void
 
-- Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#on)
- Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L942)
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#on)
 
-  注册一个回调。
+- Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L942)
 
-  Type parameters
+注册一个回调。
 
-  - NAME:string
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  - name: NAME
+回调名。
 
-    回调名。
-  - listener: any
+</Parameter>
+<Parameter name="listener" type="any" required>
 
-    回调函数。
+回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -184,22 +205,27 @@ scenesCount: number
 
 - once&lt;NAME&gt;(name:NAME, listener:any):void
 
-- Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#once)
- Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L949)
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#once)
 
-  注册只使用一次的回调。
+- Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L949)
 
-  Type parameters
+注册只使用一次的回调。
 
-  - NAME:string
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  - name: NAME
+回调名。
 
-    回调名。
-  - listener: any
+</Parameter>
+<Parameter name="listener" type="any" required>
 
-    回调函数。
+回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void

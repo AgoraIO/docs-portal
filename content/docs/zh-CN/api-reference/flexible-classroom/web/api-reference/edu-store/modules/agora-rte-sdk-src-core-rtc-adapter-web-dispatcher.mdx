@@ -40,13 +40,13 @@ CallbackAudioTrackSubscribed: (track:IRemoteAudioTrack, streamUuid:string, chann
 
 - - (track:IRemoteAudioTrack, streamUuid:string, channelName:string):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="track" type="IRemoteAudioTrack" required />
+  <Parameter name="streamUuid" type="string" required />
+  <Parameter name="channelName" type="string" required />
+  </ParameterList>
 
-    - track: IRemoteAudioTrack
-    - streamUuid: string
-    - channelName: string
-
-    Returns void
+  Returns void
 
 <a id="CallbackAudioTrackUnsubscribed"></a>
 
@@ -58,12 +58,12 @@ CallbackAudioTrackUnsubscribed: (streamUuid:string, channelName:string)=&gt;void
 
 - - (streamUuid:string, channelName:string):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="streamUuid" type="string" required />
+  <Parameter name="channelName" type="string" required />
+  </ParameterList>
 
-    - streamUuid: string
-    - channelName: string
-
-    Returns void
+  Returns void
 
 <a id="CallbackMicrophoneTrackCreated"></a>
 
@@ -75,11 +75,11 @@ CallbackMicrophoneTrackCreated: (track:ILocalAudioTrack)=&gt;void
 
 - - (track:ILocalAudioTrack):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="track" type="ILocalAudioTrack" required />
+  </ParameterList>
 
-    - track: ILocalAudioTrack
-
-    Returns void
+  Returns void
 
 <a id="CallbackMicrophoneTrackDestroyed"></a>
 
@@ -91,7 +91,7 @@ CallbackMicrophoneTrackDestroyed: ()=&gt;void
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 <a id="CallbackObserverChanged"></a>
 
@@ -103,11 +103,19 @@ CallbackObserverChanged: (position:[AgoraRteAudioRawDataPosition](/zh-CN/api-ref
 
 - - (position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="position" required>
 
-    - position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+  <ParameterType>
 
-    Returns void
+  [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="CallbackRawDataBeforeMixed"></a>
 
@@ -119,13 +127,21 @@ CallbackRawDataBeforeMixed: (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference
 
 - - (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData), streamUuid:string, channelName:string):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="rawData" required>
 
-    - rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
-    - streamUuid: string
-    - channelName: string
+  <ParameterType>
 
-    Returns void
+  [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+
+  </ParameterType>
+
+  </Parameter>
+  <Parameter name="streamUuid" type="string" required />
+  <Parameter name="channelName" type="string" required />
+  </ParameterList>
+
+  Returns void
 
 <a id="CallbackRawDataRecorded"></a>
 
@@ -137,11 +153,19 @@ CallbackRawDataRecorded: (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/fl
 
 - - (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)):void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="rawData" required>
 
-    - rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+  <ParameterType>
 
-    Returns void
+  [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns void
 
 <a id="CallbackStart"></a>
 
@@ -153,7 +177,7 @@ CallbackStart: ()=&gt;void
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 <a id="CallbackStop"></a>
 
@@ -165,4 +189,4 @@ CallbackStop: ()=&gt;void
 
 - - ():void
 
-  - Returns void
+  Returns void

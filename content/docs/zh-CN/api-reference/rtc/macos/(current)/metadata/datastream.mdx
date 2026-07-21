@@ -45,11 +45,15 @@ _migration:
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-### reliable
+</Parameter>
+<a id="reliable"></a>
+<Parameter name="reliable">
 
 设置接收端是否保证在五秒内收到数据流：
 
@@ -58,12 +62,17 @@ _migration:
 
 请确保 `reliable` 和 `ordered` 同时设置为 YES 或同时设置为 NO。
 
-### ordered
+</Parameter>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 设置接收端是否按发送顺序接收数据流：
 
 - YES：接收端按发送顺序接收数据。
 - NO：接收端不按发送顺序接收数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream1__return_values"></a>
 
@@ -109,13 +118,20 @@ _migration:
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-1"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 数据流的配置，详见 [AgoraDataStreamConfig](/zh-CN/api-reference/rtc/macos/class-datastreamconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
@@ -173,11 +189,15 @@ _migration:
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-2"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-### reliable
+</Parameter>
+<a id="reliable-1"></a>
+<Parameter name="reliable">
 
 设置是否保证接收端在五秒内收到数据流：
 
@@ -186,16 +206,23 @@ _migration:
 
 注意：请确保 `reliable` 和 `ordered` 同时设置为 YES 或同时设置为 NO。
 
-### ordered
+</Parameter>
+<a id="ordered-1"></a>
+<Parameter name="ordered">
 
 设置接收端是否按发送顺序接收数据流：
 
 - YES：接收端按发送顺序接收数据。
 - NO：接收端不按发送顺序接收数据。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex1__return_values"></a>
 
@@ -248,17 +275,26 @@ _migration:
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-3"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 数据流的配置。详见 [AgoraDataStreamConfig](/zh-CN/api-reference/rtc/macos/class-datastreamconfig)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
@@ -304,13 +340,20 @@ _migration:
 
 ### 参数
 
-### streamId
+<ParameterList>
+<a id="streamid-4"></a>
+<Parameter name="streamId">
 
 数据流 ID。你可以通过调用 [createDataStream\:config:](/zh-CN/api-reference/rtc/macos/metadata/datastream#api_irtcengine_createdatastream2) 获取该 ID。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 要发送的消息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendstreammessage__return_values"></a>
 
@@ -355,21 +398,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送该消息的远端用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-5"></a>
+<Parameter name="streamId">
 
 接收到的消息所属的数据流 ID。
 
-### data
+</Parameter>
+<a id="data-1"></a>
+<Parameter name="data">
 
 接收到的数据内容，
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -407,29 +461,44 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### streamId
+</Parameter>
+<a id="streamid-6"></a>
+<Parameter name="streamId">
 
 接收消息所属的数据流 ID。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。
 
-### missed
+</Parameter>
+<a id="missed"></a>
+<Parameter name="missed">
 
 丢失的消息数量。
 
-### cached
+</Parameter>
+<a id="cached"></a>
+<Parameter name="cached">
 
 数据流中断时缓存的传入消息数量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

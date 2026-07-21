@@ -33,12 +33,17 @@ abstract enableAutoRemoveCache(enable: boolean): number;
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否自动清除缓存文件：
 
 - true：开启自动清除缓存文件功能。
 - false：（默认）关闭自动清除缓存文件功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
 
@@ -73,9 +78,14 @@ abstract getCacheDir(length: number): string;
 
 ### 参数
 
-### length
+<ParameterList>
+<a id="length"></a>
+<Parameter name="length">
 
 输入参数，缓存文件储存路径字符串的最大长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
 
@@ -228,9 +238,14 @@ abstract removeCacheByUri(uri: string): number;
 
 ### 参数
 
-### uri
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 待删除的缓存文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
 
@@ -300,9 +315,14 @@ abstract setCacheDir(path: string): number;
 
 ### 参数
 
-### path
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 缓存文件储存的绝对路径。请确保指定的目录存在且可写。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
 
@@ -335,9 +355,14 @@ abstract setMaxCacheFileCount(count: number): number;
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 可缓存的媒体文件数量的上限，默认值为 1000。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
 
@@ -370,9 +395,14 @@ abstract setMaxCacheFileSize(cacheSize: number): number;
 
 ### 参数
 
-### cacheSize
+<ParameterList>
+<a id="cachesize"></a>
+<Parameter name="cacheSize">
 
 缓存媒体文件的总缓存上限，单位为字节。默认为 1 GB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
 
@@ -407,9 +437,14 @@ onPlayerCacheStats?(stats: CacheStatistics): void;
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 缓存中的媒体资源的相关信息，详见 [CacheStatistics](/zh-CN/api-reference/rtc/electron/class-cachestatistics)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

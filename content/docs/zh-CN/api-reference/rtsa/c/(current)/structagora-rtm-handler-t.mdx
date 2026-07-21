@@ -36,12 +36,23 @@ RTM 事件处理回调。
 
 RTM 消息回调。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
 
-| [in] | rtm_uid | 发送消息的 RTM 用户 ID。 |
-| --- | --- | --- |
-| [in] | msg | 收到的消息内容。 |
-| [in] | msg_len | 消息长度。单位为字节。 |
+发送消息的 RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+收到的消息内容。
+
+</Parameter>
+<Parameter name="msg_len" direction="[in]">
+
+消息长度。单位为字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="a25c73cac37a00ac748fa41869838f623"></a>
 
@@ -52,12 +63,23 @@ RTM 消息回调。
 
 RTM 事件回调。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
 
-| [in] | rtm_uid | RTM 用户 ID。 |
-| --- | --- | --- |
-| [in] | event_type | 事件类型。详见 [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7)。 |
-| [in] | err_code | 错误码。详见 [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395)。 |
+RTM 用户 ID。
+
+</Parameter>
+<Parameter name="event_type" direction="[in]">
+
+事件类型。详见 [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) 。
+
+</Parameter>
+<Parameter name="err_code" direction="[in]">
+
+错误码。详见 [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a15b2dba380611e1974686f74a3ec0ca7"></a>
 
@@ -68,12 +90,23 @@ RTM 事件回调。
 
 [agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) 方法调用结果回调。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
 
-| [in] | rtm_uid | RTM 用户 ID。 |
-| --- | --- | --- |
-| [in] | msg_id | 消息 ID。 |
-| [in] | state | RTM 消息的发送状态。详见 [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6)。 |
+RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg_id" direction="[in]">
+
+消息 ID。
+
+</Parameter>
+<Parameter name="state" direction="[in]">
+
+RTM 消息的发送状态。详见 [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) 。
+
+</Parameter>
+</ParameterList>
 
 ---
 

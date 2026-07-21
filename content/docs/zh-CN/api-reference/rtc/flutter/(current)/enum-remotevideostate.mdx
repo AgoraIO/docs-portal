@@ -14,22 +14,35 @@ _migration:
 
 ## 枚举值
 
-### remoteVideoStateStopped
+<ParameterList>
+<a id="remotevideostatestopped"></a>
+<Parameter name="remoteVideoStateStopped">
 
 0: 远端视频默认初始状态。在 `remoteVideoStateReasonLocalMuted`、`remoteVideoStateReasonRemoteMuted` 或 `remoteVideoStateReasonRemoteOffline` 的情况下，会报告该状态。
 
-### remoteVideoStateStarting
+</Parameter>
+<a id="remotevideostatestarting"></a>
+<Parameter name="remoteVideoStateStarting">
 
 1: 本地用户已接收远端视频首包。
 
-### remoteVideoStateDecoding
+</Parameter>
+<a id="remotevideostatedecoding"></a>
+<Parameter name="remoteVideoStateDecoding">
 
 2: 远端视频流正在解码，正常播放。在 `remoteVideoStateReasonNetworkRecovery`、`remoteVideoStateReasonLocalUnmuted`、`remoteVideoStateReasonRemoteUnmuted` 或 `remoteVideoStateReasonAudioFallbackRecovery` 的情况下，会报告该状态。
 
-### remoteVideoStateFrozen
+</Parameter>
+<a id="remotevideostatefrozen"></a>
+<Parameter name="remoteVideoStateFrozen">
 
 3: 远端视频流卡顿。在 `remoteVideoStateReasonNetworkCongestion` 或 `remoteVideoStateReasonAudioFallback` 的情况下，会报告该状态。
 
-### remoteVideoStateFailed
+</Parameter>
+<a id="remotevideostatefailed"></a>
+<Parameter name="remoteVideoStateFailed">
 
 4: 远端视频流播放失败。在 `remoteVideoStateReasonInternal` 的情况下，会报告该状态。
+
+</Parameter>
+</ParameterList>

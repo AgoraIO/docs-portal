@@ -41,17 +41,37 @@ _migration:
 
 - new LoggerImpl(_label:string, _dest:\{console:boolean;database:boolean\}, _logLevel:[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level), _logWorkerInteractor:[LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor)):[LoggerImpl](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-logger-logger-impl-ogger-impl)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="_label" type="string" required />
+<Parameter name="_dest" type="\&#123;console:boolean;database:boolean\&#125;" required>
 
-  - _label: string
-  - _dest: \{console:boolean;database:boolean\}
+<ParameterList>
+<Parameter name="console" type="boolean" required />
+<Parameter name="database" type="boolean" required />
+</ParameterList>
 
-    - console:boolean
-    - database:boolean
-  - _logLevel: [LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
-  - _logWorkerInteractor: [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor)
+</Parameter>
+<Parameter name="_logLevel" required>
 
-  Returns [LoggerImpl](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-logger-logger-impl-ogger-impl)
+<ParameterType>
+
+[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="_logWorkerInteractor" required>
+
+<ParameterType>
+
+[LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [LoggerImpl](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-logger-logger-impl-ogger-impl)
 
 ## Methods
 
@@ -61,11 +81,13 @@ _migration:
 
 - debug(...args:unknown[]):void
 
-- Implementation of Logger.debugParameters
+Implementation of Logger.debug
 
-  - Rest...args: unknown[]
+<ParameterList title="Parameters">
+<Parameter name="...args" type="unknown[]" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="error"></a>
 
@@ -73,11 +95,13 @@ _migration:
 
 - error(...args:unknown[]):void
 
-- Implementation of Logger.errorParameters
+Implementation of Logger.error
 
-  - Rest...args: unknown[]
+<ParameterList title="Parameters">
+<Parameter name="...args" type="unknown[]" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="info"></a>
 
@@ -85,11 +109,13 @@ _migration:
 
 - info(...args:unknown[]):void
 
-- Implementation of Logger.infoParameters
+Implementation of Logger.info
 
-  - Rest...args: unknown[]
+<ParameterList title="Parameters">
+<Parameter name="...args" type="unknown[]" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setLogLevel"></a>
 
@@ -97,11 +123,21 @@ _migration:
 
 - setLogLevel(logLevel:[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)):void
 
-- Implementation of [Logger](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger).[setLogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#setLogLevel)Parameters
+Implementation of [Logger](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger).[setLogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#setLogLevel)
 
-  - logLevel: [LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+<ParameterList title="Parameters">
+<Parameter name="logLevel" required>
 
-  Returns void
+<ParameterType>
+
+[LogLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="warn"></a>
 
@@ -109,8 +145,10 @@ _migration:
 
 - warn(...args:unknown[]):void
 
-- Implementation of Logger.warnParameters
+Implementation of Logger.warn
 
-  - Rest...args: unknown[]
+<ParameterList title="Parameters">
+<Parameter name="...args" type="unknown[]" required />
+</ParameterList>
 
-  Returns void
+Returns void

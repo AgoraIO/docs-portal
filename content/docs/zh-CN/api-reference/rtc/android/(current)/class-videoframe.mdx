@@ -64,11 +64,15 @@ public class VideoFrame implements RefCounted {
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 像素格式。详见 `VIDEO_PIXEL_FORMAT`。
 
-### buffer
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 视频帧缓冲区。构造 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe) 时需要传入实现了 `VideoFrame.Buffer` 的对象。常见实现包括 `JavaI420Buffer`、`NV21Buffer`、`NV12Buffer` 和 `TextureBuffer`。
 
@@ -76,22 +80,33 @@ public class VideoFrame implements RefCounted {
 注： 该参数不可为空，否则会发生异常。相关方法包括 `getRotatedWidth`、`getRotatedHeight`、`replaceBuffer`、`retain` 和 `release`。
 :::
 
-### TextureBuffer
+</Parameter>
+<a id="texturebuffer"></a>
+<Parameter name="TextureBuffer">
 
 Texture 类型的视频缓冲区抽象。可获取纹理类型 `Type`、纹理 ID、transform matrix、EGL context 和 fence object。若你需要推送 Texture 数据，推荐使用 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe) 而非 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-externalvideoframe)。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频帧在渲染前的顺时针旋转角度。支持 0、90、180 和 270 度。
 
-### timestampNs
+</Parameter>
+<a id="timestampns"></a>
+<Parameter name="timestampNs">
 
 视频帧的时间戳，单位为纳秒。
 
-### colorSpace
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
 
 视频帧的色彩空间属性，默认采用 Full Range 和 BT.709 标准配置。你可以根据自定义采集或自定义渲染的业务需求进行设置。
 
 :::note
 注： 相关方法包括 `getColorSpace` 和 `setColorSpace`。
 :::
+
+</Parameter>
+</ParameterList>

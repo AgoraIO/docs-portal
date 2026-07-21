@@ -30,15 +30,21 @@ __attribute__((visibility("default"))) @interface AgoraLiveTranscodingUser : NSO
 
 ## 属性
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 主播的用户 ID。
 
-### rect
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
 
 主播视频在输出画面中的位置和大小。
 
-### zOrder
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
 
 :::note
 注：
@@ -52,14 +58,18 @@ __attribute__((visibility("default"))) @interface AgoraLiveTranscodingUser : NSO
 - 0：（默认）主播视频处于底层。
 - 100：主播视频处于顶层。
 
-### alpha
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
 
 主播视频的透明度，取值范围为 [0.0, 1.0]。
 
 - 0.0：完全透明。
 - 1.0：（默认）不透明。
 
-### audioChannel
+</Parameter>
+<a id="audiochannel"></a>
+<Parameter name="audioChannel">
 
 :::note
 注： 如果该值不为 `0`，需要使用特殊播放器。
@@ -74,3 +84,6 @@ __attribute__((visibility("default"))) @interface AgoraLiveTranscodingUser : NSO
 - 4：使用 BL 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
 - 5：使用 BR 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
 - 0xFF 或大于 5 的值：静音该主播音频，声网服务器会移除该主播音频。
+
+</Parameter>
+</ParameterList>

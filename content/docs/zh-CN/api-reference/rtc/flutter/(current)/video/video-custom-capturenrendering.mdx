@@ -64,9 +64,14 @@ Future<void> destroyCustomVideoTrack(int videoTrackId);
 
 ### 参数
 
-### videoTrackId
+<ParameterList>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -219,9 +224,14 @@ Future<bool> pipSetup(AgoraPipOptions options);
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 画中画配置选项，详见 [AgoraPipOptions](/zh-CN/api-reference/rtc/flutter/class-agorapipoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_agorapip_pipsetup__return_values"></a>
 
@@ -323,17 +333,24 @@ Future<void> pushVideoFrame(
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 待推送的视频帧。详见 [ExternalVideoFrame](/zh-CN/api-reference/rtc/flutter/class-externalvideoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid-1"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 :::note
 注： 如果你只需推送一路外部视频流，`videoTrackId` 设置为 0 即可。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pushvideoframe__return_values"></a>
 
@@ -369,9 +386,14 @@ Future<void> registerPipStateChangedObserver(AgoraPipStateChangedObserver observ
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 画中画状态改变观测器，详见 [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -440,9 +462,14 @@ Future<void> setExternalRemoteEglContext(int eglContext);
 
 ### 参数
 
-### eglContext
+<ParameterList>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
 
 用于远端视频流渲染的 EGL 环境上下文对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalremoteeglcontext__return_values"></a>
 
@@ -490,27 +517,38 @@ Future<void> setExternalVideoSource(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用外部视频源：
 
 - true: 启用外部视频源。SDK 准备接收外部视频帧。
 - false:（默认）不启用外部视频源。
 
-### useTexture
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
 
 是否使用 Texture 格式的外部视频帧：
 
 - true: 使用 Texture 格式的外部视频帧。
 - false: 不使用 Texture 格式的外部视频帧。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 外部视频帧是否编码，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-externalvideosourcetype)。
 
-### encodedVideoOption
+</Parameter>
+<a id="encodedvideooption"></a>
+<Parameter name="encodedVideoOption">
 
 视频编码选项。如果 `sourceType` 为 `encodedVideoFrame`，则需要设置该参数。你可以[联系技术支持](https://ticket.shengwang.cn/)了解如何设置该参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalvideosource__return_values"></a>
 
@@ -572,13 +610,20 @@ final void Function(AgoraPipState state, String? error) onPipStateChanged;
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的画中画状态，详见 [AgoraPipState](/zh-CN/api-reference/rtc/flutter/enum-agorapipstate)。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 如果状态改变失败，返回错误信息；否则返回 null。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

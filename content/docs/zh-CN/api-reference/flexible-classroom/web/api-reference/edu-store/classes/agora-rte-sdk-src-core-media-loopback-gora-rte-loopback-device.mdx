@@ -53,11 +53,21 @@ _migration:
 
 - new AgoraRteLoopbackDevice(rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
 
-  - rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+<ParameterList title="Parameters">
+<Parameter name="rtc" required>
 
-  Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+<ParameterType>
+
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
 ## Properties
 
@@ -75,7 +85,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get device():undefined|string
 
-- Returns undefined|string
+Returns undefined|string
 
 <a id="state"></a>
 
@@ -83,7 +93,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get state():[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
 
-- Returns [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+Returns [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
 
 <a id="volume"></a>
 
@@ -91,7 +101,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get volume():number
 
-- Returns number
+Returns number
 
 ## Methods
 
@@ -99,14 +109,16 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+- emit(evt:string,...args:any[]):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
 <a id="off"></a>
 
@@ -114,12 +126,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - off(evt:string, cb:CallableFunction):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
 <a id="on"></a>
 
@@ -127,12 +141,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - on(evt:string, cb:CallableFunction):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
 <a id="once"></a>
 
@@ -140,12 +156,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - once(evt:string, cb:CallableFunction):[AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: string
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
 
-  Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-loopback-gora-rte-loopback-device)
 
 <a id="removeAllEventListeners"></a>
 
@@ -153,7 +171,9 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void
 
 <a id="setDevice"></a>
 
@@ -161,11 +181,11 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setDevice(deviceName:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceName" type="string" required />
+</ParameterList>
 
-  - deviceName: string
-
-  Returns void
+Returns void
 
 <a id="startRecording"></a>
 
@@ -173,11 +193,19 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - startRecording(connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="connType" optional>
 
-  - Optional connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns void
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stopRecording"></a>
 
@@ -185,11 +213,19 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - stopRecording(connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="connType" optional>
 
-  - Optional connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns void
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="updateSignalVolume"></a>
 
@@ -197,9 +233,17 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - updateSignalVolume(volume:number, connType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required />
+<Parameter name="connType" optional>
 
-  - volume: number
-  - Optional connType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns void
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

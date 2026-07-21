@@ -240,13 +240,18 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 观察器实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)。
 
 :::note
 注： 如需释放该实例，请将该参数设为 `null`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registervideoframeobserver__return_values"></a>
 
@@ -295,11 +300,15 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，包括摄像头、屏幕或媒体播放器。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧。
 
@@ -308,6 +317,9 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 
 - Android：I420 或 RGB（GLES20.GL_TEXTURE_2D）
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -363,11 +375,15 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧。
 
@@ -376,6 +392,9 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 
 - Android：I420 或 RGB（GLES20.GL_TEXTURE_2D）。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -430,17 +449,26 @@ boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame)
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送当前视频帧的远端用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

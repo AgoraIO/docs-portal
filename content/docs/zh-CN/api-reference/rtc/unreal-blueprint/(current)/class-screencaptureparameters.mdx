@@ -71,7 +71,9 @@ public:
 
 ## 属性
 
-### dimensions
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 屏幕共享流的视频编码分辨率。详见 [FUABT_VideoDimensions](/zh-CN/api-reference/rtc/unreal-blueprint/class-videodimensions)。默认值为 1920 × 1080，即 2073600 像素。该像素值为计费标准。
 
@@ -90,22 +92,30 @@ public:
   - 当采集分辨率低于 1920 × 1080 时，建议编码分辨率不低于 1280 × 720。
 :::
 
-### frameRate
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 在 Windows 和 macOS 平台上，表示屏幕共享流的视频编码帧率。单位为 fps；默认值为 5，建议不要超过 15。
 
-### bitrate
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 在 Windows 和 macOS 平台上，表示屏幕共享流的视频编码码率。单位为 Kbps；默认值为 0，表示 SDK 根据当前共享屏幕的分辨率计算出一个合理的值。
 
-### captureMouseCursor
+</Parameter>
+<a id="capturemousecursor"></a>
+<Parameter name="captureMouseCursor">
 
 是否采集鼠标用于屏幕共享：
 
 - `true`:（默认）采集鼠标。
 - `false`: 不采集鼠标。
 
-### windowFocus
+</Parameter>
+<a id="windowfocus"></a>
+<Parameter name="windowFocus">
 
 调用 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口前置：
 
@@ -116,11 +126,15 @@ public:
 注： 由于 macOS 系统限制，设置该成员将窗口前置时，如果当前的应用存在多个窗口，只会将主窗口前置。
 :::
 
-### excludeWindowList
+</Parameter>
+<a id="excludewindowlist"></a>
+<Parameter name="excludeWindowList">
 
 待屏蔽窗口的 ID 列表。调用 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕共享时，你可以通过该参数屏蔽指定的窗口。你可以在调用 [UpdateScreenCaptureParameters](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享的配置参数时，通过该参数动态屏蔽指定的窗口。
 
-### enableHighLight
+</Parameter>
+<a id="enablehighlight"></a>
+<Parameter name="enableHighLight">
 
 (仅适用于 macOS 和 Windows)是否对共享的窗口或屏幕进行描边：
 
@@ -131,14 +145,18 @@ public:
 注： 当你在共享窗口或屏幕的部分区域时，如果将该参数设置为 `true`，SDK 会对整个窗口或屏幕进行描边。
 :::
 
-### highLightColor
+</Parameter>
+<a id="highlightcolor"></a>
+<Parameter name="highLightColor">
 
 (仅适用于 macOS 和 Windows)
 
 - 在 Windows 平台上，指描边的 ARGB 颜色。默认值为 0xFF8CBF26。
 - 在 macOS 平台上，`COLOR_CLASS` 指 `NSColor`。
 
-### highLightWidth
+</Parameter>
+<a id="highlightwidth"></a>
+<Parameter name="highLightWidth">
 
 (仅适用于 macOS 和 Windows)描边的宽度 (px)。默认值为 5，取值范围为 (0,50]。
 
@@ -146,10 +164,15 @@ public:
 注： 该参数仅在 highLighted 设置为 `true` 时生效。
 :::
 
-### excludeWindowCount
+</Parameter>
+<a id="excludewindowcount"></a>
+<Parameter name="excludeWindowCount">
 
 待屏蔽窗口的数量。
 
 :::note
 注： 在 Windows 平台上，该参数最大值不超过 24，如果超过该值，则屏蔽窗口功能失效。
 :::
+
+</Parameter>
+</ParameterList>

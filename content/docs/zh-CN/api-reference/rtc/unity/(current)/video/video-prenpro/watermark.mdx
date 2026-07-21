@@ -46,9 +46,14 @@ public abstract int AddVideoWatermark(RtcImage watermark);
 
 ### 参数
 
-### watermark
+<ParameterList>
+<a id="watermark"></a>
+<Parameter name="watermark">
 
 待添加在本地直播推流中的水印图片：[RtcImage](/zh-CN/api-reference/rtc/unity/class-rtcimage)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark1__return_values"></a>
 
@@ -102,13 +107,20 @@ public abstract int AddVideoWatermark(string watermarkUrl, WatermarkOptions opti
 
 ### 参数
 
-### watermarkUrl
+<ParameterList>
+<a id="watermarkurl"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-### options
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/unity/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark2__return_values"></a>
 
@@ -147,9 +159,14 @@ public abstract int AddVideoWatermark(WatermarkConfig configs);
 
 ### 参数
 
-### configs
+<ParameterList>
+<a id="configs"></a>
+<Parameter name="configs">
 
 水印配置。详见 [WatermarkConfig](/zh-CN/api-reference/rtc/unity/class-watermarkconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark3__return_values"></a>
 
@@ -203,17 +220,26 @@ public abstract int AddVideoWatermarkEx(string watermarkUrl, WatermarkOptions op
 
 ### 参数
 
-### watermarkUrl
+<ParameterList>
+<a id="watermarkurl-1"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/unity/class-watermarkoptions)。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
 
@@ -246,9 +272,14 @@ public abstract int ClearVideoWatermarkEx(RtcConnection connection);
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
 
@@ -314,9 +345,14 @@ public abstract int RemoveVideoWatermark(string id);
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
 
 要移除的水印的 ID。该值需与添加水印时使用的 ID 相同。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_removevideowatermark__return_values"></a>
 
@@ -359,13 +395,20 @@ public abstract int RemoveVideoWatermarkEx(string id, RtcConnection connection);
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id-1"></a>
+<Parameter name="id">
 
 水印 ID。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_removevideowatermarkex__return_values"></a>
 

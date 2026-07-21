@@ -38,10 +38,13 @@ _migration:
 
 获取远端视频轨道的统计信息。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="stats" direction="[out]">
 
-| [out] | stats | 远端视频轨道的统计信息： [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats)。 |
-| --- | --- | --- |
+远端视频轨道的统计信息： [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -70,10 +73,13 @@ _migration:
 
 获取远端视频轨道的信息。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="info" direction="[out]">
 
-| [out] | info | 远端视频轨道的信息: [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info)。 |
-| --- | --- | --- |
+远端视频轨道的信息: [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -91,11 +97,18 @@ _migration:
 
 注册成功之后， SDK 在收到已编码视频帧时触发 [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) 回调。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoReceiver">
 
-| videoReceiver | [`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+[`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -111,10 +124,13 @@ _migration:
 
 销毁 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoReceiver">
 
-| videoReceiver | [`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。 |
-| --- | --- |
+[`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 

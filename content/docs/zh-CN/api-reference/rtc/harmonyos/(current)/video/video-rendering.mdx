@@ -46,7 +46,9 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 
 ### 参数
 
-### renderMode
+<ParameterList>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 本地视图显示模式。
 
@@ -55,7 +57,9 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 本地视图的镜像模式。
 
@@ -68,6 +72,9 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 :::caution
 注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
 
@@ -111,24 +118,33 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-1"></a>
+<Parameter name="renderMode">
 
 远端用户视图的渲染模式。
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-1"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式。
 
 - VIDEO_MIRROR_MODE_AUTO (0)：SDK 决定镜像模式。如果你使用前置摄像头，默认启动本地视图镜像模式；如果你启用后置摄像头，默认关闭本地视图镜像模式。
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoterendermode2__return_values"></a>
 
@@ -176,18 +192,24 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### renderMode
+</Parameter>
+<a id="rendermode-2"></a>
+<Parameter name="renderMode">
 
 远端视图显示模式：
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-### mirrorMode
+</Parameter>
+<a id="mirrormode-2"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式：
 
@@ -195,9 +217,14 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
 
@@ -223,12 +250,17 @@ public abstract setRenderMode(mode:number):number;
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放器视图的渲染模式：
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setrendermode__return_values"></a>
 
@@ -291,9 +323,14 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setuplocalvideo__return_values"></a>
 
@@ -342,9 +379,14 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-1"></a>
+<Parameter name="canvas">
 
 远端视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setupremotevideo__return_values"></a>
 
@@ -395,13 +437,20 @@ public abstract setupRemoteVideoEx(remote:VideoCanvas, connection:RtcConnection)
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas-2"></a>
+<Parameter name="canvas">
 
 视频画布信息。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setupremotevideoex__return_values"></a>
 

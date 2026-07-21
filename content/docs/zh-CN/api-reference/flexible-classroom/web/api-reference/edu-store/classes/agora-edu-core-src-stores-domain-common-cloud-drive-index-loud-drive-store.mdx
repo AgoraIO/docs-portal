@@ -62,18 +62,28 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - addPersonalResource(resourceUuid:string, resourceInfo:[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)):Promise&lt;any&gt;
 
-- 将已上传的资源文件映射为云盘内的一个文件
+将已上传的资源文件映射为云盘内的一个文件
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
 
-  - resourceUuid: string
+资源 UUID
 
-    资源 UUID
-  - resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+</Parameter>
+<Parameter name="resourceInfo" required>
 
-    资源信息
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+资源信息
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="calcResourceUuid"></a>
 
@@ -81,15 +91,15 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - calcResourceUuid(resource:string|File):Promise&lt;string&gt;
 
-- 计算资源文件 UUID
+计算资源文件 UUID
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resource" type="string | File" required />
+</ParameterList>
 
-  - resource: string|File
+Returns Promise&lt;string&gt;
 
-  Returns Promise&lt;string&gt;
-
-  资源文件 UUID
+资源文件 UUID
 
 <a id="cancelUpload"></a>
 
@@ -97,15 +107,17 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - cancelUpload(resourceUuid:string):Promise&lt;void&gt;
 
-- 取消上传资源
+取消上传资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
 
-  - resourceUuid: string
+资源 ID
 
-    资源 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="fetchPersonalResources"></a>
 
@@ -113,17 +125,25 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - fetchPersonalResources(options:[CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)):Promise&lt;\{list:never[];total:number\}&gt;
 
-- 获取个人云盘资源
+获取个人云盘资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="options" required>
 
-  - options: [CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)
+<ParameterType>
 
-    分页参数
+[CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)
 
-  Returns Promise&lt;\{list:never[];total:number\}&gt;
+</ParameterType>
 
-  云盘资源分页信息
+分页参数
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;\{list:never[];total:number\}&gt;
+
+云盘资源分页信息
 
 <a id="removePersonalResources"></a>
 
@@ -131,15 +151,17 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - removePersonalResources(resourceUuids:string[]):Promise&lt;undefined&gt;
 
-- 移除个人资源
+移除个人资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuids" type="string[]" required>
 
-  - resourceUuids: string[]
+资源 ID
 
-    资源 ID
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;undefined&gt;
+Returns Promise&lt;undefined&gt;
 
 <a id="retryUpload"></a>
 
@@ -147,15 +169,17 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - retryUpload(resourceUuid:string):void
 
-- 重新上传资源
+重新上传资源
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
 
-  - resourceUuid: string
+资源 ID
 
-    资源 ID
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="updatePersonalResource"></a>
 
@@ -163,14 +187,22 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - updatePersonalResource(resourceUuid:string, resourceInfo:Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;):Promise&lt;any&gt;
 
-- 更新云盘文件信息
+更新云盘文件信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="resourceInfo" required>
 
-  - resourceUuid: string
-  - resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+Pick & lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="uploadPersonalResource"></a>
 
@@ -178,26 +210,36 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 - uploadPersonalResource(file:File, progressUuid:string, ext:string, contentType:string, conversion?:Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;):Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
 
-- 上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
+上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="file" type="File" required>
 
-  - file: File
+资源文件对象
 
-    资源文件对象
-  - progressUuid: string
+</Parameter>
+<Parameter name="progressUuid" type="string" required>
 
-    上传 UUID
-  - ext: string
+上传 UUID
 
-    资源扩展名
-  - contentType: string
+</Parameter>
+<Parameter name="ext" type="string" required>
 
-    static: 静态， dynamic：动态
-  - Optional conversion: Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;
+资源扩展名
 
-    转换选项
+</Parameter>
+<Parameter name="contentType" type="string" required>
 
-  Returns Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+static: 静态， dynamic：动态
 
-  上传成功后的文件信息
+</Parameter>
+<Parameter name="conversion" type="Partial &amp; lt;\&#123;canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\&#125; &amp; gt;" optional>
+
+转换选项
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+
+上传成功后的文件信息

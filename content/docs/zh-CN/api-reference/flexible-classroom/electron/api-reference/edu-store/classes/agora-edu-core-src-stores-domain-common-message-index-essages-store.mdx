@@ -56,7 +56,7 @@ _migration:
 
 - get chatConvasationMessageId():Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
 
-- Returns Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+Returns Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
 
 <a id="chatConvasationUserUuid"></a>
 
@@ -64,7 +64,7 @@ _migration:
 
 - get chatConvasationUserUuid():Map&lt;string,[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)&gt;
 
-- Returns Map&lt;string,[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)&gt;
+Returns Map&lt;string,[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)&gt;
 
 <a id="chatMuted"></a>
 
@@ -72,9 +72,9 @@ _migration:
 
 - get chatMuted():boolean
 
-- 是否禁止聊天
+是否禁止聊天
 
-  Returns boolean
+Returns boolean
 
 <a id="newMessageFlag"></a>
 
@@ -82,7 +82,7 @@ _migration:
 
 - get newMessageFlag():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="roomChatConversations"></a>
 
@@ -90,9 +90,9 @@ _migration:
 
 - get roomChatConversations():[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)[]
 
-- 会话列表
+会话列表
 
-  Returns [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)[]
+Returns [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)[]
 
 <a id="roomChatMessages"></a>
 
@@ -100,9 +100,9 @@ _migration:
 
 - get roomChatMessages():[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
 
-- 历史消息列表
+历史消息列表
 
-  Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
+Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
 
 <a id="roomChatMessagesMessageId"></a>
 
@@ -110,7 +110,7 @@ _migration:
 
 - get roomChatMessagesMessageId():Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
 
-- Returns Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+Returns Map&lt;string,[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
 
 <a id="unreadMessageCount"></a>
 
@@ -118,9 +118,9 @@ _migration:
 
 - get unreadMessageCount():number
 
-- 未读消息数量
+未读消息数量
 
-  Returns number
+Returns number
 
 ## Methods
 
@@ -130,13 +130,21 @@ _migration:
 
 - addChatMessage(args:[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)):void
 
-- 增加一条消息到消息列表
+增加一条消息到消息列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="args" required>
 
-  - args: [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+<ParameterType>
 
-  Returns void
+[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addConversationChatMessage"></a>
 
@@ -144,12 +152,28 @@ _migration:
 
 - addConversationChatMessage(args:[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item), conversation:[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="args" required>
 
-  - args: [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
-  - conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+<ParameterType>
 
-  Returns void
+[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="conversation" required>
+
+<ParameterType>
+
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="addRoomChatConversation"></a>
 
@@ -157,11 +181,19 @@ _migration:
 
 - addRoomChatConversation(conversation:[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="conversation" required>
 
-  - conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+<ParameterType>
 
-  Returns void
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="getConversationHistoryChatMessage"></a>
 
@@ -169,17 +201,21 @@ _migration:
 
 - getConversationHistoryChatMessage(data:\{nextId:string;sort:number;studentUuid:string\}):Promise&lt;void&gt;
 
-- 根据学生 ID 获取学生的提问消息
+根据学生 ID 获取学生的提问消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123;nextId:string;sort:number;studentUuid:string\&#125;" required>
 
-  - data: \{nextId:string;sort:number;studentUuid:string\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+<Parameter name="studentUuid" type="string" required />
+</ParameterList>
 
-    - nextId:string
-    - sort:number
-    - studentUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="getConversationList"></a>
 
@@ -187,16 +223,20 @@ _migration:
 
 - getConversationList(data:\{nextId:string;sort:number\}):Promise&lt;any&gt;
 
-- 获取 提问列表用户信息
+获取 提问列表用户信息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123;nextId:string;sort:number\&#125;" required>
 
-  - data: \{nextId:string;sort:number\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
 
-    - nextId:string
-    - sort:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="getHistoryChatMessage"></a>
 
@@ -204,16 +244,20 @@ _migration:
 
 - getHistoryChatMessage(data:\{nextId:string;sort:number\}):Promise&lt;any&gt;
 
-- 获取房间历史的聊天消息
+获取房间历史的聊天消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123;nextId:string;sort:number\&#125;" required>
 
-  - data: \{nextId:string;sort:number\}
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
 
-    - nextId:string
-    - sort:number
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="incrementUnreadMessageCount"></a>
 
@@ -221,9 +265,9 @@ _migration:
 
 - incrementUnreadMessageCount():void
 
-- 增加未读消息总数
+增加未读消息总数
 
-  Returns void
+Returns void
 
 <a id="muteChat"></a>
 
@@ -231,9 +275,9 @@ _migration:
 
 - muteChat():Promise&lt;void&gt;
 
-- 禁止聊天
+禁止聊天
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="onDestroy"></a>
 
@@ -241,7 +285,9 @@ _migration:
 
 - onDestroy():void
 
-- Overrides EduStoreBase.onDestroyReturns void
+Overrides EduStoreBase.onDestroy
+
+Returns void
 
 <a id="onInstall"></a>
 
@@ -249,7 +295,9 @@ _migration:
 
 - onInstall():void
 
-- Overrides EduStoreBase.onInstallReturns void
+Overrides EduStoreBase.onInstall
+
+Returns void
 
 <a id="resetUnreadMessageCount"></a>
 
@@ -257,9 +305,9 @@ _migration:
 
 - resetUnreadMessageCount():void
 
-- 重置未读消息数
+重置未读消息数
 
-  Returns void
+Returns void
 
 <a id="sendMessage"></a>
 
@@ -267,13 +315,13 @@ _migration:
 
 - sendMessage(message:string):Promise&lt;void&gt;
 
-- 发送消息
+发送消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+</ParameterList>
 
-  - message: string
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="sendMessageToConversation"></a>
 
@@ -281,14 +329,22 @@ _migration:
 
 - sendMessageToConversation(message:string, conversation:[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)):Promise&lt;void&gt;
 
-- 发送会话消息
+发送会话消息
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="conversation" required>
 
-  - message: string
-  - conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="unmuteChat"></a>
 
@@ -296,6 +352,6 @@ _migration:
 
 - unmuteChat():Promise&lt;void&gt;
 
-- 解除禁止聊天
+解除禁止聊天
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;

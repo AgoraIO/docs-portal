@@ -40,13 +40,18 @@ _migration:
 如果你使用的实时音视频 SDK 没有混音状态回调方法，会导致播放的 PPT音画不同步。
 :::
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="state">
 
-| state | 音乐文件播放状态：`MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)`: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED(711)`：RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED(713)`：RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。 `MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR(714)`：音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。 |
-| --- | --- |
-| errorCode | <Slot name="api-center-table-0" /> |
+音乐文件播放状态：
 
-<Slot for="api-center-table-0">
+- `MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY(710)`: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。
+- `MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED(711)`：RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。
+- `MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED(713)`：RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。
+- `MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR(714)`：音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。
+
+</Parameter>
+<Parameter name="errorCode">
 
 音乐文件播放失败的原因：
 
@@ -54,4 +59,5 @@ _migration:
 - `MEDIA_ENGINE_AUDIO_ERROR_MIXING_TOO_FREQUENT(702)`：音乐文件打开太频繁。
 - `MEDIA_ENGINE_AUDIO_EVENT_MIXING_INTERRUPTED_EOF(703)`：音乐文件播放异常中断。
 
-</Slot>
+</Parameter>
+</ParameterList>

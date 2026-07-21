@@ -30,9 +30,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### duration
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
 
 输出参数。媒体文件总时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getduration__return_values"></a>
 
@@ -94,7 +99,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 输出参数。静音状态：
 
@@ -102,6 +109,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 - `true`: 媒体文件已静音。
 - `false`: 媒体文件未静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getmute__return_values"></a>
 
@@ -135,7 +145,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 输出参数。本地播放音量，取值范围从 0 到 100：
 
@@ -143,6 +155,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getplayoutvolume__return_values"></a>
 
@@ -176,9 +191,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### pos
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 媒体资源文件当前的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getplayposition__return_values"></a>
 
@@ -237,9 +257,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 输出参数。播放文件的远端播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getpublishsignalvolume__return_values"></a>
 
@@ -306,9 +331,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 输出参数。当前媒体文件中媒体流的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreamcount__return_values"></a>
 
@@ -354,13 +384,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 ### 参数
 
-### index
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 媒体流索引值。该参数需小于 [GetStreamCount](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的 count 参数。
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 输出参数。媒体流的所有信息，详见 [FPlayerStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-playerstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreaminfo__return_values"></a>
 
@@ -400,9 +437,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 媒体资源的相关信息，详见 [FPlayerPlaybackStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-playerplaybackstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

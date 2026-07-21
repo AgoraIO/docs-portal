@@ -46,16 +46,23 @@ AI 调音器功能支持美化音质，调整音色风格。
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启 AI 调音器功能：
 
 - true：开启 AI 调音器功能。
 - false：（默认）关闭 AI 调音器功能。
 
-### type
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 AI 调音器音效类型，详见 [VoiceAiTunerType](/zh-CN/api-reference/rtc/flutter/enum-voiceaitunertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevoiceaituner__return_values"></a>
 
@@ -93,9 +100,14 @@ Future<void> setAdvancedAudioOptions(AdvancedAudioOptions options);
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 音频的高级选项。详见 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/flutter/class-advancedaudiooptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
 
@@ -160,16 +172,23 @@ Future<void> setAINSMode(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启 AI 降噪功能：
 
 - true：开启 AI 降噪功能。
 - false：（默认）关闭 AI 降噪功能。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 降噪模式，详见 [AudioAinsMode](/zh-CN/api-reference/rtc/flutter/enum-audioainsmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setainsmode__return_values"></a>
 
@@ -232,7 +251,9 @@ Future<void> setAudioEffectParameters(
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 SDK 预设的音效，支持以下设置：
 
@@ -242,16 +263,20 @@ SDK 预设的音效，支持以下设置：
   - 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 - `pitchCorrection`，电音音效。
 
-### param1
+</Parameter>
+<a id="param1"></a>
+<Parameter name="param1">
 
-- 如果 `preset` 设为 `roomAcoustics3dVoice` ，则 `param1` 表示 3D 人声音效的环绕周期。取值范围为 [1,60]，单位为秒。默认值为 10，表示人声会 10 秒环绕 360 度。
+- 如果 `preset` 设为 `roomAcoustics3dVoice`，则 `param1` 表示 3D 人声音效的环绕周期。取值范围为 [1,60]，单位为秒。默认值为 10，表示人声会 10 秒环绕 360 度。
 - 如果 `preset` 设为 `pitchCorrection`，则 `param1` 表示电音音效的基础调式：
 
   - `1`: （默认）自然大调。
   - `2`: 自然小调。
   - `3`: 和风小调。
 
-### param2
+</Parameter>
+<a id="param2"></a>
+<Parameter name="param2">
 
 - 如果 `preset` 设为 `roomAcoustics3dVoice`，你需要将 `param2` 设置为 `0`。
 - 如果 `preset` 设为 `pitchCorrection`，则 `param2` 表示电音音效的主音音高：
@@ -268,6 +293,9 @@ SDK 预设的音效，支持以下设置：
   - `10`: F#
   - `11`: G
   - `12`: G#
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
 
@@ -327,9 +355,14 @@ Future<void> setAudioEffectPreset(AudioEffectPreset preset);
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-1"></a>
+<Parameter name="preset">
 
 预设的音效选项，详见 [AudioEffectPreset](/zh-CN/api-reference/rtc/flutter/enum-audioeffectpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
 
@@ -369,13 +402,20 @@ Future<void> setLocalVoiceEqualization(
 
 ### 参数
 
-### bandFrequency
+<ParameterList>
+<a id="bandfrequency"></a>
+<Parameter name="bandFrequency">
 
 频谱子带索引。取值范围是 [0,9]，分别代表音效的 10 个频带。对应的中心频率为 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz。详见 [AudioEqualizationBandFrequency](/zh-CN/api-reference/rtc/flutter/enum-audioequalizationbandfrequency) 。
 
-### bandGain
+</Parameter>
+<a id="bandgain"></a>
+<Parameter name="bandGain">
 
 每个 band 的增益，单位是 dB，每一个值的范围是 [-15,15]，默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
 
@@ -421,13 +461,18 @@ Future<void> setLocalVoiceFormant(double formantRatio);
 
 ### 参数
 
-### formantRatio
+<ParameterList>
+<a id="formantratio"></a>
+<Parameter name="formantRatio">
 
 共振峰比率，取值范围为 [-1.0，1.0]。默认值为 0.0，即不改变原声的音色。
 
 :::note
 注： 声网推荐的取值范围为 [-0.4，0.6] ，超出此范围外音效听感可能不佳。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
 
@@ -465,9 +510,14 @@ Future<void> setLocalVoicePitch(double pitch);
 
 ### 参数
 
-### pitch
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 语音频率。可以 [0.5,2.0] 范围内设置。取值越小，则音调越低。默认值为 1.0，表示不需要修改音调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
 
@@ -506,13 +556,20 @@ SDK 提供一个使用更为简便的方法 [setAudioEffectPreset](/zh-CN/api-re
 
 ### 参数
 
-### reverbKey
+<ParameterList>
+<a id="reverbkey"></a>
+<Parameter name="reverbKey">
 
 混响音效 Key。该方法共有 5 个混响音效 Key，详见 [AudioReverbType](/zh-CN/api-reference/rtc/flutter/enum-audioreverbtype)。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 各混响音效 Key 所对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
 
@@ -571,26 +628,35 @@ Future<void> setVoiceBeautifierParameters(
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-2"></a>
+<Parameter name="preset">
 
 预设的音效：
 
 - `SINGING_BEAUTIFIER`: 歌唱美声。
 
-### param1
+</Parameter>
+<a id="param1-1"></a>
+<Parameter name="param1">
 
 歌声的性别特征：
 
 - `1`: 男声。
 - `2`: 女声。
 
-### param2
+</Parameter>
+<a id="param2-1"></a>
+<Parameter name="param2">
 
 歌声的混响效果：
 
 - `1`: 歌声在小房间的混响效果。
 - `2`: 歌声在大房间的混响效果。
 - `3`: 歌声在大厅的混响效果。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
 
@@ -651,9 +717,14 @@ Future<void> setVoiceBeautifierPreset(VoiceBeautifierPreset preset);
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-3"></a>
+<Parameter name="preset">
 
 预设的美声效果选项，详见 [VoiceBeautifierPreset](/zh-CN/api-reference/rtc/flutter/enum-voicebeautifierpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
 
@@ -715,9 +786,14 @@ Future<void> setVoiceConversionPreset(VoiceConversionPreset preset);
 
 ### 参数
 
-### preset
+<ParameterList>
+<a id="preset-4"></a>
+<Parameter name="preset">
 
 预设的变声效果选项: [VoiceConversionPreset](/zh-CN/api-reference/rtc/flutter/enum-voiceconversionpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
 

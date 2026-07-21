@@ -37,9 +37,14 @@ public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorde
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/harmonyos/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -76,9 +81,14 @@ public abstract destroyMediaRecorder(recorder: AgoraMediaRecorder): void;
 
 ### 参数
 
-### recorder
+<ParameterList>
+<a id="recorder"></a>
+<Parameter name="recorder">
 
 待销毁的 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
@@ -116,9 +126,14 @@ public abstract setMediaRecorderObserver(callback: IMediaRecorderCallback | null
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制回调，详见 [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
@@ -164,7 +179,9 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`/sdcard/emulated/0/audio.aac`。
 
@@ -176,9 +193,14 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 请确保你指定的路径存在并且可写。
 :::
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量。详见 [AudioRecordingQuality](/zh-CN/api-reference/rtc/harmonyos/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording__return_values"></a>
 
@@ -226,9 +248,14 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
@@ -287,9 +314,14 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
@@ -396,17 +428,26 @@ onRecorderInfoUpdated(channelId: string, uid: number, info: RecorderInfo): void;
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### info
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/harmonyos/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -436,15 +477,21 @@ onRecorderStateChanged(channelId: string, uid: number, state: number, reason: nu
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-### uid
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### state
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的录制状态：
 
@@ -452,7 +499,9 @@ onRecorderStateChanged(channelId: string, uid: number, state: number, reason: nu
 - RECORDER_STATE_START（2）：音视频流录制开始。
 - RECORDER_STATE_STOP（3）：音视频流录制停止。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 录制状态出错的原因：
 
@@ -461,6 +510,9 @@ onRecorderStateChanged(channelId: string, uid: number, state: number, reason: nu
 - RECORDER_ERROR_NO_STREAM（2）：没有可录制的音视频流或者录制的音视频流中断超过 5 秒。
 - RECORDER_ERROR_OVER_MAX_DURATION（3）：录制时长超出上限。
 - RECORDER_ERROR_CONFIG_CHANGED（4）：录制配置改变。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

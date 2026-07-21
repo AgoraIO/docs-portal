@@ -116,12 +116,16 @@ type ParameterListComponent = ComponentType<{
 type ParameterComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: ReactNode;
+  direction?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
   possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
+}>;
+type ParameterTypeComponent = ComponentType<{
+  children: ReactNode;
 }>;
 
 function createStorageMock(): Storage {
@@ -590,6 +594,7 @@ describe('common MDX registry', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const ParameterList = components.ParameterList as ParameterListComponent;
     const Parameter = components.Parameter as ParameterComponent;
+    const ParameterType = components.ParameterType as ParameterTypeComponent;
 
     render(
       <ParameterList title="params" required>
@@ -601,12 +606,15 @@ describe('common MDX registry', () => {
         </Parameter>
         <Parameter
           defaultValue="{}"
+          direction="[in]"
           name="metadata"
           optional
           possibleValues="provider-specific object"
-          type="object"
         >
           <p>Provider-specific metadata.</p>
+          <ParameterType>
+            <a href="/en/api-reference/metadata">MetadataSchema</a>
+          </ParameterType>
           <ParameterList nullable>
             <Parameter name="metadata.request_id" nullable type="string">
               Optional request identifier.
@@ -622,6 +630,10 @@ describe('common MDX registry', () => {
     expect(screen.getAllByText('required')).toHaveLength(2);
     expect(screen.getByText('model')).toBeVisible();
     expect(screen.getByText('metadata')).toBeVisible();
+    expect(screen.getByText('[in]')).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: 'MetadataSchema' }),
+    ).toHaveAttribute('href', '/en/api-reference/metadata');
     expect(screen.getAllByText('optional')).toHaveLength(2);
     expect(screen.getByText('Default value')).toBeVisible();
     expect(screen.getByText('{}')).toBeVisible();
@@ -640,6 +652,7 @@ describe('common MDX registry', () => {
     expect(components.PlatformStructured).toBeDefined();
     expect(components.ParameterList).toBeDefined();
     expect(components.Parameter).toBeDefined();
+    expect(components.ParameterType).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();

@@ -55,23 +55,38 @@ EncodedVideoFrameInfo 类。
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="codecType">
 
-| codecType | 视频编码类型0：无。 1：VP8。 2：H.264。 3：H.265。 5：VP9。 6：Generic。 7：Generic H264。 12：AV1。 20：JPEG。 |
-| --- | --- |
-| width | 视频宽度（像素）。 |
-| height | 视频高度（像素）。 |
-| framesPerSecond | 每秒的视频帧数量。用于计算编码视频帧的时间戳。 |
-| frameType | <Slot name="api-center-table-0" /> |
-| rotation | <Slot name="api-center-table-1" /> |
-| trackId | 视频帧的轨道 ID。 |
-| captureTimeMs | 视频采集时间戳（毫秒）。 |
-| renderTimeMs | 视频渲染时间戳（毫秒）。 |
-| internalSendTs | 该时间戳用于音视频同步。你可以通过 [onEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-video-encoded-image-receiver#a5cdf9fc01442f7799c9b8034b808438d) 回调获取。encodedFrameOnly 需要设为 0。 |
-| uid | 用户 ID。 |
-| streamType | <Slot name="api-center-table-2" /> |
+视频编码类型
 
-<Slot for="api-center-table-0">
+- 0：无。
+- 1：VP8。
+- 2：H.264。
+- 3：H.265。
+- 5：VP9。
+- 6：Generic。
+- 7：Generic H264。
+- 12：AV1。
+- 20：JPEG。
+
+</Parameter>
+<Parameter name="width">
+
+视频宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频高度（像素）。
+
+</Parameter>
+<Parameter name="framesPerSecond">
+
+每秒的视频帧数量。用于计算编码视频帧的时间戳。
+
+</Parameter>
+<Parameter name="frameType">
 
 已编码视频帧类型。
 
@@ -82,9 +97,8 @@ EncodedVideoFrameInfo 类。
 - 6：丢弃帧。
 - 7：未知。
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="rotation">
 
 已编码视频帧旋转信息。
 
@@ -93,16 +107,41 @@ EncodedVideoFrameInfo 类。
 - 180：顺时针旋转 180 度。
 - 270：顺时针旋转 270 度。
 
-</Slot>
+</Parameter>
+<Parameter name="trackId">
 
-<Slot for="api-center-table-2">
+视频帧的轨道 ID。
+
+</Parameter>
+<Parameter name="captureTimeMs">
+
+视频采集时间戳（毫秒）。
+
+</Parameter>
+<Parameter name="renderTimeMs">
+
+视频渲染时间戳（毫秒）。
+
+</Parameter>
+<Parameter name="internalSendTs">
+
+该时间戳用于音视频同步。你可以通过 [onEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-video-encoded-image-receiver#a5cdf9fc01442f7799c9b8034b808438d) 回调获取。encodedFrameOnly 需要设为 0。
+
+</Parameter>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="streamType">
 
 视频流类型。
 
 - VIDEO_STREAM_HIGH(0): 视频大流，即高分辨率、高码率视频流。
 - VIDEO_STREAM_LOW(1): 视频小流，即低分辨率、低码率视频流。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

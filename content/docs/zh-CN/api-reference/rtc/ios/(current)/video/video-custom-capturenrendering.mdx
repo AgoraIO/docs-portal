@@ -64,9 +64,14 @@ _migration:
 
 ### 参数
 
-### videoTrackId
+<ParameterList>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -105,15 +110,22 @@ _migration:
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/ios/class-externalvideoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid-1"></a>
+<Parameter name="videoTrackId">
 
 通过调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 - 如果你只需推送一个自定义视频源，请将该参数设置为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe__return_values"></a>
 
@@ -152,9 +164,14 @@ _migration:
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/ios/class-externalvideoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe2__return_values"></a>
 
@@ -199,23 +216,32 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否使用外部视频源：
 
 - YES：使用外部视频源，SDK 准备接收外部视频帧。
 - NO：（默认）不使用外部视频源。
 
-### useTexture
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
 
 是否使用 Texture 格式的外部视频帧：
 
 - YES：使用 Texture 格式的外部视频帧。
 - NO：（默认）不使用 Texture 格式的外部视频帧。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 外部视频帧的类型，详见 [AgoraExternalVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-externalvideosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

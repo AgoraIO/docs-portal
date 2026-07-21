@@ -61,7 +61,9 @@ _migration:
 
 - new ReportService():[ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-report-eport-service)
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)Returns [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-report-eport-service)
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+Returns [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-report-eport-service)
 
 ## Properties
 
@@ -127,7 +129,7 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - get platform():"electron"|"web"
 
-- Returns "electron"|"web"
+Returns "electron"|"web"
 
 ## Methods
 
@@ -137,17 +139,33 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - buildBaseParams(ctype:string, src:string, m:string, metric:[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams), optional:[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams), event?:string, category?:string):["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="ctype" type="string" required />
+<Parameter name="src" type="string" required />
+<Parameter name="m" type="string" required />
+<Parameter name="metric" required>
 
-  - ctype: string
-  - src: string
-  - m: string
-  - metric: [ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
-  - optional: [ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
-  - Optional event: string
-  - Optional category: string
+<ParameterType>
 
-  Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="optional" required>
+
+<ParameterType>
+
+[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="event" type="string" optional />
+<Parameter name="category" type="string" optional />
+</ParameterList>
+
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="buildEventParams"></a>
 
@@ -155,14 +173,30 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - buildEventParams(event:string, category:string, metric:[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams), optional:[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)):["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="metric" required>
 
-  - event: string
-  - category: string
-  - metric: [ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
-  - optional: [ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+<ParameterType>
 
-  Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="optional" required>
+
+<ParameterType>
+
+[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="buildHBParams"></a>
 
@@ -170,7 +204,7 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - buildHBParams():["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
-- Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report).[ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="fetch"></a>
 
@@ -178,11 +212,21 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - fetch(params:[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)):Promise&lt;any&gt;
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)Parameters
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
 
-  - params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  Returns Promise&lt;any&gt;
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="getElapse"></a>
 
@@ -190,13 +234,13 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - getElapse(event:string, category:string, api?:string):number
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="api" type="string" optional />
+</ParameterList>
 
-  - event: string
-  - category: string
-  - Optional api: string
-
-  Returns number
+Returns number
 
 <a id="guardParams"></a>
 
@@ -204,7 +248,7 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - guardParams():undefined|true
 
-- Returns undefined|true
+Returns undefined|true
 
 <a id="report"></a>
 
@@ -212,14 +256,30 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - report(event:string, category:string, metric:[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams), optional?:[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="metric" required>
 
-  - event: string
-  - category: string
-  - metric: [ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
-  - Optional optional: [ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="optional" optional>
+
+<ParameterType>
+
+[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="reportEC"></a>
 
@@ -227,13 +287,21 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - reportEC(event:string, category:string, optional?:[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="optional" optional>
 
-  - event: string
-  - category: string
-  - Optional optional: [ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="reportElapse"></a>
 
@@ -241,13 +309,21 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - reportElapse(event:string, category:string, optional?:[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="optional" optional>
 
-  - event: string
-  - category: string
-  - Optional optional: [ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[ReportPointOptionalParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointOptionalParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="reportHB"></a>
 
@@ -255,7 +331,7 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - reportHB():Promise&lt;any&gt;
 
-- Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="reportHttp"></a>
 
@@ -263,16 +339,16 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - reportHttp(event:string, category:string, api:string, httpCode:number, result:boolean, errCode:string):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="api" type="string" required />
+<Parameter name="httpCode" type="number" required />
+<Parameter name="result" type="boolean" required />
+<Parameter name="errCode" type="string" required />
+</ParameterList>
 
-  - event: string
-  - category: string
-  - api: string
-  - httpCode: number
-  - result: boolean
-  - errCode: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="startTick"></a>
 
@@ -280,13 +356,13 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - startTick(event:string, category:string, api?:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="api" type="string" optional />
+</ParameterList>
 
-  - event: string
-  - category: string
-  - Optional api: string
-
-  Returns void
+Returns void
 
 <a id="tickerKey"></a>
 
@@ -294,10 +370,10 @@ shared: [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-ref
 
 - tickerKey(event:string, category:string, api?:string):string
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required />
+<Parameter name="category" type="string" required />
+<Parameter name="api" type="string" optional />
+</ParameterList>
 
-  - event: string
-  - category: string
-  - Optional api: string
-
-  Returns string
+Returns string

@@ -328,10 +328,10 @@ OptimizationMode: "motion"|"detail"
 
 RequiredOnlyOneOf&lt;T, K&gt;: object[K] extends infer O? object: never
 
-Type parameters
-
-- T
-- K:keyof T
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+<Parameter name="K" type="keyof T" />
+</ParameterList>
 
 <a id="sdk_codec"></a>
 
@@ -482,15 +482,17 @@ SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web
 
 - track-updated(track:MediaStreamTrack):void
 
-- 媒体轨道有更新时触发。
+媒体轨道有更新时触发。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="track" type="MediaStreamTrack" required>
 
-  - track: MediaStreamTrack
+媒体轨道。详见 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack)。
 
-    媒体轨道。详见 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack)。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 ## Variables
 
@@ -502,12 +504,62 @@ AUDIO_ENCODER_CONFIG_SETTINGS: object
 
 #### Type declaration
 
-- high_quality:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
-- high_quality_stereo:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
-- music_standard:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
-- speech_low_quality:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
-- speech_standard:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
-- standard_stereo:[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+<ParameterList title="Type declaration">
+<Parameter name="high_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="high_quality_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="music_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_low_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="standard_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 <a id="agorartc"></a>
 

@@ -35,13 +35,20 @@ public abstract int registerAudioEncodedFrameObserver(AudioEncodedFrameObserverC
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 编码音频的观察器配置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/android/class-audioencodedframeobserverconfig)。
 
-### observer
+</Parameter>
+<a id="observer"></a>
+<Parameter name="observer">
 
 编码音频数据的观察器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
 
@@ -76,26 +83,36 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 
 ### 参数
 
-### buffer
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样数。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 录制采样率（Hz）。
 
-### codecType
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
@@ -103,6 +120,9 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 - 8：LC-AAC。
 - 9：HE-AAC。
 - 11：HE-AAC v2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -136,26 +156,36 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 
 ### 参数
 
-### buffer
+<ParameterList>
+<a id="buffer-1"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-1"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样数。
 
-### channels
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-1"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-### codecType
+</Parameter>
+<a id="codectype-1"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
@@ -163,6 +193,9 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 - `8`：LC-AAC。
 - `9`：HE-AAC。
 - `11`：HE-AAC v2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -190,26 +223,36 @@ public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPer
 
 ### 参数
 
-### buffer
+<ParameterList>
+<a id="buffer-2"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-### samplesPerChannel
+</Parameter>
+<a id="samplesperchannel-2"></a>
+<Parameter name="samplesPerChannel">
 
 音频帧中每个声道的采样数。
 
-### channels
+</Parameter>
+<a id="channels-2"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-### samplesPerSec
+</Parameter>
+<a id="samplespersec-2"></a>
+<Parameter name="samplesPerSec">
 
 录制采样率（Hz）。
 
-### codecType
+</Parameter>
+<a id="codectype-2"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
@@ -217,6 +260,9 @@ public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPer
 - `8`：LC-AAC。
 - `9`：HE-AAC。
 - `11`：HE-AAC v2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

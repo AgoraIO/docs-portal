@@ -78,9 +78,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_pauseallchannelmediarelayex__return_values"></a>
 
@@ -162,9 +167,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_resumeallchannelmediarelayex__return_values"></a>
 
@@ -218,9 +228,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### configuration
+<ParameterList>
+<a id="configuration"></a>
+<Parameter name="configuration">
 
 跨频道媒体流转发参数配置。详见 [FChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediarelayconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__return_values"></a>
 
@@ -276,13 +291,20 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### configuration
+<ParameterList>
+<a id="configuration-1"></a>
+<Parameter name="configuration">
 
 跨频道媒体流转发参数配置。详见 [FChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediarelayconfiguration)。
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__return_values"></a>
 
@@ -368,9 +390,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_stopchannelmediarelayex__return_values"></a>
 
@@ -410,7 +437,9 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 跨频道媒体流转发状态：
 
@@ -419,7 +448,9 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - RELAY_STATE_RUNNING (2)：源频道主播成功加入目标频道。
 - RELAY_STATE_FAILURE (3)：发生异常，详见 code 中提示的错误信息。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 跨频道媒体流转发出错的错误码：
 
@@ -435,6 +466,9 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - RELAY_ERROR_INTERNAL_ERROR (9)：服务器内部出错。
 - RELAY_ERROR_SRC_TOKEN_EXPIRED (10)：源频道的 Token 已过期。
 - RELAY_ERROR_DEST_TOKEN_EXPIRED (11)：目标频道的 Token 已过期。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -14,201 +14,302 @@ _migration:
 
 ## 枚举值
 
-### ERR_OK
+<ParameterList>
+<a id="err_ok"></a>
+<Parameter name="ERR_OK">
 
 （0）：无错误。
 
-### ERR_FAILED
+</Parameter>
+<a id="err_failed"></a>
+<Parameter name="ERR_FAILED">
 
 （1）：通用错误，原因未分类。请重试该方法。
 
-### ERR_INVALID_ARGUMENT
+</Parameter>
+<a id="err_invalid_argument"></a>
+<Parameter name="ERR_INVALID_ARGUMENT">
 
 （2）：参数无效。例如，频道名包含非法字符。请重新设置参数。
 
-### ERR_NOT_READY
+</Parameter>
+<a id="err_not_ready"></a>
+<Parameter name="ERR_NOT_READY">
 
 （3）：SDK 未就绪。可能原因包括：[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化失败；调用方法时尚未加入频道；调用 [rate](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_rate) 或 [complain](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_complain) 时用户尚未离开频道；音频模块被禁用；程序不完整。
 
-### ERR_NOT_SUPPORTED
+</Parameter>
+<a id="err_not_supported"></a>
+<Parameter name="ERR_NOT_SUPPORTED">
 
 （4）：[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 不支持该请求。可能原因包括：内置加密模式设置错误，或 SDK 加载外部加密库失败。请检查加密模式设置或重新加载外部加密库。
 
-### ERR_REFUSED
+</Parameter>
+<a id="err_refused"></a>
+<Parameter name="ERR_REFUSED">
 
 （5）：请求被拒绝。可能原因包括：[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空；调用 [joinChannelEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 加入多个频道时频道名已被使用。
 
-### ERR_BUFFER_TOO_SMALL
+</Parameter>
+<a id="err_buffer_too_small"></a>
+<Parameter name="ERR_BUFFER_TOO_SMALL">
 
 （6）：缓冲区大小不足，无法存储返回数据。
 
-### ERR_NOT_INITIALIZED
+</Parameter>
+<a id="err_not_initialized"></a>
+<Parameter name="ERR_NOT_INITIALIZED">
 
 （7）：在 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化前调用了方法。请确保在调用该方法前已初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
 
-### ERR_INVALID_STATE
+</Parameter>
+<a id="err_invalid_state"></a>
+<Parameter name="ERR_INVALID_STATE">
 
 （8）：状态无效。
 
-### ERR_NO_PERMISSION
+</Parameter>
+<a id="err_no_permission"></a>
+<Parameter name="ERR_NO_PERMISSION">
 
 （9）：无访问权限。请检查应用是否已获取音视频设备权限。
 
-### ERR_TIMEDOUT
+</Parameter>
+<a id="err_timedout"></a>
+<Parameter name="ERR_TIMEDOUT">
 
 （10）：请求超时。部分 API 调用需要 SDK 返回执行结果，若超过 10 秒未返回，则触发该错误。
 
-### ERR_CANCELED
+</Parameter>
+<a id="err_canceled"></a>
+<Parameter name="ERR_CANCELED">
 
 （11）：请求被取消。该错误仅用于内部，不通过任何方法或回调返回给应用。
 
-### ERR_TOO_OFTEN
+</Parameter>
+<a id="err_too_often"></a>
+<Parameter name="ERR_TOO_OFTEN">
 
 （12）：方法调用过于频繁。该错误仅用于内部，不通过任何方法或回调返回给应用。
 
-### ERR_BIND_SOCKET
+</Parameter>
+<a id="err_bind_socket"></a>
+<Parameter name="ERR_BIND_SOCKET">
 
 （13）：SDK 绑定网络 socket 失败。该错误仅用于内部，不通过任何方法或回调返回给应用。
 
-### ERR_NET_DOWN
+</Parameter>
+<a id="err_net_down"></a>
+<Parameter name="ERR_NET_DOWN">
 
 （14）：网络不可用。该错误仅用于内部，不通过任何方法或回调返回给应用。
 
-### ERR_JOIN_CHANNEL_REJECTED
+</Parameter>
+<a id="err_join_channel_rejected"></a>
+<Parameter name="ERR_JOIN_CHANNEL_REJECTED">
 
 （17）：加入频道请求被拒绝。可能原因包括：用户已在频道中；调用 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 后未调用 [stopEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_stopechotest) 就尝试加入频道。
 
-### ERR_LEAVE_CHANNEL_REJECTED
+</Parameter>
+<a id="err_leave_channel_rejected"></a>
+<Parameter name="ERR_LEAVE_CHANNEL_REJECTED">
 
 （18）：离开频道失败。可能原因包括：调用 `leaveChannel` 前用户已离开频道；在加入频道前调用了 `leaveChannel`。
 
-### ERR_ALREADY_IN_USE
+</Parameter>
+<a id="err_already_in_use"></a>
+<Parameter name="ERR_ALREADY_IN_USE">
 
 （19）：资源已被使用。
 
-### ERR_ABORTED
+</Parameter>
+<a id="err_aborted"></a>
+<Parameter name="ERR_ABORTED">
 
 （20）：请求被 SDK 放弃，可能由于请求发送过于频繁。
 
-### ERR_INIT_NET_ENGINE
+</Parameter>
+<a id="err_init_net_engine"></a>
+<Parameter name="ERR_INIT_NET_ENGINE">
 
 （21）：[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化失败并崩溃，可能由于特定 Windows 防火墙设置导致。
 
-### ERR_RESOURCE_LIMITED
+</Parameter>
+<a id="err_resource_limited"></a>
+<Parameter name="ERR_RESOURCE_LIMITED">
 
 （22）：SDK 分配资源失败，可能由于应用使用了过多系统资源或系统资源不足。
 
-### ERR_INVALID_CHANNEL_NAME
+</Parameter>
+<a id="err_invalid_channel_name"></a>
+<Parameter name="ERR_INVALID_CHANNEL_NAME">
 
 （102）：指定的频道名无效。可能的原因是参数类型不正确。请使用有效的频道名重新加入频道。
 
-### ERR_NO_SERVER_RESOURCES
+</Parameter>
+<a id="err_no_server_resources"></a>
+<Parameter name="ERR_NO_SERVER_RESOURCES">
 
 （103）：无法获取指定区域的服务器资源。初始化 IRtcEngine 时请尝试使用其他区域。
 
-### ERR_TOKEN_EXPIRED
+</Parameter>
+<a id="err_token_expired"></a>
+<Parameter name="ERR_TOKEN_EXPIRED">
 
 （109）：当前 Token 已过期。请在服务器上申请新的 Token，并调用 renewToken 方法。
 
-### ERR_INVALID_TOKEN
+</Parameter>
+<a id="err_invalid_token"></a>
+<Parameter name="ERR_INVALID_TOKEN">
 
 （110）：无效的 Token。常见原因包括：
 
 - 在声网控制台启用了 App 证书，但代码仍使用 App ID 进行鉴权。启用 App 证书后，项目必须使用 Token 鉴权。
 - 用于生成 Token 的 uid 与加入频道时使用的 uid 不一致。
 
-### ERR_CONNECTION_INTERRUPTED
+</Parameter>
+<a id="err_connection_interrupted"></a>
+<Parameter name="ERR_CONNECTION_INTERRUPTED">
 
 （111）：网络连接中断。建立连接后，如果客户端实例与服务器断开连接超过 4 秒，SDK 会触发该回调。
 
-### ERR_CONNECTION_LOST
+</Parameter>
+<a id="err_connection_lost"></a>
+<Parameter name="ERR_CONNECTION_LOST">
 
 （112）：网络连接丢失。连接中断后，如果客户端实例在 10 秒内无法重新连接到声网边缘服务器，会触发该错误。
 
-### ERR_NOT_IN_CHANNEL
+</Parameter>
+<a id="err_not_in_channel"></a>
+<Parameter name="ERR_NOT_IN_CHANNEL">
 
 （113）：调用 sendStreamMessage 方法时，用户不在频道中。
 
-### ERR_SIZE_TOO_LARGE
+</Parameter>
+<a id="err_size_too_large"></a>
+<Parameter name="ERR_SIZE_TOO_LARGE">
 
 （114）：调用 sendStreamMessage 方法时，数据大小超过 1 KB。
 
-### ERR_BITRATE_LIMIT
+</Parameter>
+<a id="err_bitrate_limit"></a>
+<Parameter name="ERR_BITRATE_LIMIT">
 
 （115）：调用 sendStreamMessage 方法时，数据比特率超过 6 KB/s。
 
-### ERR_TOO_MANY_DATA_STREAMS
+</Parameter>
+<a id="err_too_many_data_streams"></a>
+<Parameter name="ERR_TOO_MANY_DATA_STREAMS">
 
 （116）：调用 createDataStream(int* streamId, const DataStreamConfig& config) 方法时，创建了超过五个数据流。
 
-### ERR_STREAM_MESSAGE_TIMEOUT
+</Parameter>
+<a id="err_stream_message_timeout"></a>
+<Parameter name="ERR_STREAM_MESSAGE_TIMEOUT">
 
 （117）：数据流传输超时。
 
-### ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED
+</Parameter>
+<a id="err_set_client_role_not_authorized"></a>
+<Parameter name="ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED">
 
 （119）：切换角色失败。请尝试重新加入频道。
 
-### ERR_DECRYPTION_FAILED
+</Parameter>
+<a id="err_decryption_failed"></a>
+<Parameter name="ERR_DECRYPTION_FAILED">
 
 （120）：媒体流解密失败。用户可能使用了错误的密码加入频道。请检查输入的密码，或建议用户重新加入频道。
 
-### ERR_INVALID_USER_ID
+</Parameter>
+<a id="err_invalid_user_id"></a>
+<Parameter name="ERR_INVALID_USER_ID">
 
 （121）：用户 ID 无效。
 
-### ERR_DATASTREAM_DECRYPTION_FAILED
+</Parameter>
+<a id="err_datastream_decryption_failed"></a>
+<Parameter name="ERR_DATASTREAM_DECRYPTION_FAILED">
 
 （122）：数据流解密失败。用户可能使用了错误的密码加入频道。请检查输入的密码，或建议用户重新加入频道。
 
-### ERR_CLIENT_IS_BANNED_BY_SERVER
+</Parameter>
+<a id="err_client_is_banned_by_server"></a>
+<Parameter name="ERR_CLIENT_IS_BANNED_BY_SERVER">
 
 （123）：用户被服务器封禁。
 
-### ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH
+</Parameter>
+<a id="err_encrypted_stream_not_allowed_publish"></a>
+<Parameter name="ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH">
 
 （130）：SDK 不支持将加密流推送到 CDN。
 
-### ERR_PCMSEND_FORMAT
+</Parameter>
+<a id="err_pcmsend_format"></a>
+<Parameter name="ERR_PCMSEND_FORMAT">
 
 （200）：不支持的 PCM 格式。
 
-### ERR_PCMSEND_BUFFEROVERFLOW
+</Parameter>
+<a id="err_pcmsend_bufferoverflow"></a>
+<Parameter name="ERR_PCMSEND_BUFFEROVERFLOW">
 
 （201）：缓冲区溢出，PCM 发送速率过快。
 
-### ERR_LOAD_MEDIA_ENGINE
+</Parameter>
+<a id="err_load_media_engine"></a>
+<Parameter name="ERR_LOAD_MEDIA_ENGINE">
 
 （1001）：加载媒体引擎失败。
 
-### ERR_ADM_GENERAL_ERROR
+</Parameter>
+<a id="err_adm_general_error"></a>
+<Parameter name="ERR_ADM_GENERAL_ERROR">
 
 （1005）：发生通用错误（无具体原因）。请检查音频设备是否被其他应用占用，或尝试重新加入频道。
 
-### ERR_ADM_INIT_PLAYOUT
+</Parameter>
+<a id="err_adm_init_playout"></a>
+<Parameter name="ERR_ADM_INIT_PLAYOUT">
 
 （1008）：初始化播放设备时发生错误。请检查播放设备是否被其他应用占用，或尝试重新加入频道。
 
-### ERR_ADM_START_PLAYOUT
+</Parameter>
+<a id="err_adm_start_playout"></a>
+<Parameter name="ERR_ADM_START_PLAYOUT">
 
 （1009）：启动播放设备时发生错误。请检查播放设备。
 
-### ERR_ADM_STOP_PLAYOUT
+</Parameter>
+<a id="err_adm_stop_playout"></a>
+<Parameter name="ERR_ADM_STOP_PLAYOUT">
 
 （1010）：停止播放设备时发生错误。
 
-### ERR_ADM_INIT_RECORDING
+</Parameter>
+<a id="err_adm_init_recording"></a>
+<Parameter name="ERR_ADM_INIT_RECORDING">
 
 （1011）：初始化录制设备时发生错误。请检查录制设备，或尝试重新加入频道。
 
-### ERR_ADM_START_RECORDING
+</Parameter>
+<a id="err_adm_start_recording"></a>
+<Parameter name="ERR_ADM_START_RECORDING">
 
 （1012）：启动录制设备时发生错误。请检查录制设备。
 
-### ERR_ADM_STOP_RECORDING
+</Parameter>
+<a id="err_adm_stop_recording"></a>
+<Parameter name="ERR_ADM_STOP_RECORDING">
 
 （1013）：停止录制设备时发生错误。
 
-### ERR_VDM_CAMERA_NOT_AUTHORIZED
+</Parameter>
+<a id="err_vdm_camera_not_authorized"></a>
+<Parameter name="ERR_VDM_CAMERA_NOT_AUTHORIZED">
 
 （1501）：未授予访问摄像头的权限。请检查是否已授予摄像头权限。
+
+</Parameter>
+</ParameterList>

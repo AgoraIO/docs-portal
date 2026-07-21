@@ -13,7 +13,9 @@ _migration:
 
 ### Type parameters
 
-- E
+<ParameterList>
+<Parameter name="E" />
+</ParameterList>
 
 ### Hierarchy
 
@@ -42,26 +44,28 @@ _migration:
 
 - new BatchRecord&lt;E&gt;(_batchId:number, _total?:number, _current?:number, _cb?:(dataChunk:E[])=&gt;void):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="E" />
+</ParameterList>
 
-  - E
+<ParameterList title="Parameters">
+<Parameter name="_batchId" type="number" required />
+<Parameter name="_total" type="number" optional />
+<Parameter name="_current" type="number" optional />
+<Parameter name="_cb" type="(dataChunk:E[])= &amp; gt;void" optional>
 
-  Parameters
+- - (dataChunk:E[]):void
 
-  - _batchId: number
-  - Optional _total: number
-  - Optional _current: number
-  - Optional _cb: (dataChunk:E[])=&gt;void
+  <ParameterList title="Parameters">
+  <Parameter name="dataChunk" type="E[]" required />
+  </ParameterList>
 
-    - - (dataChunk:E[]):void
+  Returns void
 
-      - Parameters
+</Parameter>
+</ParameterList>
 
-        - dataChunk: E[]
-
-        Returns void
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
 ## Methods
 
@@ -71,11 +75,11 @@ _migration:
 
 - addChunk(data:E):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="data" type="E" required />
+</ParameterList>
 
-  - data: E
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
 <a id="execute"></a>
 
@@ -83,7 +87,7 @@ _migration:
 
 - execute():void
 
-- Returns void
+Returns void
 
 <a id="setCallback"></a>
 
@@ -91,19 +95,21 @@ _migration:
 
 - setCallback(cb:(dataChunk:E[])=&gt;void):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(dataChunk:E[])= &amp; gt;void" required>
 
-  - cb: (dataChunk:E[])=&gt;void
+- - (dataChunk:E[]):void
 
-    - - (dataChunk:E[]):void
+  <ParameterList title="Parameters">
+  <Parameter name="dataChunk" type="E[]" required />
+  </ParameterList>
 
-      - Parameters
+  Returns void
 
-        - dataChunk: E[]
+</Parameter>
+</ParameterList>
 
-        Returns void
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
 <a id="setCurrent"></a>
 
@@ -111,11 +117,11 @@ _migration:
 
 - setCurrent(current:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="current" type="number" required />
+</ParameterList>
 
-  - current: number
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
 <a id="setTotal"></a>
 
@@ -123,11 +129,11 @@ _migration:
 
 - setTotal(total:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="total" type="number" required />
+</ParameterList>
 
-  - total: number
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;E&gt;
 
 <a id="getBatchRecord"></a>
 
@@ -135,12 +141,12 @@ _migration:
 
 - getBatchRecord&lt;T&gt;(batchId:number):[BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;T&gt;
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+</ParameterList>
 
-  - T
+<ParameterList title="Parameters">
+<Parameter name="batchId" type="number" required />
+</ParameterList>
 
-  Parameters
-
-  - batchId: number
-
-  Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;T&gt;
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record)&lt;T&gt;

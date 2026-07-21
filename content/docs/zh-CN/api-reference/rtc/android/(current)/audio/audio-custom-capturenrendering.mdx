@@ -37,16 +37,23 @@ public abstract int adjustCustomAudioPlayoutVolume(int trackId, int volume);
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音频源的音量，取值范围为 0 到 100。
 
 - 0：静音。
 - 100：原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
 
@@ -85,16 +92,23 @@ public abstract int adjustCustomAudioPublishVolume(int trackId, int volume);
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音频源的音量，取值范围为 0 到 100。
 
 - 0：静音。
 - 100：原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
 
@@ -137,7 +151,9 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 
 ### 参数
 
-### trackType
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
 
 自定义音频轨道的类型，详见 [AudioTrackType](/zh-CN/api-reference/rtc/android/enum-audiotracktype)。
 
@@ -145,9 +161,14 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 注： 如果该参数设置为 `AUDIO_TRACK_DIRECT`，则在调用 `joinChannel` 加入频道时，必须将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 false，否则加入频道会失败并返回错误码 -2。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 自定义音频轨道的配置，详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/android/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createcustomaudiotrack__return_values"></a>
 
@@ -180,9 +201,14 @@ public abstract int destroyCustomAudioTrack(int trackId);
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
 
 在 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 中返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomaudiotrack__return_values"></a>
 
@@ -221,16 +247,23 @@ public abstract int enableCustomAudioLocalPlayback(int trackId, boolean enabled)
 
 ### 参数
 
-### trackId
+<ParameterList>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
 
 音频轨道 ID，需设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
 
-### enabled
+</Parameter>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否播放外部音频源：
 
 - true：播放外部音频源。
 - false：（默认）不播放外部音频源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
 
@@ -280,13 +313,20 @@ public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 输出参数，要拉取的远端音频数据。
 
-### lengthInByte
+</Parameter>
+<a id="lengthinbyte"></a>
+<Parameter name="lengthInByte">
 
 数据长度（字节）。该值与音频时长，以及在 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 中设置的 `sampleRate` 和 `channels` 参数有关。计算公式为：`lengthInByte` = `sampleRate` / 1000 × 2 × `channels` × 音频时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pullaudioframe__return_values"></a>
 
@@ -331,15 +371,22 @@ public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data-1"></a>
+<Parameter name="data">
 
 用于接收拉取的远端音频数据。详见 `ByteBuffer`。
 
-### lengthInByte
+</Parameter>
+<a id="lengthinbyte-1"></a>
+<Parameter name="lengthInByte">
 
 远端音频数据的字节长度。该值与音频时长，以及在 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 中设置的 `sampleRate` 和 `channels` 参数有关。
 
 `lengthInByte` = `sampleRate` / 1000 × 2 × `channels` × 音频时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pullaudioframe2__return_values"></a>
 
@@ -386,15 +433,21 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 
 ### 参数
 
-### data
+<ParameterList>
+<a id="data-2"></a>
+<Parameter name="data">
 
 外部音频数据。
 
-### timestamp
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
 
 外部音频帧的时间戳（毫秒）。该参数为必填项，可用于还原采集音频帧的顺序，或在涉及视频的场景中（包括使用外部视频源的场景）实现音视频同步。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 外部音频源的采样率（Hz），可设置为以下值：
 
@@ -404,20 +457,29 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 - `44100`
 - `48000`。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 外部音频源的声道数，可设置为以下值：
 
 - `1`：单声道。
 - `2`：立体声。
 
-### bytesPerSample
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
 
 每个采样点的字节数。
 
-### trackId
+</Parameter>
+<a id="trackid-4"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。请设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushaudioframe2__return_values"></a>
 
@@ -468,14 +530,18 @@ public abstract int setExternalAudioSink(boolean enabled, int sampleRate, int ch
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用外部音频渲染器：
 
 - true：启用外部音频渲染器。
 - false：（默认）关闭外部音频渲染器。
 
-### sampleRate
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 外部音频渲染器的采样率（Hz），可设置为以下值：
 
@@ -484,12 +550,17 @@ public abstract int setExternalAudioSink(boolean enabled, int sampleRate, int ch
 - 44100
 - 48000
 
-### channels
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 外部音频渲染器的声道数：
 
 - 1：单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalaudiosink__return_values"></a>
 
@@ -528,14 +599,18 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用外部音频源：
 
 - true：启用外部音频源。
 - false：（默认）禁用外部音频源。
 
-### sampleRate
+</Parameter>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 外部音频源的采样率（Hz），可设置为以下值：
 
@@ -545,12 +620,17 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 - 44100
 - 48000。
 
-### channels
+</Parameter>
+<a id="channels-2"></a>
+<Parameter name="channels">
 
 外部音频源的声道数：
 
 - 1：单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalaudiosource__return_values"></a>
 
@@ -593,14 +673,18 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否启用外部音频源：
 
 - true：启用外部音频源。
 - false：（默认）不启用外部音频源。
 
-### sampleRate
+</Parameter>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 外部音频源的采样率（Hz），可设置为以下值：
 
@@ -610,26 +694,35 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 - `44100`
 - `48000`。
 
-### channels
+</Parameter>
+<a id="channels-3"></a>
+<Parameter name="channels">
 
 外部音频源的声道数，可设置为以下值：
 
 - `1`：单声道。
 - `2`：立体声。
 
-### localPlayback
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
 
 是否播放外部音频源：
 
 - true：播放外部音频源。
 - false：（默认）不播放外部音频源。
 
-### publish
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否向远端用户发布音频：
 
 - true：（默认）发布音频到远端用户。
 - false：不发布音频到远端用户。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalaudiosource2__return_values"></a>
 

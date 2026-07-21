@@ -58,11 +58,13 @@ _migration:
 
 - new StreamMediaPlayer(_streamUrl:string):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
 
-  - _streamUrl: string
+<ParameterList title="Parameters">
+<Parameter name="_streamUrl" type="string" required />
+</ParameterList>
 
-  Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
 ## Properties
 
@@ -80,7 +82,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - get mediaElement():undefined|HTMLMediaElement
 
-- Returns undefined|HTMLMediaElement
+Returns undefined|HTMLMediaElement
 
 ## Methods
 
@@ -90,7 +92,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - clearDelayTask():void
 
-- Returns void
+Returns void
 
 <a id="dispose"></a>
 
@@ -98,20 +100,24 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - dispose():void
 
-- Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[dispose](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#dispose)Returns void
+Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[dispose](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#dispose)
+
+Returns void
 
 <a id="emit"></a>
 
 ### emit
 
-- emit(evt:string, ...args:any[]):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+- emit(evt:string,...args:any[]):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)Parameters
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
 
-  - evt: string
-  - Rest...args: any[]
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
 
-  Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
 <a id="off"></a>
 
@@ -119,12 +125,22 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - off(evt:[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events), cb:CallableFunction):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
 
-  - evt: [MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" required>
 
-  Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+<ParameterType>
+
+[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
 <a id="on"></a>
 
@@ -132,12 +148,22 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - on(evt:[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events), cb:CallableFunction):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
 
-  - evt: [MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" required>
 
-  Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+<ParameterType>
+
+[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
 <a id="once"></a>
 
@@ -145,12 +171,22 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - once(evt:[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events), cb:CallableFunction):[StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
-- Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)Parameters
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
 
-  - evt: [MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
-  - cb: CallableFunction
+<ParameterList title="Parameters">
+<Parameter name="evt" required>
 
-  Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
+<ParameterType>
+
+[MediaPlayerEvents](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-player-type-edia-player-events)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+Returns [StreamMediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-media-player-stream-media-player-tream-media-player)
 
 <a id="play"></a>
 
@@ -158,12 +194,14 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - play(video:boolean, audio:boolean):void
 
-- Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[play](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#play)Parameters
+Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[play](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#play)
 
-  - video: boolean
-  - audio: boolean
+<ParameterList title="Parameters">
+<Parameter name="video" type="boolean" required />
+<Parameter name="audio" type="boolean" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="playAttempt"></a>
 
@@ -171,7 +209,7 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - playAttempt():void
 
-- Returns void
+Returns void
 
 <a id="removeAllEventListeners"></a>
 
@@ -179,7 +217,9 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - removeAllEventListeners():void
 
-- Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)Returns void
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+Returns void
 
 <a id="setView"></a>
 
@@ -187,11 +227,11 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - setView(view:HTMLElement):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="view" type="HTMLElement" required />
+</ParameterList>
 
-  - view: HTMLElement
-
-  Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -199,7 +239,9 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - stop():void
 
-- Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#stop)Returns void
+Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#stop)
+
+Returns void
 
 <a id="takeSnapshot"></a>
 
@@ -207,4 +249,6 @@ logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-cla
 
 - takeSnapshot():Blob
 
-- Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[takeSnapshot](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#takeSnapshot)Returns Blob
+Implementation of [MediaPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player).[takeSnapshot](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-player-type-edia-player#takeSnapshot)
+
+Returns Blob

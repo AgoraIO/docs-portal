@@ -48,22 +48,46 @@ _migration:
 
 构造函数。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="packetOnly">
 
-| packetOnly | 是否仅订阅音频包：1: 仅订阅音频包。SDK 不会对音频进行解码。 0: (默认) SDK 自动对音频进行解码。 |
-| --- | --- |
+是否仅订阅音频包：
+
+- 1: 仅订阅音频包。SDK 不会对音频进行解码。
+- 0: (默认) SDK 自动对音频进行解码。
+
+</Parameter>
+</ParameterList>
 
 :::info[注解]
 如果该参数设为 1，结构体中的其他参数无效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="pcmDataOnly">
 
-| pcmDataOnly | 是否仅订阅 PCM 数据：1: 仅订阅 PCM 数据。 0:（默认）SDK 自动对远端音频流进行编码。 |
-| --- | --- |
-| bytesPerSample | 每个音频采样的字节数。 |
-| numberOfChannels | 音频声道数。 |
-| sampleRateHz | 音频采样率（Hz）。 |
+是否仅订阅 PCM 数据：
+
+- 1: 仅订阅 PCM 数据。
+- 0:（默认）SDK 自动对远端音频流进行编码。
+
+</Parameter>
+<Parameter name="bytesPerSample">
+
+每个音频采样的字节数。
+
+</Parameter>
+<Parameter name="numberOfChannels">
+
+音频声道数。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+音频采样率（Hz）。
+
+</Parameter>
+</ParameterList>
 
 <a id="doc-func-members"></a>
 

@@ -41,11 +41,19 @@ _migration:
 
 - new EduUser(user:[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)):[EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="user" required>
 
-  - user: [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+<ParameterType>
 
-  Returns [EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
+[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
 
 ## Properties
 
@@ -81,9 +89,19 @@ userUuid: string
 
 - toPlainObject():\{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);userUuid:string\}
 
-- Returns \{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);userUuid:string\}
+Returns \{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);userUuid:string\}
 
-  - userName:string
-  - userProperties:Map&lt;string,any&gt;
-  - userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
-  - userUuid:string
+<ParameterList title="Returns &#123; userName: string; userProperties: Map&lt;string, any&gt;; userRole: EduRoleTypeEnum; userUuid: string &#125;">
+<Parameter name="userName" type="string" required />
+<Parameter name="userProperties" type="Map &amp; lt;string,any &amp; gt;" required />
+<Parameter name="userRole" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="userUuid" type="string" required />
+</ParameterList>

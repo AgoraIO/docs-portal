@@ -37,8 +37,26 @@ AgoraRteCustomMessage: \{fromUser:[AgoraRteUser](/zh-CN/api-reference/flexible-c
 
 #### Type declaration
 
-- fromUser:[AgoraRteUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-processor-type#AgoraRteUser)
-- payload:[AgoraRteCustomMessagePayload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessagePayload)
+<ParameterList title="Type declaration">
+<Parameter name="fromUser" required>
+
+<ParameterType>
+
+[AgoraRteUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-processor-type#AgoraRteUser)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="payload" required>
+
+<ParameterType>
+
+[AgoraRteCustomMessagePayload](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessagePayload)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 <a id="AgoraRteCustomMessageObserver"></a>
 
@@ -48,28 +66,50 @@ AgoraRteCustomMessageObserver: \{onReceiveChannelMessage:any;onReceivePeerMessag
 
 #### Type declaration
 
-- onReceiveChannelMessage:function
+<ParameterList title="Type declaration">
+<Parameter name="onReceiveChannelMessage" type="function" required>
 
-  - onReceiveChannelMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
+- onReceiveChannelMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
 
-  - 收到频道消息
+收到频道消息
 
-    Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" required>
 
-    - message: [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+<ParameterType>
 
-    Returns void
-- onReceivePeerMessage:function
+[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
 
-  - onReceivePeerMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
+</ParameterType>
 
-  - 收到点对点消息
+</Parameter>
+</ParameterList>
 
-    Parameters
+Returns void
 
-    - message: [AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+</Parameter>
+<Parameter name="onReceivePeerMessage" type="function" required>
 
-    Returns void
+- onReceivePeerMessage(message:[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)):void
+
+收到点对点消息
+
+<ParameterList title="Parameters">
+<Parameter name="message" required>
+
+<ParameterType>
+
+[AgoraRteCustomMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtm-type#AgoraRteCustomMessage)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
+
+</Parameter>
+</ParameterList>
 
 <a id="AgoraRteCustomMessagePayload"></a>
 
@@ -79,5 +119,7 @@ AgoraRteCustomMessagePayload: \{cmd:string;data:any\}
 
 #### Type declaration
 
-- cmd:string
-- data:any
+<ParameterList title="Type declaration">
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="any" required />
+</ParameterList>

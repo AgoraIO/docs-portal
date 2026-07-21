@@ -33,19 +33,27 @@ public static class AudioCaptureParameters {
 
 ## 属性
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 音频采样率（Hz）。默认值为 16000。
 
-### channels
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 音频声道数。默认值为 2，表示立体声。
 
-### captureSignalVolume
+</Parameter>
+<a id="capturesignalvolume"></a>
+<Parameter name="captureSignalVolume">
 
 采集的系统音频音量，取值范围为 [0, 100]。默认值为 100。
 
-### allowCaptureCurrentApp
+</Parameter>
+<a id="allowcapturecurrentapp"></a>
+<Parameter name="allowCaptureCurrentApp">
 
 :::note
 注： 该参数仅用于设置是否采集当前 App 的音频，不能控制采集到的 App 音频是否发布到频道中。你需要在调用 `joinChannel` 或 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 时通过 `options` 参数设置。
@@ -55,3 +63,6 @@ public static class AudioCaptureParameters {
 
 - true：（默认）采集当前 App 的音频。
 - false：不采集当前 App 的音频。
+
+</Parameter>
+</ParameterList>

@@ -38,11 +38,15 @@ public class RemoteVideoStats
 
 ## 属性
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID，指定是哪个用户的视频流。
 
-### delay
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 ### 弃用：
 
@@ -50,64 +54,95 @@ public class RemoteVideoStats
 
 延时（毫秒）。
 
-### e2eDelay
+</Parameter>
+<a id="e2edelay"></a>
+<Parameter name="e2eDelay">
 
 端到端视频延时（毫秒）。即，自远端用户视频采集起，至本地用户接收并渲染视频的总时长。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频流宽（像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频流高（像素）。
 
-### receivedBitrate
+</Parameter>
+<a id="receivedbitrate"></a>
+<Parameter name="receivedBitrate">
 
 （上次统计后）接收到的码率(Kbps)。
 
-### decoderOutputFrameRate
+</Parameter>
+<a id="decoderoutputframerate"></a>
+<Parameter name="decoderOutputFrameRate">
 
 远端视频解码器的输出帧率，单位为 fps。
 
-### rendererOutputFrameRate
+</Parameter>
+<a id="rendereroutputframerate"></a>
+<Parameter name="rendererOutputFrameRate">
 
 远端视频渲染器的输出帧率，单位为 fps。
 
-### frameLossRate
+</Parameter>
+<a id="framelossrate"></a>
+<Parameter name="frameLossRate">
 
 远端视频丢包率(%)。
 
-### packetLossRate
+</Parameter>
+<a id="packetlossrate"></a>
+<Parameter name="packetLossRate">
 
 远端视频在使用抗丢包技术之后的丢包率(%)。
 
-### rxStreamType
+</Parameter>
+<a id="rxstreamtype"></a>
+<Parameter name="rxStreamType">
 
 视频流类型，大流或小流。详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videostreamtype)。
 
-### totalFrozenTime
+</Parameter>
+<a id="totalfrozentime"></a>
+<Parameter name="totalFrozenTime">
 
 远端用户在加入频道后发生视频卡顿的累计时长（ms）。通话过程中，视频帧率设置不低于 5 fps 时，连续渲染的两帧视频之间间隔超过 500 ms，则记为一次视频卡顿。
 
-### frozenRate
+</Parameter>
+<a id="frozenrate"></a>
+<Parameter name="frozenRate">
 
 远端用户在加入频道后发生视频卡顿的累计时长占视频总有效时长的百分比 (%)。视频有效时长是指远端用户加入频道后视频未被停止发送或禁用的时长。
 
-### totalActiveTime
+</Parameter>
+<a id="totalactivetime"></a>
+<Parameter name="totalActiveTime">
 
 视频有效时长（毫秒）。
 
 视频总有效时长是远端用户或主播加入频道后，既没有停止发送视频流，也没有禁用视频模块的通话时长。
 
-### publishDuration
+</Parameter>
+<a id="publishduration"></a>
+<Parameter name="publishDuration">
 
 远端视频流的累计发布时长（毫秒）。
 
-### avSyncTimeMs
+</Parameter>
+<a id="avsynctimems"></a>
+<Parameter name="avSyncTimeMs">
 
 音频超前视频的时间 (ms)。
 
 :::caution
 注意： 如果为负值，则代表音频落后于视频。
 :::
+
+</Parameter>
+</ParameterList>

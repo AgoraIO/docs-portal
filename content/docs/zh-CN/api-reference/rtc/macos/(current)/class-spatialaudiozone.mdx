@@ -30,39 +30,57 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioZone : NSObje
 
 ## 属性
 
-### zoneSetId
+<ParameterList>
+<a id="zonesetid"></a>
+<Parameter name="zoneSetId">
 
 隔音区域的 ID。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 隔音区域的空间中心点。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-### forward
+</Parameter>
+<a id="forward"></a>
+<Parameter name="forward">
 
 从 `position` 开始的前向单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-### right
+</Parameter>
+<a id="right"></a>
+<Parameter name="right">
 
 从 `position` 开始的右向单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-### up
+</Parameter>
+<a id="up"></a>
+<Parameter name="up">
 
 从 `position` 开始的上向单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-### forwardLength
+</Parameter>
+<a id="forwardlength"></a>
+<Parameter name="forwardLength">
 
 将整个隔音区域视为一个立方体，该参数表示前向边的长度，单位为游戏引擎的单位长度。
 
-### rightLength
+</Parameter>
+<a id="rightlength"></a>
+<Parameter name="rightLength">
 
 将整个隔音区域视为一个立方体，该参数表示右向边的长度，单位为游戏引擎的单位长度。
 
-### upLength
+</Parameter>
+<a id="uplength"></a>
+<Parameter name="upLength">
 
 将整个隔音区域视为一个立方体，该参数表示上向边的长度，单位为游戏引擎的单位长度。
 
-### audioAttenuation
+</Parameter>
+<a id="audioattenuation"></a>
+<Parameter name="audioAttenuation">
 
 当隔音区域内的用户与外部用户通信时的声音衰减系数。取值范围为 [0, 1]，具体如下：
 
@@ -70,3 +88,6 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioZone : NSObje
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离大于真实环境。
 - 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `audioAttenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
+
+</Parameter>
+</ParameterList>

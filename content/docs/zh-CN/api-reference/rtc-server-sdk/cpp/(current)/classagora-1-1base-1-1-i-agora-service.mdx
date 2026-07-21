@@ -40,10 +40,13 @@ _migration:
 
 初始化 [IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | 初始化配置。 详见 [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration)。 |
-| --- | --- |
+初始化配置。 详见 [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -77,11 +80,18 @@ _migration:
 
 设置预设音效。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="scenario">
 
-| scenario | 预设音效场景： [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+预设音效场景： [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -109,12 +119,23 @@ _migration:
 - 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
 - 新建 `agorasdk.log` 文件。 `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="filePath">
 
-| filePath | 日志文件的完整路径。该日志文件为 UTF-8 编码。 |
-| --- | --- |
-| fileSize | 单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 1,024 KB。 如果你将 `fileSize` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSize` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+日志文件的完整路径。该日志文件为 UTF-8 编码。
+
+</Parameter>
+<Parameter name="fileSize">
+
+单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 1,024 KB。 如果你将 `fileSize` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSize` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -134,11 +155,18 @@ _migration:
 
 例如，你选择 WARNING 级别，就可以看到在 CRITICAL、ERROR 和 WARNING 级别上的所有日志信息。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="filters">
 
-| filters | 日志过滤等级。详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1commons#ae089652ab7c76a97e26ff5b2c8cd17d9)。 |
-| --- | --- |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+日志过滤等级。详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1commons#ae089652ab7c76a97e26ff5b2c8cd17d9)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -154,10 +182,13 @@ _migration:
 
 创建一个 [RtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="cfg">
 
-| cfg | RTC 连接配置： [RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration)。 |
-| --- | --- |
+RTC 连接配置： [RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -173,10 +204,13 @@ _migration:
 
 创建一个 [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="cfg">
 
-| cfg | CDN 连接配置： [RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration)。 |
-| --- | --- |
+CDN 连接配置： [RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -210,10 +244,13 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 该轨道对象可用于发送来 PCM 格式的音频数据。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioSource">
 
-| audioSource | PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。 |
-| --- | --- |
+PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -231,10 +268,13 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 该轨道对象可用于发送来 PCM 格式的音频数据。音频数据不参与混音。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioSource">
 
-| audioSource | PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。 |
-| --- | --- |
+PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -252,12 +292,23 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 该轨道对象可用于发送已编码的音频数据，例如 Opus 格式的编码数据。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioSource">
 
-| audioSource | 发送编码音频数据的音频源： [IAudioEncoderFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender)。 |
-| --- | --- |
-| mixMode | 已编码的音频在频道中的混音模式: [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87)。 |
-| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+发送编码音频数据的音频源： [IAudioEncoderFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender)。
+
+</Parameter>
+<Parameter name="mixMode">
+
+已编码的音频在频道中的混音模式: [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -289,11 +340,18 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 创建之后，你可以将该轨道添加到合图器进行合图。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoSource">
 
-| videoSource | 合图器: [IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source)。 |
-| --- | --- |
-| id | 流 ID。 |
+合图器: [IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source)。
+
+</Parameter>
+<Parameter name="id">
+
+流 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -311,11 +369,18 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 该轨道对象可用于发送 YUV 格式视频数据。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoSource">
 
-| videoSource | YUV 格式视频源对象 [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender)。 |
-| --- | --- |
-| id | 视频轨道的频道 ID。 |
+YUV 格式视频源对象 [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender)。
+
+</Parameter>
+<Parameter name="id">
+
+视频轨道的频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -333,12 +398,23 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 该轨道对象可用于发送已编码的视频数据，例如 H.264 或 VP8 格式的编码数据。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoSource">
 
-| videoSource | 发送编码视频数据的视频源。详见 [IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender)。 |
-| --- | --- |
-| options | 视频轨道设置。 |
-| id | 视频轨道的频道 ID。 |
+发送编码视频数据的视频源。详见 [IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender)。
+
+</Parameter>
+<Parameter name="options">
+
+视频轨道设置。
+
+</Parameter>
+<Parameter name="id">
+
+视频轨道的频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 

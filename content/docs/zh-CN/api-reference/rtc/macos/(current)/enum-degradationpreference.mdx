@@ -14,19 +14,27 @@ _migration:
 
 ## 枚举值
 
-### AgoraDegradationMaintainAuto
+<ParameterList>
+<a id="agoradegradationmaintainauto"></a>
+<Parameter name="AgoraDegradationMaintainAuto">
 
 （-1）：（默认）自动模式。SDK 会根据设置的视频场景自动选择 `AgoraDegradationMaintainFramerate`、`AgoraDegradationBalanced` 或 `AgoraDegradationMaintainResolution`，以实现最佳的整体用户体验（QoE）。
 
-### AgoraDegradationMaintainQuality
+</Parameter>
+<a id="agoradegradationmaintainquality"></a>
+<Parameter name="AgoraDegradationMaintainQuality">
 
 （0）：在带宽受限的视频编码过程中，优先降低视频帧率以保持视频分辨率。适用于对视频画质要求较高的场景。
 
-### AgoraDegradationMaintainFramerate
+</Parameter>
+<a id="agoradegradationmaintainframerate"></a>
+<Parameter name="AgoraDegradationMaintainFramerate">
 
 （1）：在带宽受限的视频编码过程中，优先降低视频分辨率以保持视频帧率。适用于对视频流畅性要求较高且可接受画质降低的场景。
 
-### AgoraDegradationBalanced
+</Parameter>
+<a id="agoradegradationbalanced"></a>
+<Parameter name="AgoraDegradationBalanced">
 
 （2）：在带宽受限的视频编码过程中，同时降低视频帧率和分辨率。相比 `AgoraDegradationMaintainQuality` 和 `AgoraDegradationMaintainFramerate`，该模式的降级程度更小，适用于对流畅性和画质均有要求的场景。
 
@@ -34,10 +42,17 @@ _migration:
 注： 发送端视频分辨率可能会发生变化，接收端需处理该问题。详见 [rtcEngine\:videoSizeChangedOfSourceType\:uid\:size\:rotation:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
 :::
 
-### AgoraDegradationMaintainResolution
+</Parameter>
+<a id="agoradegradationmaintainresolution"></a>
+<Parameter name="AgoraDegradationMaintainResolution">
 
 （3）：在带宽受限的视频编码过程中，优先降低视频帧率以保持视频分辨率。适用于对视频画质要求较高的场景。
 
-### AgoraDegradationDisable
+</Parameter>
+<a id="agoradegradationdisable"></a>
+<Parameter name="AgoraDegradationDisable">
 
 （100）：禁用 VQC 调整。
+
+</Parameter>
+</ParameterList>

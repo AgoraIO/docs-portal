@@ -61,7 +61,9 @@ _migration:
 
 - new AgoraRteService():[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
 
 ## Properties
 
@@ -121,14 +123,18 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - deleteBatchUserProperties(__namedParameters:\{data:\{cause?:any;properties:string[];userUuid:string\}[];roomUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;data:\&#123;cause?:any;properties:string[];userUuid:string\&#125;[];roomUuid:string\&#125;" required>
 
-  - __namedParameters: \{data:\{cause?:any;properties:string[];userUuid:string\}[];roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;cause?:any;properties:string[];userUuid:string\&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - data:\{cause?:any;properties:string[];userUuid:string\}[]
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteRoomProperties"></a>
 
@@ -136,15 +142,19 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - deleteRoomProperties(__namedParameters:\{cause?:unknown;properties:string[];roomUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;cause?:unknown;properties:string[];roomUuid:string\&#125;" required>
 
-  - __namedParameters: \{cause?:unknown;properties:string[];roomUuid:string\}
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="properties" type="string[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - Optional cause?:unknown
-    - properties:string[]
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteStream"></a>
 
@@ -152,13 +162,13 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - deleteStream(roomUuid:string, userUuid:string, streamUuid:string):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-  - streamUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="deleteUserProperties"></a>
 
@@ -166,16 +176,20 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - deleteUserProperties(__namedParameters:\{cause?:any;properties:string[];roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;cause?:any;properties:string[];roomUuid:string;userUuid:string\&#125;" required>
 
-  - __namedParameters: \{cause?:any;properties:string[];roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="cause" type="any" optional />
+<Parameter name="properties" type="string[]" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - Optional cause?:any
-    - properties:string[]
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="entryRoom"></a>
 
@@ -183,11 +197,19 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - entryRoom(params:[EntryRequestParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ntry-request-params)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [EntryRequestParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ntry-request-params)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[EntryRequestParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ntry-request-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="fetch"></a>
 
@@ -195,11 +217,21 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - fetch(params:[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)):Promise&lt;any&gt;
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)Parameters
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
 
-  - params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  Returns Promise&lt;any&gt;
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="publishStreamToCdn"></a>
 
@@ -207,14 +239,22 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - publishStreamToCdn(roomUuid:string, userUuid:string, streamUuid:string, params:[PublishCdnParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params)):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="params" required>
 
-  - roomUuid: string
-  - userUuid: string
-  - streamUuid: string
-  - params: [PublishCdnParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params)
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+[PublishCdnParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="sendCustomChannelMessage"></a>
 
@@ -222,16 +262,20 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - sendCustomChannelMessage(roomUuid:string, payload:\{cmd:string;data:any\}, sync?:boolean):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="payload" type="\&#123;cmd:string;data:any\&#125;" required>
 
-  - roomUuid: string
-  - payload: \{cmd:string;data:any\}
+<ParameterList>
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="any" required />
+</ParameterList>
 
-    - cmd:string
-    - data:any
-  - Optional sync: boolean
+</Parameter>
+<Parameter name="sync" type="boolean" optional />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendCustomPeerMessage"></a>
 
@@ -239,17 +283,21 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - sendCustomPeerMessage(roomUuid:string, payload:\{cmd:string;data:any\}, toUserUuid:string, waitForAck?:boolean):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="payload" type="\&#123;cmd:string;data:any\&#125;" required>
 
-  - roomUuid: string
-  - payload: \{cmd:string;data:any\}
+<ParameterList>
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="any" required />
+</ParameterList>
 
-    - cmd:string
-    - data:any
-  - toUserUuid: string
-  - Optional waitForAck: boolean
+</Parameter>
+<Parameter name="toUserUuid" type="string" required />
+<Parameter name="waitForAck" type="boolean" optional />
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="sendRoomChatMessage"></a>
 
@@ -257,12 +305,12 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - sendRoomChatMessage(message:string, roomUuid:string):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-  - message: string
-  - roomUuid: string
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="syncPeerSequence"></a>
 
@@ -270,14 +318,14 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - syncPeerSequence(roomUuid:string, userUuid:string, seqId:number, count:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="seqId" type="number" required />
+<Parameter name="count" type="number" required />
+</ParameterList>
 
-  - roomUuid: string
-  - userUuid: string
-  - seqId: number
-  - count: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="syncSequence"></a>
 
@@ -285,13 +333,13 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - syncSequence(roomUuid:string, seqId:number, count:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="seqId" type="number" required />
+<Parameter name="count" type="number" required />
+</ParameterList>
 
-  - roomUuid: string
-  - seqId: number
-  - count: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateBatchUserProperties"></a>
 
@@ -299,14 +347,18 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - updateBatchUserProperties(__namedParameters:\{data:\{cause?:any;properties:unknown;userUuid:string\}[];roomUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;data:\&#123;cause?:any;properties:unknown;userUuid:string\&#125;[];roomUuid:string\&#125;" required>
 
-  - __namedParameters: \{data:\{cause?:any;properties:unknown;userUuid:string\}[];roomUuid:string\}
+<ParameterList>
+<Parameter name="data" type="\&#123;cause?:any;properties:unknown;userUuid:string\&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - data:\{cause?:any;properties:unknown;userUuid:string\}[]
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateDeviceState"></a>
 
@@ -314,17 +366,43 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - updateDeviceState(roomUuid:string, userUuid:string, streamUuid:string, __namedParameters:\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
 
-  - roomUuid: string
-  - userUuid: string
-  - streamUuid: string
-  - __namedParameters: \{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
+<ParameterType>
 
-    - Optional audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
-    - Optional videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="updateOnlineState"></a>
 
@@ -332,14 +410,18 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - updateOnlineState(__namedParameters:\{roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;roomUuid:string;userUuid:string\&#125;" required>
 
-  - __namedParameters: \{roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateRoomProperties"></a>
 
@@ -347,15 +429,19 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - updateRoomProperties(__namedParameters:\{cause?:unknown;properties:unknown;roomUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;cause?:unknown;properties:unknown;roomUuid:string\&#125;" required>
 
-  - __namedParameters: \{cause?:unknown;properties:unknown;roomUuid:string\}
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="properties" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
 
-    - Optional cause?:unknown
-    - properties:unknown
-    - roomUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateUserProperties"></a>
 
@@ -363,16 +449,20 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - updateUserProperties(__namedParameters:\{cause?:any;properties:unknown;roomUuid:string;userUuid:string\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123;cause?:any;properties:unknown;roomUuid:string;userUuid:string\&#125;" required>
 
-  - __namedParameters: \{cause?:any;properties:unknown;roomUuid:string;userUuid:string\}
+<ParameterList>
+<Parameter name="cause" type="any" optional />
+<Parameter name="properties" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
 
-    - Optional cause?:any
-    - properties:unknown
-    - roomUuid:string
-    - userUuid:string
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="upsertStream"></a>
 
@@ -380,19 +470,61 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - upsertStream(roomUuid:string, userUuid:string, streamUuid:string, __namedParameters:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
 
-  - roomUuid: string
-  - userUuid: string
-  - streamUuid: string
-  - __namedParameters: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
+<ParameterType>
 
-    - Optional audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
-    - Optional publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="upsertStreamBatch"></a>
 
@@ -400,9 +532,17 @@ Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-referen
 
 - upsertStreamBatch(roomUuid:string, streams:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="streams" required>
 
-  - roomUuid: string
-  - streams: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+<ParameterType>
 
-  Returns Promise&lt;any&gt;
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;

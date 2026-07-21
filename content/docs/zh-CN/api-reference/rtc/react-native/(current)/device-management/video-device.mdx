@@ -60,16 +60,23 @@ abstract enableMultiCamera(
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启多摄像头视频采集模式：
 
 - true：开启多摄像头采集模式，SDK 使用多路摄像头采集视频。
 - false：关闭多摄像头采集模式，SDK 仅使用单路摄像头采集视频。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 第二个摄像头的采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablemulticamera__return_values"></a>
 
@@ -487,12 +494,17 @@ abstract setCameraAutoExposureFaceModeEnabled(enabled: boolean): number;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启自动曝光：
 
 - true: 开启自动曝光。
 - false: 关闭自动曝光。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
 
@@ -533,12 +545,17 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启人脸对焦：
 
 - true: 开启人脸对焦功能。
 - false: 关闭人脸对焦功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -584,13 +601,18 @@ abstract setCameraCapturerConfiguration(
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/class-cameracapturerconfiguration)。
 
 :::note
 注： 在该方法中，不需要设置 `deviceId` 参数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -633,9 +655,14 @@ abstract setCameraDeviceOrientation(
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameradeviceorientation__return_values"></a>
 
@@ -678,10 +705,15 @@ abstract setCameraExposureFactor(factor: number): number;
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor"></a>
+<Parameter name="factor">
 
 摄像头的曝光系数。默认值为 0，表示使用摄像头的默认曝光量。取值越大，曝光量越大。视频图像过曝时，你可以降低曝光系数；视频图像欠曝且暗部细节丢失时，你可以增加曝光系数。如果你指定的曝光系数超出设备支持的范围，SDK 会自动调节为设备实际支持的范围。
 在 Android 平台上，取值范围为 [-20.0,20.0]；在 iOS 平台上，取值范围为 [-8.0,8.0]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
 
@@ -724,13 +756,20 @@ abstract setCameraExposurePosition(
 
 ### 参数
 
-### positionXinView
+<ParameterList>
+<a id="positionxinview"></a>
+<Parameter name="positionXinView">
 
 触摸点相对于视图的横坐标。
 
-### positionYinView
+</Parameter>
+<a id="positionyinview"></a>
+<Parameter name="positionYinView">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -773,13 +812,20 @@ abstract setCameraFocusPositionInPreview(
 
 ### 参数
 
-### positionX
+<ParameterList>
+<a id="positionx"></a>
+<Parameter name="positionX">
 
 触摸点相对于视图的横坐标。
 
-### positionY
+</Parameter>
+<a id="positiony"></a>
+<Parameter name="positionY">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -818,12 +864,17 @@ abstract setCameraTorchOn(isOn: boolean): number;
 
 ### 参数
 
-### isOn
+<ParameterList>
+<a id="ison"></a>
+<Parameter name="isOn">
 
 是否打开闪光灯：
 
 - true: 打开闪光灯。
 - false:（默认）关闭闪光灯。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -864,9 +915,14 @@ abstract setCameraZoomFactor(factor: number): number;
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor-1"></a>
+<Parameter name="factor">
 
 摄像头放大比例。对不支持超广角的设备，取值范围从 1.0 到最大放大比例；对支持超广角的设备，取值范围从 0.5 到最大放大比例。你可以通过 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大放大比例。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -949,21 +1005,32 @@ onCameraExposureAreaChanged?(
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x"></a>
+<Parameter name="x">
 
 发生改变的曝光区域的 x 坐标。
 
-### y
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 发生改变的曝光区域的 y 坐标。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 发生改变的曝光区域的宽度。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 发生改变的曝光区域的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1000,21 +1067,32 @@ onCameraFocusAreaChanged?(
 
 ### 参数
 
-### x
+<ParameterList>
+<a id="x-1"></a>
+<Parameter name="x">
 
 发生改变的对焦区域的 x 坐标。
 
-### y
+</Parameter>
+<a id="y-1"></a>
+<Parameter name="y">
 
 发生改变的对焦区域的 y 坐标。
 
-### width
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 发生改变的对焦区域的宽度。
 
-### height
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 发生改变的对焦区域的高度。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

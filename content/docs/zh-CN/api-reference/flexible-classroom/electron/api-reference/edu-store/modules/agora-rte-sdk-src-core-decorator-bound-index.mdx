@@ -28,30 +28,36 @@ _migration:
 
 - bound(proto:any, propertyName:string, descriptor:PropertyDescriptor):\{configurable:boolean;enumerable:boolean;get:any;set:any\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="proto" type="any" required />
+<Parameter name="propertyName" type="string" required />
+<Parameter name="descriptor" type="PropertyDescriptor" required />
+</ParameterList>
 
-  - proto: any
-  - propertyName: string
-  - descriptor: PropertyDescriptor
+Returns \{configurable:boolean;enumerable:boolean;get:any;set:any\}
 
-  Returns \{configurable:boolean;enumerable:boolean;get:any;set:any\}
+<ParameterList>
+<Parameter name="configurable" type="boolean" required />
+<Parameter name="enumerable" type="boolean" required />
+<Parameter name="get" type="function" required>
 
-  - configurable:boolean
-  - enumerable:boolean
-  - get:function
+- get():any
 
-    - get():any
+Returns any
 
-    - Returns any
-  - set:function
+</Parameter>
+<Parameter name="set" type="function" required>
 
-    - set(v:any):void
+- set(v:any):void
 
-    - Parameters
+<ParameterList title="Parameters">
+<Parameter name="v" type="any" required />
+</ParameterList>
 
-      - v: any
+Returns void
 
-      Returns void
+</Parameter>
+</ParameterList>
 
 <a id="cleanup"></a>
 
@@ -59,4 +65,4 @@ _migration:
 
 - cleanup():void
 
-- Returns void
+Returns void

@@ -70,13 +70,18 @@ _migration:
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 摄像头采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/macos/class-cameracapturerconfiguration)。
 
 :::note
 注： 在此方法中，无需设置 `deviceId` 参数。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -109,13 +114,20 @@ _migration:
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 设备类型，包括音频采集、音频播放、视频采集或视频播放设备。详见 [AgoraMediaDeviceType](/zh-CN/api-reference/rtc/macos/enum-mediadevicetype)。
 
-### deviceId
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID。你可以通过调用 [enumerateDevices:](/zh-CN/api-reference/rtc/macos/device-management/common-device#api_irtcengine_enumeratedevices) 获取设备 ID。连接或断开音频设备不会改变该值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdevice_irtcengine__return_values"></a>
 

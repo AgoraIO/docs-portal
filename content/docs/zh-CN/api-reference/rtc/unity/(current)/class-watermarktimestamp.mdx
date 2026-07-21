@@ -50,11 +50,15 @@ _migration:
 
 ## 属性
 
-### fontSize
+<ParameterList>
+<a id="fontsize"></a>
+<Parameter name="fontSize">
 
 时间戳字体的大小。默认值为 10。
 
-### fontFilePath
+</Parameter>
+<a id="fontfilepath"></a>
+<Parameter name="fontFilePath">
 
 时间戳字体文件的路径。默认值为 `NULL`。字体文件需为 .ttf 格式。如果未设置，SDK 会使用系统默认字体（如果可用）。
 
@@ -62,14 +66,21 @@ _migration:
 注： 如果异步使用，请将路径复制到不会被释放的内存中。
 :::
 
-### strokeWidth
+</Parameter>
+<a id="strokewidth"></a>
+<Parameter name="strokeWidth">
 
 时间戳描边的宽度。默认值为 1。
 
-### format
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
 
 时间戳的格式。默认值为 `%F %X`。格式遵循 C 标准库函数 `strftime` 的规范，详见 `strftime`。
 
 :::note
 注： 如果异步使用，请将格式字符串复制到不会被释放的内存中。
 :::
+
+</Parameter>
+</ParameterList>

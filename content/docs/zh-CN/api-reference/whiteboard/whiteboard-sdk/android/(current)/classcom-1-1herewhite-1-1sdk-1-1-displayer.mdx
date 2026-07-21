@@ -50,10 +50,13 @@ _migration:
 2.11.4
 :::
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="string">
 
-| string | 字符串格式的信息。 |
-| --- | --- |
+字符串格式的信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="aafcea84ae1fc2539996f6d0e2710a362"></a>
 
@@ -68,10 +71,13 @@ _migration:
 2.11.4
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="object">
 
-| object | key-value 格式的信息，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 的子类。 |
-| --- | --- |
+key-value 格式的信息，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 的子类。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac47409b4e5ca783e080e11e0c032c145"></a>
 
@@ -86,20 +92,21 @@ _migration:
 
 你可以在该方法中指定想要查询的场景路径，SDK 会返回该路径对应的场景类型。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="path">
 
-| path | 想要查询的场景路径。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-0" /> |
+想要查询的场景路径。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<WhiteScenePathType>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenePathType` 方法的调用结果：
 
 - 如果方法调用成功，将返回场景路径类型。详见 [`WhiteScenePathType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-scene-path-type)。
 - 如果方法调用失败，将返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="ac8467c97aecb62aa78d8520dabd108bd"></a>
 
@@ -112,20 +119,21 @@ _migration:
 
 获取指定场景的信息。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="path">
 
-| path | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-1" /> |
+场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Scene>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScene` 方法的调用结果：
 
 - 如果方法调用成功，将返回场景信息。详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。
 - 如果方法调用失败，将返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a8fd708269f78c0a4d8fbee3f3ec465f2"></a>
 
@@ -136,10 +144,16 @@ _migration:
 
 获取当前房间内所有场景的信息。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="promise">
 
-| promise | `Promise<Map<String, Scene[]>>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getEntireScenes` 方法的调用结果：如果方法调用成功，将返回当前房间内所有场景的信息。 如果方法调用失败，将返回错误信息。 |
-| --- | --- |
+`Promise<Map<String, Scene[]>>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getEntireScenes` 方法的调用结果：
+
+- 如果方法调用成功，将返回当前房间内所有场景的信息。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a20be8e5cc145577cd66706d9012989a6"></a>
 
@@ -191,10 +205,13 @@ _migration:
 2.4.28
 :::
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="mode">
 
-| mode | 视角调整时的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。 |
-| --- | --- |
+视角调整时的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a5789b995344ae4c9bd0872dfb3fd8cae"></a>
 
@@ -213,11 +230,18 @@ _migration:
 对于同名的自定义事件，SDK 仅支持触发一个回调。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="eventName">
 
-| eventName | 想要监听的自定义事件名称。 |
-| --- | --- |
-| eventListener | 自定义事件回调，详见 [`EventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
+想要监听的自定义事件名称。
+
+</Parameter>
+<Parameter name="eventListener">
+
+自定义事件回调，详见 [`EventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+
+</Parameter>
+</ParameterList>
 
 <a id="a53b433bf7d24a786c4976ba85dee9940"></a>
 
@@ -237,12 +261,23 @@ _migration:
 对于同名的自定义事件，SDK 仅支持触发一个回调。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="eventName">
 
-| eventName | 想要监听的自定义事件名称。 |
-| --- | --- |
-| eventListener | 自定义事件回调，详见 [`FrequencyEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
-| fireInterval | SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。 |
+想要监听的自定义事件名称。
+
+</Parameter>
+<Parameter name="eventListener">
+
+自定义事件回调，详见 [`FrequencyEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+
+</Parameter>
+<Parameter name="fireInterval">
+
+SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+
+</Parameter>
+</ParameterList>
 
 <a id="a071edba37f99285bbea69988481eb3ae"></a>
 
@@ -253,10 +288,13 @@ _migration:
 
 移除自定义事件监听。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="eventName">
 
-| eventName | 想要移除监听的自定义事件名称。 |
-| --- | --- |
+想要移除监听的自定义事件名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="a1bfd39e7482e2937908a2dea49db1c27"></a>
 
@@ -272,21 +310,26 @@ _migration:
 
 该方法可以将 Android 内部坐标系（以屏幕左上角为原点）中的坐标转换为世界坐标系（以白板初始化时的中点为原点）坐标。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="x">
 
-| x | 点在 Android 坐标系中的 X 轴坐标。 |
-| --- | --- |
-| y | 点在 Android 坐标系中的 Y 轴坐标。 |
-| promise | <Slot name="api-center-table-2" /> |
+点在 Android 坐标系中的 X 轴坐标。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="y">
+
+点在 Android 坐标系中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Point>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `convertToPointInWorld` 的调用结果：
 
 - 如果方法调用成功，将返回点在世界坐标系上的坐标。详见 [`Point`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-point)。
 - 如果方法调用失败，将返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a7ebc499b1f6ca5457d41fcec9bad214e"></a>
 
@@ -301,10 +344,13 @@ _migration:
 2.5.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="bound">
 
-| bound | 视角边界，详见 [`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)。 |
-| --- | --- |
+视角边界，详见 [`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a67b020e6d15247e1bdc7dbd9b86bcfbe"></a>
 
@@ -327,10 +373,13 @@ _migration:
 该方法仅对本地白板有效，不会影响房间内其他用户白板的背景色。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="intColor">
 
-| intColor | 白板的背景色，格式为 16 进制 RGBA 定义下的 Hex 值。注意 A 属性不能达到使白板透明的效果。 |
-| --- | --- |
+白板的背景色，格式为 16 进制 RGBA 定义下的 Hex 值。注意 A 属性不能达到使白板透明的效果。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa164b4edc632f73ac9a83b3f1bdab64c"></a>
 
@@ -368,20 +417,21 @@ _migration:
 2.3.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="scenePath">
 
-| scenePath | 场景路径。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-3" /> |
+场景路径。
 
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Bitmap>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenePreviewImage` 方法的调用结果：
 
 - 如果方法调用成功，将返回指定场景的预览图。
 - 如果方法调用失败，将返回错误码。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a0995da14d5d9b20d5f98c2639018700e"></a>
 
@@ -398,20 +448,21 @@ _migration:
 2.3.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="scenePath">
 
-| scenePath | 场景路径。 |
-| --- | --- |
-| promise | <Slot name="api-center-table-4" /> |
+场景路径。
 
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="promise">
 
 `Promise<Bitmap>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneSnapshotImage` 方法的调用结果：
 
 - 如果方法调用成功，将返回指定场景的截图。
 - 如果方法调用失败，将返回错误信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a4b4ee486693efafc4683e312244d1129"></a>
 
@@ -428,10 +479,16 @@ _migration:
 
 该方法用于禁止或允许用户通过触屏手势移动或缩放视角。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="disable">
 
-| disable | 是否禁止用户调整视角：`true`: 禁止用户调整视角。 `false`: (默认) 允许用户调整视角。 |
-| --- | --- |
+是否禁止用户调整视角：
+
+- `true`: 禁止用户调整视角。
+- `false`: (默认) 允许用户调整视角。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa73a9b1c04e23e0f8b1ecb79099d858a"></a>
 
@@ -448,10 +505,13 @@ _migration:
 
 调用该方法后，SDK 会根据传入的参数调整视角。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="camera">
 
-| camera | 视角的参数配置，详见 [`CameraConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config)。 |
-| --- | --- |
+视角的参数配置，详见 [`CameraConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config)。
+
+</Parameter>
+</ParameterList>
 
 <a id="af19ee0561ddd8b547b22040e58309549"></a>
 
@@ -466,7 +526,10 @@ _migration:
 2.2.0
 :::
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="rectangle">
 
-| rectangle | 视觉矩形的参数设置，详见 [`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config)。 |
-| --- | --- |
+视觉矩形的参数设置，详见 [`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config)。
+
+</Parameter>
+</ParameterList>

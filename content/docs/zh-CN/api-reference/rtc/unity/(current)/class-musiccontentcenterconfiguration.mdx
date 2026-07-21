@@ -26,11 +26,15 @@ public class MusicContentCenterConfiguration
 
 ## 属性
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 已启用内容中心的项目的 App ID。
 
-### token
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
 使用音乐内容中心时，用于鉴权的 RTM Token。
 
@@ -41,10 +45,17 @@ public class MusicContentCenterConfiguration
 - 当你的 Token 即将过期时，你可以调用 [RenewToken](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_renewtoken) 来传入新的 Token。
 :::
 
-### mccUid
+</Parameter>
+<a id="mccuid"></a>
+<Parameter name="mccUid">
 
 使用音乐内容中心的用户 ID，该 ID 可以和你加入 RTC 频道时使用的 `uid` 一致，但不能为 0。
 
-### maxCacheSize
+</Parameter>
+<a id="maxcachesize"></a>
+<Parameter name="maxCacheSize">
 
 可缓存的音乐资源数量，最多不能超过 50。
+
+</Parameter>
+</ParameterList>

@@ -64,9 +64,14 @@ public abstract int destroyCustomVideoTrack(int video_track_id);
 
 ### 参数
 
-### video_track_id
+<ParameterList>
+<a id="video_track_id"></a>
+<Parameter name="video_track_id">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -144,17 +149,24 @@ public abstract int pushExternalVideoFrameById(VideoFrame frame, int videoTrackI
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 要推送的视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::note
 注： 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe__return_values"></a>
 
@@ -197,9 +209,14 @@ public abstract boolean pushExternalVideoFrame(VideoFrame frame)
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 要推送的视频帧。详见 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe2__return_values"></a>
 
@@ -250,17 +267,24 @@ public abstract int pushExternalVideoFrameById(AgoraVideoFrame frame, int videoT
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-2"></a>
+<Parameter name="frame">
 
 要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-externalvideoframe)。
 
-### videoTrackId
+</Parameter>
+<a id="videotrackid-1"></a>
+<Parameter name="videoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::note
 注： 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe3__return_values"></a>
 
@@ -299,9 +323,14 @@ public abstract boolean pushExternalVideoFrame(AgoraVideoFrame frame)
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-3"></a>
+<Parameter name="frame">
 
 要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-externalvideoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pushvideoframe4__return_values"></a>
 
@@ -348,9 +377,14 @@ public abstract int setExternalRemoteEglContext(Object eglContext);
 
 ### 参数
 
-### eglContext
+<ParameterList>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
 
 用于渲染远端视频流的 EGL 上下文。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalremoteeglcontext__return_values"></a>
 
@@ -395,23 +429,32 @@ public abstract int setExternalVideoSource(boolean enable, boolean useTexture, C
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否使用外部视频源：
 
 - true：使用外部视频源，SDK 会准备接收外部视频帧。
 - false：（默认）不使用外部视频源。
 
-### useTexture
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
 
 是否使用 Texture 格式的外部视频帧：
 
 - true：使用 Texture 格式的外部视频帧。
 - false：（默认）不使用 Texture 格式的外部视频帧。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 外部视频帧是否为编码格式，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/android/enum-externalvideosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalvideosource__return_values"></a>
 

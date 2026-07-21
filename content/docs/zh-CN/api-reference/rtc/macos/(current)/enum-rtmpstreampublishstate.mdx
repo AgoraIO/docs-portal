@@ -14,29 +14,44 @@ _migration:
 
 ## 枚举值
 
-### AgoraRtmpStreamingStateIdle
+<ParameterList>
+<a id="agorartmpstreamingstateidle"></a>
+<Parameter name="AgoraRtmpStreamingStateIdle">
 
 （0）：旁路推流未开始或已结束。
 
-### AgoraRtmpStreamingStateConnecting
+</Parameter>
+<a id="agorartmpstreamingstateconnecting"></a>
+<Parameter name="AgoraRtmpStreamingStateConnecting">
 
 （1）：正在连接推流服务器和 CDN 服务器。
 
-### AgoraRtmpStreamingStateRunning
+</Parameter>
+<a id="agorartmpstreamingstaterunning"></a>
+<Parameter name="AgoraRtmpStreamingStateRunning">
 
 （2）：RTMP 或 RTMPS 推流已发布。SDK 成功发布 RTMP 或 RTMPS 推流后返回该状态。
 
-### AgoraRtmpStreamingStateRecovering
+</Parameter>
+<a id="agorartmpstreamingstaterecovering"></a>
+<Parameter name="AgoraRtmpStreamingStateRecovering">
 
 （3）：RTMP 或 RTMPS 推流正在恢复。当 CDN 异常或推流中断时，SDK 会尝试恢复推流并返回该状态。
 
 - 如果恢复成功，将返回 AgoraRtmpStreamingStateRunning（2）。
 - 如果在 60 秒内未恢复或发生服务器错误，将返回 AgoraRtmpStreamingStateFailure（4）。如认为 60 秒过长，也可主动尝试重连。
 
-### AgoraRtmpStreamingStateFailure
+</Parameter>
+<a id="agorartmpstreamingstatefailure"></a>
+<Parameter name="AgoraRtmpStreamingStateFailure">
 
 （4）：RTMP 或 RTMPS 推流失败。你可以通过返回的错误码排查失败原因。
 
-### AgoraRtmpStreamingStateDisconnecting
+</Parameter>
+<a id="agorartmpstreamingstatedisconnecting"></a>
+<Parameter name="AgoraRtmpStreamingStateDisconnecting">
 
 （5）：SDK 正在断开与声网推流服务器和 CDN 的连接。当调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 正常停止旁路推流时，SDK 会依次上报状态为 AgoraRtmpStreamingStateDisconnecting 和 AgoraRtmpStreamingStateIdle。
+
+</Parameter>
+</ParameterList>

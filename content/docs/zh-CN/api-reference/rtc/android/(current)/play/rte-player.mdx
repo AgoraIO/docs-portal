@@ -81,13 +81,20 @@ public void addView(View view, ViewConfig viewConfig) throws RteException
 
 ### 参数
 
-### view
+<ParameterList>
+<a id="view"></a>
+<Parameter name="view">
 
 `SurfaceView` 对象。
 
-### viewConfig
+</Parameter>
+<a id="viewconfig"></a>
+<Parameter name="viewConfig">
 
 视图的相关设置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_addview__exception"></a>
 
@@ -213,13 +220,20 @@ public Canvas(Rte rte, CanvasInitialConfig config)
 
 ### 参数
 
-### rte
+<ParameterList>
+<a id="rte"></a>
+<Parameter name="rte">
 
 用于构造 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 的 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte) 对象，详见 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 初始化配置对象。你可以传入 `null`。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -566,9 +580,14 @@ public void getConfigs(CanvasConfig config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 对象的设置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_getconfigs_canvas__exception"></a>
 
@@ -610,9 +629,14 @@ public void getConfigs(PlayerConfig config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
 
 媒体播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_getconfigs_player__exception"></a>
 
@@ -654,9 +678,14 @@ public void getConfigs(Config config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
 
 详见 [Config](/zh-CN/api-reference/rtc/android/class-config)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_getconfigs_rte__exception"></a>
 
@@ -742,9 +771,14 @@ public void getInfo(PlayerInfo info) throws RteException
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 与播放器和媒体流相关的信息，详见 [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_getinfo__exception"></a>
 
@@ -1041,9 +1075,14 @@ public void getStats(PlayerGetStatsCallback callback)
 
 ### 参数
 
-### callback
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 用于异步接收统计信息和错误信息的回调接口。详见 [PlayerGetStatsCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playergetstatscallback)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1129,9 +1168,14 @@ public void initMediaEngine(AsyncCallback callBack) throws RteException
 
 ### 参数
 
-### callBack
+<ParameterList>
+<a id="callback-1"></a>
+<Parameter name="callBack">
 
 异步返回引擎初始化结果的回调。详见 [AsyncCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_asynccallback)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_initmediaengine__exception"></a>
 
@@ -1282,12 +1326,17 @@ public void muteAudio(boolean mute) throws RteException
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否接收音频流：
 
 - true：不接收音频流。
 - false：接收音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_muteaudio__exception"></a>
 
@@ -1335,12 +1384,17 @@ public void muteVideo(boolean mute) throws RteException
 
 ### 参数
 
-### mute
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否接收远端视频流：
 
 - true：不接收远端视频流。
 - false：接收远端视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_mutevideo__exception"></a>
 
@@ -1396,17 +1450,26 @@ public void openWithUrl(String url, long startTime, AsyncCallback callback)
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 要打开的 URL，可以是 CDN 推流 URL、本地媒体文件，或以 `rte://` 为前缀的 URL。
 
-### startTime
+</Parameter>
+<a id="starttime"></a>
+<Parameter name="startTime">
 
 播放的起始位置，单位为毫秒。
 
-### callback
+</Parameter>
+<a id="callback-2"></a>
+<Parameter name="callback">
 
 异步通知打开 URL 资源结果的回调。你可以通过该回调的 [onResult](/zh-CN/api-reference/rtc/android/play/rte-player#callback_asynccallback_onresult_asynccallback) 方法获取错误信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1534,13 +1597,20 @@ public Player(Rte rte, PlayerInitialConfig initialConfig)
 
 ### 参数
 
-### rte
+<ParameterList>
+<a id="rte-1"></a>
+<Parameter name="rte">
 
 一个 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)。
 
-### initialConfig
+</Parameter>
+<a id="initialconfig"></a>
+<Parameter name="initialConfig">
 
 播放器对象的初始化设置。你可以传入 `null`。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1588,9 +1658,14 @@ public static void preloadWithUrl(String url) throws RteException
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-1"></a>
+<Parameter name="url">
 
 以 `rte://` 为前缀的 URL。各字段的详细信息参见观众端的“输入在线媒体流”。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_preloadwithurl__exception"></a>
 
@@ -1634,9 +1709,14 @@ public void registerObserver(PlayerObserver observer) throws RteException
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 详见 [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_registerobserver_player__exception"></a>
 
@@ -1682,13 +1762,20 @@ public void removeView(View view, ViewConfig viewConfig) throws RteException
 
 ### 参数
 
-### view
+<ParameterList>
+<a id="view-1"></a>
+<Parameter name="view">
 
 要移除的视图对象。
 
-### viewConfig
+</Parameter>
+<a id="viewconfig-1"></a>
+<Parameter name="viewConfig">
 
 `view` 对象的设置。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_removeview__return_values"></a>
 
@@ -1730,9 +1817,14 @@ public Rte(InitialConfig initialConfig)
 
 ### 参数
 
-### initialConfig
+<ParameterList>
+<a id="initialconfig-1"></a>
+<Parameter name="initialConfig">
 
 初始化设置。你可以传入 `null`。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1762,9 +1854,14 @@ public void seek(long newTime) throws RteException
 
 ### 参数
 
-### newTime
+<ParameterList>
+<a id="newtime"></a>
+<Parameter name="newTime">
 
 要跳转到的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_seek__exception"></a>
 
@@ -1819,7 +1916,9 @@ public void setAbrFallbackLayer(Constants.AbrFallbackLayer fallbackLayer) throws
 
 ### 参数
 
-### fallbackLayer
+<ParameterList>
+<a id="fallbacklayer"></a>
+<Parameter name="fallbackLayer">
 
 视频流的回退质量层，详见 [AbrFallbackLayer](/zh-CN/api-reference/rtc/android/enum-rteabrfallbacklayer)。
 
@@ -1835,6 +1934,9 @@ public void setAbrFallbackLayer(Constants.AbrFallbackLayer fallbackLayer) throws
 | `LAYER5` | 540p (SD) |
 | `LAYER6` | 480p (SD) |
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setabrfallbacklayer__exception"></a>
 
@@ -1888,7 +1990,9 @@ public void setAbrSubscriptionLayer(Constants.AbrSubscriptionLayer subscriptionL
 
 ### 参数
 
-### subscriptionLayer
+<ParameterList>
+<a id="subscriptionlayer"></a>
+<Parameter name="subscriptionLayer">
 
 要订阅的视频质量等级，详见 [AbrSubscriptionLayer](/zh-CN/api-reference/rtc/android/enum-rteabrsubscriptionlayer)。在自定义 `LAYER1` 到 `LAYER6` 的分辨率时，你可以参考下表，或根据实际需求进行配置：
 注意：自定义分辨率时，必须按分辨率从高到低排序各视频质量等级（Layer），若分辨率相同，则按帧率从高到低排序。
@@ -1901,6 +2005,9 @@ public void setAbrSubscriptionLayer(Constants.AbrSubscriptionLayer subscriptionL
 | `LAYER4` | 720p (HD) |
 | `LAYER5` | 540p (SD) |
 | `LAYER6` | 480p (SD) |
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setabrsubscriptionlayer__exception"></a>
 
@@ -1942,9 +2049,14 @@ public void setAppId(String appId) throws RteException
 
 ### 参数
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网 App ID，可从控制台获取。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_config_setappid__exception"></a>
 
@@ -1988,12 +2100,17 @@ public void setAutoPlay(boolean autoPlay) throws RteException
 
 ### 参数
 
-### autoPlay
+<ParameterList>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
 
 是否启用自动播放：
 
 - true：（默认）启用自动播放。
 - false：关闭自动播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setautoplay__exception"></a>
 
@@ -2037,9 +2154,14 @@ public void setCanvas(Canvas canvas) throws RteException
 
 ### 参数
 
-### canvas
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 用于渲染视频帧的对象，详见 [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_setcanvas__exception"></a>
 
@@ -2081,9 +2203,14 @@ public void setConfigs(CanvasConfig config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
 
 用于设置 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 对象的配置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvas_setconfigs_canvas__exception"></a>
 
@@ -2127,9 +2254,14 @@ public void setConfigs(PlayerConfig config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-5"></a>
+<Parameter name="config">
 
 播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_setconfigs_player__exception"></a>
 
@@ -2171,9 +2303,14 @@ public void setConfigs(Config config) throws RteException
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-6"></a>
+<Parameter name="config">
 
 用于设置 `RTE` 对象的配置信息，详见 [Config](/zh-CN/api-reference/rtc/android/class-config)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_rte_setconfigs_rte__exception"></a>
 
@@ -2221,9 +2358,14 @@ public void setJsonParameter(String jsonParameter) throws RteException
 
 ### 参数
 
-### jsonParameter
+<ParameterList>
+<a id="jsonparameter"></a>
+<Parameter name="jsonParameter">
 
 JSON 字符串格式的参数。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_config_setjsonparameter_config__exception"></a>
 
@@ -2259,13 +2401,18 @@ public void setLoopCount(int count) throws RteException
 
 ### 参数
 
-### count
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 媒体文件循环播放的次数：
 
 - `1`：播放一次。
 - `2`：播放两次。
 - `-1`：无限循环播放，直到调用 [stop](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_stop_player) 停止播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setloopcount__exception"></a>
 
@@ -2309,9 +2456,14 @@ public void setVideoMirrorMode(Constants.VideoMirrorMode mode) throws RteExcepti
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 镜像模式，详见 [VideoMirrorMode](/zh-CN/api-reference/rtc/android/enum-rtevideomirrormode)。默认值为 `AUTO`，由 SDK 自动决定镜像模式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvasconfig_setmirrormode__exception"></a>
 
@@ -2349,9 +2501,14 @@ public void setPlaybackSpeed(int speed) throws RteException
 
 ### 参数
 
-### speed
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。有效范围为 [50, 400]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setplaybackspeed__exception"></a>
 
@@ -2387,9 +2544,14 @@ public void setPlayoutVolume(int volume) throws RteException
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的音量值。有效范围为 [0, 400]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_playerconfig_setplayoutvolume__exception"></a>
 
@@ -2425,13 +2587,18 @@ public void setVideoRenderMode(Constants.VideoRenderMode mode) throws RteExcepti
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 要设置的视频渲染模式，详见 [VideoRenderMode](/zh-CN/api-reference/rtc/android/enum-rtevideorendermode)。
 
 :::note
 注： 默认值为 `VideoRenderMode.HIDDEN`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_canvasconfig_setrendermode_canvasconfig__exception"></a>
 
@@ -2573,18 +2740,27 @@ public void switchWithUrl(String url, boolean syncPts, AsyncCallback callback)
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url-2"></a>
+<Parameter name="url">
 
 要切换的 URL 资源。
 
-### syncPts
+</Parameter>
+<a id="syncpts"></a>
+<Parameter name="syncPts">
 
 - true：同步播放位置。
 - false：（默认）不同步播放位置。
 
-### callback
+</Parameter>
+<a id="callback-3"></a>
+<Parameter name="callback">
 
 异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [AsyncCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_asynccallback)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2622,9 +2798,14 @@ public void unregisterObserver(PlayerObserver observer) throws RteException
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 详见 [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_player_unregisterobserver_player__exception"></a>
 
@@ -2726,9 +2907,14 @@ public void onAudioVolumeIndication(int volume)
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 播放器当前的音量，取值范围为 [0, 225]。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2766,13 +2952,18 @@ public void onEvent(int event)
 
 ### 参数
 
-### event
+<ParameterList>
+<a id="event"></a>
+<Parameter name="event">
 
 播放器事件。
 
 :::note
 注： 详见 [PlayerEvent](/zh-CN/api-reference/rtc/android/enum-rteplayerevent)。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2810,15 +3001,22 @@ public void onMetadata(int type, byte[] data)
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 附加信息的类型：
 
 - 0：SEI（Supplemental Enhancement Information）类型。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 解析后的附加信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2856,9 +3054,14 @@ public void onPlayerInfoUpdated(PlayerInfo info)
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info-1"></a>
+<Parameter name="info">
 
 播放器及媒体流的相关信息，详见 [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2894,13 +3097,20 @@ public void onPositionChanged(long curr_time, long utc_time)
 
 ### 参数
 
-### curr_time
+<ParameterList>
+<a id="curr_time"></a>
+<Parameter name="curr_time">
 
 当前播放进度，单位为毫秒。
 
-### utc_time
+</Parameter>
+<a id="utc_time"></a>
+<Parameter name="utc_time">
 
 当前 NTP（网络时间协议）时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2938,13 +3148,20 @@ public void onResolutionChanged(int width, int height)
 
 ### 参数
 
-### width
+<ParameterList>
+<a id="width"></a>
+<Parameter name="width">
 
 视频帧的宽度，单位为 px。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度，单位为 px。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2980,9 +3197,14 @@ public void onResolutionChanged(int width, int height)
 
 ### 参数
 
-### error
+<ParameterList>
+<a id="error"></a>
+<Parameter name="error">
 
 状态码或错误码。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3014,13 +3236,20 @@ public void onResolutionChanged(int width, int height)
 
 ### 参数
 
-### playerStats
+<ParameterList>
+<a id="playerstats"></a>
+<Parameter name="playerStats">
 
 媒体资源的统计信息。详见 [PlayerStats](/zh-CN/api-reference/rtc/android/class-rteplayerstats)。
 
-### error
+</Parameter>
+<a id="error-1"></a>
+<Parameter name="error">
 
 状态和错误信息。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -3058,17 +3287,26 @@ public void onStateChanged(int old_state, int new_state, Error error)
 
 ### 参数
 
-### old_state
+<ParameterList>
+<a id="old_state"></a>
+<Parameter name="old_state">
 
 变更前的播放器状态。详见 [PlayerState](/zh-CN/api-reference/rtc/android/enum-rteplayerstate)。
 
-### new_state
+</Parameter>
+<a id="new_state"></a>
+<Parameter name="new_state">
 
 当前的播放器状态。详见 [PlayerState](/zh-CN/api-reference/rtc/android/enum-rteplayerstate)。如果当前状态为 `FAILED`，你可以通过 `error` 参数获取详细的错误信息。
 
-### error
+</Parameter>
+<a id="error-2"></a>
+<Parameter name="error">
 
 状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

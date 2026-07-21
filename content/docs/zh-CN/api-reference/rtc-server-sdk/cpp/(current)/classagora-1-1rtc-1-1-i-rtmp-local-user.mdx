@@ -91,10 +91,13 @@ _migration:
 
 设置主播端直接向 CDN 推流时的音频编码属性。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | CDN 推流的音频编码属性，详见 [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration)。 |
-| --- | --- |
+CDN 推流的音频编码属性，详见 [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -110,10 +113,13 @@ _migration:
 
 设置主播端直接向 CDN 推流时的视频编码属性。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration)。 |
-| --- | --- |
+CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -129,10 +135,16 @@ _migration:
 
 调节主播端直接向 CDN 推流时的音频采集信号音量。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音量，取值范围为 [0,100]。其中：0: 静音。 100：（默认）原始音量。 |
-| --- | --- |
+音量，取值范围为 [0,100]。其中：
+
+- 0: 静音。
+- 100：（默认）原始音量。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -148,10 +160,13 @@ _migration:
 
 获取主播端直接向 CDN 推流时的音频采集信号音量。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="volume">
 
-| volume | 音量指针。 |
-| --- | --- |
+音量指针。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -169,10 +184,16 @@ _migration:
 
 你需要在开始直接向 CDN 推流前调用该方法。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enabled">
 
-| enabled | 是否开启本地音频：true：开启 false：关闭 |
-| --- | --- |
+是否开启本地音频：
+
+- true：开启
+- false：关闭
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -193,10 +214,13 @@ _migration:
 1. 调用该方法并设置 `type` 为 `Increasing`，则视频编码码率会增加 50 kbps，当前视频编码码率变为 250 kbps。
 2. 再次调用该方法并设置 `type` 为 `Decreasing`，则视频编码码率会减少 100 kbps，当前视频编码码率变为 150 kbps。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="type">
 
-| type | 视频编码码率的调节类型，详见 [VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6)。 |
-| --- | --- |
+视频编码码率的调节类型，详见 [VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="a49b3bf6f3790d6a3ee13356d4a3ed411"></a>
 
@@ -209,10 +233,16 @@ _migration:
 
 你需要在开始直接向 CDN 推流前调用该方法。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enabled">
 
-| enabled | 是否开启本地视频：true：开启 false：关闭 |
-| --- | --- |
+是否开启本地视频：
+
+- true：开启
+- false：关闭
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -228,10 +258,13 @@ _migration:
 
 向 CDN 推送本地音频流。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioTrack">
 
-| audioTrack | 本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)。 |
-| --- | --- |
+本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -247,10 +280,13 @@ _migration:
 
 停止向 CDN 推送本地音频流。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="audioTrack">
 
-| audioTrack | 本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)。 |
-| --- | --- |
+本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -266,10 +302,13 @@ _migration:
 
 向 CDN 推送本地视频流。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoTrack">
 
-| videoTrack | 本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)。 |
-| --- | --- |
+本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -285,10 +324,13 @@ _migration:
 
 停止向 CDN 推送本地视频流。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="videoTrack">
 
-| videoTrack | 本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)。 |
-| --- | --- |
+本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -306,10 +348,13 @@ _migration:
 
 成功注册后，你会收到 [`IRtmpLocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 类中的相关回调。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。 你需要在该方法中实现 [`IRtmpLocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 类。 |
-| --- | --- |
+[IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。 你需要在该方法中实现 [`IRtmpLocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 类。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -327,10 +372,13 @@ _migration:
 
 成功注销后，你将不再收到 [`IRtmpLocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 类中的相关回调。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。 |
-| --- | --- |
+[IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -346,10 +394,13 @@ _migration:
 
 注册音频观测器。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | IAudioFrameObserver 对象的指针。 |
-| --- | --- |
+IAudioFrameObserver 对象的指针。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -365,10 +416,13 @@ _migration:
 
 注销音频观测器。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | IAudioFrameObserver 对象的指针。 |
-| --- | --- |
+IAudioFrameObserver 对象的指针。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4491e15cf5655d32142135bba29d37e4"></a>
 
@@ -379,10 +433,13 @@ _migration:
 
 注册视频观测器。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | IVideoFrameObserver 对象的指针。 |
-| --- | --- |
+IVideoFrameObserver 对象的指针。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -398,7 +455,10 @@ _migration:
 
 注销视频观测器。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | IVideoFrameObserver 对象的指针。 |
-| --- | --- |
+IVideoFrameObserver 对象的指针。
+
+</Parameter>
+</ParameterList>

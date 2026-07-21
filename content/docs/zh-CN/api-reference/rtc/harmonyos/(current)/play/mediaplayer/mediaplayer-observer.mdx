@@ -43,9 +43,14 @@ public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 
 ### 参数
 
-### playerObserver
+<ParameterList>
+<a id="playerobserver"></a>
+<Parameter name="playerObserver">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
@@ -72,9 +77,14 @@ public abstract unRegisterPlayerObserver();
 
 ### 参数
 
-### playerObserver
+<ParameterList>
+<a id="playerobserver-1"></a>
+<Parameter name="playerObserver">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
@@ -107,9 +117,14 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的当前音量，取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -139,13 +154,20 @@ onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体附属信息数据类型，详见 [MediaPlayerMetadataType](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayermetadatatype)。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 具体数据，用户自定义格式的数据。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -178,9 +200,14 @@ onPlayBufferUpdated?:(playCachedBuffer:number) => void
 
 ### 参数
 
-### playCachedBuffer
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -210,17 +237,26 @@ onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:
 
 ### 参数
 
-### eventCode
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerevent)。
 
-### elapsedTime
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 发生事件的时间 (毫秒)。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -250,9 +286,14 @@ onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/harmonyos/class-playerupdatedinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -282,13 +323,20 @@ onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPl
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -312,13 +360,20 @@ onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 
 ### 参数
 
-### from
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/harmonyos/class-srcinfo)。
 
-### to
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/harmonyos/class-srcinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -348,13 +403,20 @@ onPositionChanged?:(positionMs:number,timestampMs:number) => void
 
 ### 参数
 
-### positionMs
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 当前播放进度，单位为 ms。
 
-### timestampMs
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度的 NTP 时间戳，单位为 ms。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -378,9 +440,14 @@ onPreloadEvent?:(src:string,event:Constants.MediaPlayerPreloadEvent) => void
 
 ### 参数
 
-### event
+<ParameterList>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [MediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/harmonyos/enum-playerpreloadevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

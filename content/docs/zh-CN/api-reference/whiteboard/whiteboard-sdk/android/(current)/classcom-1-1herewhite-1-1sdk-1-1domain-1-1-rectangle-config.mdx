@@ -53,12 +53,23 @@ _migration:
 
 该方法适用于需要快速显示完整 PPT 内容的场景。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="width">
 
-| width | 白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| --- | --- |
-| height | 白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| mode | 视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。 |
+白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="mode">
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a7c5540be82cfdeb3659fc655038181fa"></a>
 
@@ -77,11 +88,18 @@ _migration:
 
 该方法适用于需要快速显示完整 PPT 内容的场景。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="width">
 
-| width | 视觉矩形宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| --- | --- |
-| height | 视觉矩形高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+视觉矩形宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+</ParameterList>
 
 <a id="a33e338dd76fcf5bfd8ad793a372d5766"></a>
 
@@ -100,13 +118,28 @@ _migration:
 
 该方法不支持设置动画模式，而是使用默认的连续动画 `Continuous` 模式。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="originX">
 
-| originX | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
-| --- | --- |
-| originY | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。 |
-| width | 视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| height | 视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="width">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+</ParameterList>
 
 <a id="a9bdd60e088b51ab7a18adc66886b586e"></a>
 
@@ -124,14 +157,33 @@ _migration:
 
 在该函数中，你需要传入 `originX`、`originY`、`width`、`height` 和 `mode`。 SDK 会根据你传入的 `originX`、`originY`、`width`、`height` 和 `mode` 确定视觉矩形在世界坐标系（即世界坐标系）中的位置、大小和动画模式。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="originX">
 
-| originX | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
-| --- | --- |
-| originY | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。 |
-| width | 视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| height | 视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
-| mode | 视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。 |
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="width">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="mode">
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
 
 ## 成员函数说明
 
@@ -157,10 +209,13 @@ _migration:
 
 设置视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="originX">
 
-| originX | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
-| --- | --- |
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="ae92c2a2088b4839673e807bf08ef4ef6"></a>
 
@@ -184,10 +239,13 @@ _migration:
 
 设置视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="originY">
 
-| originY | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。 |
-| --- | --- |
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="a99dff390e92b94d1f88dba08ca04e4a7"></a>
 
@@ -211,10 +269,13 @@ _migration:
 
 设置视觉矩形的宽度。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="width">
 
-| width | 视觉矩形的宽度。 |
-| --- | --- |
+视觉矩形的宽度。
+
+</Parameter>
+</ParameterList>
 
 <a id="a38edf7afae5e8cec8cc7e4c1ae93f957"></a>
 
@@ -238,10 +299,13 @@ _migration:
 
 设置视觉矩形的高度。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="height">
 
-| height | 视觉矩形的高度。 |
-| --- | --- |
+视觉矩形的高度。
+
+</Parameter>
+</ParameterList>
 
 <a id="a864ee572d2fe0c42a090f5d63748998d"></a>
 
@@ -265,7 +329,10 @@ _migration:
 
 设置视觉矩形的动画模式。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="animationMode">
 
-| animationMode | 视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。 |
-| --- | --- |
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>

@@ -44,13 +44,15 @@ _migration:
 
 - new AGError(code:string, error:Error, _extra?:any):[AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
 
-- Overrides Error.constructorParameters
+Overrides Error.constructor
 
-  - code: string
-  - error: Error
-  - Optional _extra: any
+<ParameterList title="Parameters">
+<Parameter name="code" type="string" required />
+<Parameter name="error" type="Error" required />
+<Parameter name="_extra" type="any" optional />
+</ParameterList>
 
-  Returns [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
+Returns [AGError](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-error-gerror)
 
 ## Properties
 
@@ -80,7 +82,7 @@ original: Error
 
 - get servCode():any
 
-- Returns any
+Returns any
 
 ## Methods
 
@@ -88,11 +90,11 @@ original: Error
 
 ### Static isOf
 
-- isOf(e:Error, ...codes:(string|number)[]):boolean
+- isOf(e:Error,...codes:(string|number)[]):boolean
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="e" type="Error" required />
+<Parameter name="...codes" type="(string | number)[]" required />
+</ParameterList>
 
-  - e: Error
-  - Rest...codes: (string|number)[]
-
-  Returns boolean
+Returns boolean

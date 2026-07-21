@@ -39,12 +39,23 @@ ILocalUserObserver 接口。
 
 接收到对方音频 Metadata 数据的回调。该回调表示本地用户收到了远端用户调用 [sendAudioMetaData](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) 方法发送的音频 Metadata 数据。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agoraLocalUser">
 
-| agoraLocalUser | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| userId | 发送音频 Metadata 数据的用户 ID。 |
-| metaData | 音频 Metadata 数据。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="userId">
+
+发送音频 Metadata 数据的用户 ID。
+
+</Parameter>
+<Parameter name="metaData">
+
+音频 Metadata 数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="af11491eec8fcb0926bc9f3a90a160059"></a>
 
@@ -59,16 +70,18 @@ ILocalUserObserver 接口。
 
 音频发布状态变更后触发。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| channel | 用户所在频道的频道名。 |
-| old_state | <Slot name="api-center-table-0" /> |
-| new_state | <Slot name="api-center-table-1" /> |
-| elapse_since_last_state | 变更为新状态之后的时长（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="old_state">
 
 之前的发布状态：
 
@@ -77,9 +90,8 @@ ILocalUserObserver 接口。
 - 2：正在发布。
 - 3：发布成功。
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="new_state">
 
 新的发布状态：
 
@@ -88,7 +100,13 @@ ILocalUserObserver 接口。
 - 2：正在发布。
 - 3：发布成功。
 
-</Slot>
+</Parameter>
+<Parameter name="elapse_since_last_state">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a893f075e0cd17756e1ccc1d8bbcc4df8"></a>
 
@@ -104,17 +122,23 @@ ILocalUserObserver 接口。
 
 对远端用户音频订阅状态变更时触发。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| channel | 用户所在频道的频道名。 |
-| user_id | 订阅的远端用户的 ID。 |
-| old_state | <Slot name="api-center-table-2" /> |
-| new_state | <Slot name="api-center-table-3" /> |
-| elapse_since_last_state | 变更为新状态之后的时长（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="user_id">
+
+订阅的远端用户的 ID。
+
+</Parameter>
+<Parameter name="old_state">
 
 之前的订阅状态：
 
@@ -123,9 +147,8 @@ ILocalUserObserver 接口。
 - 2：正在订阅。
 - 3：收到了远端流，订阅成功。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="new_state">
 
 新的订阅状态：
 
@@ -134,7 +157,13 @@ ILocalUserObserver 接口。
 - 2：正在订阅。
 - 3：收到了远端流，订阅成功。
 
-</Slot>
+</Parameter>
+<Parameter name="elapse_since_last_state">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="aaca31a6556391e1a4398345ddc9a3522"></a>
 
@@ -146,11 +175,18 @@ ILocalUserObserver 接口。
 
 在第一个本地音频包发送时触发，表明本地音频轨道已成功发布。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_local_audio_track | 一个 AgoraLocalAudioTrack 对象。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="agora_local_audio_track">
+
+一个 AgoraLocalAudioTrack 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="af5ae9dc7a551fba06e275a321fb302e5"></a>
 
@@ -163,12 +199,23 @@ ILocalUserObserver 接口。
 
 在 SDK 解码第一个收到的远端音频帧时触发。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户的 ID。 |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="acec3868c1e288ccd201fcf8697281d7d"></a>
 
@@ -181,12 +228,23 @@ ILocalUserObserver 接口。
 
 接收到远端用户发送的第一个音频帧时触发。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户的 ID。 |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3abd440ee7ae421c085e93ae14134b0e"></a>
 
@@ -201,14 +259,33 @@ ILocalUserObserver 接口。
 
 在 SDK 解码第一个视频帧时触发。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户 ID。 |
-| width | 视频帧宽度（像素）。 |
-| height | 视频帧高度（像素）。 |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="width">
+
+视频帧宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频帧高度（像素）。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a968d024987365215f680d07fa79ab4ae"></a>
 
@@ -223,14 +300,33 @@ ILocalUserObserver 接口。
 
 在第一个远端发送的视频帧渲染时触发。 当用户的视频窗口显示第一个远端发送的视频帧时，SDK 会触发该回调。App 可以获取从用户加入频道到第一个视频帧渲染出来的时间。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户 ID。 |
-| width | 视频帧宽度（像素）。 |
-| height | 视频帧高度（像素）。 |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="width">
+
+视频帧宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频帧高度（像素）。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a246ab96ccc302d174b4dd7411a560aec"></a>
 
@@ -241,10 +337,13 @@ ILocalUserObserver 接口。
 
 本地用户收到来自远端用户的关键帧请求时触发。该回调提醒本地用户编码关键帧。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="a57aebc7dc03f1620719916f2a9d93cdd"></a>
 
@@ -258,15 +357,18 @@ ILocalUserObserver 接口。
 
 在本地音频轨道状态变化时触发。
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_local_audio_track | 一个 ILocalAudioTrack对象。 |
-| state | <Slot name="api-center-table-4" /> |
-| error | <Slot name="api-center-table-5" /> |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="agora_local_audio_track">
+
+一个 ILocalAudioTrack对象。
+
+</Parameter>
+<Parameter name="state">
 
 本地音频轨道状态：
 
@@ -275,9 +377,8 @@ ILocalUserObserver 接口。
 - 2：第一个音频帧成功完成编码。
 - 3：本地音频启动失败。
 
-</Slot>
-
-<Slot for="api-center-table-5">
+</Parameter>
+<Parameter name="error">
 
 本地音频失败的原因：
 
@@ -288,7 +389,8 @@ ILocalUserObserver 接口。
 - 4：本地音频录制失败。检查录制设备是否正常工作。
 - 5：本地音频编码失败。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <a id="a9f06a67f5a276d67b438c70974699ed8"></a>
 
@@ -300,11 +402,18 @@ ILocalUserObserver 接口。
 
 报告本地用户的音频统计信息。
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| stats | 本地用户的音频统计信息。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="stats">
+
+本地用户的音频统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a73405b75fce5cfdfe6955cf9d6f1c17c"></a>
 
@@ -327,12 +436,23 @@ ILocalUserObserver 接口。
 
 报告本地视频轨道的统计信息。
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_local_video_track | 一个 AgoraLocalVideoTrack 对象。 |
-| stats | 本地视频轨道的统计信息。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="agora_local_video_track">
+
+一个 AgoraLocalVideoTrack 对象。
+
+</Parameter>
+<Parameter name="stats">
+
+本地视频轨道的统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="af7099c322002d5c4cd1811a1cc12380b"></a>
 
@@ -345,12 +465,23 @@ ILocalUserObserver 接口。
 
 报告远端用户的音频统计信息。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_remote_audio_track | 一个 IRemoteAudioTrack 对象。 |
-| stats | 远端用户的音频统计信息。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="agora_remote_audio_track">
+
+一个 IRemoteAudioTrack 对象。
+
+</Parameter>
+<Parameter name="stats">
+
+远端用户的音频统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="af2855e97343091a279987dd03259d6f5"></a>
 
@@ -372,12 +503,23 @@ ILocalUserObserver 接口。
 
 报告远端视频轨道的统计信息。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_remote_video_track | 一个 AgoraRemoteVideoTrack 对象。 |
-| stats | 远端视频轨道统计信息。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="agora_remote_video_track">
+
+一个 AgoraRemoteVideoTrack 对象。
+
+</Parameter>
+<Parameter name="stats">
+
+远端视频轨道统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="a24d008cf23fa8d07ff8d1600a14ccc53"></a>
 
@@ -394,14 +536,33 @@ ILocalUserObserver 接口。
 
 该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) 方法发送的流消息。
 
-<h4 data-toc-hidden="true" id={"参数-14"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 发送消息的用户 ID。 |
-| stream_id | 接收到的消息的 Stream ID。 |
-| data | 接收到的数据。 |
-| length | 数据长度，单位为字节。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+发送消息的用户 ID。
+
+</Parameter>
+<Parameter name="stream_id">
+
+接收到的消息的 Stream ID。
+
+</Parameter>
+<Parameter name="data">
+
+接收到的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度，单位为字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="a47bb8d6d1fb6ea8f466dad982b60d916"></a>
 
@@ -417,17 +578,23 @@ ILocalUserObserver 接口。
 
 在远端音频轨道状态变化时触发。
 
-<h4 data-toc-hidden="true" id={"参数-15"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 音频轨道状态改变的远端用户的 ID。 |
-| agora_remote_audio_track | 一个 IRemoteAudioTrack 对象。 |
-| state | <Slot name="api-center-table-6" /> |
-| reason | <Slot name="api-center-table-7" /> |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-6">
+</Parameter>
+<Parameter name="user_id">
+
+音频轨道状态改变的远端用户的 ID。
+
+</Parameter>
+<Parameter name="agora_remote_audio_track">
+
+一个 IRemoteAudioTrack 对象。
+
+</Parameter>
+<Parameter name="state">
 
 音频轨道当前状态：
 
@@ -437,9 +604,8 @@ ILocalUserObserver 接口。
 - 3：远端音频流卡顿。
 - 4：远端音频流启动失败。
 
-</Slot>
-
-<Slot for="api-center-table-7">
+</Parameter>
+<Parameter name="reason">
 
 状态改变原因：
 
@@ -452,7 +618,13 @@ ILocalUserObserver 接口。
 - 6：远端用户恢复发送音频流或远端用户启用音频模块。
 - 7：远端用户离开频道。
 
-</Slot>
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4bb144ed08f545f360900288f48401e9"></a>
 
@@ -467,12 +639,23 @@ ILocalUserObserver 接口。
 
 该回调表示本地用户已订阅指定远端音频轨道，并且收到首帧来自该轨道的音频。
 
-<h4 data-toc-hidden="true" id={"参数-16"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 所接收的音频流的远端用户 ID。 |
-| agora_remote_audio_track | 一个 IRemoteAudioTrack 对象。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+所接收的音频流的远端用户 ID。
+
+</Parameter>
+<Parameter name="agora_remote_audio_track">
+
+一个 IRemoteAudioTrack 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4bee98192f243990b5b20a2bdb8fe7a7"></a>
 
@@ -486,13 +669,28 @@ ILocalUserObserver 接口。
 
 用户媒体信息更新时触发。
 
-<h4 data-toc-hidden="true" id={"参数-17"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 用户 ID。 |
-| msg | 用户媒体信息。 |
-| val | 用户是否停止发流。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="msg">
+
+用户媒体信息。
+
+</Parameter>
+<Parameter name="val">
+
+用户是否停止发流。
+
+</Parameter>
+</ParameterList>
 
 <a id="a49b34c2c06aca4f1142a54564df60bef"></a>
 
@@ -505,12 +703,23 @@ ILocalUserObserver 接口。
 
 远端用户状态更新时触发。
 
-<h4 data-toc-hidden="true" id={"参数-18"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户 ID。 |
-| state | 远端用户状态。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="state">
+
+远端用户状态。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac5812e331e7427a1821130cae146e876"></a>
 
@@ -526,17 +735,23 @@ ILocalUserObserver 接口。
 
 在远端视频轨道状态变更时触发。
 
-<h4 data-toc-hidden="true" id={"参数-19"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 远端用户 ID。 |
-| agora_remote_video_track | 一个 AgoraRemoteVideoTrack 对象。 |
-| state | <Slot name="api-center-table-8" /> |
-| reason | <Slot name="api-center-table-9" /> |
-| elapsed | 远端用户连接频道之后经过的时间（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-8">
+</Parameter>
+<Parameter name="user_id">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="agora_remote_video_track">
+
+一个 AgoraRemoteVideoTrack 对象。
+
+</Parameter>
+<Parameter name="state">
 
 当前视频帧状态：
 
@@ -545,9 +760,8 @@ ILocalUserObserver 接口。
 - 3：远端视频流卡顿。
 - 4：远端视频流播放失败。
 
-</Slot>
-
-<Slot for="api-center-table-9">
+</Parameter>
+<Parameter name="reason">
 
 状态改变原因：
 
@@ -562,7 +776,13 @@ ILocalUserObserver 接口。
 - 8：弱网情况下，远端音视频流回退为音频流。
 - 9：网络情况改善时，远端音频流恢复为音视频流。
 
-</Slot>
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="acbbc068c086c073d17323d585cc87a6d"></a>
 
@@ -576,13 +796,28 @@ ILocalUserObserver 接口。
 
 成功订阅远端用户发送的视频流时触发。
 
-<h4 data-toc-hidden="true" id={"参数-20"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| user_id | 发送视频帧的远端用户 ID。 |
-| info | 视频轨道信息。 |
-| agora_remote_video_track | An AgoraRemoteVideoTrack 对象. |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="user_id">
+
+发送视频帧的远端用户 ID。
+
+</Parameter>
+<Parameter name="info">
+
+视频轨道信息。
+
+</Parameter>
+<Parameter name="agora_remote_video_track">
+
+An AgoraRemoteVideoTrack 对象.
+
+</Parameter>
+</ParameterList>
 
 <a id="ab06d8faa1da5d4c7fe19ac0fc6343bbd"></a>
 
@@ -597,16 +832,18 @@ ILocalUserObserver 接口。
 
 视频发布状态变更后触发。
 
-<h4 data-toc-hidden="true" id={"参数-21"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| channel | 用户所在频道的频道名。 |
-| old_state | <Slot name="api-center-table-10" /> |
-| new_state | <Slot name="api-center-table-11" /> |
-| elapse_since_last_state | 变更为新状态之后的时长（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-10">
+</Parameter>
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="old_state">
 
 之前的发布状态：
 
@@ -615,9 +852,8 @@ ILocalUserObserver 接口。
 - 2：正在发布。
 - 3：发布成功。
 
-</Slot>
-
-<Slot for="api-center-table-11">
+</Parameter>
+<Parameter name="new_state">
 
 新的发布状态：
 
@@ -626,7 +862,13 @@ ILocalUserObserver 接口。
 - 2：正在发布。
 - 3：发布成功。
 
-</Slot>
+</Parameter>
+<Parameter name="elapse_since_last_state">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a00186826ced7729f1a62df6501b2a4b9"></a>
 
@@ -642,17 +884,23 @@ ILocalUserObserver 接口。
 
 对远端用户视频订阅状态变更时触发。
 
-<h4 data-toc-hidden="true" id={"参数-22"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| channel | 用户所在频道的频道名。 |
-| user_id | 订阅的远端用户的 ID。 |
-| old_state | <Slot name="api-center-table-12" /> |
-| new_state | <Slot name="api-center-table-13" /> |
-| elapse_since_last_state | 变更为新状态之后的时长（毫秒）。 |
+一个 AgoraLocalUser 对象。
 
-<Slot for="api-center-table-12">
+</Parameter>
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="user_id">
+
+订阅的远端用户的 ID。
+
+</Parameter>
+<Parameter name="old_state">
 
 之前的订阅状态：
 
@@ -661,9 +909,8 @@ ILocalUserObserver 接口。
 - 2：正在订阅。
 - 3：收到了远端流，订阅成功。
 
-</Slot>
-
-<Slot for="api-center-table-13">
+</Parameter>
+<Parameter name="new_state">
 
 新的订阅状态：
 
@@ -672,7 +919,13 @@ ILocalUserObserver 接口。
 - 2：正在订阅。
 - 3：收到了远端流，订阅成功。
 
-</Slot>
+</Parameter>
+<Parameter name="elapse_since_last_state">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="a4517b2811a2e5cae167aed670a78b5d4"></a>
 
@@ -684,11 +937,18 @@ ILocalUserObserver 接口。
 
 在第一个本地视频包发送时触发，表明本地音视频轨道已成功发布。
 
-<h4 data-toc-hidden="true" id={"参数-23"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
 
-| agora_local_user | 一个 AgoraLocalUser 对象。 |
-| --- | --- |
-| agora_local_video_track | 一个 AgoraLocalVideoTrack 对象。 |
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="agora_local_video_track">
+
+一个 AgoraLocalVideoTrack 对象。
+
+</Parameter>
+</ParameterList>
 
 ---
 

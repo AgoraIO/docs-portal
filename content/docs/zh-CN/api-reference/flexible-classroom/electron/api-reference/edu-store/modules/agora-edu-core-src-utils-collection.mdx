@@ -25,54 +25,66 @@ _migration:
 
 - iterateMap&lt;K,V,T,E&gt;(map:Map&lt;K,V&gt;, processors?:\{onFilter?:(key:K, item:V)=&gt;boolean;onMap?:(key:K, item:V)=&gt;T;onReduce?:(prev:E, key:K, item:V)=&gt;E\}):\{list:T[];prev:E\}
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="K" />
+<Parameter name="V" />
+<Parameter name="T" />
+<Parameter name="E" />
+</ParameterList>
 
-  - K
-  - V
-  - T
-  - E
+<ParameterList title="Parameters">
+<Parameter name="map" type="Map &amp; lt;K,V &amp; gt;" required />
+<Parameter name="processors" type="\&#123;onFilter?:(key:K, item:V)= &amp; gt;boolean;onMap?:(key:K, item:V)= &amp; gt;T;onReduce?:(prev:E, key:K, item:V)= &amp; gt;E\&#125;" optional>
 
-  Parameters
+<ParameterList>
+<Parameter name="onFilter" type="(key:K, item:V)= &amp; gt;boolean" optional>
 
-  - map: Map&lt;K,V&gt;
-  - Optional processors: \{onFilter?:(key:K, item:V)=&gt;boolean;onMap?:(key:K, item:V)=&gt;T;onReduce?:(prev:E, key:K, item:V)=&gt;E\}
+- - (key:K, item:V):boolean
 
-    - Optional onFilter?:(key:K, item:V)=&gt;boolean
+  <ParameterList title="Parameters">
+  <Parameter name="key" type="K" required />
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (key:K, item:V):boolean
+  Returns boolean
 
-        - Parameters
+</Parameter>
+<Parameter name="onMap" type="(key:K, item:V)= &amp; gt;T" optional>
 
-          - key: K
-          - item: V
+- - (key:K, item:V):T
 
-          Returns boolean
-    - Optional onMap?:(key:K, item:V)=&gt;T
+  <ParameterList title="Parameters">
+  <Parameter name="key" type="K" required />
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (key:K, item:V):T
+  Returns T
 
-        - Parameters
+</Parameter>
+<Parameter name="onReduce" type="(prev:E, key:K, item:V)= &amp; gt;E" optional>
 
-          - key: K
-          - item: V
+- - (prev:E, key:K, item:V):E
 
-          Returns T
-    - Optional onReduce?:(prev:E, key:K, item:V)=&gt;E
+  <ParameterList title="Parameters">
+  <Parameter name="prev" type="E" required />
+  <Parameter name="key" type="K" required />
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (prev:E, key:K, item:V):E
+  Returns E
 
-        - Parameters
+</Parameter>
+</ParameterList>
 
-          - prev: E
-          - key: K
-          - item: V
+</Parameter>
+</ParameterList>
 
-          Returns E
+Returns \{list:T[];prev:E\}
 
-  Returns \{list:T[];prev:E\}
-
-  - list:T[]
-  - prev:E
+<ParameterList title="Returns &#123; list: T[]; prev: E &#125;">
+<Parameter name="list" type="T[]" required />
+<Parameter name="prev" type="E" required />
+</ParameterList>
 
 <a id="iterateSet"></a>
 
@@ -80,47 +92,59 @@ _migration:
 
 - iterateSet&lt;V,T,E&gt;(map:Set&lt;V&gt;, processors?:\{onFilter?:(item:V)=&gt;boolean;onMap?:(item:V)=&gt;T;onReduce?:(prev:E, item:V)=&gt;E\}):\{list:T[];prev:E\}
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="V" />
+<Parameter name="T" />
+<Parameter name="E" />
+</ParameterList>
 
-  - V
-  - T
-  - E
+<ParameterList title="Parameters">
+<Parameter name="map" type="Set &amp; lt;V &amp; gt;" required />
+<Parameter name="processors" type="\&#123;onFilter?:(item:V)= &amp; gt;boolean;onMap?:(item:V)= &amp; gt;T;onReduce?:(prev:E, item:V)= &amp; gt;E\&#125;" optional>
 
-  Parameters
+<ParameterList>
+<Parameter name="onFilter" type="(item:V)= &amp; gt;boolean" optional>
 
-  - map: Set&lt;V&gt;
-  - Optional processors: \{onFilter?:(item:V)=&gt;boolean;onMap?:(item:V)=&gt;T;onReduce?:(prev:E, item:V)=&gt;E\}
+- - (item:V):boolean
 
-    - Optional onFilter?:(item:V)=&gt;boolean
+  <ParameterList title="Parameters">
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (item:V):boolean
+  Returns boolean
 
-        - Parameters
+</Parameter>
+<Parameter name="onMap" type="(item:V)= &amp; gt;T" optional>
 
-          - item: V
+- - (item:V):T
 
-          Returns boolean
-    - Optional onMap?:(item:V)=&gt;T
+  <ParameterList title="Parameters">
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (item:V):T
+  Returns T
 
-        - Parameters
+</Parameter>
+<Parameter name="onReduce" type="(prev:E, item:V)= &amp; gt;E" optional>
 
-          - item: V
+- - (prev:E, item:V):E
 
-          Returns T
-    - Optional onReduce?:(prev:E, item:V)=&gt;E
+  <ParameterList title="Parameters">
+  <Parameter name="prev" type="E" required />
+  <Parameter name="item" type="V" required />
+  </ParameterList>
 
-      - - (prev:E, item:V):E
+  Returns E
 
-        - Parameters
+</Parameter>
+</ParameterList>
 
-          - prev: E
-          - item: V
+</Parameter>
+</ParameterList>
 
-          Returns E
+Returns \{list:T[];prev:E\}
 
-  Returns \{list:T[];prev:E\}
-
-  - list:T[]
-  - prev:E
+<ParameterList title="Returns &#123; list: T[]; prev: E &#125;">
+<Parameter name="list" type="T[]" required />
+<Parameter name="prev" type="E" required />
+</ParameterList>

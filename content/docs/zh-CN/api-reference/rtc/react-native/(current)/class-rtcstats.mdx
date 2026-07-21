@@ -87,75 +87,111 @@ export class RtcStats {
 
 ## 属性
 
-### duration
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
 
 本地用户通话时长（秒），累计值。
 
-### txBytes
+</Parameter>
+<a id="txbytes"></a>
+<Parameter name="txBytes">
 
 发送字节数 (bytes)。
 
-### rxBytes
+</Parameter>
+<a id="rxbytes"></a>
+<Parameter name="rxBytes">
 
 接收字节数 (bytes)。
 
-### txAudioBytes
+</Parameter>
+<a id="txaudiobytes"></a>
+<Parameter name="txAudioBytes">
 
 发送音频字节数 (bytes)，累计值。
 
-### txVideoBytes
+</Parameter>
+<a id="txvideobytes"></a>
+<Parameter name="txVideoBytes">
 
 发送视频字节数 (bytes)，累计值。
 
-### rxAudioBytes
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
 
 接收音频字节数 (bytes)，累计值。
 
-### rxVideoBytes
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
 
 接收视频字节数 (bytes)，累计值。
 
-### txKBitRate
+</Parameter>
+<a id="txkbitrate"></a>
+<Parameter name="txKBitRate">
 
 发送码率 (Kbps)。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收码率 (Kbps)。
 
-### rxAudioKBitRate
+</Parameter>
+<a id="rxaudiokbitrate"></a>
+<Parameter name="rxAudioKBitRate">
 
 音频接收码率 (Kbps)。
 
-### txAudioKBitRate
+</Parameter>
+<a id="txaudiokbitrate"></a>
+<Parameter name="txAudioKBitRate">
 
 音频包的发送码率 (Kbps)。
 
-### rxVideoKBitRate
+</Parameter>
+<a id="rxvideokbitrate"></a>
+<Parameter name="rxVideoKBitRate">
 
 视频接收码率 (Kbps)。
 
-### txVideoKBitRate
+</Parameter>
+<a id="txvideokbitrate"></a>
+<Parameter name="txVideoKBitRate">
 
 视频发送码率 (Kbps)。
 
-### lastmileDelay
+</Parameter>
+<a id="lastmiledelay"></a>
+<Parameter name="lastmileDelay">
 
 客户端-接入服务器延时 (毫秒)。
 
-### txPacketLossRate
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 使用抗丢包技术前，客户端上行发送到服务器丢包率 (%)。
 
-### rxPacketLossRate
+</Parameter>
+<a id="rxpacketlossrate"></a>
+<Parameter name="rxPacketLossRate">
 
 使用抗丢包技术前，服务器下行发送到客户端丢包率 (%)。
 
-### userCount
+</Parameter>
+<a id="usercount"></a>
+<Parameter name="userCount">
 
 当前频道内的用户人数。
 
-### cpuAppUsage
+</Parameter>
+<a id="cpuappusage"></a>
+<Parameter name="cpuAppUsage">
 
 当前 App 的 CPU 使用率 (%)。
 
@@ -165,7 +201,9 @@ export class RtcStats {
 - [onLeaveChannel](/zh-CN/api-reference/rtc/react-native/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 `cpuAppUsage` 恒为 0。
 :::
 
-### cpuTotalUsage
+</Parameter>
+<a id="cputotalusage"></a>
+<Parameter name="cpuTotalUsage">
 
 当前系统的 CPU 使用率 (%)。
 
@@ -176,11 +214,15 @@ export class RtcStats {
 - 自 Android 8.1 起，因系统限制，你无法通过该属性获取 CPU 使用率。
 :::
 
-### connectTimeMs
+</Parameter>
+<a id="connecttimems"></a>
+<Parameter name="connectTimeMs">
 
 从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。
 
-### gatewayRtt
+</Parameter>
+<a id="gatewayrtt"></a>
+<Parameter name="gatewayRtt">
 
 客户端到本地路由器的往返时延 (ms)。
 
@@ -191,7 +233,9 @@ export class RtcStats {
 在 Android 平台上，如需获取 `gatewayRtt`，请确保已在项目 `AndroidManifest.xml` 文件的 `</application>` 后面添加 `android.permission.ACCESS_WIFI_STATE` 权限。
 :::
 
-### memoryAppUsageRatio
+</Parameter>
+<a id="memoryappusageratio"></a>
+<Parameter name="memoryAppUsageRatio">
 
 当前 App 的内存占比 (%)。
 
@@ -199,7 +243,9 @@ export class RtcStats {
 注： 该值仅作参考。受系统限制可能无法获取。
 :::
 
-### memoryTotalUsageRatio
+</Parameter>
+<a id="memorytotalusageratio"></a>
+<Parameter name="memoryTotalUsageRatio">
 
 当前系统的内存占比 (%)。
 
@@ -207,10 +253,15 @@ export class RtcStats {
 注： 该值仅作参考。受系统限制可能无法获取。
 :::
 
-### memoryAppUsageInKbytes
+</Parameter>
+<a id="memoryappusageinkbytes"></a>
+<Parameter name="memoryAppUsageInKbytes">
 
 当前 App 的内存大小 (KB)。
 
 :::note
 注： 该值仅作参考。受系统限制可能无法获取。
 :::
+
+</Parameter>
+</ParameterList>

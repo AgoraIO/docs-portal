@@ -28,17 +28,26 @@ __attribute__((visibility("default"))) @interface AgoraLocalTranscoderConfigurat
 
 ## 属性
 
-### videoInputStreams
+<ParameterList>
+<a id="videoinputstreams"></a>
+<Parameter name="videoInputStreams">
 
 用于本地合图的视频流。详见 [AgoraTranscodingVideoStream](/zh-CN/api-reference/rtc/macos/class-transcodingvideostream)。
 
-### videoOutputConfiguration
+</Parameter>
+<a id="videooutputconfiguration"></a>
+<Parameter name="videoOutputConfiguration">
 
 本地合图后合图视频的编码配置。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
 
-### syncWithPrimaryCamera
+</Parameter>
+<a id="syncwithprimarycamera"></a>
+<Parameter name="syncWithPrimaryCamera">
 
 是否使用主摄像头采集的视频帧的时间戳作为合图视频的时间戳。
 
 - YES：（默认）使用采集视频帧的时间戳作为合图视频的时间戳。
 - NO：不使用采集视频帧的时间戳，而使用构建合图视频时的时间戳。
+
+</Parameter>
+</ParameterList>

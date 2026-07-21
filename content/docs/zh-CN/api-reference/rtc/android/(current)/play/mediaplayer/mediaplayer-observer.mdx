@@ -31,16 +31,23 @@ int registerAudioFrameObserver(IMediaPlayerAudioFrameObserver audioFrameObserver
 
 ### 参数
 
-### audioFrameObserver
+<ParameterList>
+<a id="audioframeobserver"></a>
+<Parameter name="audioFrameObserver">
 
 音频帧观测器对象，用于接收每一帧音频数据。详见 [IMediaPlayerAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayeraudioframeobserver)。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式：
 
 - `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`（0）：（默认）只读模式。例如，你通过声网 SDK 获取音频数据后，再推送 RTMP 或 RTMPS 流。
 - `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE`（2）：读写模式。你可以从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取音频数据，修改后再播放。例如，你有自己的音频特效处理模块，并进行语音预处理，如变声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
 
@@ -81,9 +88,14 @@ int registerPlayerObserver(IMediaPlayerObserver playerObserver);
 
 ### 参数
 
-### playerObserver
+<ParameterList>
+<a id="playerobserver"></a>
+<Parameter name="playerObserver">
 
 媒体播放器观察器，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
@@ -118,9 +130,14 @@ int registerVideoFrameObserver(IMediaPlayerVideoFrameObserver videoFrameObserver
 
 ### 参数
 
-### videoFrameObserver
+<ParameterList>
+<a id="videoframeobserver"></a>
+<Parameter name="videoFrameObserver">
 
 用于上报每一帧视频的接收情况。详见 [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__return_values"></a>
 
@@ -153,9 +170,14 @@ int unRegisterPlayerObserver(IMediaPlayerObserver playerObserver);
 
 ### 参数
 
-### playerObserver
+<ParameterList>
+<a id="playerobserver-1"></a>
+<Parameter name="playerObserver">
 
 用于监听播放过程中的事件的媒体播放器观察者。详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
@@ -196,9 +218,14 @@ int unRegisterPlayerObserver(IMediaPlayerObserver playerObserver);
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 媒体播放器的音量，取值范围为 0 到 255。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -232,9 +259,14 @@ int unRegisterPlayerObserver(IMediaPlayerObserver playerObserver);
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 音频帧信息，详见 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__return_values"></a>
 
@@ -274,9 +306,14 @@ int unRegisterPlayerObserver(IMediaPlayerObserver playerObserver);
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 视频帧信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -310,13 +347,20 @@ void onMetaData(Constants.MediaPlayerMetadataType type, byte[] data)
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体元数据的类型，详见 [MediaPlayerMetadataType](/zh-CN/api-reference/rtc/android/enum-mediaplayermetadatatype)。
 
-### data
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 媒体元数据的详细内容。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -353,9 +397,14 @@ void onPlayBufferUpdated(long playCachedBuffer)
 
 ### 参数
 
-### playCachedBuffer
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 缓冲数据可支持的播放时长，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -383,17 +432,26 @@ void onPlayerEvent(Constants.MediaPlayerEvent eventCode, long elapsedTime, Strin
 
 ### 参数
 
-### eventCode
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/android/enum-mediaplayerevent)。
 
-### elapsedTime
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 事件发生的时间，单位为毫秒。
 
-### message
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 关于该事件的补充信息。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -427,9 +485,14 @@ void onPlayerEvent(Constants.MediaPlayerEvent eventCode, long elapsedTime, Strin
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/android/class-playerupdatedinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -457,13 +520,20 @@ void onPlayerStateChanged(Constants.MediaPlayerState state, Constants.MediaPlaye
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/android/enum-mediaplayerstate)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放状态变化的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -495,13 +565,20 @@ void onPlayerSrcInfoChanged(SrcInfo from, SrcInfo to)
 
 ### 参数
 
-### from
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 正在播放的媒体资源的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/android/class-srcinfo)。
 
-### to
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变更后的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/android/class-srcinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -535,17 +612,24 @@ void onPositionChanged(long positionMs, long timestampMs)
 
 ### 参数
 
-### positionMs
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 媒体文件的播放位置，单位为毫秒。
 
-### timestampMs
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度对应的 NTP 时间戳，单位为毫秒。
 
 :::note
 注： 该参数仅在频道内生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -573,13 +657,20 @@ void onPreloadEvent(String src, Constants.MediaPlayerPreloadEvent event)
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [MediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/android/enum-playerpreloadevent)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -607,13 +698,20 @@ SDK 读取媒体资源数据时触发的回调。
 
 ### 参数
 
-### buffer
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 数据缓冲区。你需要将 SDK 请求的 `bufferSize` 字节数据写入该缓冲区。详见 `ByteBuffer`。
 
-### bufferSize
+</Parameter>
+<a id="buffersize"></a>
+<Parameter name="bufferSize">
 
 数据缓冲区的长度，单位为字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__return_values"></a>
 

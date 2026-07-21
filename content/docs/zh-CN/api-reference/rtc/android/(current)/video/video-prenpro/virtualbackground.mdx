@@ -52,20 +52,29 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用虚拟背景：
 
 - true：启用虚拟背景。
 - false：关闭虚拟背景。
 
-### backgroundSource
+</Parameter>
+<a id="backgroundsource"></a>
+<Parameter name="backgroundSource">
 
 自定义背景。为了使自定义背景图像的分辨率适配 SDK 采集的视频分辨率，SDK 会对图像进行缩放和裁剪，确保图像内容不失真。详见 [VirtualBackgroundSource](/zh-CN/api-reference/rtc/android/class-virtualbackgroundsource)。
 
-### segproperty
+</Parameter>
+<a id="segproperty"></a>
+<Parameter name="segproperty">
 
 背景图像的处理属性。详见 [SegmentationProperty](/zh-CN/api-reference/rtc/android/class-segmentationproperty)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground__return_values"></a>
 
@@ -123,22 +132,30 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用虚拟背景：
 
 - true：启用虚拟背景。
 - false：关闭虚拟背景。
 
-### backgroundSource
+</Parameter>
+<a id="backgroundsource-1"></a>
+<Parameter name="backgroundSource">
 
 自定义背景。SDK 会对自定义背景图像进行缩放和裁剪，以适配采集的视频分辨率，并确保图像内容不失真。详见 [VirtualBackgroundSource](/zh-CN/api-reference/rtc/android/class-virtualbackgroundsource)。
 
-### segproperty
+</Parameter>
+<a id="segproperty-1"></a>
+<Parameter name="segproperty">
 
 背景图像的处理属性。详见 [SegmentationProperty](/zh-CN/api-reference/rtc/android/class-segmentationproperty)。
 
-### sourceType
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/enum-mediasourcetype)。
 
@@ -148,6 +165,9 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 - 默认值为 `PRIMARY_CAMERA_SOURCE`。
 - 若使用自定义视频源，请将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground2__return_values"></a>
 

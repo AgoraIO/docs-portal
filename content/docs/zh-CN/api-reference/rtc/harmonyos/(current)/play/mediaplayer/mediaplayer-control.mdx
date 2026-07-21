@@ -43,7 +43,9 @@ public abstract adjustPlayoutVolume(vol: number): number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放音量，取值范围从 0 到 100：
 
@@ -51,6 +53,9 @@ public abstract adjustPlayoutVolume(vol: number): number;
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
 
@@ -99,7 +104,9 @@ public abstract adjustPublishSignalVolume(volume:number):number;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 信号音量，取值范围从 0 到 400：
 
@@ -108,6 +115,9 @@ public abstract adjustPublishSignalVolume(volume:number):number;
 - 0: 无声。
 - 100: （默认）媒体文件的原始音量。
 - 400: 原始音量的四倍（自带溢出保护）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
 
@@ -283,9 +293,14 @@ public abstract playPreloadedSrc(src:string):number;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 播放列表中的媒体资源 URL 地址，必须与 preloadSrc 方法设置的 src 一致，否则无法播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 

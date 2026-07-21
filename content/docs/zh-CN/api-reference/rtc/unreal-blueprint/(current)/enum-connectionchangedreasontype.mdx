@@ -14,35 +14,51 @@ _migration:
 
 ## 枚举值
 
-### CONNECTION_CHANGED_CONNECTING
+<ParameterList>
+<a id="connection_changed_connecting"></a>
+<Parameter name="CONNECTION_CHANGED_CONNECTING">
 
 0: 建立网络连接中。
 
-### CONNECTION_CHANGED_JOIN_SUCCESS
+</Parameter>
+<a id="connection_changed_join_success"></a>
+<Parameter name="CONNECTION_CHANGED_JOIN_SUCCESS">
 
 1: 成功加入频道。
 
-### CONNECTION_CHANGED_INTERRUPTED
+</Parameter>
+<a id="connection_changed_interrupted"></a>
+<Parameter name="CONNECTION_CHANGED_INTERRUPTED">
 
 2: 网络连接中断。
 
-### CONNECTION_CHANGED_BANNED_BY_SERVER
+</Parameter>
+<a id="connection_changed_banned_by_server"></a>
+<Parameter name="CONNECTION_CHANGED_BANNED_BY_SERVER">
 
 3: 网络连接被服务器禁止。例如，当用户被踢出频道时，会返回该状态。
 
-### CONNECTION_CHANGED_JOIN_FAILED
+</Parameter>
+<a id="connection_changed_join_failed"></a>
+<Parameter name="CONNECTION_CHANGED_JOIN_FAILED">
 
 4: 加入频道失败。SDK 在尝试加入频道 20 分钟后仍未能加入频道，会返回该状态并不再尝试重连。请提示用户尝试切换网络后重新加入频道。
 
-### CONNECTION_CHANGED_LEAVE_CHANNEL
+</Parameter>
+<a id="connection_changed_leave_channel"></a>
+<Parameter name="CONNECTION_CHANGED_LEAVE_CHANNEL">
 
 5: 离开频道。
 
-### CONNECTION_CHANGED_INVALID_APP_ID
+</Parameter>
+<a id="connection_changed_invalid_app_id"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_APP_ID">
 
 6: App ID 无效。请使用有效的 APP ID 重新加入频道，并确保你使用的 App ID 与在声网控制台生成的一致。
 
-### CONNECTION_CHANGED_INVALID_CHANNEL_NAME
+</Parameter>
+<a id="connection_changed_invalid_channel_name"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_CHANNEL_NAME">
 
 7: 频道名无效。请更换有效的频道名重新加入频道。有效的频道名为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
 
@@ -51,7 +67,9 @@ _migration:
 - 10 个数字 0~9
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
-### CONNECTION_CHANGED_INVALID_TOKEN
+</Parameter>
+<a id="connection_changed_invalid_token"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_TOKEN">
 
 8: Token 无效。一般有以下原因：
 
@@ -65,53 +83,80 @@ _migration:
 - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
 - 生成的 Token 和加入频道使用的 Token 一致。
 
-### CONNECTION_CHANGED_TOKEN_EXPIRED
+</Parameter>
+<a id="connection_changed_token_expired"></a>
+<Parameter name="CONNECTION_CHANGED_TOKEN_EXPIRED">
 
 9: 当前使用的 Token 已过期。请重新在你的服务端生成 Token，然后用新的 Token 重新加入频道。
 
-### CONNECTION_CHANGED_REJECTED_BY_SERVER
+</Parameter>
+<a id="connection_changed_rejected_by_server"></a>
+<Parameter name="CONNECTION_CHANGED_REJECTED_BY_SERVER">
 
 10: 此用户被服务器禁止。一般有以下原因：
 
 - 用户已进入频道，再次调用加入频道的 API，例如 JoinChannelWithOptions，会返回此状态。停止调用该方法即可。
 - 用户在进行通话测试时尝试加入频道。等待通话测试结束后再加入频道即可。
 
-### CONNECTION_CHANGED_SETTING_PROXY_SERVER
+</Parameter>
+<a id="connection_changed_setting_proxy_server"></a>
+<Parameter name="CONNECTION_CHANGED_SETTING_PROXY_SERVER">
 
 11: 由于设置了代理服务器，SDK 尝试重连。
 
-### CONNECTION_CHANGED_RENEW_TOKEN
+</Parameter>
+<a id="connection_changed_renew_token"></a>
+<Parameter name="CONNECTION_CHANGED_RENEW_TOKEN">
 
 12: 更新 Token 引起网络连接状态改变。
 
-### CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED
+</Parameter>
+<a id="connection_changed_client_ip_address_changed"></a>
+<Parameter name="CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED">
 
 13: 客户端 IP 地址变更。如多次收到该状态码，请提示用户更换网络后尝试重新加入频道。
 
-### CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT
+</Parameter>
+<a id="connection_changed_keep_alive_timeout"></a>
+<Parameter name="CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT">
 
 14: SDK 和服务器连接保活超时，进入自动重连状态。
 
-### CONNECTION_CHANGED_REJOIN_SUCCESS
+</Parameter>
+<a id="connection_changed_rejoin_success"></a>
+<Parameter name="CONNECTION_CHANGED_REJOIN_SUCCESS">
 
 15: 重新加入频道成功。
 
-### CONNECTION_CHANGED_LOST
+</Parameter>
+<a id="connection_changed_lost"></a>
+<Parameter name="CONNECTION_CHANGED_LOST">
 
 16: SDK 和服务器失去连接。
 
-### CONNECTION_CHANGED_ECHO_TEST
+</Parameter>
+<a id="connection_changed_echo_test"></a>
+<Parameter name="CONNECTION_CHANGED_ECHO_TEST">
 
 17: 连接状态变化由回声测试引起。
 
-### CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER
+</Parameter>
+<a id="connection_changed_client_ip_address_changed_by_user"></a>
+<Parameter name="CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER">
 
 18: 本地 IP 地址被用户更改。
 
-### CONNECTION_CHANGED_SAME_UID_LOGIN
+</Parameter>
+<a id="connection_changed_same_uid_login"></a>
+<Parameter name="CONNECTION_CHANGED_SAME_UID_LOGIN">
 
 19: 使用相同的 UID 从不同的设备加入同一频道。
 
-### CONNECTION_CHANGED_TOO_MANY_BROADCASTERS
+</Parameter>
+<a id="connection_changed_too_many_broadcasters"></a>
+<Parameter name="CONNECTION_CHANGED_TOO_MANY_BROADCASTERS">
 
 20: 频道内主播人数已达上限。
+
+</Parameter>
+</ParameterList>

@@ -30,12 +30,20 @@ _migration:
 
 - onAudioRawDataBeforeMixed(rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData), streamUuid:string, sceneId:string):void
 
-- 远端音频流裸数据回调
+远端音频流裸数据回调
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="rawData" required>
 
-  - rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
-  - streamUuid: string
-  - sceneId: string
+<ParameterType>
 
-  Returns void
+[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="sceneId" type="string" required />
+</ParameterList>
+
+Returns void

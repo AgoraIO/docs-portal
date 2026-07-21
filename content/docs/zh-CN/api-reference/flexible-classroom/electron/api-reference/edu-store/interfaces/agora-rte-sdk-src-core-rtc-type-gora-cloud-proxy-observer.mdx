@@ -31,13 +31,21 @@ _migration:
 
 - onConnectedThroughCloudProxy(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
 
-- Callback when the rtc channel connected through the cloud proxy server. only fired in electron environment.
+Callback when the rtc channel connected through the cloud proxy server. only fired in electron environment.
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="connectionType" required>
 
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterType>
 
-  Returns void
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="onPublishedThroughCloudProxy"></a>
 
@@ -45,11 +53,19 @@ _migration:
 
 - onPublishedThroughCloudProxy(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy:boolean):void
 
-- Callback when any streams published through the cloud proxy server, only fired in web browser environment.
+Callback when any streams published through the cloud proxy server, only fired in web browser environment.
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="connectionType" required>
 
-  - connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
-  - isUsingCloudProxy: boolean
+<ParameterType>
 
-  Returns void
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="isUsingCloudProxy" type="boolean" required />
+</ParameterList>
+
+Returns void

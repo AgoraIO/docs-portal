@@ -20,30 +20,47 @@ _migration:
 
 ## 枚举值
 
-### renewTokenSuccess
+<ParameterList>
+<a id="renewtokensuccess"></a>
+<Parameter name="renewTokenSuccess">
 
 （0）：Token 更新成功。
 
-### renewTokenFailure
+</Parameter>
+<a id="renewtokenfailure"></a>
+<Parameter name="renewTokenFailure">
 
 （1）：由于未知的服务器错误，Token 更新失败。建议检查用于生成 Token 的参数，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken)。
 
-### renewTokenTokenExpired
+</Parameter>
+<a id="renewtokentokenexpired"></a>
+<Parameter name="renewTokenTokenExpired">
 
 （2）：由于提供的 Token 已过期，Token 更新失败。建议生成一个过期时间更长的新 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken)。
 
-### renewTokenInvalidToken
+</Parameter>
+<a id="renewtokeninvalidtoken"></a>
+<Parameter name="renewTokenInvalidToken">
 
 （3）：由于提供的 Token 无效，Token 更新失败。常见原因包括：项目在声网控制台启用了 App 证书但加入频道时未使用 Token；[joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 中指定的 uid 与生成 Token 时使用的 uid 不一致；[joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 中指定的频道名与生成 Token 时使用的频道名不一致。建议检查 Token 的生成流程，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken)。
 
-### renewTokenInvalidChannelName
+</Parameter>
+<a id="renewtokeninvalidchannelname"></a>
+<Parameter name="renewTokenInvalidChannelName">
 
 （4）：由于 Token 中的频道名与当前频道不一致，Token 更新失败。建议检查频道名，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken)。
 
-### renewTokenInconsistentAppid
+</Parameter>
+<a id="renewtokeninconsistentappid"></a>
+<Parameter name="renewTokenInconsistentAppid">
 
 （5）：由于 Token 中的 App ID 与当前 App ID 不一致，Token 更新失败。建议检查 App ID，重新生成 Token，并重试 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken)。
 
-### renewTokenCanceledByNewRequest
+</Parameter>
+<a id="renewtokencanceledbynewrequest"></a>
+<Parameter name="renewTokenCanceledByNewRequest">
 
 （6）：由于发起了新的请求，之前的 Token 更新请求被取消。
+
+</Parameter>
+</ParameterList>

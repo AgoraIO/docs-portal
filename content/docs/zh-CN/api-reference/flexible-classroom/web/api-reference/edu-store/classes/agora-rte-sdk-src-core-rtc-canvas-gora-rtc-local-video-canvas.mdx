@@ -43,13 +43,23 @@ _migration:
 
 - new AgoraRtcLocalVideoCanvas(view:HTMLElement, mirror?:boolean, renderMode?:[AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)):[AgoraRtcLocalVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-local-video-canvas)
 
-- Overrides [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas#constructor)Parameters
+Overrides [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas#constructor)
 
-  - view: HTMLElement
-  - Optional mirror: boolean
-  - Optional renderMode: [AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+<ParameterList title="Parameters">
+<Parameter name="view" type="HTMLElement" required />
+<Parameter name="mirror" type="boolean" optional />
+<Parameter name="renderMode" optional>
 
-  Returns [AgoraRtcLocalVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-local-video-canvas)
+<ParameterType>
+
+[AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRtcLocalVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-local-video-canvas)
 
 ## Properties
 
@@ -101,9 +111,11 @@ Inherited from [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web
 
 - key(streamUuid:string, channelName:string):string
 
-- Inherited from [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas).[key](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas#key)Parameters
+Inherited from [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas).[key](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas#key)
 
-  - streamUuid: string
-  - channelName: string
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
 
-  Returns string
+Returns string

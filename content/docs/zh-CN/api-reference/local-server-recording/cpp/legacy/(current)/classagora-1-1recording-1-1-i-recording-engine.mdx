@@ -54,11 +54,18 @@ _migration:
 
 该方法创建 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 实例。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="appId">
 
-| appId | 希望录制的音视频通话中使用的 App ID，详见 获取 App ID。 |
-| --- | --- |
-| eventHandler | 录制 SDK 所触发的事件通过 [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) 类回调通知应用程序。 |
+希望录制的音视频通话中使用的 App ID，详见 获取 App ID。
+
+</Parameter>
+<Parameter name="eventHandler">
+
+录制 SDK 所触发的事件通过 [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) 类回调通知应用程序。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -78,22 +85,31 @@ _migration:
 - 同一个频道里不能出现两个相同的 UID，否则会产生未定义行为。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="channelKey">
 
-| channelKey | 用于鉴权的动态密钥。录制端的 `channelKey` 与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
-| --- | --- |
-| channelId | 希望录制的音视频通话的频道名称。 |
-| uid | <Slot name="api-center-table-0" /> |
-| config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config)。 |
+用于鉴权的动态密钥。录制端的 `channelKey` 与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="channelId">
+
+希望录制的音视频通话的频道名称。
+
+</Parameter>
+<Parameter name="uid">
 
 录制使用的 UID。有两种设置方法：
 
 - 设置为 0，系统将自动分配一个 UID；
 - 设置一个唯一的 UID，不能与现在频道内的任何 UID 重复。取值范围：1 到 (232-1)。
 
-</Slot>
+</Parameter>
+<Parameter name="config">
+
+录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
 
@@ -115,15 +131,18 @@ _migration:
 为保证通信质量，我们建议一个频道内使用同一类型的数据标识用户身份，因此录制端的用户标识数据类型要与 Native/Web SDK 的保持一致。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="token">
 
-| token | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。 |
-| --- | --- |
-| channelId | 待录制频道的频道名。 |
-| userAccount | <Slot name="api-center-table-1" /> |
-| config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config)。 |
+用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见校验用户权限。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="channelId">
+
+待录制频道的频道名。
+
+</Parameter>
+<Parameter name="userAccount">
 
 用户的 User Account。该参数为必填，最大不超过 255 字节，不可填 null。请确保加入频道的 User Account 的唯一性。以下为支持的字符集范围（共 89 个字符）:
 
@@ -133,7 +152,13 @@ _migration:
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+<Parameter name="config">
+
+录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -153,20 +178,21 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调后，你可以调用 `getUserInfoByUserAccount` 方法，通过传入 User Account 获取包含了指定用户 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userAccount">
 
-| userAccount | 用户 User Account，必填。 |
-| --- | --- |
-| userinfo | <Slot name="api-center-table-2" /> |
+用户 User Account，必填。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="userinfo">
 
 [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
 - 输入值：一个 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 - 输出值：一个包含了用户 User Account 和 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
@@ -186,20 +212,21 @@ _migration:
 
 收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调后，你可以调用 `getUserInfoByUid` 方法，通过传入 UID 获取包含了指定用户 User Account 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 用户 UID，必填。 |
-| --- | --- |
-| userInfo | <Slot name="api-center-table-3" /> |
+用户 UID，必填。
 
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="userInfo">
 
 [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
 - 输入值：一个 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 - 输出值：一个包含了用户 User Account 和 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) 对象。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
@@ -217,10 +244,13 @@ _migration:
 
 合流模式下如果有视频，必须调用该方法设置布局。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="layout">
 
-| layout | 视频合流布局的设定，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout)。 |
-| --- | --- |
+视频合流布局的设定，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
@@ -332,11 +362,18 @@ _migration:
 该设置对 Agora Web SDK 的用户无效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-| uid | 该用户的 UID。 |
-| --- | --- |
-| img_path | 背景图片路径。仅支持本地 JPEG 文件。 |
+该用户的 UID。
+
+</Parameter>
+<Parameter name="img_path">
+
+背景图片路径。仅支持本地 JPEG 文件。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
@@ -352,10 +389,13 @@ _migration:
 
 该方法设置 log 过滤等级。设置完成后，只有等级低于和等于所设 level 的 log 才会被生成。默认值为 5。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="level">
 
-| level | 详见 [agora_log_level](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a08e209290d684d21a48648bd755d0334)。 |
-| --- | --- |
+详见 [agora_log_level](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a08e209290d684d21a48648bd755d0334)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
 
@@ -375,11 +415,18 @@ _migration:
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afc2322e9bf7424f4e692d99967a50f6e) 为 false 时有效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uids">
 
-| uids | UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
-| --- | --- |
-| num | UID 的个数。 |
+UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。
+
+</Parameter>
+<Parameter name="num">
+
+UID 的个数。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
 
@@ -399,11 +446,18 @@ _migration:
 该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#afc2322e9bf7424f4e692d99967a50f6e) 为 false 时有效。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uids">
 
-| uids | UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
-| --- | --- |
-| num | UID 的个数。 |
+UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
+
+</Parameter>
+<Parameter name="num">
+
+UID 的个数。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
@@ -430,8 +484,15 @@ _migration:
 水印仅适用于合流录制模式（[RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) 中的 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 参数为 true）。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="wm_num">
 
-| wm_num | 水印的个数。录制 SDK 最多支持 15 个水印，其中文字水印最多 10 个，时间戳水印最多 1 个，图片水印最多 4 个。 |
-| --- | --- |
-| config | 水印的具体设置。[WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config) 组成的数组。一个水印对应一个 [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config)。 |
+水印的个数。录制 SDK 最多支持 15 个水印，其中文字水印最多 10 个，时间戳水印最多 1 个，图片水印最多 4 个。
+
+</Parameter>
+<Parameter name="config">
+
+水印的具体设置。[WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config) 组成的数组。一个水印对应一个 [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config)。
+
+</Parameter>
+</ParameterList>

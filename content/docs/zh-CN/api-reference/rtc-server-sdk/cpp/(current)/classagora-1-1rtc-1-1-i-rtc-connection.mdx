@@ -56,14 +56,13 @@ _migration:
 
 根据连接是否成功，连接状态会变更为 `CONNECTION_STATE_CONNECTED(3)` 或 `CONNECTION_STATE_FAILED(5)`。 SDK 会触发 `onConnected` 或 `onDisconnected` 提醒连接状态变更。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="token">
 
-| token | RTC Token。详见 使用 Token 鉴权。如果你的项目中未开启 App 证书，则仅需在该参数中填写你声网项目的 App ID。 |
-| --- | --- |
-| channelId | <Slot name="api-center-table-0" /> |
-| userId | <Slot name="api-center-table-1" /> |
+RTC Token。详见 使用 Token 鉴权 。如果你的项目中未开启 App 证书，则仅需在该参数中填写你声网项目的 App ID。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="channelId">
 
 频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
 
@@ -73,9 +72,8 @@ _migration:
 - 空格。
 - 标点符号和其他特殊符号： "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="userId">
 
 本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 NULL，SDK 在 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a1df408778b1886055df47cd7d0ff8e5c) 回调中自动返回一个 user ID。 你必须自行记录并管理此 ID。根据你在 [initialize](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a6f1fb6e792c564dee46903cbb3bc35fc) 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
 
@@ -90,7 +88,8 @@ _migration:
   - 空格
   - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 
@@ -98,7 +97,7 @@ _migration:
 - &lt; 0: 方法调用失败。
 
   - -2(ERR_INVALID_ARGUMENT)：参数无效。
-  - -8(ERR_INVALID_STATE): 当前连接状态不是 CONNECTION_STATE_DISCONNECTED(1) 。
+  - -8(ERR_INVALID_STATE): 当前连接状态不是 CONNECTION_STATE_DISCONNECTED(1)。
 
 <a id="aa83ca15b81922af3cb3f5d81221556e4"></a>
 
@@ -138,10 +137,13 @@ SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNEC
 - 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="config">
 
-| config | Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config)。 |
-| --- | --- |
+Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
 
@@ -175,10 +177,13 @@ Token 会在一定时间后过期。
 
 当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a27ee9184ccaba5855389412846f6949f) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="token">
 
-| token | 新 Token。 |
-| --- | --- |
+新 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="ab91ff9124027bdc7a3ce6e77addf8da1"></a>
 
@@ -217,10 +222,13 @@ Token 会在一定时间后过期。
 
 获取频道中全部远端用户的信息。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="users" direction="[out]">
 
-| [out] | users | 用户列表： [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) 对象。 |
-| --- | --- | --- |
+用户列表： [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
@@ -236,11 +244,18 @@ Token 会在一定时间后过期。
 
 获取频道中指定远端用户的信息。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userId" direction="[in]">
 
-| [in] | userId | 用户 ID。 |
-| --- | --- | --- |
-| [out] | userInfo | 用户信息： [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) 对象。 |
+用户 ID。
+
+</Parameter>
+<Parameter name="userInfo" direction="[out]">
+
+用户信息： [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
@@ -256,10 +271,13 @@ Token 会在一定时间后过期。
 
 注册 RTC 连接 observer。你必须先创建 [`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。 |
-| --- | --- |
+[IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
 
@@ -275,10 +293,13 @@ Token 会在一定时间后过期。
 
 销毁 RTC 连接 observer。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。 |
-| --- | --- |
+[IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
@@ -294,10 +315,13 @@ Token 会在一定时间后过期。
 
 注册网络状态 observer。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。 |
-| --- | --- |
+[INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
@@ -313,10 +337,13 @@ Token 会在一定时间后过期。
 
 销毁网络状态 observer。
 
-<h4 data-toc-hidden="true" id={"参数-8"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。 |
-| --- | --- |
+[INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
@@ -384,40 +411,37 @@ Token 会在一定时间后过期。
 - 设置为与音频同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调。 当需要数据包立刻到达接收端时，不能将 `sync` 参数设置为 `true`。声网推荐你仅在需要实现特殊场景，例如歌词同步时，设置为与音频同步。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-9"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="streamId">
 
-| streamId | 输出参数，数据流 ID。 |
-| --- | --- |
-| reliable | <Slot name="api-center-table-2" /> |
-| ordered | <Slot name="api-center-table-3" /> |
-| sync | <Slot name="api-center-table-4" /> |
+输出参数，数据流 ID。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="reliable">
 
 该数据流是否可靠：
 
 - `true`: 接收方 5 秒内会收到发送方所发送的数据。
 - `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="ordered">
 
 该数据流是否有序：
 
 - `true`: 接收方会按照发送方发送的顺序收到数据包。
 - `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
-</Slot>
-
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="sync">
 
 是否与本地发送的音频流同步：
 
 - `true`: 数据流与音频流同步。
 - `false`: 数据流与音频流不同步。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
 
@@ -446,12 +470,23 @@ Token 会在一定时间后过期。
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-10"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="streamId">
 
-| streamId | 数据流 ID。可以通过 `createDataStream` 获取。 |
-| --- | --- |
-| data | 待发送的数据。 |
-| length | 数据长度。 |
+数据流 ID。可以通过 `createDataStream` 获取。
+
+</Parameter>
+<Parameter name="data">
+
+待发送的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
 
@@ -475,11 +510,21 @@ Token 会在一定时间后过期。
 - 如果开启了内置加密，则不能使用直推 CDN 功能。
 :::
 
-<h4 data-toc-hidden="true" id={"参数-11"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="enabled">
 
-| enabled | 是否开启内置加密：true: 开启内置加密。 false: 关闭内置加密。 |
-| --- | --- |
-| config | 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config)。 |
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false: 关闭内置加密。
+
+</Parameter>
+<Parameter name="config">
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) 。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
 
@@ -495,20 +540,21 @@ Token 会在一定时间后过期。
 
 根据 user account（String 型用户 ID） 获取用户信息。
 
-<h4 data-toc-hidden="true" id={"参数-12"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="userAccount">
 
-|  | userAccount | 用户的 user account。 |
-| --- | --- | --- |
-| [in,out] | userInfo | <Slot name="api-center-table-5" /> |
+用户的 user account。
 
-<Slot for="api-center-table-5">
+</Parameter>
+<Parameter name="userInfo" direction="[in,out]">
 
 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
 
 - 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象。
 - 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
 
@@ -524,20 +570,21 @@ Token 会在一定时间后过期。
 
 根据用户 ID 获取用户信息。
 
-<h4 data-toc-hidden="true" id={"参数-13"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="uid">
 
-|  | uid | 用户 ID |
-| --- | --- | --- |
-| [in,out] | userInfo | <Slot name="api-center-table-6" /> |
+用户 ID
 
-<Slot for="api-center-table-6">
+</Parameter>
+<Parameter name="userInfo" direction="[in,out]">
 
 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
 
 - 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象。
 - 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
 

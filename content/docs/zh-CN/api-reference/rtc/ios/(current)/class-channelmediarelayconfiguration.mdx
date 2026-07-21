@@ -23,7 +23,9 @@ __attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfigur
 
 ## 属性
 
-### destinationInfos
+<ParameterList>
+<a id="destinationinfos"></a>
+<Parameter name="destinationInfos">
 
 :::note
 注： 如果任一目标频道的 Token 过期，整个媒体流转发将停止。建议为所有目标频道设置相同的 Token 过期时间。
@@ -40,7 +42,9 @@ __attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfigur
 
 详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)。
 
-### sourceInfo
+</Parameter>
+<a id="sourceinfo"></a>
+<Parameter name="sourceInfo">
 
 源频道信息。包含以下成员：
 
@@ -52,6 +56,9 @@ __attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfigur
 - `uid`：用于标识源频道中转发流的唯一用户 ID。建议保持默认值 0 不变。
 
 详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 相关参考
 

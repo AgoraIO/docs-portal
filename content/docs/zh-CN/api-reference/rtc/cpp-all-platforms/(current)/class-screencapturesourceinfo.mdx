@@ -40,53 +40,75 @@ struct ScreenCaptureSourceInfo {
 
 ## 属性
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screencapturesourcetype)。
 
-### sourceId
+</Parameter>
+<a id="sourceid"></a>
+<Parameter name="sourceId">
 
 窗口的 ID 或屏幕的显示 ID。
 
-### sourceName
+</Parameter>
+<a id="sourcename"></a>
+<Parameter name="sourceName">
 
 窗口或屏幕的名称，UTF-8 编码。
 
-### thumbImage
+</Parameter>
+<a id="thumbimage"></a>
+<Parameter name="thumbImage">
 
 缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/cpp-all-platforms/class-thumbimagebuffer)。
 
-### iconImage
+</Parameter>
+<a id="iconimage"></a>
+<Parameter name="iconImage">
 
 图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/cpp-all-platforms/class-thumbimagebuffer)。
 
-### processPath
+</Parameter>
+<a id="processpath"></a>
+<Parameter name="processPath">
 
 窗口所属进程的路径，UTF-8 编码。
 
-### sourceTitle
+</Parameter>
+<a id="sourcetitle"></a>
+<Parameter name="sourceTitle">
 
 窗口的标题，UTF-8 编码。
 
-### primaryMonitor
+</Parameter>
+<a id="primarymonitor"></a>
+<Parameter name="primaryMonitor">
 
 是否为主显示屏：
 
 - true：是主显示屏。
 - false：不是主显示屏。
 
-### isOccluded
+</Parameter>
+<a id="isoccluded"></a>
+<Parameter name="isOccluded">
 
 是否被遮挡：
 
 - true：窗口被遮挡。
 - false：窗口未被遮挡。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 窗口相对于整个屏幕空间（包括所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
 
-### minimizeWindow
+</Parameter>
+<a id="minimizewindow"></a>
+<Parameter name="minimizeWindow">
 
 :::note
 注： 仅适用于 Windows 平台。
@@ -97,10 +119,15 @@ struct ScreenCaptureSourceInfo {
 - true：窗口已最小化。
 - false：窗口未最小化。
 
-### sourceDisplayId
+</Parameter>
+<a id="sourcedisplayid"></a>
+<Parameter name="sourceDisplayId">
 
 窗口所在的屏幕 ID（仅适用于 Windows）。如果窗口跨多个屏幕显示，该参数表示窗口与其交集面积最大的屏幕的 ID；如果窗口位于不可见屏幕之外，则该值为 -2。
 
 :::note
 注： 仅适用于 Windows 平台。
 :::
+
+</Parameter>
+</ParameterList>

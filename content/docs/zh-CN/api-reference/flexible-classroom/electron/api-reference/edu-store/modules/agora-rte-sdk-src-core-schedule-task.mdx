@@ -39,7 +39,7 @@ AnyFunction: ()=&gt;void
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 <a id="IntervalArguments"></a>
 
@@ -49,23 +49,37 @@ IntervalArguments: \{immediate?:boolean;interval:number;runnable:["agora-rte-sdk
 
 #### Type declaration
 
-- Optional immediate?:boolean
-- interval:number
-- runnable:["agora-rte-sdk/src/core/schedule/task"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-task).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-task#AnyFunction)
-- onComplete?:function
+<ParameterList title="Type declaration">
+<Parameter name="immediate" type="boolean" optional />
+<Parameter name="interval" type="number" required />
+<Parameter name="runnable" required>
 
-  - onComplete():void
+<ParameterType>
 
-  - Returns void
-- onFail:function
+["agora-rte-sdk/src/core/schedule/task"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-task).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-schedule-task#AnyFunction)
 
-  - onFail(err:any):[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+</ParameterType>
 
-  - Parameters
+</Parameter>
+<Parameter name="onComplete" type="function" required>
 
-    - err: any
+- onComplete():void
 
-    Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+Returns void
+
+</Parameter>
+<Parameter name="onFail" type="function" required>
+
+- onFail(err:any):[ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+<ParameterList title="Parameters">
+<Parameter name="err" type="any" required />
+</ParameterList>
+
+Returns [ActionWhenTaskFail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-schedule-task-ction-when-task-fail)
+
+</Parameter>
+</ParameterList>
 
 <a id="PollingArguments"></a>
 

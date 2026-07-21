@@ -12,7 +12,17 @@ _migration:
 
 ### Type parameters
 
-- CALLBACKS:[DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)
+<ParameterList>
+<Parameter name="CALLBACKS">
+
+<ParameterType>
+
+[DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
 
 ### Hierarchy
 
@@ -395,66 +405,99 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 - addMagixEventListener(event:string, listener:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?:[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)):void
 - addMagixEventListener(event:string, listener:[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval:number):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
- Defined in [index-zh.d.ts\:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
 
-  注册自定义事件监听。
+- Defined in [index-zh.d.ts\:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
 
-  成功注册后，你可以接收到对应的自定义事件通知。
+注册自定义事件监听。
 
-  **Note**
+成功注册后，你可以接收到对应的自定义事件通知。
 
-  对于同名的自定义事件，SDK 仅支持触发一个回调。
+**Note**
 
-  Parameters
+对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-  - event: string
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-    想要监听的自定义事件名称。
-  - listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+想要监听的自定义事件名称。
 
-    自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
-  - Optional options: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
+</Parameter>
+<Parameter name="listener" required>
 
-    自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)。
+<ParameterType>
 
-  Returns void
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
- Defined in [index-zh.d.ts\:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
+[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
 
-  注册高频自定义事件监听。
+</ParameterType>
 
-  成功注册后，你可以接收到对应的自定义事件通知。
+自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
 
-  **Note**
+</Parameter>
+<Parameter name="options" optional>
 
-  对于同名的自定义事件，SDK 仅支持触发一个回调。
+<ParameterType>
 
-  ### example
+[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
 
-  ```ts
-  function listener(events) {
-      // events 是一个数组
-      for (const event of events) {
-          // 回调事件 event
-      }
-  }
-  displayer.addMagixEventListener("my-event", listener, 100);
-  ```
+</ParameterType>
 
-  Parameters
+自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)。
 
-  - event: string
+</Parameter>
+</ParameterList>
 
-    想要监听的自定义事件名称。
-  - listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)
+Returns void
 
-    自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
-  - fireInterval: number
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
 
-    SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+- Defined in [index-zh.d.ts\:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
 
-  Returns void
+注册高频自定义事件监听。
+
+成功注册后，你可以接收到对应的自定义事件通知。
+
+**Note**
+
+对于同名的自定义事件，SDK 仅支持触发一个回调。
+
+### example
+
+```ts
+function listener(events) {
+    // events 是一个数组
+    for (const event of events) {
+        // 回调事件 event
+    }
+}
+displayer.addMagixEventListener("my-event", listener, 100);
+```
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+想要监听的自定义事件名称。
+
+</Parameter>
+<Parameter name="listener" required>
+
+<ParameterType>
+
+[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)
+
+</ParameterType>
+
+自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+
+</Parameter>
+<Parameter name="fireInterval" type="number" required>
+
+SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="bindhtmlelement"></a>
 
@@ -462,18 +505,21 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - bindHtmlElement(element:HTMLDivElement|null):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#bindhtmlelement)
- Defined in [index-zh.d.ts\:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#bindhtmlelement)
 
-  将白板绑定到 HTML 元素上。
+- Defined in [index-zh.d.ts\:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
 
-  Parameters
+将白板绑定到 HTML 元素上。
 
-  - element: HTMLDivElement|null
+<ParameterList title="Parameters">
+<Parameter name="element" type="HTMLDivElement | null" required>
 
-    用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。
+用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="converttopointinworld"></a>
 
@@ -481,38 +527,53 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - convertToPointInWorld(point:\{x:number;y:number\}):\{x:number;y:number\}
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#converttopointinworld)
- Defined in [index-zh.d.ts\:1721](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1721)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#converttopointinworld)
 
-  转换白板上点的坐标。
+- Defined in [index-zh.d.ts\:1721](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1721)
 
-  该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
-   中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
-   中的坐标。
+转换白板上点的坐标。
 
-  Parameters
+该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
+ 中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
+ 中的坐标。
 
-  - point: \{x:number;y:number\}
+<ParameterList title="Parameters">
+<Parameter name="point" type="\&#123;x:number;y:number\&#125;" required>
 
-    点在屏幕坐标系中的坐标。
+点在屏幕坐标系中的坐标。
 
-    - x:number
+<ParameterList>
+<Parameter name="x" type="number" required>
 
-      点在屏幕坐标系上的 X 轴坐标。
-    - y:number
+点在屏幕坐标系上的 X 轴坐标。
 
-      点在屏幕坐标系上的 Y 轴坐标。
+</Parameter>
+<Parameter name="y" type="number" required>
 
-  Returns \{x:number;y:number\}
+点在屏幕坐标系上的 Y 轴坐标。
 
-  点在世界坐标系中的坐标。
+</Parameter>
+</ParameterList>
 
-  - x:number
+</Parameter>
+</ParameterList>
 
-    点在世界坐标系上的 X 轴坐标。
-  - y:number
+Returns \{x:number;y:number\}
 
-    点在世界坐标系上的 Y 轴坐标。
+点在世界坐标系中的坐标。
+
+<ParameterList>
+<Parameter name="x" type="number" required>
+
+点在世界坐标系上的 X 轴坐标。
+
+</Parameter>
+<Parameter name="y" type="number" required>
+
+点在世界坐标系上的 Y 轴坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="createscenescallback"></a>
 
@@ -520,32 +581,43 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - createScenesCallback(path:string, callbacks?:Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;):[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#createscenescallback)
- Defined in [index-zh.d.ts\:1668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1668)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#createscenescallback)
 
-  创建场景目录的监听器对象。
+- Defined in [index-zh.d.ts\:1668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1668)
 
-  成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) 中实现的回调。
-   当不再需要使用已创建的监听器时，需要调用 [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose) 来释放该监听器对象。
+创建场景目录的监听器对象。
 
-  ### note
+成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) 中实现的回调。
+ 当不再需要使用已创建的监听器时，需要调用 [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose) 来释放该监听器对象。
 
-  - 该方法需要在加入白板房间后调用。
-  - 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
+### note
 
-  Parameters
+- 该方法需要在加入白板房间后调用。
+- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
 
-  - path: string
+<ParameterList title="Parameters">
+<Parameter name="path" type="string" required>
 
-    场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。
-  - Optional callbacks: Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;
+场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。
 
-    需要监听的回调。详见 `ScenesCallbacks`。
+</Parameter>
+<Parameter name="callbacks" optional>
 
-  Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+<ParameterType>
 
-  - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) 对象。
-  - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
+Partial & lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) & gt;
+
+</ParameterType>
+
+需要监听的回调。详见 `ScenesCallbacks`。
+
+</Parameter>
+</ParameterList>
+
+Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+
+- 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) 对象。
+- 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
 
 <a id="entirescenes"></a>
 
@@ -553,14 +625,15 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - entireScenes():[SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)
- Defined in [index-zh.d.ts\:1884](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1884)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)
 
-  获取当前房间内所有场景的信息。
+- Defined in [index-zh.d.ts\:1884](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1884)
 
-  Returns [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+获取当前房间内所有场景的信息。
 
-  当前房间内所有场景的信息。
+Returns [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+
+当前房间内所有场景的信息。
 
 <a id="fillscenesnapshot"></a>
 
@@ -568,27 +641,36 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - fillSceneSnapshot(scenePath:string, div:HTMLElement, width:number, height:number):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#fillscenesnapshot)
- Defined in [index-zh.d.ts\:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#fillscenesnapshot)
 
-  生成特定场景的屏幕快照。
+- Defined in [index-zh.d.ts\:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
 
-  Parameters
+生成特定场景的屏幕快照。
 
-  - scenePath: string
+<ParameterList title="Parameters">
+<Parameter name="scenePath" type="string" required>
 
-    特定场景的路径。
-  - div: HTMLElement
+特定场景的路径。
 
-    用于显示屏幕快照的 div。
-  - width: number
+</Parameter>
+<Parameter name="div" type="HTMLElement" required>
 
-    屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。
-  - height: number
+用于显示屏幕快照的 div。
 
-    屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。
+</Parameter>
+<Parameter name="width" type="number" required>
 
-  Returns void
+屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。
+
+</Parameter>
+<Parameter name="height" type="number" required>
+
+屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="generatescreenshot"></a>
 
@@ -596,34 +678,41 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - generateScreenshot(scenePath?:string, width?:number, height?:number):Promise&lt;string&gt;
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#generatescreenshot)
- Defined in [index-zh.d.ts\:1765](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1765)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#generatescreenshot)
 
-  生成特定场景的截图。
+- Defined in [index-zh.d.ts\:1765](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1765)
 
-  ### deprecated
+生成特定场景的截图。
 
-  该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#screenshottocanvasasync) 方法。
+### deprecated
 
-  Parameters
+该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#screenshottocanvasasync) 方法。
 
-  - Optional scenePath: string
+<ParameterList title="Parameters">
+<Parameter name="scenePath" type="string" optional>
 
-    特定场景的路径。
-  - Optional width: number
+特定场景的路径。
 
-    截图的宽度。
-  - Optional height: number
+</Parameter>
+<Parameter name="width" type="number" optional>
 
-    截图的高度
+截图的宽度。
 
-  Returns Promise&lt;string&gt;
+</Parameter>
+<Parameter name="height" type="number" optional>
 
-  截图的 URL 地址。
+截图的高度
 
-  **Note**
+</Parameter>
+</ParameterList>
 
-  如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
+Returns Promise&lt;string&gt;
+
+截图的 URL 地址。
+
+**Note**
+
+如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
 
 <a id="getinvisibleplugin"></a>
 
@@ -631,24 +720,27 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - getInvisiblePlugin&lt;A&gt;(kind:string):[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getinvisibleplugin)
- Defined in [index-zh.d.ts\:1709](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1709)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getinvisibleplugin)
 
-  获取指定的不可见插件。
+- Defined in [index-zh.d.ts\:1709](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1709)
 
-  Type parameters
+获取指定的不可见插件。
 
-  - A:Object
+<ParameterList title="Type parameters">
+<Parameter name="A" type="Object" />
+</ParameterList>
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="kind" type="string" required>
 
-  - kind: string
+不可见插件的类型。
 
-    不可见插件的类型。
+</Parameter>
+</ParameterList>
 
-  Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
+Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
 
-  指定的不可见插件。
+指定的不可见插件。
 
 <a id="getscene"></a>
 
@@ -656,20 +748,23 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - getScene(path:string):[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getscene)
- Defined in [index-zh.d.ts\:1892](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1892)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getscene)
 
-  获取指定场景的信息。
+- Defined in [index-zh.d.ts\:1892](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1892)
 
-  Parameters
+获取指定场景的信息。
 
-  - path: string
+<ParameterList title="Parameters">
+<Parameter name="path" type="string" required>
 
-    场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
 
-  Returns [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+</Parameter>
+</ParameterList>
 
-  场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)。
+Returns [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+
+场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)。
 
 <a id="memberstate"></a>
 
@@ -677,20 +772,23 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - memberState(memberId:number):[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#memberstate)
- Defined in [index-zh.d.ts\:1676](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1676)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#memberstate)
 
-  获取房间内指定用户的白板工具状态。
+- Defined in [index-zh.d.ts\:1676](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1676)
 
-  Parameters
+获取房间内指定用户的白板工具状态。
 
-  - memberId: number
+<ParameterList title="Parameters">
+<Parameter name="memberId" type="number" required>
 
-    指定用户的 ID。
+指定用户的 ID。
 
-  Returns [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+</Parameter>
+</ParameterList>
 
-  指定用户的白板工具状态。
+Returns [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+指定用户的白板工具状态。
 
 <a id="movecamera"></a>
 
@@ -698,18 +796,27 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - moveCamera(camera:Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecamera)
- Defined in [index-zh.d.ts\:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecamera)
 
-  调整视角。
+- Defined in [index-zh.d.ts\:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
 
-  Parameters
+调整视角。
 
-  - camera: Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;
+<ParameterList title="Parameters">
+<Parameter name="camera" required>
 
-    视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
+<ParameterType>
 
-  Returns void
+Partial & lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera) & gt; & Readonly & lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\} & gt;
+
+</ParameterType>
+
+视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="movecameratocontain"></a>
 
@@ -717,18 +824,27 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - moveCameraToContain(rectangle:[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecameratocontain)
- Defined in [index-zh.d.ts\:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecameratocontain)
 
-  调整视角，以保证完整显示视觉矩形。
+- Defined in [index-zh.d.ts\:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
 
-  Parameters
+调整视角，以保证完整显示视觉矩形。
 
-  - rectangle: [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;
+<ParameterList title="Parameters">
+<Parameter name="rectangle" required>
 
-    视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)。
+<ParameterType>
 
-  Returns void
+[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle) & Readonly & lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\} & gt;
+
+</ParameterType>
+
+视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="pause"></a>
 
@@ -738,9 +854,9 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts\:2831](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2831)
 
-  暂停白板回放。
+暂停白板回放。
 
-  Returns void
+Returns void
 
 <a id="play"></a>
 
@@ -750,11 +866,11 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - Defined in [index-zh.d.ts\:2826](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2826)
 
-  开始白板回放。
+开始白板回放。
 
-  暂停回放后，可以调用该方法继续回放。
+暂停回放后，可以调用该方法继续回放。
 
-  Returns void
+Returns void
 
 <a id="refreshviewsize"></a>
 
@@ -762,15 +878,16 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - refreshViewSize():void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#refreshviewsize)
- Defined in [index-zh.d.ts\:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#refreshviewsize)
 
-  刷新白板的界面。
+- Defined in [index-zh.d.ts\:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
 
-  当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
-   该方法仅在 `autoResize` 为 `false` 时生效。
+刷新白板的界面。
 
-  Returns void
+当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
+ 该方法仅在 `autoResize` 为 `false` 时生效。
+
+Returns void
 
 <a id="removemagixeventlistener"></a>
 
@@ -778,21 +895,32 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 - removeMagixEventListener(event:string, listener?:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)
- Defined in [index-zh.d.ts\:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)
 
-  移除自定义事件监听。
+- Defined in [index-zh.d.ts\:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
 
-  Parameters
+移除自定义事件监听。
 
-  - event: string
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-    想要移除监听的自定义事件名称。
-  - Optional listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+想要移除监听的自定义事件名称。
 
-    要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。
+</Parameter>
+<Parameter name="listener" optional>
 
-  Returns void
+<ParameterType>
+
+[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+
+</ParameterType>
+
+要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="scaleppttofit"></a>
 
@@ -810,11 +938,19 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 2.3.18
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="animationMode" optional>
 
-- Optional animationMode: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+<ParameterType>
 
-  视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+
+</ParameterType>
+
+视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
+
+</Parameter>
+</ParameterList>
 
 Returns void
 
@@ -824,20 +960,23 @@ Returns void
 
 - scenePathType(path:string):[ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)
- Defined in [index-zh.d.ts\:1877](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1877)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)
 
-  查询场景路径类型。
+- Defined in [index-zh.d.ts\:1877](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1877)
 
-  Parameters
+查询场景路径类型。
 
-  - path: string
+<ParameterList title="Parameters">
+<Parameter name="path" type="string" required>
 
-    场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
 
-  Returns [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+</Parameter>
+</ParameterList>
 
-  场景路径的类型。
+Returns [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+
+场景路径的类型。
 
 <a id="scenepreview"></a>
 
@@ -845,27 +984,36 @@ Returns void
 
 - scenePreview(scenePath:string, div:HTMLElement, width:number|undefined, height:number|undefined):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepreview)
- Defined in [index-zh.d.ts\:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepreview)
 
-  生成特定场景的预览图。
+- Defined in [index-zh.d.ts\:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
 
-  Parameters
+生成特定场景的预览图。
 
-  - scenePath: string
+<ParameterList title="Parameters">
+<Parameter name="scenePath" type="string" required>
 
-    特定场景的路径。
-  - div: HTMLElement
+特定场景的路径。
 
-    用于显示预览内容的 div。
-  - width: number|undefined
+</Parameter>
+<Parameter name="div" type="HTMLElement" required>
 
-    预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。
-  - height: number|undefined
+用于显示预览内容的 div。
 
-    预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。
+</Parameter>
+<Parameter name="width" type="number | undefined" required>
 
-  Returns void
+预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。
+
+</Parameter>
+<Parameter name="height" type="number | undefined" required>
+
+预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="screenshottocanvas"></a>
 
@@ -873,33 +1021,52 @@ Returns void
 
 - screenshotToCanvas(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)
- Defined in [index-zh.d.ts\:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)
 
-  生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
+- Defined in [index-zh.d.ts\:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
 
-  Parameters
+生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
 
-  - context: CanvasRenderingContext2D
+<ParameterList title="Parameters">
+<Parameter name="context" type="CanvasRenderingContext2D" required>
 
-    CanvasRenderingContext2D 对象。
-  - scenePath: string
+CanvasRenderingContext2D 对象。
 
-    场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
-  - width: number
+</Parameter>
+<Parameter name="scenePath" type="string" required>
 
-    屏幕快照的宽度。
-  - height: number
+场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
 
-    屏幕快照的高度。
-  - camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+</Parameter>
+<Parameter name="width" type="number" required>
 
-    视角的描述。
-  - Optional ratio: number
+屏幕快照的宽度。
 
-    设备像素比。该参数为可选参数，如果不填，则默认值为 1。
+</Parameter>
+<Parameter name="height" type="number" required>
 
-  Returns void
+屏幕快照的高度。
+
+</Parameter>
+<Parameter name="camera" required>
+
+<ParameterType>
+
+[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+
+</ParameterType>
+
+视角的描述。
+
+</Parameter>
+<Parameter name="ratio" type="number" optional>
+
+设备像素比。该参数为可选参数，如果不填，则默认值为 1。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="screenshottocanvasasync"></a>
 
@@ -907,42 +1074,63 @@ Returns void
 
 - screenshotToCanvasAsync(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number, timeout?:number):Promise&lt;void&gt;
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)
- Defined in [index-zh.d.ts\:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)
 
-  等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
+- Defined in [index-zh.d.ts\:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
 
-  ### note
+等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
 
-  - 该功能处于实验阶段。
-  - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-  - 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#screenshottocanvas)。
+### note
 
-  Parameters
+- 该功能处于实验阶段。
+- 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
+- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#screenshottocanvas)。
 
-  - context: CanvasRenderingContext2D
+<ParameterList title="Parameters">
+<Parameter name="context" type="CanvasRenderingContext2D" required>
 
-    CanvasRenderingContext2D 对象。
-  - scenePath: string
+CanvasRenderingContext2D 对象。
 
-    场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
-  - width: number
+</Parameter>
+<Parameter name="scenePath" type="string" required>
 
-    屏幕快照的宽度。
-  - height: number
+场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
 
-    屏幕快照的高度。
-  - camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+</Parameter>
+<Parameter name="width" type="number" required>
 
-    视角的描述。详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
-  - Optional ratio: number
+屏幕快照的宽度。
 
-    设备像素比。该参数为可选参数，如果不填，则默认值为 1。
-  - Optional timeout: number
+</Parameter>
+<Parameter name="height" type="number" required>
 
-    图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
+屏幕快照的高度。
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+<Parameter name="camera" required>
+
+<ParameterType>
+
+[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+
+</ParameterType>
+
+视角的描述。详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
+
+</Parameter>
+<Parameter name="ratio" type="number" optional>
+
+设备像素比。该参数为可选参数，如果不填，则默认值为 1。
+
+</Parameter>
+<Parameter name="timeout" type="number" optional>
+
+图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="seektoprogresstime"></a>
 
@@ -962,11 +1150,13 @@ v2.15.0
 成功调用该方法后，SDK 会返回 `PlayerSeekingResult`，报告定位回放的结果。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="progressTime" type="number" required>
 
-- progressTime: number
+指定的回放位置，单位为毫秒。
 
-  指定的回放位置，单位为毫秒。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult)&gt;
 
@@ -978,18 +1168,27 @@ Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whitebo
 
 - setCameraBound(cameraBound:[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)):void
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#setcamerabound)
- Defined in [index-zh.d.ts\:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#setcamerabound)
 
-  设置用户的视角边界。
+- Defined in [index-zh.d.ts\:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
 
-  Parameters
+设置用户的视角边界。
 
-  - cameraBound: [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+<ParameterList title="Parameters">
+<Parameter name="cameraBound" required>
 
-    视角边界。
+<ParameterType>
 
-  Returns void
+[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+
+</ParameterType>
+
+视角边界。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setobservermode"></a>
 
@@ -999,15 +1198,23 @@ Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whitebo
 
 - Defined in [index-zh.d.ts\:2859](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2859)
 
-  设置白板回放的观看模式。
+设置白板回放的观看模式。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="observerMode" required>
 
-  - observerMode: [ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)
+<ParameterType>
 
-    白板回放的观看模式，详见 [ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)。
+[ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)
 
-  Returns void
+</ParameterType>
+
+白板回放的观看模式，详见 [ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="stop"></a>
 
@@ -1017,11 +1224,11 @@ Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whitebo
 
 - Defined in [index-zh.d.ts\:2838](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2838)
 
-  停止白板回放。
+停止白板回放。
 
-  白板回放停止后，`Player` 资源会被释放。如果想要重新播放，需要重新初始化 `Player` 对象。
+白板回放停止后，`Player` 资源会被释放。如果想要重新播放，需要重新初始化 `Player` 对象。
 
-  Returns void
+Returns void
 
 <a id="waitmagixevent"></a>
 
@@ -1029,17 +1236,26 @@ Returns Promise&lt;[PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whitebo
 
 - waitMagixEvent(filter:[EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)):Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
 
-- Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#waitmagixevent)
- Defined in [index-zh.d.ts\:1860](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1860)
+Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#waitmagixevent)
 
-  等待特定的自定义事件发生。
+- Defined in [index-zh.d.ts\:1860](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1860)
 
-  Parameters
+等待特定的自定义事件发生。
 
-  - filter: [EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)
+<ParameterList title="Parameters">
+<Parameter name="filter" required>
 
-    事件过滤器。
+<ParameterType>
 
-  Returns Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+[EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)
 
-  当特定自定义事件发生时，返回该事件。
+</ParameterType>
+
+事件过滤器。
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+
+当特定自定义事件发生时，返回该事件。

@@ -46,63 +46,93 @@ public static class RtcStats {
 
 ## 属性
 
-### totalDuration
+<ParameterList>
+<a id="totalduration"></a>
+<Parameter name="totalDuration">
 
 本地用户的通话时长（秒），以累计值表示。
 
-### txBytes
+</Parameter>
+<a id="txbytes"></a>
+<Parameter name="txBytes">
 
 已发送的字节数。
 
-### rxBytes
+</Parameter>
+<a id="rxbytes"></a>
+<Parameter name="rxBytes">
 
 已接收的字节数。
 
-### txKBitRate
+</Parameter>
+<a id="txkbitrate"></a>
+<Parameter name="txKBitRate">
 
 发送本地视频流的实际码率（Kbps）。
 
-### txAudioBytes
+</Parameter>
+<a id="txaudiobytes"></a>
+<Parameter name="txAudioBytes">
 
 发送的音频字节总数，以累计值表示。
 
-### rxAudioBytes
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
 
 接收的音频字节总数，以累计值表示。
 
-### txVideoBytes
+</Parameter>
+<a id="txvideobytes"></a>
+<Parameter name="txVideoBytes">
 
 发送的视频字节总数，以累计值表示。
 
-### rxVideoBytes
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
 
 接收的视频字节总数，以累计值表示。
 
-### rxKBitRate
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收码率（Kbps）。
 
-### txAudioKBitRate
+</Parameter>
+<a id="txaudiokbitrate"></a>
+<Parameter name="txAudioKBitRate">
 
 音频发送码率（Kbps）。
 
-### rxAudioKBitRate
+</Parameter>
+<a id="rxaudiokbitrate"></a>
+<Parameter name="rxAudioKBitRate">
 
 音频接收码率（Kbps）。
 
-### txVideoKBitRate
+</Parameter>
+<a id="txvideokbitrate"></a>
+<Parameter name="txVideoKBitRate">
 
 视频发送码率（Kbps）。
 
-### rxVideoKBitRate
+</Parameter>
+<a id="rxvideokbitrate"></a>
+<Parameter name="rxVideoKBitRate">
 
 视频接收码率（Kbps）。
 
-### lastmileDelay
+</Parameter>
+<a id="lastmiledelay"></a>
+<Parameter name="lastmileDelay">
 
 客户端到服务器的延迟（毫秒）。
 
-### cpuTotalUsage
+</Parameter>
+<a id="cputotalusage"></a>
+<Parameter name="cpuTotalUsage">
 
 系统 CPU 使用率（%）。
 
@@ -113,7 +143,9 @@ public static class RtcStats {
 - 从 Android 8.1 开始，受系统限制无法获取该值。
 :::
 
-### gatewayRtt
+</Parameter>
+<a id="gatewayrtt"></a>
+<Parameter name="gatewayRtt">
 
 客户端到本地路由器的往返时延（毫秒）。
 
@@ -121,7 +153,9 @@ public static class RtcStats {
 注： 在 Android 上，如需获取该值，请确保在项目的 `AndroidManifest.xml` 文件中，在 `</application>` 后添加权限 `android.permission.ACCESS_WIFI_STATE`。
 :::
 
-### cpuAppUsage
+</Parameter>
+<a id="cpuappusage"></a>
+<Parameter name="cpuAppUsage">
 
 应用的 CPU 使用率（%）。
 
@@ -132,23 +166,33 @@ public static class RtcStats {
 - 从 Android 8.1 开始，受系统限制无法获取该值。
 :::
 
-### users
+</Parameter>
+<a id="users"></a>
+<Parameter name="users">
 
 频道中的用户人数。
 
-### connectTimeMs
+</Parameter>
+<a id="connecttimems"></a>
+<Parameter name="connectTimeMs">
 
 SDK 开始连接到连接建立之间的时长（毫秒）。若值为 0，表示无效。
 
-### txPacketLossRate
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 客户端发送到声网服务器的丢包率（%），为应用抗丢包机制前的值。
 
-### rxPacketLossRate
+</Parameter>
+<a id="rxpacketlossrate"></a>
+<Parameter name="rxPacketLossRate">
 
 声网服务器发送到客户端前，未使用抗丢包机制时的丢包率（%）。
 
-### memoryAppUsageRatio
+</Parameter>
+<a id="memoryappusageratio"></a>
+<Parameter name="memoryAppUsageRatio">
 
 应用占用的内存比例（%）。
 
@@ -156,7 +200,9 @@ SDK 开始连接到连接建立之间的时长（毫秒）。若值为 0，表�
 注： 该值仅供参考，因系统限制可能无法获取。
 :::
 
-### memoryTotalUsageRatio
+</Parameter>
+<a id="memorytotalusageratio"></a>
+<Parameter name="memoryTotalUsageRatio">
 
 系统占用的内存比例（%）。
 
@@ -164,10 +210,15 @@ SDK 开始连接到连接建立之间的时长（毫秒）。若值为 0，表�
 注： 该值仅供参考，因系统限制可能无法获取。
 :::
 
-### memoryAppUsageInKbytes
+</Parameter>
+<a id="memoryappusageinkbytes"></a>
+<Parameter name="memoryAppUsageInKbytes">
 
 应用占用的内存大小（KB）。
 
 :::note
 注： 该值仅供参考，因系统限制可能无法获取。
 :::
+
+</Parameter>
+</ParameterList>

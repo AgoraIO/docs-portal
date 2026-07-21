@@ -59,9 +59,9 @@ _migration:
 
 - get localCameraStreamUuid():undefined|string
 
-- 本地摄像头视频流 UUID
+本地摄像头视频流 UUID
 
-  Returns undefined|string
+Returns undefined|string
 
 <a id="localMicStreamUuid"></a>
 
@@ -69,9 +69,9 @@ _migration:
 
 - get localMicStreamUuid():undefined|string
 
-- 本地麦克风音频流 UUID
+本地麦克风音频流 UUID
 
-  Returns undefined|string
+Returns undefined|string
 
 <a id="localShareStreamUuid"></a>
 
@@ -79,9 +79,9 @@ _migration:
 
 - get localShareStreamUuid():undefined|string
 
-- 本地屏幕共享视频流 UUID
+本地屏幕共享视频流 UUID
 
-  Returns undefined|string
+Returns undefined|string
 
 <a id="shareStreamToken"></a>
 
@@ -89,9 +89,9 @@ _migration:
 
 - get shareStreamToken():undefined|string
 
-- 本地屏幕共享 Token
+本地屏幕共享 Token
 
-  Returns undefined|string
+Returns undefined|string
 
 <a id="shareStreamTokens"></a>
 
@@ -99,11 +99,11 @@ _migration:
 
 - get shareStreamTokens():Map&lt;string,string&gt;
 
-- 屏幕共享 Tokens
+屏幕共享 Tokens
 key: 流 UUID
 value: RTC Token
 
-  Returns Map&lt;string,string&gt;
+Returns Map&lt;string,string&gt;
 
 <a id="streamByStreamUuid"></a>
 
@@ -111,11 +111,11 @@ value: RTC Token
 
 - get streamByStreamUuid():Map&lt;string,[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
 
-- 房间内流信息列表
+房间内流信息列表
 key: 流 UUID
 value: 流对象
 
-  Returns Map&lt;string,[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
+Returns Map&lt;string,[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
 
 <a id="streamByUserUuid"></a>
 
@@ -123,11 +123,11 @@ value: 流对象
 
 - get streamByUserUuid():Map&lt;string,Set&lt;string&gt;&gt;
 
-- 房间内用户流信息列表
+房间内用户流信息列表
 key: 用户 UUID
 value: 流 UUID 集合
 
-  Returns Map&lt;string,Set&lt;string&gt;&gt;
+Returns Map&lt;string,Set&lt;string&gt;&gt;
 
 <a id="streamVolumes"></a>
 
@@ -135,11 +135,11 @@ value: 流 UUID 集合
 
 - get streamVolumes():Map&lt;string,number&gt;
 
-- 音量列表
+音量列表
 key: 流 UUID
 value: 音量值，范围：0 ~ 1
 
-  Returns Map&lt;string,number&gt;
+Returns Map&lt;string,number&gt;
 
 ## Methods
 
@@ -149,15 +149,23 @@ value: 音量值，范围：0 ~ 1
 
 - destroyScreenShareStream(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- 销毁屏幕共享流
+销毁屏幕共享流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="scene" required>
 
-  - scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    房间对象
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns void
+</ParameterType>
+
+房间对象
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="initializeScreenShareStream"></a>
 
@@ -165,21 +173,33 @@ value: 音量值，范围：0 ~ 1
 
 - initializeScreenShareStream(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamUuid:string, rtcToken:string):void
 
-- 初始化屏幕共享流
+初始化屏幕共享流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="scene" required>
 
-  - scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    房间对象
-  - streamUuid: string
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-    流 UUID
-  - rtcToken: string
+</ParameterType>
 
-    RTC Token
+房间对象
 
-  Returns void
+</Parameter>
+<Parameter name="streamUuid" type="string" required>
+
+流 UUID
+
+</Parameter>
+<Parameter name="rtcToken" type="string" required>
+
+RTC Token
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="muteRemoteAudioStream"></a>
 
@@ -187,21 +207,39 @@ value: 音量值，范围：0 ~ 1
 
 - muteRemoteAudioStream(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- 订阅/取消远端音频流
+订阅/取消远端音频流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="stream" required>
 
-  - stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
+<ParameterType>
 
-    流对象
-  - muted: boolean
+[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
 
-    是否订阅
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+流对象
 
-  Returns void
+</Parameter>
+<Parameter name="muted" type="boolean" required>
+
+是否订阅
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="muteRemoteVideoStream"></a>
 
@@ -209,21 +247,39 @@ value: 音量值，范围：0 ~ 1
 
 - muteRemoteVideoStream(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- 订阅/取消远端视频流
+订阅/取消远端视频流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="stream" required>
 
-  - stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
+<ParameterType>
 
-    流对象
-  - muted: boolean
+[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
 
-    是否订阅
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+流对象
 
-  Returns void
+</Parameter>
+<Parameter name="muted" type="boolean" required>
+
+是否订阅
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="muteRemoteVideoStreamMass"></a>
 
@@ -231,21 +287,39 @@ value: 音量值，范围：0 ~ 1
 
 - muteRemoteVideoStreamMass(streams:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)[], muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):undefined|Promise&lt;string[]&gt;
 
-- 批量订阅
+批量订阅
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="streams" required>
 
-  - streams: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)[]
+<ParameterType>
 
-    流对象列表
-  - muted: boolean
+[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)[]
 
-    是否订阅
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+流对象列表
 
-  Returns undefined|Promise&lt;string[]&gt;
+</Parameter>
+<Parameter name="muted" type="boolean" required>
+
+是否订阅
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns undefined|Promise&lt;string[]&gt;
 
 <a id="publishScreenShare"></a>
 
@@ -253,19 +327,35 @@ value: 音量值，范围：0 ~ 1
 
 - publishScreenShare(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamOptions?:Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;):Promise&lt;any&gt;
 
-- 为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
+为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
 此方法只允许房间内创建一路屏幕共享流，若房间内需要同时存在多路屏幕流，请使用 publishScreenShareStateless
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromScene" optional>
 
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
-  - Optional streamOptions: Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-    发流选项
+</ParameterType>
 
-  Returns Promise&lt;any&gt;
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+<Parameter name="streamOptions" optional>
+
+<ParameterType>
+
+Partial & lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states) & gt;
+
+</ParameterType>
+
+发流选项
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="publishScreenShareStateless"></a>
 
@@ -273,16 +363,24 @@ value: 音量值，范围：0 ~ 1
 
 - publishScreenShareStateless(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;any&gt;
 
-- 为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
+为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
 此方法允许房间内创建多路屏幕共享流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromScene" optional>
 
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns Promise&lt;any&gt;
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="publishStreamToCdn"></a>
 
@@ -290,15 +388,23 @@ value: 音量值，范围：0 ~ 1
 
 - publishStreamToCdn(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 旁路推流，将当前已发布的流推送到CDN
+旁路推流，将当前已发布的流推送到CDN
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromScene" optional>
 
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="setLatencyLevel"></a>
 
@@ -306,18 +412,34 @@ value: 音量值，范围：0 ~ 1
 
 - setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 设置延时等级（仅可在当前端没有发布音视频流的情况下使用）
+设置延时等级（仅可在当前端没有发布音视频流的情况下使用）
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="level" required>
 
-  - level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
+<ParameterType>
 
-    流的延时等级
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)
 
-    流所在的房间对象，不传默认为当前房间
+</ParameterType>
 
-  Returns Promise&lt;void&gt;
+流的延时等级
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -325,21 +447,39 @@ value: 音量值，范围：0 ~ 1
 
 - setRemoteVideoStreamType(streamUuid:string, remoteVideoStreamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 设置远端视频质量
+设置远端视频质量
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required>
 
-  - streamUuid: string
+要设置的流的 UUID
 
-    要设置的流的 UUID
-  - remoteVideoStreamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
+</Parameter>
+<Parameter name="remoteVideoStreamType" required>
 
-    要设置的流类型
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+要设置的流类型
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="setupRemoteVideo"></a>
 
@@ -347,27 +487,55 @@ value: 音量值，范围：0 ~ 1
 
 - setupRemoteVideo(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), dom:HTMLElement, mirror:boolean, renderMode?:[AGRenderMode](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
 
-- 渲染远端视频
+渲染远端视频
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="stream" required>
 
-  - stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
+<ParameterType>
 
-    流对象
-  - dom: HTMLElement
+[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)
 
-    渲染节点
-  - mirror: boolean
+</ParameterType>
 
-    是否镜像
-  - Optional renderMode: [AGRenderMode](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+流对象
 
-    填充方式
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</Parameter>
+<Parameter name="dom" type="HTMLElement" required>
 
-    流所在的房间对象，不传默认为当前房间
+渲染节点
 
-  Returns void
+</Parameter>
+<Parameter name="mirror" type="boolean" required>
+
+是否镜像
+
+</Parameter>
+<Parameter name="renderMode" optional>
+
+<ParameterType>
+
+[AGRenderMode](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+
+</ParameterType>
+
+填充方式
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="unpublishScreenShare"></a>
 
@@ -375,15 +543,23 @@ value: 音量值，范围：0 ~ 1
 
 - unpublishScreenShare(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 取消发布屏幕共享流
+取消发布屏幕共享流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromScene" optional>
 
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="unpublishScreenShareStateless"></a>
 
@@ -391,15 +567,23 @@ value: 音量值，范围：0 ~ 1
 
 - unpublishScreenShareStateless(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 取消发布屏幕共享流
+取消发布屏幕共享流
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="fromScene" optional>
 
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updateExpandedScopeAndStreams"></a>
 
@@ -407,20 +591,26 @@ value: 音量值，范围：0 ~ 1
 
 - updateExpandedScopeAndStreams(state:0|1, data:\{userUuids:string[]\}):Promise&lt;void&gt;
 
-- 更新视频墙开关状态和发流用户列表
+更新视频墙开关状态和发流用户列表
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="state" type="0 | 1" required>
 
-  - state: 0|1
+1 开启视频墙 0 关闭视频墙
 
-    1 开启视频墙 0 关闭视频墙
-  - data: \{userUuids:string[]\}
+</Parameter>
+<Parameter name="data" type="\&#123;userUuids:string[]\&#125;" required>
 
-    userUuids 发流用户列表
+userUuids 发流用户列表
 
-    - userUuids:string[]
+<ParameterList>
+<Parameter name="userUuids" type="string[]" required />
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updateLocalPublishState"></a>
 
@@ -428,21 +618,55 @@ value: 音量值，范围：0 ~ 1
 
 - updateLocalPublishState(state:\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 更新本地音频和视频发布状态
+更新本地音频和视频发布状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="state" required>
 
-  - state: \{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+<ParameterType>
 
-    音频和视频发布状态
+\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
 
-    - Optional audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+</ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+音频和视频发布状态
 
-  Returns Promise&lt;void&gt;
+<ParameterList>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updateRemotePublishState"></a>
 
@@ -450,27 +674,65 @@ value: 音量值，范围：0 ~ 1
 
 - updateRemotePublishState(userUuid:string, streamUuid:string, state:\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 更新远端音频和视频发布状态
+更新远端音频和视频发布状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
 
-  - userUuid: string
+用户 ID
 
-    用户 ID
-  - streamUuid: string
+</Parameter>
+<Parameter name="streamUuid" type="string" required>
 
-    流 ID
-  - state: \{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+流 ID
 
-    音频和视频发布状态
+</Parameter>
+<Parameter name="state" required>
 
-    - Optional audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-    - Optional videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ParameterType>
 
-    流所在的房间对象，不传默认为当前房间
+\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+音频和视频发布状态
+
+<ParameterList>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+流所在的房间对象，不传默认为当前房间
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="updateRemotePublishStateBatch"></a>
 
@@ -478,13 +740,29 @@ value: 音量值，范围：0 ~ 1
 
 - updateRemotePublishStateBatch(streams:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[], fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
 
-- 批量更新远端音频和视频发布状态
+批量更新远端音频和视频发布状态
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="streams" required>
 
-  - streams: \{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+<ParameterType>
 
-    流列表
-  - Optional fromScene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
 
-  Returns Promise&lt;void&gt;
+</ParameterType>
+
+流列表
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;

@@ -49,19 +49,33 @@ converterOptions: \{bitrate:number;height:number;seiOptions?:\{sink?:\{type?:num
 
 #### Type declaration
 
-- bitrate:number
-- height:number
-- Optional seiOptions?:\{sink?:\{type?:number\};source?:\{customized?:unknown;datastream?:boolean;metadata?:boolean\}\}
+<ParameterList title="Type declaration">
+<Parameter name="bitrate" type="number" required />
+<Parameter name="height" type="number" required />
+<Parameter name="seiOptions" type="\&#123;sink?:\&#123;type?:number\&#125;;source?:\&#123;customized?:unknown;datastream?:boolean;metadata?:boolean\&#125;\&#125;" optional>
 
-  - Optional sink?:\{type?:number\}
+<ParameterList>
+<Parameter name="sink" type="\&#123;type?:number\&#125;" optional>
 
-    - Optional type?:number
-  - Optional source?:\{customized?:unknown;datastream?:boolean;metadata?:boolean\}
+<ParameterList>
+<Parameter name="type" type="number" optional />
+</ParameterList>
 
-    - Optional customized?:unknown
-    - Optional datastream?:boolean
-    - Optional metadata?:boolean
-- width:number
+</Parameter>
+<Parameter name="source" type="\&#123;customized?:unknown;datastream?:boolean;metadata?:boolean\&#125;" optional>
+
+<ParameterList>
+<Parameter name="customized" type="unknown" optional />
+<Parameter name="datastream" type="boolean" optional />
+<Parameter name="metadata" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="width" type="number" required />
+</ParameterList>
 
 <a id="generateToken"></a>
 

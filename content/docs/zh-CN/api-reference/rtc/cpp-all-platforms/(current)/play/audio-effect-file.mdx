@@ -35,13 +35,18 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid"></a>
+<Parameter name="soundId">
 
 音效 ID。
 
 :::note
 注： 每个音效文件的 ID 是唯一的。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geteffectcurrentposition__return_values"></a>
 
@@ -78,13 +83,18 @@ virtual int getEffectDuration(const char* filePath) = 0;
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 音效文件路径：
 
 - Android：文件路径需精确到文件名和后缀名。支持 URL 地址、绝对路径，或以 `/assets/` 开头的文件路径。使用绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址。例如：`content://com.android.providers.media.documents/document/audio%3A14441`。
 - Windows：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如：C:\\music\\audio.mp4。
 - iOS 或 macOS：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如：`/var/mobile/Containers/Data/audio.mp4`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geteffectduration__return_values"></a>
 
@@ -150,9 +160,14 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-1"></a>
+<Parameter name="soundId">
 
 音效文件的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getvolumeofeffect__return_values"></a>
 
@@ -212,9 +227,14 @@ virtual int pauseEffect(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-2"></a>
+<Parameter name="soundId">
 
 音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_pauseeffect__return_values"></a>
 
@@ -249,7 +269,9 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 ### 参数
 
-### loopCount
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
 
 音效文件的循环播放次数：
 
@@ -257,11 +279,15 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 - 0：播放一次。
 - 1：播放两次。
 
-### pitch
+</Parameter>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 音效的音调。取值范围为 [0.5, 2.0]，默认值为 1.0（原始音调）。值越小，音调越低。
 
-### pan
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
 
 音效的空间位置。取值范围为 [-1.0, 1.0]：
 
@@ -269,16 +295,23 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 - 0：音效出现在正前方。
 - 1.0：音效出现在右侧。
 
-### gain
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 音效的音量。取值范围为 [0, 100]，默认值为 100（原始音量）。值越小，音量越低。
 
-### publish
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否将音效发布给远端用户：
 
 - true：将音效发布给远端用户，本地和远端用户都能听到。
 - false：（默认）不发布音效，只有本地用户能听到。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_playalleffects__return_values"></a>
 
@@ -335,15 +368,21 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-3"></a>
+<Parameter name="soundId">
 
 音效的 ID。
 
-### filePath
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 本地音效文件的绝对路径或在线音效文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-### loopCount
+</Parameter>
+<a id="loopcount-1"></a>
+<Parameter name="loopCount">
 
 音效的循环播放次数：
 
@@ -351,11 +390,15 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 - `0`：播放一次。
 - `1`：播放两次。
 
-### pitch
+</Parameter>
+<a id="pitch-1"></a>
+<Parameter name="pitch">
 
 音效的音调。取值范围为 0.5 到 2.0，默认值为 `1.0`（原始音调）。值越小，音调越低。
 
-### pan
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
 
 音效的空间位置。取值范围为 -1.0 到 1.0：
 
@@ -363,20 +406,29 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 - `0.0`：音效定位在正前方。
 - `1.0`：音效定位在右侧。
 
-### gain
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
 
 音效的音量。取值范围为 0 到 100，默认值为 `100`（原始音量）。值越小，音量越低。
 
-### publish
+</Parameter>
+<a id="publish-1"></a>
+<Parameter name="publish">
 
 是否将音效发布到远端：
 
 - true：将音效发布到远端。
 - false：（默认）不将音效发布到远端。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音效文件的播放起始位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_playeffect3__return_values"></a>
 
@@ -430,19 +482,27 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection) 对象，详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
-### soundId
+</Parameter>
+<a id="soundid-4"></a>
+<Parameter name="soundId">
 
 音效 ID。
 
-### filePath
+</Parameter>
+<a id="filepath-2"></a>
+<Parameter name="filePath">
 
 本地文件的绝对路径或在线文件的 URL。支持的音频格式包括 mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-### loopCount
+</Parameter>
+<a id="loopcount-2"></a>
+<Parameter name="loopCount">
 
 音效的循环播放次数：
 
@@ -450,11 +510,15 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 - `0`：播放一次。
 - `1`：播放两次。
 
-### pitch
+</Parameter>
+<a id="pitch-2"></a>
+<Parameter name="pitch">
 
 音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。数值越小，音调越低。
 
-### pan
+</Parameter>
+<a id="pan-2"></a>
+<Parameter name="pan">
 
 音效的空间位置。取值范围为 -1.0 到 1.0：
 
@@ -462,20 +526,29 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 - `0.0`：音效从用户正前方传来。
 - `1.0`：音效从用户右侧传来。
 
-### gain
+</Parameter>
+<a id="gain-2"></a>
+<Parameter name="gain">
 
 音效的音量。取值范围为 0 到 100，默认值为 100（原始音量）。数值越小，音量越低。
 
-### publish
+</Parameter>
+<a id="publish-2"></a>
+<Parameter name="publish">
 
 是否在频道中发布该音效：
 
 - true：在频道中发布该音效。
 - false：（默认）不在频道中发布该音效。
 
-### startPos
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
 
 音效文件的播放起始位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_playeffectex__return_values"></a>
 
@@ -525,17 +598,26 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-5"></a>
+<Parameter name="soundId">
 
 音效 ID。每个音效文件的 ID 必须唯一。
 
-### filePath
+</Parameter>
+<a id="filepath-3"></a>
+<Parameter name="filePath">
 
 本地音效文件的绝对路径或在线音效文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-### startPos
+</Parameter>
+<a id="startpos-2"></a>
+<Parameter name="startPos">
 
 音效播放的起始位置，单位为毫秒。默认值为 0，表示从头开始播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadeffect__return_values"></a>
 
@@ -589,21 +671,32 @@ virtual int preloadEffectEx(const RtcConnection& connection, int soundId, const 
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
-### soundId
+</Parameter>
+<a id="soundid-6"></a>
+<Parameter name="soundId">
 
 音效 ID。
 
-### filePath
+</Parameter>
+<a id="filepath-4"></a>
+<Parameter name="filePath">
 
 本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-### startPos
+</Parameter>
+<a id="startpos-3"></a>
+<Parameter name="startPos">
 
 音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_preloadeffectex__return_values"></a>
 
@@ -671,9 +764,14 @@ virtual int resumeEffect(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-7"></a>
+<Parameter name="soundId">
 
 音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_resumeeffect__return_values"></a>
 
@@ -712,13 +810,20 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-8"></a>
+<Parameter name="soundId">
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-### pos
+</Parameter>
+<a id="pos"></a>
+<Parameter name="pos">
 
 音效文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_seteffectposition__return_values"></a>
 
@@ -757,9 +862,14 @@ virtual int setEffectsVolume(int volume) = 0;
 
 ### 参数
 
-### volume
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放音量。取值范围为 [0, 100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_seteffectsvolume__return_values"></a>
 
@@ -798,13 +908,20 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-9"></a>
+<Parameter name="soundId">
 
 音效文件的唯一 ID。
 
-### volume
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 播放音量，取值范围为 [0, 100]。（默认）为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvolumeofeffect__return_values"></a>
 
@@ -880,9 +997,14 @@ virtual int stopEffect(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-10"></a>
+<Parameter name="soundId">
 
 音效的 ID，每个音效具有唯一的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopeffect__return_values"></a>
 
@@ -950,9 +1072,14 @@ virtual int unloadEffect(int soundId) = 0;
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-11"></a>
+<Parameter name="soundId">
 
 音效的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unloadeffect__return_values"></a>
 
@@ -987,9 +1114,14 @@ virtual void onAudioEffectFinished(int soundId) {}
 
 ### 参数
 
-### soundId
+<ParameterList>
+<a id="soundid-12"></a>
+<Parameter name="soundId">
 
 音效 ID，每个音效文件的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

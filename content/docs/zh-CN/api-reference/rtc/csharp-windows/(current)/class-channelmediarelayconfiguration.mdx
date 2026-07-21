@@ -38,7 +38,9 @@ public class ChannelMediaRelayConfiguration
 
 ## 属性
 
-### srcInfo
+<ParameterList>
+<a id="srcinfo"></a>
+<Parameter name="srcInfo">
 
 源频道信息 [ChannelMediaInfo](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediainfo)，包含如下成员：
 
@@ -49,11 +51,13 @@ public class ChannelMediaRelayConfiguration
   - 如已启用 App Certificate，则务必填入使用 channelName 和 uid 生成的 token，且其中的 uid 必须为 0。
 - uid：标识源频道中的转发媒体流的 UID。默认值为 0，请勿修改。
 
-### destInfos
+</Parameter>
+<a id="destinfos"></a>
+<Parameter name="destInfos">
 
 目标频道信息 ChannelMediaInfo，包含如下成员：
 
-- channelName ：目标频道的频道名。
+- channelName：目标频道的频道名。
 - token：能加入目标频道的 token。由你在 destInfos 中设置的 channelName 和 uid 生成。
 
   - 如未启用 App Certificate，可直接将该参数设为默认值 `NULL`，表示 SDK 填充 App ID。
@@ -66,6 +70,11 @@ public class ChannelMediaRelayConfiguration
   :::
 - uid：标识目标频道中的转发媒体流的 UID。取值范围为 0 到 (2 32-1），请确保与目标频道中的所有 UID 不同。默认值为 0，表示 SDK 随机分配一个 UID。
 
-### destCount
+</Parameter>
+<a id="destcount"></a>
+<Parameter name="destCount">
 
 目标频道数量，默认值为 0，取值范围为 [0,6]。该参数应与你在 destInfos 中定义的 ChannelMediaInfo 数组的数目一致。
+
+</Parameter>
+</ParameterList>

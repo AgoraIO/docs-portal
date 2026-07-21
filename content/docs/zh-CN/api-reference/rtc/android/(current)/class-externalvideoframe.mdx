@@ -64,7 +64,9 @@ public class AgoraVideoFrame {
 
 ## 属性
 
-### format
+<ParameterList>
+<a id="format"></a>
+<Parameter name="format">
 
 视频数据的格式：
 
@@ -75,66 +77,96 @@ public class AgoraVideoFrame {
 - 4：`RGBA`。
 - 16：`I422`。
 
-### timeStamp
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timeStamp">
 
 视频帧的时间戳，单位为毫秒。设置错误可能导致视频帧丢失或音视频不同步。
 
-### stride
+</Parameter>
+<a id="stride"></a>
+<Parameter name="stride">
 
 视频帧的行跨度，单位为像素。对于纹理类型的视频数据，该字段表示纹理的宽度。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度。
 
-### textureID
+</Parameter>
+<a id="textureid"></a>
+<Parameter name="textureID">
 
 纹理 ID，仅适用于纹理格式的视频数据。
 
-### syncMode
+</Parameter>
+<a id="syncmode"></a>
+<Parameter name="syncMode">
 
 是否启用同步模式，仅适用于纹理格式的视频数据：
 
 - true：启用同步模式，SDK 会等待纹理处理完成。
 - false：关闭同步模式。
 
-### transform
+</Parameter>
+<a id="transform"></a>
+<Parameter name="transform">
 
 纹理帧的附加变换参数，仅适用于纹理格式的视频数据。
 
-### eglContext10
+</Parameter>
+<a id="eglcontext10"></a>
+<Parameter name="eglContext10">
 
 EGLContext10，仅适用于纹理格式的视频数据。
 
-### eglContext14
+</Parameter>
+<a id="eglcontext14"></a>
+<Parameter name="eglContext14">
 
 EGLContext14，仅适用于纹理格式的视频数据。详见 `EGLContext`。
 
-### buf
+</Parameter>
+<a id="buf"></a>
+<Parameter name="buf">
 
 视频帧的数据缓冲区。
 
-### cropLeft
+</Parameter>
+<a id="cropleft"></a>
+<Parameter name="cropLeft">
 
 左侧裁剪的像素数，默认值为 0。
 
-### cropTop
+</Parameter>
+<a id="croptop"></a>
+<Parameter name="cropTop">
 
 顶部裁剪的像素数，默认值为 0。
 
-### cropRight
+</Parameter>
+<a id="cropright"></a>
+<Parameter name="cropRight">
 
 右侧裁剪的像素数，默认值为 0。
 
-### cropBottom
+</Parameter>
+<a id="cropbottom"></a>
+<Parameter name="cropBottom">
 
 底部裁剪的像素数，默认值为 0。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 顺时针旋转角度，可设置为 0、90、180 或 270，默认值为 0。
 
-### alphaStitchMode
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
 
 视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置，详见 `AlphaStitchMode`：
 
@@ -143,3 +175,6 @@ EGLContext14，仅适用于纹理格式的视频数据。详见 `EGLContext`。
 - `ALPHA_STITCH_BELOW (2)`：`alphaBuffer` 在视频帧下方。
 - `ALPHA_STITCH_LEFT (3)`：`alphaBuffer` 在视频帧左侧。
 - `ALPHA_STITCH_RIGHT (4)`：`alphaBuffer` 在视频帧右侧。
+
+</Parameter>
+</ParameterList>

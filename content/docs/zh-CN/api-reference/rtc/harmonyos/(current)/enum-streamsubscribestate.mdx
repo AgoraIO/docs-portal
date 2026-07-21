@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### IDLE
+<ParameterList>
+<a id="idle"></a>
+<Parameter name="IDLE">
 
 0: 加入频道后的初始订阅状态。
 
-### NO_SUBSCRIBED
+</Parameter>
+<a id="no_subscribed"></a>
+<Parameter name="NO_SUBSCRIBED">
 
 1: 订阅失败。可能是因为：
 
@@ -35,10 +39,17 @@ _migration:
   - 调用 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)(`true`)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)(`true`) 停止接收远端音频流。
   - 调用 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremotevideostream)(`true`)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremotevideostreams)(`true`) 停止接收远端视频流。
 
-### SUBSCRIBING
+</Parameter>
+<a id="subscribing"></a>
+<Parameter name="SUBSCRIBING">
 
 2: 正在订阅。
 
-### SUBSCRIBED
+</Parameter>
+<a id="subscribed"></a>
+<Parameter name="SUBSCRIBED">
 
 3: 收到了远端流，订阅成功。
+
+</Parameter>
+</ParameterList>

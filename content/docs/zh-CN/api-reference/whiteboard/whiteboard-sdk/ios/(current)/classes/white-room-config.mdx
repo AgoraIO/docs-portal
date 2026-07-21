@@ -38,24 +38,23 @@ _migration:
 
 `- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="uuid">
 
-| `uuid` | 房间 UUID，即房间唯一标识符。 |
-| --- | --- |
-| `roomToken` | <Slot name="api-center-table-0" /> |
-| `uid` | <Slot name="api-center-table-1" /> |
+房间 UUID，即房间唯一标识符。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="roomToken">
 
 用于鉴权的 Room Token。生成该 Room Token 的房间 UUID 必须和上面传入的房间 UUID 一致。
 
-</Slot>
-
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="uid">
 
 自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。请确保同一房间内每个用户 [uid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/uid) 的唯一性。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -73,31 +72,28 @@ _migration:
 
 `- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid* userPayload:(id _Nullable)*userPayload*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="uuid">
 
-| `uuid` | 房间 UUID，即房间唯一标识符。 |
-| --- | --- |
-| `roomToken` | <Slot name="api-center-table-2" /> |
-| `uid` | <Slot name="api-center-table-3" /> |
-| `userPayload` | <Slot name="api-center-table-4" /> |
+房间 UUID，即房间唯一标识符。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="roomToken">
 
 用于鉴权的 Room Token。生成该 Room Token 的房间 UUID 必须和上面传入的房间 UUID 一致。
 
-</Slot>
-
-<Slot for="api-center-table-3">
+</Parameter>
+<Parameter name="uid">
 
 自从 v2.15.0。用户唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 及之后版本的 SDK，必须传入该参数。请确保同一房间内每个用户 [uid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/uid) 的唯一性。
 
-</Slot>
-
-<Slot for="api-center-table-4">
+</Parameter>
+<Parameter name="userPayload">
 
 自定义用户信息。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -316,7 +312,7 @@ _migration:
 
 - 必须使用 `WhiteRoomConfig` 子类，以保证字段结构正确。
 - 自定义的用户信息会被完整透传。
-如果要在白板房间中显示用户头像，请在 `userPayload` 中传入 `avatar` 字段并添加用户头像的地址，例如 “avatar”, “[https://example.com/user.png](https://example.com/user.png)”)。
+  如果要在白板房间中显示用户头像，请在 `userPayload` 中传入 `avatar` 字段并添加用户头像的地址，例如 “avatar”, “[https://example.com/user.png](https://example.com/user.png)”)。
 - 从 [WhiteMemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information) 迁移，只需要在 `userPayload` 中，传入相同字段即可。
 
 #### Declared In

@@ -35,12 +35,17 @@ virtual int enableSoundPositionIndication(bool enabled) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启远端用户语音立体声：
 
 - `true`: 开启语音立体声。
 - `false`: 关闭语音立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
 
@@ -86,11 +91,15 @@ virtual int setRemoteVoicePositionEx(uid_t uid, double pan, double gain, const R
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-### pan
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
 
 设置远端用户声音的空间位置，取值范围为 [-1.0,1.0]:
 
@@ -98,13 +107,20 @@ virtual int setRemoteVoicePositionEx(uid_t uid, double pan, double gain, const R
 - （默认）0.0: 声音出现在正前方。
 - 1.0: 声音出现在右边。
 
-### gain
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 设置远端用户声音的音量，取值范围为 [0.0,100.0]，默认值为 100.0，表示该用户的原始音量。取值越小，则音量越低。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
 
@@ -151,11 +167,15 @@ virtual int setRemoteVoicePosition(uid_t uid, double pan, double gain) = 0;
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户的 ID
 
-### pan
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
 
 设置远端用户声音的 2D 位置，取值范围为 [-1.0,1.0]:
 
@@ -163,9 +183,14 @@ virtual int setRemoteVoicePosition(uid_t uid, double pan, double gain) = 0;
 - -1.0: 声音出现在左边。
 - 1.0: 声音出现在右边。
 
-### gain
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
 
 设置远端用户声音的音量，取值范围为 [0.0,100.0]，默认值为 100.0，表示该用户的原始音量。取值越小，则音量越低。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevoiceposition__return_values"></a>
 

@@ -54,7 +54,9 @@ _migration:
 
 - new ReportServiceV2():[ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-report-v2-eport-service-v2)
 
-- Overrides [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)Returns [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-report-v2-eport-service-v2)
+Overrides [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+Returns [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-services-report-v2-eport-service-v2)
 
 ## Properties
 
@@ -126,11 +128,21 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - fetch(params:[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)):Promise&lt;any&gt;
 
-- Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)Parameters
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
 
-  - params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  Returns Promise&lt;any&gt;
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;any&gt;
 
 <a id="guardParams"></a>
 
@@ -138,7 +150,7 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - guardParams():true|void
 
-- Returns true|void
+Returns true|void
 
 <a id="initReportUserParams"></a>
 
@@ -146,11 +158,19 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - initReportUserParams(params:[ReportUserParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-services-report-v2#ReportUserParams)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="params" required>
 
-  - params: [ReportUserParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-services-report-v2#ReportUserParams)
+<ParameterType>
 
-  Returns void
+[ReportUserParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-services-report-v2#ReportUserParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="reportApaasUserJoin"></a>
 
@@ -158,12 +178,12 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - reportApaasUserJoin(lts:number, errorCode:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lts" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
 
-  - lts: number
-  - errorCode: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="reportApaasUserQuit"></a>
 
@@ -171,12 +191,12 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - reportApaasUserQuit(lts:number, errorCode:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lts" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
 
-  - lts: number
-  - errorCode: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="reportApaasUserReconnect"></a>
 
@@ -184,12 +204,12 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - reportApaasUserReconnect(lts:number, errorCode:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lts" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
 
-  - lts: number
-  - errorCode: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="reportScreenShareEnd"></a>
 
@@ -197,12 +217,12 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - reportScreenShareEnd(lts:number, errorCode:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lts" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
 
-  - lts: number
-  - errorCode: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="reportScreenShareStart"></a>
 
@@ -210,12 +230,12 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - reportScreenShareStart(lts:number, errorCode:number):Promise&lt;any&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lts" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
 
-  - lts: number
-  - errorCode: number
-
-  Returns Promise&lt;any&gt;
+Returns Promise&lt;any&gt;
 
 <a id="updateRtcSessionId"></a>
 
@@ -223,8 +243,8 @@ shared: [ReportServiceV2](/zh-CN/api-reference/flexible-classroom/web/api-refere
 
 - updateRtcSessionId(sid:string):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="sid" type="string" required />
+</ParameterList>
 
-  - sid: string
-
-  Returns void
+Returns void

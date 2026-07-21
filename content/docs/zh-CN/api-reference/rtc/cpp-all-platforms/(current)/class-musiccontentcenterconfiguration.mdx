@@ -27,11 +27,15 @@ struct MusicContentCenterConfiguration {
 
 ## 属性
 
-### appId
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 启用音乐内容中心的项目的 App ID。
 
-### token
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
 用于音乐内容中心鉴权的 Token。
 
@@ -39,14 +43,23 @@ struct MusicContentCenterConfiguration {
 注： 声网推荐使用 AccessToken2 进行鉴权。详见 `Deploy Token Server`。生成 Token 时，将 `String` 类型的 `mccUid` 传入 `uid`。当 Token 即将过期时，可以调用 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 传入新的 Token。
 :::
 
-### mccUid
+</Parameter>
+<a id="mccuid"></a>
+<Parameter name="mccUid">
 
 用于音乐内容中心的用户 ID。该 ID 可与加入 RTC 频道时使用的 `uid` 相同，但不能为 0。
 
-### maxCacheSize
+</Parameter>
+<a id="maxcachesize"></a>
+<Parameter name="maxCacheSize">
 
 可缓存的音乐资源数量，最大值为 50。
 
-### eventHandler
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 用于接收回调的事件处理器。详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>

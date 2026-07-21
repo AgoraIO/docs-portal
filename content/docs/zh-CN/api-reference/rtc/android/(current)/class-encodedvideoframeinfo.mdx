@@ -31,7 +31,9 @@ public class EncodedVideoFrameInfo {
 
 ## 属性
 
-### codecType
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 :::note
 注： 在某些场景下，例如采集的视频流分辨率较低或设备性能受限，SDK 会自动调整为 H.264 编码格式。
@@ -43,19 +45,27 @@ public class EncodedVideoFrameInfo {
 - `2`：`VIDEO_CODEC_H264`，H.264。
 - `3`：（默认）`VIDEO_CODEC_H265`，H.265。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频帧的宽度（单位：像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度（单位：像素）。
 
-### framesPerSecond
+</Parameter>
+<a id="framespersecond"></a>
+<Parameter name="framesPerSecond">
 
 视频帧的每秒帧数。当该参数不为 `0` 时，你可以使用它来计算外部编码视频帧的 Unix 时间戳。
 
-### frameType
+</Parameter>
+<a id="frametype"></a>
+<Parameter name="frameType">
 
 视频帧类型：
 
@@ -65,7 +75,9 @@ public class EncodedVideoFrameInfo {
 - `5`：`VIDEO_FRAME_TYPE_B_FRAME`，B 帧。
 - `6`：`VIDEO_FRAME_TYPE_UNKNOW`，未知帧。
 
-### rotation
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频帧的旋转角度：
 
@@ -74,18 +86,29 @@ public class EncodedVideoFrameInfo {
 - `180`：180 度。
 - `270`：270 度。
 
-### trackId
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 保留参数，用于未来扩展。
 
-### captureTimeMs
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
 
 外部编码视频帧采集时的 Unix 时间戳（单位：毫秒）。
 
-### decodeTimeMs
+</Parameter>
+<a id="decodetimems"></a>
+<Parameter name="decodeTimeMs">
 
 输出参数，表示解码该视频帧的时间戳（单位：毫秒）。
 
-### streamType
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 视频流的类型。
+
+</Parameter>
+</ParameterList>

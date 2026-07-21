@@ -332,9 +332,14 @@ public abstract setCameraCapturerConfiguration(config: CameraCapturerConfigurati
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -376,13 +381,20 @@ public abstract setCameraExposurePosition(positionXinView: number, positionYinVi
 
 ### 参数
 
-### positionXinView
+<ParameterList>
+<a id="positionxinview"></a>
+<Parameter name="positionXinView">
 
 触摸点相对于视图的横坐标。
 
-### positionYinView
+</Parameter>
+<a id="positionyinview"></a>
+<Parameter name="positionYinView">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcameraexposureposition__return_values"></a>
 
@@ -420,13 +432,20 @@ public abstract setCameraFocusPositionInPreview(positionX: number, positionY: nu
 
 ### 参数
 
-### positionX
+<ParameterList>
+<a id="positionx"></a>
+<Parameter name="positionX">
 
 触摸点相对于视图的横坐标。
 
-### positionY
+</Parameter>
+<a id="positiony"></a>
+<Parameter name="positionY">
 
 触摸点相对于视图的纵坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
 
@@ -463,9 +482,14 @@ public abstract setCameraZoomFactor(factor: number): number;
 
 ### 参数
 
-### factor
+<ParameterList>
+<a id="factor"></a>
+<Parameter name="factor">
 
 摄像头缩放比例。对不支持超广角的设备，取值范围从 1.0 到最大缩放比例；对支持超广角的设备，取值范围从 0.5 到最大缩放比例。你可以通过 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大缩放比例。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -535,9 +559,14 @@ onCameraExposureAreaChanged?:(rect:camera.Rect) => void;
 
 ### 参数
 
-### rect
+<ParameterList>
+<a id="rect"></a>
+<Parameter name="rect">
 
 镜头内表示曝光的区域。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -563,9 +592,14 @@ onCameraFocusPointChanged?:(point:camera.Point) => void;
 
 ### 参数
 
-### point
+<ParameterList>
+<a id="point"></a>
+<Parameter name="point">
 
 镜头内表示对焦的点。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

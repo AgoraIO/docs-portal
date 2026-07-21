@@ -46,11 +46,18 @@ _migration:
 
 初始化视角边界。
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="miniScale">
 
-| miniScale | 视角边界的最小缩放比例。 |
-| --- | --- |
-| maxScale | 视角边界的最大缩放比例。 |
+视角边界的最小缩放比例。
+
+</Parameter>
+<Parameter name="maxScale">
+
+视角边界的最大缩放比例。
+
+</Parameter>
+</ParameterList>
 
 ## 成员函数说明
 
@@ -76,10 +83,13 @@ _migration:
 
 设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
 
-<h4 data-toc-hidden="true" id={"参数-1"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="centerX">
 
-| centerX | 视角边界的中心点在世界坐标系的 X 轴坐标。默认值为 0.0。 |
-| --- | --- |
+视角边界的中心点在世界坐标系的 X 轴坐标。默认值为 0.0。
+
+</Parameter>
+</ParameterList>
 
 <a id="a07258c5ab55fa52c2e358f78e1fdfa0c"></a>
 
@@ -103,10 +113,13 @@ _migration:
 
 设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
 
-<h4 data-toc-hidden="true" id={"参数-2"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="centerY">
 
-| centerY | 视角边界的中心点在世界坐标系中的 Y 轴坐标。默认值为 0.0。 |
-| --- | --- |
+视角边界的中心点在世界坐标系中的 Y 轴坐标。默认值为 0.0。
+
+</Parameter>
+</ParameterList>
 
 <a id="a2959924ced012f75c8f7af2e2385ab8a"></a>
 
@@ -130,10 +143,13 @@ _migration:
 
 设置视角边界的宽度。
 
-<h4 data-toc-hidden="true" id={"参数-3"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="width">
 
-| width | 视角边界的宽度，单位为像素。如果不填，则表示无限制。 |
-| --- | --- |
+视角边界的宽度，单位为像素。如果不填，则表示无限制。
+
+</Parameter>
+</ParameterList>
 
 <a id="ac9f6023ff209476e7dad1421f32e6099"></a>
 
@@ -157,10 +173,13 @@ _migration:
 
 设置视角边界的高度。
 
-<h4 data-toc-hidden="true" id={"参数-4"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="height">
 
-| height | 视角边界的高度，单位为像素。如果不填，则表示无限制。 |
-| --- | --- |
+视角边界的高度，单位为像素。如果不填，则表示无限制。
+
+</Parameter>
+</ParameterList>
 
 <a id="a3f86f60880e9462b8a64775972aa6cdf"></a>
 
@@ -184,10 +203,13 @@ _migration:
 
 设置视角边界的缩放模式和最大缩放比例。
 
-<h4 data-toc-hidden="true" id={"参数-5"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="maxContentMode">
 
-| maxContentMode | 视角边界的最大缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。 |
-| --- | --- |
+视角边界的最大缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+</Parameter>
+</ParameterList>
 
 <a id="aa40a670d489a70de4b9e903d69e3c465"></a>
 
@@ -211,10 +233,13 @@ _migration:
 
 设置视角边界的缩放模式和最小缩放比例。
 
-<h4 data-toc-hidden="true" id={"参数-6"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="minContentMode">
 
-| minContentMode | 视角边界的缩放模式和最小缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。 |
-| --- | --- |
+视角边界的缩放模式和最小缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+</Parameter>
+</ParameterList>
 
 <a id="a68edcda93e00c71ead62c96fb908a507"></a>
 
@@ -238,7 +263,13 @@ _migration:
 
 设置用户将视角移出视角边界时感受到的阻力。
 
-<h4 data-toc-hidden="true" id={"参数-7"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="damping">
 
-| damping | 阻力大小，取值范围为 [0.0,1.0]。取值越大，用户感受到的阻力越大。`0.0`: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。 `1.0`: 用户完全无法将视角移出视角边界。 |
-| --- | --- |
+阻力大小，取值范围为 [0.0,1.0]。取值越大，用户感受到的阻力越大。
+
+- `0.0`: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。
+- `1.0`: 用户完全无法将视角移出视角边界。
+
+</Parameter>
+</ParameterList>

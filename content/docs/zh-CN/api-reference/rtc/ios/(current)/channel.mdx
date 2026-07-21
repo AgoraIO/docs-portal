@@ -61,13 +61,20 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### error
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码，详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuid__return_values"></a>
 
@@ -110,17 +117,26 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### connection
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### error
+</Parameter>
+<a id="error-1"></a>
+<Parameter name="error">
 
 错误码。详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getuserinfobyuidex__return_values"></a>
 
@@ -161,13 +177,20 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
 
-### error
+</Parameter>
+<a id="error-2"></a>
+<Parameter name="error">
 
 错误码，详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
 
@@ -210,17 +233,26 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
 
 用户 User Account。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### error
+</Parameter>
+<a id="error-3"></a>
+<Parameter name="error">
 
 错误码。详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__return_values"></a>
 
@@ -281,7 +313,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -291,7 +325,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 如果你需要同时加入多个频道或在频道之间切换，声网建议使用通配符 Token，这样你无需每次加入频道时都申请新的 Token。详见 `使用 Token 实现安全鉴权`。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。该参数表示你进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -300,17 +336,26 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### info
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
 
 （可选）预留参数
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock"></a>
+<Parameter name="joinSuccessBlock">
 
 用户成功加入频道时触发。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel1__return_values"></a>
 
@@ -382,7 +427,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -394,7 +441,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 如果你需要同时加入不同频道或在频道间切换，声网建议使用通配符 Token，这样你无需每次加入频道时都申请新的 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。该参数表示你进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -403,17 +452,26 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### uid
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
 
-### mediaOptions
+</Parameter>
+<a id="mediaoptions"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。详见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock-1"></a>
+<Parameter name="joinSuccessBlock">
 
 用户加入频道成功时触发。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不再生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -489,7 +547,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
 
 你在服务器上生成的用于鉴权的 token。
 
@@ -501,21 +561,32 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 如果你需要同时加入多个频道或在频道之间切换，声网建议使用通配符 token，这样你无需每次加入频道时都申请新的 token。
 :::
 
-### connection
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。参见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### delegate
+</Parameter>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 `AgoraRtcEngine` 的回调类。参见 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 对象获取多个频道的回调事件。
 
-### mediaOptions
+</Parameter>
+<a id="mediaoptions-1"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。参见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock-2"></a>
+<Parameter name="joinSuccessBlock">
 
 用户加入频道成功时触发。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -584,7 +655,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -596,7 +669,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道名。该参数表示用户进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -605,7 +680,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### userAccount
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 User Account，并确保同一频道内的每个用户 User Account 唯一。该参数的最大长度为 255 字节。请确保设置了该参数，且不为 nil。支持的字符如下（共 89 个）：
 
@@ -615,9 +692,14 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock-3"></a>
+<Parameter name="joinSuccessBlock">
 
 用户成功加入频道回调。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__return_values"></a>
 
@@ -688,7 +770,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -700,7 +784,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你无需每次加入频道时都申请新的 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道名。该参数表示你进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -709,7 +795,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### userAccount
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 User Account，并确保同一频道内的每个用户 User Account 唯一。该参数的最大长度为 255 字节。支持的字符如下（共 89 个）：
 
@@ -719,13 +807,20 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### mediaOptions
+</Parameter>
+<a id="mediaoptions-2"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。详见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock-4"></a>
+<Parameter name="joinSuccessBlock">
 
 用户加入频道成功时触发。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
 
@@ -802,7 +897,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-5"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。
 
@@ -814,7 +911,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样每次加入频道时无需重新申请 Token。
 :::
 
-### channelId
+</Parameter>
+<a id="channelid-4"></a>
+<Parameter name="channelId">
 
 频道名。该参数表示你进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -823,7 +922,9 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### userAccount
+</Parameter>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 User Account，并确保同一频道中的每个用户 User Account 唯一。该参数的最大长度为 255 字节。支持的字符如下（共 89 个）：
 
@@ -833,17 +934,26 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### delegate
+</Parameter>
+<a id="delegate-1"></a>
+<Parameter name="delegate">
 
 `AgoraRtcEngine` 的回调类。参见 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) 对象获取多个频道的回调事件。
 
-### mediaOptions
+</Parameter>
+<a id="mediaoptions-3"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。参见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
 
-### joinSuccessBlock
+</Parameter>
+<a id="joinsuccessblock-5"></a>
+<Parameter name="joinSuccessBlock">
 
 用户加入频道成功时触发。`joinSuccessBlock` 的优先级高于 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。当两者同时实现时，[rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 不生效。声网建议将 `joinSuccessBlock` 设置为 nil，以使用 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__return_values"></a>
 
@@ -908,9 +1018,14 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 
 ### 参数
 
-### leaveChannelBlock
+<ParameterList>
+<a id="leavechannelblock"></a>
+<Parameter name="leaveChannelBlock">
 
 该回调表示你离开频道，并在 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats) 中提供通话统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel__return_values"></a>
 
@@ -969,13 +1084,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### options
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 离开频道的选项。详见 [AgoraLeaveChannelOptions](/zh-CN/api-reference/rtc/ios/class-leavechanneloptions)。
 
-### leaveChannelBlock
+</Parameter>
+<a id="leavechannelblock-1"></a>
+<Parameter name="leaveChannelBlock">
 
 该回调表示你离开频道，并在 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats) 中提供通话统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -1039,13 +1161,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### leaveChannelBlock
+</Parameter>
+<a id="leavechannelblock-2"></a>
+<Parameter name="leaveChannelBlock">
 
 离开频道回调。在 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats) 中提供通话统计信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex__return_values"></a>
 
@@ -1105,17 +1234,26 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-### options
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 离开频道的选项。仅支持设置 [AgoraLeaveChannelOptions](/zh-CN/api-reference/rtc/ios/class-leavechanneloptions) 中的 `stopMicrophoneRecording` 成员，设置其他成员无效。详见 [AgoraLeaveChannelOptions](/zh-CN/api-reference/rtc/ios/class-leavechanneloptions)。
 
-### leaveChannelBlock
+</Parameter>
+<a id="leavechannelblock-3"></a>
+<Parameter name="leaveChannelBlock">
 
 该回调表示你离开频道，并在 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats) 中提供通话统计信息。详见 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
 
@@ -1167,7 +1305,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-6"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。当用于预加载频道的 Token 过期时，你可以根据预加载的频道数量更新 Token。
 
@@ -1180,7 +1320,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 如果你为不同频道使用不同的 Token，调用该方法传入用户 ID、频道名和新的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-5"></a>
+<Parameter name="channelId">
 
 你想要预加载的频道名。该参数表示用户进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -1189,9 +1331,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### uid
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存该信息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannel__return_values"></a>
 
@@ -1246,7 +1393,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-7"></a>
+<Parameter name="token">
 
 在你的服务器上生成的用于鉴权的 Token。当用于预加载频道的 Token 过期时，你可以根据预加载的频道数量更新 Token。
 
@@ -1256,7 +1405,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
   - 如果你为所有预加载频道使用通配符 Token，调用 [updatePreloadChannelToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatepreloadchanneltoken) 更新 Token。注意：生成通配符 Token 时，确保用户 ID 不为 0。
   - 如果你为不同频道使用不同的 Token，调用该方法传入你的用户 ID、频道名和新的 Token。
 
-### channelId
+</Parameter>
+<a id="channelid-6"></a>
+<Parameter name="channelId">
 
 你想要预加载的频道名。该参数表示用户进行实时音视频互动的频道。在相同 App ID 的前提下，填写相同频道名的用户会进入同一个频道进行音视频互动。字符串长度必须小于 64 字节。支持的字符（共 89 个）：
 
@@ -1265,7 +1416,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 所有数字字符：0 到 9。
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
 
-### userAccount
+</Parameter>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
 
 用户 User Account。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 User Account，并确保同一频道中的每个用户 User Account 唯一。该参数的最大长度为 255 字节。请确保设置了该参数，且不为 nil。支持的字符如下（共 89 个）：
 
@@ -1274,6 +1427,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 所有数字字符：0 到 9。
 - 空格
 - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
 
@@ -1332,7 +1488,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### userAccount
+<ParameterList>
+<a id="useraccount-6"></a>
+<Parameter name="userAccount">
 
 用于在频道中标识用户身份，以实现实时音视频互动。你需要自行设置并管理 `userAccount`，并确保同一频道中每个 `userAccount` 唯一。该参数的最大长度为 255 字节，不能为空。支持的字符如下（共 89 个）：
 
@@ -1342,9 +1500,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 - 空格
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","。
 
-### appId
+</Parameter>
+<a id="appid"></a>
+<Parameter name="appId">
 
 你在声网控制台项目中的 `App ID`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
 
@@ -1383,9 +1546,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-8"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_renewtoken__return_values"></a>
 
@@ -1440,9 +1608,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### profile
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 频道场景。详见 [AgoraChannelProfile](/zh-CN/api-reference/rtc/ios/enum-channelprofiletype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setchannelprofile__return_values"></a>
 
@@ -1499,13 +1672,18 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role"></a>
+<Parameter name="role">
 
 用户角色。详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
 
 :::note
 注： 如果你将用户角色设置为观众，则无法在频道中发布音视频流。如果你希望在直播中发布媒体流，请确保将用户角色设置为主播。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole1__return_values"></a>
 
@@ -1574,7 +1752,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### role
+<ParameterList>
+<a id="role-1"></a>
+<Parameter name="role">
 
 用户角色。详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
 
@@ -1582,9 +1762,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 注： 如果你将用户角色设置为观众，则无法在频道中发布音视频流。如果你希望在直播过程中发布媒体流，请确保将用户角色设置为主播。
 :::
 
-### options
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
 
 用户的详细选项，包括用户等级。详见 [AgoraClientRoleOptions](/zh-CN/api-reference/rtc/ios/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -1624,9 +1809,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### mediaOptions
+<ParameterList>
+<a id="mediaoptions-4"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。详见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -1670,13 +1860,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### mediaOptions
+<ParameterList>
+<a id="mediaoptions-5"></a>
+<Parameter name="mediaOptions">
 
 频道媒体选项。详见 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions)。
 
-### connection
+</Parameter>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -1721,9 +1918,14 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### token
+<ParameterList>
+<a id="token-9"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatepreloadchanneltoken__return_values"></a>
 
@@ -1772,21 +1974,32 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 引擎实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### oldRole
+</Parameter>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
 
 用户切换前的角色。详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
 
-### newRole
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
 
 用户切换后的角色。详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
 
-### newRoleOptions
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
 
 用户切换后的角色属性。详见 [AgoraClientRoleOptions](/zh-CN/api-reference/rtc/ios/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1818,13 +2031,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### reason
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
 
 用户角色切换失败的原因，详见 [AgoraClientRoleChangeFailedReason](/zh-CN/api-reference/rtc/ios/enum-clientrolechangefailedreason)。
 
-### currentRole
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
 
 当前的用户角色，详见 [AgoraClientRole](/zh-CN/api-reference/rtc/ios/enum-clientroletype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1858,13 +2078,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### errorCode
+</Parameter>
+<a id="errorcode"></a>
+<Parameter name="errorCode">
 
 错误码。详见 [AgoraErrorCode](/zh-CN/api-reference/rtc/ios/enum-errorcodetype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1898,21 +2125,32 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 本地用户加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannelByToken` 方法到 SDK 触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1946,13 +2184,20 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-3"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
 
-### stats
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 通话统计信息，详见 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1986,17 +2231,26 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-4"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 本地用户的用户 ID。
 
-### userAccount
+</Parameter>
+<a id="useraccount-7"></a>
+<Parameter name="userAccount">
 
 本地用户的用户 User Account。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2028,21 +2282,32 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-5"></a>
+<Parameter name="engine">
 
 声网引擎对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 重新加入频道的用户 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调所经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2078,17 +2343,26 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-6"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### token
+</Parameter>
+<a id="token-10"></a>
+<Parameter name="token">
 
 Token。
 
-### code
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 错误码，详见 [AgoraRenewTokenErrorCode](/zh-CN/api-reference/rtc/ios/enum-renewtokenerrorcode)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2128,9 +2402,14 @@ Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-7"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2162,13 +2441,20 @@ Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-8"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### stats
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 通话统计信息，详见 [AgoraChannelStats](/zh-CN/api-reference/rtc/ios/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2210,13 +2496,20 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-9"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### token
+</Parameter>
+<a id="token-11"></a>
+<Parameter name="token">
 
 即将过期的 Token。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2250,17 +2543,26 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-10"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### userInfo
+</Parameter>
+<a id="userinfo"></a>
+<Parameter name="userInfo">
 
 包含远端用户的用户 ID 和用户 User Account 的对象。详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/ios/class-userinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2299,17 +2601,26 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-11"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-9"></a>
+<Parameter name="uid">
 
 加入频道的用户或主播的 ID。
 
-### elapsed
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从你调用 [joinChannelByToken\:channelId\:info\:uid\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 到该回调被触发的延迟时间（毫秒）。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2346,17 +2657,26 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine-12"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### uid
+</Parameter>
+<a id="uid-10"></a>
+<Parameter name="uid">
 
 离开频道或掉线的远端用户 ID。
 
-### reason
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端用户（在通信场景中）或主播（在直播场景中）离线的原因，详见 [AgoraUserOfflineReason](/zh-CN/api-reference/rtc/ios/enum-userofflinereasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -51,7 +51,9 @@ class AudioRecordingConfiguration {
 
 ## 属性
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`C:\music\audio.aac`。
 
@@ -59,14 +61,18 @@ class AudioRecordingConfiguration {
 注： 请确保你指定的路径存在并且可写。
 :::
 
-### encode
+</Parameter>
+<a id="encode"></a>
+<Parameter name="encode">
 
 设置是否编码音频数据：
 
 - true: 将音频数据用 AAC 编码。
 - false:（默认）不编码音频数据，直接保存录制的音频数据。
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 :::note
 注： 如果把该参数设为 44100 或 48000，为保证录音效果，建议录制 WAV 文件或 `quality` 为 audioRecordingQualityMedium 或 audioRecordingQualityHigh 的 AAC 文件。
@@ -79,11 +85,15 @@ class AudioRecordingConfiguration {
 - 44100
 - 48000
 
-### fileRecordingType
+</Parameter>
+<a id="filerecordingtype"></a>
+<Parameter name="fileRecordingType">
 
 录音内容。详见 [AudioFileRecordingType](/zh-CN/api-reference/rtc/flutter/enum-audiofilerecordingtype)。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音音质。详见 [audiorecordingqualitytype](/zh-CN/api-reference/rtc/flutter/enum-audiorecordingqualitytype)。
 
@@ -91,7 +101,9 @@ class AudioRecordingConfiguration {
 注： 该参数仅适用于 AAC 文件。
 :::
 
-### recordingChannel
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
 
 :::note
 注： 实际录制的音频声道与你采集的音频声道有关：
@@ -106,3 +118,6 @@ class AudioRecordingConfiguration {
 
 - 1:（默认）单声道。
 - 2: 双声道。
+
+</Parameter>
+</ParameterList>

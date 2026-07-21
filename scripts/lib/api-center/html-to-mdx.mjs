@@ -82,13 +82,6 @@ function isSinceDefinitionTerm(value) {
   return normalized === '自从' || normalized === 'since';
 }
 
-function containsTypeDocSinceDefinitionTerm($, element) {
-  return element
-    .find('dl.tsd-comment-tags > dt')
-    .toArray()
-    .some((term) => isSinceDefinitionTerm($(term).text()));
-}
-
 export function detailedDescriptionTitleMode(element) {
   const id = String(element.attr('id') ?? element.attr('name') ?? '');
   const deliveryTarget = String(
@@ -252,7 +245,14 @@ function createState(options) {
     ...options,
     warnings: [],
     assets: [],
+    parameterSlugCounts: new Map(),
     tableSlotCounter: 0,
+    structuredParameters: {
+      appledoc: { fields: 0, lists: 0 },
+      doxygen: { fields: 0, lists: 0 },
+      oxygen: { fields: 0, lists: 0 },
+      typedoc: { fields: 0, lists: 0 },
+    },
   };
 }
 
@@ -373,6 +373,14 @@ async function renderInlineNodes($, nodes, state, options = {}) {
   return tightenInlinePunctuation(normalizedWhitespace).trim();
 }
 
+function normalizeInlineListContent(value) {
+  return tightenInlinePunctuation(
+    String(value ?? '')
+      .replace(/\n[ \t]+/g, '\n')
+      .replace(/[ \t]+/g, ' '),
+  ).trim();
+}
+
 async function renderInlineNode($, node, state, options = {}) {
   if (node.type === 'text') {
     return options.rawText ? (node.data ?? '') : escapeMdxText(node.data ?? '');
@@ -420,6 +428,221 @@ async function renderInlineNode($, node, state, options = {}) {
   }
   if (['script', 'style', 'svg'].includes(name)) return '';
   return content;
+}
+
+function escapeMdxJsxAttribute(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\{/g, '&#123;')
+    .replace(/\}/g, '&#125;');
+}
+
+function parameterAttribute(name, value) {
+  const normalized = cleanText(value);
+  return normalized ? ` ${name}="${escapeMdxJsxAttribute(normalized)}"` : '';
+}
+
+function hasRichParameterType(value) {
+  return /(?<!!)\[[^\]]+]\([^)]+\)/.test(String(value ?? ''));
+}
+
+function normalizeTypeDocType(value) {
+  return String(value ?? '')
+    .replace(/\s*\|\s*/g, ' | ')
+    .replace(/\s*&\s*/g, ' & ')
+    .trim();
+}
+
+function parameterHeadingSlug(value, state) {
+  const baseSlug =
+    cleanText(value)
+      .toLowerCase()
+      .replace(/[^\p{Letter}\p{Number}\p{Mark}\s_-]/gu, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || 'section';
+  const previousCount = state.parameterSlugCounts.get(baseSlug) ?? 0;
+  state.parameterSlugCounts.set(baseSlug, previousCount + 1);
+  return previousCount === 0 ? baseSlug : `${baseSlug}-${previousCount}`;
+}
+
+function renderStructuredParameter(parameter) {
+  const richType = hasRichParameterType(parameter.type);
+  const attributes = [
+    parameterAttribute('name', parameter.name),
+    richType ? '' : parameterAttribute('type', parameter.type),
+    parameterAttribute('direction', parameter.direction),
+    parameter.optional ? ' optional' : '',
+    parameter.required ? ' required' : '',
+  ].join('');
+  const blocks = [
+    richType ? `<ParameterType>\n\n${parameter.type}\n\n</ParameterType>` : '',
+    parameter.body,
+  ].filter(Boolean);
+  const component =
+    blocks.length === 0
+      ? `<Parameter${attributes} />`
+      : `<Parameter${attributes}>\n\n${blocks.join('\n\n')}\n\n</Parameter>`;
+  return [renderStableAnchor(parameter.anchor), component]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function renderStructuredParameterList({ parameters, title }) {
+  const body = parameters
+    .filter((parameter) => cleanText(parameter.name))
+    .map(renderStructuredParameter)
+    .join('\n');
+  if (!body) return '';
+  return `<ParameterList${parameterAttribute('title', title)}>\n${body}\n</ParameterList>`;
+}
+
+function recordStructuredParameterList(state, generator, fieldCount) {
+  if (fieldCount <= 0) return;
+  state.structuredParameters[generator].fields += fieldCount;
+  state.structuredParameters[generator].lists += 1;
+}
+
+async function parseTypeDocParameters($, list, state) {
+  const parameters = [];
+  const isTypeParameterList = list.hasClass('tsd-type-parameters');
+  const headingSelector = isTypeParameterList ? 'h4' : 'h5';
+  const unparsedItemIndexes = [];
+  for (const [itemIndex, node] of list.children('li').toArray().entries()) {
+    const item = $(node);
+    const heading = item.children(headingSelector).first();
+    if (heading.length === 0) {
+      unparsedItemIndexes.push(itemIndex);
+      continue;
+    }
+    const optional = heading.find('.ts-flagOptional').length > 0;
+    const normalizedHeading = heading.clone();
+    normalizedHeading.find('.tsd-flag').remove();
+    const renderedHeading = await renderInlineNodes(
+      $,
+      normalizedHeading.contents().toArray(),
+      state,
+    );
+    const separator = renderedHeading.indexOf(':');
+    const name = cleanText(normalizedHeading.text().split(':', 1)[0]).replace(
+      /\?$/,
+      '',
+    );
+    const type = normalizeTypeDocType(
+      separator >= 0 ? renderedHeading.slice(separator + 1) : '',
+    );
+    const description = item.clone();
+    description.children(headingSelector).first().remove();
+    parameters.push({
+      body: await renderChildren($, description, state),
+      name,
+      optional,
+      required: !isTypeParameterList && !optional,
+      type,
+    });
+  }
+  const title = cleanText(list.prev('h4').first().text());
+  recordStructuredParameterList(state, 'typedoc', parameters.length);
+  const structured = renderStructuredParameterList({ parameters, title });
+  if (unparsedItemIndexes.length === 0) return structured;
+  const fallbackList = list.clone();
+  fallbackList.children('li').each((index, node) => {
+    if (!unparsedItemIndexes.includes(index)) {
+      $(node).remove();
+    }
+  });
+  const fallback = await renderList($, fallbackList, state, false);
+  return [structured, fallback].filter(Boolean).join('\n\n');
+}
+
+async function parseOxygenParameters($, list, state) {
+  const parameters = [];
+  const orphanBodies = [];
+  let current = null;
+  const flushCurrent = () => {
+    if (!current) return;
+    const body = current.bodies.filter(Boolean).join('\n\n');
+    if (current.name) {
+      parameters.push({
+        anchor: parameterHeadingSlug(current.name, state),
+        body,
+        name: current.name,
+      });
+    } else if (body) orphanBodies.push(body);
+    current = null;
+  };
+  for (const node of list.children('dt, dd').toArray()) {
+    const element = $(node);
+    if (elementName(node) === 'dt') {
+      flushCurrent();
+      current = { bodies: [], name: cleanText(element.text()) };
+      continue;
+    }
+    const body = await renderChildren($, element, state);
+    if (current) current.bodies.push(body);
+    else if (body) orphanBodies.push(body);
+  }
+  flushCurrent();
+  recordStructuredParameterList(state, 'oxygen', parameters.length);
+  return [renderStructuredParameterList({ parameters }), ...orphanBodies]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+async function parseDoxygenParameters($, list, state) {
+  const parameters = [];
+  const table = list.find('> dd > table.params, > dd table.params').first();
+  for (const node of table.find('> tbody > tr, > tr').toArray()) {
+    const row = $(node);
+    const nameCell = row.children('.paramname').first();
+    if (nameCell.length === 0) continue;
+    const directionCell = row.children('.paramdir').first();
+    const descriptions = [];
+    for (const cell of row.children('th, td').toArray()) {
+      if (cell === nameCell.get(0) || cell === directionCell.get(0)) continue;
+      const body = await renderChildren($, $(cell), state);
+      if (body) descriptions.push(body);
+    }
+    parameters.push({
+      body: descriptions.join('\n\n'),
+      direction: cleanText(directionCell.text()),
+      name: cleanText(nameCell.text()),
+    });
+  }
+  recordStructuredParameterList(state, 'doxygen', parameters.length);
+  return renderStructuredParameterList({
+    parameters,
+    title: cleanText(list.children('dt').first().text()),
+  });
+}
+
+async function parseAppledocParameters($, container, state) {
+  const parameters = [];
+  const table = container.children('table.argument-def.parameter-def').first();
+  for (const node of table.find('> tbody > tr, > tr').toArray()) {
+    const row = $(node);
+    const nameCell = row.children('.argument-name').first();
+    if (nameCell.length === 0) continue;
+    const descriptions = [];
+    for (const cell of row.children('td').toArray()) {
+      const body = await renderChildren($, $(cell), state);
+      if (body) descriptions.push(body);
+    }
+    parameters.push({
+      body: descriptions.join('\n\n'),
+      name: cleanText(nameCell.text()),
+    });
+  }
+  recordStructuredParameterList(state, 'appledoc', parameters.length);
+  return renderStructuredParameterList({
+    parameters,
+    title: cleanText(
+      container.children('.method-subtitle.parameter-title').first().text(),
+    ),
+  });
 }
 
 function compactImageContext(value) {
@@ -548,11 +771,21 @@ async function renderList($, element, state, ordered) {
     for (const child of item.contents().toArray()) {
       const name = elementName(child);
       if (name === 'ul' || name === 'ol') {
-        if (inline.trim()) {
-          blocks.push(inline.trim());
+        const normalizedInline = normalizeInlineListContent(inline);
+        if (normalizedInline) {
+          blocks.push(normalizedInline);
           inline = '';
         }
-        blocks.push(await renderList($, $(child), state, name === 'ol'));
+        const nestedList = $(child);
+        const isTypeDocStructuralList =
+          nestedList.hasClass('tsd-descriptions') ||
+          nestedList.hasClass('tsd-parameters') ||
+          nestedList.hasClass('tsd-type-parameters');
+        blocks.push(
+          isTypeDocStructuralList
+            ? await renderBlockNode($, child, state)
+            : await renderList($, nestedList, state, name === 'ol'),
+        );
       } else if (
         [
           'blockquote',
@@ -565,8 +798,9 @@ async function renderList($, element, state, ordered) {
           'table',
         ].includes(name)
       ) {
-        if (inline.trim()) {
-          blocks.push(inline.trim());
+        const normalizedInline = normalizeInlineListContent(inline);
+        if (normalizedInline) {
+          blocks.push(normalizedInline);
           inline = '';
         }
         blocks.push(await renderBlockNode($, child, state));
@@ -574,9 +808,16 @@ async function renderList($, element, state, ordered) {
         inline += await renderInlineNode($, child, state);
       }
     }
-    if (inline.trim()) blocks.push(inline.trim());
+    const normalizedInline = normalizeInlineListContent(inline);
+    if (normalizedInline) blocks.push(normalizedInline);
     const [first = '', ...rest] = blocks.filter(Boolean);
-    let rendered = `${marker} ${first}`;
+    const firstBlock = first
+      .split('\n')
+      .map((line, lineIndex) =>
+        lineIndex === 0 ? line : `${' '.repeat(continuation)}${line}`,
+      )
+      .join('\n');
+    let rendered = `${marker} ${firstBlock}`;
     if (rest.length > 0) {
       rendered += `\n\n${rest.map((block) => indentBlock(block, continuation)).join('\n\n')}`;
     }
@@ -797,6 +1038,16 @@ async function renderBlockNode($, node, state) {
     );
     return anchor;
   }
+  const isAppledocParameters =
+    name === 'div' &&
+    element.hasClass('arguments-section') &&
+    element.hasClass('parameters') &&
+    element.children('table.argument-def.parameter-def').length > 0;
+  if (isAppledocParameters) {
+    return [anchor, await parseAppledocParameters($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
   const detectedCallout = calloutType(element);
   if (detectedCallout && ['aside', 'div', 'section'].includes(name)) {
     const titleNode = element
@@ -817,6 +1068,10 @@ async function renderBlockNode($, node, state) {
       'tsd-type-parameters-title',
     ].some((className) => element.hasClass(className));
   if (isTypeDocSectionLabel) {
+    const isParameterTitle =
+      element.hasClass('tsd-parameters-title') ||
+      element.hasClass('tsd-type-parameters-title');
+    if (isParameterTitle) return anchor;
     const label = cleanText(
       await renderInlineNodes($, element.contents().toArray(), state),
     );
@@ -898,11 +1153,18 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'ul' || name === 'ol') {
-    const body =
-      element.hasClass('tsd-descriptions') &&
-      containsTypeDocSinceDefinitionTerm($, element)
-        ? await renderUnwrappedListItems($, element, state)
-        : await renderList($, element, state, name === 'ol');
+    if (
+      name === 'ul' &&
+      (element.hasClass('tsd-parameters') ||
+        element.hasClass('tsd-type-parameters'))
+    ) {
+      return [anchor, await parseTypeDocParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    const body = element.hasClass('tsd-descriptions')
+      ? await renderUnwrappedListItems($, element, state)
+      : await renderList($, element, state, name === 'ol');
     return [anchor, body].filter(Boolean).join('\n\n');
   }
   if (name === 'table') {
@@ -911,6 +1173,20 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'dl') {
+    if (element.hasClass('parml')) {
+      return [anchor, await parseOxygenParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    if (
+      element.hasClass('params') &&
+      element.closest('.memdoc').length > 0 &&
+      element.find('table.params').length > 0
+    ) {
+      return [anchor, await parseDoxygenParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
     return [anchor, await renderDefinitionList($, element, state)]
       .filter(Boolean)
       .join('\n\n');
@@ -1065,6 +1341,7 @@ export async function convertHtmlToMdx({
     body: normalizedLinks.source,
     fragments,
     assets: state.assets,
+    structuredParameters: state.structuredParameters,
     warnings: state.warnings,
     sourceTextLength: cleanText(article.text()).length,
   };

@@ -18,19 +18,27 @@ _migration:
 
 ## 枚举值
 
-### ErrOk
+<ParameterList>
+<a id="errok"></a>
+<Parameter name="ErrOk">
 
 0：没有错误。
 
-### ErrFailed
+</Parameter>
+<a id="errfailed"></a>
+<Parameter name="ErrFailed">
 
 1：一般性的错误（没有明确归类的错误原因）。请重新调用方法。
 
-### ErrInvalidArgument
+</Parameter>
+<a id="errinvalidargument"></a>
+<Parameter name="ErrInvalidArgument">
 
 2：方法中设置了无效的参数。例如指定的频道名中含有非法字符。请重新设置参数。
 
-### ErrNotReady
+</Parameter>
+<a id="errnotready"></a>
+<Parameter name="ErrNotReady">
 
 3：SDK 尚未准备好。可能的原因有：
 
@@ -40,13 +48,17 @@ _migration:
 - 音频模块未开启。
 - 程序集不完整。
 
-### ErrNotSupported
+</Parameter>
+<a id="errnotsupported"></a>
+<Parameter name="ErrNotSupported">
 
 4：[IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 当前状态不支持该操作。可能的原因有：
 
 - 使用内置加密时，设置的加密模式不正确，或加载外部加密库失败。请检查加密的枚举值是否正确，或重新加载外部加密库。
 
-### ErrRefused
+</Parameter>
+<a id="errrefused"></a>
+<Parameter name="ErrRefused">
 
 5：方法调用被拒绝。可能的原因有：
 
@@ -54,69 +66,99 @@ _migration:
 - 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
 - 多频道场景下，在调用 [joinChannelEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
 
-### ErrBufferTooSmall
+</Parameter>
+<a id="errbuffertoosmall"></a>
+<Parameter name="ErrBufferTooSmall">
 
 6：缓冲区大小不足以存放返回的数据。
 
-### ErrNotInitialized
+</Parameter>
+<a id="errnotinitialized"></a>
+<Parameter name="ErrNotInitialized">
 
 7：[IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象并完成初始化。
 
-### ErrInvalidState
+</Parameter>
+<a id="errinvalidstate"></a>
+<Parameter name="ErrInvalidState">
 
 8：当前状态无效。
 
-### ErrNoPermission
+</Parameter>
+<a id="errnopermission"></a>
+<Parameter name="ErrNoPermission">
 
 9：没有操作权限。请检查用户是否授予了 App 音视频设备的使用权限。
 
-### ErrTimedout
+</Parameter>
+<a id="errtimedout"></a>
+<Parameter name="ErrTimedout">
 
 10： 方法调用超时。有些方法调用需要 SDK 返回结果，如果 SDK 处理事件过长，超过 10 秒没有返回，会出现此错误。
 
-### ErrJoinChannelRejected
+</Parameter>
+<a id="errjoinchannelrejected"></a>
+<Parameter name="ErrJoinChannelRejected">
 
 17：加入频道被拒绝。可能的原因有：
 
 - 用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 `ConnectionStateDisconnected`(1) 状态外，不要再次调用该方法加入频道。
 - 用户在调用 [startEchoTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 [stopEchoTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_stopechotest) 结束当前测试，再加入频道。
 
-### ErrLeaveChannelRejected
+</Parameter>
+<a id="errleavechannelrejected"></a>
+<Parameter name="ErrLeaveChannelRejected">
 
 18：离开频道失败。可能的原因有：
 
 - 调用 [leaveChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
 - 用户尚未加入频道，就调用 [leaveChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_leavechannel2) 退出频道。这种情况下无需额外操作。
 
-### ErrAlreadyInUse
+</Parameter>
+<a id="erralreadyinuse"></a>
+<Parameter name="ErrAlreadyInUse">
 
 19：资源已被占用，不能重复使用。
 
-### ErrAborted
+</Parameter>
+<a id="erraborted"></a>
+<Parameter name="ErrAborted">
 
 20：SDK 放弃请求，可能由于请求的次数太多。
 
-### ErrInitNetEngine
+</Parameter>
+<a id="errinitnetengine"></a>
+<Parameter name="ErrInitNetEngine">
 
 21：Windows 下特定的防火墙设置导致 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 初始化失败然后崩溃。
 
-### ErrResourceLimited
+</Parameter>
+<a id="errresourcelimited"></a>
+<Parameter name="ErrResourceLimited">
 
 22：SDK 分配资源失败，可能由于 App 占用资源过多或系统资源耗尽。
 
-### ErrInvalidAppId
+</Parameter>
+<a id="errinvalidappid"></a>
+<Parameter name="ErrInvalidAppId">
 
 101：不是有效的 App ID。请更换有效的 App ID 重新加入频道。
 
-### ErrInvalidChannelName
+</Parameter>
+<a id="errinvalidchannelname"></a>
+<Parameter name="ErrInvalidChannelName">
 
 102：不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。
 
-### ErrNoServerResources
+</Parameter>
+<a id="errnoserverresources"></a>
+<Parameter name="ErrNoServerResources">
 
 103：无法获取当前区域的服务器资源。请在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 时尝试指定其他区域。
 
-### ErrTokenExpired
+</Parameter>
+<a id="errtokenexpired"></a>
+<Parameter name="ErrTokenExpired">
 
 109：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [renewToken](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_renewtoken) 更新 Token。
 
@@ -124,7 +166,9 @@ _migration:
 注： 弃用：该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 `ConnectionChangedTokenExpired`(9)。
 :::
 
-### ErrInvalidToken
+</Parameter>
+<a id="errinvalidtoken"></a>
+<Parameter name="ErrInvalidToken">
 
 :::note
 注： 弃用：该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 `ConnectionChangedInvalidToken`(8)。
@@ -135,102 +179,155 @@ _migration:
 - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
 - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 `uid` 不匹配。
 
-### ErrConnectionInterrupted
+</Parameter>
+<a id="errconnectioninterrupted"></a>
+<Parameter name="ErrConnectionInterrupted">
 
 111：网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。
 
-### ErrConnectionLost
+</Parameter>
+<a id="errconnectionlost"></a>
+<Parameter name="ErrConnectionLost">
 
 112：网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。
 
-### ErrNotInChannel
+</Parameter>
+<a id="errnotinchannel"></a>
+<Parameter name="ErrNotInChannel">
 
 113：调用 [sendStreamMessage](/zh-CN/api-reference/rtc/react-native/metadata/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
 
-### ErrSizeTooLarge
+</Parameter>
+<a id="errsizetoolarge"></a>
+<Parameter name="ErrSizeTooLarge">
 
 114：在调用 [sendStreamMessage](/zh-CN/api-reference/rtc/react-native/metadata/datastream#api_irtcengine_sendstreammessage) 时，发送的数据长度大于 1 KB。
 
-### ErrBitrateLimit
+</Parameter>
+<a id="errbitratelimit"></a>
+<Parameter name="ErrBitrateLimit">
 
 115：在调用 [sendStreamMessage](/zh-CN/api-reference/rtc/react-native/metadata/datastream#api_irtcengine_sendstreammessage) 时，发送数据的频率超过限制（6 KB/s）。
 
-### ErrTooManyDataStreams
+</Parameter>
+<a id="errtoomanydatastreams"></a>
+<Parameter name="ErrTooManyDataStreams">
 
 116：在调用 [createDataStream](/zh-CN/api-reference/rtc/react-native/metadata/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
 
-### ErrStreamMessageTimeout
+</Parameter>
+<a id="errstreammessagetimeout"></a>
+<Parameter name="ErrStreamMessageTimeout">
 
 117：数据流发送超时。
 
-### ErrSetClientRoleNotAuthorized
+</Parameter>
+<a id="errsetclientrolenotauthorized"></a>
+<Parameter name="ErrSetClientRoleNotAuthorized">
 
 119：用户切换角色失败，请尝试重新加入频道。
 
-### ErrDecryptionFailed
+</Parameter>
+<a id="errdecryptionfailed"></a>
+<Parameter name="ErrDecryptionFailed">
 
 120：媒体流解密失败。可能是用户加入频道时使用了错误的密钥。请检查用户加入频道时填入的密钥，或引导用户尝试重新加入频道。
 
-### ErrInvalidUserId
+</Parameter>
+<a id="errinvaliduserid"></a>
+<Parameter name="ErrInvalidUserId">
 
 121：该用户 ID 无效。
 
-### ErrDatastreamDecryptionFailed
+</Parameter>
+<a id="errdatastreamdecryptionfailed"></a>
+<Parameter name="ErrDatastreamDecryptionFailed">
 
 122：数据流解密失败。可能是用户加入频道时使用了错误的密钥。请检查用户加入频道时填入的密钥，或引导用户尝试重新加入频道。
 
-### ErrClientIsBannedByServer
+</Parameter>
+<a id="errclientisbannedbyserver"></a>
+<Parameter name="ErrClientIsBannedByServer">
 
 123：该用户被服务器禁止。
 
-### ErrEncryptedStreamNotAllowedPublish
+</Parameter>
+<a id="errencryptedstreamnotallowedpublish"></a>
+<Parameter name="ErrEncryptedStreamNotAllowedPublish">
 
 130：SDK 不支持将加密过的流推到 CDN 上。
 
-### ErrInvalidUserAccount
+</Parameter>
+<a id="errinvaliduseraccount"></a>
+<Parameter name="ErrInvalidUserAccount">
 
 134：无效的 user account，可能是因为设置了无效的参数。
 
-### ErrPcmsendFormat
+</Parameter>
+<a id="errpcmsendformat"></a>
+<Parameter name="ErrPcmsendFormat">
 
 200：不支持的 PCM 格式。
 
-### ErrPcmsendBufferoverflow
+</Parameter>
+<a id="errpcmsendbufferoverflow"></a>
+<Parameter name="ErrPcmsendBufferoverflow">
 
 201：缓冲区溢出，PCM 发送速率过快。
 
-### ErrCertRaw
+</Parameter>
+<a id="errcertraw"></a>
+<Parameter name="ErrCertRaw">
 
 1001：加载媒体引擎失败。
 
-### ErrAdmGeneralError
+</Parameter>
+<a id="erradmgeneralerror"></a>
+<Parameter name="ErrAdmGeneralError">
 
 1005：音频设备出现错误（未指明何种错误）。请检查音频设备是否被其他应用占用，或者尝试重新进入频道。
 
-### ErrAdmInitPlayout
+</Parameter>
+<a id="erradminitplayout"></a>
+<Parameter name="ErrAdmInitPlayout">
 
 1008：初始化播放设备出错。请检查播放设备是否被其他应用占用，或者尝试重新进入频道。
 
-### ErrAdmStartPlayout
+</Parameter>
+<a id="erradmstartplayout"></a>
+<Parameter name="ErrAdmStartPlayout">
 
 1009：启动播放设备出错。请检查播放设备是否正常。
 
-### ErrAdmStopPlayout
+</Parameter>
+<a id="erradmstopplayout"></a>
+<Parameter name="ErrAdmStopPlayout">
 
 1010：停止播放设备出错。
 
-### ErrAdmInitRecording
+</Parameter>
+<a id="erradminitrecording"></a>
+<Parameter name="ErrAdmInitRecording">
 
 1011：初始化录音设备出错。请检查录音设备是否正常，或者尝试重新进入频道。
 
-### ErrAdmStartRecording
+</Parameter>
+<a id="erradmstartrecording"></a>
+<Parameter name="ErrAdmStartRecording">
 
 1012：启动录音设备出错。请检查录音设备是否正常。
 
-### ErrAdmStopRecording
+</Parameter>
+<a id="erradmstoprecording"></a>
+<Parameter name="ErrAdmStopRecording">
 
 1013：停止录音设备出错。
 
-### ErrVdmCameraNotAuthorized
+</Parameter>
+<a id="errvdmcameranotauthorized"></a>
+<Parameter name="ErrVdmCameraNotAuthorized">
 
 1501：没有摄像头使用权限。请检查是否已经打开摄像头权限。
+
+</Parameter>
+</ParameterList>

@@ -43,12 +43,17 @@ _migration:
 
 ### 参数
 
-### enable
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用本地用户的人脸检测功能：
 
 - YES：启用人脸检测。
 - NO：（默认）关闭人脸检测。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablefacedetection__return_values"></a>
 
@@ -106,21 +111,32 @@ _migration:
 
 ### 参数
 
-### engine
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 本地摄像头采集的视频图像的宽度（像素）。
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地摄像头采集的视频图像的高度（像素）。
 
-### faces
+</Parameter>
+<a id="faces"></a>
+<Parameter name="faces">
 
 检测到的人脸信息，详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo)。该回调中返回的 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo) 数组数量取决于检测到的人脸数量。数组长度可能为 0，表示摄像头前未检测到人脸。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

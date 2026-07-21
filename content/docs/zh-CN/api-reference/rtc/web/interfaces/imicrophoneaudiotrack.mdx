@@ -193,13 +193,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - close():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#close)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#close)
 
-  关闭本地轨道，并释放相关采集设备。
+关闭本地轨道，并释放相关采集设备。
 
-  一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
+一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-  Returns void
+Returns void
 
 <a id="getlisteners"></a>
 
@@ -207,17 +207,19 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getListeners(event:string):Function[]
 
-- Inherited from EventEmitter.getListeners
+Inherited from EventEmitter.getListeners
 
-  指定一个事件名，获取当前所有监听这个事件的回调函数。
+指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+事件名称。
 
-    事件名称。
+</Parameter>
+</ParameterList>
 
-  Returns Function[]
+Returns Function[]
 
 <a id="getmediastreamtrack"></a>
 
@@ -225,13 +227,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getMediaStreamTrack():MediaStreamTrack
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
-  获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-  Returns MediaStreamTrack
+Returns MediaStreamTrack
 
-  一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
 <a id="getrtcrtptransceiver"></a>
 
@@ -239,28 +241,34 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)):RTCRtpTransceiver|undefined
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
-  获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
+获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
 
-  该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
+该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-  > 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
-  >
-  > - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
-  > - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+>
+> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
+> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="type" optional>
 
-  - Optional type: [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
+<ParameterType>
 
-    视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)。
+[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
 
-  Returns RTCRtpTransceiver
-   |
-   undefined
+</ParameterType>
 
-  当前轨道的 `RTCRtpTransceiver` 实例。
+视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)。
+
+</Parameter>
+</ParameterList>
+
+Returns RTCRtpTransceiver | undefined
+
+当前轨道的 `RTCRtpTransceiver` 实例。
 
 <a id="getstats"></a>
 
@@ -268,16 +276,17 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getStats():[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getstats)
- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#getstats)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getstats)
 
-  获取本地音频轨道的质量相关信息。
+Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#getstats)
 
-  ### deprecated
+获取本地音频轨道的质量相关信息。
 
-  自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
+### deprecated
 
-  Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
+
+Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
 
 <a id="gettrackid"></a>
 
@@ -285,13 +294,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getTrackId():string
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
 
-  获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
+获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-  Returns string
+Returns string
 
-  媒体轨道 ID。
+媒体轨道 ID。
 
 <a id="gettracklabel"></a>
 
@@ -299,17 +308,17 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getTrackLabel():string
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettracklabel)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettracklabel)
 
-  获取本地轨道的来源描述。
+获取本地轨道的来源描述。
 
-  Returns string
+Returns string
 
-  可能返回以下值：
+可能返回以下值：
 
-  - 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
-  - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
-  - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
+- 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
+- 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
+- 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
 <a id="getvolumelevel"></a>
 
@@ -317,13 +326,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - getVolumeLevel():number
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getvolumelevel)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getvolumelevel)
 
-  获取本地音频轨道的音量等级。
+获取本地音频轨道的音量等级。
 
-  Returns number
+Returns number
 
-  音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
+音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
 
 <a id="off"></a>
 
@@ -331,20 +340,24 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - off(event:string, listener:Function):void
 
-- Inherited from EventEmitter.off
+Inherited from EventEmitter.off
 
-  取消一个指定事件的监听。
+取消一个指定事件的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    监听事件时传入的回调函数。
+监听事件时传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="on"></a>
 
@@ -354,47 +367,64 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 - on(event:"track-ended", listener:typeof event_track_ended):void
 - on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
 
-- Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
- Overrides EventEmitter.on
+Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-  Parameters
+Overrides EventEmitter.on
 
-  - event: "track-updated"
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-updated&quot;" required>
 
-    事件名称。
-  - listener: typeof event_track_updated
+事件名称。
 
-    详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。
+</Parameter>
+<Parameter name="listener" type="typeof event_track_updated" required>
 
-  Returns void
-- Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
- Overrides EventEmitter.on
+详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。
 
-  Parameters
+</Parameter>
+</ParameterList>
 
-  - event: "track-ended"
+Returns void
 
-    事件名称。
-  - listener: typeof event_track_ended
+Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-    详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended)。
+Overrides EventEmitter.on
 
-  Returns void
-- Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
- Overrides EventEmitter.on
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-ended&quot;" required>
 
-  添加事件监听器。
+事件名称。
 
-  Parameters
+</Parameter>
+<Parameter name="listener" type="typeof event_track_ended" required>
 
-  - event: "transceiver-updated"
+详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended)。
 
-    事件名称。
-  - listener: typeof event_transceiver_updated
+</Parameter>
+</ParameterList>
 
-    详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)。
+Returns void
 
-  Returns void
+Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
+
+Overrides EventEmitter.on
+
+添加事件监听器。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;transceiver-updated&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_transceiver_updated" required>
+
+详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)。
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="once"></a>
 
@@ -402,22 +432,26 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 - once(event:string, listener:Function):void
 
-- Inherited from EventEmitter.once
+Inherited from EventEmitter.once
 
-  监听一个指定的事件，当事件触发时会调用传入的回调函数。
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
-  当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
 
-  - event: string
+指定事件的名称。
 
-    指定事件的名称。
-  - listener: Function
+</Parameter>
+<Parameter name="listener" type="Function" required>
 
-    传入的回调函数。
+传入的回调函数。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="pipe"></a>
 
@@ -433,11 +467,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 将 `Processor` 注入本地音频轨道。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="processor" type="IAudioProcessor" required>
 
-- processor: IAudioProcessor
+`Processor` 实例。每个插件均有对应类型的 `Processor`。
 
-  `Processor` 实例。每个插件均有对应类型的 `Processor`。
+</Parameter>
+</ParameterList>
 
 Returns IAudioProcessor
 
@@ -449,14 +485,15 @@ Returns IAudioProcessor
 
 - play():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#play)
- Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#play)
 
-  播放本地音频轨道。
+Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
 
-  > 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+播放本地音频轨道。
 
-  Returns void
+> 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+
+Returns void
 
 <a id="removealllisteners"></a>
 
@@ -464,17 +501,19 @@ Returns IAudioProcessor
 
 - removeAllListeners(event?:string):void
 
-- Inherited from EventEmitter.removeAllListeners
+Inherited from EventEmitter.removeAllListeners
 
-  指定一个事件，取消其所有的监听。
+指定一个事件，取消其所有的监听。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
 
-  - Optional event: string
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
 
-    指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="setaudioframecallback"></a>
 
@@ -482,38 +521,42 @@ Returns IAudioProcessor
 
 - setAudioFrameCallback(audioFrameCallback:null|function, frameSize?:number):void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setAudioFrameCallback](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setaudioframecallback)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setAudioFrameCallback](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setaudioframecallback)
 
-  设置原始音频数据（PCM）回调。
+设置原始音频数据（PCM）回调。
 
-  设置成功后，SDK 会不断地将本地音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
+设置成功后，SDK 会不断地将本地音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
 
-  > 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+> 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
 
-  ```javascript
-  track.setAudioFrameCallback((buffer) => {
-    for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
-      // Float32Array with PCM data
-      const currentChannelData = buffer.getChannelData(channel);
-      console.log("PCM data in channel", channel, currentChannelData);
-    }
-  }, 2048);
+```javascript
+track.setAudioFrameCallback((buffer) => {
+  for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+    // Float32Array with PCM data
+    const currentChannelData = buffer.getChannelData(channel);
+    console.log("PCM data in channel", channel, currentChannelData);
+  }
+}, 2048);
 
-  // ....
-  // Stop getting the raw audio data
-  track.setAudioFrameCallback(null);
-  ```
+// ....
+// Stop getting the raw audio data
+track.setAudioFrameCallback(null);
+```
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="audioFrameCallback" type="null | function" required>
 
-  - audioFrameCallback: null|function
+用于接收 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的回调函数。设为 `null` 后，SDK 就会停止获取音频原始数据。
 
-    用于接收 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的回调函数。设为 `null` 后，SDK 就会停止获取音频原始数据。
-  - Optional frameSize: number
+</Parameter>
+<Parameter name="frameSize" type="number" optional>
 
-    每次回调的 `AudioBuffer` 中每个声道包含的采样数据个数，只能设为下列值：256, 512, 1024, 2048, 4096, 8192, 16384。默认为 4096。
+每次回调的 `AudioBuffer` 中每个声道包含的采样数据个数，只能设为下列值：256, 512, 1024, 2048, 4096, 8192, 16384。默认为 4096。
 
-  Returns void
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="setdevice"></a>
 
@@ -521,17 +564,19 @@ Returns IAudioProcessor
 
 - setDevice(deviceId:string):Promise&lt;void&gt;
 
-- 设置负责采集音频数据的麦克风设备。
+设置负责采集音频数据的麦克风设备。
 
 > 在发布前和发布后均可调用此方法。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required>
 
-  - deviceId: string
+指定设备的设备 Id，可以通过 [AgoraRTC.getMicrophones](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getmicrophones) 获取。
 
-    指定设备的设备 Id，可以通过 [AgoraRTC.getMicrophones](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getmicrophones) 获取。
+</Parameter>
+</ParameterList>
 
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="setenabled"></a>
 
@@ -553,14 +598,16 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="enabled" type="boolean" required>
 
-- enabled: boolean
+是否启用该轨道:
 
-  是否启用该轨道:
+- `true`: 启用该轨道.
+- `false`: 禁用该轨道.
 
-  - `true`: 启用该轨道.
-  - `false`: 禁用该轨道.
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -583,14 +630,16 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 > - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="muted" type="boolean" required>
 
-- muted: boolean
+是否发送该轨道的媒体数据:
 
-  是否发送该轨道的媒体数据:
+- `true`: 暂停发送该轨道的媒体数据。
+- `false`: 恢复发送该轨道的媒体数据。
 
-  - `true`: 暂停发送该轨道的媒体数据。
-  - `false`: 恢复发送该轨道的媒体数据。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -612,11 +661,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 设置本地播放远端音频流的设备（扬声器）。
 :::
 
-Parameters
+<ParameterList title="Parameters">
+<Parameter name="deviceId" type="string" required>
 
-- deviceId: string
+设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
 
-  设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices) 方法获取。
+</Parameter>
+</ParameterList>
 
 Returns Promise&lt;void&gt;
 
@@ -626,17 +677,19 @@ Returns Promise&lt;void&gt;
 
 - setVolume(volume:number):void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setVolume](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setvolume)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setVolume](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setvolume)
 
-  设置本地音频轨道的音量。
+设置本地音频轨道的音量。
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
 
-  - volume: number
+音量值，范围 [0, 1000], 0 代表静音，100 代表原始音量。100 以上会使用 WebAudio 进行音量增益。如果本地音频轨道已经发布，修改音量会影响远端听到的音量大小。
 
-    音量值，范围 [0, 1000], 0 代表静音，100 代表原始音量。100 以上会使用 WebAudio 进行音量增益。如果本地音频轨道已经发布，修改音量会影响远端听到的音量大小。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="stop"></a>
 
@@ -644,11 +697,11 @@ Returns Promise&lt;void&gt;
 
 - stop():void
 
-- Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
 
-  停止播放。
+停止播放。
 
-  Returns void
+Returns void
 
 <a id="unpipe"></a>
 

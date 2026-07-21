@@ -38,13 +38,20 @@ virtual int complain(const char* callId, const char* description) = 0;
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
 
 当前通话的通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
 
-### description
+</Parameter>
+<a id="description"></a>
+<Parameter name="description">
 
 （可选）对通话的描述。字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_complain__return_values"></a>
 
@@ -102,16 +109,23 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用内置加密功能：
 
 - true：启用内置加密功能。
 - false：（默认）关闭内置加密功能。
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableencryption__return_values"></a>
 
@@ -169,20 +183,29 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
 
-### enabled
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用内置加密：
 
 - true：启用内置加密。
 - false：（默认）关闭内置加密。
 
-### config
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableencryptionex__return_values"></a>
 
@@ -221,12 +244,17 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 
 ### 参数
 
-### enabled
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否启用互通功能：
 
 - true：启用互通功能。
 - false：（默认）关闭互通功能。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
 
@@ -267,9 +295,14 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid-1"></a>
+<Parameter name="callId">
 
 输出参数，当前通话的 `callId`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getcallid__return_values"></a>
 
@@ -316,13 +349,20 @@ virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& conne
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid-2"></a>
+<Parameter name="callId">
 
 输出参数，当前通话的 `callId`。
 
-### connection
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getcallidex__return_values"></a>
 
@@ -399,9 +439,14 @@ virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connecti
 
 ### 参数
 
-### connection
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_getconnectionstateex__return_values"></a>
 
@@ -468,9 +513,14 @@ virtual const char* getErrorDescription(int code) = 0;
 
 ### 参数
 
-### code
+<ParameterList>
+<a id="code"></a>
+<Parameter name="code">
 
 SDK 报告的错误码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_geterrordescription__return_values"></a>
 
@@ -572,9 +622,14 @@ virtual const char* getVersion(int* build) = 0;
 
 ### 参数
 
-### build
+<ParameterList>
+<a id="build"></a>
+<Parameter name="build">
 
 输出参数，表示 SDK 的构建索引。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getversion__return_values"></a>
 
@@ -613,9 +668,14 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 高级功能的类型，详见 [FeatureType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-featuretype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
 
@@ -677,13 +737,20 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 
 ### 参数
 
-### iid
+<ParameterList>
+<a id="iid"></a>
+<Parameter name="iid">
 
 接口的 ID，详见 [INTERFACE_ID_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-interfaceidtype)。
 
-### inter
+</Parameter>
+<a id="inter"></a>
+<Parameter name="inter">
 
 输出参数，表示指定接口的指针。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_queryinterface__return_values"></a>
 
@@ -720,17 +787,26 @@ virtual int rate(const char* callId, int rating, const char* description) = 0;
 
 ### 参数
 
-### callId
+<ParameterList>
+<a id="callid-3"></a>
+<Parameter name="callId">
 
 当前通话的 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
 
-### rating
+</Parameter>
+<a id="rating"></a>
+<Parameter name="rating">
 
 评分值，范围为 1（最低分）到 5（最高分）。
 
-### description
+</Parameter>
+<a id="description-1"></a>
+<Parameter name="description">
 
 （可选）通话的描述信息，字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_rate__return_values"></a>
 
@@ -777,9 +853,14 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 ### 参数
 
-### observer
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 数据包观察器。详见 [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registerpacketobserver__return_values"></a>
 
@@ -814,25 +895,38 @@ virtual int sendCustomReportMessage(const char* id, const char* category, const 
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
 
 消息的唯一标识。
 
-### category
+</Parameter>
+<a id="category"></a>
+<Parameter name="category">
 
 消息的分类。
 
-### event
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 事件名称。
 
-### label
+</Parameter>
+<a id="label"></a>
+<Parameter name="label">
 
 消息标签。
 
-### value
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 消息的数值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendcustomreportmessage__return_values"></a>
 
@@ -873,29 +967,44 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 
 ### 参数
 
-### id
+<ParameterList>
+<a id="id-1"></a>
+<Parameter name="id">
 
 自定义消息的唯一标识。
 
-### category
+</Parameter>
+<a id="category-1"></a>
+<Parameter name="category">
 
 自定义消息的分类。
 
-### event
+</Parameter>
+<a id="event-1"></a>
+<Parameter name="event">
 
 自定义消息的事件名称。
 
-### label
+</Parameter>
+<a id="label-1"></a>
+<Parameter name="label">
 
 自定义消息的标签。
 
-### value
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 自定义消息的数值。
 
-### connection
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection) 对象。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_sendcustomreportmessageex__return_values"></a>
 
@@ -934,13 +1043,20 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 ### 参数
 
-### channelId
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 音频发送端的频道名。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 音频发送端的用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setavsyncsource__return_values"></a>
 
@@ -999,9 +1115,14 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 ### 参数
 
-### proxyType
+<ParameterList>
+<a id="proxytype"></a>
+<Parameter name="proxyType">
 
 云代理类型，详见 [CLOUD_PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-cloudproxytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcloudproxy__return_values"></a>
 
@@ -1049,9 +1170,14 @@ virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
 
 本地接入点配置。详见 LocalAccessPointConfiguration。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -1100,9 +1226,14 @@ virtual int setLogFile(const char* filePath) = 0;
 
 ### 参数
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 日志文件的完整路径，使用 UTF-8 编码。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfile__return_values"></a>
 
@@ -1158,9 +1289,14 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 
 ### 参数
 
-### fileSizeInKBytes
+<ParameterList>
+<a id="filesizeinkbytes"></a>
+<Parameter name="fileSizeInKBytes">
 
 `agorasdk.log` 文件的大小（单位：KB）。取值范围为 [128, 20480]。默认值为 2,048 KB。如果设置值小于 128 KB，SDK 会自动调整为 128 KB；如果设置值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilesize__return_values"></a>
 
@@ -1199,9 +1335,14 @@ virtual int setLogFilter(unsigned int filter) = 0;
 
 ### 参数
 
-### filter
+<ParameterList>
+<a id="filter"></a>
+<Parameter name="filter">
 
 SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-logfiltertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlogfilter__return_values"></a>
 
@@ -1240,9 +1381,14 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 
 ### 参数
 
-### level
+<ParameterList>
+<a id="level"></a>
+<Parameter name="level">
 
 日志等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-loglevel)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setloglevel__return_values"></a>
 
@@ -1277,9 +1423,14 @@ virtual int setParameters(const char* parameters) = 0;
 
 ### 参数
 
-### parameters
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
 
 指向 JSON 字符串格式的参数集合。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setparameters__return_values"></a>
 
@@ -1320,9 +1471,14 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 
 ### 参数
 
-### option
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
 
 订阅流的回退选项，详见 [STREAM_FALLBACK_OPTIONS](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamfallbackoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
 
@@ -1374,9 +1530,14 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
 
 音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-echotestconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startechotest3__return_values"></a>
 
@@ -1415,9 +1576,14 @@ virtual int startLastmileProbeTest(const LastmileProbeConfig& config) = 0;
 
 ### 参数
 
-### config
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
 
 Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startlastmileprobetest__return_values"></a>
 
@@ -1603,13 +1769,20 @@ virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CH
 
 ### 参数
 
-### state
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
 
-### reason
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 连接状态变化的原因。详见 [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionchangedreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1637,9 +1810,14 @@ virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 
 ### 参数
 
-### errorType
+<ParameterList>
+<a id="errortype"></a>
+<Parameter name="errorType">
 
 错误类型，详见 [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-encryptionerrortype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1667,9 +1845,14 @@ virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 
 ### 参数
 
-### result
+<ParameterList>
+<a id="result"></a>
+<Parameter name="result">
 
 上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileproberesult)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1697,9 +1880,14 @@ virtual void onLastmileQuality(int quality) { (void)quality; }
 
 ### 参数
 
-### quality
+<ParameterList>
+<a id="quality"></a>
+<Parameter name="quality">
 
 Last-mile 网络质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1735,9 +1923,14 @@ virtual void onMultipathStats(const MultipathStats& stats)
 
 ### 参数
 
-### stats
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-multipathstats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1769,17 +1962,26 @@ virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。用于指定要报告网络质量的用户。如果该值为 0，则表示报告本地用户的网络质量。
 
-### txQuality
+</Parameter>
+<a id="txquality"></a>
+<Parameter name="txQuality">
 
 用户的上行网络质量评分，依据上行网络的传输码率、丢包率、平均往返时延（RTT）和抖动情况评估。该评分有助于判断当前上行网络是否能支持所选的视频编码器配置。例如，1000 Kbps 的上行网络可能足以支持分辨率为 640 × 480、帧率为 15 fps 的视频帧，但可能不足以支持高于 1280 × 720 的分辨率。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
 
-### rxQuality
+</Parameter>
+<a id="rxquality"></a>
+<Parameter name="rxQuality">
 
 用户的下行网络质量评分，依据下行网络的丢包率、平均 RTT 和抖动情况评估。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1807,9 +2009,14 @@ virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 
 ### 参数
 
-### type
+<ParameterList>
+<a id="type-1"></a>
+<Parameter name="type">
 
 本地网络连接的类型，详见 [NETWORK_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-networktype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1837,9 +2044,14 @@ virtual void onPermissionError(PERMISSION_TYPE permissionType)
 
 ### 参数
 
-### permissionType
+<ParameterList>
+<a id="permissiontype"></a>
+<Parameter name="permissionType">
 
 设备权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1865,9 +2077,14 @@ virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 
 ### 参数
 
-### permissionType
+<ParameterList>
+<a id="permissiontype-1"></a>
+<Parameter name="permissionType">
 
 权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1895,25 +2112,38 @@ virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyTy
 
 ### 参数
 
-### channel
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-### uid
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-### proxyType
+</Parameter>
+<a id="proxytype-1"></a>
+<Parameter name="proxyType">
 
 连接的代理类型，详见 [PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-proxytype)。
 
-### localProxyIp
+</Parameter>
+<a id="localproxyip"></a>
+<Parameter name="localProxyIp">
 
 预留参数，暂未使用。
 
-### elapsed
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从调用 `joinChannel` 到触发该回调所经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -1939,9 +2169,14 @@ virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 
 ### 参数
 
-### packet
+<ParameterList>
+<a id="packet"></a>
+<Parameter name="packet">
 
 接收到的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ipacketobserver_onreceiveaudiopacket__return_values"></a>
 
@@ -1974,9 +2209,14 @@ virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 
 ### 参数
 
-### packet
+<ParameterList>
+<a id="packet-1"></a>
+<Parameter name="packet">
 
 接收到的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ipacketobserver_onreceivevideopacket__return_values"></a>
 
@@ -2018,16 +2258,23 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 
 ### 参数
 
-### uid
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-### isFallbackOrRecover
+</Parameter>
+<a id="isfallbackorrecover"></a>
+<Parameter name="isFallbackOrRecover">
 
 是否因网络变化导致媒体流切换：
 
 - true：由于网络条件差，已订阅的媒体流降级为纯音频流。
 - false：网络条件改善后，已订阅的媒体流恢复为视频流。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 
@@ -2053,9 +2300,14 @@ virtual bool onSendAudioPacket(Packet& packet) = 0;
 
 ### 参数
 
-### packet
+<ParameterList>
+<a id="packet-2"></a>
+<Parameter name="packet">
 
 发送的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ipacketobserver_onsendaudiopacket__return_values"></a>
 
@@ -2088,9 +2340,14 @@ virtual bool onSendVideoPacket(Packet& packet) = 0;
 
 ### 参数
 
-### packet
+<ParameterList>
+<a id="packet-3"></a>
+<Parameter name="packet">
 
 发送的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ipacketobserver_onsendvideopacket__return_values"></a>
 
@@ -2127,9 +2384,14 @@ virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info)
 
 ### 参数
 
-### info
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 上行网络信息。详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-uplinknetworkinfo)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

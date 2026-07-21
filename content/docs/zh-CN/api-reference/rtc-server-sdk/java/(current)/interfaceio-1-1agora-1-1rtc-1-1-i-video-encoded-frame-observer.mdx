@@ -45,13 +45,28 @@ IVideoEncodedFrameObserver 接口类。
 为保证数据传输效率，视频数据缓存使用 DirectByteBuffer 类型。请确保同步提取回调中的 Byte 数组的值，然后将其发送到非同步线程进行处理。
 :::
 
-<h4 data-toc-hidden="true" id={"参数"}>参数</h4>
+<ParameterList title="参数">
+<Parameter name="observer">
 
-| observer | [AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。 |
-| --- | --- |
-| userId | 远端用户 ID。 |
-| buffer | 编码后的视频数据缓存。 |
-| info | 编码后的视频数据信息：[EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。 |
+[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。
+
+</Parameter>
+<Parameter name="userId">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="buffer">
+
+编码后的视频数据缓存。
+
+</Parameter>
+<Parameter name="info">
+
+编码后的视频数据信息：[EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。
+
+</Parameter>
+</ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
 

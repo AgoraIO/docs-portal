@@ -12,7 +12,9 @@ _migration:
 
 ### Type parameters
 
-- CALLBACKS:\{\}
+<ParameterList>
+<Parameter name="CALLBACKS" type="\&#123;\&#125;" />
+</ParameterList>
 
 ### Hierarchy
 
@@ -39,22 +41,32 @@ _migration:
 
 - Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L963)
 
-  将注册的回调转到另一个 `Callbacks` 对象。
+将注册的回调转到另一个 `Callbacks` 对象。
 
-  Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  - NAME:string
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  Parameters
+注册回调的名称。
 
-  - name: NAME
+</Parameter>
+<Parameter name="toCallbacks" required>
 
-    注册回调的名称。
-  - toCallbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;CALLBACKS&gt;
+<ParameterType>
 
-    转到的 `Callbacks` 对象。
+[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks) & lt;CALLBACKS & gt;
 
-  Returns any
+</ParameterType>
+
+转到的 `Callbacks` 对象。
+
+</Parameter>
+</ParameterList>
+
+Returns any
 
 <a id="off"></a>
 
@@ -64,22 +76,26 @@ _migration:
 
 - Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L956)
 
-  注销回调。
+注销回调。
 
-  Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  - NAME:string
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" optional>
 
-  Parameters
+回调名。
 
-  - Optional name: NAME
+</Parameter>
+<Parameter name="listener" type="any" optional>
 
-    回调名。
-  - Optional listener: any
+回调函数。
 
-    回调函数。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="on"></a>
 
@@ -89,22 +105,26 @@ _migration:
 
 - Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L942)
 
-  注册一个回调。
+注册一个回调。
 
-  Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  - NAME:string
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  Parameters
+回调名。
 
-  - name: NAME
+</Parameter>
+<Parameter name="listener" type="any" required>
 
-    回调名。
-  - listener: any
+回调函数。
 
-    回调函数。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="once"></a>
 
@@ -114,19 +134,23 @@ _migration:
 
 - Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L949)
 
-  注册只使用一次的回调。
+注册只使用一次的回调。
 
-  Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
 
-  - NAME:string
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
 
-  Parameters
+回调名。
 
-  - name: NAME
+</Parameter>
+<Parameter name="listener" type="any" required>
 
-    回调名。
-  - listener: any
+回调函数。
 
-    回调函数。
+</Parameter>
+</ParameterList>
 
-  Returns void
+Returns void

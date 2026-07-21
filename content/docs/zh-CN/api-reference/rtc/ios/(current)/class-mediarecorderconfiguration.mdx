@@ -32,7 +32,9 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 
 ## 属性
 
-### storagePath
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
 
 本地录制文件的绝对路径。路径必须包含文件名和扩展名。例如：iOS：`/App Sandbox/Library/Caches/example.mp4`，macOS：`/Library/Logs/example.mp4`。
 
@@ -40,23 +42,33 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 注： 请确保指定路径存在且可写。
 :::
 
-### containerFormat
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
 
 录制文件的封装格式。详见 [AgoraMediaRecorderContainerFormat](/zh-CN/api-reference/rtc/ios/enum-mediarecordercontainerformat)。
 
-### streamType
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 录制内容类型。详见 [AgoraMediaRecorderStreamType](/zh-CN/api-reference/rtc/ios/enum-mediarecorderstreamtype)。
 
-### maxDurationMs
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
 
 录制的最大时长，单位为毫秒。默认值为 120000。
 
-### recorderInfoUpdateInterval
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
 
 录制信息更新的时间间隔，单位为毫秒。取值范围为 [1000, 10000]。SDK 会根据该设置触发 [mediaRecorder\:informationDidUpdated\:uid\:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调以报告录制信息更新。
 
-### width
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 录制视频的宽度（单位：px）。
 
@@ -64,7 +76,9 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。宽度 × 高度的最大值不能超过 3840 × 2160。
 :::
 
-### height
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 录制视频的高度（单位：px）。
 
@@ -72,7 +86,9 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。宽度 × 高度的最大值不能超过 3840 × 2160。
 :::
 
-### fps
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
 
 录制视频的帧率，最大值为 30。例如：5、10、15、24、30 等。
 
@@ -80,7 +96,9 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
 :::
 
-### sample_rate
+</Parameter>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
 
 录制音频的采样率（单位：Hz）。可设置为 16000、32000、44100 或 48000。
 
@@ -88,7 +106,9 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
 :::
 
-### channel_num
+</Parameter>
+<a id="channel_num"></a>
+<Parameter name="channel_num">
 
 :::note
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
@@ -99,10 +119,15 @@ __attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguratio
 - 1：单声道。
 - 2：双声道。
 
-### videoSourceType
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
 
 录制使用的视频源类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
 
 :::note
 注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
 :::
+
+</Parameter>
+</ParameterList>

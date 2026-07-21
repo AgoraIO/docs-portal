@@ -79,9 +79,14 @@ SDK 只支持每个 App 创建一个 IRtcEngine 实例。
 
 ### 参数
 
-### context
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
 
 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 实例的配置。详见 [FRtcEngineContext](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcengineconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_initialize__return_values"></a>
 
@@ -135,20 +140,29 @@ void GetEventHandler(EAgoraBPuEventHandlerType& HandlerType, UAgoraBPuIRtcEngine
 
 ### 参数
 
-### HandlerType
+<ParameterList>
+<a id="handlertype"></a>
+<Parameter name="HandlerType">
 
 输出参数，事件处理器类型。
 
 - 1: EventHandler。
 - 2: EventHandlerEx。
 
-### EventHandler
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="EventHandler">
 
 输出参数，返回一个指向 `UAgoraBPuIRtcEngineEventHandler` 事件处理器的指针。
 
-### EventHandlerEx
+</Parameter>
+<a id="eventhandlerex"></a>
+<Parameter name="EventHandlerEx">
 
 输出参数，返回一个指向 `UAgoraBPuIRtcEngineEventHandlerEx` 事件处理器的指针。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addblueprintcallbackexecutor"></a>
 
@@ -185,9 +199,14 @@ void AddBlueprintCallbackExecutor(UAgoraBPuIRtcEngineEventHandlerCBExecutor* Exe
 
 ### 参数
 
-### Executor
+<ParameterList>
+<a id="executor"></a>
+<Parameter name="Executor">
 
 指向 `UAgoraBPuIRtcEngineEventHandlerCBExecutor` 类型的指针，用于执行 IRtcEngineEventHandler 接口类下的回调逻辑。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_addblueprintcallbackexecutorex"></a>
 
@@ -224,9 +243,14 @@ void AddBlueprintCallbackExecutorEx(UAgoraBPuIRtcEngineEventHandlerExCBExecutor*
 
 ### 参数
 
-### Executor
+<ParameterList>
+<a id="executor-1"></a>
+<Parameter name="Executor">
 
 指向 `UAgoraBPuIRtcEngineEventHandlerExCBExecutor` 类型的指针，用于执行 `IRtcEngineEventHandlerEx` 接口类下的回调逻辑。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_clearalleventhandlercbexecutors"></a>
 
@@ -292,12 +316,17 @@ static void Release(bool sync = false);
 
 ### 参数
 
-### sync
+<ParameterList>
+<a id="sync"></a>
+<Parameter name="sync">
 
 该方法是否为同步调用：
 
 - `true`\:该方法为同步调用。
 - `false`\:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
 

@@ -35,19 +35,27 @@ export class MediaSource {
 
 ## 属性
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 需要播放的媒体资源的 URL。
 
-### uri
+</Parameter>
+<a id="uri"></a>
+<Parameter name="uri">
 
 媒体文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 设置起始播放位置 (毫秒)，默认值为 0。
 
-### autoPlay
+</Parameter>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
 
 :::note
 注： 如果你设置关闭自动播放，打开媒体文件后，请调用 [play](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法来播放媒体文件。
@@ -58,7 +66,9 @@ export class MediaSource {
 - true：（默认）开启自动播放。
 - false：关闭自动播放。
 
-### enableCache
+</Parameter>
+<a id="enablecache"></a>
+<Parameter name="enableCache">
 
 :::note
 注：
@@ -73,7 +83,9 @@ export class MediaSource {
 - true：开启实时缓存。
 - false：（默认）关闭实时缓存。
 
-### enableMultiAudioTrack
+</Parameter>
+<a id="enablemultiaudiotrack"></a>
+<Parameter name="enableMultiAudioTrack">
 
 此次播放是否允许选择不同音轨：
 
@@ -82,7 +94,9 @@ export class MediaSource {
 
 如果你在本地播放和发布音频至远端时，需要设置不同的音轨，你需要将该参数设为 true，然后再调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法来设置音轨。
 
-### isAgoraSource
+</Parameter>
+<a id="isagorasource"></a>
+<Parameter name="isAgoraSource">
 
 :::note
 注： 如果你需要打开的媒体资源为声网融合 CDN 分发的直播流或点播流，请向 `url` 传入直播或点播流的 URL 并将 `isAgoraSource` 设置为 true，否则无需设置 `isAgoraSource`。
@@ -93,7 +107,9 @@ export class MediaSource {
 - true：打开的媒体资源是声网融合 CDN 分发的直播或点播流。
 - false：（默认）打开的媒体资源不是声网融合 CDN 分发的直播或点播流。
 
-### isLiveSource
+</Parameter>
+<a id="islivesource"></a>
+<Parameter name="isLiveSource">
 
 :::note
 注： 仅当打开的媒体资源为直播流时，将 `isLiveSource` 设置为 true 后才可加快媒体资源的打开速度。
@@ -105,3 +121,6 @@ export class MediaSource {
 - false：（默认）非直播流。
 
 如果你打开的媒体资源为直播流，建议你将该参数设置为 true，可加快打开直播流的速度。
+
+</Parameter>
+</ParameterList>

@@ -65,17 +65,18 @@ _migration:
 
 `- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer* whitePlayer:(WhitePlayer *)*replayer*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="nativePlayer">
 
-| `nativePlayer` | 本地视频播放器。 |
-| --- | --- |
-| `replayer` | <Slot name="api-center-table-0" /> |
+本地视频播放器。
 
-<Slot for="api-center-table-0">
+</Parameter>
+<Parameter name="replayer">
 
 白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -93,17 +94,18 @@ _migration:
 
 `- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl* whitePlayer:(WhitePlayer *)*replayer*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="mediaUrl">
 
-| `mediaUrl` | 媒体资源地址。 |
-| --- | --- |
-| `replayer` | <Slot name="api-center-table-1" /> |
+媒体资源地址。
 
-<Slot for="api-center-table-1">
+</Parameter>
+<Parameter name="replayer">
 
 白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -121,10 +123,13 @@ _migration:
 
 `- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="mediaUrl">
 
-| `mediaUrl` | 媒体资源地址。 |
-| --- | --- |
+媒体资源地址。
+
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -142,10 +147,13 @@ _migration:
 
 `- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="nativePlayer">
 
-| `nativePlayer` | 本地视频播放器。 |
-| --- | --- |
+本地视频播放器。
+
+</Parameter>
+</ParameterList>
 
 #### Return Value
 
@@ -199,20 +207,21 @@ _migration:
 
 `- (void)seekToTime:(CMTime)*time* completionHandler:(void ( ^ ) ( BOOL finished ))*completionHandler*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="time">
 
-| `time` | 时间长度（s)。 |
-| --- | --- |
-| `completionHandler` | <Slot name="api-center-table-2" /> |
+时间长度（s)。
 
-<Slot for="api-center-table-2">
+</Parameter>
+<Parameter name="completionHandler">
 
 方法调用结果：
 
 - `YES`：调用已经完成。
 - `No`：调用未完成。
 
-</Slot>
+</Parameter>
+</ParameterList>
 
 #### Discussion
 
@@ -230,10 +239,17 @@ _migration:
 
 `- (void)updateWhitePlayerPhase:(WhitePlayerPhase)*phase*`
 
-#### Parameters
+<ParameterList title="Parameters">
+<Parameter name="phase">
 
-| `phase` | [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player) 的播放状态。 **Note:** 在该回调中，需要主动调用 [WhitePlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-player-phase) 方法，将状态同步给 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。 |
-| --- | --- |
+[WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player) 的播放状态。
+
+**Note:**
+
+在该回调中，需要主动调用 [WhitePlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-player-phase) 方法，将状态同步给 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+</Parameter>
+</ParameterList>
 
 #### Discussion
 

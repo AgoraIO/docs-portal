@@ -53,21 +53,32 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 
 ### 参数
 
-### videoFrameObserver
+<ParameterList>
+<a id="videoframeobserver"></a>
+<Parameter name="videoFrameObserver">
 
 接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/unity/enum-observermode)。
 
-### formatPreference
+</Parameter>
+<a id="formatpreference"></a>
+<Parameter name="formatPreference">
 
 视频数据类型，详见 [VIDEO_OBSERVER_FRAME_TYPE](/zh-CN/api-reference/rtc/unity/enum-videoobserverframetype)。
 
-### position
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 视频观测位置的 bit mask。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/unity/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver__return_values"></a>
 
@@ -142,13 +153,20 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
 
@@ -192,13 +210,20 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
 
@@ -237,17 +262,26 @@ public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFr
 
 ### 参数
 
-### remoteUid
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送该帧视频的远端用户 ID。
 
-### videoFrame
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
 

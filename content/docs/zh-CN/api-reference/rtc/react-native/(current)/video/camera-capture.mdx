@@ -52,9 +52,14 @@ abstract setCameraStabilizationMode(mode: CameraStabilizationMode): number;
 
 ### 参数
 
-### mode
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 摄像头的防抖模式。详见 [CameraStabilizationMode](/zh-CN/api-reference/rtc/react-native/enum-camerastabilizationmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setcamerastabilizationmode__return_values"></a>
 
@@ -96,7 +101,9 @@ abstract startCameraCapture(
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
@@ -107,13 +114,18 @@ abstract startCameraCapture(
 - Android 设备最多支持 4 路摄像头采集的视频流（要求设备配备多摄像头或支持外接摄像头）。
 :::
 
-### config
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 视频采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/class-cameracapturerconfiguration)。
 
 :::note
 注： 在 iOS 平台上，该参数无实际作用。请使用 [enableMultiCamera](/zh-CN/api-reference/rtc/react-native/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数设置视频采集配置。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startcameracapture__return_values"></a>
 
@@ -153,9 +165,14 @@ abstract stopCameraCapture(sourceType: VideoSourceType): number;
 
 ### 参数
 
-### sourceType
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopcameracapture__return_values"></a>
 

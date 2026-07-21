@@ -59,13 +59,20 @@ virtual int open(const char* url, int64_t startPos) = 0;
 
 ### 参数
 
-### url
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 设置媒体文件的路径，支持本地和在线文件。
 
-### startPos
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 设置起始播放位置（毫秒），默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_open__return_values"></a>
 
@@ -112,9 +119,14 @@ virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
 
 ### 参数
 
-### source
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 媒体资源，详见 [MediaSource](/zh-CN/api-reference/rtc/unreal-cpp/class-mediasource)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_openwithmediasource__return_values"></a>
 
@@ -162,13 +174,20 @@ virtual int preloadSrc(const char* src, int64_t startPos) = 0;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的网络路径。
 
-### startPos
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
 
 预加载到播放列表后，开始播放时的起始位置（毫秒）。预加载直播流时，将该参数设置为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_preloadsrc__return_values"></a>
 
@@ -221,16 +240,23 @@ virtual int switchSrc(const char* src, bool syncPts) = 0;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src-1"></a>
+<Parameter name="src">
 
 媒体资源的网络路径。
 
-### syncPts
+</Parameter>
+<a id="syncpts"></a>
+<Parameter name="syncPts">
 
 是否同步切换前后的起始播放位置:
 
 - `true`：同步。
 - `false`：(默认) 不同步。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_switchsrc__return_values"></a>
 
@@ -271,9 +297,14 @@ virtual int unloadSrc(const char* src) = 0;
 
 ### 参数
 
-### src
+<ParameterList>
+<a id="src-2"></a>
+<Parameter name="src">
 
 媒体资源的网络路径。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unloadsrc__return_values"></a>
 

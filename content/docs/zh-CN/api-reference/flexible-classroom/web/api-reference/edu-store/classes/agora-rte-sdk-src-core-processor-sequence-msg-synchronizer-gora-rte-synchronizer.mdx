@@ -51,15 +51,49 @@ _migration:
 
 - new AgoraRteSynchronizer(__namedParameters:\{messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle);scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene);sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)\}):[AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" required>
 
-  - __namedParameters: \{messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle);scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene);sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)\}
+<ParameterType>
 
-    - messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
-    - scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
-    - sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)
+\{messageHandle:[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle);scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene);sequenceType:[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)\}
 
-  Returns [AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer)
+</ParameterType>
+
+<ParameterList>
+<Parameter name="messageHandle" required>
+
+<ParameterType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="scene" required>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="sequenceType" required>
+
+<ParameterType>
+
+[AgoraRteSequenceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-synchronizer-gora-rte-synchronizer)
 
 ## Properties
 
@@ -79,7 +113,7 @@ runNextTask: ()=&gt;void
 
 - - ():void
 
-  - Returns void
+  Returns void
 
 ## Accessors
 
@@ -89,7 +123,7 @@ runNextTask: ()=&gt;void
 
 - get handle():[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
-- Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
 
 <a id="sequenceTypeLabel"></a>
 
@@ -97,7 +131,7 @@ runNextTask: ()=&gt;void
 
 - get sequenceTypeLabel():"ChannelSequence"|"PeerSequence"
 
-- Returns "ChannelSequence"|"PeerSequence"
+Returns "ChannelSequence"|"PeerSequence"
 
 ## Methods
 
@@ -107,11 +141,19 @@ runNextTask: ()=&gt;void
 
 - addTasks(tasks:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tasks" required>
 
-  - tasks: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+<ParameterType>
 
-  Returns void
+[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="dequeueTask"></a>
 
@@ -119,7 +161,7 @@ runNextTask: ()=&gt;void
 
 - dequeueTask():undefined|null|[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
 
-- Returns undefined|null|[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+Returns undefined|null|[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
 
 <a id="findSequenceGap"></a>
 
@@ -127,7 +169,7 @@ runNextTask: ()=&gt;void
 
 - findSequenceGap():null|\{count:number;queueHeadSeq:number;seq:number\}
 
-- Returns null|\{count:number;queueHeadSeq:number;seq:number\}
+Returns null|\{count:number;queueHeadSeq:number;seq:number\}
 
 <a id="notifyTaskQueueUpdate"></a>
 
@@ -135,7 +177,7 @@ runNextTask: ()=&gt;void
 
 - notifyTaskQueueUpdate():void
 
-- Returns void
+Returns void
 
 <a id="prependTasks"></a>
 
@@ -143,11 +185,19 @@ runNextTask: ()=&gt;void
 
 - prependTasks(tasks:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="tasks" required>
 
-  - tasks: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+<ParameterType>
 
-  Returns void
+[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void
 
 <a id="processTask"></a>
 
@@ -155,11 +205,19 @@ runNextTask: ()=&gt;void
 
 - processTask(task:[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="task" required>
 
-  - task: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+<ParameterType>
 
-  Returns Promise&lt;void&gt;
+[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;void&gt;
 
 <a id="sortTasks"></a>
 
@@ -167,7 +225,7 @@ runNextTask: ()=&gt;void
 
 - sortTasks():void
 
-- Returns void
+Returns void
 
 <a id="syncSequenceUntilSuccess"></a>
 
@@ -175,12 +233,12 @@ runNextTask: ()=&gt;void
 
 - syncSequenceUntilSuccess(lastSeq:number, count:number):Promise&lt;void&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="lastSeq" type="number" required />
+<Parameter name="count" type="number" required />
+</ParameterList>
 
-  - lastSeq: number
-  - count: number
-
-  Returns Promise&lt;void&gt;
+Returns Promise&lt;void&gt;
 
 <a id="syncSnapshot"></a>
 
@@ -188,8 +246,16 @@ runNextTask: ()=&gt;void
 
 - syncSnapshot(snapshot:[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="snapshot" required>
 
-  - snapshot: [AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+<ParameterType>
 
-  Returns void
+[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

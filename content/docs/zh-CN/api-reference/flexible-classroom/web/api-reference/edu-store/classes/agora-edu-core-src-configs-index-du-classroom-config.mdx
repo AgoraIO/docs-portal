@@ -57,20 +57,48 @@ _migration:
 
 - new EduClassroomConfig(appId:string, sessionInfo:[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info), recordUrl:string, rteOpts?:[AgoraRteOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-type-gora-rte-options), platform?:[Platform](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-configs-index-latform), options?:\{openCameraDeviceAfterLaunch?:boolean;openRecordingDeviceAfterLaunch?:boolean;recordRetryTimeout?:number\}):[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="appId" type="string" required />
+<Parameter name="sessionInfo" required>
 
-  - appId: string
-  - sessionInfo: [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
-  - recordUrl: string
-  - Optional rteOpts: [AgoraRteOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-type-gora-rte-options)
-  - Optional platform: [Platform](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-configs-index-latform)
-  - Optional options: \{openCameraDeviceAfterLaunch?:boolean;openRecordingDeviceAfterLaunch?:boolean;recordRetryTimeout?:number\}
+<ParameterType>
 
-    - Optional openCameraDeviceAfterLaunch?:boolean
-    - Optional openRecordingDeviceAfterLaunch?:boolean
-    - Optional recordRetryTimeout?:number
+[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
 
-  Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+</ParameterType>
+
+</Parameter>
+<Parameter name="recordUrl" type="string" required />
+<Parameter name="rteOpts" optional>
+
+<ParameterType>
+
+[AgoraRteOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-type-gora-rte-options)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="platform" optional>
+
+<ParameterType>
+
+[Platform](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-configs-index-latform)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="options" type="\&#123;openCameraDeviceAfterLaunch?:boolean;openRecordingDeviceAfterLaunch?:boolean;recordRetryTimeout?:number\&#125;" optional>
+
+<ParameterList>
+<Parameter name="openCameraDeviceAfterLaunch" type="boolean" optional />
+<Parameter name="openRecordingDeviceAfterLaunch" type="boolean" optional />
+<Parameter name="recordRetryTimeout" type="number" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
 ## Properties
 
@@ -106,7 +134,7 @@ recordUrl: string
 
 - get headers():Record&lt;string,string|number&gt;
 
-- Returns Record&lt;string,string|number&gt;
+Returns Record&lt;string,string|number&gt;
 
 <a id="host"></a>
 
@@ -115,12 +143,13 @@ recordUrl: string
 - get host():undefined|string
 - set host(host:undefined|string):void
 
-- Returns undefined|string
-- Parameters
+Returns undefined|string
 
-  - host: undefined|string
+<ParameterList title="Parameters">
+<Parameter name="host" type="undefined | string" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="ignoreUrlRegionPrefix"></a>
 
@@ -129,12 +158,13 @@ recordUrl: string
 - get ignoreUrlRegionPrefix():boolean
 - set ignoreUrlRegionPrefix(ignoreUrlRegionPrefix:boolean):void
 
-- Returns boolean
-- Parameters
+Returns boolean
 
-  - ignoreUrlRegionPrefix: boolean
+<ParameterList title="Parameters">
+<Parameter name="ignoreUrlRegionPrefix" type="boolean" required />
+</ParameterList>
 
-  Returns void
+Returns void
 
 <a id="isLowAPIVersionCompatibleRequired"></a>
 
@@ -142,7 +172,7 @@ recordUrl: string
 
 - get isLowAPIVersionCompatibleRequired():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="openCameraDeviceAfterLaunch"></a>
 
@@ -150,7 +180,7 @@ recordUrl: string
 
 - get openCameraDeviceAfterLaunch():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="openRecordingDeviceAfterLaunch"></a>
 
@@ -158,7 +188,7 @@ recordUrl: string
 
 - get openRecordingDeviceAfterLaunch():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="recordRetryTimeout"></a>
 
@@ -166,7 +196,7 @@ recordUrl: string
 
 - get recordRetryTimeout():number
 
-- Returns number
+Returns number
 
 <a id="rteEngineConfig"></a>
 
@@ -174,7 +204,7 @@ recordUrl: string
 
 - get rteEngineConfig():[AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
 
-- Returns [AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
+Returns [AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-configs-index-gora-rte-engine-config)
 
 <a id="sessionInfo"></a>
 
@@ -182,7 +212,7 @@ recordUrl: string
 
 - get sessionInfo():[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
 
-- Returns [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
+Returns [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)
 
 <a id="shared"></a>
 
@@ -190,7 +220,7 @@ recordUrl: string
 
 - get shared():[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
-- Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
 ## Methods
 
@@ -200,11 +230,11 @@ recordUrl: string
 
 - setCompatibleVersions(compatibleVersions:string[]):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="compatibleVersions" type="string[]" required />
+</ParameterList>
 
-  - compatibleVersions: string[]
-
-  Returns void
+Returns void
 
 <a id="defaultLowStreamParameter"></a>
 
@@ -212,12 +242,14 @@ recordUrl: string
 
 - defaultLowStreamParameter():\{bitrate:number;frameRate:number;height:number;width:number\}
 
-- Returns \{bitrate:number;frameRate:number;height:number;width:number\}
+Returns \{bitrate:number;frameRate:number;height:number;width:number\}
 
-  - bitrate:number
-  - frameRate:number
-  - height:number
-  - width:number
+<ParameterList title="Returns &#123; bitrate: number; frameRate: number; height: number; width: number &#125;">
+<Parameter name="bitrate" type="number" required />
+<Parameter name="frameRate" type="number" required />
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
 <a id="defaultMediaOptions"></a>
 
@@ -225,17 +257,35 @@ recordUrl: string
 
 - defaultMediaOptions(roomType:[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)):\{bitrate:number;frameRate:number;height:number;width:number\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="roomType" required>
 
-  - roomType: [EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
-  - userRole: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+<ParameterType>
 
-  Returns \{bitrate:number;frameRate:number;height:number;width:number\}
+[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum)
 
-  - bitrate:number
-  - frameRate:number
-  - height:number
-  - width:number
+</ParameterType>
+
+</Parameter>
+<Parameter name="userRole" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{bitrate:number;frameRate:number;height:number;width:number\}
+
+<ParameterList title="Returns &#123; bitrate: number; frameRate: number; height: number; width: number &#125;">
+<Parameter name="bitrate" type="number" required />
+<Parameter name="frameRate" type="number" required />
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
 <a id="getRtcVersion"></a>
 
@@ -243,7 +293,7 @@ recordUrl: string
 
 - getRtcVersion():string
 
-- Returns string
+Returns string
 
 <a id="getVersion"></a>
 
@@ -251,7 +301,7 @@ recordUrl: string
 
 - getVersion():string
 
-- Returns string
+Returns string
 
 <a id="setConfig"></a>
 
@@ -259,8 +309,16 @@ recordUrl: string
 
 - setConfig(config:[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)):void
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="config" required>
 
-  - config: [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+<ParameterType>
 
-  Returns void
+[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns void

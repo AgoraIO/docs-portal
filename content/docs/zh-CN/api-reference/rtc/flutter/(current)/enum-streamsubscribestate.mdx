@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### subStateIdle
+<ParameterList>
+<a id="substateidle"></a>
+<Parameter name="subStateIdle">
 
 0: 加入频道后的初始订阅状态。
 
-### subStateNoSubscribed
+</Parameter>
+<a id="substatenosubscribed"></a>
+<Parameter name="subStateNoSubscribed">
 
 1: 订阅失败。可能是因为：
 
@@ -33,10 +37,17 @@ _migration:
   - 调用 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_muteremoteaudiostream)(true)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)(true) 停止接收远端音频流。
   - 调用 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_muteremotevideostream)(true)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_muteallremotevideostreams)(true) 停止接收远端视频流。
 
-### subStateSubscribing
+</Parameter>
+<a id="substatesubscribing"></a>
+<Parameter name="subStateSubscribing">
 
 2: 正在订阅。
 
-### subStateSubscribed
+</Parameter>
+<a id="substatesubscribed"></a>
+<Parameter name="subStateSubscribed">
 
 3: 收到了远端流，订阅成功。
+
+</Parameter>
+</ParameterList>

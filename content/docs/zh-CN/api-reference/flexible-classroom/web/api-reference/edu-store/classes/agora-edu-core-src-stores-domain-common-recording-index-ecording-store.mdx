@@ -36,7 +36,9 @@ _migration:
 
 - onInstall():void
 
-- Overrides EduStoreBase.onInstallReturns void
+Overrides EduStoreBase.onInstall
+
+Returns void
 
 <a id="pauseRecording"></a>
 
@@ -44,9 +46,9 @@ _migration:
 
 - pauseRecording():Promise&lt;undefined&gt;
 
-- 暂停录制
+暂停录制
 
-  Returns Promise&lt;undefined&gt;
+Returns Promise&lt;undefined&gt;
 
 <a id="resumeRecording"></a>
 
@@ -54,9 +56,9 @@ _migration:
 
 - resumeRecording():Promise&lt;undefined&gt;
 
-- 恢复录制
+恢复录制
 
-  Returns Promise&lt;undefined&gt;
+Returns Promise&lt;undefined&gt;
 
 <a id="startRecording"></a>
 
@@ -64,13 +66,21 @@ _migration:
 
 - startRecording(recordArgs:[RecordArguments](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-recording-type#RecordArguments)):Promise&lt;undefined&gt;
 
-- 开始录制
+开始录制
 
-  Parameters
+<ParameterList title="Parameters">
+<Parameter name="recordArgs" required>
 
-  - recordArgs: [RecordArguments](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-recording-type#RecordArguments)
+<ParameterType>
 
-  Returns Promise&lt;undefined&gt;
+[RecordArguments](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-recording-type#RecordArguments)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns Promise&lt;undefined&gt;
 
 <a id="stopRecording"></a>
 
@@ -78,6 +88,6 @@ _migration:
 
 - stopRecording():Promise&lt;undefined&gt;
 
-- 停止录制
+停止录制
 
-  Returns Promise&lt;undefined&gt;
+Returns Promise&lt;undefined&gt;

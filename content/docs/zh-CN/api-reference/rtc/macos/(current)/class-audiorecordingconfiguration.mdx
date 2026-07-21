@@ -26,7 +26,9 @@ __attribute__((visibility("default"))) @interface AgoraAudioRecordingConfigurati
 
 ## 属性
 
-### filePath
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 录音文件的绝对路径（包括文件扩展名）。例如：/var/mobile/Containers/Data/audio.aac。
 
@@ -34,7 +36,9 @@ __attribute__((visibility("default"))) @interface AgoraAudioRecordingConfigurati
 注： 请确保日志文件目录存在且可写。
 :::
 
-### sampleRate
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz）。支持以下取值：16000、32000（默认）、44100、48000。
 
@@ -42,11 +46,15 @@ __attribute__((visibility("default"))) @interface AgoraAudioRecordingConfigurati
 注： 如果将该参数设置为 44100 或 48000，声网建议录制 WAV 文件，或录制 `quality` 设置为 `AgoraAudioRecordingQualityMedium` 或 `AgoraAudioRecordingQualityHigh` 的 AAC 文件，以获得更好的录音质量。
 :::
 
-### fileRecordOption
+</Parameter>
+<a id="filerecordoption"></a>
+<Parameter name="fileRecordOption">
 
 录音内容。详见 [AgoraAudioFileRecordingType](/zh-CN/api-reference/rtc/macos/enum-audiofilerecordingtype)。
 
-### quality
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量。详见 [AgoraAudioRecordingQuality](/zh-CN/api-reference/rtc/macos/enum-audiorecordingqualitytype)。
 
@@ -54,7 +62,9 @@ __attribute__((visibility("default"))) @interface AgoraAudioRecordingConfigurati
 注： 该参数仅适用于 AAC 文件。
 :::
 
-### recordingChannel
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
 
 :::note
 注： 实际录制的音频声道与采集的音频声道有关：
@@ -69,3 +79,6 @@ __attribute__((visibility("default"))) @interface AgoraAudioRecordingConfigurati
 
 - 1：（默认）单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>

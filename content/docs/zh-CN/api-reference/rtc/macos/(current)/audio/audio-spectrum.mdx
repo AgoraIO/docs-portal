@@ -76,9 +76,14 @@ _migration:
 
 ### 参数
 
-### intervalInMS
+<ParameterList>
+<a id="intervalinms"></a>
+<Parameter name="intervalInMS">
 
 SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（单位为毫秒，默认值为 100）。该参数不能小于 10，否则调用该方法会失败。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
 
@@ -119,9 +124,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
@@ -160,9 +170,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate-1"></a>
+<Parameter name="delegate">
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
@@ -197,9 +212,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-### audioSpectrumData
+<ParameterList>
+<a id="audiospectrumdata"></a>
+<Parameter name="audioSpectrumData">
 
 本地用户的音频频谱数据。声网将音频频率划分为 256 个频率域，并通过该参数报告每个频率域的能量值。每个能量值的取值范围为 [-300, 1]，单位为 dBFS。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -240,9 +260,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-### AudioSpectrumInfo
+<ParameterList>
+<a id="audiospectruminfo"></a>
+<Parameter name="AudioSpectrumInfo">
 
 远端用户的音频频谱信息。数组的数量为 SDK 监测到的远端用户数量。若该数组为 nil，表示未检测到远端用户的音频频谱。详见 [AgoraAudioSpectrumInfo](/zh-CN/api-reference/rtc/macos/class-useraudiospectruminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
 

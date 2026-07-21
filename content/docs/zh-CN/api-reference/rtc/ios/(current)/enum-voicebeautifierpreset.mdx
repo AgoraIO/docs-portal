@@ -14,11 +14,15 @@ _migration:
 
 ## 枚举值
 
-### AgoraVoiceBeautifierPresetOff
+<ParameterList>
+<a id="agoravoicebeautifierpresetoff"></a>
+<Parameter name="AgoraVoiceBeautifierPresetOff">
 
 （0x00000000）：关闭声动语聊美声效果，使用原始语音。
 
-### AgoraVoiceBeautifierPresetChatBeautifierMagnetic
+</Parameter>
+<a id="agoravoicebeautifierpresetchatbeautifiermagnetic"></a>
+<Parameter name="AgoraVoiceBeautifierPresetChatBeautifierMagnetic">
 
 （0x01010100）：更具磁性的声音。
 
@@ -26,7 +30,9 @@ _migration:
 注： 声网建议用于处理男性音色，否则可能会出现声音失真。
 :::
 
-### AgoraVoiceBeautifierPresetChatBeautifierFresh
+</Parameter>
+<a id="agoravoicebeautifierpresetchatbeautifierfresh"></a>
+<Parameter name="AgoraVoiceBeautifierPresetChatBeautifierFresh">
 
 （0x01010200）：更清新的声音。
 
@@ -34,7 +40,9 @@ _migration:
 注： 声网建议用于处理女性音色，否则可能会出现声音失真。
 :::
 
-### AgoraVoiceBeautifierPresetChatBeautifierVitality
+</Parameter>
+<a id="agoravoicebeautifierpresetchatbeautifiervitality"></a>
+<Parameter name="AgoraVoiceBeautifierPresetChatBeautifierVitality">
 
 （0x01010300）：更有活力的声音。
 
@@ -42,7 +50,9 @@ _migration:
 注： 声网建议用于处理女性音色，否则可能会出现声音失真。
 :::
 
-### AgoraVoiceBeautifierPresetSingingBeautifier
+</Parameter>
+<a id="agoravoicebeautifierpresetsingingbeautifier"></a>
+<Parameter name="AgoraVoiceBeautifierPresetSingingBeautifier">
 
 （0x01020100）：歌唱美声效果。
 
@@ -50,42 +60,63 @@ _migration:
 注： 如果调用 [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)（AgoraVoiceBeautifierPresetSingingBeautifier），可美化男性音色并添加小房间混响效果。声网建议用于处理男性音色，否则可能会出现声音失真。若调用 [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)（AgoraVoiceBeautifierPresetSingingBeautifier, param1, param2），可美化男性或女性音色并添加混响效果。
 :::
 
-### AgoraVoiceBeautifierTimbreTransformationVigorous
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationvigorous"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationVigorous">
 
 （0x01030100）：更有力量感的声音。
 
-### AgoraVoiceBeautifierTimbreTransformationDeep
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationdeep"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationDeep">
 
 （0x01030200）：更深沉的声音。
 
-### AgoraVoiceBeautifierTimbreTransformationMellow
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationmellow"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationMellow">
 
 （0x01030300）：更圆润的声音。
 
-### AgoraVoiceBeautifierTimbreTransformationFalsetto
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationfalsetto"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationFalsetto">
 
 （0x01030400）：假声效果。
 
-### AgoraVoiceBeautifierTimbreTransformationFull
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationfull"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationFull">
 
 （0x01030500）：更饱满的声音。
 
-### AgoraVoiceBeautifierTimbreTransformationClear
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationclear"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationClear">
 
 （0x01030600）：更清晰的声音。
 
-### AgoraVoiceBeautifierTimbreTransformationResounding
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformationresounding"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformationResounding">
 
 （0x01030700）：更响亮的声音。
 
-### AgoraVoiceBeautifierTimbreTransformatRinging
+</Parameter>
+<a id="agoravoicebeautifiertimbretransformatringing"></a>
+<Parameter name="AgoraVoiceBeautifierTimbreTransformatRinging">
 
 （0x01030800）：更有穿透力的声音。
 
-### AgoraVoiceBeautifierUltraHighQuality
+</Parameter>
+<a id="agoravoicebeautifierultrahighquality"></a>
+<Parameter name="AgoraVoiceBeautifierUltraHighQuality">
 
 （0x01040100）：超高音质效果，使音频更清晰并还原更多细节。
 
 :::note
 注： 为获得更好的音效质量，声网建议在调用 [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前，将 [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 的 `profile` 设置为 `AgoraAudioProfileMusicHighQuality`（4）或 `AgoraAudioProfileMusicHighQualityStereo`（5），并将 `scenario` 设置为 `AgoraAudioScenarioGameStreaming`（3）。如果你的音频采集设备已能高度还原音频细节，声网建议不要启用超高音质，否则 SDK 可能会过度还原音频细节，导致无法听到预期的声音效果。
 :::
+
+</Parameter>
+</ParameterList>

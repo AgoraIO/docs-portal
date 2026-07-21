@@ -33,17 +33,39 @@ _migration:
 
 - convertLocalDimensionsToRatio(dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)):\{ratioDimensions:\{height:number;width:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="dimensions" required>
 
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - outerSize: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+<ParameterType>
 
-  Returns \{ratioDimensions:\{height:number;width:number\}\}
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
 
-  - ratioDimensions:\{height:number;width:number\}
+</ParameterType>
 
-    - height:number
-    - width:number
+</Parameter>
+<Parameter name="outerSize" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{ratioDimensions:\{height:number;width:number\}\}
+
+<ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125; &#125;">
+<Parameter name="ratioDimensions" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertLocalPositionToRatio"></a>
 
@@ -51,18 +73,32 @@ _migration:
 
 - convertLocalPositionToRatio(position:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), medX:number, medY:number):\{ratioPosition:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  - position: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - medX: number
-  - medY: number
+<ParameterType>
 
-  Returns \{ratioPosition:\{x:number;y:number\}\}
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
 
-  - ratioPosition:\{x:number;y:number\}
+</ParameterType>
 
-    - x:number
-    - y:number
+</Parameter>
+<Parameter name="medX" type="number" required />
+<Parameter name="medY" type="number" required />
+</ParameterList>
+
+Returns \{ratioPosition:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; ratioPosition: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="ratioPosition" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertLocalToRatio"></a>
 
@@ -70,24 +106,58 @@ _migration:
 
 - convertLocalToRatio(position:[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), medX:number, medY:number, outerSize:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)):\{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  - position: [Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - medX: number
-  - medY: number
-  - outerSize: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+<ParameterType>
 
-  Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
+[Point](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
 
-  - ratioDimensions:\{height:number;width:number\}
+</ParameterType>
 
-    - height:number
-    - width:number
-  - ratioPosition:\{x:number;y:number\}
+</Parameter>
+<Parameter name="dimensions" required>
 
-    - x:number
-    - y:number
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="medX" type="number" required />
+<Parameter name="medY" type="number" required />
+<Parameter name="outerSize" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125;; ratioPosition: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="ratioDimensions" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="ratioPosition" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertRatioToLocal"></a>
 
@@ -95,32 +165,62 @@ _migration:
 
 - convertRatioToLocal(diffRatio:\{ratioX:number;ratioY:number\}, sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
 
-  - diffRatio: \{ratioX:number;ratioY:number\}
+<ParameterList>
+<Parameter name="ratioX" type="number" required />
+<Parameter name="ratioY" type="number" required />
+</ParameterList>
 
-    - ratioX:number
-    - ratioY:number
-  - sizeRatio: \{ratioHeight:number;ratioWidth:number\}
+</Parameter>
+<Parameter name="sizeRatio" type="\&#123;ratioHeight:number;ratioWidth:number\&#125;" required>
 
-    - ratioHeight:number
-    - ratioWidth:number
-  - outerSize: \{height:number;width:number\}
+<ParameterList>
+<Parameter name="ratioHeight" type="number" required />
+<Parameter name="ratioWidth" type="number" required />
+</ParameterList>
 
-    - height:number
-    - width:number
-  - resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+</Parameter>
+<Parameter name="outerSize" type="\&#123;height:number;width:number\&#125;" required>
 
-  Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
-  - dimensions:\{height:number;width:number\}
+</Parameter>
+<Parameter name="resizeBounds" required>
 
-    - height:number
-    - width:number
-  - position:\{x:number;y:number\}
+<ParameterType>
 
-    - x:number
-    - y:number
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125;; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="dimensions" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertRatioToLocalDimensions"></a>
 
@@ -128,24 +228,46 @@ _migration:
 
 - convertRatioToLocalDimensions(sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:\{height:number;width:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="sizeRatio" type="\&#123;ratioHeight:number;ratioWidth:number\&#125;" required>
 
-  - sizeRatio: \{ratioHeight:number;ratioWidth:number\}
+<ParameterList>
+<Parameter name="ratioHeight" type="number" required />
+<Parameter name="ratioWidth" type="number" required />
+</ParameterList>
 
-    - ratioHeight:number
-    - ratioWidth:number
-  - outerSize: \{height:number;width:number\}
+</Parameter>
+<Parameter name="outerSize" type="\&#123;height:number;width:number\&#125;" required>
 
-    - height:number
-    - width:number
-  - resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
-  Returns \{dimensions:\{height:number;width:number\}\}
+</Parameter>
+<Parameter name="resizeBounds" required>
 
-  - dimensions:\{height:number;width:number\}
+<ParameterType>
 
-    - height:number
-    - width:number
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{dimensions:\{height:number;width:number\}\}
+
+<ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125; &#125;">
+<Parameter name="dimensions" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertRatioToLocalPosition"></a>
 
@@ -153,28 +275,54 @@ _migration:
 
 - convertRatioToLocalPosition(diffRatio:\{ratioX:number;ratioY:number\}, sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{position:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
 
-  - diffRatio: \{ratioX:number;ratioY:number\}
+<ParameterList>
+<Parameter name="ratioX" type="number" required />
+<Parameter name="ratioY" type="number" required />
+</ParameterList>
 
-    - ratioX:number
-    - ratioY:number
-  - sizeRatio: \{ratioHeight:number;ratioWidth:number\}
+</Parameter>
+<Parameter name="sizeRatio" type="\&#123;ratioHeight:number;ratioWidth:number\&#125;" required>
 
-    - ratioHeight:number
-    - ratioWidth:number
-  - outerSize: \{height:number;width:number\}
+<ParameterList>
+<Parameter name="ratioHeight" type="number" required />
+<Parameter name="ratioWidth" type="number" required />
+</ParameterList>
 
-    - height:number
-    - width:number
-  - resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+</Parameter>
+<Parameter name="outerSize" type="\&#123;height:number;width:number\&#125;" required>
 
-  Returns \{position:\{x:number;y:number\}\}
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
 
-  - position:\{x:number;y:number\}
+</Parameter>
+<Parameter name="resizeBounds" required>
 
-    - x:number
-    - y:number
+<ParameterType>
+
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{position:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertRatioToLocalPositionWithFixedDimensions"></a>
 
@@ -182,25 +330,55 @@ _migration:
 
 - convertRatioToLocalPositionWithFixedDimensions(diffRatio:\{ratioX:number;ratioY:number\}, dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{position:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
 
-  - diffRatio: \{ratioX:number;ratioY:number\}
+<ParameterList>
+<Parameter name="ratioX" type="number" required />
+<Parameter name="ratioY" type="number" required />
+</ParameterList>
 
-    - ratioX:number
-    - ratioY:number
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - outerSize: \{height:number;width:number\}
+</Parameter>
+<Parameter name="dimensions" required>
 
-    - height:number
-    - width:number
-  - resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+<ParameterType>
 
-  Returns \{position:\{x:number;y:number\}\}
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
 
-  - position:\{x:number;y:number\}
+</ParameterType>
 
-    - x:number
-    - y:number
+</Parameter>
+<Parameter name="outerSize" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="resizeBounds" required>
+
+<ParameterType>
+
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{position:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="convertRatioToLocalWithFixedDimensions"></a>
 
@@ -208,26 +386,64 @@ _migration:
 
 - convertRatioToLocalWithFixedDimensions(diffRatio:\{ratioX:number;ratioY:number\}, dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions);position:\{x:number;y:number\}\}
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
 
-  - diffRatio: \{ratioX:number;ratioY:number\}
+<ParameterList>
+<Parameter name="ratioX" type="number" required />
+<Parameter name="ratioY" type="number" required />
+</ParameterList>
 
-    - ratioX:number
-    - ratioY:number
-  - dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - outerSize: \{height:number;width:number\}
+</Parameter>
+<Parameter name="dimensions" required>
 
-    - height:number
-    - width:number
-  - resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+<ParameterType>
 
-  Returns \{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions);position:\{x:number;y:number\}\}
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
 
-  - dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
-  - position:\{x:number;y:number\}
+</ParameterType>
 
-    - x:number
-    - y:number
+</Parameter>
+<Parameter name="outerSize" type="\&#123;height:number;width:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="resizeBounds" required>
+
+<ParameterType>
+
+[ResizeBounds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns \{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions);position:\{x:number;y:number\}\}
+
+<ParameterList title="Returns &#123; dimensions: Dimensions; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
 
 <a id="createClosure"></a>
 
@@ -235,24 +451,30 @@ _migration:
 
 - createClosure():\{next:any;prev:any\}
 
-- Returns \{next:any;prev:any\}
+Returns \{next:any;prev:any\}
 
-  - next:function
+<ParameterList title="Returns &#123; next: any; prev: any &#125;">
+<Parameter name="next" type="function" required>
 
-    - next(key:string, value:any):void
+- next(key:string, value:any):void
 
-    - Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+<Parameter name="value" type="any" required />
+</ParameterList>
 
-      - key: string
-      - value: any
+Returns void
 
-      Returns void
-  - prev:function
+</Parameter>
+<Parameter name="prev" type="function" required>
 
-    - prev(key:string):any
+- prev(key:string):any
 
-    - Parameters
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+</ParameterList>
 
-      - key: string
+Returns any
 
-      Returns any
+</Parameter>
+</ParameterList>

@@ -46,11 +46,11 @@ AbortCallback: (e:Error)=&gt;Promise&lt;void&gt;|void
 
 - - (e:Error):Promise&lt;void&gt;|void
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="e" type="Error" required />
+  </ParameterList>
 
-    - e: Error
-
-    Returns Promise&lt;void&gt;|void
+  Returns Promise&lt;void&gt;|void
 
 <a id="AnyFunction"></a>
 
@@ -62,11 +62,11 @@ AnyFunction: (...args:any[])=&gt;unknown
 
 - - (...args:any[]):unknown
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="...args" type="any[]" required />
+  </ParameterList>
 
-    - Rest...args: any[]
-
-    Returns unknown
+  Returns unknown
 
 <a id="AttemptFailCallback"></a>
 
@@ -78,11 +78,19 @@ AttemptFailCallback: (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-clas
 
 - - (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\}):Promise&lt;boolean&gt;|boolean
 
-  - Parameters
+  <ParameterList title="Parameters">
+  <Parameter name="args" required>
 
-    - args: [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\}
+  <ParameterType>
 
-    Returns Promise&lt;boolean&gt;|boolean
+  [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{timeFn:any\}
+
+  </ParameterType>
+
+  </Parameter>
+  </ParameterList>
+
+  Returns Promise&lt;boolean&gt;|boolean
 
 <a id="RetryAttemptArgs"></a>
 
@@ -92,14 +100,16 @@ RetryAttemptArgs: \{currentRetry:number;error:Error;exponential:number;factor:nu
 
 #### Type declaration
 
-- currentRetry:number
-- error:Error
-- exponential:number
-- factor:number
-- interval:number
-- jitter:number
-- maxBackoff:number
-- retriesMax:number
+<ParameterList title="Type declaration">
+<Parameter name="currentRetry" type="number" required />
+<Parameter name="error" type="Error" required />
+<Parameter name="exponential" type="number" required />
+<Parameter name="factor" type="number" required />
+<Parameter name="interval" type="number" required />
+<Parameter name="jitter" type="number" required />
+<Parameter name="maxBackoff" type="number" required />
+<Parameter name="retriesMax" type="number" required />
+</ParameterList>
 
 <a id="RetryOptions"></a>
 
@@ -109,13 +119,15 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 #### Type declaration
 
-- Optional exponential?:boolean
-- Optional factor?:number
-- Optional interval?:number
-- Optional isCb?:boolean
-- Optional jitter?:number
-- Optional maxBackoff?:number
-- Optional retriesMax?:number
+<ParameterList title="Type declaration">
+<Parameter name="exponential" type="boolean" optional />
+<Parameter name="factor" type="number" optional />
+<Parameter name="interval" type="number" optional />
+<Parameter name="isCb" type="boolean" optional />
+<Parameter name="jitter" type="number" optional />
+<Parameter name="maxBackoff" type="number" optional />
+<Parameter name="retriesMax" type="number" optional />
+</ParameterList>
 
 ## Functions
 
@@ -125,24 +137,26 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - arr2Map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Map&lt;string,T&gt;
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+</ParameterList>
 
-  - T
+<ParameterList title="Parameters">
+<Parameter name="arr" type="T[]" required />
+<Parameter name="fnKey" type="(ele:T)= &amp; gt;string" required>
 
-  Parameters
+- - (ele:T):string
 
-  - arr: T[]
-  - fnKey: (ele:T)=&gt;string
+  <ParameterList title="Parameters">
+  <Parameter name="ele" type="T" required />
+  </ParameterList>
 
-    - - (ele:T):string
+  Returns string
 
-      - Parameters
+</Parameter>
+</ParameterList>
 
-        - ele: T
-
-        Returns string
-
-  Returns Map&lt;string,T&gt;
+Returns Map&lt;string,T&gt;
 
 <a id="arr2map"></a>
 
@@ -150,24 +164,26 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - arr2map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Record&lt;string,T&gt;
 
-- Type parameters
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+</ParameterList>
 
-  - T
+<ParameterList title="Parameters">
+<Parameter name="arr" type="T[]" required />
+<Parameter name="fnKey" type="(ele:T)= &amp; gt;string" required>
 
-  Parameters
+- - (ele:T):string
 
-  - arr: T[]
-  - fnKey: (ele:T)=&gt;string
+  <ParameterList title="Parameters">
+  <Parameter name="ele" type="T" required />
+  </ParameterList>
 
-    - - (ele:T):string
+  Returns string
 
-      - Parameters
+</Parameter>
+</ParameterList>
 
-        - ele: T
-
-        Returns string
-
-  Returns Record&lt;string,T&gt;
+Returns Record&lt;string,T&gt;
 
 <a id="isElectron"></a>
 
@@ -175,7 +191,7 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - isElectron():boolean
 
-- Returns boolean
+Returns boolean
 
 <a id="jsonstring"></a>
 
@@ -183,11 +199,11 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - jsonstring(json:unknown):string
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="json" type="unknown" required />
+</ParameterList>
 
-  - json: unknown
-
-  Returns string
+Returns string
 
 <a id="printarr"></a>
 
@@ -195,20 +211,22 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - printarr(arr:unknown[], keyFn?:(i:unknown)=&gt;string):string
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="arr" type="unknown[]" required />
+<Parameter name="keyFn" type="(i:unknown)= &amp; gt;string" optional>
 
-  - arr: unknown[]
-  - Optional keyFn: (i:unknown)=&gt;string
+- - (i:unknown):string
 
-    - - (i:unknown):string
-
-      - Parameters
-
-        - i: unknown
-
-        Returns string
+  <ParameterList title="Parameters">
+  <Parameter name="i" type="unknown" required />
+  </ParameterList>
 
   Returns string
+
+</Parameter>
+</ParameterList>
+
+Returns string
 
 <a id="retryAttempt"></a>
 
@@ -216,13 +234,29 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - retryAttempt(fn:["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args:unknown[], opts?:[RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)):[Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="fn" required>
 
-  - fn: ["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction)
-  - args: unknown[]
-  - Optional opts: [RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)
+<ParameterType>
 
-  Returns [Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="args" type="unknown[]" required />
+<Parameter name="opts" optional>
+
+<ParameterType>
+
+[RetryOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+Returns [Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
 
 <a id="sleep"></a>
 
@@ -230,8 +264,8 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 - sleep(ms:number):Promise&lt;unknown&gt;
 
-- Parameters
+<ParameterList title="Parameters">
+<Parameter name="ms" type="number" required />
+</ParameterList>
 
-  - ms: number
-
-  Returns Promise&lt;unknown&gt;
+Returns Promise&lt;unknown&gt;

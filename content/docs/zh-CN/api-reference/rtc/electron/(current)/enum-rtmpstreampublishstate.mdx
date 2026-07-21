@@ -14,29 +14,44 @@ _migration:
 
 ## 枚举值
 
-### RtmpStreamPublishStateIdle
+<ParameterList>
+<a id="rtmpstreampublishstateidle"></a>
+<Parameter name="RtmpStreamPublishStateIdle">
 
 0：推流未开始或已结束。
 
-### RtmpStreamPublishStateConnecting
+</Parameter>
+<a id="rtmpstreampublishstateconnecting"></a>
+<Parameter name="RtmpStreamPublishStateConnecting">
 
 1：正在连接推流服务器和 CDN 服务器。
 
-### RtmpStreamPublishStateRunning
+</Parameter>
+<a id="rtmpstreampublishstaterunning"></a>
+<Parameter name="RtmpStreamPublishStateRunning">
 
 2：推流正在进行。成功推流后，会返回该状态。
 
-### RtmpStreamPublishStateRecovering
+</Parameter>
+<a id="rtmpstreampublishstaterecovering"></a>
+<Parameter name="RtmpStreamPublishStateRecovering">
 
 3：正在恢复推流。当 CDN 出现异常，或推流短暂中断时，SDK 会自动尝试恢复推流，并返回该状态。
 
 - 如成功恢复推流，则进入状态 RtmpStreamPublishStateRunning(2)。
 - 如服务器出错或 60 秒内未成功恢复，则进入状态 RtmpStreamPublishStateFailure(4)。如果觉得 60 秒太长，也可以主动尝试重连。
 
-### RtmpStreamPublishStateFailure
+</Parameter>
+<a id="rtmpstreampublishstatefailure"></a>
+<Parameter name="RtmpStreamPublishStateFailure">
 
 4：推流失败。失败后，你可以通过返回的错误码排查错误原因。
 
-### RtmpStreamPublishStateDisconnecting
+</Parameter>
+<a id="rtmpstreampublishstatedisconnecting"></a>
+<Parameter name="RtmpStreamPublishStateDisconnecting">
 
 5：SDK 正在与推流服务器和 CDN 服务器断开连接。当你调用 [stopRtmpStream](/zh-CN/api-reference/rtc/electron/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 方法正常结束推流时，SDK 会依次报告推流状态为 `RtmpStreamPublishStateDisconnecting`、`RtmpStreamPublishStateIdle`。
+
+</Parameter>
+</ParameterList>

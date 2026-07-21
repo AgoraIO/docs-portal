@@ -209,9 +209,14 @@ _migration:
 
 ### 参数
 
-### delegate
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 观察者实例。将该参数设为 nil 可释放该实例。声网建议在收到 [rtcEngine\:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频观察者对象。详见 [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudioframeobserver__return_values"></a>
 
@@ -256,24 +261,35 @@ _migration:
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 在 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的音频数据的采样率，可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 在 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的音频声道数。
 
 - 1：单声道。
 - 2：双声道。
 
-### mode
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [AgoraAudioRawFrameOperationMode](/zh-CN/api-reference/rtc/ios/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 在 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -316,20 +332,29 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率，可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为 1 或 2。
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
@@ -371,16 +396,23 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为 1 或 2。
 
 - 1：单声道。
 - 2：立体声。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
 
@@ -417,20 +449,29 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的采样率（Hz）。可设置为以下值：8000、16000、32000、44100 或 48000。
 
-### channel
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的声道数。
 
 - 1：单声道。
 - 2：立体声。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的数据的每次回调采样点数。例如，在 RTMP 推流场景中，建议设置为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -480,24 +521,35 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、24000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为以下取值：
 
 - 1：单声道。
 - 2：立体声。
 
-### mode
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式。详见 [AgoraAudioRawFrameOperationMode](/zh-CN/api-reference/rtc/ios/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
@@ -541,24 +593,35 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### sampleRate
+<ParameterList>
+<a id="samplerate-5"></a>
+<Parameter name="sampleRate">
 
 回调中返回的采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
-### channel
+</Parameter>
+<a id="channel-5"></a>
+<Parameter name="channel">
 
 音频声道数。可设置为：
 
 - 1：单声道。
 - 2：双声道。
 
-### mode
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [AgoraAudioRawFrameOperationMode](/zh-CN/api-reference/rtc/ios/enum-rawaudioframeopmodetype)。
 
-### samplesPerCall
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
 
 每次回调的数据采样数，例如媒体推流时为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
@@ -608,9 +671,14 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe__return_values"></a>
 
@@ -660,13 +728,20 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe__return_values"></a>
 
@@ -714,13 +789,20 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-2"></a>
+<Parameter name="frame">
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe__return_values"></a>
 
@@ -753,17 +835,26 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-3"></a>
+<Parameter name="frame">
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-### uid
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values"></a>
 
@@ -811,13 +902,20 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 ### 参数
 
-### frame
+<ParameterList>
+<a id="frame-4"></a>
+<Parameter name="frame">
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-### channelId
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe__return_values"></a>
 

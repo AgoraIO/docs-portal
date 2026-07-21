@@ -36,11 +36,21 @@ LogSchema: \{content:string;created_at:[Timestamp](/zh-CN/api-reference/flexible
 
 #### Type declaration
 
-- content:string
-- created_at:[Timestamp](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-db#Timestamp)
-- id:number
-- label:string
-- timestamp:string
+<ParameterList title="Type declaration">
+<Parameter name="content" type="string" required />
+<Parameter name="created_at" required>
+
+<ParameterType>
+
+[Timestamp](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-worker-handler-db#Timestamp)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="id" type="number" required />
+<Parameter name="label" type="string" required />
+<Parameter name="timestamp" type="string" required />
+</ParameterList>
 
 <a id="TempLogs"></a>
 
@@ -50,8 +60,10 @@ TempLogs: \{data:Blob;id:number\}
 
 #### Type declaration
 
-- data:Blob
-- id:number
+<ParameterList title="Type declaration">
+<Parameter name="data" type="Blob" required />
+<Parameter name="id" type="number" required />
+</ParameterList>
 
 <a id="Timestamp"></a>
 
