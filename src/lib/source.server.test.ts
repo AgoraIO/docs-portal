@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getLLMText, source } from './source.server';
+import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
   it('resolves localized OpenAPI operation pages from the merged source', () => {
@@ -140,5 +140,29 @@ describe('fumadocs source loader', () => {
         ),
       ).toBe(true);
     }
+  });
+
+  it('percent-encodes escaped parentheses in machine-readable HTTP links', async () => {
+    const page = source.getPage(
+      [
+        'realtime-media',
+        'interactive-live-streaming',
+        'build',
+        'optimize-quality-and-connection',
+        'best-practices-sound-quality',
+      ],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    if (!page) {
+      throw new Error('Expected the English iOS sound quality page');
+    }
+
+    const markdown = await getPlatformLLMText(page, 'ios');
+
+    expect(markdown).not.toBeNull();
+    expect(markdown).toContain('setaudioprofile%28_:%29');
+    expect(markdown).not.toContain('setaudioprofile\\(_:\\)');
   });
 });

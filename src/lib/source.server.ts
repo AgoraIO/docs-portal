@@ -116,16 +116,18 @@ export async function getLLMText(page: InferPageType<typeof source>) {
   const platformGroupText = await getPlatformGroupLLMText(page);
 
   if (platformGroupText) {
-    return platformGroupText;
+    return normalizeAgentMarkdownLinks(platformGroupText);
   }
 
   const processed = await getAgentSourceText(page);
 
-  return buildCanonicalPlatformLLMText({
-    pageTitle: page.data.title,
-    pageUrl: page.url,
-    processedText: expandSdkCatalogMarkdown(processed),
-  });
+  return normalizeAgentMarkdownLinks(
+    buildCanonicalPlatformLLMText({
+      pageTitle: page.data.title,
+      pageUrl: page.url,
+      processedText: expandSdkCatalogMarkdown(processed),
+    }),
+  );
 }
 
 async function getAgentSourceText(page: InferPageType<typeof source>) {
@@ -206,9 +208,9 @@ export async function getPlatformLLMText(
         ? await panelPage.data.getText('processed')
         : '';
 
-    return `# ${page.data.title} (${page.url}/${platform})
+    return normalizeAgentMarkdownLinks(`# ${page.data.title} (${page.url}/${platform})
 
-${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
+${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`);
   }
 
   if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
@@ -222,12 +224,22 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
     return null;
   }
 
-  return buildPlatformLLMText({
-    pageTitle: page.data.title,
-    pageUrl: page.url,
-    platform,
-    processedText,
-  });
+  return normalizeAgentMarkdownLinks(
+    buildPlatformLLMText({
+      pageTitle: page.data.title,
+      pageUrl: page.url,
+      platform,
+      processedText,
+    }),
+  );
+}
+
+function normalizeAgentMarkdownLinks(markdown: string) {
+  return markdown.replace(
+    /(\]\()(https?:\/\/(?:\\.|[^\\)])+)(\))/g,
+    (_match, opening: string, destination: string, closing: string) =>
+      `${opening}${destination.replaceAll('\\(', '%28').replaceAll('\\)', '%29')}${closing}`,
+  );
 }
 
 export async function getPagePlatformKeys(page: InferPageType<typeof source>) {
