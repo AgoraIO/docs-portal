@@ -824,6 +824,7 @@ Contains the configuration parameters required for Conversational AI API initial
     @objc public weak var rtmEngine: AgoraRtmClientKit?
     @objc public var renderMode: TranscriptRenderMode
     @objc public var enableLog: Bool
+    @objc public var enableRenderModeFallback: Bool
 }
 ```
 
@@ -833,6 +834,7 @@ Contains the configuration parameters required for Conversational AI API initial
 | `rtmEngine`  | `AgoraRtmClientKit?`     | Client instance for real-time messaging. See the [Signaling iOS API reference](https://agoraio.github.io/AgoraRtm_Apple/documentation/agorartm). |
 | `renderMode` | `TranscriptRenderMode`| Transcript rendering mode. See [`TranscriptRenderMode`](#transcriptrendermode). |
 | `enableLog`  | `Bool`                   | Whether to enable verbose logging. `YES` enables verbose logging. `NO` (default) disables logging. |
+| `enableRenderModeFallback` | `Bool` | Whether to automatically fall back to text rendering when `renderMode` is set to word-level but the server doesn't provide word-level timing data. If `YES` (default), the component falls back to text mode automatically. If `NO`, the component stays in word mode regardless — this can result in no transcript being displayed if the server doesn't support word-level transcription. |
 
 ### `ConversationalAIAPIError`
 

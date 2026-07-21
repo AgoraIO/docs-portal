@@ -110,10 +110,10 @@ If the method call succeeds, a `ConversationalAIAPI` instance is returned. If no
 Initializes the `ConversationalAIAPI` singleton instance.
 
 ```javascript
-public static init(cfg: IConversationalAIAPIConfig)
+public static async init(cfg: IConversationalAIAPIConfig): Promise<ConversationalAIAPI>
 ```
 
-This method sets the RTC and RTM engines, rendering mode, and logging options. You must call this method before calling other methods of `ConversationalAIAPI`.
+This method sets the RTC and RTM engines, rendering mode, and logging options. You must call this method before calling other methods of `ConversationalAIAPI`. Awaiting this method returns the initialized instance directly, so a separate call to [`getInstance`](#getinstance) is not required immediately after initialization.
 
 :::info
 - Only one instance can be initialized at a time.
@@ -125,7 +125,7 @@ This method sets the RTC and RTM engines, rendering mode, and logging options. Y
 | `cfg` | `IConversationalAIAPIConfig` | Configuration object used to initialize the API. See [`IConversationalAIAPIConfig`](#iconversationalaiapiconfig). |
 
 **Return Value:**
-If the method call succeeds, a `ConversationalAIAPI` instance is returned.
+If the method call succeeds, a `Promise` resolving to the initialized `ConversationalAIAPI` instance.
 
 ### `subscribeMessage`
 
@@ -416,8 +416,9 @@ Parameters used to configure the interface.
 export interface IConversationalAIAPIConfig {
  rtcEngine: IAgoraRTCClient;
  rtmEngine: RTMClient;
- renderMode?: ESubtitleHelperMode;
+ renderMode?: ETranscriptHelperMode;
  enableLog?: boolean;
+ enableRenderModeFallback?: boolean;
 }
 ```
 
@@ -425,8 +426,9 @@ export interface IConversationalAIAPIConfig {
 |-----------|----------|-------------------------|
 | `rtcEngine` | `IAgoraRTCClient` | Agora RTC engine instance. See [`IAgoraRTCClient`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html). |
 | `rtmEngine` | `RTMClient` | Agora RTM engine instance. See the [Signaling Web API reference](https://api-ref.agora.io/en/signaling-sdk/web/2.x/index.html). |
-| `renderMode` | `ESubtitleHelperMode` | Rendering mode. See [`ESubtitleHelperMode`](#esubtitlehelpermode). |
+| `renderMode` | `ETranscriptHelperMode` | Rendering mode. See [`ETranscriptHelperMode`](#etranscripthelpermode). |
 | `enableLog` | `boolean` | Whether to enable logging: `true` enables logging, `false` disables logging. |
+| `enableRenderModeFallback` | `boolean` | Whether to automatically fall back to text rendering when `renderMode` is set to word-level but the server doesn't provide word-level timing data. If `true` (default), falls back to text mode automatically. If `false`, stays in word mode regardless — this can result in no transcript being displayed if the server doesn't support word-level transcription. |
 
 ### `TStateChangeEvent`
 
@@ -611,7 +613,7 @@ Enumeration of module types for AI capabilities.
 | `CONTEXT` | ("context"): Context management module. |
 | `UNKNOWN` | ("unknown"): Unknown module type. |
 
-### ESubtitleHelperMode
+### ETranscriptHelperMode
 
 The mode type for transcript processing.
 

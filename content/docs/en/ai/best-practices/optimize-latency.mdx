@@ -317,9 +317,11 @@ Agora RTC SDK 4.5.1 and later supports the AI conversation scenario (`AUDIO_SCEN
 
 ```kotlin
 val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
+    rtcEngine = rtcEngine,
+    rtmClient = rtmClient,
+    renderMode = TranscriptRenderMode.Word,
+    enableLog = true,
+    enableRenderModeFallback = true
 )
 val api = ConversationalAIAPIImpl(config)
 
@@ -345,7 +347,9 @@ rtcEngine = RtcEngine.create(config)
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine,
     rtmEngine: rtmEngine,
-    enableLog: true
+    renderMode: .words,
+    enableLog: true,
+    enableRenderModeFallback: true
 )
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 

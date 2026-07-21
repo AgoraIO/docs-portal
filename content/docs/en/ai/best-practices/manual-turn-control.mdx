@@ -323,9 +323,11 @@ After a successful response, the agent joins the specified RTC channel and is re
 
    ```kotlin
    val config = ConversationalAIAPIConfig(
-       rtcEngine = rtcEngineInstance,
-       rtmClient = rtmClientInstance,
-       enableLog = true
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
    )
    val api = ConversationalAIAPIImpl(config)
    ```
@@ -366,7 +368,9 @@ After a successful response, the agent joins the specified RTC channel and is re
    let config = ConversationalAIAPIConfig(
        rtcEngine: rtcEngine,
        rtmEngine: rtmEngine,
-       enableLog: true
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
    )
    convoAIAPI = ConversationalAIAPIImpl(config: config)
    ```
@@ -404,12 +408,15 @@ After a successful response, the agent joins the specified RTC channel and is re
 2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```ts
-   ConversationalAIAPI.init({
-       rtcEngine,
-       rtmEngine,
-   })
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
 
-   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
    ```
 
 3. Register a handler for the manual SoS/EoS result events, then subscribe to the agent's channel.

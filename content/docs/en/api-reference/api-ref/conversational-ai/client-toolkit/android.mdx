@@ -719,7 +719,8 @@ data class ConversationalAIAPIConfig(
     val rtcEngine: RtcEngine,
     val rtmClient: RtmClient,
     val renderMode: TranscriptRenderMode = TranscriptRenderMode.Word,
-    val enableLog: Boolean = false
+    val enableLog: Boolean = true,
+    val enableRenderModeFallback: Boolean = true
 )
 ```
 
@@ -728,7 +729,8 @@ data class ConversationalAIAPIConfig(
 | `rtcEngine`  | `RtcEngine`              | Audio/video engine instance. See [`RtcEngine`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#class_irtcengine).     |
 | `rtmClient`  | `RtmClient`              | Real-time messaging client. See the [Signaling Android API reference](https://api-ref.agora.io/en/signaling-sdk/android/2.x/index.html).       |
 | `renderMode` | `TranscriptRenderMode`| Transcript rendering style. Default: word-by-word. See [`TranscriptRenderMode`](#transcriptrendermode). |
-| `enableLog`  | `Boolean`                | Enables logging if `true`. Default is `false`.    |
+| `enableLog`  | `Boolean`                | Enables logging if `true`. When `true`, logs are written to the RTC SDK log file. Default is `true`.    |
+| `enableRenderModeFallback` | `Boolean` | Whether to automatically fall back to text rendering when `renderMode` is set to word-level but the server doesn't provide word-level timing data. If `true` (default), the component falls back to text mode automatically. If `false`, the component stays in word mode regardless — this can result in no transcript being displayed if the server doesn't support word-level transcription. |
 
 
 
