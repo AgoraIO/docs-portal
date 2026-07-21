@@ -1,4 +1,5 @@
 import { notFound } from '@tanstack/react-router';
+import { withAgentDocsDirective } from './agent-docs-directive';
 import {
   getSourceSlugs,
   getSourceSlugsFromContentPath,
@@ -163,7 +164,7 @@ function resolvePublicPlatformMarkdownRoute({
 }
 
 function markdownResponse(markdown: string) {
-  return new Response(markdown, {
+  return new Response(withAgentDocsDirective(markdown), {
     headers: MARKDOWN_RESPONSE_HEADERS,
   });
 }
