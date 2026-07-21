@@ -3,8 +3,7 @@ info:
   version: ''
   title: RTMP 网关 RESTful API
   summary: ''
-  description: "RTMP 网关服务能够把使用标准推流协议（RTMP 和 SRT）的媒体流推送到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。RTMP 网关服务包含以下三套 API：\n1. **推流码 API**\n\n    开始推流前，你需要先创建推流码，它能够确保媒体流被推送到正确的频道与主播 uid 下。这套 RESTful API 可供你创建、查询和删除推流码。\n2. **流配置模板 API**\n\n    在使用 RTMP 网关推流进频道时，你可以自行控制网关将流推送到频道之前的处理，比如开启音频或视频转码，并指定相应的转码参数。同时，一个流配置模板，既可以用于所属 App ID 的全局配置，也可以只关联到指定的推流码。你可以使用这套 RESTful API 来创建、查询和删除流配置模板。\n3. **查询在推流信息 API**\n\n    你可以使用这套 RESTful API 来查询指定 App ID 下当前正在推送到 RTMP 网关的流列表信息，包括使用的推流域名、推流码和音视频流的基础参数（分辨率、码率、声道数、采样率、GOP 等信息），也可以强制断开正在推送的流。\n\n> 请确保声网频道的场景为直播，而非通信，否则 RTMP 网关服务会失败。有关直播与通信场景的信息，请参考[设置频道场景](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_channel#setChannelProfile)。\n为方便你监听 RTMP 网关的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)。开通该服务后，你可以通过 Webhook 接收相关的[事件回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)。\n\n因为声网会动态调整消息通知服务器的 IP 地址，为了不影响你接收事件，你需要定期[查询 IP 地址](https://doc.shengwang.cn/doc/rtmp-gateway/restful/rtmp-gateway/operations/get-v1-ncs-ip)并更新防火墙白名单配置。\n\
-    \n在使用过程如果遇到问题，你可以参考[最佳实践](https://doc.shengwang.cn/doc/rtmp-gateway/restful/best-practices)检查各项设置和限制是否已正确处理。"
+  description: "RTMP 网关服务能够把使用标准推流协议（RTMP 和 SRT）的媒体流推送到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。RTMP 网关服务包含以下三套 API：\n1. **推流码 API**\n\n    开始推流前，你需要先创建推流码，它能够确保媒体流被推送到正确的频道与主播 uid 下。这套 RESTful API 可供你创建、查询和删除推流码。\n2. **流配置模板 API**\n\n    在使用 RTMP 网关推流进频道时，你可以自行控制网关将流推送到频道之前的处理，比如开启音频或视频转码，并指定相应的转码参数。同时，一个流配置模板，既可以用于所属 App ID 的全局配置，也可以只关联到指定的推流码。你可以使用这套 RESTful API 来创建、查询和删除流配置模板。\n3. **查询在推流信息 API**\n\n    你可以使用这套 RESTful API 来查询指定 App ID 下当前正在推送到 RTMP 网关的流列表信息，包括使用的推流域名、推流码和音视频流的基础参数（分辨率、码率、声道数、采样率、GOP 等信息），也可以强制断开正在推送的流。\n\n> 请确保声网频道的场景为直播，而非通信，否则 RTMP 网关服务会失败。有关直播与通信场景的信息，请参考[设置频道场景](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setchannelprofile)。\n为方便你监听 RTMP 网关的状态，声网提供[消息通知服务](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)。开通该服务后，你可以通过 Webhook 接收相关的[事件回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)。\n\n因为声网会动态调整消息通知服务器的 IP 地址，为了不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/rtmp-gateway/query-ip-address)并更新防火墙白名单配置。"
 servers:
 - url: https://api.sd-rtn.com/
 paths:
@@ -67,7 +66,7 @@ paths:
       - $ref: '#/components/parameters/cursor'
       responses:
         default:
-          description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](http://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)了解可能的原因。
+          description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtmp-gateway/reference/response-code)了解可能的原因。
         2XX:
           description: 如果状态码为 `2XX`，则请求成功。
           content:
@@ -185,7 +184,7 @@ paths:
                     templateId:
                       type: string
                       nullable: true
-                      description: '关联的流配置模板 ID，具体请见[流配置模板](https://doc.shengwang.cn/doc/rtmp-gateway/restful/rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId)。请确保它已经被创建。
+                      description: '关联的流配置模板 ID，具体请见[流配置模板](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template)。请确保它已经被创建。
 
 
                         如果想要解除之前绑定的模板，且不再绑定新的模板，可以设置为 `null`。'
@@ -656,7 +655,7 @@ paths:
         name: sid
         in: path
         required: true
-        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)的 Payload 获取。
+        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)的 Payload 获取。
       responses:
         '200':
           description: 如果状态码为 200，则请求成功。
@@ -727,7 +726,7 @@ paths:
                           sampleRate: 48000
                           bitrate: 80
         default:
-          description: 如果状态码不为 2XX，请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)排查问题。
+          description: 如果状态码不为 2XX，请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtmp-gateway/reference/response-code)排查问题。
           headers:
             X-Request-ID:
               schema:
@@ -806,7 +805,7 @@ paths:
 
           - 方法一：先调用[销毁推流码 API](delete-streaming-key)，再使用本接口断开正在进行的推流。
 
-          - 方法二：使用声网[封禁用户权限：将用户一次性踢出频道 API](https://doc.shengwang.cn/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 同样也可以强制断开推流，如果已经集成过踢人接口，可以继续使用踢人接口来断开推流。'
+          - 方法二：使用声网[封禁用户权限：将用户一次性踢出频道 API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 同样也可以强制断开推流，如果已经集成过踢人接口，可以继续使用踢人接口来断开推流。'
       x-docs-callouts:
       - type: warning
         title: 注意
@@ -859,7 +858,7 @@ paths:
         name: sid
         in: path
         required: true
-        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)的 Payload 获取。
+        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)的 Payload 获取。
       responses:
         '200':
           description: 如果状态码为 200，则请求成功。
@@ -881,7 +880,7 @@ paths:
                   value:
                     status: success
         default:
-          description: 如果状态码不为 2XX，表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)排查问题。
+          description: 如果状态码不为 2XX，表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtmp-gateway/reference/response-code)排查问题。
           headers:
             X-Request-ID:
               schema:
@@ -1074,7 +1073,7 @@ components:
     sid:
       name: sid
       in: path
-      description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过接收[消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)的 Payload 获取。
+      description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过接收[消息通知回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)的 Payload 获取。
       required: true
       schema:
         type: string
@@ -1100,11 +1099,11 @@ components:
   securitySchemes:
     Basic Auth:
       type: http
-      description: '**HTTP 基本认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](https://doc.shengwang.cn/doc/rtmp-gateway/restful/user-guides/http-auth#实现-http-基本认证)。'
+      description: '**HTTP 基本认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth#实现-http-基本认证)。'
       scheme: basic
     API Key:
       type: apiKey
-      description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](https://doc.shengwang.cn/doc/rtmp-gateway/restful/user-guides/http-auth#实现-http-hmac-认证)。'
+      description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth#实现-http-hmac-鉴权)。'
       name: API Key
       in: header
   responses:
@@ -1152,7 +1151,7 @@ components:
             type: string
           description: 本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
     failure:
-      description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](http://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)了解可能的原因。
+      description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtmp-gateway/reference/response-code)了解可能的原因。
       content:
         application/json:
           schema:
@@ -1245,7 +1244,7 @@ components:
                 - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`。'
             uid:
               type: string
-              description: 'RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](https://doc.shengwang.cn/faq/integration-issues/string-uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
+              description: 'RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](/zh-CN/api-reference/faq/integration/string_uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
 
                 - 所有小写英文字母（a-z）
 
@@ -1257,7 +1256,7 @@ components:
 
                 - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
 
-                允许填 "" 或者 "0"，此时会使用随机的整型 uid 进入频道。具体 uid 的值可通过[查询在推流列表 API](query-streaming-list)  或[接收 NCS 回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)获得。
+                允许填 "" 或者 "0"，此时会使用随机的整型 uid 进入频道。具体 uid 的值可通过[查询在推流列表 API](query-streaming-list)  或[接收 NCS 回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)获得。
 
                 > `uid` 和 `channel` 不能同时为空，即在 `channel` 为 "" 的情况下，`uid` 就不能为 "0" 或 ""。
 
@@ -1328,7 +1327,7 @@ components:
           maximum: 60
         bitrate:
           type: number
-          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](https://doc.shengwang.cn/doc/rtmp-gateway/restful/api/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
+          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](/zh-CN/realtime-media/rtmp-gateway/reference/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
           minimum: 0
           maximum: 14000
         simulcastStream:

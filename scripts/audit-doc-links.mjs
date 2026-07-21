@@ -22,6 +22,7 @@ const OVERVIEW_CARD_SOURCE_PATHS = [
  * @property {string} [docsRoot]
  * @property {string} [openApiRoot]
  * @property {string[]} [sourcePaths]
+ * @property {string[]} [openApiSourcePaths]
  */
 
 /**
@@ -31,6 +32,7 @@ export function auditDocsLinks({
   docsRoot = path.join(process.cwd(), 'content', 'docs'),
   openApiRoot = getDefaultOpenApiRoot(docsRoot),
   sourcePaths,
+  openApiSourcePaths,
 } = {}) {
   const stats = createStats();
   const docsFiles = listMarkdownFiles(docsRoot);
@@ -47,11 +49,17 @@ export function auditDocsLinks({
     existingRoutePaths,
   });
   const sourcePathFilter = sourcePaths ? new Set(sourcePaths) : null;
+  const openApiSourcePathFilter = openApiSourcePaths
+    ? new Set(openApiSourcePaths)
+    : null;
 
   for (const filePath of docsFiles) {
     const sourcePath = toContentPath(docsRoot, filePath);
 
-    if (sourcePathFilter && !sourcePathFilter.has(sourcePath)) {
+    if (
+      openApiSourcePathFilter ||
+      (sourcePathFilter && !sourcePathFilter.has(sourcePath))
+    ) {
       continue;
     }
 
@@ -71,12 +79,23 @@ export function auditDocsLinks({
     }
   }
 
-  if (!sourcePathFilter && fs.existsSync(openApiRoot)) {
+  if (
+    (!sourcePathFilter || openApiSourcePathFilter) &&
+    fs.existsSync(openApiRoot)
+  ) {
     const openApiFiles = listOpenApiYamlFiles(openApiRoot);
     const openApiSourceContexts = getOpenApiSourceContexts();
 
     for (const filePath of openApiFiles) {
       const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
+
+      if (
+        openApiSourcePathFilter &&
+        !openApiSourcePathFilter.has(sourcePath)
+      ) {
+        continue;
+      }
+
       const sourceContextPath =
         openApiSourceContexts.get(sourcePath) ?? sourcePath;
       const yaml = fs.readFileSync(filePath, 'utf8');
@@ -112,6 +131,7 @@ function createStats() {
     invalidLinks: [],
     invalidInternalLinks: [],
     legacyRootDocLinks: [],
+    legacyShengwangDocHostLinks: [],
     openapiFiles: 0,
     apiReferenceMacroLinks: [],
     missingHashLinks: [],
@@ -378,6 +398,16 @@ function toOpenApiSourcePath(openApiRoot, filePath) {
     .join(path.posix.sep);
 }
 
+export function getZhCnOpenApiSourcePaths(openApiRoot) {
+  if (!fs.existsSync(openApiRoot)) {
+    return [];
+  }
+
+  return listOpenApiYamlFiles(openApiRoot)
+    .map((filePath) => toOpenApiSourcePath(openApiRoot, filePath))
+    .filter(isZhCnOpenApiSourcePath);
+}
+
 function extractLinks(markdown) {
   const links = [];
   const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
@@ -550,6 +580,26 @@ function classifyLink(
       hash: parsedHref.hash,
       link,
       stats,
+    });
+    return;
+  }
+
+  if (
+    isZhCnOpenApiSourcePath(sourcePath) &&
+    isLegacyShengwangDocHostHref(href)
+  ) {
+    const entry = {
+      href,
+      reason: 'legacy-shengwang-doc-host',
+      source: link.source,
+      sourcePath,
+      target: href,
+    };
+
+    stats.legacyShengwangDocHostLinks.push(entry);
+    addInvalidLink(stats, {
+      ...entry,
+      type: 'internal',
     });
     return;
   }
@@ -1998,6 +2048,26 @@ function normalizeExternalTarget(href) {
   return '';
 }
 
+function isLegacyShengwangDocHostHref(href) {
+  const normalizedHref = href.startsWith('//') ? `https:${href}` : href;
+
+  if (!/^https?:\/\//i.test(normalizedHref)) {
+    return false;
+  }
+
+  try {
+    return new URL(normalizedHref).host.toLowerCase() === 'doc.shengwang.cn';
+  } catch {
+    return false;
+  }
+}
+
+function isZhCnOpenApiSourcePath(sourcePath) {
+  return (
+    sourcePath.startsWith('openapi/') && /\.zh-CN\.ya?ml$/i.test(sourcePath)
+  );
+}
+
 function isApiReferenceMacroHref(href) {
   return /^{{\s*global\.API_REF_[A-Z0-9_]+\s*}}/i.test(href);
 }
@@ -3185,6 +3255,7 @@ export function formatReport(stats, maxSamples) {
     `resolvedRelativeMarkdownLinks: ${stats.resolvedRelativeMarkdownLinks.length}`,
     `missingRelativeMarkdownLinks: ${stats.missingRelativeMarkdownLinks.length}`,
     `legacyRootDocLinks: ${stats.legacyRootDocLinks.length}`,
+    `legacyShengwangDocHostLinks: ${stats.legacyShengwangDocHostLinks.length}`,
     `apiReferenceMacroLinks: ${stats.apiReferenceMacroLinks.length}`,
     `rootLinks: ${stats.rootLinks.length}`,
     `skippedRootLinks: ${stats.skippedRootLinks.length}`,
@@ -3242,6 +3313,12 @@ export function formatReport(stats, maxSamples) {
     lines,
     'Sample legacy /doc/* links',
     stats.legacyRootDocLinks,
+    maxSamples,
+  );
+  appendInvalidSection(
+    lines,
+    'Legacy doc.shengwang.cn links in zh-CN OpenAPI',
+    stats.legacyShengwangDocHostLinks,
     maxSamples,
   );
   appendSection(
@@ -3375,6 +3452,7 @@ function parseArgs(args) {
     failOnInvalid: args.includes('--fail-on-invalid'),
     failOnMissing: args.includes('--fail-on-missing'),
     maxSamples: parseNumberArg(args, '--max-samples=', DEFAULT_MAX_SAMPLES),
+    openapiZhOnly: args.includes('--openapi-zh-only'),
     overviewCards: args.includes('--overview-cards'),
   };
 }
@@ -3412,11 +3490,16 @@ function readAllowlistFile(filePath) {
 async function main() {
   const repoRoot = process.cwd();
   const docsRoot = path.join(repoRoot, 'content', 'docs');
+  const openApiRoot = path.join(repoRoot, 'content', 'openapi');
   const options = parseArgs(process.argv.slice(2));
   const stats = auditDocsLinks({
     docsRoot,
+    openApiRoot,
     ...(options.overviewCards
       ? { sourcePaths: OVERVIEW_CARD_SOURCE_PATHS }
+      : {}),
+    ...(options.openapiZhOnly
+      ? { openApiSourcePaths: getZhCnOpenApiSourcePaths(openApiRoot) }
       : {}),
   });
 
