@@ -17,37 +17,60 @@ Released on July XX, 2026.
 
 Included in this release:
 
-- **Generic HTTP TTS provider (Beta)**
+- **Generic HTTP TTS provider**
 
-  Integrate a custom TTS service that implements the OpenAI TTS protocol using the new `generic_http` TTS vendor. Configure [`tts.url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-url), [`tts.headers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-headers), and `tts.params` when starting the agent. For details, see [Generic TTS](/en/ai/models/tts/generic-http).
+  Integrate a custom TTS service that implements the OpenAI TTS protocol using the new `generic_http` TTS vendor. Configure [`tts.url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-url), [`tts.headers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-headers), and `tts.params` when starting the agent. For details, see [Generic TTS](/en/ai/models/tts/generic-http) and [Connect your own TTS service](/en/ai/build/custom-model-integration/custom-tts).
 
 - **Client toolkit support for manual turn control**
 
-  The Android, iOS, and Web client toolkits now provide dedicated APIs for manual Start of Speech (SoS) and End of Speech (EoS) control, so you no longer need to construct raw Signaling (RTM) messages by hand. Call `manualSOS`/`manualEOS` to send requests, and register the new result callbacks to handle the server's response. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
+  The Android, iOS, and Web client toolkits now provide dedicated APIs for manual Start of Speech (SoS) and End of Speech (EoS) control, so you no longer need to construct raw Signaling (RTM) messages by hand. Call `manualSOS`/`manualEOS` to send requests, and register the new result callbacks to handle the server's response. This capability is suitable for scenarios that require explicit control of the user turn boundary from the client side, such as AI interviews, interactive quizzes, and walkie-talkie apps. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
+
+- **New Avatar provider**
+
+  - [LemonSlice](models/avatar/lemonslice)
 
 #### Toolkit API
 
 This release adds the following APIs to the client toolkit for manual turn control:
 
-- Android:
-  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualsos)
-  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualeos)
-  - [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualsosevent)
-  - [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualeosevent)
-  - [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmanualeosevent)
-  - `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
-- iOS:
-  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualsos)
-  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualeos)
-  - [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualsosevent)
-  - [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualeosevent)
-  - [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmanualeosevent)
-  - `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
-- Web:
-  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualsos)
-  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualeos)
-  - [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents) values `USER_MANUAL_SOS_RESULT`, `USER_MANUAL_EOS_RESULT`, and `AGENT_MANUAL_EOS_RESULT`
-  - `TUserManualEventPayload`, `TUserManualSosEvent`, `TUserManualEosEvent`, `TAgentManualEosPayload`, `TAgentManualEosEvent`
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualsos)
+- [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualeos)
+- [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualsosevent)
+- [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmanualeosevent)
+- `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualsos)
+- [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualeos)
+- [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualsosevent)
+- [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmanualeosevent)
+- `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualsos)
+- [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualeos)
+- [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents) values `USER_MANUAL_SOS_RESULT`, `USER_MANUAL_EOS_RESULT`, and `AGENT_MANUAL_EOS_RESULT`
+- `TUserManualEventPayload`, `TUserManualSosEvent`, `TUserManualEosEvent`, `TAgentManualEosPayload`, `TAgentManualEosEvent`
+
+</TabsContent>
+</Tabs>
 
 #### API changes
 

@@ -1,0 +1,160 @@
+---
+title: Connect your own TTS service
+description: Integrate a custom text-to-speech (TTS) service into Agora's Conversational AI Engine.
+---
+
+By integrating a custom text-to-speech (TTS) service, you can use a self-built, privately deployed, or third-party TTS service as the speech synthesis module for your conversational AI agent. This page explains how to prepare an HTTP service compatible with the OpenAI TTS protocol and how to connect it when starting a conversational AI agent using the `generic_http` TTS configuration.
+
+## Understand the tech
+
+Agora's Conversational AI Engine calls your TTS service using an extended OpenAI TTS protocol. When you call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), set `tts.vendor` to `generic_http` and configure your TTS service address. The agent then sends an HTTP request to that address whenever it needs to synthesize speech.
+
+## Prerequisites
+
+Before you begin, ensure that you have:
+
+- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../../get-started/quickstart).
+- Prepared a TTS HTTP service that Agora's Conversational AI Engine can reach.
+- Confirmed your TTS service supports HTTP/1.1 or later.
+- Confirmed your TTS service can return audio data in PCM format.
+
+:::tip[Best practices]
+Use HTTPS for your TTS service in production.
+:::
+
+## Implementation
+
+Take the following steps to connect your custom TTS service to Agora's Conversational AI Engine.
+
+### Prepare your TTS service interface
+
+Your TTS service must provide an HTTP interface compatible with the OpenAI TTS protocol. The basic requirements are:
+
+- **Request method**: `POST`
+- **Request path**: `/audio/speech`
+- **Request headers**: Authentication via an `Authorization: Bearer <api_key>` header
+- **Request body**: JSON
+- **Response body**: A stream of PCM audio data
+
+Example request body:
+
+```json
+{
+  "model": "your-tts-model",
+  "input": "Welcome to Agora's Conversational AI service.",
+  "voice": "alloy",
+  "speed": 1.0,
+  "sample_rate": 16000,
+  "response_format": "pcm",
+  "instruction": "calm"
+}
+```
+
+Request body fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `input` | String | The text to synthesize. Agora's Conversational AI Engine automatically populates this field from the agent's response. |
+| `model` | String | The TTS model name. Omit this field if your TTS service doesn't distinguish between models. |
+| `voice` | String | The voice name. Omit this field if your TTS service doesn't distinguish between voices. |
+| `speed` | Number | The speech rate. |
+| `sample_rate` | Integer | The sample rate, in Hz, of the output audio. Default: `16000`. |
+| `response_format` | String | The output audio format. Default: `pcm`. Only `pcm` is supported. |
+| `instruction` | String | Instructions for voice style, emotion, or other playback directives. |
+
+:::info[Info]
+If your TTS service doesn't support multiple sample rates, make sure the sample rate of the audio it returns matches `tts.params.sample_rate`, configured when you start the agent.
+:::
+
+### Verify your TTS service's response
+
+Use `curl` to confirm your TTS service returns a valid PCM audio stream:
+
+```bash
+curl --request POST \
+  --url https://your-tts-service.example.com/v1/audio/speech \
+  --header 'Authorization: Bearer <your_tts_api_key>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "model": "your-tts-model",
+    "input": "Welcome to the Agora Conversational AI service.",
+    "voice": "alloy",
+    "speed": 1.0,
+    "sample_rate": 16000,
+    "response_format": "pcm"
+  }' \
+  --output test.pcm
+```
+
+When the request succeeds, your service should stream the synthesized PCM audio back using HTTP chunked transfer encoding.
+
+If a request fails, your TTS service should return a standard HTTP error status code along with a JSON error body, for example:
+
+```json
+{
+  "error": {
+    "message": "Incorrect API key provided.",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_api_key"
+  }
+}
+```
+
+### Configure the agent to use your custom TTS service
+
+When calling [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), set `vendor` to `generic_http` in the `tts` block, and configure your TTS service address and parameters. The following example shows only the `properties.tts` configuration:
+
+```json
+{
+  "tts": {
+    "vendor": "generic_http",
+    "url": "https://your-tts-service.example.com/v1/audio/speech",
+    "headers": {
+      "Authorization": "Bearer <your_tts_api_key>"
+    },
+    "params": {
+      "model": "your-tts-model",
+      "voice": "alloy",
+      "speed": 1.0,
+      "sample_rate": 16000,
+      "response_format": "pcm",
+      "instruction": "calm",
+      "enable_request_id": false
+    }
+  }
+}
+```
+
+`generic_http` configuration reference:
+
+| Field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `tts.vendor` | String | Yes | - | Set to `generic_http` to use a custom TTS service. |
+| `tts.url` | String | Yes | - | The TTS service address. Must be compatible with the OpenAI TTS protocol. |
+| `tts.headers` | Object | No | - | Request headers to include when calling the TTS service, typically used to configure `Authorization`. |
+| `tts.params` | Object | No | - | TTS request parameters. In addition to the fields listed below, `params` supports other fields as needed. The system passes them through to the TTS service. |
+| `tts.params.api_key` | String | No | - | The API key used to authenticate with the TTS service. If set, the system automatically includes `Authorization: Bearer <api_key>` when calling the TTS service. |
+| `tts.params.model` | String | No | - | The TTS model name. |
+| `tts.params.voice` | String | No | - | The voice name. Omit this parameter if your TTS service doesn't support multiple voices. |
+| `tts.params.speed` | Number | No | - | The speech rate. |
+| `tts.params.sample_rate` | Integer | No | `16000` | The sample rate, in Hz, of the output audio. If your TTS service doesn't support multiple sample rates, make sure the sample rate of the returned audio matches this value. |
+| `tts.params.response_format` | String | No | `pcm` | The output audio format. Only `pcm` is supported. |
+| `tts.params.instruction` | String | No | - | Instructions for voice style, emotion, or other playback directives. |
+| `tts.params.enable_request_id` | Boolean | No | `false` | Whether to include `request_id`, `request_seq_id`, and `request_end` in the TTS request body. |
+
+:::info[Info]
+Provide at least one of `tts.headers.Authorization` or `tts.params.api_key`. If you provide both, the system uses `tts.headers.Authorization`.
+:::
+
+For the full `generic_http` parameter reference, see [Generic TTS](../../models/tts/generic-http).
+
+### Receive request identifiers on demand
+
+If your TTS service needs to distinguish between multiple requests within the same playback turn, set `tts.params.enable_request_id` to `true`. When enabled, the system includes the following fields in the request body it sends to your TTS service:
+
+| Field | Type | Description |
+|---|---|---|
+| `request_id` | String | A unique identifier for this TTS request. |
+| `request_seq_id` | Integer | The request sequence number within the current playback turn, starting from `0`. |
+| `request_end` | Boolean | Whether this is the last request in the current playback turn. |

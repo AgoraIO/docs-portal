@@ -1,0 +1,128 @@
+---
+title: LemonSlice
+description: >
+ Integrate LemonSlice AI avatars into Conversational AI Engine.
+---
+
+LemonSlice provides AI-powered avatar agents that generate synchronized video and audio responses in real time, enabling natural video conversations with your AI agents.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
+
+### Sample configuration
+
+LemonSlice integrates through the `generic` avatar vendor. The following examples show how to configure a LemonSlice avatar when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GenericAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(GenericAvatar(
+        api_key='<LEMONSLICE_API_KEY>',
+        api_base_url='https://lemonslice.com/api/liveai/agora',
+        avatar_id='<LEMONSLICE_AVATAR_ID>',
+        agora_uid='<AGORA_UID>',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GenericAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(new GenericAvatar({
+    apiKey: '<LEMONSLICE_API_KEY>',
+    apiBaseUrl: 'https://lemonslice.com/api/liveai/agora',
+    avatarId: '<LEMONSLICE_AVATAR_ID>',
+    agoraUid: '<AGORA_UID>',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */).
+  WithAvatar(
+    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+        APIKey:     "<LEMONSLICE_API_KEY>",
+        APIBaseURL: "https://lemonslice.com/api/liveai/agora",
+        AvatarID:   "<LEMONSLICE_AVATAR_ID>",
+        AgoraUID:   "<AGORA_UID>",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
+
+```json
+"avatar": {
+  "vendor": "generic",
+  "params": {
+    "api_key": "<LEMONSLICE_API_KEY>",
+    "api_base_url": "https://lemonslice.com/api/liveai/agora",
+    "avatar_id": "<LEMONSLICE_AVATAR_ID>",
+    "agora_token": "<AGORA_TOKEN>",
+    "agora_uid": "<AGORA_UID>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+  The API key used for authentication with LemonSlice. Get your API key from your LemonSlice account.
+  </Parameter>
+  <Parameter name="api_base_url" type="string" required={true}>
+  The base URL of the LemonSlice API endpoint. Set to `https://lemonslice.com/api/liveai/agora`.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={true}>
+  The unique identifier for the LemonSlice avatar to use.
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+  The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  </Parameter>
+  <Parameter name="agora_uid" type="string" required={true}>
+  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  </Parameter>
+</ParameterList>
+
+For advanced configuration options, refer to the [LemonSlice API documentation](https://lemonslice.com/docs/api-reference/create-self-managed-session).
