@@ -60,7 +60,7 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain(
       'The `region` value is the same as for the input source stream.',
     );
-    expect(markdown).toContain('Allowed: `na`, `eu`, `ap`, `cn`');
+    expect(markdown).toContain('Allowed: `na` | `eu` | `ap` | `cn`');
     expect(markdown).toContain('## Authorization');
     expect(markdown).toContain('- `basicAuth`');
     expect(markdown).toContain('## Request examples');
@@ -149,6 +149,83 @@ describe('openapi markdown serializer', () => {
       '  :::info[Project ID]\n  Use the project ID from Agora Console.\n  :::',
     );
     expect(markdown).not.toContain('No schema.');
+  });
+
+  it('serializes endpoint, parameter types, and schema constraints', () => {
+    const markdown = serializeOpenApiOperationMarkdown({
+      locale: 'en',
+      operation: {
+        codeSampleGroups: [],
+        codeSamples: [],
+        docsCallouts: [],
+        docsSections: [],
+        method: 'POST',
+        operationId: 'create-status',
+        parameters: [
+          {
+            example: 'manual',
+            in: 'query',
+            name: 'mode',
+            required: false,
+            schema: {
+              default: 'auto',
+              enum: ['auto', 'manual'],
+              format: 'slug',
+              maxLength: 24,
+              minLength: 3,
+              pattern: '^[a-z]+$',
+              type: 'string',
+            },
+          },
+        ],
+        path: '/v1/status',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                properties: {
+                  count: {
+                    deprecated: true,
+                    exclusiveMaximum: 10,
+                    minimum: 1,
+                    nullable: true,
+                    type: 'integer',
+                  },
+                  tags: {
+                    items: { type: 'string' },
+                    maxItems: 8,
+                    minItems: 1,
+                    type: 'array',
+                  },
+                },
+                type: 'object',
+              },
+            },
+          },
+          contentTypes: ['application/json'],
+          required: true,
+        },
+        responses: {},
+        servers: [{ url: 'https://api.example.com/' }],
+      },
+      publicSourceUrl: '/openapi/status.yaml',
+      title: 'Create status',
+      url: '/en/api-reference/status',
+    });
+
+    expect(markdown).toContain('- Endpoint: https://api.example.com/v1/status');
+    expect(markdown).toContain('- `mode` (query, optional, string)');
+    expect(markdown).toContain('  - Allowed: `auto` | `manual`');
+    expect(markdown).toContain('  - Default: `auto`');
+    expect(markdown).toContain('  - Format: `slug`');
+    expect(markdown).toContain('  - Example: `manual`');
+    expect(markdown).toContain('  - Min length: `3`');
+    expect(markdown).toContain('  - Max length: `24`');
+    expect(markdown).toContain('  - Pattern: `^[a-z]+$`');
+    expect(markdown).toContain('  - Range: `[1, 10)`');
+    expect(markdown).toContain('- `count` (integer | null, deprecated)');
+    expect(markdown).toContain('  - Min items: `1`');
+    expect(markdown).toContain('  - Max items: `8`');
   });
 
   it('places guidance by position and preserves callout semantics', () => {

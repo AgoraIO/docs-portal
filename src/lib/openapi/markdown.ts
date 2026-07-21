@@ -41,6 +41,11 @@ export function serializeOpenApiOperationMarkdown({
     `- Operation ID: ${operation.operationId}`,
     `- Method: ${operation.method}`,
     `- Path: ${operation.path}`,
+    ...(operation.servers[0]
+      ? [
+          `- Endpoint: ${joinOpenApiUrl(operation.servers[0].url, operation.path)}`,
+        ]
+      : []),
   ].filter((line, index, array) => line.length > 0 || array[index - 1] !== '');
 
   if (operation.servers.length > 0) {
@@ -248,13 +253,17 @@ function parameterToMarkdown(parameter: Record<string, unknown>) {
 
   const lines = [`- \`${name}\` (${location}, ${required})${description}`];
   const schema = isRecord(parameter.schema) ? parameter.schema : undefined;
-  const allowedValues = Array.isArray(schema?.enum) ? schema.enum : [];
-
-  if (allowedValues.length > 0) {
-    lines.push(
-      `  - Allowed: ${allowedValues.map((value) => `\`${formatInlineValue(value)}\``).join(', ')}`,
-    );
-  }
+  const type = typeof schema?.type === 'string' ? schema.type : undefined;
+  lines[0] = `- \`${name}\` (${[location, required, type].filter(Boolean).join(', ')})${description}`;
+  const example =
+    parameter.example ??
+    getFirstParameterExample(parameter.examples) ??
+    schema?.example;
+  const metadataSchema =
+    example === undefined ? schema : { ...schema, example };
+  lines.push(
+    ...schemaMetadataToMarkdown(metadataSchema).map((item) => `  - ${item}`),
+  );
 
   const docsCallouts = Array.isArray(parameter.docsCallouts)
     ? parameter.docsCallouts
@@ -277,7 +286,11 @@ function schemaTreeToMarkdown(
 
   return nodes.flatMap((node) => {
     const indent = '  '.repeat(depth);
-    const required = node.required ? ', required' : '';
+    const qualifiers = [
+      `${node.type}${node.nullable ? ' | null' : ''}`,
+      node.required ? 'required' : undefined,
+      node.deprecated ? 'deprecated' : undefined,
+    ].filter(Boolean);
     const description = node.description ? ` - ${node.description}` : '';
     const metadata = schemaNodeMetadataToMarkdown(node);
     const callouts = serializeDocsFragments(node.docsCallouts ?? [], {
@@ -286,7 +299,7 @@ function schemaTreeToMarkdown(
     });
 
     return [
-      `${indent}- \`${node.path}\` (${node.type}${required})${description}`,
+      `${indent}- \`${node.path}\` (${qualifiers.join(', ')})${description}`,
       ...metadata.map((item) => `${indent}  - ${item}`),
       ...callouts,
       ...(node.children.length > 0
@@ -451,24 +464,117 @@ function normalizeCodeLanguage(language: unknown) {
 }
 
 function schemaNodeMetadataToMarkdown(node: OpenApiSchemaTreeNode) {
-  const metadata: string[] = [];
+  return schemaMetadataToMarkdown({
+    default: node.defaultValue,
+    enum: node.enumValues,
+    example: node.example,
+    exclusiveMaximum: node.exclusiveMaximum,
+    exclusiveMinimum: node.exclusiveMinimum,
+    format: node.format,
+    maximum: node.maximum,
+    maxItems: node.maxItems,
+    maxLength: node.maxLength,
+    minimum: node.minimum,
+    minItems: node.minItems,
+    minLength: node.minLength,
+    pattern: node.pattern,
+  });
+}
 
-  if (node.enumValues && node.enumValues.length > 0) {
+function schemaMetadataToMarkdown(schema: Record<string, unknown> | undefined) {
+  const metadata: string[] = [];
+  const allowedValues = Array.isArray(schema?.enum) ? schema.enum : [];
+
+  if (allowedValues.length > 0) {
     metadata.push(
-      `Allowed: ${node.enumValues.map((value) => `\`${formatInlineValue(value)}\``).join(', ')}`,
+      `Allowed: ${allowedValues.map((value) => `\`${formatInlineValue(value)}\``).join(' | ')}`,
     );
   }
-  if (node.defaultValue !== undefined) {
-    metadata.push(`Default: \`${formatInlineValue(node.defaultValue)}\``);
+  if (schema?.default !== undefined) {
+    metadata.push(`Default: \`${formatInlineValue(schema.default)}\``);
   }
-  if (node.example !== undefined) {
-    metadata.push(`Example: \`${formatInlineValue(node.example)}\``);
+  if (schema?.example !== undefined) {
+    metadata.push(`Example: \`${formatInlineValue(schema.example)}\``);
   }
-  if (node.format) {
-    metadata.push(`Format: \`${node.format}\``);
+  if (typeof schema?.format === 'string') {
+    metadata.push(`Format: \`${schema.format}\``);
+  }
+
+  const range = getMarkdownRange(schema);
+  if (range) {
+    metadata.push(`Range: \`${range}\``);
+  } else {
+    appendNumericMetadata(metadata, 'Minimum', schema?.minimum);
+    appendNumericMetadata(metadata, 'Maximum', schema?.maximum);
+  }
+  appendNumericMetadata(metadata, 'Min length', schema?.minLength);
+  appendNumericMetadata(metadata, 'Max length', schema?.maxLength);
+  appendNumericMetadata(metadata, 'Min items', schema?.minItems);
+  appendNumericMetadata(metadata, 'Max items', schema?.maxItems);
+  if (typeof schema?.pattern === 'string') {
+    metadata.push(`Pattern: \`${schema.pattern}\``);
   }
 
   return metadata;
+}
+
+function appendNumericMetadata(
+  metadata: string[],
+  label: string,
+  value: unknown,
+) {
+  if (typeof value === 'number') {
+    metadata.push(`${label}: \`${value}\``);
+  }
+}
+
+function getMarkdownRange(schema: Record<string, unknown> | undefined) {
+  const minimum = getMarkdownNumberBound(
+    schema?.minimum,
+    schema?.exclusiveMinimum,
+  );
+  const maximum = getMarkdownNumberBound(
+    schema?.maximum,
+    schema?.exclusiveMaximum,
+  );
+
+  if (!minimum || !maximum) {
+    return undefined;
+  }
+
+  return `${minimum.exclusive ? '(' : '['}${minimum.value}, ${maximum.value}${maximum.exclusive ? ')' : ']'}`;
+}
+
+function getMarkdownNumberBound(inclusive: unknown, exclusive: unknown) {
+  if (typeof inclusive === 'number') {
+    return { exclusive: false, value: inclusive };
+  }
+  if (typeof exclusive === 'number') {
+    return { exclusive: true, value: exclusive };
+  }
+  return undefined;
+}
+
+function getFirstParameterExample(examples: unknown) {
+  if (!isRecord(examples)) {
+    return undefined;
+  }
+
+  for (const example of Object.values(examples)) {
+    if (isRecord(example) && example.value !== undefined) {
+      return example.value;
+    }
+  }
+
+  return undefined;
+}
+
+function joinOpenApiUrl(baseUrl: string, path: string) {
+  if (!path) {
+    return baseUrl;
+  }
+
+  return `${baseUrl.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`;
 }
 
 function formatInlineValue(value: unknown) {
