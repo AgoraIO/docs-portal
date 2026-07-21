@@ -82,6 +82,21 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
+  it('does not append Previous to older SDK version options', () => {
+    render(<SdksCatalog />);
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    const select = within(voiceCard).getByRole('combobox', {
+      name: 'Voice SDK version',
+    }) as HTMLSelectElement;
+    const optionLabels = Array.from(select.options).map(
+      (option) => option.textContent,
+    );
+
+    expect(optionLabels).toContain('v4.6.2');
+    expect(optionLabels).not.toContain('v4.6.2 - Previous');
+  });
+
   it('falls back to a download button when the platform has no derivable command', () => {
     render(<SdksCatalog />);
 
