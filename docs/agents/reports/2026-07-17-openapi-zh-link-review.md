@@ -8,9 +8,10 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 - Rule: `doc.shengwang.cn` links must be replaced with current zh-CN routes or reviewed before removal.
 - Removal policy: no link is removed without user approval.
 - Task 5 replacements applied: 83 high-confidence href rules, 156 total occurrences.
-- Current focused audit: `openapiFiles: 15`, `totalLinks: 425`, `legacyShengwangDocHostLinks: 4`, `invalidInternalLinks: 69`.
-- Remaining review scope: 3 unique legacy-link rows (4 occurrences) and 22 unique broken-link rows (65 occurrences).
-- No links were removed in Task 5.
+- Task 6 additional fixes applied: 18 baseline rows, 33 total occurrences resolved or reduced.
+- Task 6 approved removal: removed the RTMP Gateway best-practices legacy link from `content/openapi/media-gateway/media-gateway.zh-CN.yaml` after user confirmation on 2026-07-21.
+- Current focused audit: `openapiFiles: 15`, `totalLinks: 424`, `legacyShengwangDocHostLinks: 3`, `invalidInternalLinks: 36`.
+- Remaining review scope: 2 unique legacy-link rows (3 occurrences) and 5 unique broken-link rows (33 occurrences).
 - Reproducibility: run `bun run docs:links:openapi-zh -- --max-samples=200`. Use the bundled Node runtime if the default shell lacks Node 22.
 - CI gate: `bun run docs:links:openapi-zh:baseline` is wired into `.github/workflows/vercel-deploy.yml`. It allows the review baseline below but fails on new or increased zh-CN OpenAPI invalid-link rows.
 
@@ -102,53 +103,52 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 | `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/overview/concepts#token` | `/zh-CN/realtime-media/whiteboard/concepts#token` | 1 | High-confidence current-route or same-lane endpoint mapping; the old href no longer appears in the focused audit. |
 | `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code` | 18 | High-confidence current-route or same-lane endpoint mapping; the old href no longer appears in the focused audit. |
 
+## Additional Fixes Applied After Task 5
+
+| Source | Fix | Occurrences | Notes |
+| --- | --- | ---: | --- |
+| `content/openapi/cloud-recording/cloud-recording.zh-CN.yaml` | Updated `recording-status#保障录制成功启动` to `recording-status#monitor_status`. | 1 | Fixes missing hash anchor. |
+| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | Updated obsolete AI/RTC internal routes to current zh-CN routes. | 11 | Fixes `custom-data`, `custom-llm`, `http-basic-auth`, `listen-agent-events`, `realtime-sub`, `enable-ncs`, RTC token, and RTC billing paths. |
+| `content/openapi/media-gateway/media-gateway.zh-CN.yaml` | Removed the RTMP Gateway best-practices legacy link sentence. | 1 | User approved this removal on 2026-07-21. |
+| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | Updated PPT transcoding response-code, enable-service, token, and whiteboard concept links. | 14 | Fixes missing internal paths and same-lane `status-codes` links. |
+| `content/openapi/voip-callkit/call.zh-CN.yaml` | Updated VoIP Call license and Source/Sink links to current build routes. | 5 | Fixes missing internal paths. |
+| `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | Removed missing `convert-files#新旧版本对比` fragment and linked to the page. | 1 | Fixes missing hash anchor. |
+
 ## Needs User Review: Legacy doc.shengwang.cn
 
 | Source | Old href | Occurrences | Context | Suggested action |
 | --- | --- | ---: | --- | --- |
-| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption` | 1 | content/openapi/danmaku/danmaku.zh-CN.yaml:247 description: RTC 内置加密设置。详见[`enableEncrption`](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption)。 | No clearly equivalent current Windows RTC API reference page was confirmed; keep for user review. Do not remove without approval. |
-| `content/openapi/media-gateway/media-gateway.zh-CN.yaml` | `https://doc.shengwang.cn/doc/rtmp-gateway/restful/best-practices` | 1 | content/openapi/media-gateway/media-gateway.zh-CN.yaml:7 \n在使用过程如果遇到问题，你可以参考[最佳实践](https://doc.shengwang.cn/doc/rtmp-gateway/restful/best-practices)检查各项设置和限制是否已正确处理。" | No clearly equivalent current RTMP Gateway best-practices page was confirmed; keep for user review. Do not remove without approval. |
+| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption` | 1 | content/openapi/danmaku/danmaku.zh-CN.yaml:247 description: RTC 内置加密设置。详见[`enableEncrption`](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption)。 | Danmaku file is intentionally out of scope for the current cleanup per user direction; keep for later review. |
 | `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync` | 2 | content/openapi/whiteboard/restful-wb.zh-CN.yaml:544 markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync)。 | No current API reference page was confirmed for `screenshotToCanvasAsync`; keep for user review. Do not remove without approval. |
 
 ## Needs User Review: Broken Internal Links
 
-These are the remaining non-legacy `invalidInternalLinks` from the focused audit. They were not rewritten in Task 5 because the target route, anchor, or product IA needs a separate semantic decision.
+These are the remaining non-legacy `invalidInternalLinks` from the focused audit. `content/openapi/danmaku/danmaku.zh-CN.yaml` is intentionally left unchanged for now per user direction.
 
 | Source | Href | Audit target | Reason | Occurrences | Suggested action |
 | --- | --- | --- | --- | ---: | --- |
-| `content/openapi/cloud-recording/cloud-recording.zh-CN.yaml` | `/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#保障录制成功启动` | `/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#保障录制成功启动` | `missing-hash-anchor` | 1 | Verify the current page heading/fragment and update only if the anchor is semantically equivalent. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/user-guides/custom-data` | `/zh-CN/ai/user-guides/custom-data` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/user-guides/custom-llm` | `/zh-CN/ai/user-guides/custom-llm` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/user-guides/http-basic-auth` | `/zh-CN/ai/user-guides/http-basic-auth` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/user-guides/listen-agent-events` | `/zh-CN/ai/user-guides/listen-agent-events` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/user-guides/realtime-sub` | `/zh-CN/ai/user-guides/realtime-sub` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/ai/webhook/enable-ncs` | `/zh-CN/ai/webhook/enable-ncs` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/conversational-ai/rest-api.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/billing/billing-strategy` | `/zh-CN/realtime-media/rtc/billing/billing-strategy` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数` | `/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数` | `missing-internal-path` | 10 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/danmaku/response-code` | `/zh-CN/realtime-media/danmaku/response-code` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `missing-internal-path` | 10 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | `/zh-CN/introduction/ppt-transcoding/get-started/enable-service` | `/zh-CN/introduction/ppt-transcoding/get-started/enable-service` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥` | `missing-internal-path` | 2 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/concepts#token` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/concepts#token` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/ppt-conversion-service/rest-api.zh-CN.yaml` | `status-codes` | `/zh-CN/api-reference/api-ref/ppt-conversion-service/status-codes` | `missing-internal-path` | 8 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
+| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数` | `/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数` | `missing-internal-path` | 10 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
+| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/danmaku/response-code` | `/zh-CN/realtime-media/danmaku/response-code` | `missing-internal-path` | 2 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
+| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `missing-internal-path` | 2 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
+| `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `missing-internal-path` | 10 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
 | `content/openapi/rtc/channel-management.zh-CN.yaml` | `/zh-CN/api-reference/response-code` | `/zh-CN/api-reference/response-code` | `missing-internal-path` | 9 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/voip-callkit/call.zh-CN.yaml` | `/zh-CN/solutions/voip-call/user-guide/license` | `/zh-CN/solutions/voip-call/user-guide/license` | `missing-internal-path` | 1 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/voip-callkit/call.zh-CN.yaml` | `/zh-CN/solutions/voip-call/user-guide/set-source-sink` | `/zh-CN/solutions/voip-call/user-guide/set-source-sink` | `missing-internal-path` | 4 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
-| `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files#新旧版本对比` | `/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files#新旧版本对比` | `missing-hash-anchor` | 1 | Verify the current page heading/fragment and update only if the anchor is semantically equivalent. |
+
+## Approved Removals
+
+| Source | Removed link | Context | Approval |
+| --- | --- | --- | --- |
+| `content/openapi/media-gateway/media-gateway.zh-CN.yaml` | `https://doc.shengwang.cn/doc/rtmp-gateway/restful/best-practices` | Removed the final sentence that linked to RTMP Gateway best practices because no equivalent current page was confirmed. | User confirmed this removal is expected on 2026-07-21. |
 
 ## Candidate Removals
 
 | Source | Link text | Old href | Context | Reason removal is being considered |
 | --- | --- | --- | --- | --- |
-| None identified in Task 5 | N/A | N/A | N/A | No removals are proposed without user approval. |
+| None currently pending | N/A | N/A | N/A | Media Gateway removal has already been approved and recorded above. |
 
 ## Verification Notes
 
-- `bun run docs:links:openapi-zh -- --max-samples=200`: exits 0 and reports the remaining review items above.
-- `bun run docs:links:openapi-zh:baseline`: exits 0 with `newOrIncreasedEntries: 0`.
-- `bun run docs:links:openapi-zh:strict -- --max-samples=200`: exits 1 while the review items above remain unresolved.
-- `bun run test scripts/check-openapi-zh-link-baseline.test.ts scripts/audit-doc-links.test.ts`: passes, 11 tests.
-- `bun run types:check`: exits 2 in existing TypeScript OpenAPI renderer code (`fumadocs-openapi` no exported `Document`; `renderAPIPage` call arity mismatch). No TypeScript source files were changed in Task 5.
+- `bun run docs:links:openapi-zh -- --max-samples=120`: exits 0 and reports the remaining review items above.
+- `bun run docs:links:openapi-zh:baseline`: exits 0 with `newOrIncreasedEntries: 0` after updating the baseline to 7 entries.
+- `bun run test scripts/check-openapi-zh-link-baseline.test.ts scripts/audit-doc-links.test.ts`: exits 0, 2 files and 11 tests passed.
+- `bun run docs:links:openapi-zh:strict -- --max-samples=200`: expected to exit 1 while the review items above remain unresolved.
+- `bun run types:check`: previously exits 2 in existing TypeScript OpenAPI renderer code (`fumadocs-openapi` no exported `Document`; `renderAPIPage` call arity mismatch). No TypeScript source files were changed in this cleanup.
