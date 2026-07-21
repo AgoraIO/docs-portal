@@ -49,7 +49,7 @@ paths:
                       description: 智能体加入的 RTC 频道名。
                     token:
                       type: string
-                      description: '加入 RTC 频道使用的 Token，即用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。'
+                      description: '加入 RTC 频道使用的 Token，即用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。'
                     agent_rtc_uid:
                       type: string
                       description: |-
@@ -63,7 +63,7 @@ paths:
                     # agent_rtm_uid:
                     #   type: string
                     #   description: |-
-                    #     > 该字段已废弃，请参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
+                    #     > 该字段已废弃，请参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
 
                     #     智能体在 RTM 频道内的用户 ID。仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
                     enable_string_uid:
@@ -73,7 +73,7 @@ paths:
                         是否启用 String UID：
                         - `true`：智能体和订阅用户 ID 均使用 String UID。
                         - `false`：（默认）智能体和订阅用户 ID 均使用 Int UID。
-                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](https://doc.shengwang.cn/faq/integration-issues/string-uid)。
+                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
                     idle_timeout:
                       type: integer
                       minimum: 0
@@ -105,9 +105,9 @@ paths:
                         enable_rtm:
                           type: boolean
                           description: |-
-                            是否启用实时消息 RTM 服务。启用后智能体会自动登录 RTM 并订阅 `channel` 中指定的频道，可结合 RTM 提供的能力实现一些进阶功能，例如[传递自定义信息](/zh-CN/ai/user-guides/custom-data)。
+                            是否启用实时消息 RTM 服务。启用后智能体会自动登录 RTM 并订阅 `channel` 中指定的频道，可结合 RTM 提供的能力实现一些进阶功能，例如[传递自定义信息](/zh-CN/ai/build/shape-the-conversation/custom-information)。
 
-                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
+                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
                           default: false
                         enable_sal:
                           type: boolean
@@ -173,8 +173,8 @@ paths:
                             - `5`：跳过英文花括号 \{ } 中的内容
 
                             > - 当输入文本中存在嵌套括号，且多种括号类型都被配置为跳过时，智能体只处理最外层括号，即系统将从文本的起始位置开始匹配，一旦找到第一个符合跳过规则的最外层括号对，该括号对及其包含的所有内容（包括任何嵌套的其他类型括号）都将被整体跳过。
-                            > - 无论是否打开[实时字幕](/zh-CN/ai/user-guides/realtime-sub)，智能体短期记忆都会包含被过滤的内容，即 LLM 生成的完整文本。
-                            > - 开启[实时字幕](/zh-CN/ai/user-guides/realtime-sub)时，实时字幕在 TTS 播报时不会包含被过滤的内容，等这句话播报完毕后，字幕会把这些内容添加回来。
+                            > - 无论是否打开[实时字幕](/zh-CN/ai/build/transcripts)，智能体短期记忆都会包含被过滤的内容，即 LLM 生成的完整文本。
+                            > - 开启[实时字幕](/zh-CN/ai/build/transcripts)时，实时字幕在 TTS 播报时不会包含被过滤的内容，等这句话播报完毕后，字幕会把这些内容添加回来。
                             > - 火山引擎双向流式 TTS 暂不支持该功能。
                           items:
                             type: integer
@@ -392,7 +392,7 @@ paths:
                             - `true`：启用。启用后需配置 `vendor` 和 `params` 字段。
                             - `false`：（默认）不启用。
 
-                            > 开启数字人功能将产生 RTC 视频通话费用，详见 [RTC 计费说明](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+                            > 开启数字人功能将产生 RTC 视频通话费用，详见 [RTC 计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
                         vendor:
                           type: string
                           description: |
@@ -527,7 +527,7 @@ paths:
                             - `"locking"`：（默认）主讲人锁定模式。智能体锁定主讲人，屏蔽 95% 的环境人声、噪声。该模式可通过两种方式启用：
                               - 无感识别：用户在对话初期大声、清晰地说话，智能体即可自动将用户识别为主讲人。
                               - 预注册：创建智能体时，通过 `sample_urls` 字段预注册一名主讲人的声纹 URL，智能体将根据预注册的声纹 URL 锁定主讲人。
-                            - `"recognition"`：声纹识别模式。你可以通过 `sample_urls` 字段预注册声纹 URL，目前仅支持单声纹注册。智能体将识别不同的说话人并抑制其他背景人声和环境噪音。识别到的说话人身份会通过 `metadata` 字段里的 `vpids` 字段标识并发送给 LLM，你需要将 `llm.vendor` 设置为 `"custom"`，并参考[自定义大模型](/zh-CN/ai/user-guides/custom-llm)了解如何让 LLM 处理说话人信息。
+                            - `"recognition"`：声纹识别模式。你可以通过 `sample_urls` 字段预注册声纹 URL，目前仅支持单声纹注册。智能体将识别不同的说话人并抑制其他背景人声和环境噪音。识别到的说话人身份会通过 `metadata` 字段里的 `vpids` 字段标识并发送给 LLM，你需要将 `llm.vendor` 设置为 `"custom"`，并参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)了解如何让 LLM 处理说话人信息。
                           default: "locking"
                         sample_urls:
                           type: object
@@ -655,7 +655,7 @@ paths:
                           description: |-
                             智能体数据传输通道，可选以下值：
                             - `rtm`：使用 RTM 传输。该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
-                            - `datastream`：（默认）使用 RTC 的 [`DataStream`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) 传输。
+                            - `datastream`：（默认）使用 RTC 的 [`DataStream`](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 传输。
 
                             > 如果 `turn_detection.config.start_of_speech.mode` 或 `turn_detection.config.end_of_speech.mode` 为 `manual`，则必须同时开启 `advanced_features.enable_rtm = true`，并将该字段设为 `rtm`。
                         enable_metrics:
@@ -667,7 +667,7 @@ paths:
                             - `true`：接收。
                             - `false`：（默认）不接收。
                             
-                            该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。你可以参考[监听智能体事件](/zh-CN/ai/user-guides/listen-agent-events)了解如何使用客户端组件接收智能体性能数据，或参考[接收 Webhook 事件](/zh-CN/ai/webhook/enable-ncs)了解如何使用 Webhook 接收智能体性能数据。
+                            该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。你可以参考[监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)了解如何使用客户端组件接收智能体性能数据，或参考[接收 Webhook 事件](/zh-CN/ai/build/handle-runtime-events/webhooks)了解如何使用 Webhook 接收智能体性能数据。
                         enable_error_message:
                           type: boolean
                           default: false
@@ -676,7 +676,7 @@ paths:
                             - `true`：接收。
                             - `false`：（默认）不接收。
                             
-                            该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。你可以参考[监听智能体事件](/zh-CN/ai/user-guides/listen-agent-events)了解如何使用客户端组件接收智能体错误事件。
+                            该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。你可以参考[监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)了解如何使用客户端组件接收智能体错误事件。
                         opt_out:
                           type: boolean
                           default: false
@@ -1200,7 +1200,7 @@ paths:
                   properties:
                     token:
                       type: string
-                      description: '用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。运行中的智能体收到 `104 agent expire` 事件后，你可以调用本接口并更新该字段以刷新 RTC Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。'
+                      description: '用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。运行中的智能体收到 `104 agent expire` 事件后，你可以调用本接口并更新该字段以刷新 RTC Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。'
                     llm:
                       type: object
                       description: 大语言模型 (LLM) 设置。
@@ -2849,7 +2849,7 @@ components:
     Basic Auth:
       type: http
       scheme: basic
-      description: '发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 安全认证](/zh-CN/ai/user-guides/http-basic-auth)。'
+      description: '发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth)。'
 security:
   - {}
   - Basic Auth: []

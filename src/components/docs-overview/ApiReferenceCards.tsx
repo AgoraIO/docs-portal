@@ -180,6 +180,10 @@ function FilterSelect({
 }
 
 function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
+  if (group.solutionGroups.some((solutionGroup) => solutionGroup.isExplicit)) {
+    return <ApiReferenceSolutionGroup group={group} />;
+  }
+
   const clientEntries = group.entries.filter(
     (entry) => entry.apiType === 'client-api',
   );
@@ -218,18 +222,106 @@ function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
   );
 }
 
+function ApiReferenceSolutionGroup({
+  group,
+}: {
+  group: ApiReferenceProductGroup;
+}) {
+  return (
+    <section className="rounded-lg border border-border bg-muted/25 p-5 sm:p-6">
+      <div className="mb-5 max-w-3xl">
+        <h3 className="m-0 text-lg font-semibold text-foreground">
+          {group.product}
+        </h3>
+        <p className="m-0 mt-2 text-sm leading-6 text-muted-foreground">
+          {productDescriptions[group.productId] ??
+            '选择对应方案、平台或语言，打开该产品的 API 参考。'}
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {group.solutionGroups.map((solutionGroup) => (
+          <ApiReferenceSolutionCard
+            group={solutionGroup}
+            key={solutionGroup.id}
+            productId={group.productId}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ApiReferenceSolutionCard({
+  group,
+  productId,
+}: {
+  group: ApiReferenceSolutionEntryGroup;
+  productId: string;
+}) {
+  const clientEntries = group.entries.filter(
+    (entry) => entry.apiType === 'client-api',
+  );
+  const serverEntries = group.entries.filter(
+    (entry) =>
+      entry.apiType === 'server-sdk' || entry.apiType === 'restful-api',
+  );
+
+  return (
+    <section
+      aria-labelledby={`${productId}-${group.id}-heading`}
+      className="rounded-lg border border-border bg-background p-4 sm:p-5"
+    >
+      <div className="mb-5">
+        <h4
+          className="m-0 text-base font-semibold text-foreground"
+          id={`${productId}-${group.id}-heading`}
+        >
+          {group.title}
+        </h4>
+        {group.description ? (
+          <p className="m-0 mt-2 text-sm leading-6 text-muted-foreground">
+            {group.description}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="space-y-6">
+        {clientEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={clientEntries}
+            headingLevel="h5"
+            title="客户端 API"
+          />
+        ) : null}
+        {serverEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={serverEntries}
+            headingLevel="h5"
+            title="服务端 API"
+          />
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 function ApiReferenceEntrySection({
   entries,
+  headingLevel = 'h4',
   title,
 }: {
   entries: ApiReferenceCardEntry[];
+  headingLevel?: 'h4' | 'h5';
   title: string;
 }) {
+  const Heading = headingLevel;
+
   return (
     <section>
-      <h4 className="m-0 mb-3 text-sm font-semibold text-foreground">
+      <Heading className="m-0 mb-3 text-sm font-semibold text-foreground">
         {title}
-      </h4>
+      </Heading>
       <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
         {entries.map((entry) => (
           <ApiReferenceChip entry={entry} key={entryKey(entry)} />
@@ -240,9 +332,11 @@ function ApiReferenceEntrySection({
 }
 
 function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
+  const solutionLabel = entry.solutionTitle ? `${entry.solutionTitle} ` : '';
+
   return (
     <a
-      aria-label={`${entry.product} ${entry.platform} ${apiTypeLabels[entry.apiType]}`}
+      aria-label={`${entry.product} ${solutionLabel}${entry.platform} ${apiTypeLabels[entry.apiType]}`}
       className="group inline-flex min-h-14 max-w-full items-center gap-3 rounded-md border border-border bg-background px-3.5 py-2.5 text-sm transition-colors hover:border-foreground/20 hover:bg-background/80"
       href={entry.href}
     >
@@ -279,6 +373,15 @@ type ApiReferenceProductGroup = {
   entries: ApiReferenceCardEntry[];
   product: string;
   productId: string;
+  solutionGroups: ApiReferenceSolutionEntryGroup[];
+};
+
+type ApiReferenceSolutionEntryGroup = {
+  description?: string;
+  entries: ApiReferenceCardEntry[];
+  id: string;
+  isExplicit: boolean;
+  title: string;
 };
 
 const platformIconBaseUrl =
@@ -330,6 +433,8 @@ const productDescriptions: Record<string, string> = {
   'media-pull': '将在线媒体流输入到实时互动频道。',
   'media-push': '将实时互动频道内容旁路推送到外部直播平台。',
   meeting: '接入会议场景下的客户端能力。',
+  'online-ktv':
+    '声网提供的线上 K 歌场景化解决方案，支持一站式灵活接入到各类娱乐社交场景中。',
   'ppt-conversion-service': '通过服务端 API 管理 PPT 转码任务。',
   'private-room': '接入私密房场景下的客户端能力。',
   rtc: '集成实时音视频互动能力，覆盖多平台客户端和服务端接口。',
@@ -364,7 +469,7 @@ function buildOptions(
 }
 
 function entryKey(entry: ApiReferenceCardEntry) {
-  return `${entry.productId}-${entry.platformId}-${entry.apiType}-${entry.href}`;
+  return `${entry.productId}-${entry.solutionId ?? 'default'}-${entry.platformId}-${entry.apiType}-${entry.href}`;
 }
 
 function matchesApiTypeFilter(
@@ -396,8 +501,41 @@ function groupEntriesByProduct(
         entries: [],
         product: entry.product,
         productId: entry.productId,
+        solutionGroups: [],
       };
       groupByProductId.set(entry.productId, group);
+      groups.push(group);
+    }
+
+    group.entries.push(entry);
+  }
+
+  for (const group of groups) {
+    group.solutionGroups = groupEntriesBySolution(group.entries);
+  }
+
+  return groups;
+}
+
+function groupEntriesBySolution(
+  entries: readonly ApiReferenceCardEntry[],
+): ApiReferenceSolutionEntryGroup[] {
+  const groups: ApiReferenceSolutionEntryGroup[] = [];
+  const groupBySolutionId = new Map<string, ApiReferenceSolutionEntryGroup>();
+
+  for (const entry of entries) {
+    const id = entry.solutionId ?? 'default';
+    let group = groupBySolutionId.get(id);
+
+    if (!group) {
+      group = {
+        description: entry.solutionDescription,
+        entries: [],
+        id,
+        isExplicit: Boolean(entry.solutionTitle),
+        title: entry.solutionTitle ?? 'API 参考',
+      };
+      groupBySolutionId.set(id, group);
       groups.push(group);
     }
 
