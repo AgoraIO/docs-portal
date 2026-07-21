@@ -15,6 +15,8 @@ import {
 
 const API_CENTER_URL = 'https://doc.shengwang.cn/api-center';
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference';
+const API_REFERENCE_CATALOG_DATA =
+  'src/components/docs-overview/api-reference-cards-data.zh-cn.json';
 const MANIFEST_SOURCE = 'docs/migration/api-center-html-manifest.json';
 const OUT_OF_SCOPE_SHARED_ROUTES = new Set([
   '/zh-CN/introduction/mcp-integrate',
@@ -29,6 +31,9 @@ const API_CENTER_SCOPE_TITLES = new Map([
   ['/zh-CN/api-reference/local-server-recording/cpp', '本地服务端录制'],
   ['/zh-CN/api-reference/local-server-recording/java', '本地服务端录制'],
 ]);
+const API_CENTER_SCOPED_LOCAL_ROOT_PREFIXES = [
+  '/zh-CN/api-reference/online-ktv/',
+];
 const API_CENTER_SIDEBAR_LABELS = new Map([
   ['/zh-CN/api-reference/rtc-server-sdk/error-code', '通用错误码'],
 ]);
@@ -96,6 +101,48 @@ const ROOT_PRODUCT_ICONS = new Map([
   ['在线美术教学', 'Palette'],
   ['在线音乐教学', 'Music2'],
   ['平行操控', 'Gamepad2'],
+]);
+const API_REFERENCE_CATALOG_PRODUCT_IDS = new Map([
+  ['对话式 AI', 'conversational-ai'],
+  ['实时互动 RTC', 'rtc'],
+  ['实时消息 RTM', 'rtm'],
+  ['融合 CDN 直播', 'fusion-cdn'],
+  ['媒体流加速 RTSA', 'rtsa'],
+  ['互动白板', 'whiteboard'],
+  ['VoIP 呼叫服务', 'voip-callkit'],
+  ['水晶球', 'analytics'],
+  ['实时转录翻译', 'speech-to-text'],
+  ['云端录制', 'cloud-recording'],
+  ['本地服务端录制', 'local-server-recording'],
+  ['旁路推流', 'media-push'],
+  ['输入在线媒体流', 'media-pull'],
+  ['云端转码', 'cloud-transcoding'],
+  ['RTMP 网关', 'rtmp-gateway'],
+  ['RTC 服务端 SDK', 'rtc-server-sdk'],
+  ['PPT 转码服务', 'ppt-conversion-service'],
+  ['控制台', 'console'],
+  ['会议', 'meeting'],
+  ['在线 K 歌房', 'online-ktv'],
+  ['私密房', 'private-room'],
+  ['在线美术教学', 'online-art-teaching'],
+  ['在线音乐教学', 'online-music-teaching'],
+  ['平行操控', 'teleoperation'],
+  ['灵动课堂', 'flexible-classroom'],
+  ['弹幕玩法', 'danmaku'],
+]);
+const API_REFERENCE_CATALOG_SOLUTION_IDS = new Map([
+  ['Fastboard SDK', 'fastboard-sdk'],
+  ['Whiteboard SDK', 'whiteboard-sdk'],
+  ['场景化 API 方案', 'scenario-api'],
+  ['PaaS 方案', 'paas'],
+  ['UIKit 开源方案', 'uikit'],
+  ['场景化 API 默认 RTM 方案', 'scenario-api-rtm'],
+  ['场景化 API 自定义信令方案', 'scenario-api-custom-signaling'],
+]);
+const API_REFERENCE_CATALOG_SERVER_PRODUCTS = new Set([
+  'RTC 服务端 SDK',
+  '云端录制',
+  '本地服务端录制',
 ]);
 
 function unique(values) {
@@ -434,10 +481,10 @@ function createMetaAccumulator(
   };
   current.includeIndex ||= includeIndex;
   current.preserveExistingPages ||= preserveExistingPages;
-  const sidebarLabels = {
-    ...current.metaPatch.sidebarLabels,
-    ...metaPatch.sidebarLabels,
-  };
+  const sidebarLabels = { ...current.metaPatch.sidebarLabels };
+  for (const [route, label] of Object.entries(metaPatch.sidebarLabels ?? {})) {
+    if (!(route in sidebarLabels)) sidebarLabels[route] = label;
+  }
   current.metaPatch = {
     ...current.metaPatch,
     ...metaPatch,
@@ -528,6 +575,40 @@ function addRtcServerSdkScopeMetaPlans(metaByPath, entries) {
   }
 }
 
+function addOnlineKtvScopeMetaPlans(metaByPath, entries) {
+  const prefix = '/zh-CN/api-reference/online-ktv/';
+  const platformSolutions = new Map();
+  for (const entry of entries) {
+    if (!entry.targetRoute?.startsWith(prefix)) continue;
+    const [platform, solution] = entry.targetRoute
+      .slice(prefix.length)
+      .split('/');
+    if (!platform || !solution) continue;
+    const solutions = platformSolutions.get(platform) ?? [];
+    if (!solutions.includes(solution)) solutions.push(solution);
+    platformSolutions.set(platform, solutions);
+  }
+  if (platformSolutions.size === 0) return;
+
+  const platforms = [...platformSolutions.keys()];
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/online-ktv/meta.json`,
+    rootRoute: '/zh-CN/api-reference/online-ktv',
+    title: '在线 K 歌',
+    pages: platforms,
+    preserveExistingPages: true,
+  });
+  for (const [platform, solutions] of platformSolutions) {
+    createMetaAccumulator(metaByPath, {
+      metaPath: `${API_REFERENCE_ROOT}/online-ktv/${platform}/meta.json`,
+      rootRoute: `/zh-CN/api-reference/online-ktv/${platform}`,
+      title: platform === 'ios' ? 'iOS' : 'Android',
+      pages: solutions,
+      preserveExistingPages: true,
+    });
+  }
+}
+
 function addOpenApiLaneRootMetaPlans(metaByPath, lanes) {
   for (const lane of lanes) {
     const rootRoute = lane.parentUrl?.['zh-CN'];
@@ -594,6 +675,9 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
         },
       );
       const scopeTitle = API_CENTER_SCOPE_TITLES.get(root.rootRoute);
+      const scopesLocalRoot = API_CENTER_SCOPED_LOCAL_ROOT_PREFIXES.some(
+        (prefix) => root.rootRoute.startsWith(prefix),
+      );
       const useReferenceRootSidebar =
         REFERENCE_ROOT_SIDEBAR_ROUTES.has(root.rootRoute) ||
         root.focusedOpenApiSidebar;
@@ -604,6 +688,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
         metaPatch: {
           ...(Object.keys(sidebarLabels).length > 0 ? { sidebarLabels } : {}),
           ...(scopeTitle ? { title: scopeTitle } : {}),
+          ...(scopesLocalRoot ? { navScope: {} } : {}),
           ...(useReferenceRootSidebar ? { navScope: undefined } : {}),
         },
       });
@@ -612,6 +697,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
 
   addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
+  addOnlineKtvScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addOpenApiLaneRootMetaPlans(metaByPath, lanes);
 
   return { metaByPath, openApiEntries };
@@ -899,20 +985,13 @@ function productGroups(entries) {
   return groups;
 }
 
-function actionLabel(entry, productEntries) {
-  const qualifiers = [];
-  if (entry.useCase) qualifiers.push(entry.useCase);
-  const apiGroups = unique(productEntries.map((item) => item.apiGroup));
-  if (apiGroups.length > 1) {
-    qualifiers.push(entry.apiGroup === 'client' ? '客户端' : '服务端');
-  }
-  qualifiers.push(entry.label);
-  return qualifiers.join(' · ');
+function actionLabel(entry) {
+  return entry.label === 'RESTful' ? 'RESTful API' : entry.label;
 }
 
-function actionForEntry(entry, productEntries) {
+function actionForEntry(entry) {
   const href = entry.targetRoute ?? entry.legacyUrl;
-  return { label: actionLabel(entry, productEntries), href };
+  return { label: actionLabel(entry), href };
 }
 
 function rootActionLabel(entry, productEntries) {
@@ -969,9 +1048,7 @@ function buildOverviewBody(entries, live) {
             : group.product;
           const description =
             first.useCaseDescription ?? first.productDescription ?? '';
-          const actions = card.entries.map((entry) =>
-            actionForEntry(entry, group.entries),
-          );
+          const actions = card.entries.map((entry) => actionForEntry(entry));
           lines.push(
             `<SolutionCard title=${JSON.stringify(title)} description=${JSON.stringify(
               description,
@@ -996,12 +1073,227 @@ function rootMetaRoutes(pages) {
   });
 }
 
+function apiReferenceRootSegment(route) {
+  const prefix = '/zh-CN/api-reference/';
+  if (!route?.startsWith(prefix)) return null;
+  return route.slice(prefix.length).split('/')[0] || null;
+}
+
 function rootProductTitle(product) {
   return ROOT_PRODUCT_TITLES.get(product) ?? product;
 }
 
 function rootMetaLink(label, route) {
   return `[${String(label).replace(/([\\\]])/g, '\\$1')}](${route})`;
+}
+
+function parseRootMetaLink(page) {
+  const parsed = parseMetaLink(page);
+  if (!parsed?.label || !parsed.route) return null;
+  return { label: parsed.label, route: parsed.route };
+}
+
+function catalogGroupsFromData(data) {
+  const groups = [];
+  const byProduct = new Map();
+  for (const entry of data?.all ?? [
+    ...(data?.client ?? []),
+    ...(data?.server ?? []),
+  ]) {
+    if (!entry?.product || !entry?.sourceLabel || !entry?.href) continue;
+    let group = byProduct.get(entry.product);
+    if (!group) {
+      group = {
+        type: 'group',
+        title: entry.product,
+        pages: [],
+      };
+      byProduct.set(entry.product, group);
+      groups.push(group);
+    }
+    const page = rootMetaLink(entry.sourceLabel, entry.href);
+    if (!group.pages.includes(page)) group.pages.push(page);
+  }
+  return groups;
+}
+
+async function readExistingCatalogGroups(repoRoot) {
+  try {
+    const data = JSON.parse(
+      await fs.readFile(
+        path.resolve(repoRoot, API_REFERENCE_CATALOG_DATA),
+        'utf8',
+      ),
+    );
+    return catalogGroupsFromData(data);
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+function productGroupsFromRootMeta(pages) {
+  const productReferenceIndex = (pages ?? []).findIndex(
+    (page) =>
+      page === '---产品参考---' ||
+      (page &&
+        typeof page === 'object' &&
+        page.type === 'group' &&
+        page.title === '产品参考' &&
+        page.sidebarHidden === true),
+  );
+  if (productReferenceIndex < 0) return [];
+  return pages.slice(productReferenceIndex + 1).filter(visibleRootProductGroup);
+}
+
+export function buildApiReferenceCatalogGroups(
+  rootPages,
+  existingCatalogGroups,
+  entries,
+  apiReferenceRehome,
+) {
+  const currentProductGroups = productGroupsFromRootMeta(rootPages);
+  const preservedGroups =
+    currentProductGroups.length > 0
+      ? currentProductGroups
+      : existingCatalogGroups;
+  return reconcileRootProductGroups(
+    preservedGroups,
+    entries,
+    apiReferenceRehome,
+  ).filter(visibleRootProductGroup);
+}
+
+function platformIdForCatalogLabel(platform) {
+  const normalized = platform.toLowerCase();
+  if (platform === '设备端') return 'device';
+  if (platform === '操控端') return 'operator';
+  if (normalized.includes('restful')) return 'restful-api';
+  if (normalized === 'javascript' || normalized === 'react') return 'web';
+  if (normalized.startsWith('agent-')) return normalized.slice(6);
+  if (normalized.includes('react native')) return 'react-native';
+  if (normalized.includes('harmony')) return 'harmonyos';
+  if (normalized.includes('unreal') && normalized.includes('blueprint'))
+    return 'unreal-blueprint';
+  if (normalized.includes('unreal')) return 'unreal-cpp';
+  if (normalized.includes('electron')) return 'electron';
+  if (normalized.includes('objective-c')) return 'ios';
+  if (normalized.includes('c#')) return 'csharp';
+  if (normalized.includes('c++')) return 'cpp';
+  if (normalized.includes('小程序')) return 'mini-program';
+  return normalized
+    .replace(/\([^)]*\)/g, '')
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-');
+}
+
+function catalogLabelParts(sourceLabel) {
+  const parts = sourceLabel.split(' · ').map((part) => part.trim());
+  const knownSolution = API_REFERENCE_CATALOG_SOLUTION_IDS.has(parts[0]);
+  if (parts.length >= 3) {
+    const solutionTitle = parts[0];
+    const platform = parts.at(-2);
+    const label = parts.at(-1);
+    return {
+      label,
+      platform,
+      solutionId: API_REFERENCE_CATALOG_SOLUTION_IDS.get(solutionTitle),
+      solutionTitle,
+    };
+  }
+  if (parts.length === 2 && knownSolution) {
+    return {
+      label: parts[1],
+      platform: parts[1],
+      solutionId: API_REFERENCE_CATALOG_SOLUTION_IDS.get(parts[0]),
+      solutionTitle: parts[0],
+    };
+  }
+  if (parts.length === 2 && (parts[0] === '客户端' || parts[0] === '服务端')) {
+    return { label: parts[1], platform: parts[1] };
+  }
+  if (parts.length === 2) {
+    return { label: parts[1], platform: parts[0] };
+  }
+  return { label: sourceLabel, platform: sourceLabel };
+}
+
+function catalogEntryLabelParts(product, action) {
+  const projection = catalogLabelParts(action.label);
+  if (product === '对话式 AI' && action.label.startsWith('agent-')) {
+    const language = action.label.slice('agent-'.length);
+    const platform =
+      { go: 'Go', python: 'Python', typescript: 'TypeScript' }[language] ??
+      language;
+    return { label: 'Agent SDK', platform };
+  }
+  if (product === '对话式 AI' && action.route.includes('/restclient-')) {
+    return { label: 'REST Client', platform: projection.platform };
+  }
+  if (projection.label === 'API 参考') {
+    return { ...projection, label: projection.platform };
+  }
+  return projection;
+}
+
+function catalogApiType(product, sourceLabel, route, platform) {
+  if (
+    sourceLabel.includes('RESTful API') ||
+    platform.includes('RESTful') ||
+    route.includes('/api-ref/')
+  ) {
+    return 'restful-api';
+  }
+  if (
+    API_REFERENCE_CATALOG_SERVER_PRODUCTS.has(product) ||
+    sourceLabel.includes('服务端 API') ||
+    (product === '对话式 AI' && !['Android', 'iOS', 'Web'].includes(platform))
+  ) {
+    return 'server-sdk';
+  }
+  return 'client-api';
+}
+
+export function buildApiReferenceCatalogData(groups) {
+  const data = { all: [], client: [], server: [] };
+  for (const group of groups) {
+    const product = group.title;
+    const productId = API_REFERENCE_CATALOG_PRODUCT_IDS.get(product);
+    if (!productId) {
+      throw new Error(`Missing API catalog product id rule for ${product}.`);
+    }
+    for (const page of group.pages ?? []) {
+      const action = parseRootMetaLink(page);
+      if (!action) continue;
+      const projection = catalogEntryLabelParts(product, action);
+      if (!projection.platform) continue;
+      const apiType = catalogApiType(
+        product,
+        action.label,
+        action.route,
+        projection.platform,
+      );
+      const entry = {
+        apiType,
+        href: action.route,
+        label: projection.label,
+        platform: projection.platform,
+        platformId: platformIdForCatalogLabel(projection.platform),
+        product,
+        productId,
+        sourceLabel: action.label,
+        ...(projection.solutionId
+          ? {
+              solutionId: projection.solutionId,
+              solutionTitle: projection.solutionTitle,
+            }
+          : {}),
+      };
+      data.all.push(entry);
+      data[apiType === 'client-api' ? 'client' : 'server'].push(entry);
+    }
+  }
+  return data;
 }
 
 function visibleRootProductGroup(page) {
@@ -1044,14 +1336,25 @@ function preferredExistingRootLink(
   return labelMatch ? { ...labelMatch, useExistingRoute: false } : null;
 }
 
-function sourceEntryRootPages(existingPages, entries) {
+function sourceEntryRootPages(existingPages, entries, promotedLinks = []) {
+  const canonicalRoutes = new Set(
+    entries.map((entry) => entry.targetRoute).filter(Boolean),
+  );
+  const promotedDetailRoutes = new Set(
+    promotedLinks
+      .map((link) => link.route)
+      .filter((route) => route && !canonicalRoutes.has(route)),
+  );
+  const entryScopedPages = (existingPages ?? []).filter(
+    (page) => !promotedDetailRoutes.has(parseMetaLink(page)?.route),
+  );
   const consumed = new Set();
   const generated = [];
   for (const entry of entries) {
     if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(entry.targetRoute)) continue;
     const label = rootActionLabel(entry, entries);
     const existing = preferredExistingRootLink(
-      existingPages,
+      entryScopedPages,
       entry.targetRoute,
       label,
       consumed,
@@ -1066,7 +1369,7 @@ function sourceEntryRootPages(existingPages, entries) {
   const generatedLabels = new Set(
     generated.map((page) => parseMetaLink(page)?.label).filter(Boolean),
   );
-  for (const [index, page] of (existingPages ?? []).entries()) {
+  for (const [index, page] of entryScopedPages.entries()) {
     const parsed = parseMetaLink(page);
     if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(parsed?.route)) continue;
     const existingLabel = parsed?.label;
@@ -1098,9 +1401,16 @@ function reconcileRootProductGroups(pages, entries, apiReferenceRehome) {
     const landing = (apiReferenceRehome?.landingPages ?? []).find(
       (candidate) => candidate.title === group.product,
     );
-    const groupPages = landing
-      ? landing.links.map((link) => rootMetaLink(link.label, link.route))
-      : sourceEntryRootPages(existing?.pages ?? [], group.entries);
+    const groupPages = sourceEntryRootPages(
+      existing?.pages ?? [],
+      group.entries,
+      landing?.links,
+    );
+    if (groupPages.length === 0 && landing) {
+      groupPages.push(
+        ...landing.links.map((link) => rootMetaLink(link.label, link.route)),
+      );
+    }
     if (groupPages.length === 0) continue;
     if (existing) consumed.add(existing);
     projected.push({
@@ -1125,11 +1435,20 @@ function reconcileRootProductGroups(pages, entries, apiReferenceRehome) {
 /**
  * @param {any[]} pages
  * @param {any[]} entries
- * @param {{landingPages?: any[]} | null} [apiReferenceRehome]
+ * @param {{landingPages?: any[]} | null} [_apiReferenceRehome]
  * @returns {any[]}
  */
-export function scopedRootMetaPages(pages, entries, apiReferenceRehome = null) {
-  const preserved = [...(pages ?? [])];
+export function scopedRootMetaPages(
+  pages,
+  entries,
+  _apiReferenceRehome = null,
+) {
+  const preserved = [...(pages ?? [])].filter((page) => page !== 'overview');
+  const apiReferenceIndex = preserved.indexOf('api');
+  if (apiReferenceIndex > 0) {
+    preserved.splice(apiReferenceIndex, 1);
+    preserved.unshift('api');
+  }
   const productReferenceIndex = preserved.findIndex(
     (page) =>
       page === '---产品参考---' ||
@@ -1163,6 +1482,10 @@ export function scopedRootMetaPages(pages, entries, apiReferenceRehome = null) {
       ? ['whiteboard']
       : []),
     ...productReferencePages,
+    ...entries
+      .map((entry) => apiReferenceRootSegment(entry.targetRoute))
+      .filter(Boolean),
+    ...rootMetaRoutes(tail).map(apiReferenceRootSegment).filter(Boolean),
     ...tail.filter(
       (page) =>
         typeof page === 'string' &&
@@ -1170,13 +1493,6 @@ export function scopedRootMetaPages(pages, entries, apiReferenceRehome = null) {
         !page.startsWith('['),
     ),
   ]);
-  const visibleProductPages = tail.filter(
-    (page) =>
-      typeof page !== 'string' ||
-      page.startsWith('---') ||
-      page.startsWith('['),
-  );
-
   return [
     ...preserved.slice(0, productReferenceIndex),
     ...(structuralRoots.length > 0
@@ -1189,11 +1505,6 @@ export function scopedRootMetaPages(pages, entries, apiReferenceRehome = null) {
           },
         ]
       : []),
-    ...reconcileRootProductGroups(
-      visibleProductPages,
-      entries,
-      apiReferenceRehome,
-    ),
   ];
 }
 
@@ -1232,6 +1543,8 @@ function countMetaLinks(pages) {
 
 function navigationParityReport({
   apiReferenceRehome,
+  catalogData,
+  catalogGroups,
   entries,
   metaByPath,
   overviewBody,
@@ -1258,74 +1571,74 @@ function navigationParityReport({
         page.sidebarHidden !== true,
     )
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
-  const visibleRootRoutes = unique(
-    rootPages
-      .filter(
-        (page) =>
-          page &&
-          typeof page === 'object' &&
-          page.type === 'group' &&
-          page.sidebarHidden !== true,
-      )
-      .flatMap((page) => rootMetaRoutes(page.pages)),
-  );
   const visibleRootGroups = rootPages.filter(visibleRootProductGroup);
-  const expectedRootProductGroups = productGroups(internalEntries);
-  const expectedRootProductTitles = expectedRootProductGroups.map((group) =>
+  const manifestProductGroups = productGroups(internalEntries);
+  const manifestProductTitles = manifestProductGroups.map((group) =>
     rootProductTitle(group.product),
   );
   const visibleRootProductTitles = visibleRootGroups.map((page) => page.title);
-  const missingVisibleRootProducts = expectedRootProductTitles.filter(
-    (title) => !visibleRootProductTitles.includes(title),
+  const catalogEntries = catalogData.all ?? [
+    ...(catalogData.client ?? []),
+    ...(catalogData.server ?? []),
+  ];
+  const catalogProductTitles = unique(
+    catalogEntries.map((entry) => entry.product),
   );
-  const visibleSourceProductOrder = visibleRootProductTitles.filter((title) =>
-    expectedRootProductTitles.includes(title),
+  const catalogSourceActions = catalogGroups.flatMap((group) =>
+    (group.pages ?? [])
+      .map(parseRootMetaLink)
+      .filter(Boolean)
+      .map((action) => ({ ...action, product: group.title })),
   );
-  const rootProductOrderMatches =
-    JSON.stringify(visibleSourceProductOrder) ===
-    JSON.stringify(expectedRootProductTitles);
-  const expectedRootNavigationActions = expectedRootProductGroups.flatMap(
-    (group) => {
-      const landing = apiReferenceRehome.landingPages.find(
-        (candidate) => candidate.title === group.product,
-      );
-      return landing
-        ? landing.links.map((link) => ({
-            product: group.product,
-            label: link.label,
-            route: link.route,
-            exact: true,
-          }))
-        : group.entries
-            .filter((entry) => entry.targetRoute)
-            .map((entry) => ({
-              product: group.product,
-              label: rootActionLabel(entry, group.entries),
-              route: entry.targetRoute,
-              exact: false,
-            }));
-    },
-  );
-  const missingRootNavigationActions = expectedRootNavigationActions.filter(
+  const missingCatalogActions = catalogSourceActions.filter(
     (action) =>
-      !visibleRootRoutes.some(
-        (route) =>
-          route === action.route ||
-          (!action.exact && action.route.startsWith(`${route}/`)),
+      !catalogEntries.some(
+        (entry) =>
+          entry.product === action.product &&
+          entry.sourceLabel === action.label &&
+          entry.href === action.route,
       ),
   );
-  const visibleLandingGroups = apiReferenceRehome.landingPages.filter(
+  const catalogProductOrderMatches =
+    JSON.stringify(catalogProductTitles) ===
+    JSON.stringify(catalogGroups.map((group) => group.title));
+  const expectedManifestCatalogActions = manifestProductGroups.flatMap(
+    (group) =>
+      group.entries
+        .filter((entry) => entry.targetRoute)
+        .map((entry) => ({
+          product: group.product,
+          label: rootActionLabel(entry, group.entries),
+          route: entry.targetRoute,
+        })),
+  );
+  const missingManifestCatalogActions = expectedManifestCatalogActions.filter(
+    (action) =>
+      !catalogEntries.some(
+        (entry) =>
+          entry.product === rootProductTitle(action.product) &&
+          (entry.href === action.route ||
+            action.route.startsWith(`${entry.href}/`)),
+      ),
+  );
+  const catalogLandingGroups = apiReferenceRehome.landingPages.filter(
     (landing) =>
-      visibleRootRoutes.some(
-        (route) =>
-          route === landing.route || route.startsWith(`${landing.route}/`),
+      catalogEntries.some(
+        (entry) =>
+          entry.href === landing.route ||
+          entry.href.startsWith(`${landing.route}/`),
       ),
   );
-  const visibleLandingLinks = visibleLandingGroups.flatMap(
+  const catalogLandingLinks = catalogLandingGroups.flatMap(
     (landing) => landing.links,
   );
-  const missingVisibleLandingLinks = visibleLandingLinks.filter(
-    (link) => !visibleRootRoutes.includes(link.route),
+  const manifestCatalogRoutes = new Set(
+    expectedManifestCatalogActions.map((action) => action.route),
+  );
+  const promotedCatalogLandingLinks = catalogLandingLinks.filter(
+    (link) =>
+      !manifestCatalogRoutes.has(link.route) &&
+      catalogEntries.some((entry) => entry.href === link.route),
   );
   const visibleLeaves = internalEntries.flatMap((entry) => {
     const navigation =
@@ -1366,33 +1679,39 @@ function navigationParityReport({
       message: `${missingNavigationTargets.length} visible legacy navigation leaves have no new-site target.`,
     });
   }
-  if (missingVisibleLandingLinks.length > 0) {
+  if (visibleRootGroups.length > 0) {
     issues.push({
       severity: 'error',
-      code: 'missing-reference-landing-navigation-link',
-      message: `${missingVisibleLandingLinks.length} visible Reference Center landing links are missing from their product navigation groups.`,
+      code: 'reference-root-product-navigation-present',
+      message: `${visibleRootGroups.length} product groups remain in the Reference Center root sidebar.`,
     });
   }
-  if (missingVisibleRootProducts.length > 0) {
+  if (missingCatalogActions.length > 0) {
     issues.push({
       severity: 'error',
-      code: 'missing-reference-product-navigation-group',
-      message: `${missingVisibleRootProducts.length} internal API Center products are missing from the Reference Center navigation.`,
+      code: 'missing-api-reference-catalog-action',
+      message: `${missingCatalogActions.length} source catalog actions are missing from the API reference directory.`,
     });
   }
-  if (missingRootNavigationActions.length > 0) {
+  if (missingManifestCatalogActions.length > 0) {
     issues.push({
       severity: 'error',
-      code: 'missing-reference-entry-navigation-link',
-      message: `${missingRootNavigationActions.length} internal API Center actions are missing from the Reference Center navigation.`,
+      code: 'missing-manifest-api-reference-catalog-action',
+      message: `${missingManifestCatalogActions.length} internal API Center actions are missing from the API reference directory.`,
     });
   }
-  if (!rootProductOrderMatches) {
+  if (promotedCatalogLandingLinks.length > 0) {
     issues.push({
       severity: 'error',
-      code: 'reference-product-navigation-order',
-      message:
-        'Reference Center product groups do not preserve the live API Center product order.',
+      code: 'promoted-reference-detail-catalog-link',
+      message: `${promotedCatalogLandingLinks.length} platform-internal detail links were promoted into the API reference directory.`,
+    });
+  }
+  if (!catalogProductOrderMatches) {
+    issues.push({
+      severity: 'error',
+      code: 'api-reference-catalog-product-order',
+      message: 'The API reference directory does not preserve product order.',
     });
   }
   if (/https?:\/\/doc\.shengwang\.cn\/(?:doc|api-ref)\//.test(overviewBody)) {
@@ -1433,15 +1752,18 @@ function navigationParityReport({
       externalEntries: externalEntries.length,
       overviewActions,
       rootActions,
-      expectedVisibleRootProducts: expectedRootProductTitles.length,
       visibleRootProductGroups: visibleRootProductTitles.length,
-      missingVisibleRootProducts: missingVisibleRootProducts.length,
-      expectedRootNavigationActions: expectedRootNavigationActions.length,
-      missingRootNavigationActions: missingRootNavigationActions.length,
-      rootProductOrderMatches,
-      visibleReferenceLandingGroups: visibleLandingGroups.length,
-      visibleReferenceLandingLinks: visibleLandingLinks.length,
-      missingVisibleReferenceLandingLinks: missingVisibleLandingLinks.length,
+      catalogProductGroups: catalogProductTitles.length,
+      catalogActions: catalogEntries.length,
+      expectedCatalogActions: catalogSourceActions.length,
+      missingCatalogActions: missingCatalogActions.length,
+      expectedManifestCatalogProducts: manifestProductTitles.length,
+      expectedManifestCatalogActions: expectedManifestCatalogActions.length,
+      missingManifestCatalogActions: missingManifestCatalogActions.length,
+      catalogProductOrderMatches,
+      catalogReferenceLandingGroups: catalogLandingGroups.length,
+      catalogReferenceLandingLinks: catalogLandingLinks.length,
+      promotedCatalogReferenceLandingLinks: promotedCatalogLandingLinks.length,
       entryMetaFiles: metaByPath.size,
       entryMetaLinks: [...metaByPath.values()].reduce(
         (count, plan) => count + countMetaLinks(plan.pages),
@@ -1469,9 +1791,9 @@ function navigationParityReport({
     },
     missingEntryTargets,
     missingNavigationTargets,
-    missingVisibleRootProducts,
-    missingRootNavigationActions,
-    missingVisibleLandingLinks,
+    missingCatalogActions,
+    missingManifestCatalogActions,
+    promotedCatalogLandingLinks,
     missingHiddenTargets: supplementalNavigation.missingHiddenTargets,
     missingVisibleChildTargets:
       supplementalNavigation.missingVisibleChildTargets,
@@ -1494,15 +1816,18 @@ function navigationParityMarkdown(report) {
     `- External entries: ${report.counts.externalEntries}`,
     `- Overview actions: ${report.counts.overviewActions}`,
     `- Root navigation actions: ${report.counts.rootActions}`,
-    `- Expected visible root products: ${report.counts.expectedVisibleRootProducts}`,
     `- Visible root product groups: ${report.counts.visibleRootProductGroups}`,
-    `- Missing visible root products: ${report.counts.missingVisibleRootProducts}`,
-    `- Expected root navigation actions: ${report.counts.expectedRootNavigationActions}`,
-    `- Missing root navigation actions: ${report.counts.missingRootNavigationActions}`,
-    `- Root product order matches API Center: ${report.counts.rootProductOrderMatches ? 'yes' : 'no'}`,
-    `- Visible Reference Center landing groups: ${report.counts.visibleReferenceLandingGroups}`,
-    `- Visible Reference Center landing links: ${report.counts.visibleReferenceLandingLinks}`,
-    `- Missing visible Reference Center landing links: ${report.counts.missingVisibleReferenceLandingLinks}`,
+    `- API reference catalog product groups: ${report.counts.catalogProductGroups}`,
+    `- API reference catalog actions: ${report.counts.catalogActions}`,
+    `- Expected catalog actions: ${report.counts.expectedCatalogActions}`,
+    `- Missing catalog actions: ${report.counts.missingCatalogActions}`,
+    `- Expected manifest catalog products: ${report.counts.expectedManifestCatalogProducts}`,
+    `- Expected manifest catalog actions: ${report.counts.expectedManifestCatalogActions}`,
+    `- Missing manifest catalog actions: ${report.counts.missingManifestCatalogActions}`,
+    `- Catalog product order matches source: ${report.counts.catalogProductOrderMatches ? 'yes' : 'no'}`,
+    `- Catalog Reference Center landing groups: ${report.counts.catalogReferenceLandingGroups}`,
+    `- Catalog Reference Center landing links: ${report.counts.catalogReferenceLandingLinks}`,
+    `- Promoted platform-internal catalog links: ${report.counts.promotedCatalogReferenceLandingLinks}`,
     `- Entry meta files: ${report.counts.entryMetaFiles}`,
     `- Entry meta links: ${report.counts.entryMetaLinks}`,
     `- Visible legacy navigation leaves: ${report.counts.visibleNavigationLeaves}`,
@@ -1618,6 +1943,14 @@ export async function runApiCenterNavigation({
     'utf8',
   );
   const rootMeta = await readMeta(repoRoot, rootMetaPath, null);
+  const existingCatalogGroups = await readExistingCatalogGroups(repoRoot);
+  const catalogGroups = buildApiReferenceCatalogGroups(
+    rootMeta.pages,
+    existingCatalogGroups,
+    entries,
+    apiReferenceRehome,
+  );
+  const catalogData = buildApiReferenceCatalogData(catalogGroups);
   const rootPages = scopedRootMetaPages(
     rootMeta.pages,
     entries,
@@ -1635,6 +1968,14 @@ export async function runApiCenterNavigation({
     sourcePath: manifestPath,
     sourceUrl: API_CENTER_URL,
     type: 'navigation-meta',
+    adoptExisting: true,
+  });
+  run.planFile({
+    targetPath: API_REFERENCE_CATALOG_DATA,
+    contents: serializeJson({ all: catalogData.all }),
+    sourcePath: manifestPath,
+    sourceUrl: API_CENTER_URL,
+    type: 'navigation-data',
     adoptExisting: true,
   });
 
@@ -1685,6 +2026,8 @@ export async function runApiCenterNavigation({
   }
   const parity = navigationParityReport({
     apiReferenceRehome,
+    catalogData,
+    catalogGroups,
     entries,
     metaByPath,
     overviewBody,

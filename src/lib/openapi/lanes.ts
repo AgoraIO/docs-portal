@@ -1631,7 +1631,7 @@ export function getOpenApiPrerenderPaths() {
 export function getOpenApiReferenceBackLink(locale: AppLocale) {
   return locale === 'zh-CN'
     ? {
-        href: '/zh-CN/api-reference/overview',
+        href: '/zh-CN/api-reference/api',
         label: '参考中心',
       }
     : {

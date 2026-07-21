@@ -22,9 +22,7 @@ export function ApiReferenceCards({
   type: ApiReferenceCardType | 'all';
 }) {
   const entries =
-    type === 'all'
-      ? [...zhCNApiReferenceCards.client, ...zhCNApiReferenceCards.server]
-      : zhCNApiReferenceCards[type];
+    type === 'all' ? zhCNApiReferenceCards.all : zhCNApiReferenceCards[type];
   const [productId, setProductId] = useState('all');
   const [platformId, setPlatformId] = useState('all');
   const [apiType, setApiType] = useState<ApiReferenceTypeFilter>('all');
@@ -333,10 +331,16 @@ function ApiReferenceEntrySection({
 
 function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
   const solutionLabel = entry.solutionTitle ? `${entry.solutionTitle} ` : '';
+  const entryLabel = entry.label === entry.platform ? '' : ` ${entry.label}`;
+  const apiTypeLabel = apiTypeLabels[entry.apiType];
+  const typeLabel =
+    entry.platform === apiTypeLabel || entry.label === apiTypeLabel
+      ? ''
+      : ` ${apiTypeLabel}`;
 
   return (
     <a
-      aria-label={`${entry.product} ${solutionLabel}${entry.platform} ${apiTypeLabels[entry.apiType]}`}
+      aria-label={`${entry.product} ${solutionLabel}${entry.platform}${entryLabel}${typeLabel}`}
       className="group inline-flex min-h-14 max-w-full items-center gap-3 rounded-md border border-border bg-background px-3.5 py-2.5 text-sm transition-colors hover:border-foreground/20 hover:bg-background/80"
       href={entry.href}
     >
@@ -359,7 +363,14 @@ function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
           src={iconSrc}
         />
       </span>
-      <span className="truncate text-sm font-medium">{entry.platform}</span>
+      <span className="flex min-w-0 flex-col">
+        <span className="truncate text-sm font-medium">{entry.platform}</span>
+        {entry.label !== entry.platform ? (
+          <span className="truncate text-xs text-muted-foreground">
+            {entry.label}
+          </span>
+        ) : null}
+      </span>
     </span>
   );
 }

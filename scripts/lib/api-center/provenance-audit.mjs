@@ -711,9 +711,8 @@ export async function auditApiCenterProvenance({
   }
 
   const preservedRootItems = [
-    'overview',
-    'sdks',
     'api',
+    'sdks',
     '---指南---',
     '[示例配方](/zh-CN/api-reference/recipes)',
     'faq',
@@ -739,6 +738,22 @@ export async function auditApiCenterProvenance({
         ...issue(
           'root-navigation-copy-drift',
           'Non-API Center root navigation copy must be preserved from the base branch.',
+          { targetPath: 'content/docs/zh-CN/api-reference/meta.json' },
+        ),
+        axis: 'source-provenance',
+      });
+    }
+    const visibleRootItems = currentRoot.pages.filter(
+      (item) => typeof item === 'string',
+    );
+    if (
+      currentRoot.pages.includes('overview') ||
+      JSON.stringify(visibleRootItems) !== JSON.stringify(preservedRootItems)
+    ) {
+      errors.push({
+        ...issue(
+          'root-navigation-order-drift',
+          'The Reference Center root must start with API Reference and omit the API Center entry.',
           { targetPath: 'content/docs/zh-CN/api-reference/meta.json' },
         ),
         axis: 'source-provenance',

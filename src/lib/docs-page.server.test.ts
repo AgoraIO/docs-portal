@@ -2122,7 +2122,7 @@ Web body
     );
 
     expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/overview',
+      backHref: '/zh-CN/api-reference/api',
       backLabel: '参考中心',
     });
 
@@ -2136,7 +2136,7 @@ Web body
     );
 
     expect(unscopedPayload.sidebarHeader).toEqual({
-      backHref: '/zh-CN/api-reference/overview',
+      backHref: '/zh-CN/api-reference/api',
       backLabel: '参考中心',
       title: 'RESTful API',
     });

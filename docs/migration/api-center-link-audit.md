@@ -19,7 +19,8 @@
 - `generated-html`: 4757
 - `manual-mdx`: 225
 - `navigation`: 6
-- `navigation-meta`: 102
+- `navigation-data`: 1
+- `navigation-meta`: 104
 
 ## Warning explanations
 

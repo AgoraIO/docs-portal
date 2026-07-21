@@ -225,6 +225,7 @@ function reportMarkdown(report) {
     `- Owned files: ${report.counts.ownedFiles}`,
     `- Generated MDX pages: ${report.counts.mdxFiles}`,
     `- Generated navigation metas: ${report.counts.metaFiles}`,
+    `- Generated navigation data files: ${report.counts.navigationDataFiles}`,
     `- Generated assets: ${report.counts.assetFiles}`,
     `- Errors: ${report.counts.errors}`,
     `- Warnings: ${report.counts.warnings}`,
@@ -280,6 +281,7 @@ export async function auditApiCenterMigration({
   let mdxFiles = 0;
   let assetFiles = 0;
   let metaFiles = 0;
+  let navigationDataFiles = 0;
 
   for (const record of ownership.files ?? []) {
     const targetPath = record.targetPath;
@@ -313,6 +315,35 @@ export async function auditApiCenterMigration({
           issue({
             code: 'asset-output-path',
             message: 'Generated asset is outside the API Center asset root.',
+            targetPath,
+          }),
+        );
+      }
+      continue;
+    }
+    if (record.type === 'navigation-data') {
+      navigationDataFiles += 1;
+      try {
+        const data = JSON.parse(contents.toString('utf8'));
+        if (
+          targetPath !==
+            'src/components/docs-overview/api-reference-cards-data.zh-cn.json' ||
+          !Array.isArray(data.all)
+        ) {
+          issues.push(
+            issue({
+              code: 'navigation-data-shape',
+              message:
+                'Generated API reference navigation data has an unexpected path or shape.',
+              targetPath,
+            }),
+          );
+        }
+      } catch (error) {
+        issues.push(
+          issue({
+            code: 'navigation-data-parse',
+            message: `Invalid navigation data JSON: ${error.message}`,
             targetPath,
           }),
         );
@@ -401,6 +432,7 @@ export async function auditApiCenterMigration({
       mdxFiles,
       assetFiles,
       metaFiles,
+      navigationDataFiles,
       errors: issues.filter((item) => item.severity === 'error').length,
       warnings: issues.filter((item) => item.severity === 'warning').length,
     },

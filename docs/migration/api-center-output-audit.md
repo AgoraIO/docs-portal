@@ -5,6 +5,7 @@
 - Owned files: 4799
 - Generated MDX pages: 4757
 - Generated navigation metas: 0
+- Generated navigation data files: 0
 - Generated assets: 42
 - Errors: 0
 - Warnings: 0

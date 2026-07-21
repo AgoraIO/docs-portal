@@ -40,35 +40,37 @@ async function loadApiReferencePayload(slugs: string[]) {
 }
 
 describe('API Center scoped sidebars', () => {
-  it('keeps hidden implementation roots out of the Reference sidebar', async () => {
+  it('keeps product entries out of the Reference sidebar', async () => {
     const sidebar = await loadApiReferenceSidebar(['overview']);
     const titles = collectTitles(sidebar);
     const rootTitles = sidebar.flatMap((node) =>
       node.title ? [node.title] : [],
     );
     expect(titles.filter((title) => title === 'API 参考')).toHaveLength(1);
-    expect(titles.filter((title) => title === '实时互动 RTC')).toHaveLength(1);
-    expect(titles.filter((title) => title === '实时消息 RTM')).toHaveLength(1);
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        'API 参考',
+        'SDK 下载',
+        '指南',
+        '示例配方',
+        '常见问题',
+      ]),
+    );
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
-    expect(rootTitles).toEqual(
+    expect(titles).not.toEqual(
       expect.arrayContaining([
         '对话式 AI',
         '实时互动 RTC',
         '实时消息 RTM',
         '互动白板',
-        '云端录制',
-        '本地服务端录制',
-        'RTC 服务端 SDK',
         '灵动课堂',
       ]),
     );
-    expect(
-      collectTitles(findNode(sidebar, '对话式 AI')?.children ?? []),
-    ).toEqual(expect.arrayContaining(['agent-go', 'Android', 'RESTful API']));
+    expect(rootTitles).toEqual(['API 参考', 'SDK 下载', '指南']);
   });
 
-  it('keeps the same flat product labels on the Recipes page', async () => {
+  it('keeps the same non-product navigation on the Recipes page', async () => {
     const sidebar = await loadApiReferenceSidebar(['recipes']);
     const titles = collectTitles(sidebar);
     const rootTitles = sidebar.flatMap((node) =>
@@ -77,15 +79,16 @@ describe('API Center scoped sidebars', () => {
 
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
-    expect(rootTitles).toEqual(
+    expect(titles).toEqual(
       expect.arrayContaining([
-        '对话式 AI',
-        '实时互动 RTC',
-        '实时消息 RTM',
-        '互动白板',
-        '灵动课堂',
+        'API 参考',
+        'SDK 下载',
+        '指南',
+        '示例配方',
+        '常见问题',
       ]),
     );
+    expect(rootTitles).toEqual(['API 参考', 'SDK 下载', '指南']);
   });
 
   it('uses the generated RTC Android current-version categories', async () => {
@@ -108,14 +111,15 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toContain('参考概览');
   });
 
-  it('keeps a single-page Agent SDK entry in the Reference root sidebar', async () => {
+  it('keeps a single-page Agent SDK entry out of the Reference root sidebar', async () => {
     const sidebar = await loadApiReferenceSidebar([
       'conversational-ai',
       'agent-go',
     ]);
     const titles = collectTitles(sidebar);
 
-    expect(titles).toContain('实时互动 RTC');
+    expect(titles).toContain('API 参考');
+    expect(titles).not.toContain('实时互动 RTC');
     expect(titles).not.toContain('创建对话式智能体');
   });
 
@@ -157,7 +161,7 @@ describe('API Center scoped sidebars', () => {
       expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
     );
     expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/overview',
+      backHref: '/zh-CN/api-reference/api',
       backLabel: '参考中心',
       title: 'RESTful API',
     });
@@ -178,7 +182,7 @@ describe('API Center scoped sidebars', () => {
       expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
     );
     expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/overview',
+      backHref: '/zh-CN/api-reference/api',
       backLabel: '参考中心',
       title: 'RESTful API',
     });
@@ -188,7 +192,7 @@ describe('API Center scoped sidebars', () => {
     'android',
     'ios',
     'web',
-  ])('keeps the single-page Fastboard %s API in the Reference root sidebar', async (platform) => {
+  ])('keeps the single-page Fastboard %s API out of the Reference root sidebar', async (platform) => {
     const payload = await loadApiReferencePayload([
       'whiteboard',
       'fastboard',
@@ -196,7 +200,8 @@ describe('API Center scoped sidebars', () => {
     ]);
     const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-    expect(titles).toContain('实时互动 RTC');
+    expect(titles).toContain('API 参考');
+    expect(titles).not.toContain('实时互动 RTC');
     expect(titles).not.toContain('Fastboard SDK');
     expect(payload.sidebarHeader).toBeUndefined();
   });
@@ -224,7 +229,7 @@ describe('API Center scoped sidebars', () => {
     const payload = await loadApiReferencePayload(route);
 
     expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/overview',
+      backHref: '/zh-CN/api-reference/api',
       backLabel: '参考中心',
       title,
     });
@@ -429,5 +434,34 @@ describe('API Center scoped sidebars', () => {
       ]),
     );
     expect(toc.every((item) => !item.title.includes('◆'))).toBe(true);
+  });
+
+  it.each([
+    'android',
+    'ios',
+  ])('keeps the online KTV %s entry scoped to its three API documents', async (platform) => {
+    const payload = await loadApiReferencePayload([
+      'online-ktv',
+      platform,
+      'ktv-scenario',
+      'api',
+      'ktv-api',
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        '场景化 API',
+        '歌词打分组件 API',
+        '实时互动 API',
+        '服务端 API',
+      ]),
+    );
+    expect(titles.filter((title) => title === '场景化 API')).toHaveLength(1);
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: '参考中心',
+      title: platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
+    });
   });
 });

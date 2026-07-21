@@ -7,6 +7,8 @@ import { auditDocsLinks } from './audit-doc-links.mjs';
 import { buildApiReferenceRehomePlan } from './lib/api-center/api-reference-ownership.mjs';
 import { auditApiCenterMigration } from './lib/api-center/migration-audit.mjs';
 import {
+  buildApiReferenceCatalogData,
+  buildApiReferenceCatalogGroups,
   runApiCenterNavigation,
   scopedRootMetaPages,
 } from './lib/api-center/navigation-runner.mjs';
@@ -26,7 +28,44 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
-  it('projects every rehomed private-room API leaf into the visible product group', () => {
+  it('keeps the online KTV platform API pages in a scoped sidebar', async () => {
+    const solutionMeta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          'content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+    const productMeta = JSON.parse(
+      await fs.readFile(
+        path.resolve('content/docs/zh-CN/api-reference/online-ktv/meta.json'),
+        'utf8',
+      ),
+    );
+    const platformMeta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          'content/docs/zh-CN/api-reference/online-ktv/android/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+
+    expect(productMeta.pages).toContain('android');
+    expect(platformMeta.pages).toContain('ktv-scenario');
+    expect(solutionMeta.navScope).toEqual({});
+    expect(
+      solutionMeta.sidebarLabels[
+        '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api'
+      ],
+    ).toBe('场景化 API');
+    expect(solutionMeta.pages).toEqual(
+      expect.arrayContaining(['api/ktv-api', 'api/lyrics-api', 'api/rtc-api']),
+    );
+  });
+
+  it('moves every rehomed private-room API leaf from the root sidebar into the API catalog', () => {
     const rootRoute = '/zh-CN/api-reference/private-room';
     const useCases = [
       ['场景化 API 默认 RTM 方案', 'rtm'],
@@ -45,6 +84,7 @@ describe('API Center navigation runner', () => {
           productDescription: '支持陌生人社交和即时通讯。',
           useCase,
           label,
+          targetRoute: `${rootRoute}/${platform}/${sourceVariant}/api/call-api`,
           pageGraph: {
             pages: [
               { label: 'CallAPI', url: callUrl },
@@ -73,27 +113,15 @@ describe('API Center navigation runner', () => {
     );
     const manifest = { entries, pageEvidence };
     const rehome = buildApiReferenceRehomePlan(manifest);
-    const pages = scopedRootMetaPages(
-      [
-        'overview',
-        '---产品参考---',
-        'private-room',
-        {
-          type: 'group',
-          title: '私密房',
-          pages: [`[Android](${rootRoute}/android)`, `[iOS](${rootRoute}/ios)`],
-        },
-      ],
+    const initialPages = ['overview', '---产品参考---', 'private-room'];
+    const catalogGroups = buildApiReferenceCatalogGroups(
+      initialPages,
+      [],
       entries,
       rehome,
     );
-    const privateRoom = pages.find(
-      (page: unknown) =>
-        page !== null &&
-        typeof page === 'object' &&
-        'title' in page &&
-        page.title === '私密房',
-    );
+    const catalog = buildApiReferenceCatalogData(catalogGroups);
+    const pages = scopedRootMetaPages(initialPages, entries, rehome);
 
     expect(rehome.landingPages).toEqual([
       expect.objectContaining({
@@ -134,17 +162,42 @@ describe('API Center navigation runner', () => {
         ],
       }),
     ]);
-    expect(privateRoom).toMatchObject({
-      type: 'group',
-      title: '私密房',
-      pages: rehome.landingPages[0].links.map(
-        (link: { label: string; route: string }) =>
-          `[${link.label}](${link.route})`,
+    expect(
+      pages.some(
+        (page: unknown) =>
+          page !== null &&
+          typeof page === 'object' &&
+          'title' in page &&
+          page.title === '私密房',
       ),
-    });
+    ).toBe(false);
+    expect(catalog.client).toHaveLength(4);
+    expect(
+      catalog.client.map((entry: { href: string; sourceLabel: string }) => ({
+        label: entry.sourceLabel,
+        route: entry.href,
+      })),
+    ).toEqual([
+      {
+        label: '场景化 API 默认 RTM 方案 · Android',
+        route: `${rootRoute}/android/rtm/api/call-api`,
+      },
+      {
+        label: '场景化 API 默认 RTM 方案 · iOS',
+        route: `${rootRoute}/ios/rtm/api/call-api`,
+      },
+      {
+        label: '场景化 API 自定义信令方案 · Android',
+        route: `${rootRoute}/android/custom-signaling/api/call-api`,
+      },
+      {
+        label: '场景化 API 自定义信令方案 · iOS',
+        route: `${rootRoute}/ios/custom-signaling/api/call-api`,
+      },
+    ]);
   });
 
-  it('adds every internal API Center product in source order without dropping existing reference groups', () => {
+  it('keeps non-product root entries and moves products into the API catalog in source order', () => {
     const rtcRoute = '/zh-CN/api-reference/rtc/android/rtc-api-overview';
     const rtsaRoute = '/zh-CN/api-reference/rtsa/c/overview';
     const rtmCppRoute =
@@ -188,41 +241,45 @@ describe('API Center navigation runner', () => {
         urlFamily: 'doc',
       },
     ];
-    const pages = scopedRootMetaPages(
-      [
-        'overview',
-        '---产品参考---',
-        'rtc',
-        {
-          type: 'group',
-          title: '实时消息 RTM',
-          pages: [
-            `[C++](${rtmCppRoute})`,
-            '[C++](/zh-CN/api-reference/rtm/cpp/configuration)',
-            '[React Native](/zh-CN/api-reference/rtm/react-native/configuration)',
-            '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
-          ],
-        },
-        {
-          type: 'group',
-          title: '实时互动 RTC',
-          icon: 'AudioLines',
-          pages: [
-            `[Android](${rtcRoute})`,
-            '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
-            '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
-          ],
-        },
-        {
-          type: 'group',
-          title: '灵动课堂',
-          pages: [
-            '[Android](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)',
-          ],
-        },
-      ],
+    const initialPages = [
+      'overview',
+      '---产品参考---',
+      'rtc',
+      {
+        type: 'group',
+        title: '实时消息 RTM',
+        pages: [
+          `[C++](${rtmCppRoute})`,
+          '[C++](/zh-CN/api-reference/rtm/cpp/configuration)',
+          '[React Native](/zh-CN/api-reference/rtm/react-native/configuration)',
+          '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
+        ],
+      },
+      {
+        type: 'group',
+        title: '实时互动 RTC',
+        icon: 'AudioLines',
+        pages: [
+          `[Android](${rtcRoute})`,
+          '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
+          '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
+        ],
+      },
+      {
+        type: 'group',
+        title: '灵动课堂',
+        pages: [
+          '[Android](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)',
+        ],
+      },
+    ];
+    const catalogGroups = buildApiReferenceCatalogGroups(
+      initialPages,
+      [],
       entries,
+      null,
     );
+    const pages = scopedRootMetaPages(initialPages, entries);
     const visibleGroups = pages.filter(
       (page): page is { title: string; pages: string[] } =>
         page !== null &&
@@ -231,31 +288,32 @@ describe('API Center navigation runner', () => {
         page.title !== '产品参考',
     );
 
-    expect(visibleGroups.map((page) => page.title)).toEqual([
+    expect(visibleGroups).toEqual([]);
+    expect(catalogGroups.map((page) => page.title)).toEqual([
       '实时互动 RTC',
       '实时消息 RTM',
       '媒体流加速 RTSA',
       '平行操控',
       '灵动课堂',
     ]);
-    expect(visibleGroups[0].pages).toEqual([
+    expect(catalogGroups[0].pages).toEqual([
       `[Android](${rtcRoute})`,
       '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
       '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
     ]);
-    expect(visibleGroups[1].pages).toEqual([
+    expect(catalogGroups[1].pages).toEqual([
       `[C++](${rtmCppRoute})`,
       '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
     ]);
-    expect(visibleGroups[2]).toMatchObject({
+    expect(catalogGroups[2]).toMatchObject({
       title: '媒体流加速 RTSA',
       pages: [`[C](${rtsaRoute})`],
     });
-    expect(visibleGroups[3]).toMatchObject({
+    expect(catalogGroups[3]).toMatchObject({
       title: '平行操控',
       pages: [`[设备端](${teleoperationRoute})`],
     });
-    expect(visibleGroups.some((page) => page.title === '即时通讯 IM')).toBe(
+    expect(catalogGroups.some((page) => page.title === '即时通讯 IM')).toBe(
       false,
     );
   });
@@ -651,12 +709,26 @@ describe('API Center navigation runner', () => {
         'utf8',
       ),
     );
+    const catalog = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'src/components/docs-overview/api-reference-cards-data.zh-cn.json',
+        ),
+        'utf8',
+      ),
+    );
 
     expect(result.report.counts).toMatchObject({ errors: 0, warnings: 0 });
     expect(result.parity.counts).toMatchObject({
       entries: 5,
       overviewActions: 5,
-      rootActions: 4,
+      rootActions: 0,
+      visibleRootProductGroups: 0,
+      catalogActions: 4,
+      expectedCatalogActions: 4,
+      missingCatalogActions: 0,
+      missingManifestCatalogActions: 0,
       visibleNavigationLeaves: 4,
       missingNavigationTargets: 0,
       errors: 0,
@@ -669,12 +741,16 @@ describe('API Center navigation runner', () => {
     expect(overview).toContain('查看声网 API 的详细信息。');
     expect(overview).not.toContain('API 参考概览');
     expect(overview).not.toContain('按旧站 API Center');
+    expect(overview).not.toContain('客户端 ·');
+    expect(overview).not.toContain('服务端 ·');
     expect(overview).toContain('https://im.shengwang.cn/docs/sdk/web.html');
     expect(rootMeta.root).toBe(true);
     expect(rootMeta.pages).toContain('api');
     expect(
       rootMeta.pages.filter((page: unknown) => typeof page === 'string'),
-    ).toEqual(['overview', 'api']);
+    ).toEqual(['api']);
+    expect(rootMeta.pages[0]).toBe('api');
+    expect(rootMeta.pages).not.toContain('overview');
     expect(rootMeta.pages).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -695,17 +771,19 @@ describe('API Center navigation runner', () => {
     expect(rootMeta.pages).not.toContain('rtc');
     expect(rootMeta.pages).not.toContain('whiteboard');
     expect(rootMeta.pages).not.toContain('cloud-recording');
-    expect(rootMeta.pages).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ title: '实时互动 RTC' }),
-      ]),
-    );
-    expect(rootMeta.pages).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ title: '实时转录翻译' }),
-        expect.objectContaining({ title: '互动白板' }),
-      ]),
-    );
+    expect(
+      rootMeta.pages.filter(
+        (page: unknown) =>
+          page !== null &&
+          typeof page === 'object' &&
+          'sidebarHidden' in page &&
+          page.sidebarHidden !== true,
+      ),
+    ).toEqual([]);
+    expect(catalog.all).toHaveLength(4);
+    expect(
+      catalog.all.map((entry: { product: string }) => entry.product),
+    ).toEqual(['实时互动 RTC', '实时互动 RTC', '实时转录翻译', '互动白板']);
     expect(rtcMeta.pages).toEqual([
       'overview',
       { type: 'group', title: '核心接口', pages: ['client'] },

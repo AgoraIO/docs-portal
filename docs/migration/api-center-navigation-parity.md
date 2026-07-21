@@ -8,18 +8,21 @@
 - Internal entries: 81
 - External entries: 10
 - Overview actions: 91
-- Root navigation actions: 109
-- Expected visible root products: 24
-- Visible root product groups: 26
-- Missing visible root products: 0
-- Expected root navigation actions: 95
-- Missing root navigation actions: 0
-- Root product order matches API Center: yes
-- Visible Reference Center landing groups: 4
-- Visible Reference Center landing links: 34
-- Missing visible Reference Center landing links: 0
-- Entry meta files: 101
-- Entry meta links: 1345
+- Root navigation actions: 0
+- Visible root product groups: 0
+- API reference catalog product groups: 26
+- API reference catalog actions: 95
+- Expected catalog actions: 95
+- Missing catalog actions: 0
+- Expected manifest catalog products: 24
+- Expected manifest catalog actions: 81
+- Missing manifest catalog actions: 0
+- Catalog product order matches source: yes
+- Catalog Reference Center landing groups: 4
+- Catalog Reference Center landing links: 34
+- Promoted platform-internal catalog links: 0
+- Entry meta files: 103
+- Entry meta links: 1353
 - Visible legacy navigation leaves: 1326
 - Visible supplemental entry pages: 2
 - Visible supplemental child pages: 22
@@ -39,7 +42,7 @@
 ## Migration types
 
 - `overview-entry`: 91
-- `navigation-meta`: 101
+- `navigation-meta`: 103
 
 ## Warning explanations
 
