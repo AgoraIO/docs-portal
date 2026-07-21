@@ -20,12 +20,26 @@ export type OpenApiParameterLocation = 'cookie' | 'header' | 'path' | 'query';
 
 export type OpenApiParameter = {
   description?: string;
+  docsCallouts?: OpenApiDocsFragment[];
   example?: OpenApiJsonValue;
   examples?: Record<string, { value?: OpenApiJsonValue }>;
   in: OpenApiParameterLocation;
   name: string;
   required: boolean;
   schema?: OpenApiJsonValue;
+};
+
+export type OpenApiDocsFragment = {
+  markdown: string;
+  position?: string;
+  title?: string;
+  type?: string;
+};
+
+export type OpenApiCodeSample = {
+  label?: string;
+  lang?: string;
+  source: string;
 };
 
 export type NormalizedOpenApiMedia = {
@@ -40,7 +54,10 @@ export type OpenApiResponse = {
 };
 
 export type NormalizedOpenApiOperation = {
+  codeSamples: OpenApiCodeSample[];
   description?: string;
+  docsCallouts: OpenApiDocsFragment[];
+  docsSections: OpenApiDocsFragment[];
   method: OpenApiHttpMethod;
   operationId: string;
   parameters: OpenApiParameter[];
@@ -70,6 +87,7 @@ const HTTP_METHODS = new Set([
 
 type OpenApiDocument = {
   paths?: Record<string, Record<string, unknown>>;
+  security?: unknown;
   servers?: { description?: string; url: string }[];
 };
 
@@ -132,7 +150,10 @@ async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
       }
 
       operations.push({
+        codeSamples: normalizeCodeSamples(operation['x-codeSamples']),
         description: stringValue(operation.description),
+        docsCallouts: normalizeDocsFragments(operation['x-docs-callouts']),
+        docsSections: normalizeDocsFragments(operation['x-docs-sections']),
         method: method.toUpperCase() as NormalizedOpenApiOperation['method'],
         operationId,
         parameters: arrayValue(operation.parameters).flatMap((parameter) =>
@@ -145,9 +166,9 @@ async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
         ),
         responses: normalizeResponses(operation.responses, document),
         security:
-          operation.security === undefined
+          operation.security === undefined && document.security === undefined
             ? undefined
-            : toOpenApiJsonValue(operation.security),
+            : toOpenApiJsonValue(operation.security ?? document.security),
         servers:
           normalizeServers(operation.servers) ??
           normalizeServers(pathItem.servers) ??
@@ -336,11 +357,14 @@ function normalizeParameter(
     return [];
   }
 
+  const docsCallouts = normalizeDocsFragments(value['x-docs-callouts']);
+
   return [
     {
       ...(typeof value.description === 'string'
         ? { description: value.description }
         : {}),
+      ...(docsCallouts.length > 0 ? { docsCallouts } : {}),
       ...(value.example !== undefined
         ? { example: toOpenApiJsonValue(value.example) }
         : {}),
@@ -357,6 +381,49 @@ function normalizeParameter(
           }),
     },
   ];
+}
+
+function normalizeDocsFragments(value: unknown): OpenApiDocsFragment[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((item) => {
+    if (!isRecord(item) || typeof item.markdown !== 'string') {
+      return [];
+    }
+
+    return [
+      {
+        markdown: item.markdown,
+        ...(typeof item.position === 'string'
+          ? { position: item.position }
+          : {}),
+        ...(typeof item.title === 'string' ? { title: item.title } : {}),
+        ...(typeof item.type === 'string' ? { type: item.type } : {}),
+      },
+    ];
+  });
+}
+
+function normalizeCodeSamples(value: unknown): OpenApiCodeSample[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((item) => {
+    if (!isRecord(item) || typeof item.source !== 'string') {
+      return [];
+    }
+
+    return [
+      {
+        source: item.source,
+        ...(typeof item.label === 'string' ? { label: item.label } : {}),
+        ...(typeof item.lang === 'string' ? { lang: item.lang } : {}),
+      },
+    ];
+  });
 }
 
 function normalizeExamples(

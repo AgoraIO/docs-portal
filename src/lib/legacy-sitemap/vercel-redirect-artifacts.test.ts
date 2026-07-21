@@ -57,7 +57,7 @@ describe('legacy redirect Vercel artifacts', () => {
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
     expect(vercelConfig.routes).toContainEqual({
-      dest: '/$1/$2.md',
+      dest: '/en/$1.md',
       has: [
         {
           key: 'Accept',
@@ -65,8 +65,14 @@ describe('legacy redirect Vercel artifacts', () => {
           value: '.*text/markdown.*',
         },
       ],
-      src: '^/(en|zh-CN)/((?!.*\\.md/?$).+?)/?$',
+      src: '^/en/((?!.*\\.md/?$).+?)/?$',
     });
+
+    expect(vercelConfig.routes).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
+      ]),
+    );
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {

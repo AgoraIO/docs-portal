@@ -117,6 +117,39 @@ Shared outro`;
     expect(filtered).toContain('Shared outro');
   });
 
+  it('dedents selected platform content into valid top-level markdown', () => {
+    const processedText = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="windows" />
+    ## Configure Windows [#configure-windows]
+
+    Run the command:
+
+    \`\`\`powershell
+    Write-Output "ready"
+    \`\`\`
+<_PlatformProcessedMarker close="true" />`;
+
+    expect(buildPlatformMarkdownText(processedText, 'windows')).toBe(
+      `## Configure Windows
+
+Run the command:
+
+\`\`\`powershell
+Write-Output "ready"
+\`\`\``,
+    );
+  });
+
+  it('removes generated heading anchor suffixes from agent markdown', () => {
+    const markdown = buildCanonicalPlatformLLMText({
+      pageTitle: 'Release notes',
+      pageUrl: '/en/release-notes',
+      processedText: '## Version 1.0 [#version-10]\n\nDetails.',
+    });
+
+    expect(markdown).toContain('## Version 1.0\n');
+    expect(markdown).not.toContain('[#version-10]');
+  });
+
   it('builds a platform-specific markdown document header', () => {
     expect(
       buildPlatformLLMText({
@@ -130,7 +163,7 @@ Shared outro`;
 iOS body`);
   });
 
-  it('builds canonical markdown from only the default structured platform', () => {
+  it('builds canonical markdown from the page default structured platform', () => {
     const processedText = `Shared intro
 
 <_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
@@ -152,5 +185,47 @@ Web body
     expect(markdown).toContain('Android body');
     expect(markdown).not.toContain('Web body');
     expect(markdown).not.toContain('_PlatformProcessedMarker');
+  });
+
+  it('falls back to each group canonical platform when the page default is absent', () => {
+    const processedText = `<_PlatformTabsGroup groupMode="structured" canonicalPlatform="web" platforms="[&#x22;android&#x22;,&#x22;web&#x22;]" showTabs="true">
+<_PlatformPanel platform="android">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+Android setup
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+<_PlatformPanel platform="web">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web setup
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+</_PlatformTabsGroup>
+
+Shared content
+
+<_PlatformTabsGroup groupMode="structured" canonicalPlatform="web" platforms="[&#x22;ios&#x22;,&#x22;web&#x22;]" showTabs="true">
+<_PlatformPanel platform="ios">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="ios" />
+iOS follow-up
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+<_PlatformPanel platform="web">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web follow-up
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+</_PlatformTabsGroup>`;
+
+    const markdown = buildCanonicalPlatformLLMText({
+      pageTitle: 'Multiple groups',
+      pageUrl: '/en/multiple-groups',
+      processedText,
+    });
+
+    expect(markdown).toContain('Android setup');
+    expect(markdown).not.toContain('Web setup');
+    expect(markdown).not.toContain('iOS follow-up');
+    expect(markdown).toContain('Web follow-up');
+    expect(markdown).toContain('Shared content');
   });
 });

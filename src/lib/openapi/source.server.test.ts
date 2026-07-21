@@ -28,9 +28,12 @@ describe('openapi source loader', () => {
 
   it('dereferences local parameter refs before normalization', async () => {
     expect(rtcLane).toBeDefined();
+    if (!rtcLane) {
+      throw new Error('Missing rtc-rest OpenAPI lane');
+    }
 
     const operation = await getOpenApiOperation(
-      rtcLane!,
+      rtcLane,
       'cma-query-channel-list',
     );
 
@@ -51,7 +54,7 @@ describe('openapi source loader', () => {
   it('preserves OpenAPI security without treating auth as a parameter', async () => {
     const operation = await getOpenApiOperation(lane, 'start-agent');
 
-    expect(operation.security).toBeUndefined();
+    expect(operation.security).toEqual([{ tokenAuth: [] }, { basicAuth: [] }]);
     expect(operation.parameters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -80,18 +83,17 @@ describe('openapi source loader', () => {
     });
   });
 
-  it.each(OPENAPI_LANES)(
-    'keeps registry operation IDs in sync with YAML for $id',
-    async (openApiLane) => {
-      const operations = await getOpenApiOperations(openApiLane);
-      const fromYaml = operations
-        .map((operation) => operation.operationId)
-        .sort();
-      const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
+  it.each(
+    OPENAPI_LANES,
+  )('keeps registry operation IDs in sync with YAML for $id', async (openApiLane) => {
+    const operations = await getOpenApiOperations(openApiLane);
+    const fromYaml = operations
+      .map((operation) => operation.operationId)
+      .sort();
+    const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
 
-      expect(fromRegistry).toEqual(fromYaml);
-    },
-  );
+    expect(fromRegistry).toEqual(fromYaml);
+  });
 
   it('loads localized operation summaries from locale-specific YAML', async () => {
     const english = await getOpenApiOperation(lane, 'start-agent', 'en');

@@ -50,25 +50,65 @@ export function serializeOpenApiOperationMarkdown({
     }
   }
 
+  appendOperationDocsFragments(lines, operation, 'after-description');
+
+  const securityKeys = getSecurityKeys(operation.security);
+  if (securityKeys.length > 0) {
+    lines.push('', '## Authorization', '');
+    lines.push('This endpoint requires authentication.', '');
+    for (const securityKey of securityKeys) {
+      lines.push(`- \`${securityKey}\``);
+    }
+  }
+
   lines.push('', '## Parameters', '');
   if (operation.parameters.length > 0) {
     for (const parameter of operation.parameters) {
-      lines.push(parameterToMarkdown(parameter));
+      lines.push(...parameterToMarkdown(parameter));
     }
   } else {
     lines.push('No parameters.');
   }
+  appendOperationDocsFragments(lines, operation, 'after-parameters');
 
   lines.push('', '## Request body', '');
   const requestSchema =
     operation.requestBody?.content['application/json']?.schema;
+  if (operation.requestBody?.description) {
+    lines.push(operation.requestBody.description, '');
+  }
   if (requestSchema) {
     lines.push(...schemaTreeToMarkdown(buildOpenApiSchemaTree(requestSchema)));
   } else {
     lines.push('No request body.');
   }
 
+  const requestExample = getMediaExample(
+    operation.requestBody?.content['application/json'],
+  );
+  if (requestExample !== undefined) {
+    lines.push('', '### Request body example', '');
+    lines.push(...jsonCodeBlock(requestExample));
+  }
+
+  if (operation.codeSamples.length > 0) {
+    lines.push('', '## Request examples', '');
+    for (const sample of operation.codeSamples) {
+      if (sample.label) {
+        lines.push(`### ${sample.label}`, '');
+      }
+      lines.push(
+        `\`\`\`${normalizeCodeLanguage(sample.lang)}`,
+        sample.source.trim(),
+        '```',
+        '',
+      );
+    }
+  }
+
+  appendOperationDocsFragments(lines, operation, 'before-response-body');
   lines.push('', '## Responses', '');
+  const responseExamples: Array<{ status: string; value: unknown }> = [];
   for (const [status, response] of Object.entries(operation.responses)) {
     lines.push(`### ${status}`, '');
     if (response.description) {
@@ -79,7 +119,23 @@ export function serializeOpenApiOperationMarkdown({
         buildOpenApiSchemaTree(response.content?.['application/json']?.schema),
       ),
     );
+
+    const responseExample = getMediaExample(
+      response.content?.['application/json'],
+    );
+    if (responseExample !== undefined) {
+      responseExamples.push({ status, value: responseExample });
+    }
   }
+  appendOperationDocsFragments(lines, operation, 'after-response-body');
+
+  if (responseExamples.length > 0) {
+    lines.push('', '## Response examples', '');
+    for (const example of responseExamples) {
+      lines.push(`### ${example.status}`, '', ...jsonCodeBlock(example.value));
+    }
+  }
+  appendOperationDocsFragments(lines, operation, 'after-response-example');
 
   return `${lines.join('\n').trim()}\n`;
 }
@@ -173,7 +229,25 @@ function parameterToMarkdown(parameter: Record<string, unknown>) {
       ? ` - ${parameter.description}`
       : '';
 
-  return `- \`${name}\` (${location}, ${required})${description}`;
+  const lines = [`- \`${name}\` (${location}, ${required})${description}`];
+  const schema = isRecord(parameter.schema) ? parameter.schema : undefined;
+  const allowedValues = Array.isArray(schema?.enum) ? schema.enum : [];
+
+  if (allowedValues.length > 0) {
+    lines.push(
+      `  - Allowed: ${allowedValues.map((value) => `\`${formatInlineValue(value)}\``).join(', ')}`,
+    );
+  }
+
+  const docsCallouts = Array.isArray(parameter.docsCallouts)
+    ? parameter.docsCallouts
+    : [];
+  appendDocsFragments(lines, docsCallouts, {
+    asCallout: true,
+    indent: '  ',
+  });
+
+  return lines;
 }
 
 function schemaTreeToMarkdown(
@@ -188,10 +262,202 @@ function schemaTreeToMarkdown(
     const indent = '  '.repeat(depth);
     const required = node.required ? ', required' : '';
     const description = node.description ? ` - ${node.description}` : '';
+    const metadata = schemaNodeMetadataToMarkdown(node);
+    const callouts = serializeDocsFragments(node.docsCallouts ?? [], {
+      asCallout: true,
+      indent: `${indent}  `,
+    });
 
     return [
       `${indent}- \`${node.path}\` (${node.type}${required})${description}`,
-      ...schemaTreeToMarkdown(node.children, depth + 1),
+      ...metadata.map((item) => `${indent}  - ${item}`),
+      ...callouts,
+      ...(node.children.length > 0
+        ? schemaTreeToMarkdown(node.children, depth + 1)
+        : []),
     ];
   });
+}
+
+function appendDocsFragments(
+  lines: string[],
+  fragments: Array<{
+    markdown?: unknown;
+    type?: unknown;
+    title?: unknown;
+  }>,
+  options: { asCallout?: boolean; indent?: string } = {},
+) {
+  lines.push(...serializeDocsFragments(fragments, options));
+}
+
+function serializeDocsFragments(
+  fragments: Array<{
+    markdown?: unknown;
+    type?: unknown;
+    title?: unknown;
+  }>,
+  { asCallout = false, indent = '' }: { asCallout?: boolean; indent?: string },
+) {
+  const lines: string[] = [];
+
+  for (const fragment of fragments) {
+    if (typeof fragment.markdown !== 'string' || !fragment.markdown.trim()) {
+      continue;
+    }
+
+    lines.push('');
+    if (asCallout) {
+      const type = normalizeCalloutType(fragment.type);
+      const title =
+        typeof fragment.title === 'string' && fragment.title.trim()
+          ? `[${fragment.title.trim().replaceAll(']', '\\]')}]`
+          : '';
+      lines.push(`${indent}:::${type}${title}`);
+      lines.push(
+        ...fragment.markdown
+          .trim()
+          .split('\n')
+          .map((line) => `${indent}${line}`),
+      );
+      lines.push(`${indent}:::`);
+      continue;
+    }
+
+    if (typeof fragment.title === 'string' && fragment.title.trim()) {
+      lines.push(`${indent}### ${fragment.title.trim()}`, '');
+    }
+    lines.push(
+      ...fragment.markdown
+        .trim()
+        .split('\n')
+        .map((line) => `${indent}${line}`),
+      '',
+    );
+  }
+
+  return lines;
+}
+
+function appendOperationDocsFragments(
+  lines: string[],
+  operation: NormalizedOpenApiOperation,
+  position: string,
+) {
+  const atPosition = <T extends { position?: string }>(fragments: T[]) =>
+    fragments.filter(
+      (fragment) => (fragment.position ?? 'after-description') === position,
+    );
+
+  appendDocsFragments(lines, atPosition(operation.docsSections));
+  const calloutPosition =
+    position === 'after-response-body' ? 'after-responses' : position;
+  appendDocsFragments(
+    lines,
+    operation.docsCallouts.filter(
+      (fragment) =>
+        (fragment.position ?? 'after-description') === calloutPosition,
+    ),
+    {
+      asCallout: true,
+    },
+  );
+}
+
+function normalizeCalloutType(type: unknown) {
+  if (
+    type === 'caution' ||
+    type === 'important' ||
+    type === 'warn' ||
+    type === 'warning'
+  ) {
+    return 'warning';
+  }
+  if (type === 'error') {
+    return 'error';
+  }
+  if (type === 'idea' || type === 'success' || type === 'tip') {
+    return 'tip';
+  }
+  if (type === 'note') {
+    return 'note';
+  }
+  return 'info';
+}
+
+function getSecurityKeys(security: unknown) {
+  if (!Array.isArray(security)) {
+    return [];
+  }
+
+  return [
+    ...new Set(
+      security.flatMap((entry) =>
+        isRecord(entry) ? Object.keys(entry).filter(Boolean) : [],
+      ),
+    ),
+  ];
+}
+
+function getMediaExample(media: unknown) {
+  if (!isRecord(media)) {
+    return undefined;
+  }
+
+  if (media.example !== undefined) {
+    return media.example;
+  }
+
+  if (!isRecord(media.examples)) {
+    return undefined;
+  }
+
+  for (const example of Object.values(media.examples)) {
+    if (isRecord(example) && example.value !== undefined) {
+      return example.value;
+    }
+  }
+
+  return undefined;
+}
+
+function jsonCodeBlock(value: unknown) {
+  return ['```json', JSON.stringify(value, null, 2), '```'];
+}
+
+function normalizeCodeLanguage(language: unknown) {
+  if (typeof language !== 'string' || !language.trim()) {
+    return 'text';
+  }
+
+  return language === 'shell' || language === 'sh' ? 'bash' : language;
+}
+
+function schemaNodeMetadataToMarkdown(node: OpenApiSchemaTreeNode) {
+  const metadata: string[] = [];
+
+  if (node.enumValues && node.enumValues.length > 0) {
+    metadata.push(
+      `Allowed: ${node.enumValues.map((value) => `\`${formatInlineValue(value)}\``).join(', ')}`,
+    );
+  }
+  if (node.defaultValue !== undefined) {
+    metadata.push(`Default: \`${formatInlineValue(node.defaultValue)}\``);
+  }
+  if (node.example !== undefined) {
+    metadata.push(`Example: \`${formatInlineValue(node.example)}\``);
+  }
+  if (node.format) {
+    metadata.push(`Format: \`${node.format}\``);
+  }
+
+  return metadata;
+}
+
+function formatInlineValue(value: unknown) {
+  return typeof value === 'string' ? value : JSON.stringify(value);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

@@ -32,6 +32,195 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain('- Path: /v2/projects/{appid}/join');
   });
 
+  it('preserves human-visible OpenAPI guidance and examples', async () => {
+    const lane = OPENAPI_LANES.find((item) => item.id === 'media-gateway-rest');
+    expect(lane).toBeDefined();
+    if (!lane) {
+      throw new Error('Missing media-gateway-rest OpenAPI lane');
+    }
+
+    const operation = await getOpenApiOperation(
+      lane,
+      'query-media-gateway-streaming-information',
+    );
+    const markdown = serializeOpenApiOperationMarkdown({
+      locale: 'en',
+      operation,
+      publicSourceUrl: lane.publicSourceUrl.en,
+      title: 'Query streaming information',
+      url: '/en/api-reference/api-ref/rtmp-gateway/query-streaming-information',
+    });
+
+    expect(markdown).toContain(
+      'This method queries an ongoing push based on SID.',
+    );
+    expect(markdown).toContain(
+      'A streaming session ID is generated for each initiated streaming task.',
+    );
+    expect(markdown).toContain(
+      'The `region` value is the same as for the input source stream.',
+    );
+    expect(markdown).toContain('Allowed: `na`, `eu`, `ap`, `cn`');
+    expect(markdown).toContain('## Authorization');
+    expect(markdown).toContain('- `basicAuth`');
+    expect(markdown).toContain('## Request examples');
+    expect(markdown).toContain('curl --request GET');
+    expect(markdown).toContain('## Response examples');
+    expect(markdown).toContain('"status": "success"');
+  });
+
+  it('does not append empty-schema markers after leaf fields', () => {
+    const markdown = serializeOpenApiOperationMarkdown({
+      locale: 'en',
+      operation: {
+        codeSamples: [],
+        docsCallouts: [],
+        docsSections: [],
+        method: 'GET',
+        operationId: 'get-status',
+        parameters: [
+          {
+            docsCallouts: [
+              {
+                markdown: 'Use the project ID from Agora Console.',
+                title: 'Project ID',
+                type: 'info',
+              },
+            ],
+            in: 'path',
+            name: 'appid',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        path: '/status',
+        responses: {
+          '200': {
+            content: {
+              'application/json': {
+                schema: {
+                  properties: {
+                    status: { type: 'string' },
+                  },
+                  type: 'object',
+                },
+              },
+            },
+          },
+        },
+        servers: [],
+      },
+      publicSourceUrl: '/openapi/status.yaml',
+      title: 'Get status',
+      url: '/en/api-reference/status',
+    });
+
+    expect(markdown).toContain('- `status` (string)');
+    expect(markdown).toContain(
+      '  :::info[Project ID]\n  Use the project ID from Agora Console.\n  :::',
+    );
+    expect(markdown).not.toContain('No schema.');
+  });
+
+  it('places guidance by position and preserves callout semantics', () => {
+    const markdown = serializeOpenApiOperationMarkdown({
+      locale: 'en',
+      operation: {
+        codeSamples: [],
+        docsCallouts: [
+          {
+            markdown: 'Check credentials before retrying.',
+            position: 'after-parameters',
+            title: 'Caution',
+            type: 'caution',
+          },
+        ],
+        docsSections: [
+          { markdown: 'Description guidance.', position: 'after-description' },
+          { markdown: 'Parameter guidance.', position: 'after-parameters' },
+          {
+            markdown: 'Response body guidance.',
+            position: 'before-response-body',
+          },
+          {
+            markdown: 'Response schema guidance.',
+            position: 'after-response-body',
+          },
+          {
+            markdown: 'Response example guidance.',
+            position: 'after-response-example',
+          },
+        ],
+        method: 'POST',
+        operationId: 'create-status',
+        parameters: [],
+        path: '/status',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                properties: {
+                  mode: {
+                    'x-docs-callouts': [
+                      {
+                        markdown: 'Use automatic mode unless instructed.',
+                        title: 'Mode guidance',
+                        type: 'info',
+                      },
+                    ],
+                    type: 'string',
+                  },
+                },
+                type: 'object',
+              },
+            },
+          },
+          contentTypes: ['application/json'],
+          required: true,
+        },
+        responses: {
+          '200': {
+            content: {
+              'application/json': {
+                example: { status: 'ok' },
+                schema: {
+                  properties: { status: { type: 'string' } },
+                  type: 'object',
+                },
+              },
+            },
+          },
+        },
+        servers: [],
+      },
+      publicSourceUrl: '/openapi/status.yaml',
+      title: 'Create status',
+      url: '/en/api-reference/status',
+    });
+
+    expect(markdown).toContain(
+      ':::warning[Caution]\nCheck credentials before retrying.\n:::',
+    );
+    expect(markdown).toContain(
+      ':::info[Mode guidance]\n  Use automatic mode unless instructed.\n  :::',
+    );
+    expect(markdown.indexOf('Description guidance.')).toBeLessThan(
+      markdown.indexOf('## Parameters'),
+    );
+    expect(markdown.indexOf('Parameter guidance.')).toBeGreaterThan(
+      markdown.indexOf('## Parameters'),
+    );
+    expect(markdown.indexOf('Response body guidance.')).toBeLessThan(
+      markdown.indexOf('## Responses'),
+    );
+    expect(markdown.indexOf('Response schema guidance.')).toBeGreaterThan(
+      markdown.indexOf('- `status` (string)'),
+    );
+    expect(markdown.indexOf('Response example guidance.')).toBeGreaterThan(
+      markdown.indexOf('"status": "ok"'),
+    );
+  });
+
   it('resolves published openapi markdown content paths that end in .md', async () => {
     const markdown = await getOpenApiMarkdownByContentPath(
       'en/api-reference/api-ref/conversational-ai/join.md',
