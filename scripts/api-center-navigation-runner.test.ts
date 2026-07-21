@@ -4,8 +4,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { auditDocsLinks } from './audit-doc-links.mjs';
+import { buildApiReferenceRehomePlan } from './lib/api-center/api-reference-ownership.mjs';
 import { auditApiCenterMigration } from './lib/api-center/migration-audit.mjs';
-import { runApiCenterNavigation } from './lib/api-center/navigation-runner.mjs';
+import {
+  runApiCenterNavigation,
+  scopedRootMetaPages,
+} from './lib/api-center/navigation-runner.mjs';
 
 const roots: string[] = [];
 
@@ -22,6 +26,237 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it('projects every rehomed private-room API leaf into the visible product group', () => {
+    const rootRoute = '/zh-CN/api-reference/private-room';
+    const useCases = [
+      ['场景化 API 默认 RTM 方案', 'rtm'],
+      ['场景化 API 自定义信令方案', 'custom-signaling'],
+    ] as const;
+    const platforms = [
+      ['Android', 'android'],
+      ['iOS', 'ios'],
+    ] as const;
+    const entries = useCases.flatMap(([useCase, sourceVariant]) =>
+      platforms.map(([label, platform]) => {
+        const callUrl = `https://doc.shengwang.cn/doc/one-to-one-live/${platform}/${sourceVariant}/api/call-api`;
+        const rtcUrl = `https://doc.shengwang.cn/doc/one-to-one-live/${platform}/${sourceVariant}/api/rtc-api`;
+        return {
+          product: '1v1 私密房',
+          productDescription: '支持陌生人社交和即时通讯。',
+          useCase,
+          label,
+          pageGraph: {
+            pages: [
+              { label: 'CallAPI', url: callUrl },
+              { label: 'RTC API', url: rtcUrl },
+            ],
+          },
+        };
+      }),
+    );
+    const pageEvidence = entries.flatMap((entry) =>
+      entry.pageGraph.pages.map((page) => {
+        const parsed = new URL(page.url);
+        const [, , , platform, sourceVariant, , leaf] =
+          parsed.pathname.split('/');
+        return {
+          requestedUrl: page.url,
+          sourceResolution: {
+            sourcePath: `docs/one-to-one-live/${sourceVariant}/api/${leaf}.${platform}.mdx`,
+            supersededTargetPath: `content/docs/zh-CN/solutions/one-to-one-live/${sourceVariant}/reference/${leaf}.mdx`,
+            supersededTargetRoute: `/zh-CN/solutions/one-to-one-live/${sourceVariant}/reference/${leaf}`,
+            targetPath: `content/docs${rootRoute}/${platform}/${sourceVariant}/api/${leaf}.mdx`,
+            targetRoute: `${rootRoute}/${platform}/${sourceVariant}/api/${leaf}`,
+          },
+        };
+      }),
+    );
+    const manifest = { entries, pageEvidence };
+    const rehome = buildApiReferenceRehomePlan(manifest);
+    const pages = scopedRootMetaPages(
+      [
+        'overview',
+        '---产品参考---',
+        'private-room',
+        {
+          type: 'group',
+          title: '私密房',
+          pages: [`[Android](${rootRoute}/android)`, `[iOS](${rootRoute}/ios)`],
+        },
+      ],
+      entries,
+      rehome,
+    );
+    const privateRoom = pages.find(
+      (page: unknown) =>
+        page !== null &&
+        typeof page === 'object' &&
+        'title' in page &&
+        page.title === '私密房',
+    );
+
+    expect(rehome.landingPages).toEqual([
+      expect.objectContaining({
+        route: rootRoute,
+        links: [
+          {
+            label: '场景化 API 默认 RTM 方案 · Android · CallAPI',
+            route: `${rootRoute}/android/rtm/api/call-api`,
+          },
+          {
+            label: '场景化 API 默认 RTM 方案 · Android · RTC API',
+            route: `${rootRoute}/android/rtm/api/rtc-api`,
+          },
+          {
+            label: '场景化 API 默认 RTM 方案 · iOS · CallAPI',
+            route: `${rootRoute}/ios/rtm/api/call-api`,
+          },
+          {
+            label: '场景化 API 默认 RTM 方案 · iOS · RTC API',
+            route: `${rootRoute}/ios/rtm/api/rtc-api`,
+          },
+          {
+            label: '场景化 API 自定义信令方案 · Android · CallAPI',
+            route: `${rootRoute}/android/custom-signaling/api/call-api`,
+          },
+          {
+            label: '场景化 API 自定义信令方案 · Android · RTC API',
+            route: `${rootRoute}/android/custom-signaling/api/rtc-api`,
+          },
+          {
+            label: '场景化 API 自定义信令方案 · iOS · CallAPI',
+            route: `${rootRoute}/ios/custom-signaling/api/call-api`,
+          },
+          {
+            label: '场景化 API 自定义信令方案 · iOS · RTC API',
+            route: `${rootRoute}/ios/custom-signaling/api/rtc-api`,
+          },
+        ],
+      }),
+    ]);
+    expect(privateRoom).toMatchObject({
+      type: 'group',
+      title: '私密房',
+      pages: rehome.landingPages[0].links.map(
+        (link: { label: string; route: string }) =>
+          `[${link.label}](${link.route})`,
+      ),
+    });
+  });
+
+  it('adds every internal API Center product in source order without dropping existing reference groups', () => {
+    const rtcRoute = '/zh-CN/api-reference/rtc/android/rtc-api-overview';
+    const rtsaRoute = '/zh-CN/api-reference/rtsa/c/overview';
+    const rtmCppRoute =
+      '/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp';
+    const teleoperationRoute =
+      '/zh-CN/api-reference/teleoperation/iot/api/device';
+    const entries = [
+      {
+        product: '实时互动 RTC',
+        apiGroup: 'client',
+        label: 'Android',
+        targetRoute: rtcRoute,
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '实时消息 RTM',
+        apiGroup: 'client',
+        label: 'C++',
+        targetRoute: rtmCppRoute,
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '即时通讯 IM',
+        apiGroup: 'client',
+        label: 'Web',
+        legacyUrl: 'https://im.shengwang.cn/docs/sdk/web.html',
+        urlFamily: 'external',
+      },
+      {
+        product: '媒体流加速 RTSA',
+        apiGroup: 'client',
+        label: 'C',
+        targetRoute: rtsaRoute,
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '平行操控',
+        apiGroup: 'client',
+        label: '设备端',
+        targetRoute: teleoperationRoute,
+        urlFamily: 'doc',
+      },
+    ];
+    const pages = scopedRootMetaPages(
+      [
+        'overview',
+        '---产品参考---',
+        'rtc',
+        {
+          type: 'group',
+          title: '实时消息 RTM',
+          pages: [
+            `[C++](${rtmCppRoute})`,
+            '[C++](/zh-CN/api-reference/rtm/cpp/configuration)',
+            '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
+          ],
+        },
+        {
+          type: 'group',
+          title: '实时互动 RTC',
+          icon: 'AudioLines',
+          pages: [
+            `[Android](${rtcRoute})`,
+            '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
+          ],
+        },
+        {
+          type: 'group',
+          title: '灵动课堂',
+          pages: [
+            '[Android](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)',
+          ],
+        },
+      ],
+      entries,
+    );
+    const visibleGroups = pages.filter(
+      (page): page is { title: string; pages: string[] } =>
+        page !== null &&
+        typeof page === 'object' &&
+        'title' in page &&
+        page.title !== '产品参考',
+    );
+
+    expect(visibleGroups.map((page) => page.title)).toEqual([
+      '实时互动 RTC',
+      '实时消息 RTM',
+      '媒体流加速 RTSA',
+      '平行操控',
+      '灵动课堂',
+    ]);
+    expect(visibleGroups[0].pages).toEqual([
+      `[Android](${rtcRoute})`,
+      '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
+    ]);
+    expect(visibleGroups[1].pages).toEqual([
+      `[C++](${rtmCppRoute})`,
+      '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
+    ]);
+    expect(visibleGroups[2]).toMatchObject({
+      title: '媒体流加速 RTSA',
+      pages: [`[C](${rtsaRoute})`],
+    });
+    expect(visibleGroups[3]).toMatchObject({
+      title: '平行操控',
+      pages: [`[设备端](${teleoperationRoute})`],
+    });
+    expect(visibleGroups.some((page) => page.title === '即时通讯 IM')).toBe(
+      false,
+    );
+  });
+
   it('generates ordered overview/root navigation, entry meta, and a missing OpenAPI landing', async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-navigation-'),
@@ -418,7 +653,7 @@ describe('API Center navigation runner', () => {
     expect(result.parity.counts).toMatchObject({
       entries: 5,
       overviewActions: 5,
-      rootActions: 1,
+      rootActions: 4,
       visibleNavigationLeaves: 4,
       missingNavigationTargets: 0,
       errors: 0,
@@ -462,7 +697,12 @@ describe('API Center navigation runner', () => {
         expect.objectContaining({ title: '实时互动 RTC' }),
       ]),
     );
-    expect(JSON.stringify(rootMeta.pages)).not.toContain('实时转录翻译');
+    expect(rootMeta.pages).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ title: '实时转录翻译' }),
+        expect.objectContaining({ title: '互动白板' }),
+      ]),
+    );
     expect(rtcMeta.pages).toEqual([
       'overview',
       { type: 'group', title: '核心接口', pages: ['client'] },

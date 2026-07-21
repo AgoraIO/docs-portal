@@ -54,6 +54,50 @@ function metaLink(label, route) {
   return `[${String(label).replace(/([\\\]])/g, '\\$1')}](${route})`;
 }
 
+function landingLinksInSourceOrder(manifest, route) {
+  const evidenceByUrl = new Map(
+    (manifest.pageEvidence ?? []).map((page) => [
+      normalizeLegacyUrl(page.requestedUrl),
+      page,
+    ]),
+  );
+  const entries = (manifest.entries ?? []).filter((entry) =>
+    (entry.pageGraph?.pages ?? []).some((page) =>
+      evidenceByUrl
+        .get(normalizeLegacyUrl(page.url))
+        ?.sourceResolution?.targetRoute?.startsWith(`${route}/`),
+    ),
+  );
+  const useCases = unique(entries.map((entry) => entry.useCase));
+  const includeUseCase = useCases.length > 1;
+  const links = new Map();
+
+  for (const entry of entries) {
+    for (const page of entry.pageGraph?.pages ?? []) {
+      const resolution = evidenceByUrl.get(
+        normalizeLegacyUrl(page.url),
+      )?.sourceResolution;
+      if (
+        !resolution?.targetRoute?.startsWith(`${route}/`) ||
+        !resolution.sourcePath
+          ?.split('/')
+          .some((segment) => segment.toLowerCase() === 'api')
+      ) {
+        continue;
+      }
+      if (links.has(resolution.targetRoute)) continue;
+      links.set(resolution.targetRoute, {
+        label: [includeUseCase ? entry.useCase : null, entry.label, page.label]
+          .filter(Boolean)
+          .join(' · '),
+        route: resolution.targetRoute,
+      });
+    }
+  }
+
+  return [...links.values()];
+}
+
 function replaceMetaPages(pages, replacements) {
   const output = [];
   for (const page of pages ?? []) {
@@ -180,24 +224,28 @@ export function buildApiReferenceRehomePlan(manifest) {
     const productDetails = pages
       .map((page) => details.get(normalizeLegacyUrl(page.requestedUrl)))
       .find((value) => value?.product);
-    const links = unique(
-      pages
-        .filter((page) =>
-          page.sourceResolution?.sourcePath
-            ?.split('/')
-            .some((segment) => segment.toLowerCase() === 'api'),
-        )
-        .map((page) => {
-          const pageDetails =
-            details.get(normalizeLegacyUrl(page.requestedUrl)) ?? {};
-          return JSON.stringify({
-            label: [pageDetails.platform, pageDetails.label]
-              .filter(Boolean)
-              .join(' · '),
-            route: page.sourceResolution.targetRoute,
-          });
-        }),
-    ).map((value) => JSON.parse(value));
+    const orderedLinks = landingLinksInSourceOrder(manifest, route);
+    const links =
+      orderedLinks.length > 0
+        ? orderedLinks
+        : unique(
+            pages
+              .filter((page) =>
+                page.sourceResolution?.sourcePath
+                  ?.split('/')
+                  .some((segment) => segment.toLowerCase() === 'api'),
+              )
+              .map((page) => {
+                const pageDetails =
+                  details.get(normalizeLegacyUrl(page.requestedUrl)) ?? {};
+                return JSON.stringify({
+                  label: [pageDetails.platform, pageDetails.label]
+                    .filter(Boolean)
+                    .join(' · '),
+                  route: page.sourceResolution.targetRoute,
+                });
+              }),
+          ).map((value) => JSON.parse(value));
     landingByRoute.set(route, {
       description: productDetails?.description ?? '',
       links,

@@ -60,6 +60,38 @@ const PRODUCT_ICONS = new Map([
   ['在线音乐教学', 'classroom'],
   ['平行操控', 'iot'],
 ]);
+const ROOT_PRODUCT_TITLES = new Map([
+  ['对话式 AI 引擎', '对话式 AI'],
+  ['微呼叫', 'VoIP 呼叫服务'],
+  ['灵动会议', '会议'],
+  ['1v1 私密房', '私密房'],
+]);
+const ROOT_PRODUCT_ICONS = new Map([
+  ['对话式 AI', 'Bot'],
+  ['实时互动 RTC', 'AudioLines'],
+  ['实时消息 RTM', 'Network'],
+  ['融合 CDN 直播', 'RadioTower'],
+  ['媒体流加速 RTSA', 'Radio'],
+  ['互动白板', 'Presentation'],
+  ['VoIP 呼叫服务', 'PhoneCall'],
+  ['水晶球', 'ChartColumn'],
+  ['实时转录翻译', 'Captions'],
+  ['云端录制', 'HardDrive'],
+  ['本地服务端录制', 'HardDrive'],
+  ['旁路推流', 'ArrowUpFromLine'],
+  ['输入在线媒体流', 'ArrowDownToLine'],
+  ['云端转码', 'Film'],
+  ['RTMP 网关', 'RadioTower'],
+  ['RTC 服务端 SDK', 'ServerCog'],
+  ['PPT 转码服务', 'FileVideo'],
+  ['控制台', 'LayoutDashboard'],
+  ['会议', 'Users'],
+  ['在线 K 歌房', 'MicVocal'],
+  ['私密房', 'Lock'],
+  ['在线美术教学', 'Palette'],
+  ['在线音乐教学', 'Music2'],
+  ['平行操控', 'Gamepad2'],
+]);
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
@@ -878,6 +910,16 @@ function actionForEntry(entry, productEntries) {
   return { label: actionLabel(entry, productEntries), href };
 }
 
+function rootActionLabel(entry, productEntries) {
+  const useCases = unique(productEntries.map((item) => item.useCase));
+  return [
+    useCases.length > 1 ? entry.useCase : null,
+    entry.label === 'RESTful' ? 'RESTful API' : entry.label,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+}
+
 function buildOverviewBody(entries, live) {
   if (!live?.heroTitle || !live?.heroDescription) {
     throw new Error(
@@ -941,7 +983,144 @@ function buildOverviewBody(entries, live) {
   return lines.join('\n').trim();
 }
 
-function scopedRootMetaPages(pages, entries) {
+function rootMetaRoutes(pages) {
+  return (pages ?? []).flatMap((page) => {
+    if (page && typeof page === 'object') return rootMetaRoutes(page.pages);
+    const parsed = parseMetaLink(page);
+    return parsed?.route ? [parsed.route] : [];
+  });
+}
+
+function rootProductTitle(product) {
+  return ROOT_PRODUCT_TITLES.get(product) ?? product;
+}
+
+function rootMetaLink(label, route) {
+  return `[${String(label).replace(/([\\\]])/g, '\\$1')}](${route})`;
+}
+
+function visibleRootProductGroup(page) {
+  return (
+    page &&
+    typeof page === 'object' &&
+    page.type === 'group' &&
+    page.sidebarHidden !== true
+  );
+}
+
+function preferredExistingRootLink(
+  existingPages,
+  targetRoute,
+  label,
+  consumed,
+) {
+  if (!targetRoute) return null;
+  const candidates = (existingPages ?? []).map((page, index) => ({
+    index,
+    page,
+    parsed: parseMetaLink(page),
+  }));
+  const matches = candidates
+    .filter(
+      ({ parsed }) =>
+        parsed?.route === targetRoute ||
+        targetRoute.startsWith(`${parsed?.route}/`),
+    )
+    .sort(
+      (left, right) =>
+        (right.parsed?.route.length ?? 0) - (left.parsed?.route.length ?? 0),
+    );
+  const routeMatch =
+    matches.find(({ index }) => !consumed.has(index)) ?? matches[0];
+  if (routeMatch) return { ...routeMatch, useExistingRoute: true };
+  const labelMatch = candidates.find(
+    ({ index, parsed }) => !consumed.has(index) && parsed?.label === label,
+  );
+  return labelMatch ? { ...labelMatch, useExistingRoute: false } : null;
+}
+
+function sourceEntryRootPages(existingPages, entries) {
+  const consumed = new Set();
+  const generated = [];
+  for (const entry of entries) {
+    const label = rootActionLabel(entry, entries);
+    const existing = preferredExistingRootLink(
+      existingPages,
+      entry.targetRoute,
+      label,
+      consumed,
+    );
+    if (existing) consumed.add(existing.index);
+    const route = existing?.useExistingRoute
+      ? existing.parsed?.route
+      : entry.targetRoute;
+    if (!route) continue;
+    generated.push(rootMetaLink(label, route));
+  }
+  const generatedLabels = new Set(
+    generated.map((page) => parseMetaLink(page)?.label).filter(Boolean),
+  );
+  for (const [index, page] of (existingPages ?? []).entries()) {
+    const existingLabel = parseMetaLink(page)?.label;
+    if (
+      !consumed.has(index) &&
+      !generated.includes(page) &&
+      !generatedLabels.has(existingLabel)
+    ) {
+      generated.push(page);
+    }
+  }
+  return generated;
+}
+
+function reconcileRootProductGroups(pages, entries, apiReferenceRehome) {
+  const existingGroups = pages.filter(visibleRootProductGroup);
+  const existingByTitle = new Map(
+    existingGroups.map((page) => [page.title, page]),
+  );
+  const consumed = new Set();
+  const projected = [];
+  const internalEntries = entries.filter(
+    (entry) => entry.urlFamily !== 'external',
+  );
+
+  for (const group of productGroups(internalEntries)) {
+    const title = rootProductTitle(group.product);
+    const existing = existingByTitle.get(title);
+    const landing = (apiReferenceRehome?.landingPages ?? []).find(
+      (candidate) => candidate.title === group.product,
+    );
+    const groupPages = landing
+      ? landing.links.map((link) => rootMetaLink(link.label, link.route))
+      : sourceEntryRootPages(existing?.pages ?? [], group.entries);
+    if (groupPages.length === 0) continue;
+    if (existing) consumed.add(existing);
+    projected.push({
+      ...(existing ?? {
+        type: 'group',
+        icon: ROOT_PRODUCT_ICONS.get(title),
+        collapsible: true,
+      }),
+      title,
+      pages: groupPages,
+    });
+  }
+
+  return [
+    ...projected,
+    ...pages.filter(
+      (page) => !visibleRootProductGroup(page) || !consumed.has(page),
+    ),
+  ];
+}
+
+/**
+ * @param {any[]} pages
+ * @param {any[]} entries
+ * @param {{landingPages?: any[]} | null} [apiReferenceRehome]
+ * @returns {any[]}
+ */
+export function scopedRootMetaPages(pages, entries, apiReferenceRehome = null) {
   const preserved = [...(pages ?? [])];
   const productReferenceIndex = preserved.findIndex(
     (page) =>
@@ -1002,7 +1181,11 @@ function scopedRootMetaPages(pages, entries) {
           },
         ]
       : []),
-    ...visibleProductPages,
+    ...reconcileRootProductGroups(
+      visibleProductPages,
+      entries,
+      apiReferenceRehome,
+    ),
   ];
 }
 
@@ -1067,6 +1250,75 @@ function navigationParityReport({
         page.sidebarHidden !== true,
     )
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
+  const visibleRootRoutes = unique(
+    rootPages
+      .filter(
+        (page) =>
+          page &&
+          typeof page === 'object' &&
+          page.type === 'group' &&
+          page.sidebarHidden !== true,
+      )
+      .flatMap((page) => rootMetaRoutes(page.pages)),
+  );
+  const visibleRootGroups = rootPages.filter(visibleRootProductGroup);
+  const expectedRootProductGroups = productGroups(internalEntries);
+  const expectedRootProductTitles = expectedRootProductGroups.map((group) =>
+    rootProductTitle(group.product),
+  );
+  const visibleRootProductTitles = visibleRootGroups.map((page) => page.title);
+  const missingVisibleRootProducts = expectedRootProductTitles.filter(
+    (title) => !visibleRootProductTitles.includes(title),
+  );
+  const visibleSourceProductOrder = visibleRootProductTitles.filter((title) =>
+    expectedRootProductTitles.includes(title),
+  );
+  const rootProductOrderMatches =
+    JSON.stringify(visibleSourceProductOrder) ===
+    JSON.stringify(expectedRootProductTitles);
+  const expectedRootNavigationActions = expectedRootProductGroups.flatMap(
+    (group) => {
+      const landing = apiReferenceRehome.landingPages.find(
+        (candidate) => candidate.title === group.product,
+      );
+      return landing
+        ? landing.links.map((link) => ({
+            product: group.product,
+            label: link.label,
+            route: link.route,
+            exact: true,
+          }))
+        : group.entries
+            .filter((entry) => entry.targetRoute)
+            .map((entry) => ({
+              product: group.product,
+              label: rootActionLabel(entry, group.entries),
+              route: entry.targetRoute,
+              exact: false,
+            }));
+    },
+  );
+  const missingRootNavigationActions = expectedRootNavigationActions.filter(
+    (action) =>
+      !visibleRootRoutes.some(
+        (route) =>
+          route === action.route ||
+          (!action.exact && action.route.startsWith(`${route}/`)),
+      ),
+  );
+  const visibleLandingGroups = apiReferenceRehome.landingPages.filter(
+    (landing) =>
+      visibleRootRoutes.some(
+        (route) =>
+          route === landing.route || route.startsWith(`${landing.route}/`),
+      ),
+  );
+  const visibleLandingLinks = visibleLandingGroups.flatMap(
+    (landing) => landing.links,
+  );
+  const missingVisibleLandingLinks = visibleLandingLinks.filter(
+    (link) => !visibleRootRoutes.includes(link.route),
+  );
   const visibleLeaves = internalEntries.flatMap((entry) => {
     const navigation =
       entry.pageGraph?.sourceNavigation ?? entry.pageGraph?.navigation;
@@ -1104,6 +1356,35 @@ function navigationParityReport({
       severity: 'error',
       code: 'missing-navigation-target',
       message: `${missingNavigationTargets.length} visible legacy navigation leaves have no new-site target.`,
+    });
+  }
+  if (missingVisibleLandingLinks.length > 0) {
+    issues.push({
+      severity: 'error',
+      code: 'missing-reference-landing-navigation-link',
+      message: `${missingVisibleLandingLinks.length} visible Reference Center landing links are missing from their product navigation groups.`,
+    });
+  }
+  if (missingVisibleRootProducts.length > 0) {
+    issues.push({
+      severity: 'error',
+      code: 'missing-reference-product-navigation-group',
+      message: `${missingVisibleRootProducts.length} internal API Center products are missing from the Reference Center navigation.`,
+    });
+  }
+  if (missingRootNavigationActions.length > 0) {
+    issues.push({
+      severity: 'error',
+      code: 'missing-reference-entry-navigation-link',
+      message: `${missingRootNavigationActions.length} internal API Center actions are missing from the Reference Center navigation.`,
+    });
+  }
+  if (!rootProductOrderMatches) {
+    issues.push({
+      severity: 'error',
+      code: 'reference-product-navigation-order',
+      message:
+        'Reference Center product groups do not preserve the live API Center product order.',
     });
   }
   if (/https?:\/\/doc\.shengwang\.cn\/(?:doc|api-ref)\//.test(overviewBody)) {
@@ -1144,6 +1425,15 @@ function navigationParityReport({
       externalEntries: externalEntries.length,
       overviewActions,
       rootActions,
+      expectedVisibleRootProducts: expectedRootProductTitles.length,
+      visibleRootProductGroups: visibleRootProductTitles.length,
+      missingVisibleRootProducts: missingVisibleRootProducts.length,
+      expectedRootNavigationActions: expectedRootNavigationActions.length,
+      missingRootNavigationActions: missingRootNavigationActions.length,
+      rootProductOrderMatches,
+      visibleReferenceLandingGroups: visibleLandingGroups.length,
+      visibleReferenceLandingLinks: visibleLandingLinks.length,
+      missingVisibleReferenceLandingLinks: missingVisibleLandingLinks.length,
       entryMetaFiles: metaByPath.size,
       entryMetaLinks: [...metaByPath.values()].reduce(
         (count, plan) => count + countMetaLinks(plan.pages),
@@ -1171,6 +1461,9 @@ function navigationParityReport({
     },
     missingEntryTargets,
     missingNavigationTargets,
+    missingVisibleRootProducts,
+    missingRootNavigationActions,
+    missingVisibleLandingLinks,
     missingHiddenTargets: supplementalNavigation.missingHiddenTargets,
     missingVisibleChildTargets:
       supplementalNavigation.missingVisibleChildTargets,
@@ -1193,6 +1486,15 @@ function navigationParityMarkdown(report) {
     `- External entries: ${report.counts.externalEntries}`,
     `- Overview actions: ${report.counts.overviewActions}`,
     `- Root navigation actions: ${report.counts.rootActions}`,
+    `- Expected visible root products: ${report.counts.expectedVisibleRootProducts}`,
+    `- Visible root product groups: ${report.counts.visibleRootProductGroups}`,
+    `- Missing visible root products: ${report.counts.missingVisibleRootProducts}`,
+    `- Expected root navigation actions: ${report.counts.expectedRootNavigationActions}`,
+    `- Missing root navigation actions: ${report.counts.missingRootNavigationActions}`,
+    `- Root product order matches API Center: ${report.counts.rootProductOrderMatches ? 'yes' : 'no'}`,
+    `- Visible Reference Center landing groups: ${report.counts.visibleReferenceLandingGroups}`,
+    `- Visible Reference Center landing links: ${report.counts.visibleReferenceLandingLinks}`,
+    `- Missing visible Reference Center landing links: ${report.counts.missingVisibleReferenceLandingLinks}`,
     `- Entry meta files: ${report.counts.entryMetaFiles}`,
     `- Entry meta links: ${report.counts.entryMetaLinks}`,
     `- Visible legacy navigation leaves: ${report.counts.visibleNavigationLeaves}`,
@@ -1308,7 +1610,11 @@ export async function runApiCenterNavigation({
     'utf8',
   );
   const rootMeta = await readMeta(repoRoot, rootMetaPath, null);
-  const rootPages = scopedRootMetaPages(rootMeta.pages, entries);
+  const rootPages = scopedRootMetaPages(
+    rootMeta.pages,
+    entries,
+    apiReferenceRehome,
+  );
   const rootMetaContents =
     JSON.stringify(rootPages) === JSON.stringify(rootMeta.pages)
       ? rootMetaSource.endsWith('\n')
