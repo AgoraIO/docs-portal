@@ -19,4 +19,4 @@ Support capability enhancement and customized audio-video effects on top of the 
 
 ## Marketplace
 
-Provides a faster path to selecting, purchasing, and connecting external realtime modules into your product.
+Provides a faster path to selecting, purchasing, and connecting external real-time modules into your product.

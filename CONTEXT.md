@@ -6,6 +6,10 @@ Migration behavior, migration protocol, migration acceptance rules, and migratio
 
 ## Language
 
+**Real-time**:
+The preferred ordinary adjective for user-facing English prose when describing low-latency communication, media, events, captions, updates, or shared state. Use **Realtime** only inside official product/API names, formal navigation or category labels, and historical feature names; keep `realtime` in URLs, code identifiers, model names, endpoint paths, and protocol values.
+_Avoid_: realtime as a generic prose adjective
+
 **Deployment region**:
 The build-time publication boundary for one deployed docs site. `global` publishes every locale except `zh-CN`; `cn` publishes only `zh-CN`. A deployment region controls published routes and generated site artifacts, but does not imply different branding, source repositories, product links, or asset hosts.
 _Avoid_: locale, brand region, market locale
@@ -13,6 +17,10 @@ _Avoid_: locale, brand region, market locale
 **Published locale**:
 A documentation locale exposed by a particular **Deployment region**, including its public routes, static payloads, machine-readable output, sitemap entries, and search records.
 _Avoid_: supported locale, repository locale
+
+**Static prerendered page**:
+A canonical documentation route whose build-produced HTML contains the page body and can hydrate into the interactive application without a runtime server.
+_Avoid_: runtime SSR page, SPA shell page, crawler-only page
 
 **Content staging**:
 The repository-owned staging layer that holds normalized documentation inputs before the docs website renders them.

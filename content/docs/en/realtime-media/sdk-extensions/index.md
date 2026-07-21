@@ -5,7 +5,7 @@ description: SDK extension plugins help teams enhance experience and capability 
 
 ## What this capability is
 
-SDK extension plugins sit on top of the core realtime SDK stack and help teams extend functionality or add richer experience layers.
+SDK extension plugins sit on top of the core real-time SDK stack and help teams extend functionality or add richer experience layers.
 
 ## Common scenarios
 
@@ -15,4 +15,4 @@ SDK extension plugins sit on top of the core realtime SDK stack and help teams e
 
 ## What to read first
 
-If the main realtime path is already chosen and the next need is experience enhancement, extension plugins are the right place to continue.
+If the main real-time path is already chosen and the next need is experience enhancement, extension plugins are the right place to continue.

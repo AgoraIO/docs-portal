@@ -1,10 +1,15 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { llms } from 'fumadocs-core/source';
+import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
 } from '../src/lib/docs-page.server.ts';
+import {
+  createMachineReadableDocsIndexes,
+  validateMachineReadableDocsArtifacts,
+} from '../src/lib/llms-index.ts';
 import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import {
@@ -16,12 +21,17 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
+import { createPublishedDocsRoutes } from '../src/lib/published-docs-routes.ts';
 import {
   DOCS_LOCALES,
   isPublishedDocsPath,
   PUBLISHED_DOCS_LOCALES,
 } from '../src/lib/site-region.ts';
-import { createSitemapXml, getSitemapUrls } from '../src/lib/sitemap.ts';
+import {
+  createSitemapXml,
+  getSitemapBaseUrl,
+  getSitemapUrls,
+} from '../src/lib/sitemap.ts';
 import {
   getLLMText,
   getPageMarkdownUrl,
@@ -45,6 +55,12 @@ const seoManifestPath = path.join(
   '__static',
   'docs-seo.json',
 );
+const routesManifestPath = path.join(
+  repoRoot,
+  'public',
+  '__static',
+  'docs-routes.json',
+);
 const markdownOutputRoot = path.join(repoRoot, 'public');
 
 export async function generateStaticDocsPayload() {
@@ -58,14 +74,34 @@ export async function generateStaticDocsPayload() {
   });
   await removeGeneratedMachineReadableDocs();
 
-  const allRoutes = Array.from(
+  const canonicalRoutes = Array.from(
     new Set([...getContentDocsPrerenderPaths(), ...getOpenApiPrerenderPaths()]),
   )
     .filter((route) => route !== '/')
     .filter((route) => isPublishedDocsPath(route))
     .sort();
+  const canonicalRouteSet = new Set(canonicalRoutes);
+  const platformKeysByPageUrl = new Map();
+  const platformPages = [];
+
+  for (const locale of PUBLISHED_DOCS_LOCALES) {
+    for (const page of source.getPages(locale)) {
+      if (!canonicalRouteSet.has(page.url)) {
+        continue;
+      }
+
+      const platforms = await getStaticPagePlatformKeys(page);
+      platformKeysByPageUrl.set(page.url, platforms);
+
+      if (platforms.length > 0) {
+        platformPages.push({ platforms, url: page.url });
+      }
+    }
+  }
+
   let generated = 0;
   const staticSeoPages = [];
+  const canonicalPayloads = new Map();
 
   for (const locale of PUBLISHED_DOCS_LOCALES) {
     await writeSearchIndex(searchOutputRoot, {
@@ -75,7 +111,7 @@ export async function generateStaticDocsPayload() {
 
     const tabs = new Set();
 
-    for (const route of allRoutes) {
+    for (const route of canonicalRoutes) {
       const parsed = parseRoute(route);
       if (parsed?.locale === locale) {
         tabs.add(parsed.tab);
@@ -96,7 +132,7 @@ export async function generateStaticDocsPayload() {
     }
   }
 
-  for (const route of allRoutes) {
+  for (const route of canonicalRoutes) {
     const parsed = parseRoute(route);
     if (!parsed) {
       continue;
@@ -119,13 +155,36 @@ export async function generateStaticDocsPayload() {
       tab: parsed.tab,
     });
     if (!('redirectUrl' in payload)) {
-      staticSeoPages.push({
-        description: payload.description,
-        title: payload.title,
-        url: route,
-      });
+      canonicalPayloads.set(route, payload);
     }
     generated += 1;
+  }
+
+  const publishedRoutes = createPublishedDocsRoutes({
+    canonicalPaths: canonicalRoutes,
+    platformPages: platformPages.filter((page) =>
+      canonicalPayloads.has(page.url),
+    ),
+  });
+  await writeTextFile(
+    routesManifestPath,
+    `${JSON.stringify(publishedRoutes)}\n`,
+  );
+
+  for (const route of publishedRoutes) {
+    const payload = canonicalPayloads.get(route.canonicalPath);
+
+    if (!payload) {
+      continue;
+    }
+
+    staticSeoPages.push({
+      canonicalPath: route.canonicalPath,
+      description: payload.description,
+      markdownPath: route.markdownPath,
+      title: payload.title,
+      url: route.url,
+    });
   }
 
   await writeTextFile(
@@ -134,7 +193,10 @@ export async function generateStaticDocsPayload() {
   );
   console.log(`[static-payload] generated ${generated} payload files`);
 
-  const markdownGenerated = await generateStaticMachineReadableDocs();
+  const markdownGenerated = await generateStaticMachineReadableDocs({
+    platformKeysByPageUrl,
+    publishedRoutes,
+  });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,
   );
@@ -180,6 +242,10 @@ async function writeSearchIndex(root, { locale, pages }) {
 async function removeGeneratedMachineReadableDocs() {
   await fs.rm(path.join(markdownOutputRoot, 'llms.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'llms-full.txt'), { force: true });
+  await fs.rm(path.join(markdownOutputRoot, 'llms'), {
+    force: true,
+    recursive: true,
+  });
   await fs.rm(path.join(markdownOutputRoot, 'sitemap.xml'), { force: true });
   await Promise.all(
     DOCS_LOCALES.map((locale) =>
@@ -191,19 +257,25 @@ async function removeGeneratedMachineReadableDocs() {
   );
 }
 
-async function generateStaticMachineReadableDocs() {
+async function generateStaticMachineReadableDocs({
+  platformKeysByPageUrl,
+  publishedRoutes,
+}) {
   const pages = source.getPages(MACHINE_READABLE_LOCALE);
   const openApiPages = await getOpenApiMarkdownPages();
-  const openApiIndex = openApiPages
-    .map((page) => `- [${page.title}](${page.url})`)
-    .join('\n');
   let generated = 0;
 
-  await writeTextFile(
-    path.join(markdownOutputRoot, 'llms.txt'),
-    `${llms(source).index(MACHINE_READABLE_LOCALE)}\n\n${openApiIndex}\n`,
-  );
-  generated += 1;
+  const indexes = createMachineReadableDocsIndexes({
+    baseUrl: getSitemapBaseUrl(),
+    docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+    locale: MACHINE_READABLE_LOCALE,
+    publishedRoutes,
+  });
+
+  for (const index of indexes) {
+    await writePublicRouteFile(index.path, index.content);
+    generated += 1;
+  }
 
   const fullText = await Promise.all(pages.map(getStaticLLMText));
   await writeTextFile(
@@ -216,8 +288,7 @@ async function generateStaticMachineReadableDocs() {
     path.join(markdownOutputRoot, 'sitemap.xml'),
     createSitemapXml(
       getSitemapUrls({
-        openApiPages,
-        pages,
+        pages: publishedRoutes,
       }),
     ),
   );
@@ -227,10 +298,16 @@ async function generateStaticMachineReadableDocs() {
     const markdown = await getStaticLLMText(page);
     const regularMarkdownUrl = `${page.url}.md`;
 
-    await writePublicRouteFile(regularMarkdownUrl, markdown);
+    await writePublicRouteFile(
+      regularMarkdownUrl,
+      withAgentDocsDirective(markdown),
+    );
     generated += 1;
 
-    generated += await writePlatformMarkdownFiles(page);
+    generated += await writePlatformMarkdownFiles(
+      page,
+      platformKeysByPageUrl.get(page.url),
+    );
   }
 
   for (const page of openApiPages) {
@@ -241,15 +318,26 @@ async function generateStaticMachineReadableDocs() {
       continue;
     }
 
-    await writePublicRouteFile(`${page.url}.md`, markdown);
+    await writePublicRouteFile(
+      `${page.url}.md`,
+      withAgentDocsDirective(markdown),
+    );
     generated += 1;
   }
+
+  await validateMachineReadableDocsArtifacts({
+    artifactExists: publicRouteFileExists,
+    baseUrl: getSitemapBaseUrl(),
+    files: indexes,
+    locale: MACHINE_READABLE_LOCALE,
+    publishedRoutes,
+  });
 
   return generated;
 }
 
-async function writePlatformMarkdownFiles(page) {
-  const platforms = await getStaticPagePlatformKeys(page);
+async function writePlatformMarkdownFiles(page, knownPlatforms) {
+  const platforms = knownPlatforms ?? (await getStaticPagePlatformKeys(page));
 
   let generated = 0;
 
@@ -268,7 +356,7 @@ async function writePlatformMarkdownFiles(page) {
 
     await writePublicRouteFile(
       getPageMarkdownUrl(page, normalizedPlatform).url,
-      markdown,
+      withAgentDocsDirective(markdown),
     );
     generated += 1;
   }
@@ -403,6 +491,21 @@ function stripFrontmatter(markdown) {
 async function writePublicRouteFile(route, content) {
   const relativePath = route.split('/').filter(Boolean).join('/');
   await writeTextFile(path.join(markdownOutputRoot, relativePath), content);
+}
+
+async function publicRouteFileExists(route) {
+  const relativePath = route.split('/').filter(Boolean).join('/');
+
+  try {
+    await fs.access(path.join(markdownOutputRoot, relativePath));
+    return true;
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      return false;
+    }
+
+    throw error;
+  }
 }
 
 async function writeTextFile(filePath, content) {

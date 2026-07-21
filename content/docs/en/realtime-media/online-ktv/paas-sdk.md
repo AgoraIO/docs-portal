@@ -5,7 +5,7 @@ description: PaaS SDK is the lower-level integration path for teams that want to
 
 ## What it is
 
-The PaaS SDK path gives teams more control over business logic, room interaction, and UI design while still building on Agora's realtime and music-related capabilities.
+The PaaS SDK path gives teams more control over business logic, room interaction, and UI design while still building on Agora's real-time and music-related capabilities.
 
 ## Best fit
 
