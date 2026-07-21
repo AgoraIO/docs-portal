@@ -14,6 +14,7 @@ describe('machine-readable docs indexes', () => {
         '- [RTC overview](/en/realtime-media/rtc/overview)',
         '- [External API reference](https://api-ref.example.com/rtc)',
       ].join('\n'),
+      locale: 'en',
       maxCharacters: 500,
       publishedRoutes: [
         {
@@ -72,29 +73,35 @@ describe('machine-readable docs indexes', () => {
     ).toBe(true);
   });
 
-  it('covers every published English route exactly once and excludes other locales', () => {
-    const files = createMachineReadableDocsIndexes({
-      baseUrl: 'https://docs.example.com',
-      docsIndex: '',
-      publishedRoutes: [
-        {
-          canonicalPath: '/en/introduction',
-          markdownPath: '/en/introduction.md',
-          url: '/en/introduction',
-        },
-        {
-          canonicalPath: '/zh-CN/introduction',
-          markdownPath: '/zh-CN/introduction.md',
-          url: '/zh-CN/introduction',
-        },
-      ],
-    });
+  it('covers only the locale published for the configured region', () => {
+    const publishedRoutes = [
+      {
+        canonicalPath: '/en/introduction',
+        markdownPath: '/en/introduction.md',
+        url: '/en/introduction',
+      },
+      {
+        canonicalPath: '/zh-CN/introduction',
+        markdownPath: '/zh-CN/introduction.md',
+        url: '/zh-CN/introduction',
+      },
+    ];
 
-    const targets = files
-      .slice(1)
-      .flatMap((file) => getMarkdownTargets(file.content));
+    for (const locale of ['en', 'zh-CN']) {
+      const files = createMachineReadableDocsIndexes({
+        baseUrl: 'https://docs.example.com',
+        docsIndex: '',
+        locale,
+        publishedRoutes,
+      });
+      const targets = files
+        .slice(1)
+        .flatMap((file) => getMarkdownTargets(file.content));
 
-    expect(targets).toEqual(['https://docs.example.com/en/introduction.md']);
+      expect(targets).toEqual([
+        `https://docs.example.com/${locale}/introduction.md`,
+      ]);
+    }
   });
 
   it('splits oversized semantic groups without adding another index level', () => {
@@ -106,6 +113,7 @@ describe('machine-readable docs indexes', () => {
     const files = createMachineReadableDocsIndexes({
       baseUrl: 'https://docs.example.com',
       docsIndex: '',
+      locale: 'en',
       maxCharacters: 600,
       publishedRoutes,
     });
@@ -131,6 +139,7 @@ describe('machine-readable docs indexes', () => {
     const files = createMachineReadableDocsIndexes({
       baseUrl: 'https://docs.example.com',
       docsIndex: '- [Quickstart](/en/ai/quickstart)',
+      locale: 'en',
       publishedRoutes,
     });
     const emittedPaths = new Set([
@@ -143,6 +152,7 @@ describe('machine-readable docs indexes', () => {
         artifactExists: async (path) => emittedPaths.has(path),
         baseUrl: 'https://docs.example.com',
         files,
+        locale: 'en',
         publishedRoutes,
       }),
     ).resolves.toBeUndefined();
@@ -154,6 +164,7 @@ describe('machine-readable docs indexes', () => {
         artifactExists: async (path) => emittedPaths.has(path),
         baseUrl: 'https://docs.example.com',
         files,
+        locale: 'en',
         publishedRoutes,
       }),
     ).rejects.toThrow('Missing machine-readable docs artifact');

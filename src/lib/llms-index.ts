@@ -32,30 +32,32 @@ type IndexGroup = {
 export function createMachineReadableDocsIndexes({
   baseUrl,
   docsIndex,
+  locale,
   maxCharacters = DEFAULT_MAX_CHARACTERS,
   publishedRoutes,
 }: {
   baseUrl: string;
   docsIndex: string;
+  locale: string;
   maxCharacters?: number;
   publishedRoutes: ReadonlyArray<PublishedDocsRoute>;
 }): MachineReadableDocsIndexFile[] {
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, '');
-  const labelsByPath = extractLabelsByPath(docsIndex);
+  const labelsByPath = extractLabelsByPath(docsIndex, locale);
   const entriesByGroup = new Map<string, IndexEntry[]>();
   const groupsBySlug = new Map<string, IndexGroup>();
   const seenMarkdownPaths = new Set<string>();
 
   for (const route of publishedRoutes) {
     if (
-      !route.url.startsWith('/en/') ||
+      !route.url.startsWith(`/${locale}/`) ||
       seenMarkdownPaths.has(route.markdownPath)
     ) {
       continue;
     }
 
     seenMarkdownPaths.add(route.markdownPath);
-    const group = getIndexGroup(route.url);
+    const group = getIndexGroup(route.url, locale);
     const entries = entriesByGroup.get(group.slug) ?? [];
 
     groupsBySlug.set(group.slug, group);
@@ -106,11 +108,13 @@ export async function validateMachineReadableDocsArtifacts({
   artifactExists,
   baseUrl,
   files,
+  locale,
   publishedRoutes,
 }: {
   artifactExists: (path: string) => boolean | Promise<boolean>;
   baseUrl: string;
   files: ReadonlyArray<MachineReadableDocsIndexFile>;
+  locale: string;
   publishedRoutes: ReadonlyArray<PublishedDocsRoute>;
 }) {
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, '');
@@ -132,14 +136,14 @@ export async function validateMachineReadableDocsArtifacts({
       .flatMap((file) => extractLinkTargets(file.content))
       .filter((target) => isSameOrigin(target, normalizedBaseUrl)),
     publishedRoutes
-      .filter((route) => route.url.startsWith('/en/'))
+      .filter((route) => route.url.startsWith(`/${locale}/`))
       .map((route) => `${normalizedBaseUrl}${route.markdownPath}`),
   );
 
   const artifactPaths = new Set([
     ...files.map((file) => file.path),
     ...publishedRoutes
-      .filter((route) => route.url.startsWith('/en/'))
+      .filter((route) => route.url.startsWith(`/${locale}/`))
       .map((route) => route.markdownPath),
   ]);
 
@@ -201,7 +205,7 @@ function renderRootIndex(
   return [
     '# Agora Documentation',
     '',
-    '> Machine-readable indexes for the complete published English documentation.',
+    '> Machine-readable indexes for the complete documentation published on this site.',
     '',
     '## Documentation indexes',
     '',
@@ -226,14 +230,14 @@ function renderSectionIndex(label: string, entries: IndexEntry[]) {
   ].join('\n');
 }
 
-function extractLabelsByPath(docsIndex: string) {
+function extractLabelsByPath(docsIndex: string, locale: string) {
   const labels = new Map<string, string>();
 
   for (const match of docsIndex.matchAll(LINK_PATTERN)) {
     const label = match[1]?.trim();
     const target = match[2];
 
-    if (label && target?.startsWith('/en/')) {
+    if (label && target?.startsWith(`/${locale}/`)) {
       labels.set(target.replace(/\.md$/, ''), label);
     }
   }
@@ -309,7 +313,7 @@ function getRouteLabel(
   return route.platform ? `${label} (${titleCase(route.platform)})` : label;
 }
 
-function getIndexGroup(url: string): IndexGroup {
+function getIndexGroup(url: string, expectedLocale: string): IndexGroup {
   const [, locale, tab, area, product] = url.split('/');
   const segments =
     tab === 'realtime-media'
@@ -319,7 +323,7 @@ function getIndexGroup(url: string): IndexGroup {
         : [tab];
   const normalizedSegments = segments.filter(Boolean) as string[];
 
-  if (locale !== 'en' || normalizedSegments.length === 0) {
+  if (locale !== expectedLocale || normalizedSegments.length === 0) {
     return { label: 'Documentation', slug: 'documentation' };
   }
 

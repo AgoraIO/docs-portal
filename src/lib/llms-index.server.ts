@@ -23,6 +23,7 @@ async function createRuntimeMachineReadableDocsIndexes() {
   return createMachineReadableDocsIndexes({
     baseUrl: getSitemapBaseUrl(),
     docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+    locale: MACHINE_READABLE_LOCALE,
     publishedRoutes,
   });
 }

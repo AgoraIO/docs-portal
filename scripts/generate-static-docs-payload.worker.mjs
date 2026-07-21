@@ -268,6 +268,7 @@ async function generateStaticMachineReadableDocs({
   const indexes = createMachineReadableDocsIndexes({
     baseUrl: getSitemapBaseUrl(),
     docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+    locale: MACHINE_READABLE_LOCALE,
     publishedRoutes,
   });
 
@@ -328,6 +329,7 @@ async function generateStaticMachineReadableDocs({
     artifactExists: publicRouteFileExists,
     baseUrl: getSitemapBaseUrl(),
     files: indexes,
+    locale: MACHINE_READABLE_LOCALE,
     publishedRoutes,
   });
 
