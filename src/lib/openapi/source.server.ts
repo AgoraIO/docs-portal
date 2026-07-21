@@ -42,6 +42,11 @@ export type OpenApiCodeSample = {
   source: string;
 };
 
+export type OpenApiCodeSampleGroup = {
+  samples: OpenApiCodeSample[];
+  title: string;
+};
+
 export type NormalizedOpenApiMedia = {
   example?: OpenApiJsonValue;
   examples?: Record<string, { value?: OpenApiJsonValue }>;
@@ -54,6 +59,7 @@ export type OpenApiResponse = {
 };
 
 export type NormalizedOpenApiOperation = {
+  codeSampleGroups: OpenApiCodeSampleGroup[];
   codeSamples: OpenApiCodeSample[];
   description?: string;
   docsCallouts: OpenApiDocsFragment[];
@@ -149,8 +155,16 @@ async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
         continue;
       }
 
+      const codeSampleGroups = normalizeCodeSampleGroups(
+        operation['x-docs-code-sample-groups'],
+      );
+
       operations.push({
-        codeSamples: normalizeCodeSamples(operation['x-codeSamples']),
+        codeSampleGroups,
+        codeSamples:
+          codeSampleGroups.length > 0
+            ? []
+            : normalizeCodeSamples(operation['x-codeSamples']),
         description: stringValue(operation.description),
         docsCallouts: normalizeDocsFragments(operation['x-docs-callouts']),
         docsSections: normalizeDocsFragments(operation['x-docs-sections']),
@@ -423,6 +437,23 @@ function normalizeCodeSamples(value: unknown): OpenApiCodeSample[] {
         ...(typeof item.lang === 'string' ? { lang: item.lang } : {}),
       },
     ];
+  });
+}
+
+function normalizeCodeSampleGroups(value: unknown): OpenApiCodeSampleGroup[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((item) => {
+    if (!isRecord(item)) {
+      return [];
+    }
+
+    const title = stringValue(item.title);
+    const samples = normalizeCodeSamples(item.samples);
+
+    return title && samples.length > 0 ? [{ samples, title }] : [];
   });
 }
 

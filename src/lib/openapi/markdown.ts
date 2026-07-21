@@ -91,7 +91,24 @@ export function serializeOpenApiOperationMarkdown({
     lines.push(...jsonCodeBlock(requestExample));
   }
 
-  if (operation.codeSamples.length > 0) {
+  if (operation.codeSampleGroups.length > 0) {
+    lines.push('', '## Request examples', '');
+    for (const group of operation.codeSampleGroups) {
+      lines.push(`### ${group.title}`, '');
+      for (const sample of group.samples) {
+        const sampleTitle = sample.label ?? sample.lang;
+        if (sampleTitle) {
+          lines.push(`#### ${sampleTitle}`, '');
+        }
+        lines.push(
+          `\`\`\`${normalizeCodeLanguage(sample.lang)}`,
+          sample.source.trim(),
+          '```',
+          '',
+        );
+      }
+    }
+  } else if (operation.codeSamples.length > 0) {
     lines.push('', '## Request examples', '');
     for (const sample of operation.codeSamples) {
       if (sample.label) {

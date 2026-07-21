@@ -81,4 +81,64 @@ describe('fumadocs source loader', () => {
     expect(markdown).toContain('### What you need for webhooks');
     expect(markdown).toContain('### How to receive webhook events');
   });
+
+  it('keeps oversized plain Markdown pages below the agent size limit', async () => {
+    const page = source.getPage(
+      ['api-reference', 'api-ref', 'agora-analytics', 'analytics-rest-api'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    if (!page) {
+      throw new Error('Expected the English Analytics REST API page');
+    }
+
+    const markdown = await getLLMText(page);
+
+    expect(markdown.length).toBeLessThan(100_000);
+    expect(markdown).toContain('## Call Inspector');
+    expect(markdown).toContain('### Metrics ID');
+    expect(markdown).not.toContain('title: "Analytics REST API reference"');
+  });
+
+  it('qualifies every 3D Avatar tab heading with its platform', async () => {
+    const page = source.getPage(
+      [
+        'realtime-media',
+        'marketplace',
+        'build',
+        'add-video-and-ar-effects',
+        'ht-3d-avatar',
+      ],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    if (!page) {
+      throw new Error('Expected the English 3D Avatar page');
+    }
+
+    const markdown = await getLLMText(page);
+
+    for (const platform of ['android', 'ios'] as const) {
+      const panel = markdown.match(
+        new RegExp(
+          `<TabsContent value="${platform}">([\\s\\S]*?)<\\/TabsContent>`,
+        ),
+      )?.[1];
+
+      expect(panel).toBeDefined();
+      const headings = Array.from(
+        panel?.matchAll(/^\s*#{2,4}\s+(.+)$/gm) ?? [],
+        (match) => match[1],
+      );
+
+      expect(headings.length).toBeGreaterThan(0);
+      expect(
+        headings.every((heading) =>
+          heading.toLowerCase().includes(platform === 'ios' ? 'ios' : platform),
+        ),
+      ).toBe(true);
+    }
+  });
 });

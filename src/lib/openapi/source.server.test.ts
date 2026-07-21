@@ -26,6 +26,23 @@ describe('openapi source loader', () => {
     expect(operation.requestBody?.contentTypes).toContain('application/json');
   });
 
+  it('normalizes grouped request samples using the HTML renderer precedence', async () => {
+    const operation = await getOpenApiOperation(lane, 'start-agent');
+
+    expect(operation.codeSampleGroups.map((group) => group.title)).toEqual([
+      'Basic configuration',
+      'Saved agent configuration',
+      'Advanced configuration',
+      'String UID',
+      'MCP server integration',
+      'Preset models',
+    ]);
+    expect(
+      operation.codeSampleGroups.flatMap((group) => group.samples),
+    ).toHaveLength(18);
+    expect(operation.codeSamples).toEqual([]);
+  });
+
   it('dereferences local parameter refs before normalization', async () => {
     expect(rtcLane).toBeDefined();
     if (!rtcLane) {

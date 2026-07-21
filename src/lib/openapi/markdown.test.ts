@@ -69,10 +69,39 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain('"status": "success"');
   });
 
+  it('preserves grouped request examples without exceeding the agent size limit', async () => {
+    const lane = OPENAPI_LANES.find((item) => item.id === 'convoai');
+    expect(lane).toBeDefined();
+    if (!lane) {
+      throw new Error('Missing conversational AI OpenAPI lane');
+    }
+
+    const operation = await getOpenApiOperation(lane, 'start-agent');
+    const markdown = serializeOpenApiOperationMarkdown({
+      locale: 'en',
+      operation,
+      publicSourceUrl: lane.publicSourceUrl.en,
+      title: 'Start a conversational AI agent',
+      url: '/en/api-reference/api-ref/conversational-ai/join',
+    });
+
+    expect(markdown).toContain('## Request examples');
+    expect(markdown).toContain('### Basic configuration');
+    expect(markdown).toContain('### Saved agent configuration');
+    expect(markdown).toContain('### Advanced configuration');
+    expect(markdown).toContain('### String UID');
+    expect(markdown).toContain('### MCP server integration');
+    expect(markdown).toContain('### Preset models');
+    expect(markdown).toContain('full_config_agent');
+    expect(markdown).toContain('pipeline_id');
+    expect(markdown.length).toBeLessThan(100_000);
+  });
+
   it('does not append empty-schema markers after leaf fields', () => {
     const markdown = serializeOpenApiOperationMarkdown({
       locale: 'en',
       operation: {
+        codeSampleGroups: [],
         codeSamples: [],
         docsCallouts: [],
         docsSections: [],
@@ -126,6 +155,7 @@ describe('openapi markdown serializer', () => {
     const markdown = serializeOpenApiOperationMarkdown({
       locale: 'en',
       operation: {
+        codeSampleGroups: [],
         codeSamples: [],
         docsCallouts: [
           {
