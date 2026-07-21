@@ -1,11 +1,15 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { llms } from 'fumadocs-core/source';
+import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
 } from '../src/lib/docs-page.server.ts';
-import { createMarkdownLlmsIndex } from '../src/lib/llms-index.ts';
+import {
+  createMachineReadableDocsIndexes,
+  validateMachineReadableDocsArtifacts,
+} from '../src/lib/llms-index.ts';
 import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import {
@@ -189,9 +193,10 @@ export async function generateStaticDocsPayload() {
   );
   console.log(`[static-payload] generated ${generated} payload files`);
 
-  const markdownGenerated = await generateStaticMachineReadableDocs(
+  const markdownGenerated = await generateStaticMachineReadableDocs({
     platformKeysByPageUrl,
-  );
+    publishedRoutes,
+  });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,
   );
@@ -237,6 +242,10 @@ async function writeSearchIndex(root, { locale, pages }) {
 async function removeGeneratedMachineReadableDocs() {
   await fs.rm(path.join(markdownOutputRoot, 'llms.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'llms-full.txt'), { force: true });
+  await fs.rm(path.join(markdownOutputRoot, 'llms'), {
+    force: true,
+    recursive: true,
+  });
   await fs.rm(path.join(markdownOutputRoot, 'sitemap.xml'), { force: true });
   await Promise.all(
     DOCS_LOCALES.map((locale) =>
@@ -248,20 +257,25 @@ async function removeGeneratedMachineReadableDocs() {
   );
 }
 
-async function generateStaticMachineReadableDocs(platformKeysByPageUrl) {
+async function generateStaticMachineReadableDocs({
+  platformKeysByPageUrl,
+  publishedRoutes,
+}) {
   const pages = source.getPages(MACHINE_READABLE_LOCALE);
   const openApiPages = await getOpenApiMarkdownPages();
   let generated = 0;
 
-  await writeTextFile(
-    path.join(markdownOutputRoot, 'llms.txt'),
-    createMarkdownLlmsIndex({
-      baseUrl: getSitemapBaseUrl(),
-      docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
-      openApiPages,
-    }),
-  );
-  generated += 1;
+  const indexes = createMachineReadableDocsIndexes({
+    baseUrl: getSitemapBaseUrl(),
+    docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+    locale: MACHINE_READABLE_LOCALE,
+    publishedRoutes,
+  });
+
+  for (const index of indexes) {
+    await writePublicRouteFile(index.path, index.content);
+    generated += 1;
+  }
 
   const fullText = await Promise.all(pages.map(getStaticLLMText));
   await writeTextFile(
@@ -274,8 +288,7 @@ async function generateStaticMachineReadableDocs(platformKeysByPageUrl) {
     path.join(markdownOutputRoot, 'sitemap.xml'),
     createSitemapXml(
       getSitemapUrls({
-        openApiPages,
-        pages,
+        pages: publishedRoutes,
       }),
     ),
   );
@@ -285,7 +298,10 @@ async function generateStaticMachineReadableDocs(platformKeysByPageUrl) {
     const markdown = await getStaticLLMText(page);
     const regularMarkdownUrl = `${page.url}.md`;
 
-    await writePublicRouteFile(regularMarkdownUrl, markdown);
+    await writePublicRouteFile(
+      regularMarkdownUrl,
+      withAgentDocsDirective(markdown),
+    );
     generated += 1;
 
     generated += await writePlatformMarkdownFiles(
@@ -302,9 +318,20 @@ async function generateStaticMachineReadableDocs(platformKeysByPageUrl) {
       continue;
     }
 
-    await writePublicRouteFile(`${page.url}.md`, markdown);
+    await writePublicRouteFile(
+      `${page.url}.md`,
+      withAgentDocsDirective(markdown),
+    );
     generated += 1;
   }
+
+  await validateMachineReadableDocsArtifacts({
+    artifactExists: publicRouteFileExists,
+    baseUrl: getSitemapBaseUrl(),
+    files: indexes,
+    locale: MACHINE_READABLE_LOCALE,
+    publishedRoutes,
+  });
 
   return generated;
 }
@@ -329,7 +356,7 @@ async function writePlatformMarkdownFiles(page, knownPlatforms) {
 
     await writePublicRouteFile(
       getPageMarkdownUrl(page, normalizedPlatform).url,
-      markdown,
+      withAgentDocsDirective(markdown),
     );
     generated += 1;
   }
@@ -464,6 +491,21 @@ function stripFrontmatter(markdown) {
 async function writePublicRouteFile(route, content) {
   const relativePath = route.split('/').filter(Boolean).join('/');
   await writeTextFile(path.join(markdownOutputRoot, relativePath), content);
+}
+
+async function publicRouteFileExists(route) {
+  const relativePath = route.split('/').filter(Boolean).join('/');
+
+  try {
+    await fs.access(path.join(markdownOutputRoot, relativePath));
+    return true;
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      return false;
+    }
+
+    throw error;
+  }
 }
 
 async function writeTextFile(filePath, content) {
