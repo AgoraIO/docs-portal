@@ -1051,9 +1051,11 @@ public virtual void OnRemoteVideoTransportStats(RtcConnection connection, uint r
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 该回调已被废弃，请改用 [OnRemoteVideoStats](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+:::
 
 该回调描述远端用户通话中端到端的网络统计信息，通过视频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。
 通话中，当用户收到远端用户/主播发送的视频数据包后，会每 2 秒触发一次该回调。
@@ -1115,12 +1117,14 @@ public virtual void OnUserEnableLocalVideo(RtcConnection connection, uint remote
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 弃用： 该回调已废弃，请改用 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
 
 - `REMOTE_VIDEO_STATE_STOPPED`(0) 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED`(5)。
 - `REMOTE_VIDEO_STATE_DECODING` (2) 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED`(6)。
+:::
 
 该回调是由远端用户调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablelocalvideo) 方法开启或关闭视频采集触发的。
 
@@ -1399,9 +1403,11 @@ public virtual void OnVideoStopped()
 
 <a id="callback_irtcengineeventhandler_onvideostopped__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 弃用： 请改用 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unity/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 `LOCAL_VIDEO_STREAM_STATE_STOPPED`(0)。
+:::
 
 App 如需在停止视频后对 `view` 做其他处理（比如显示其他画面），可以在这个回调中进行。
 

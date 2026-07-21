@@ -608,14 +608,18 @@ public abstract setChannelProfile(profile: number): number;
 - LIVE_BROADCASTING (1)：（默认）直播。
 - GAME (2)：游戏语音场景。
 
-  ### 废弃：
+  <a id="废弃"></a>
 
+  :::error[废弃：]
   请改用 LIVE_BROADCASTING。
+  :::
 - CLOUD_GAMING (3)：互动。该场景对延时进行了优化。如果你的场景中有用户需要频繁互动，建议使用该场景。
 
-  ### 废弃：
+  <a id="废弃-1"></a>
 
+  :::error[废弃：]
   请改用 LIVE_BROADCASTING。
+  :::
 
 </Parameter>
 </ParameterList>
@@ -929,14 +933,18 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 - CLIENT_ROLE_CHANGE_FAILED_NOT_AUTHORIZED(2): 请求被服务端拒绝。建议提示用户重新尝试切换用户角色。
 - CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT(3): 请求超时。建议提示用户检查网络连接状况后重新尝试切换用户角色。
 
-  ### 废弃：
+  <a id="废弃-2"></a>
 
+  :::error[废弃：]
   该枚举值自 v4.4.0 起废弃，不建议使用。
+  :::
 - CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED(4): 网络连接断开。可根据 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 报告的 reason，排查网络连接失败的具体原因。
 
-  ### 废弃：
+  <a id="废弃-3"></a>
 
+  :::error[废弃：]
   该枚举值自 v4.4.0 起废弃，不建议使用。
+  :::
 
 </Parameter>
 <a id="currentrole"></a>

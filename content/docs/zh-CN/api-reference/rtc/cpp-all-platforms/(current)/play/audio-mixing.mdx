@@ -709,9 +709,11 @@ virtual int startAudioMixing(const char* filePath, bool loopback, int cycle) = 0
 
 <a id="api_irtcengine_startaudiomixing__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 `startAudioMixing(const char* filePath, bool loopback, int cycle, int startPos)`。
+:::
 
 如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AUDIO_MIXING_REASON_CAN_NOT_OPEN`。
 
@@ -945,9 +947,11 @@ virtual void onAudioMixingFinished() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+:::
 
 调用 `startAudioMixing` 播放本地音乐文件后，当播放结束时会触发该回调。如果调用 `startAudioMixing` 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
 

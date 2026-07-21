@@ -439,9 +439,11 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_T
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 此方法已废弃，如需设置音频编码属性，请改用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioprofile2)；如需设置音频场景，请改用 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioscenario)。
+:::
 
 :::note
 注： 由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
@@ -699,9 +701,11 @@ public virtual void OnAudioQuality(RtcConnection connection, uint remoteUid, int
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 弃用： 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 该回调描述远端用户在通话中的音频质量，针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播，该回调每 2 秒会被触发多次。
 
@@ -872,9 +876,11 @@ public virtual void OnFirstRemoteAudioDecoded(RtcConnection connection, uint uid
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
+:::
 
 SDK 会在以下时机触发该回调：
 
@@ -931,9 +937,11 @@ public virtual void OnFirstRemoteAudioFrame(RtcConnection connection, uint userI
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__parameters"></a>
 

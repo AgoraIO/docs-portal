@@ -234,9 +234,11 @@ public abstract int enableWebSdkInteroperability(boolean enabled);
 
 <a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+:::
 
 如果频道中存在 Web SDK 用户，必须调用该方法，否则 Native 用户的视频画面在 Web 端将显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
 
@@ -1102,9 +1104,11 @@ public abstract int setLogFile(String filePath);
 
 <a id="api_irtcengine_setlogfile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
+:::
 
 该方法需在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 后立即调用，否则输出日志可能不完整。
 
@@ -1158,9 +1162,11 @@ public abstract int setLogFileSize(long fileSizeInKBytes);
 
 <a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+:::
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
@@ -1224,9 +1230,11 @@ public abstract int setLogFilter(int filter);
 
 <a id="api_irtcengine_setlogfilter__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 中的 `logConfig`。
+:::
 
 你可以使用一个或多个日志过滤等级的组合。日志等级的顺序为 `LOG_FILTER_OFF`、`LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR`、`LOG_FILTER_WARN`、`LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择一个等级可以查看该等级及其之前的日志信息。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志信息。
 
@@ -1277,9 +1285,11 @@ public abstract int setLogLevel(int level);
 
 <a id="api_irtcengine_setloglevel__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该方法已废弃，请在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
+:::
 
 选择一个日志等级，以查看该等级及更高级别的日志信息。
 
@@ -1409,9 +1419,11 @@ public abstract int setRemoteSubscribeFallbackOption(int option)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption2__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-5"></a>
 
+:::error[废弃]
 该方法已废弃。
+:::
 
 不稳定的网络会影响视频通话或互动直播中的音视频质量。当下行网络无法同时支持音视频时，若将 `option` 设置为 `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW` 或 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，SDK 会自动将视频从高质量流切换为低质量流，或关闭视频以保障音频质量。SDK 会持续监测网络质量，在网络改善后恢复订阅音视频流。
 
@@ -1627,9 +1639,11 @@ public void onConnectionBanned() {}
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-6"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__timing"></a>
 
@@ -1657,9 +1671,11 @@ public void onConnectionInterrupted() {}
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-7"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 该回调在 SDK 建立连接后与服务器断开连接超过四秒时被触发。触发该回调后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。
 该回调与 [onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：

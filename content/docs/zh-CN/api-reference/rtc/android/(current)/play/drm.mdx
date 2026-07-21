@@ -78,9 +78,11 @@ public static synchronized void destroy()
 
 <a id="api_imusicplayer_destroy_imusicplayer__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [destroyMusicPlayer](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_destroymusicplayer)。
+:::
 
 <a id="api_imusicplayer_destroy_imusicplayer__return_values"></a>
 
@@ -744,9 +746,11 @@ public abstract int preload(long songCode, String jsonOption)
 
 <a id="api_imusiccontentcenter_preload__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [preload [2/2]](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_preload2)。
+:::
 
 调用成功后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法前，你需要先调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 获取音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取资源标识符（`songCode`）。
 

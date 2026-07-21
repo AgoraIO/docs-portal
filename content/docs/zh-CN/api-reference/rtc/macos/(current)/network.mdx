@@ -278,9 +278,11 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+:::
 
 你可以调用该方法启用或关闭与声网 Web SDK 的互通功能。如果频道中有 Web SDK 用户，确保调用该方法，否则 Native 用户的视频画面在 Web 端将显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
 
@@ -1153,9 +1155,11 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请在调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
+:::
 
 指定一个 SDK 输出日志文件。该日志文件记录 SDK 运行过程中的所有日志数据。
 
@@ -1209,9 +1213,11 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+:::
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
@@ -1272,9 +1278,11 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfilter__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 中的 `logConfig`。
+:::
 
 你可以使用该方法设置 SDK 的日志输出等级。日志等级按以下顺序排列：`AgoraLogFilterOff`、`AgoraLogFilterCritical`、`AgoraLogFilterError`、`AgoraLogFilterWarning`、`AgoraLogFilterInfo` 和 `AgoraLogFilterDebug`。选择某个等级后，你可以查看该等级及其之前的日志内容。例如，如果将日志等级设置为 `AgoraLogFilterWarning`，你将看到 `AgoraLogFilterCritical`、`AgoraLogFilterError` 和 `AgoraLogFilterWarning` 等级的日志。
 
@@ -1318,9 +1326,11 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setloglevel__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该方法已废弃，请在调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
+:::
 
 你可以选择一个日志等级，以查看该等级及更高级别的日志信息。详见 [AgoraLogLevel](/zh-CN/api-reference/rtc/macos/enum-loglevel)。
 
@@ -1612,9 +1622,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-5"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 该回调在连接被声网服务器封禁时触发。
 
@@ -1657,9 +1669,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-6"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+:::
 
 当 SDK 在建立连接后与服务器断开连接超过四秒时，会触发该回调。触发该回调后，SDK 会尝试重新连接服务器。你可以使用该回调实现弹窗提醒功能。该回调与 [rtcEngineConnectionDidLost:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
 

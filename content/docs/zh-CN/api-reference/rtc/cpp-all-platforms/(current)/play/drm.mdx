@@ -806,9 +806,11 @@ virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 
 <a id="api_imusiccontentcenter_preload__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [preload [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_preload2) 方法。
+:::
 
 你可以调用该方法预加载想要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法之前，你需要先调用 `getMusicCollectionWithMusicChartId` 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 获取目标音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号 `songCode`。
 

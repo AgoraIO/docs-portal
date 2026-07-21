@@ -238,9 +238,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-### 弃用:
+<a id="弃用"></a>
 
+:::error[弃用:]
 该方法已废弃，SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+:::
 
 该方法打开或关闭与 Web SDK 的互通。如果有用户通过 Web SDK 加入频道，请确保调用该方法，否则 Web 端用户看 Native 端的画面会是黑屏。
 
@@ -1072,9 +1074,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlogfile__detailed_desc"></a>
 
-### 弃用：
+<a id="弃用-1"></a>
 
+:::error[弃用：]
 该方法已废弃，请在调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 时通过 context 参数设置日志文件路径。
+:::
 
 设置 SDK 的输出 log 文件。SDK 运行时产生的所有 log 将写入该文件。
 
@@ -1133,9 +1137,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-### 弃用：
+<a id="弃用-2"></a>
 
+:::error[弃用：]
 该方法已废弃，请改用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+:::
 
 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
 
@@ -1205,9 +1211,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-### 弃用：
+<a id="弃用-3"></a>
 
+:::error[弃用：]
 请改用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 中的 logConfig。
+:::
 
 该方法设置 SDK 的输出日志输出等级。不同的输出等级可以单独或组合使用。日志级别顺序依次为 LOG_FILTER_OFF、LOG_FILTER_CRITICAL、LOG_FILTER_ERROR、LOG_FILTER_WARN、LOG_FILTER_INFO 和 LOG_FILTER_DEBUG。
  选择一个级别，你就可以看到在该级别之前所有级别的日志信息。
@@ -1262,9 +1270,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setloglevel__detailed_desc"></a>
 
-### 弃用：
+<a id="弃用-4"></a>
 
+:::error[弃用：]
 该方法已废弃，请在调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 时通过 context 参数设置日志输出级别。
+:::
 
 选择一个级别，你就可以看到该级别的日志信息。
 
@@ -1590,9 +1600,11 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 详情
 
-### 弃用:
+<a id="弃用-5"></a>
 
+:::error[弃用:]
 请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 ### 所属接口类
 
@@ -1617,9 +1629,11 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 详情
 
-### 弃用:
+<a id="弃用-6"></a>
 
+:::error[弃用:]
 请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+:::
 
 SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触发该回调。在触发事件后，SDK 会主动重连服务器，所以该事件可以用于 UI 提示。该回调与 [OnConnectionLost](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionlost) 的区别是：
 

@@ -452,9 +452,11 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scen
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。你可以改用 [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_setaudioprofile2) 方法。若需设置音频场景，请调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 方法，并在 [RtcEngineContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcengineconfig) 结构体中的 `audioScenario` 成员中传入值。
+:::
 
 :::note
 注： 由于 iOS 系统限制，在通话音量模式下部分音频路由无法识别。因此，如需使用外置声卡，建议将音频场景设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。在该场景下，SDK 会切换为媒体音量以规避该问题。
@@ -707,9 +709,11 @@ virtual void onAudioQuality(uid_t uid, int quality, unsigned short delay, unsign
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该回调已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 SDK 每两秒触发一次该回调，用于报告每个正在发送音频流的远端用户的音频质量。如果频道中有多个用户发送音频流，SDK 会触发多次该回调。
 
@@ -871,9 +875,11 @@ virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__timing"></a>
 
@@ -920,9 +926,11 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__parameters"></a>
 
@@ -1143,9 +1151,11 @@ virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsign
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 该回调报告传输层的统计信息，例如在本地用户接收到远端用户的音频数据包后，数据包的丢失率和网络时延。该回调在通话过程中每 2 秒触发一次。
 

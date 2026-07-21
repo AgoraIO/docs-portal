@@ -1851,17 +1851,21 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - ERR_NO_SERVER_RESOURCES(103)：无法获取当前区域的服务器资源。请在初始化 IRtcEngine 时尝试指定其他区域。
 - ERR_TOKEN_EXPIRED(109)：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 更新 Token。
 
-  ### 弃用：
+  <a id="弃用"></a>
 
+  :::error[弃用：]
   该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED(9)。
+  :::
 - ERR_INVALID_TOKEN(110)：Token 无效。一般有以下原因：
 
   - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
   - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 uid 不匹配。
 
-  ### 弃用：
+  <a id="弃用-1"></a>
 
+  :::error[弃用：]
   该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN(8)。
+  :::
 - ERR_CONNECTION_INTERRUPTED(111)：网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。
 - ERR_CONNECTION_LOST(112)：网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。
 - ERR_NOT_IN_CHANNEL(113)：调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。

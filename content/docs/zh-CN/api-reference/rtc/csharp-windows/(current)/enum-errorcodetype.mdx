@@ -164,9 +164,11 @@ _migration:
 
 109：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 更新 Token。
 
-### 弃用：
+<a id="弃用"></a>
 
+:::error[弃用：]
 该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED(9)。
+:::
 
 </Parameter>
 <a id="err_invalid_token"></a>
@@ -177,9 +179,11 @@ _migration:
 - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
 - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 uid 不匹配。
 
-### 弃用：
+<a id="弃用-1"></a>
 
+:::error[弃用：]
 该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN(8)。
+:::
 
 </Parameter>
 <a id="err_connection_interrupted"></a>

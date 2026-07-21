@@ -1104,9 +1104,11 @@ virtual void onRemoteVideoTransportStats(uid_t uid,
 
 ### 详情
 
-### 弃用：
+<a id="弃用"></a>
 
+:::error[弃用：]
 该回调已被废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+:::
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__desc1"></a>
 
@@ -1172,12 +1174,14 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) {
 
 ### 详情
 
-### 弃用：
+<a id="弃用-1"></a>
 
+:::error[弃用：]
 该回调已废弃，请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
 
 - REMOTE_VIDEO_STATE_STOPPED(0) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED(5)。
 - REMOTE_VIDEO_STATE_DECODING (2) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED(6)。
+:::
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__desc"></a>
 
@@ -1458,9 +1462,11 @@ virtual void onVideoStopped()
 
 ### 详情
 
-### 弃用：
+<a id="弃用-2"></a>
 
+:::error[弃用：]
 请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 LOCAL_VIDEO_STREAM_STATE_STOPPED(0)。
+:::
 
 <a id="callback_irtcengineeventhandler_onvideostopped__desc"></a>
 

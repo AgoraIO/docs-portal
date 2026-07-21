@@ -608,9 +608,11 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 
 <a id="api_imusiccontentcenter_preload__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 该方法已废弃，请改用 [Preload [2/2]](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_preload2)。
+:::
 
 你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
 在调用该方法来预加载音乐资源之前，你需要调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode`）。

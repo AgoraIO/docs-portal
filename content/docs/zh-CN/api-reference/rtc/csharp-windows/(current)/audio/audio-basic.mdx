@@ -417,9 +417,11 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_T
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-### 弃用：
+<a id="弃用"></a>
 
+:::error[弃用：]
 此方法已废弃，如需设置音频编码属性，请改用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_setaudioprofile2)；如需设置音频场景，请改用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_setaudioscenario)。
+:::
 
 <a id="api_irtcengine_setaudioprofile__scenario"></a>
 
@@ -653,9 +655,11 @@ public virtual void OnAudioQuality(RtcConnection connection, uint remoteUid, int
 
 ### 详情
 
-### 弃用：
+<a id="弃用-1"></a>
 
+:::error[弃用：]
 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 该回调描述远端用户在通话中的音频质量，针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播，该回调每 2 秒会被触发多次。
 
@@ -835,9 +839,11 @@ public virtual void OnFirstRemoteAudioDecoded(RtcConnection connection, uint uid
 
 ### 详情
 
-### 弃用：
+<a id="弃用-2"></a>
 
+:::error[弃用：]
 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
+:::
 
 SDK 会在以下时机触发该回调：
 
@@ -896,9 +902,11 @@ public virtual void OnFirstRemoteAudioFrame(RtcConnection connection, uint userI
 
 ### 详情
 
-### 弃用：
+<a id="弃用-3"></a>
 
+:::error[弃用：]
 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__parameters"></a>
 
@@ -1164,9 +1172,11 @@ public virtual void OnRemoteAudioTransportStats(RtcConnection connection, uint r
 
 ### 详情
 
-### 弃用：
+<a id="弃用-4"></a>
 
+:::error[弃用：]
 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__desc"></a>
 

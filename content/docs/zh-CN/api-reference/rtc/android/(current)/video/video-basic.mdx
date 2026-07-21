@@ -666,9 +666,11 @@ public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapse
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调中的 `REMOTE_VIDEO_STATE_STARTING(1)` 或 `REMOTE_VIDEO_STATE_DECODING(2)`。
+:::
 
 SDK 在以下任一情况下会触发该回调：
 
@@ -1087,9 +1089,11 @@ public void onRemoteVideoTransportStats(int uid, int delay, int lost, int rxKBit
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+:::
 
 该回调上报传输层的统计信息，例如丢包率和网络时延。该回调在通话过程中，当本地用户接收到远端用户或主播发送的视频包时，每 2 秒触发一次。
 
@@ -1150,12 +1154,14 @@ public void onUserEnableLocalVideo(int uid, boolean enabled)
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该回调已废弃，建议使用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调替代，并结合以下参数使用：
 
 - `REMOTE_VIDEO_STATE_STOPPED(0)` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED(5)`。
 - `REMOTE_VIDEO_STATE_DECODING(2)` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED(6)`。
+:::
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__timing"></a>
 
@@ -1439,9 +1445,11 @@ public void onVideoStopped() {}
 
 <a id="callback_irtcengineeventhandler_onvideostopped__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)。
+:::
 
 你可以在该回调中更改视图的配置，例如在视图中显示其他图片。
 

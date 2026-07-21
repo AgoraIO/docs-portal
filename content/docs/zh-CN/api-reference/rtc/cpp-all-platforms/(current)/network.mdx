@@ -234,9 +234,11 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 
 <a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+:::
 
 你可以调用该方法启用或关闭与声网 Web SDK 的互通功能。如果频道中有 Web SDK 用户，必须调用该方法，否则 Native 用户的视频画面在 Web 端会显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
 
@@ -1206,9 +1208,11 @@ virtual int setLogFile(const char* filePath) = 0;
 
 <a id="api_irtcengine_setlogfile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志文件路径。
+:::
 
 用于指定 SDK 输出日志的文件路径，日志文件记录 SDK 运行过程中的所有日志数据。你需要在调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 后立即调用该方法，否则日志输出可能不完整。
 
@@ -1262,9 +1266,11 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 
 <a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志文件大小。
+:::
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
@@ -1325,9 +1331,11 @@ virtual int setLogFilter(unsigned int filter) = 0;
 
 <a id="api_irtcengine_setlogfilter__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志过滤等级。
+:::
 
 你可以使用一个或多个日志过滤等级的组合来设置 SDK 的日志输出等级。日志等级的顺序为 `LOG_FILTER_OFF`、`LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR`、`LOG_FILTER_WARN`、`LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择某个等级后，将输出该等级及更高级别的日志。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志。
 
@@ -1371,9 +1379,11 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 
 <a id="api_irtcengine_setloglevel__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志等级。
+:::
 
 选择一个日志等级，以查看该等级及以上的日志信息。
 
@@ -1670,9 +1680,11 @@ virtual void onConnectionBanned() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-5"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 ### 所属接口类
 
@@ -1694,9 +1706,11 @@ virtual void onConnectionInterrupted() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-6"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
 
 当 SDK 建立连接后与服务器断开超过 4 秒时，会触发该回调。触发后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。
 

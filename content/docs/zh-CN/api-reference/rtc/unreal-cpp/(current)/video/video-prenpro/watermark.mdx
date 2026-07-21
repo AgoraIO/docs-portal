@@ -29,10 +29,12 @@ virtual int addVideoWatermark(const RtcImage& watermark) = 0;
 
 ### 详情
 
-### 弃用：
+<a id="弃用"></a>
 
+:::error[弃用：]
 该方法已废弃，请使用
                         [addVideoWatermark [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) 作为替代。
+:::
 
 该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户，旁路推流观众，甚至采集设备都能看到或采集到该水印图片。如果你仅仅希望在旁路直播推流中添加水印，请参考 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 中描述的用法。
 

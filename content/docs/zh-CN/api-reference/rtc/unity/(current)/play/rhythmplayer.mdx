@@ -27,9 +27,11 @@ public abstract int ConfigRhythmPlayer(AgoraRhythmPlayerConfig config);
 
 <a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 - 调用 [StartRhythmPlayer](/zh-CN/api-reference/rtc/unity/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
 - 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unity/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
@@ -87,9 +89,11 @@ public abstract int StartRhythmPlayer(string sound1, string sound2, AgoraRhythmP
 
 <a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 - 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unity/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
 - 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unity/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
@@ -166,9 +170,11 @@ public abstract int StopRhythmPlayer();
 
 <a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 调用 [StartRhythmPlayer](/zh-CN/api-reference/rtc/unity/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
 
@@ -203,9 +209,11 @@ public virtual void OnRhythmPlayerStateChanged(RHYTHM_PLAYER_STATE_TYPE state, R
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 虚拟节拍器状态发生改变时，SDK 会触发该回调报告当前的虚拟节拍器状态。在虚拟节拍器出现故障时，该回调可以帮助你了解当前虚拟节拍的状态以及出现故障的原因，方便你排查问题。
 

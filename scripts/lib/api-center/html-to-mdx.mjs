@@ -274,6 +274,7 @@ function createState(options) {
     ...options,
     warnings: [],
     assets: [],
+    definitionSlugCounts: new Map(),
     parameterSlugCounts: new Map(),
     tableSlotCounter: 0,
     structuredParameters: {
@@ -555,7 +556,7 @@ function normalizeTypeDocType(value, state) {
     : normalized;
 }
 
-function parameterHeadingSlug(value, state) {
+function stableHeadingSlug(value, counts) {
   const baseSlug =
     cleanText(value)
       .toLowerCase()
@@ -563,9 +564,17 @@ function parameterHeadingSlug(value, state) {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '') || 'section';
-  const previousCount = state.parameterSlugCounts.get(baseSlug) ?? 0;
-  state.parameterSlugCounts.set(baseSlug, previousCount + 1);
+  const previousCount = counts.get(baseSlug) ?? 0;
+  counts.set(baseSlug, previousCount + 1);
   return previousCount === 0 ? baseSlug : `${baseSlug}-${previousCount}`;
+}
+
+function parameterHeadingSlug(value, state) {
+  return stableHeadingSlug(value, state.parameterSlugCounts);
+}
+
+function definitionHeadingSlug(value, state) {
+  return stableHeadingSlug(value, state.definitionSlugCounts);
 }
 
 function renderStructuredParameter(parameter) {
@@ -1110,6 +1119,7 @@ async function renderTable($, table, state) {
 async function renderDefinitionList($, list, state) {
   const blocks = [];
   const listIsSince = classNames(list).has('since');
+  const listIsDeprecated = classNames(list).has('deprecated');
   const listIsTypeDocCommentTags = list.hasClass('tsd-comment-tags');
   const listIsDoxygenMemberDetail = list.closest('.memdoc').length > 0;
   const listIsDoxygenNote = listIsDoxygenMemberDetail && list.hasClass('note');
@@ -1118,6 +1128,7 @@ async function renderDefinitionList($, list, state) {
   const listIsDoxygenReturn =
     listIsDoxygenMemberDetail && list.hasClass('return');
   let term = null;
+  let termPlainText = '';
   let termHasLink = false;
   let termIsSince = false;
   for (const child of list.children('dt, dd').toArray()) {
@@ -1129,13 +1140,22 @@ async function renderDefinitionList($, list, state) {
         $(child).find('a').length > 0 ||
         /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
       term = termHasLink ? renderedTerm : stripHeadingLinks(renderedTerm);
+      termPlainText = cleanText($(child).text());
       termIsSince =
         listIsSince ||
         (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
       const body = await renderChildren($, $(child), state);
       if (term) {
-        if (termIsSince || listIsDoxygenNote) {
+        if (listIsDeprecated) {
+          const title = termPlainText || term;
+          blocks.push(
+            [
+              renderStableAnchor(definitionHeadingSlug(title, state)),
+              renderCallout({ type: 'error', title, body }),
+            ].join('\n\n'),
+          );
+        } else if (termIsSince || listIsDoxygenNote) {
           blocks.push(renderCallout({ type: 'info', title: term, body }));
         } else if (listIsDoxygenParams || listIsDoxygenReturn) {
           const title = listIsDoxygenReturn ? '返回值' : term;
@@ -1147,6 +1167,7 @@ async function renderDefinitionList($, list, state) {
         }
       } else if (body) blocks.push(body);
       term = null;
+      termPlainText = '';
       termHasLink = false;
       termIsSince = false;
     }

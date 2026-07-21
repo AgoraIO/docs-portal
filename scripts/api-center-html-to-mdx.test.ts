@@ -651,6 +651,42 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('- :::info[自从]');
   });
 
+  it('renders source-classified deprecated definitions as error callouts', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Publish and subscribe</h1>
+        <dl class="dl deprecated">
+          <dt class="dt dlterm">废弃</dt>
+          <dd class="dd">弃用： 从 v4.2.0 起废弃，请改用 <a href="toc_publishnsubscribe.html#replacement">setDualStreamMode</a>。</dd>
+        </dl>
+        <dl class="dl deprecated">
+          <dt class="dt dlterm">废弃</dt>
+          <dd class="dd">第二个废弃说明。</dd>
+        </dl>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_publishnsubscribe',
+      sourcePath: 'html-docs/rtc/Electron/API/toc_publishnsubscribe.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_publishnsubscribe',
+          '/zh-CN/api-reference/rtc/electron/publishnsubscribe',
+        ],
+        [
+          'https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_publishnsubscribe.html',
+          '/zh-CN/api-reference/rtc/electron/publishnsubscribe',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain(
+      '<a id="废弃"></a>\n\n:::error[废弃]\n弃用： 从 v4.2.0 起废弃，请改用 [setDualStreamMode](/zh-CN/api-reference/rtc/electron/publishnsubscribe#replacement)。\n:::',
+    );
+    expect(result.body).toContain(
+      '<a id="废弃-1"></a>\n\n:::error[废弃]\n第二个废弃说明。\n:::',
+    );
+    expect(result.body).not.toContain('### 废弃');
+  });
+
   it('does not infer since callouts from arbitrary definition-list text', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>API</h1><dl><dt>自从</dt><dd>Ordinary definition.</dd></dl></article>',
@@ -1154,8 +1190,8 @@ describe('API Center shared HTML to MDX converter', () => {
       '<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>',
     );
     expect(result.body).toContain(':::info[注解]');
-    expect(result.body).toContain('**弃用**');
-    expect(result.body).not.toContain('### **弃用**');
+    expect(result.body).toContain(':::error[弃用]\nDeprecated details.\n:::');
+    expect(result.body).not.toContain('### 弃用');
     expect(result.body).not.toContain('◆');
   });
 

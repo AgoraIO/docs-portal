@@ -452,9 +452,11 @@ public abstract int setAudioProfile(int profile, int scenario);
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-### 废弃
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。请使用 `setAudioProfile(int profile)` 设置音频配置，使用 `setAudioScenario(int scenario)` 设置音频场景。
+:::
 
 <a id="api_irtcengine_setaudioprofile__scenario"></a>
 
@@ -698,9 +700,11 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 该回调每两秒触发一次，用于报告每个正在发送音频流的远端用户的音频质量。
 
@@ -862,9 +866,11 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__timing"></a>
 
@@ -914,9 +920,11 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__timing"></a>
 
@@ -1181,9 +1189,11 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
 
-### 废弃
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该回调已废弃，请使用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) 代替。
+:::
 
 该回调上报远端音频流的传输层统计信息，例如本地用户接收到远端用户音频包后的丢包率和网络时延。
 
