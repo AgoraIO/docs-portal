@@ -39,7 +39,7 @@ If you only need current UI state, use the client path. If you need monitoring, 
 
 Use the client toolkit when the app must react during the current session.
 
-### What you get
+### What you get with the client toolkit
 
 - `onAgentStateChanged`
 - `onAgentListeningChanged`
@@ -51,13 +51,13 @@ Use the client toolkit when the app must react during the current session.
 - `onTranscriptUpdated`
 - `onDebugLog` or `DEBUG_LOG`
 
-### What you need
+### What you need for the client toolkit
 
 - RTC integrated in the client
 - RTM enabled for the project
 - Authenticated RTC and RTM instances with lifecycle managed by your app
 
-### How to receive events
+### How to receive client toolkit events
 
 1. Start the agent with RTM enabled.
 2. Set `parameters.data_channel` to `rtm`.
@@ -93,7 +93,7 @@ For the full client setup and platform examples, see [Client-side events](event-
 
 Use webhooks when your backend must receive and persist runtime events.
 
-### What you get
+### What you get with webhooks
 
 - `101 agent joined`
 - `102 agent left`
@@ -105,13 +105,13 @@ Use webhooks when your backend must receive and persist runtime events.
 - `201 inbound call state`
 - `202 outbound call state`
 
-### What you need
+### What you need for webhooks
 
 - A public HTTPS callback endpoint
 - Access to the Agora Console project notification settings
 - Server-side storage for the generated secret
 
-### How to receive events
+### How to receive webhook events
 
 1. Open the project's notification settings in Agora Console.
 2. Choose the Conversational AI event types you want to subscribe to.

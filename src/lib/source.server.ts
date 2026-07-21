@@ -20,6 +20,7 @@ import {
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import { getPlatformLabel, type PlatformKey } from './platforms/registry';
+import { expandSdkCatalogMarkdown } from './sdk-catalog-markdown.server';
 import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
@@ -121,7 +122,7 @@ export async function getLLMText(page: InferPageType<typeof source>) {
   return buildCanonicalPlatformLLMText({
     pageTitle: page.data.title,
     pageUrl: page.url,
-    processedText: processed,
+    processedText: expandSdkCatalogMarkdown(processed),
   });
 }
 
