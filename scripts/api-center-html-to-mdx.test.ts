@@ -680,6 +680,33 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toMatch(/^### .*\]\(/m);
   });
 
+  it('renders multiline Appledoc definitions as fenced code blocks', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<main role="main"><h1 class="title">WhiteAnimationMode</h1>
+        <div class="section">
+          <h4 class="method-subtitle">Definition</h4>
+          <code>typedef NS_ENUM(NSInteger, WhiteAnimationMode ) {<br>
+            &nbsp;&nbsp; <a href="">WhiteAnimationModeContinuous</a>,<br>
+            &nbsp;&nbsp; WhiteAnimationModeImmediately,<br>
+          };</code>
+        </div>
+      </main>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/ios/Constants/WhiteAnimationMode',
+      sourcePath: 'html-docs/whiteboard/iOS/Constants/WhiteAnimationMode.html',
+      rootSelector: 'main[role="main"]',
+      titleSelector: 'main[role="main"] > h1.title',
+    });
+
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'WhiteAnimationModeContinuous',
+    );
+    expect(result.body).toContain(
+      '```text\ntypedef NS_ENUM(NSInteger, WhiteAnimationMode ) {\n  WhiteAnimationModeContinuous,\n  WhiteAnimationModeImmediately,\n};\n```',
+    );
+    expect(result.body).not.toMatch(/^`typedef NS_ENUM/m);
+  });
+
   it('removes generic self-links from headings while keeping their text', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Page</h1>

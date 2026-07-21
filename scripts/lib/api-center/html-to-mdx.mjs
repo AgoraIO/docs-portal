@@ -257,7 +257,7 @@ function createState(options) {
 }
 
 function renderCodeSpan(value) {
-  const content = String(value ?? '');
+  const content = String(value ?? '').replace(/\s*\r?\n\s*/g, ' ');
   const longestBacktickRun = Math.max(
     0,
     ...[...content.matchAll(/`+/g)].map((match) => match[0].length),
@@ -265,6 +265,26 @@ function renderCodeSpan(value) {
   const fence = '`'.repeat(longestBacktickRun + 1);
   const padding = content.startsWith('`') || content.endsWith('`') ? ' ' : '';
   return `${fence}${padding}${content}${padding}${fence}`;
+}
+
+function hasExplicitCodeLineBreak(element) {
+  return element.find('br').length > 0;
+}
+
+function normalizeMultilineCode(value) {
+  return String(value ?? '')
+    .split(/\r?\n/)
+    .map((line) => {
+      const withoutLayoutWhitespace = line.replace(/^[ \t]+|[ \t]+$/g, '');
+      const nonBreakingIndent =
+        withoutLayoutWhitespace.match(/^\u00a0+/)?.[0].length ?? 0;
+      return `${' '.repeat(nonBreakingIndent)}${withoutLayoutWhitespace
+        .slice(nonBreakingIndent)
+        .trimStart()
+        .replace(/\u00a0/g, ' ')}`;
+    })
+    .filter(Boolean)
+    .join('\n');
 }
 
 function inlineCodeElement($, node) {
@@ -706,6 +726,8 @@ async function renderChildren($, element, state) {
     const name = elementName(child);
     const isHeadingAnchor =
       name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
+    const isMultilineCode =
+      name === 'code' && hasExplicitCodeLineBreak($(child));
     const isBlock =
       [
         'article',
@@ -733,7 +755,9 @@ async function renderChildren($, element, state) {
         'table',
         'ul',
         'video',
-      ].includes(name) || isHeadingAnchor;
+      ].includes(name) ||
+      isHeadingAnchor ||
+      isMultilineCode;
     if (isBlock) {
       if (inline.trim()) {
         blocks.push(inline.trim());
@@ -846,6 +870,16 @@ async function renderBlockNode($, node, state) {
       state,
     );
     return [anchor, body].filter(Boolean).join('\n\n');
+  }
+  if (name === 'code' && hasExplicitCodeLineBreak(element)) {
+    const source = normalizeMultilineCode(
+      await renderInlineNodes($, element.contents().toArray(), state, {
+        rawText: true,
+      }),
+    );
+    return [anchor, renderCodeFence(source, languageFromCode(element))]
+      .filter(Boolean)
+      .join('\n\n');
   }
   if (name === 'pre') {
     const code = element.find('code').first();
