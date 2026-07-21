@@ -308,7 +308,7 @@ function ProductCard({
                 key={getVersionKey(activePlatform.platformId, version)}
                 value={String(index)}
               >
-                {getVersionMeta(version, index).optionLabel}
+                {getVersionMeta(version).optionLabel}
               </option>
             ))}
           </select>
@@ -596,7 +596,7 @@ function productIconKind(productLabel: string): SolutionCardIconKind {
   return 'tools';
 }
 
-function getVersionMeta(version: SdkDownloadVersion, index: number) {
+function getVersionMeta(version: SdkDownloadVersion) {
   const compactLabel = version.label.trim().replace(/\s+/g, ' ');
   const isLatest = /\(Latest\)|\bLatest\b/i.test(compactLabel);
   const isLite = /\bLite\b/i.test(compactLabel);
@@ -605,7 +605,6 @@ function getVersionMeta(version: SdkDownloadVersion, index: number) {
     isLatest ? 'Latest' : null,
     isLite ? 'Lite' : null,
     isLegacy ? 'Legacy' : null,
-    !isLatest && !isLegacy && index > 0 ? 'Previous' : null,
   ].filter((state): state is string => Boolean(state));
   const displayLabel = compactLabel
     .replace(/^version\s+/i, 'v')
