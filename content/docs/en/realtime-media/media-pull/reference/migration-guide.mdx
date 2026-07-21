@@ -1,0 +1,79 @@
+---
+title: "Migrate to Cloud Transcoding"
+description: "Migrate your integration from Media Pull to Cloud Transcoding."
+---
+
+[Cloud Transcoding](/en/realtime-media/transcoding) is the actively maintained successor to Media Pull. Like Media Pull, it uses REST APIs to publish media streams into an Agora RTC channel. Built on Agora's next-generation server infrastructure, Cloud Transcoding supports all Media Pull use cases while adding advanced capabilities such as server-side stream mixing and compositing.
+
+## Why migrate
+
+Cloud Transcoding offers the following advantages over Media Pull:
+
+- **Higher stream stability**: Runs on Agora's next-generation server cluster, with active-active failover and lower connection startup latency.
+- **Active maintenance**: Receives ongoing protocol updates, security patches, and active support.
+- **Unified authentication pattern**: Aligns with Agora's standard REST API authentication and resource token model.
+
+## What's different
+
+The following table compares the core workflow differences between the two services:
+
+| | Media Pull | Cloud Transcoding |
+|---|---|---|
+| Authentication | Basic Auth (Customer ID + Customer Secret) | Basic Auth (Customer ID + Customer Secret) |
+| Session control | Single request to create a task | [Acquire a builder token](/en/api-reference/api-ref/cloud-transcoding/acquire), then create, query, update, or destroy the task |
+| Input source | A single external stream URL | One or more RTC channel streams, external stream URLs, or a mix of both |
+| Output layout | Forwards the source stream unmodified | Custom canvas, background, and watermarks when mixing multiple inputs |
+
+## Map your integration
+
+This section maps each Media Pull API operation to its Cloud Transcoding equivalent.
+
+### Authentication
+
+Customer ID and Customer Secret work the same way in both services. See [Cloud Transcoding RESTful authentication](/en/api-reference/api-ref/cloud-transcoding/authentication).
+
+### Acquire a builder token
+
+Cloud Transcoding adds a step with no Media Pull equivalent: before you create a task, [acquire a builder token](/en/api-reference/api-ref/cloud-transcoding/acquire) for the `instanceId` you plan to use. Pass this token as the `builderToken` query parameter on the create request.
+
+### Start a task
+
+| Media Pull | Cloud Transcoding |
+|---|---|
+| [`Create` API](/en/api-reference/api-ref/media-pull#create-api) | [Create a cloud transcoding task](/en/api-reference/api-ref/cloud-transcoding/create) |
+
+### Query a task
+
+| Media Pull | Cloud Transcoding |
+|---|---|
+| [`List` API](/en/api-reference/api-ref/media-pull#list-api) | [Query the status of a task](/en/api-reference/api-ref/cloud-transcoding/query) |
+
+### Update a task
+
+| Media Pull | Cloud Transcoding |
+|---|---|
+| [`Update` API](/en/api-reference/api-ref/media-pull#update-api) | [Update a cloud transcoding task](/en/api-reference/api-ref/cloud-transcoding/update) |
+
+### Destroy a task
+
+| Media Pull | Cloud Transcoding |
+|---|---|
+| [`Delete` API](/en/api-reference/api-ref/media-pull#delete-api) | [Destroy a cloud transcoding task](/en/api-reference/api-ref/cloud-transcoding/destroy) |
+
+### Webhook notifications
+
+| Media Pull | Cloud Transcoding |
+|---|---|
+| [Receive event notifications](/en/realtime-media/media-pull/build/receive-notifications) | [Receive notifications](/en/realtime-media/transcoding/build/receive-ncs-events) |
+
+### Templates
+
+Cloud Transcoding adds reusable [transcoding templates](/en/api-reference/api-ref/cloud-transcoding/template-create) with no Media Pull equivalent. Use a template to store a canvas, watermark, and input configuration, then reference it by name across multiple tasks.
+
+## Next steps
+
+<Cards>
+  <Card title="SDK quickstart" href="/en/realtime-media/transcoding/sdk-quickstart" description="Use the Go SDK to start and manage Cloud Transcoding sessions." />
+  <Card title="REST quickstart" href="/en/realtime-media/transcoding/rest-quickstart" description="Call the Cloud Transcoding REST API directly." />
+  <Card title="API reference" href="/en/api-reference/api-ref/cloud-transcoding" description="Explore Cloud Transcoding REST API operations and parameters." />
+</Cards>
