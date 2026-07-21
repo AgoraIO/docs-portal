@@ -1,13 +1,13 @@
 ---
-title: Foundational realtime capabilities
-description: A foundation-first view of RTC, RTM, IM, realtime transcription, and RTSA.
+title: Foundational real-time capabilities
+description: A foundation-first view of RTC, RTM, IM, real-time transcription, and RTSA.
 ---
 
 <div id="rm-rtc"></div>
 
 ## RTC
 
-Owns audio, video, and channel sessions as the realtime base for calling, live streaming, meetings, and classrooms.
+Owns audio, video, and channel sessions as the real-time base for calling, live streaming, meetings, and classrooms.
 
 <div id="rm-rtm"></div>
 
@@ -19,11 +19,11 @@ Provides low-latency, reliable messaging plus state synchronization for channel 
 
 ## Instant Messaging IM
 
-Fits broader cloud-chat workloads where a full messaging service is needed beyond lightweight realtime coordination.
+Fits broader cloud-chat workloads where a full messaging service is needed beyond lightweight real-time coordination.
 
 <div id="rm-speech-to-text"></div>
 
-## Realtime Transcription & Translation
+## Real-time Transcription & Translation
 
 Provides ultra-low-latency, high-accuracy speech transcription and translation for captions, multilingual communication, and content understanding.
 
@@ -31,4 +31,4 @@ Provides ultra-low-latency, high-accuracy speech transcription and translation f
 
 ## RTSA
 
-Provides realtime media-stream and signaling transport for device-oriented and terminal-style workloads.
+Provides real-time media-stream and signaling transport for device-oriented and terminal-style workloads.

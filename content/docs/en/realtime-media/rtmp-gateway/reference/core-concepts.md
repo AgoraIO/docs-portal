@@ -1,6 +1,6 @@
 ---
 title: "Core concepts"
-description: "Key concepts for understanding how Media Gateway fits into Agora realtime media workflows."
+description: "Key concepts for understanding how Media Gateway fits into Agora real-time media workflows."
 ---
 
 RTC (Real-Time Communication) refers to real-time communication technology that allows almost instant exchange of audio, video, and other data between the sender and the receiver.

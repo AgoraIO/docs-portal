@@ -1,6 +1,6 @@
 ---
 title: "Optimize transcription quality and cost"
-description: "Optimize Realtime STT transcription quality and cost"
+description: "Optimize real-time STT transcription quality and cost"
 ---
 
 To optimize transcription quality and reduce costs, specify only one source language per STT agent or task. This approach avoids additional language identification fees and provides the most accurate results.
