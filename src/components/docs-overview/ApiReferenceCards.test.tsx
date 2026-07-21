@@ -20,7 +20,7 @@ describe('ApiReferenceCards', () => {
       'href',
       '/zh-CN/api-reference/rtc/android/rtc-api-overview',
     );
-    expect(screen.getByText('37 / 37')).toBeVisible();
+    expect(screen.getByText('41 / 41')).toBeVisible();
   });
 
   it('filters client cards by product and platform', () => {
@@ -39,7 +39,7 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.queryByRole('link', { name: /实时互动 RTC Web 客户端 API/i }),
     ).not.toBeInTheDocument();
-    expect(screen.getByText('1 / 37')).toBeVisible();
+    expect(screen.getByText('1 / 41')).toBeVisible();
   });
 
   it('renders server API cards for server SDK and RESTful API entries', () => {
@@ -68,7 +68,7 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.getByRole('button', { name: '全部', pressed: true }),
     ).toBeVisible();
-    expect(screen.getByText('65 / 65')).toBeVisible();
+    expect(screen.getByText('71 / 71')).toBeVisible();
     expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
       screen.getByRole('link', { name: /对话式 AI Android 客户端 API/i }),
@@ -85,7 +85,7 @@ describe('ApiReferenceCards', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '服务端 API' }));
 
-    expect(screen.getByText('28 / 65')).toBeVisible();
+    expect(screen.getByText('30 / 71')).toBeVisible();
     expect(
       screen.getByRole('button', { name: '服务端 API', pressed: true }),
     ).toBeVisible();
@@ -117,7 +117,7 @@ describe('ApiReferenceCards', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '清除筛选' }));
 
-    expect(screen.getByText('28 / 28')).toBeVisible();
+    expect(screen.getByText('30 / 30')).toBeVisible();
     expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
   });
 
@@ -164,6 +164,42 @@ describe('ApiReferenceCards', () => {
     expect(within(cloudRecordingCard).getAllByText('RESTful API')).toHaveLength(
       1,
     );
+  });
+
+  it('renders stacked solution groups inside one product card', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'online-ktv' },
+    });
+
+    expect(screen.getByText('6 / 71')).toBeVisible();
+    expect(screen.getByRole('heading', { name: '在线 K 歌' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '场景化 API 方案' }),
+    ).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'PaaS 方案' })).toBeVisible();
+    expect(
+      screen.getByRole('link', {
+        name: /在线 K 歌 场景化 API 方案 Android 客户端 API/i,
+      }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc/android/class-musiccontentcenterconfiguration',
+    );
+    expect(
+      screen.getByRole('link', {
+        name: /在线 K 歌 PaaS 方案 Android 客户端 API/i,
+      }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+    );
+    expect(
+      screen.getByRole('link', {
+        name: /在线 K 歌 PaaS 方案 RESTful API RESTful API/i,
+      }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/rtc');
   });
 });
 
