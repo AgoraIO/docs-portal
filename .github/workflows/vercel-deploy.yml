@@ -141,6 +141,10 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: bun install --frozen-lockfile
 
+      - name: Check zh-CN OpenAPI links
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        run: bun run docs:links:openapi-zh:baseline
+
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
@@ -302,6 +306,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Check zh-CN OpenAPI links
+        run: bun run docs:links:openapi-zh:baseline
 
       - name: Pull Vercel production environment
         run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"

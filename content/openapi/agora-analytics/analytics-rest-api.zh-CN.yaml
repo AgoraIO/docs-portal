@@ -10,19 +10,19 @@ info:
     调用水晶球 RESTful API 之前，我们推荐你先在[控制台](https://console.shengwang.cn)中试用水晶球，以便对各项参数和数据指标有更直观的了解。详情可参考以下使用指南：
 
 
-    - [通话调查](https://doc.shengwang.cn/doc/analytics/general/rtc/call-search/overview)
+    - [通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)
 
-    - [数据洞察普通版](https://doc.shengwang.cn/doc/analytics/general/rtc/data-insight/basic)
+    - [数据洞察普通版](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)
 
-    - [数据洞察 Plus](https://doc.shengwang.cn/doc/analytics/general/rtc/data-insight/plus)
+    - [数据洞察 Plus](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus)
 
-    - [实时监控](https://doc.shengwang.cn/doc/analytics/general/rtc/monitor)
+    - [实时监控](/zh-CN/realtime-media/usage-analytics/build/rtc/monitor)
 
 
     ## 认证方式
 
 
-    水晶球 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 Authorization 字段中。详见[使用 HTTP 认证](https://doc.shengwang.cn/doc/rtc/restful/user-guides/http-basic-auth)。
+    水晶球 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 Authorization 字段中。详见[使用 HTTP 认证](/zh-CN/api-reference/api-ref/agora-analytics/analytics-restful-authentication)。
 
 
     ## 数据格式
@@ -44,7 +44,7 @@ info:
     ## 调用限制
 
 
-    水晶球 RESTful API 根据项目订阅的水晶球套餐包具有不同的调用限制，包括请求频率、查询范围、数据延迟等，详见[调用限制](https://doc.shengwang.cn/doc/analytics/general/rtc/api-limits)。'
+    水晶球 RESTful API 根据项目订阅的水晶球套餐包具有不同的调用限制，包括请求频率、查询范围、数据延迟等，详见[调用限制](/zh-CN/realtime-media/usage-analytics/reference/api-limits)。'
 servers:
 - url: https://api.sd-rtn.com
 paths:
@@ -1216,7 +1216,7 @@ components:
     appid:
       name: appid
       in: query
-      description: 你的项目使用的 [App ID](https://doc.shengwang.cn/basics/glossary#appid)。
+      description: 你的项目使用的 [App ID](/zh-CN/introduction/glossary#appid)。
       required: true
       schema:
         type: string
@@ -1421,13 +1421,13 @@ components:
   securitySchemes:
     Authorization:
       type: http
-      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。详见[使用 HTTP 认证](https://doc.shengwang.cn/doc/rtc/restful/user-guides/http-basic-auth)
+      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。详见[使用 HTTP 认证](/zh-CN/api-reference/api-ref/agora-analytics/analytics-restful-authentication)
       scheme: basic
   schemas:
     code:
       type: number
       title: code
-      description: 响应状态码。200 表示请求成功，详见[响应状态码](https://doc.shengwang.cn/doc/analytics/general/rtc/response-code)。
+      description: 响应状态码。200 表示请求成功，详见[响应状态码](/zh-CN/realtime-media/usage-analytics/reference/response-code)。
       examples:
       - 200
       x-stoplight:

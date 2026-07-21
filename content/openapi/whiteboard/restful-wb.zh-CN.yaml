@@ -22,22 +22,22 @@ info:
     - **截图管理**：对指定场景或指定场景组下的所有场景进行截图，生成 PNG 格式的图片并上传至你提供的第三方云存储空间中。在调用截图管理 API 之前，请确保：
 
       - 已开通第三方云存储账号，并创建了存储空间。目前互动白板支持的第三方云存储包括：[阿里云存储](https://help.aliyun.com/product/31815.html?spm=5176.7933691.J_1309819.8.2e392a66QiJZD3)、[七牛云存储](https://www.qiniu.com/products/kodo)和 [AWS 云存储](https://amazonaws-china.com/cn/products/storage/?nc2=h_ql_prod_st)。
-      - 已在声网控制台开启截图服务，并添加了存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+      - 已在声网控制台开启截图服务，并添加了存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
     - **场景管理**：互动白板场景的相关操作，包括插入新场景、场景跳转和获取场景地址列表。
 
-    - **文档转换**：文档转换服务支持将 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成静态图片，将 PPT 和 PPTX 的文件转换为动态 HTML 网页，转换后的图片或网页可作为演示资料在互动白板中展示。详见[文档转换服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/advanced-features/convert-files)。
+    - **文档转换**：文档转换服务支持将 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成静态图片，将 PPT 和 PPTX 的文件转换为动态 HTML 网页，转换后的图片或网页可作为演示资料在互动白板中展示。详见[文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
 
       调用文档转换 API 前，请确保：
 
-      - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+      - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
       - 已为待转换的文档生成一个公网可访问的 URL 地址。
 
-    > 本文仅适用于新版文档转换服务。新版本和旧版本的差异详见[文档转换服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/advanced-features/convert-files#新旧版本对比)。如果使用旧版文档转换服务，请查看[旧版文档转换服务 API 参考](https://docportal.shengwang.cn/cn/whiteboard/whiteboard_file_conversion_old?platform=RESTful) 。
+    > 本文仅适用于新版文档转换服务。新版本和旧版本的差异详见[文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。如果使用旧版文档转换服务，请查看[旧版文档转换服务 API 参考](https://docportal.shengwang.cn/cn/whiteboard/whiteboard_file_conversion_old?platform=RESTful) 。
 
     ## 响应状态码
 
-    调用互动白板 RESTful API 可能返回的响应状态码包括**通用响应状态码**和**文档转换错误码**，详见[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)。
+    调用互动白板 RESTful API 可能返回的响应状态码包括**通用响应状态码**和**文档转换错误码**，详见[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)。
 servers:
 - url: https://api.netless.link
   description: ''
@@ -176,7 +176,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -215,7 +215,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -254,7 +254,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -321,7 +321,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -461,7 +461,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -509,7 +509,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -575,7 +575,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -674,7 +674,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -705,7 +705,7 @@ paths:
         markdown: |-
           调用文档转换 API 前，请确保：
 
-          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
           - 已为待转换的文档生成一个公网可访问的 URL 地址。
     get:
@@ -722,7 +722,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -755,7 +755,7 @@ paths:
         markdown: |-
           调用文档转换 API 前，请确保：
 
-          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
           - 已为待转换的文档生成一个公网可访问的 URL 地址。
   /v5/projector/tasks/{uuid}:
@@ -774,7 +774,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -866,7 +866,7 @@ paths:
         markdown: |-
           调用文档转换 API 前，请确保：
 
-          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
           - 已为待转换的文档生成一个公网可访问的 URL 地址。
     delete:
@@ -882,7 +882,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -906,7 +906,7 @@ paths:
         markdown: |-
           调用文档转换 API 前，请确保：
 
-          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
           - 已为待转换的文档生成一个公网可访问的 URL 地址。
   /v5/projector/tasks/{uuid}/priority:
@@ -941,7 +941,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -970,7 +970,7 @@ paths:
         markdown: |-
           调用文档转换 API 前，请确保：
 
-          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
           - 已为待转换的文档生成一个公网可访问的 URL 地址。
   /v5/services/conversion/tasks:
@@ -1046,7 +1046,7 @@ paths:
           description: |-
             若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -1089,7 +1089,7 @@ paths:
           description: |-
             若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
 
-            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
           content:
             application/json:
               schema:
@@ -1263,11 +1263,11 @@ components:
       description: |-
         SDK Token，可以通过以下方式获取：
 
-        - 在声网控制台生成用于测试的 SDK Token，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+        - 在声网控制台生成用于测试的 SDK Token，详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
         - 调用服务端 RESTful API， 详见[生成 SDK Token](generate-sdk-token)。
 
-        - 在 App 服务端用代码生成，详见[在 App 服务端生成 Token](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+        - 在 App 服务端用代码生成，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
       required: true
       schema:
         type: string
@@ -1281,7 +1281,7 @@ components:
 
         - 调用服务端 RESTful API， 详见[生成 Task Token](generate-task-token)。
 
-        - 在 app 服务端用代码生成，详见[在 App 服务端生成 Token](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+        - 在 app 服务端用代码生成，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
       required: true
       schema:
         type: string
@@ -1290,7 +1290,7 @@ components:
       description: |-
         若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含包含 String 型的场景地址。
 
-        若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+        若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
       content:
         application/json:
           schema:
@@ -1310,7 +1310,7 @@ components:
       description: |-
         若返回的状态码为 `201` 则表示请求成功。响应 Body 为空对象。
 
-        若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+        若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)了解可能的原因。
       content:
         application/json:
           schema:
@@ -1322,11 +1322,11 @@ components:
     ak:
       type: string
       title: ak
-      description: 访问密钥 Access Key (AK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。
+      description: 访问密钥 Access Key (AK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
     sk:
       type: string
       title: sk
-      description: 私有访问密钥 Secret Access Key (SK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。
+      description: 私有访问密钥 Secret Access Key (SK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
     lifespan:
       type: integer
       title: lifespan
@@ -1344,7 +1344,7 @@ components:
         - `writer`
 
         - `reader`
-        详见 [Token 的类型与权限](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/overview/concepts#token)。
+        详见 [Token 的类型与权限](/zh-CN/realtime-media/whiteboard/concepts#token)。
     isRecord:
       type: boolean
       title: isRecord
@@ -1553,7 +1553,7 @@ components:
       type: string
       title: webhookEndpoint
       description: |-
-        Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。Webhook 配置方式和签名验证详见[接收文档转换 Webhook 事件](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/conversion-webhook)。
+        Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。Webhook 配置方式和签名验证详见[接收文档转换 Webhook 事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook)。
 
         > Webhook 回调有一定概率重复回调，为保证 app 服务端在接到相同响应时的处理方式保持一致，需要做好幂等处理。
       examples:
@@ -1655,7 +1655,7 @@ components:
     errorCode:
       type: string
       title: errorCode
-      description: 错误码。仅在转换任务失败时，才会返回该字段。所有可能的错误码详见[文档转换错误码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)。
+      description: 错误码。仅在转换任务失败时，才会返回该字段。所有可能的错误码详见[文档转换错误码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code)。
     errorMessage:
       type: string
       title: errorMessage

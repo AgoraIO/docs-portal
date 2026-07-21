@@ -15,7 +15,7 @@ info:
 
     > 云端录制不支持在一路录制中完成多个任务。例如，如果你需要同时对某个频道进行单流录制和合流录制，那么需要起两路录制。即，使用两个不同的 `uid` 分别调用 `acquire`，获取两个 `resourceId`，再分别调用 `start` 启动两路录制任务。两路录制均会产生费用。
 
-    为方便你监听云端录制的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/cloud-recording/restful/webhook/enable-ncs)。开通该服务后，你可以通过 Webhook 接收[云端录制相关事件](https://doc.shengwang.cn/doc/cloud-recording/restful/webhook/ncs-events)。
+    为方便你监听云端录制的状态，声网提供[消息通知服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)。开通该服务后，你可以通过 Webhook 接收[云端录制相关事件](/zh-CN/realtime-media/cloud-recording/reference/ncs-events)。
 
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要[定期查询 IP 地址](./get-ncs-ip)并更新防火墙白名单配置。
   contact: {}
@@ -94,7 +94,7 @@ paths:
             通过 [`acquire`](acquire) 方法获取云端录制资源后，调用 `start` 方法开始云端录制。
       x-docs-callouts:
         - position: after-description
-          markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/recording-status#%E4%BF%9D%E9%9A%9C%E5%BD%95%E5%88%B6%E6%88%90%E5%8A%9F%E5%90%AF%E5%8A%A8)检查录制服务是否已经成功启动。
+          markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#monitor_status)检查录制服务是否已经成功启动。
       operationId: start-cloud-recording
       parameters:
         - $ref: '#/components/parameters/Content-Type'
@@ -321,7 +321,7 @@ paths:
           description: |-
             如果返回的 HTTP 状态码为 `200`，表示请求成功。
 
-            如需检查录制服务是否已经成功启动，请参考[监控录制状态](https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/recording-status)操作。
+            如需检查录制服务是否已经成功启动，请参考[监控录制状态](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status)操作。
           content:
             application/json:
               schema:
@@ -454,7 +454,7 @@ paths:
         - $ref: '#/components/parameters/sid'
         - name: mode
           in: path
-          description: '录制模式。只支持 `mix`，代表[合流录制模式](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite)。'
+          description: '录制模式。只支持 `mix`，代表[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。'
           required: true
           schema:
             type: string
@@ -625,7 +625,7 @@ components:
     appid:
       name: appid
       in: path
-      description: '你的项目使用的 [App ID](http://doc.shengwang.cn/doc/cloud-recording/restful/get-started/enable-service#%E8%8E%B7%E5%8F%96-app-id)。<li>对于页面录制模式，只需输入开通了云端录制服务的 App ID。</li><li>对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。</li>'
+      description: '你的项目使用的 [App ID](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#获取-app-id)。<li>对于页面录制模式，只需输入开通了云端录制服务的 App ID。</li><li>对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。</li>'
       required: true
       schema:
         type: string
@@ -646,7 +646,7 @@ components:
     mode:
       name: mode
       in: path
-      description: '录制模式：<li>`individual`：[单流录制模式](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/web-mode/set-webpage-recording)。</li>'
+      description: '录制模式：<li>`individual`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。</li>'
       required: true
       schema:
         type: string
@@ -660,11 +660,11 @@ components:
   securitySchemes:
     Basic Auth:
       type: http
-      description: '声网云端录制 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/http-basic-auth)。'
+      description: '声网云端录制 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
       scheme: basic
   responses:
     not-200:
-      description: '如果 HTTP 状态码不为 `200`，请参考[响应状态码](https://doc.shengwang.cn/doc/cloud-recording/restful/response-code)排查问题。'
+      description: '如果 HTTP 状态码不为 `200`，请参考[响应状态码](/zh-CN/realtime-media/cloud-recording/reference/response-code)排查问题。'
     ncs-ip:
       description: |-
         如果返回的 HTTP 状态码为 200，表示请求成功。
@@ -741,7 +741,7 @@ components:
               default: 72
             excludeResourceIds:
               type: array
-              description: '另一路或几路录制任务的 `resourceId`。该字段用于排除指定的录制资源，以便新发起的录制任务可以使用新区域的资源，实现跨区域多路录制。详见[多路任务保障](https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/rest-availability#%E5%A4%9A%E8%B7%AF%E4%BB%BB%E5%8A%A1%E4%BF%9D%E9%9A%9C)。'
+              description: '另一路或几路录制任务的 `resourceId`。该字段用于排除指定的录制资源，以便新发起的录制任务可以使用新区域的资源，实现跨区域多路录制。详见[多路任务保障](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/rest-availability#多路任务保障)。'
               items:
                 type: string
             regionAffinity:
@@ -773,7 +773,7 @@ components:
         token:
           type: string
           description: |
-            用于鉴权的动态密钥（Token）。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)。
+            用于鉴权的动态密钥（Token）。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
             <p><b>注意</b>：
             <li>仅需在<b>单流录制</b>和<b>合流录制</b>模式下设置。</li>
             <li>云端录制服务暂不支持更新 Token。为保证录制正常，请确保 Token 有效时长大于你预计的录制时长，以避免 Token 过期导致录制任务退出频道而结束录制。</li>
@@ -816,7 +816,7 @@ components:
           type: number
           description: |-
             第三方云存储指定的地区信息。
-            > 为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。详见[第三方存储地区说明](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference)。
+            > 为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。详见[第三方存储地区说明](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。
         bucket:
           type: string
           description: 第三方云存储的 Bucket。Bucket 名称需要符合对应第三方云存储服务的命名规则。
@@ -947,10 +947,10 @@ components:
         streamMode:
           type: string
           description: |-
-            媒体流的输出模式。详见[媒体流输出模式](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference#媒体流输出模式设置)。
+            媒体流的输出模式。详见[媒体流输出模式](/zh-CN/realtime-media/cloud-recording/reference/api-reference#媒体流输出模式设置)。
             - `"default"`：默认模式。录制过程中音频转码，分别生成 M3U8 音频索引文件和视频索引文件。
             - `"standard"`：标准模式。声网推荐使用该模式。录制过程中音频转码，分别生成 M3U8 音频索引文件、视频索引文件和合并的音视频索引文件。如果在 Web 端使用 VP8 编码，则生成一个合并的 MPD 音视频索引文件。
-            - `"original"`：原始编码模式。适用于[单流音频不转码录制](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/individual-mode/set-individual-without-transcoding)。仅订阅音频时（`streamTypes` 为 0）时该字段生效，录制过程中音频不转码，生成 M3U8 音频索引文件。
+            - `"original"`：原始编码模式。适用于[单流音频不转码录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding)。仅订阅音频时（`streamTypes` 为 0）时该字段生效，录制过程中音频不转码，生成 M3U8 音频索引文件。
             > 仅需在**单流录制**模式下设置。
           default: default
         audioProfile:
@@ -972,7 +972,7 @@ components:
       type: array
       title: sub-audio-uid
       description: |-
-        指定订阅哪几个 UID 的音频流。如需订阅全部 UID 的音频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeAudioUids` 只能设一个。详见[设置订阅名单](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference#%E8%AE%A2%E9%98%85%E5%90%8D%E5%8D%95%E8%AE%BE%E7%BD%AE)。
+        指定订阅哪几个 UID 的音频流。如需订阅全部 UID 的音频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeAudioUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
         <p><b>注意：</b>
         <li>该字段仅适用于 <b>streamTypes</b> 设为音频，或音频和视频的情况。</li>
         <li>如果你设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。</li>
@@ -985,7 +985,7 @@ components:
     unsub-audio-uid:
       type: array
       title: unsub-audio-uid
-      description: '指定不订阅哪几个 UID 的音频流。云端录制会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，不推荐使用空数组。该字段和 `subscribeAudioUids` 只能设一个。详见[设置订阅名单](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference#%E8%AE%A2%E9%98%85%E5%90%8D%E5%8D%95%E8%AE%BE%E7%BD%AE)。'
+      description: '指定不订阅哪几个 UID 的音频流。云端录制会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，不推荐使用空数组。该字段和 `subscribeAudioUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。'
       items:
         type: string
       x-stoplight:
@@ -994,7 +994,7 @@ components:
       type: array
       title: sub-video-uid
       description: |-
-        指定订阅哪几个 UID 的视频流。如需订阅全部 UID 的视频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeVideoUids` 只能设一个。详见[设置订阅名单](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference#%E8%AE%A2%E9%98%85%E5%90%8D%E5%8D%95%E8%AE%BE%E7%BD%AE)。
+        指定订阅哪几个 UID 的视频流。如需订阅全部 UID 的视频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeVideoUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
         <p><b>注意：</b>
         <li>该字段仅适用于 <b>streamTypes</b> 设为视频，或音频和视频的情况。</li>
         <li>如果你设置了视频的订阅名单，但没有设置音频的订阅名单，云端录制服务不会订阅任何音频流。反之亦然。</li>
@@ -1007,7 +1007,7 @@ components:
     unsub-video-uid:
       type: array
       title: unsub-video-uid
-      description: '指定不订阅哪几个 UID 的视频流。云端录制会订阅频道内除指定 UID 外所有 UID 的视频流。数组长度不得超过 32，不推荐使用空数组。该字段和 `subscribeVideoUids` 只能设一个。详见[设置订阅名单](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference#%E8%AE%A2%E9%98%85%E5%90%8D%E5%8D%95%E8%AE%BE%E7%BD%AE)。'
+      description: '指定不订阅哪几个 UID 的视频流。云端录制会订阅频道内除指定 UID 外所有 UID 的视频流。数组长度不得超过 32，不推荐使用空数组。该字段和 `subscribeVideoUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。'
       items:
         type: string
       x-stoplight:
@@ -1015,7 +1015,7 @@ components:
     transcodingConfig:
       type: object
       description: |-
-        转码输出的视频配置项。取值可参考[设置录制输出视频的分辨率](http://doc.shengwang.cn/doc/cloud-recording/restful/api/reference)。
+        转码输出的视频配置项。取值可参考[设置录制输出视频的分辨率](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。
         <p><b>注意：</b>仅需在<b>合流录制</b>模式下设置。</p>
       properties:
         width:
@@ -1171,7 +1171,7 @@ components:
             description: |-
               该用户的背景图 URL。配置背景图后，当该⽤户停止发送视频流超过 3.5 秒，画⾯将切换为该背景图。
               
-              URL 支持 HTTP 和 HTTPS 协议，图片格式支持 JPG 和 BMP。图片大小不得超过 6 MB。录制服务成功下载图片后，设置才会生效；如果下载失败，则设置不⽣效。不同字段设置可能会互相覆盖，具体规则详见[设置背景色或背景图](https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite-layout#%E8%BF%9B%E9%98%B6%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E8%89%B2%E6%88%96%E8%83%8C%E6%99%AF%E5%9B%BE)。
+              URL 支持 HTTP 和 HTTPS 协议，图片格式支持 JPG 和 BMP。图片大小不得超过 6 MB。录制服务成功下载图片后，设置才会生效；如果下载失败，则设置不⽣效。不同字段设置可能会互相覆盖，具体规则详见[设置背景色或背景图](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout#进阶设置背景色或背景图)。
           render_mode:
             $ref: '#/components/schemas/render_mode'
         required:
@@ -1210,7 +1210,7 @@ components:
         云端截图配置项。<p><b>注意：</b>仅需在<b>单流录制</b>模式下，且使用截图功能时设置。</p>
         **截图**使用须知：
         - 截图功能仅适用于单流录制模式（`individual`）。
-        - 你可以在一个单流录制进程中仅截图，或同时录制和截图，详见[云端截图](http://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/snapshot)。同时录制和截图的情况需要设置 `recordingFileConfig` 字段。
+        - 你可以在一个单流录制进程中仅截图，或同时录制和截图，详见[云端截图](/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot)。同时录制和截图的情况需要设置 `recordingFileConfig` 字段。
         - 如果录制服务或录制上传服务异常，则截图失败。截图异常时，录制不受影响。
         - 使用截图时，`streamTypes` 必须设置为 1 或 2。如果设置了 `subscribeAudioUid`，则必须同时设置 `subscribeVideoUids`。
       properties:
@@ -1294,12 +1294,12 @@ components:
                 - `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps。
             videoWidth:
               type: number
-              description: '输出视频的宽度，单位为 pixel。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。推荐值可参考[如何设置页面录制移动端网页模式的输出视频分辨率](https://doc.shengwang.cn/faq/integration-issues/mobile-video-profile)。'
+              description: '输出视频的宽度，单位为 pixel。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。推荐值可参考[如何设置页面录制移动端网页模式的输出视频分辨率](/zh-CN/api-reference/faq/integration/mobile_video_profile)。'
               minimum: 240
               maximum: 1920
             videoHeight:
               type: number
-              description: '输出视频的高度，单位为 pixel。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。推荐值可参考[如何设置页面录制移动端网页模式的输出视频分辨率](https://doc.shengwang.cn/faq/integration-issues/mobile-video-profile)。'
+              description: '输出视频的高度，单位为 pixel。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。推荐值可参考[如何设置页面录制移动端网页模式的输出视频分辨率](/zh-CN/api-reference/faq/integration/mobile_video_profile)。'
               minimum: 240
               maximum: 1920
             maxRecordingHour:
@@ -1340,7 +1340,7 @@ components:
             readyTimeout:
               type: number
               description: |-
-                设置页面加载超时时间，单位为秒。详见[页面加载超时检测](https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/webpage#%E6%A3%80%E6%B5%8B%E9%A1%B5%E9%9D%A2%E5%8A%A0%E8%BD%BD%E8%B6%85%E6%97%B6)。
+                设置页面加载超时时间，单位为秒。详见[页面加载超时检测](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/webpage#检测页面加载超时)。
                 - `0` 或不设置，表示不检测页面加载状态。
                 - [1,60] 之间的整数，表示页面加载超时时间。
               minimum: 0
@@ -1663,7 +1663,7 @@ components:
           type: number
           description: |-
             第三方云存储指定的地区信息。
-            <br><b>注意：</b>为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。详见[第三方存储地区说明](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference)。</br>
+            <br><b>注意：</b>为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。详见[第三方存储地区说明](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。</br>
         bucket:
           type: string
           description: 第三方云存储的 Bucket。Bucket 名称需要符合对应第三方云存储服务的命名规则。
