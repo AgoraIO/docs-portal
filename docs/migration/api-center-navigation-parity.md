@@ -8,7 +8,7 @@
 - Internal entries: 81
 - External entries: 10
 - Overview actions: 91
-- Root navigation actions: 110
+- Root navigation actions: 109
 - Expected visible root products: 24
 - Visible root product groups: 26
 - Missing visible root products: 0

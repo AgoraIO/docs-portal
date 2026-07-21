@@ -199,6 +199,7 @@ describe('API Center navigation runner', () => {
           pages: [
             `[C++](${rtmCppRoute})`,
             '[C++](/zh-CN/api-reference/rtm/cpp/configuration)',
+            '[React Native](/zh-CN/api-reference/rtm/react-native/configuration)',
             '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
           ],
         },
@@ -209,6 +210,7 @@ describe('API Center navigation runner', () => {
           pages: [
             `[Android](${rtcRoute})`,
             '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
+            '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
           ],
         },
         {
@@ -239,6 +241,7 @@ describe('API Center navigation runner', () => {
     expect(visibleGroups[0].pages).toEqual([
       `[Android](${rtcRoute})`,
       '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
+      '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
     ]);
     expect(visibleGroups[1].pages).toEqual([
       `[C++](${rtmCppRoute})`,

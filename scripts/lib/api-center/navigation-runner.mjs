@@ -32,6 +32,11 @@ const API_CENTER_SCOPE_TITLES = new Map([
 const API_CENTER_SIDEBAR_LABELS = new Map([
   ['/zh-CN/api-reference/rtc-server-sdk/error-code', '通用错误码'],
 ]);
+// The legacy API Center intentionally omitted RTM React Native even though its
+// generated API pages still exist and must remain directly reachable.
+const LEGACY_HIDDEN_ROOT_ACTION_ROUTES = new Set([
+  '/zh-CN/api-reference/rtm/react-native/configuration',
+]);
 
 const PRODUCT_ICONS = new Map([
   ['对话式 AI 引擎', 'ai'],
@@ -1043,6 +1048,7 @@ function sourceEntryRootPages(existingPages, entries) {
   const consumed = new Set();
   const generated = [];
   for (const entry of entries) {
+    if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(entry.targetRoute)) continue;
     const label = rootActionLabel(entry, entries);
     const existing = preferredExistingRootLink(
       existingPages,
@@ -1061,7 +1067,9 @@ function sourceEntryRootPages(existingPages, entries) {
     generated.map((page) => parseMetaLink(page)?.label).filter(Boolean),
   );
   for (const [index, page] of (existingPages ?? []).entries()) {
-    const existingLabel = parseMetaLink(page)?.label;
+    const parsed = parseMetaLink(page);
+    if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(parsed?.route)) continue;
+    const existingLabel = parsed?.label;
     if (
       !consumed.has(index) &&
       !generated.includes(page) &&
