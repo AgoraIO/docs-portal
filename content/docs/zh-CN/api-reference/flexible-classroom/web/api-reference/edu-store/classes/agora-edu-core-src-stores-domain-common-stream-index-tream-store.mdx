@@ -12,45 +12,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
-
-  - StreamStore
-
-## Index
-
-### Accessors
-
-- [localCameraStreamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#localCameraStreamUuid)
-- [localMicStreamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#localMicStreamUuid)
-- [localShareStreamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#localShareStreamUuid)
-- [shareStreamToken](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#shareStreamToken)
-- [shareStreamTokens](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#shareStreamTokens)
-- [streamByStreamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#streamByStreamUuid)
-- [streamByUserUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#streamByUserUuid)
-- [streamVolumes](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#streamVolumes)
-
-### Methods
-
-- [destroyScreenShareStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#destroyScreenShareStream)
-- [initializeScreenShareStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#initializeScreenShareStream)
-- [muteRemoteAudioStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#muteRemoteAudioStream)
-- [muteRemoteVideoStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#muteRemoteVideoStream)
-- [muteRemoteVideoStreamMass](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#muteRemoteVideoStreamMass)
-- [publishScreenShare](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#publishScreenShare)
-- [publishScreenShareStateless](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#publishScreenShareStateless)
-- [publishStreamToCdn](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#publishStreamToCdn)
-- [setLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#setLatencyLevel)
-- [setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#setRemoteVideoStreamType)
-- [setupRemoteVideo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#setupRemoteVideo)
-- [unpublishScreenShare](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#unpublishScreenShare)
-- [unpublishScreenShareStateless](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#unpublishScreenShareStateless)
-- [updateExpandedScopeAndStreams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateExpandedScopeAndStreams)
-- [updateLocalPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateLocalPublishState)
-- [updateRemotePublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateRemotePublishState)
-- [updateRemotePublishStateBatch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateRemotePublishStateBatch)
-
 ## Accessors
 
 <a id="localCameraStreamUuid"></a>
@@ -506,7 +467,7 @@ publishScreenShare(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-cla
 
 <ParameterType>
 
-Partial & lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states) & gt;
+Partial & lt; [AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states) & gt;
 
 </ParameterType>
 
@@ -855,7 +816,7 @@ updateExpandedScopeAndStreams(state: 0 | 1, data: \{ userUuids: string[] \}): Pr
 1 开启视频墙 0 关闭视频墙
 
 </Parameter>
-<Parameter name="data" type="\&#123;userUuids:string[]\&#125;" required>
+<Parameter name="data" type="\&#123; userUuids: string[] \&#125;" required>
 
 userUuids 发流用户列表
 
@@ -893,7 +854,7 @@ updateLocalPublishState(state: \{ audioState?: [AgoraRteMediaPublishState](/zh-C
 
 <ParameterType>
 
-\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+\{ audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
 
 </ParameterType>
 
@@ -971,7 +932,7 @@ updateRemotePublishState(userUuid: string, streamUuid: string, state: \{ audioSt
 
 <ParameterType>
 
-\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+\{ audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
 
 </ParameterType>
 
@@ -1039,7 +1000,7 @@ updateRemotePublishStateBatch(streams: \{ audioSourceType?: [AgoraRteAudioSource
 
 <ParameterType>
 
-\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[]
+\{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); streamUuid: string; userUuid: string; videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}[]
 
 </ParameterType>
 

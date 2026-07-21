@@ -12,42 +12,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
-
-  - MessagesStore
-
-## Index
-
-### Accessors
-
-- [chatConvasationMessageId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#chatConvasationMessageId)
-- [chatConvasationUserUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#chatConvasationUserUuid)
-- [chatMuted](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#chatMuted)
-- [newMessageFlag](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#newMessageFlag)
-- [roomChatConversations](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#roomChatConversations)
-- [roomChatMessages](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#roomChatMessages)
-- [roomChatMessagesMessageId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#roomChatMessagesMessageId)
-- [unreadMessageCount](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#unreadMessageCount)
-
-### Methods
-
-- [addChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#addChatMessage)
-- [addConversationChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#addConversationChatMessage)
-- [addRoomChatConversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#addRoomChatConversation)
-- [getConversationHistoryChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#getConversationHistoryChatMessage)
-- [getConversationList](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#getConversationList)
-- [getHistoryChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#getHistoryChatMessage)
-- [incrementUnreadMessageCount](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#incrementUnreadMessageCount)
-- [muteChat](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#muteChat)
-- [onDestroy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#onDestroy)
-- [onInstall](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#onInstall)
-- [resetUnreadMessageCount](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#resetUnreadMessageCount)
-- [sendMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#sendMessage)
-- [sendMessageToConversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#sendMessageToConversation)
-- [unmuteChat](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-index-essages-store#unmuteChat)
-
 ## Accessors
 
 <a id="chatConvasationMessageId"></a>
@@ -340,7 +304,7 @@ getConversationHistoryChatMessage(data: \{ nextId: string; sort: number; student
 根据学生 ID 获取学生的提问消息
 
 <ParameterList title="Parameters">
-<Parameter name="data" type="\&#123;nextId:string;sort:number;studentUuid:string\&#125;" required>
+<Parameter name="data" type="\&#123; nextId: string; sort: number; studentUuid: string \&#125;" required>
 
 <ParameterList>
 <Parameter name="nextId" type="string" required />
@@ -374,7 +338,7 @@ getConversationList(data: \{ nextId: string; sort: number \}): Promise&lt;any&gt
 获取 提问列表用户信息
 
 <ParameterList title="Parameters">
-<Parameter name="data" type="\&#123;nextId:string;sort:number\&#125;" required>
+<Parameter name="data" type="\&#123; nextId: string; sort: number \&#125;" required>
 
 <ParameterList>
 <Parameter name="nextId" type="string" required />
@@ -407,7 +371,7 @@ getHistoryChatMessage(data: \{ nextId: string; sort: number \}): Promise&lt;any&
 获取房间历史的聊天消息
 
 <ParameterList title="Parameters">
-<Parameter name="data" type="\&#123;nextId:string;sort:number\&#125;" required>
+<Parameter name="data" type="\&#123; nextId: string; sort: number \&#125;" required>
 
 <ParameterList>
 <Parameter name="nextId" type="string" required />

@@ -11,22 +11,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- PublishCdnParams
-
-## Index
-
-### Properties
-
-- [audioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#audioSourceType)
-- [audioState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#audioState)
-- [converterOptions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#converterOptions)
-- [generateToken](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#generateToken)
-- [streamName](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#streamName)
-- [videoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#videoSourceType)
-- [videoState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params#videoState)
-
 ## Properties
 
 <a id="audioSourceType"></a>
@@ -52,17 +36,17 @@ converterOptions: \{bitrate:number;height:number;seiOptions?:\{sink?:\{type?:num
 <ParameterList title="Type declaration">
 <Parameter name="bitrate" type="number" required />
 <Parameter name="height" type="number" required />
-<Parameter name="seiOptions" type="\&#123;sink?:\&#123;type?:number\&#125;;source?:\&#123;customized?:unknown;datastream?:boolean;metadata?:boolean\&#125;\&#125;" optional>
+<Parameter name="seiOptions" type="\&#123; sink?: \&#123; type?: number \&#125;; source?: \&#123; customized?: unknown; datastream?: boolean; metadata?: boolean \&#125; \&#125;" optional>
 
 <ParameterList>
-<Parameter name="sink" type="\&#123;type?:number\&#125;" optional>
+<Parameter name="sink" type="\&#123; type?: number \&#125;" optional>
 
 <ParameterList>
 <Parameter name="type" type="number" optional />
 </ParameterList>
 
 </Parameter>
-<Parameter name="source" type="\&#123;customized?:unknown;datastream?:boolean;metadata?:boolean\&#125;" optional>
+<Parameter name="source" type="\&#123; customized?: unknown; datastream?: boolean; metadata?: boolean \&#125;" optional>
 
 <ParameterList>
 <Parameter name="customized" type="unknown" optional />

@@ -30,6 +30,22 @@ export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
   },
 });
 
+export const EDU_STORE_TYPEDOC_CONVERSION_PROFILE = 'edu-store-typedoc';
+
+export function apiCenterHtmlConversionProfile({
+  sourcePath = '',
+  supplementalGeneratedSource,
+} = {}) {
+  if (
+    supplementalGeneratedSource?.kind === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+  ) {
+    return EDU_STORE_TYPEDOC_CONVERSION_PROFILE;
+  }
+  return /^html-docs\/flexible-classroom\/(?:Web|Electron)\//.test(sourcePath)
+    ? EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+    : undefined;
+}
+
 function cleanText(value) {
   return String(value ?? '')
     .replace(/\u00a0/g, ' ')
@@ -181,7 +197,12 @@ function selectArticle($) {
   return $('body').first();
 }
 
-function loadHtmlPage({ html, rootSelector, titleSelector }) {
+function loadHtmlPage({
+  html,
+  rootSelector,
+  titleSelector,
+  conversionProfile,
+}) {
   const $ = cheerio.load(html);
   const preferredTitle = titleSelector
     ? cleanText($(titleSelector).first().text())
@@ -204,6 +225,9 @@ function loadHtmlPage({ html, rootSelector, titleSelector }) {
       description: '',
     };
   }
+  if (conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE) {
+    article.children('section.tsd-hierarchy, section.tsd-index-group').remove();
+  }
   const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
   const titleNode =
     selectedTitleNode?.length > 0
@@ -214,8 +238,13 @@ function loadHtmlPage({ html, rootSelector, titleSelector }) {
   );
   const titleArticle = titleNode.closest('article').get(0);
   const articleNode = article.get(0);
-  const descriptionNode = article
-    .find('.shortdesc, .lead, .tsd-comment-shortform')
+  const descriptionCandidates =
+    conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+      ? article
+          .children('section.tsd-panel.tsd-comment')
+          .find('.shortdesc, .lead, .tsd-comment-shortform')
+      : article.find('.shortdesc, .lead, .tsd-comment-shortform');
+  const descriptionNode = descriptionCandidates
     .filter((_, node) => {
       const nodeArticle = $(node).closest('article').get(0);
       return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
@@ -495,11 +524,35 @@ function hasRichParameterType(value) {
   return /(?<!!)\[[^\]]+]\([^)]+\)/.test(String(value ?? ''));
 }
 
-function normalizeTypeDocType(value) {
-  return String(value ?? '')
+function normalizeTypeDocRichTypeSpacing(value) {
+  const source = String(value ?? '');
+  const markdownLinkPattern = /(?<!!)\[[^\]]+]\([^)]+\)/g;
+  let offset = 0;
+  let normalized = '';
+  const normalizeText = (text) =>
+    text
+      .replace(/\\\{\s*/g, '\\{ ')
+      .replace(/\s*\\\}/g, ' \\}')
+      .replace(/;\s*/g, '; ')
+      .replace(/:\s*/g, ': ')
+      .replace(/[ \t]+/g, ' ');
+  for (const match of source.matchAll(markdownLinkPattern)) {
+    normalized += normalizeText(source.slice(offset, match.index));
+    normalized += match[0];
+    offset = (match.index ?? 0) + match[0].length;
+  }
+  normalized += normalizeText(source.slice(offset));
+  return normalized.trim();
+}
+
+function normalizeTypeDocType(value, state) {
+  const normalized = String(value ?? '')
     .replace(/\s*\|\s*/g, ' | ')
     .replace(/\s*&\s*/g, ' & ')
     .trim();
+  return state.conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+    ? normalizeTypeDocRichTypeSpacing(normalized)
+    : normalized;
 }
 
 function parameterHeadingSlug(value, state) {
@@ -683,6 +736,7 @@ async function parseTypeDocParameters($, list, state) {
     );
     const type = normalizeTypeDocType(
       separator >= 0 ? renderedHeading.slice(separator + 1) : '',
+      state,
     );
     const description = item.clone();
     description.children(headingSelector).first().remove();
@@ -1457,6 +1511,7 @@ async function renderBlockNode($, node, state) {
  * @param {(args: { source: string, sourceUrl: string }) => Promise<string> | string} [options.onAsset]
  * @param {string} [options.rootSelector]
  * @param {string} [options.titleSelector]
+ * @param {string} [options.conversionProfile]
  */
 export async function convertHtmlToMdx({
   html,
@@ -1467,9 +1522,15 @@ export async function convertHtmlToMdx({
   onAsset,
   rootSelector,
   titleSelector,
+  conversionProfile,
 }) {
   const { $, article, titleNode, descriptionNode, title, description } =
-    loadHtmlPage({ html, rootSelector, titleSelector });
+    loadHtmlPage({
+      html,
+      rootSelector,
+      titleSelector,
+      conversionProfile,
+    });
   if (article.length === 0) {
     return {
       title: '',
@@ -1491,6 +1552,7 @@ export async function convertHtmlToMdx({
     routeMap,
     fragmentMap,
     onAsset,
+    conversionProfile,
   });
   state.pageTitle = title;
   const fragments = [];

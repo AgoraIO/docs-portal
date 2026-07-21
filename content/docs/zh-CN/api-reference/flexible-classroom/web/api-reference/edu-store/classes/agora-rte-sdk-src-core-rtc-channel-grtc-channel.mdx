@@ -10,43 +10,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- AGRtcChannel
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#constructor)
-
-### Properties
-
-- [channelName](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#channelName)
-
-### Methods
-
-- [enableDualStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#enableDualStream)
-- [getRtcSid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#getRtcSid)
-- [join](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#join)
-- [leave](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#leave)
-- [muteLocalAudioStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteLocalAudioStream)
-- [muteLocalScreenStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteLocalScreenStream)
-- [muteLocalVideoStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteLocalVideoStream)
-- [muteRemoteAudioStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteRemoteAudioStream)
-- [muteRemoteVideoStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteRemoteVideoStream)
-- [muteRemoteVideoStreamMass](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#muteRemoteVideoStreamMass)
-- [onAudioVolumeIndication](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#onAudioVolumeIndication)
-- [onConnectedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#onConnectedThroughCloudProxy)
-- [onConnectionStageChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#onConnectionStageChanged)
-- [onNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#onNetworkStats)
-- [onPublishedThroughCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#onPublishedThroughCloudProxy)
-- [setCloudProxy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#setCloudProxy)
-- [setLatencyLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#setLatencyLevel)
-- [setLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#setLowStreamParameter)
-- [setRemoteTrackVolume](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#setRemoteTrackVolume)
-- [setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel#setRemoteVideoStreamType)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -396,7 +359,7 @@ onAudioVolumeIndication(cb: (volumes: Map&lt;string, number&gt;) =&gt; void): nu
 </ApiSignature>
 
 <ParameterList title="Parameters">
-<Parameter name="cb" type="(volumes:Map &amp; lt;string,number &amp; gt;)= &amp; gt;void" required>
+<Parameter name="cb" type="(volumes: Map &amp; lt; string,number &amp; gt; )= &amp; gt; void" required>
 
 <ApiSignature>
 
@@ -405,7 +368,7 @@ onAudioVolumeIndication(cb: (volumes: Map&lt;string, number&gt;) =&gt; void): nu
 </ApiSignature>
 
 <ParameterList title="Parameters">
-<Parameter name="volumes" type="Map &amp; lt;string,number &amp; gt;" required />
+<Parameter name="volumes" type="Map &amp; lt; string,number &amp; gt;" required />
 </ParameterList>
 
 <ApiReturns>
@@ -446,7 +409,7 @@ onConnectedThroughCloudProxy(cb: (connectionType: [AGRtcConnectionType](/zh-CN/a
 
 <ParameterType>
 
-(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt;void
+(connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt; void
 
 </ParameterType>
 
@@ -506,7 +469,7 @@ onConnectionStageChanged(cb: (state: [AGRtcState](/zh-CN/api-reference/flexible-
 
 <ParameterType>
 
-(state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt;void
+(state: [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))= & gt; void
 
 </ParameterType>
 
@@ -575,7 +538,7 @@ onNetworkStats(cb: (stats: [AGNetworkStats](/zh-CN/api-reference/flexible-classr
 
 <ParameterType>
 
-(stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))= & gt;void
+(stats: [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))= & gt; void
 
 </ParameterType>
 
@@ -635,7 +598,7 @@ onPublishedThroughCloudProxy(cb: (connectionType: [AGRtcConnectionType](/zh-CN/a
 
 <ParameterType>
 
-(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy:boolean)= & gt;void
+(connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy: boolean)= & gt; void
 
 </ParameterType>
 

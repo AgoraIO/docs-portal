@@ -11,39 +11,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- AGAudioRawDataDispatcher
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#constructor)
-
-### Properties
-
-- [logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#logger)
-
-### Accessors
-
-- [audioTrackRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#audioTrackRawDataConfig)
-- [hasAudioTrackRawDataObservers](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#hasAudioTrackRawDataObservers)
-- [hasMicrophoneRawDataObservers](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#hasMicrophoneRawDataObservers)
-- [isStarted](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#isStarted)
-- [microphoneTrackRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#microphoneTrackRawDataConfig)
-
-### Methods
-
-- [addAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#addAudioRawDataObserver)
-- [dispatch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#dispatch)
-- [register](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#register)
-- [removeAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#removeAudioRawDataObserver)
-- [setConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#setConfig)
-- [start](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#start)
-- [stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#stop)
-- [unregister](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher#unregister)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -306,7 +273,7 @@ void
 
 <ParameterType>
 
-[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid:string,channelName:string]
+[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid: string,channelName: string]
 
 </ParameterType>
 
@@ -348,7 +315,7 @@ void
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
-<Parameter name="...params" type="[track:ILocalAudioTrack]" required />
+<Parameter name="...params" type="[track: ILocalAudioTrack]" required />
 </ParameterList>
 
 <ApiReturns>
@@ -363,7 +330,7 @@ void
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
-<Parameter name="...params" type="[track:IRemoteAudioTrack,streamUuid:string,channelName:string]" required />
+<Parameter name="...params" type="[track: IRemoteAudioTrack,streamUuid: string,channelName: string]" required />
 </ParameterList>
 
 <ApiReturns>
@@ -393,7 +360,7 @@ void
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
-<Parameter name="...params" type="[streamUuid:string,channelName:string]" required />
+<Parameter name="...params" type="[streamUuid: string,channelName: string]" required />
 </ParameterList>
 
 <ApiReturns>

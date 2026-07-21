@@ -1,6 +1,5 @@
 ---
 title: Class AgoraWidgetController
-description: 房间配置
 _migration:
   type: generated-html
   status: migrated
@@ -11,50 +10,6 @@ _migration:
   generator: typedoc
   warnings: []
 ---
-
-### Hierarchy
-
-- AgoraWidgetController
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#constructor)
-
-### Properties
-
-- [logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#logger)
-
-### Accessors
-
-- [classroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#classroomConfig)
-- [eventBus](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#eventBus)
-- [widgetIds](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#widgetIds)
-- [zIndexController](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#zIndexController)
-
-### Methods
-
-- [addBroadcastListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#addBroadcastListener)
-- [addWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#addWidgetMessageListener)
-- [addWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#addWidgetStateListener)
-- [broadcast](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#broadcast)
-- [deleteWidget](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#deleteWidget)
-- [destroy](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#destroy)
-- [getWidgetProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#getWidgetProperties)
-- [getWidgetState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#getWidgetState)
-- [getWidgetTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#getWidgetTrack)
-- [getWidgetUserProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#getWidgetUserProperties)
-- [removeBroadcastListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#removeBroadcastListener)
-- [removeWidgetExtraProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#removeWidgetExtraProperties)
-- [removeWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#removeWidgetMessageListener)
-- [removeWidgetStateListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#removeWidgetStateListener)
-- [removeWidgetUserProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#removeWidgetUserProperties)
-- [sendMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#sendMessage)
-- [setWidegtActive](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#setWidegtActive)
-- [setWidgetInactive](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#setWidgetInactive)
-- [updateWidgetProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#updateWidgetProperties)
-- [updateWidgetUserProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller#updateWidgetUserProperties)
 
 ## Constructors
 
@@ -127,6 +82,8 @@ logger: LoggerFacade
 get classroomConfig(): [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
 
 </ApiSignature>
+
+房间配置
 
 <ApiReturns>
 
@@ -223,7 +180,7 @@ addBroadcastListener(listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-r
 
 <ParameterType>
 
-Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;,"widgetId" & gt;
+Omit & lt; [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt; unknown & gt; ,"widgetId" & gt;
 
 </ParameterType>
 
@@ -257,7 +214,7 @@ addWidgetMessageListener(listener: [AgoraWidgetMessageListener](/zh-CN/api-refer
 
 <ParameterType>
 
-[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;
+[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt; unknown & gt;
 
 </ParameterType>
 
@@ -504,7 +461,7 @@ removeBroadcastListener(listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/ap
 
 <ParameterType>
 
-Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;,"widgetId" & gt;
+Omit & lt; [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt; unknown & gt; ,"widgetId" & gt;
 
 </ParameterType>
 
@@ -565,7 +522,7 @@ removeWidgetMessageListener(listener: [AgoraWidgetMessageListener](/zh-CN/api-re
 
 <ParameterType>
 
-[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt;unknown & gt;
+[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener) & lt; unknown & gt;
 
 </ParameterType>
 

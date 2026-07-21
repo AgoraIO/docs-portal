@@ -10,47 +10,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- AgoraRteLocalUser
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#constructor)
-
-### Properties
-
-- [logger](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#logger)
-- [rtcToken](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#rtcToken)
-- [sceneId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#sceneId)
-- [streamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#streamUuid)
-- [subStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#subStream)
-- [userName](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#userName)
-- [userProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#userProperties)
-- [userRole](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#userRole)
-- [userUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#userUuid)
-
-### Methods
-
-- [deleteLocalMediaStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#deleteLocalMediaStream)
-- [deleteLocalScreenStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#deleteLocalScreenStream)
-- [deleteSceneProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#deleteSceneProperties)
-- [deleteUserProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#deleteUserProperties)
-- [destroy](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#destroy)
-- [publishStreamToCdn](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#publishStreamToCdn)
-- [sendCustomChannelMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#sendCustomChannelMessage)
-- [sendCustomPeerMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#sendCustomPeerMessage)
-- [sendRoomMessage](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#sendRoomMessage)
-- [setSceneProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#setSceneProperties)
-- [setUserProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#setUserProperties)
-- [setupRemoteVideo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#setupRemoteVideo)
-- [toData](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#toData)
-- [updateLocalMediaState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#updateLocalMediaState)
-- [updateLocalMediaStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#updateLocalMediaStream)
-- [updateRemoteMediaStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user#updateRemoteMediaStream)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -77,7 +36,7 @@ new AgoraRteLocalUser(scene: [AgoraRteScene](/zh-CN/api-reference/flexible-class
 
 <ParameterType>
 
-\{rtc:[AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager);rtcToken:string;sceneId:string;streamUuid:string;userName:string;userProperties:any;userRole:string;userUuid:string\}
+\{ rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager); rtcToken: string; sceneId: string; streamUuid: string; userName: string; userProperties: any; userRole: string; userUuid: string \}
 
 </ParameterType>
 
@@ -331,7 +290,7 @@ sendCustomChannelMessage(cmd: string, data: Record&lt;string, any&gt;, sync?: bo
 
 <ParameterList title="Parameters">
 <Parameter name="cmd" type="string" required />
-<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
 <Parameter name="sync" type="boolean" optional />
 </ParameterList>
 
@@ -357,7 +316,7 @@ sendCustomPeerMessage(cmd: string, data: Record&lt;string, any&gt;, toUserUuid: 
 
 <ParameterList title="Parameters">
 <Parameter name="cmd" type="string" required />
-<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
 <Parameter name="toUserUuid" type="string" required />
 <Parameter name="ack" type="boolean" optional />
 </ParameterList>
@@ -513,7 +472,7 @@ updateLocalMediaState(__namedParameters: \{ audioSourceState?: [AgoraRteMediaSou
 
 <ParameterType>
 
-\{audioSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state);videoSourceState?:[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)\}
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}
 
 </ParameterType>
 
@@ -575,7 +534,7 @@ updateLocalMediaStream(__namedParameters: \{ audioSourceType?: [AgoraRteAudioSou
 
 <ParameterType>
 
-\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)\}
+\{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type) \}
 
 </ParameterType>
 
@@ -657,7 +616,7 @@ updateRemoteMediaStream(userUuid: string, streamUuid: string, __namedParameters:
 
 <ParameterType>
 
-\{publishAudio?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);publishVideo?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}
+\{ publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
 
 </ParameterType>
 

@@ -11,49 +11,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-thread-gora-rte-thread)
-
-  - AgoraRteSubscribeThread
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#constructor)
-
-### Properties
-
-- [_canvasMap](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#_canvasMap)
-- [_muteMap](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#_muteMap)
-- [_volumeMap](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#_volumeMap)
-- [runnable](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#runnable)
-
-### Accessors
-
-- [canvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#canvas)
-- [mute](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#mute)
-- [streamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#streamUuid)
-- [track](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#track)
-
-### Methods
-
-- [emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#emit)
-- [isTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#isTrackSubscribed)
-- [off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#off)
-- [on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#on)
-- [onExecution](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#onExecution)
-- [once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#once)
-- [play](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#play)
-- [preparePcmCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#preparePcmCallback)
-- [removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#removeAllEventListeners)
-- [run](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#run)
-- [setAudioFrameCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#setAudioFrameCallback)
-- [setAudioPlaybackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#setAudioPlaybackDevice)
-- [stop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#stop)
-- [stopAudioFrameCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-thread-gora-rte-subscribe-thread#stopAudioFrameCallback)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -75,7 +32,7 @@ Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-refer
 
 <ParameterType>
 
-\{audioPlaybackDeviceId?:string;canvasMap?:Map & lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt;;channelName:string;mediaType:"audio" | "video";muteMap:Map & lt;string,boolean & gt;;volumeMap:Map & lt;string,number & gt;\}
+\{ audioPlaybackDeviceId?: string; canvasMap?: Map & lt; string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt; ; channelName: string; mediaType: "audio" | "video"; muteMap: Map & lt; string,boolean & gt; ; volumeMap: Map & lt; string,number & gt; \}
 
 </ParameterType>
 
@@ -85,15 +42,15 @@ Overrides [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-refer
 
 <ParameterType>
 
-Map & lt;string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt;
+Map & lt; string,[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas) & gt;
 
 </ParameterType>
 
 </Parameter>
 <Parameter name="channelName" type="string" required />
 <Parameter name="mediaType" type="&quot;audio&quot; | &quot;video&quot;" required />
-<Parameter name="muteMap" type="Map &amp; lt;string,boolean &amp; gt;" required />
-<Parameter name="volumeMap" type="Map &amp; lt;string,number &amp; gt;" required />
+<Parameter name="muteMap" type="Map &amp; lt; string,boolean &amp; gt;" required />
+<Parameter name="volumeMap" type="Map &amp; lt; string,number &amp; gt;" required />
 </ParameterList>
 
 </Parameter>

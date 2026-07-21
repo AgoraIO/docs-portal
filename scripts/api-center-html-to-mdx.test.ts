@@ -3,7 +3,10 @@ import { remarkDirectiveAdmonition } from 'fumadocs-core/mdx-plugins';
 import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { directiveCalloutTypes } from '../src/lib/mdx/directive-callouts';
-import { convertHtmlToMdx } from './lib/api-center/html-to-mdx.mjs';
+import {
+  convertHtmlToMdx,
+  EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+} from './lib/api-center/html-to-mdx.mjs';
 import { buildLegacyRouteMap } from './lib/api-center/migration-framework.mjs';
 
 async function compileGeneratedMdx(source: string) {
@@ -274,6 +277,92 @@ describe('API Center shared HTML to MDX converter', () => {
     await expect(compileGeneratedMdx(result.body)).resolves.toContain(
       'ParameterList',
     );
+  });
+
+  it('omits TypeDoc hierarchy and index chrome that the old rendered page hides', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="col-content">
+        <section class="tsd-panel tsd-comment"><div class="lead"><p>Store description.</p></div></section>
+        <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><ul><li>BaseStore</li></ul></section>
+        <section class="tsd-panel-group tsd-index-group"><h2>Index</h2><section class="tsd-panel tsd-index-panel"><h3>Methods</h3><ul><li><a href="#run">run</a></li></ul></section></section>
+        <section class="tsd-panel-group tsd-member-group"><h2>Methods</h2><section class="tsd-panel tsd-member"><a id="run"></a><h3>run</h3><ul class="tsd-signatures"><li class="tsd-signature">run(): void</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><p>Runs the store.</p><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></section></section>
+      </div>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/store.html',
+      sourcePath: 'html-docs/flexible-classroom/Electron/classes/store.html',
+      rootSelector: '.col-content',
+      conversionProfile: EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+    });
+
+    expect(result.description).toBe('Store description.');
+    expect(result.body).not.toContain('### Hierarchy');
+    expect(result.body).not.toContain('## Index');
+    expect(result.body).not.toContain('[run](#run)');
+    expect(result.body.match(/^## Methods$/gm)).toHaveLength(1);
+    expect(result.body).toContain('### run');
+    expect(result.body).toContain('Runs the store.');
+    expect(result.body).toContain('<ApiReturnType>\n\nvoid');
+  });
+
+  it('keeps rich TypeDoc object types out of remark directive syntax', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="col-content"><section class="tsd-panel-group tsd-member-group"><h2>Methods</h2><section class="tsd-panel tsd-member"><h3>addGroup</h3><ul class="tsd-descriptions"><li class="tsd-description"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>data: <span class="tsd-signature-symbol">{ </span>groups<span class="tsd-signature-symbol">: </span><a href="../modules/group.html" class="tsd-signature-type">Group</a><span class="tsd-signature-symbol">[]; </span>inProgress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span></h5></li></ul></li></ul></section></section></div>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/api-service.html',
+      sourcePath:
+        'html-docs/flexible-classroom/Electron/classes/api-service.html',
+      rootSelector: '.col-content',
+      conversionProfile: EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/group.html',
+          '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/group',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain(
+      '\\{ groups: [Group](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/group)[]; inProgress: boolean \\}',
+    );
+    expect(result.body).not.toContain('inProgress:boolean');
+    const compiled = await compileGeneratedMdx(result.body);
+    expect(compiled).not.toContain('<_components.div />');
+  });
+
+  it('keeps the first TypeDoc member description when no page summary exists', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="col-content">
+        <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3></section>
+        <section class="tsd-panel-group tsd-index-group"><h2>Index</h2></section>
+        <section class="tsd-panel-group tsd-member-group"><h2>Methods</h2><section class="tsd-panel tsd-member"><a id="acceptGroupInvite"></a><h3>acceptGroupInvite</h3><ul class="tsd-signatures"><li>acceptGroupInvite(): void</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><div class="tsd-comment tsd-typography"><div class="lead"><p>接受分组邀请</p></div></div><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></section></section>
+      </div>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/api-service.html',
+      sourcePath:
+        'html-docs/flexible-classroom/Electron/classes/api-service.html',
+      rootSelector: '.col-content',
+      conversionProfile: EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+    });
+
+    expect(result.description).toBe('');
+    expect(result.body).toContain('接受分组邀请');
+    expect(result.body).not.toContain('### Hierarchy');
+    expect(result.body).not.toContain('## Index');
+  });
+
+  it('does not apply the Edu Store TypeDoc body profile to other TypeDoc pages', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="col-content">
+        <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><p>Base</p></section>
+        <section class="tsd-panel-group tsd-index-group"><h2>Index</h2><p>Member index</p></section>
+      </div>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/classes/client.html',
+      sourcePath: 'html-docs/rtc/Web/classes/client.html',
+      rootSelector: '.col-content',
+    });
+
+    expect(result.body).toContain('### Hierarchy');
+    expect(result.body).toContain('## Index');
   });
 
   it('renders TypeDoc signatures and returns as structured API member blocks', async () => {

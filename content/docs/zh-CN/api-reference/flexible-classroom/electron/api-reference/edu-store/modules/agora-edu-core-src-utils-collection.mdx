@@ -10,13 +10,6 @@ _migration:
   warnings: []
 ---
 
-## Index
-
-### Functions
-
-- [iterateMap](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-utils-collection#iterateMap)
-- [iterateSet](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-utils-collection#iterateSet)
-
 ## Functions
 
 <a id="iterateMap"></a>
@@ -37,11 +30,11 @@ iterateMap&lt;K, V, T, E&gt;(map: Map&lt;K, V&gt;, processors?: \{ onFilter?: (k
 </ParameterList>
 
 <ParameterList title="Parameters">
-<Parameter name="map" type="Map &amp; lt;K,V &amp; gt;" required />
-<Parameter name="processors" type="\&#123;onFilter?:(key:K, item:V)= &amp; gt;boolean;onMap?:(key:K, item:V)= &amp; gt;T;onReduce?:(prev:E, key:K, item:V)= &amp; gt;E\&#125;" optional>
+<Parameter name="map" type="Map &amp; lt; K,V &amp; gt;" required />
+<Parameter name="processors" type="\&#123; onFilter?: (key: K, item: V)= &amp; gt; boolean; onMap?: (key: K, item: V)= &amp; gt; T; onReduce?: (prev: E, key: K, item: V)= &amp; gt; E \&#125;" optional>
 
 <ParameterList>
-<Parameter name="onFilter" type="(key:K, item:V)= &amp; gt;boolean" optional>
+<Parameter name="onFilter" type="(key: K, item: V)= &amp; gt; boolean" optional>
 
 <ApiSignature>
 
@@ -65,7 +58,7 @@ boolean
 </ApiReturns>
 
 </Parameter>
-<Parameter name="onMap" type="(key:K, item:V)= &amp; gt;T" optional>
+<Parameter name="onMap" type="(key: K, item: V)= &amp; gt; T" optional>
 
 <ApiSignature>
 
@@ -89,7 +82,7 @@ T
 </ApiReturns>
 
 </Parameter>
-<Parameter name="onReduce" type="(prev:E, key:K, item:V)= &amp; gt;E" optional>
+<Parameter name="onReduce" type="(prev: E, key: K, item: V)= &amp; gt; E" optional>
 
 <ApiSignature>
 
@@ -151,11 +144,11 @@ iterateSet&lt;V, T, E&gt;(map: Set&lt;V&gt;, processors?: \{ onFilter?: (item: V
 </ParameterList>
 
 <ParameterList title="Parameters">
-<Parameter name="map" type="Set &amp; lt;V &amp; gt;" required />
-<Parameter name="processors" type="\&#123;onFilter?:(item:V)= &amp; gt;boolean;onMap?:(item:V)= &amp; gt;T;onReduce?:(prev:E, item:V)= &amp; gt;E\&#125;" optional>
+<Parameter name="map" type="Set &amp; lt; V &amp; gt;" required />
+<Parameter name="processors" type="\&#123; onFilter?: (item: V)= &amp; gt; boolean; onMap?: (item: V)= &amp; gt; T; onReduce?: (prev: E, item: V)= &amp; gt; E \&#125;" optional>
 
 <ParameterList>
-<Parameter name="onFilter" type="(item:V)= &amp; gt;boolean" optional>
+<Parameter name="onFilter" type="(item: V)= &amp; gt; boolean" optional>
 
 <ApiSignature>
 
@@ -178,7 +171,7 @@ boolean
 </ApiReturns>
 
 </Parameter>
-<Parameter name="onMap" type="(item:V)= &amp; gt;T" optional>
+<Parameter name="onMap" type="(item: V)= &amp; gt; T" optional>
 
 <ApiSignature>
 
@@ -201,7 +194,7 @@ T
 </ApiReturns>
 
 </Parameter>
-<Parameter name="onReduce" type="(prev:E, item:V)= &amp; gt;E" optional>
+<Parameter name="onReduce" type="(prev: E, item: V)= &amp; gt; E" optional>
 
 <ApiSignature>
 

@@ -17,25 +17,6 @@ _migration:
 <Parameter name="E" />
 </ParameterList>
 
-### Hierarchy
-
-- BatchRecord
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#constructor)
-
-### Methods
-
-- [addChunk](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#addChunk)
-- [execute](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#execute)
-- [setCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setCallback)
-- [setCurrent](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setCurrent)
-- [setTotal](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#setTotal)
-- [getBatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-utils-batch-atch-record#getBatchRecord)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -56,7 +37,7 @@ new BatchRecord&lt;E&gt;(_batchId: number, _total?: number, _current?: number, _
 <Parameter name="_batchId" type="number" required />
 <Parameter name="_total" type="number" optional />
 <Parameter name="_current" type="number" optional />
-<Parameter name="_cb" type="(dataChunk:E[])= &amp; gt;void" optional>
+<Parameter name="_cb" type="(dataChunk: E[])= &amp; gt; void" optional>
 
 <ApiSignature>
 
@@ -148,7 +129,7 @@ setCallback(cb: (dataChunk: E[]) =&gt; void): [BatchRecord](/zh-CN/api-reference
 </ApiSignature>
 
 <ParameterList title="Parameters">
-<Parameter name="cb" type="(dataChunk:E[])= &amp; gt;void" required>
+<Parameter name="cb" type="(dataChunk: E[])= &amp; gt; void" required>
 
 <ApiSignature>
 

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {
   API_CENTER_GENERATOR_CONVERSION_OPTIONS,
+  apiCenterHtmlConversionProfile,
   convertHtmlToMdx,
 } from './html-to-mdx.mjs';
 import {
@@ -313,6 +314,10 @@ export async function runHtmlGenerators({
       sourcePath: resolution.sourcePath,
       routeMap,
       onAsset: assetHandler({ run, sourceAbsolutePath, oldRoot }),
+      conversionProfile: apiCenterHtmlConversionProfile({
+        sourcePath: resolution.sourcePath,
+        supplementalGeneratedSource: page.supplementalGeneratedSource,
+      }),
       ...API_CENTER_GENERATOR_CONVERSION_OPTIONS[resolution.generator],
     });
     for (const [generator, counts] of Object.entries(

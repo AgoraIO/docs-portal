@@ -12,49 +12,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
-
-  - RoomStore
-
-## Index
-
-### Properties
-
-- [classroomSchedule](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#classroomSchedule)
-
-### Accessors
-
-- [acceptedList](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#acceptedList)
-- [carousel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#carousel)
-- [clientServerTimeShift](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#clientServerTimeShift)
-- [clockTime](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#clockTime)
-- [expandedScope](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#expandedScope)
-- [flexProps](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#flexProps)
-- [inviteList](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#inviteList)
-- [isOnPodium](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#isOnPodium)
-- [isScreenSharing](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#isScreenSharing)
-- [recordOnHold](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordOnHold)
-- [recordReady](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordReady)
-- [recordStatus](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordStatus)
-- [recordStreamingUrl](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordStreamingUrl)
-- [screenShareStreamUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#screenShareStreamUuid)
-- [screenShareUserUuid](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#screenShareUserUuid)
-- [waveArmList](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#waveArmList)
-
-### Methods
-
-- [addCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#addCustomMessageObserver)
-- [removeCustomMessageObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#removeCustomMessageObserver)
-- [sendCustomChannelMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#sendCustomChannelMessage)
-- [sendCustomPeerMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#sendCustomPeerMessage)
-- [sendRewards](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#sendRewards)
-- [startCarousel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#startCarousel)
-- [stopCarousel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#stopCarousel)
-- [updateClassState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#updateClassState)
-- [updateFlexProperties](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#updateFlexProperties)
-
 ## Properties
 
 <a id="classroomSchedule"></a>
@@ -506,7 +463,7 @@ sendCustomChannelMessage(data: Record&lt;string, any&gt;, needSync?: boolean): P
 发送自定义频道消息
 
 <ParameterList title="Parameters">
-<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
 <Parameter name="needSync" type="boolean" optional />
 </ParameterList>
 
@@ -533,7 +490,7 @@ sendCustomPeerMessage(data: Record&lt;string, any&gt;, toUserUuid: string, needA
 发送自定义点对点消息
 
 <ParameterList title="Parameters">
-<Parameter name="data" type="Record &amp; lt;string,any &amp; gt;" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
 <Parameter name="toUserUuid" type="string" required />
 <Parameter name="needAck" type="boolean" optional />
 </ParameterList>
@@ -561,7 +518,7 @@ sendRewards(rewards: \{ changeReward: number; userUuid: string \}[], isBatch?: b
 授予学生奖励
 
 <ParameterList title="Parameters">
-<Parameter name="rewards" type="\&#123;changeReward:number;userUuid:string\&#125;[]" required>
+<Parameter name="rewards" type="\&#123; changeReward: number; userUuid: string \&#125;[]" required>
 
 userUuid: 被奖励用户 UUID， changeRecord: 奖励数量
 
@@ -600,7 +557,7 @@ startCarousel(params: Pick&lt;[CarouselSetting](/zh-CN/api-reference/flexible-cl
 
 <ParameterType>
 
-Pick & lt;[CarouselSetting](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#CarouselSetting),"range" | "type" | "interval" & gt;
+Pick & lt; [CarouselSetting](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-room-type#CarouselSetting),"range" | "type" | "interval" & gt;
 
 </ParameterType>
 

@@ -5,7 +5,7 @@
 - Owned MDX pages: 4988
 - Visible MDX pages: 5266
 - Preserved/reused MDX pages: 278
-- Links checked: 78406
+- Links checked: 71357
 - Old-site body links: 0
 - Invalid links: 0
 - Missing local paths: 0
@@ -23,7 +23,7 @@
 
 ## Warning explanations
 
-- `empty-source-body` (5, info): The legacy generator exposes a named page whose source body is intentionally empty.
+- `empty-source-body` (149, info): The legacy generator exposes a named page whose source body is intentionally empty.
 - `empty-source-code` (9, info): The legacy source contains an empty code block; the migration preserves its anchor and omits the empty fence without inventing a signature.
 - `generated-fragment-alias` (1, info): A stable alias was added so a legacy generated-page fragment remains reachable.
 - `generated-fragment-normalized` (4, info): A generated-page fragment was rewritten to the unique stable anchor exposed by its local target.

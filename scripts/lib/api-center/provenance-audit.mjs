@@ -7,6 +7,7 @@ import yaml from 'js-yaml';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 import {
   API_CENTER_GENERATOR_CONVERSION_OPTIONS,
+  apiCenterHtmlConversionProfile,
   extractHtmlPageMetadata,
 } from './html-to-mdx.mjs';
 import { splitOpenApiDescription } from './openapi-normalizer.mjs';
@@ -448,6 +449,9 @@ export async function auditApiCenterProvenance({
         const expectedDescription = conversionOptions
           ? extractHtmlPageMetadata({
               html: legacyHtml,
+              conversionProfile: apiCenterHtmlConversionProfile({
+                sourcePath: record.sourcePath,
+              }),
               ...conversionOptions,
             }).description
           : '';

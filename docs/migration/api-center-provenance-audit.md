@@ -18,7 +18,7 @@
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Generated HTML descriptions checked: 4757
-- Generated HTML descriptions present: 3227
+- Generated HTML descriptions present: 3177
 - Generated HTML description provenance violations: 0
 - Runtime label substitutions checked: 7
 - Provenance-matched OpenAPI normalizations: 5
@@ -34,7 +34,7 @@
 - Explicit existing-route projections: 54
 - OpenAPI-routed targets: 130
 - Preserved pre-existing targets outside API Reference: 315
-- Local links checked: 78406
+- Local links checked: 71357
 - Reachable OpenAPI operations checked: 130
 
 ### Target decisions

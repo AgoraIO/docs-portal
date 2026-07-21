@@ -12,40 +12,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-base-du-store-base)
-
-  - ConnectionStore
-
-## Index
-
-### Properties
-
-- [classroomState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#classroomState)
-- [engine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#engine)
-- [rtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#rtcState)
-
-### Accessors
-
-- [scene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#scene)
-- [sceneId](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#sceneId)
-
-### Methods
-
-- [addCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#addCloudProxyObserver)
-- [checkIn](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#checkIn)
-- [getEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#getEngine)
-- [getRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#getRtcState)
-- [initialize](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#initialize)
-- [joinClassroom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinClassroom)
-- [joinRTC](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinRTC)
-- [joinSubRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#joinSubRoom)
-- [leaveClassroom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveClassroom)
-- [leaveRTC](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveRTC)
-- [leaveSubRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#leaveSubRoom)
-- [removeCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-connection-onnection-store#removeCloudProxyObserver)
-
 ## Properties
 
 <a id="classroomState"></a>
@@ -295,7 +261,7 @@ joinClassroom(options?: \{ mode: "check-in" | "entry" \}): Promise&lt;undefined&
 加入房间
 
 <ParameterList title="Parameters">
-<Parameter name="options" type="\&#123;mode:&quot;check-in&quot; | &quot;entry&quot;\&#125;" optional>
+<Parameter name="options" type="\&#123; mode: &quot;check-in&quot; | &quot;entry&quot; \&#125;" optional>
 
 <ParameterList>
 <Parameter name="mode" type="&quot;check-in&quot; | &quot;entry&quot;" required />
@@ -404,7 +370,7 @@ leaveClassroom(reason: [LeaveReason](/zh-CN/api-reference/flexible-classroom/web
 原因
 
 </Parameter>
-<Parameter name="promise" type="Promise &amp; lt;void &amp; gt;" optional />
+<Parameter name="promise" type="Promise &amp; lt; void &amp; gt;" optional />
 </ParameterList>
 
 <ApiReturns>
