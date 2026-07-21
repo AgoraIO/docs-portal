@@ -23,6 +23,7 @@ function parseArgs(argv) {
           'Usage: bun scripts/normalize-api-center-openapi.mjs [--check|--dry-run] [--manifest <file>]',
         );
         process.exit(0);
+        break;
       default:
         throw new Error(`Unknown argument: ${argv[index]}`);
     }
@@ -32,12 +33,13 @@ function parseArgs(argv) {
 
 const isMain =
   process.argv[1] &&
-  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+  path.resolve(process.argv[1]) ===
+    path.resolve(fileURLToPath(import.meta.url));
 if (isMain) {
   try {
     const report = await runOpenApiNormalizer(parseArgs(process.argv.slice(2)));
     console.log(
-      `API Center OpenAPI normalization: ${report.counts.normalizedOperations} operations in ${report.counts.normalizedFiles} files, warnings ${report.counts.warnings}, errors ${report.counts.errors}.`,
+      `API Center OpenAPI normalization: ${report.counts.normalizedOperations} operations in ${report.counts.normalizedFiles} files; ${report.counts.rewrittenLinks} links in ${report.counts.normalizedLinkFiles} files (${report.counts.routeRewrites} routes, ${report.counts.fragmentRewrites} fragments); warnings ${report.counts.warnings}, errors ${report.counts.errors}.`,
     );
   } catch (error) {
     console.error(`normalize-api-center-openapi: ${error.message}`);

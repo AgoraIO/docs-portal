@@ -2,6 +2,14 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import {
+  buildApiReferenceRehomePlan,
+  rehomeRouteAliases,
+} from './api-reference-ownership.mjs';
+import {
+  buildLocalFragmentIndex,
+  findBestFragmentAnchor,
+} from './local-fragment-index.mjs';
 
 const HTTP_METHODS = new Set([
   'delete',
@@ -41,6 +49,210 @@ async function readJson(filePath, fallback) {
     if (error.code === 'ENOENT') return fallback;
     throw error;
   }
+}
+
+const MARKDOWN_LINK_PATTERN =
+  /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\((<[^>\n]+>|[^)\s]+)(?:\s+"[^"]*")?\s*\)/dg;
+
+function markdownScalarRanges(raw) {
+  const ranges = [];
+  let scalarStart = null;
+  yaml.load(raw, {
+    listener(event, state) {
+      if (event === 'open' && state.kind === 'scalar') {
+        scalarStart = state.position;
+        return;
+      }
+      if (event !== 'close' || state.kind !== 'scalar') return;
+      if (
+        scalarStart !== null &&
+        typeof state.result === 'string' &&
+        state.result.includes('](')
+      ) {
+        ranges.push({ end: state.position, start: scalarStart });
+      }
+      scalarStart = null;
+    },
+  });
+  return ranges;
+}
+
+function markdownHrefMatches(raw) {
+  const matches = [];
+  for (const range of markdownScalarRanges(raw)) {
+    const scalar = raw.slice(range.start, range.end);
+    for (const match of scalar.matchAll(MARKDOWN_LINK_PATTERN)) {
+      const [hrefStart, hrefEnd] = match.indices[2];
+      const encoded = match[2];
+      const angleWrapped = encoded.startsWith('<') && encoded.endsWith('>');
+      matches.push({
+        angleWrapped,
+        end: range.start + hrefEnd,
+        href: angleWrapped ? encoded.slice(1, -1) : encoded,
+        start: range.start + hrefStart,
+      });
+    }
+  }
+  return matches;
+}
+
+function decodeFragment(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function markdownSafeFragment(value) {
+  return String(value).replace(/\(/g, '%28').replace(/\)/g, '%29');
+}
+
+function parseLocalHref(href) {
+  if (!href.startsWith('/zh-CN/')) return null;
+  const hashIndex = href.indexOf('#');
+  const pathAndQuery = hashIndex < 0 ? href : href.slice(0, hashIndex);
+  const queryIndex = pathAndQuery.indexOf('?');
+  return {
+    fragment: hashIndex < 0 ? null : href.slice(hashIndex + 1),
+    query: queryIndex < 0 ? '' : pathAndQuery.slice(queryIndex),
+    route: queryIndex < 0 ? pathAndQuery : pathAndQuery.slice(0, queryIndex),
+  };
+}
+
+export async function rewriteOpenApiMarkdownLinks(
+  raw,
+  { fragmentIndex, routeAliases },
+) {
+  const changes = [];
+  const replacements = [];
+  const warnings = [];
+  for (const match of markdownHrefMatches(raw)) {
+    const parsed = parseLocalHref(match.href);
+    if (!parsed) continue;
+    const route = routeAliases.get(parsed.route) ?? parsed.route;
+    const routeRewritten = route !== parsed.route;
+    let fragment = parsed.fragment;
+    let fragmentRewritten = false;
+    if (fragment) {
+      const anchors = await fragmentIndex.anchorsFor(route);
+      if (anchors) {
+        const mapped = findBestFragmentAnchor(anchors, fragment);
+        if (mapped) {
+          fragmentRewritten = mapped !== decodeFragment(fragment);
+          fragment = markdownSafeFragment(mapped);
+        } else {
+          warnings.push({
+            href: match.href,
+            reason: 'unresolved-local-fragment',
+            route,
+          });
+        }
+      }
+    }
+    if (!routeRewritten && !fragmentRewritten) continue;
+    const nextHref = `${route}${parsed.query}${fragment ? `#${fragment}` : ''}`;
+    replacements.push({
+      end: match.end,
+      start: match.start,
+      value: match.angleWrapped ? `<${nextHref}>` : nextHref,
+    });
+    changes.push({
+      fragmentRewritten,
+      from: match.href,
+      routeRewritten,
+      to: nextHref,
+    });
+  }
+  let contents = raw;
+  for (const replacement of replacements.sort(
+    (left, right) => right.start - left.start,
+  )) {
+    contents = `${contents.slice(0, replacement.start)}${replacement.value}${contents.slice(replacement.end)}`;
+  }
+  return { changes, contents, warnings };
+}
+
+function linkRecordKey(record) {
+  return [
+    record.targetPath,
+    record.from,
+    record.to,
+    record.routeRewritten,
+    record.fragmentRewritten,
+  ].join('\u0000');
+}
+
+function aggregateLinkRecords(records) {
+  const aggregated = new Map();
+  for (const record of records) {
+    const key = linkRecordKey(record);
+    const current = aggregated.get(key);
+    if (current) current.count += record.count ?? 1;
+    else aggregated.set(key, { ...record, count: record.count ?? 1 });
+  }
+  return [...aggregated.values()].sort((left, right) =>
+    linkRecordKey(left).localeCompare(linkRecordKey(right)),
+  );
+}
+
+function hrefCounts(raw) {
+  const counts = new Map();
+  for (const { href } of markdownHrefMatches(raw)) {
+    counts.set(href, (counts.get(href) ?? 0) + 1);
+  }
+  return counts;
+}
+
+function reconcileLinkRecords(previous, changes, outputs) {
+  const fresh = new Map(
+    aggregateLinkRecords(changes).map((record) => [
+      linkRecordKey(record),
+      record,
+    ]),
+  );
+  const countsByTarget = new Map(
+    outputs.map((output) => [output.targetPath, hrefCounts(output.contents)]),
+  );
+  const records = [];
+  for (const prior of previous ?? []) {
+    const key = linkRecordKey(prior);
+    const current = fresh.get(key);
+    const available = countsByTarget.get(prior.targetPath)?.get(prior.to) ?? 0;
+    const count = Math.min(
+      available,
+      Number(prior.count ?? 0) + Number(current?.count ?? 0),
+    );
+    if (count > 0) records.push({ ...prior, count });
+    fresh.delete(key);
+  }
+  for (const record of fresh.values()) {
+    const available =
+      countsByTarget.get(record.targetPath)?.get(record.to) ?? 0;
+    const count = Math.min(available, record.count);
+    if (count > 0) records.push({ ...record, count });
+  }
+  return aggregateLinkRecords(records);
+}
+
+function aggregateWarnings(warnings) {
+  const records = new Map();
+  for (const warning of warnings) {
+    const key = [
+      warning.targetPath,
+      warning.href,
+      warning.route,
+      warning.reason,
+    ].join('\u0000');
+    const current = records.get(key);
+    if (current) current.count += 1;
+    else records.set(key, { ...warning, count: 1 });
+  }
+  return [...records.values()].sort(
+    (left, right) =>
+      left.targetPath.localeCompare(right.targetPath) ||
+      left.href.localeCompare(right.href),
+  );
 }
 
 function needsNormalization(value) {
@@ -310,28 +522,66 @@ async function authoritativeDescriptionMap(manifest, oldRoot) {
 
 function reportMarkdown(report) {
   const lines = [
-    '# API Center OpenAPI Description Normalization',
+    '# API Center OpenAPI Normalization',
     '',
     '> Generated by `scripts/normalize-api-center-openapi.mjs`. Do not edit by hand.',
     '',
     `- Normalized files: ${report.counts.normalizedFiles}`,
     `- Normalized operations: ${report.counts.normalizedOperations}`,
+    `- Link-normalized files: ${report.counts.normalizedLinkFiles}`,
+    `- Rewritten links: ${report.counts.rewrittenLinks}`,
+    `- Rehomed routes: ${report.counts.routeRewrites}`,
+    `- Normalized fragments: ${report.counts.fragmentRewrites}`,
     `- Warnings: ${report.counts.warnings}`,
     `- Errors: ${report.counts.errors}`,
     '',
     '## Migration types',
     '',
     `- \`openapi-description-normalization\`: ${report.counts.normalizedOperations}`,
+    `- \`openapi-link-route-rewrite\`: ${report.counts.routeRewrites}`,
+    `- \`openapi-link-fragment-normalization\`: ${report.counts.fragmentRewrites}`,
     '',
     '## Warning explanations',
     '',
-    '- None.',
+  ];
+  if (report.warnings.length === 0) {
+    lines.push('- None.', '');
+  } else {
+    lines.push(
+      '- `unresolved-local-fragment`: The linked local page exists, but the requested fragment could not be mapped uniquely; the original fragment was preserved for audit.',
+      '',
+      '| Target | Href | Route | Count |',
+      '| --- | --- | --- | ---: |',
+    );
+    for (const warning of report.warnings) {
+      lines.push(
+        `| \`${warning.targetPath}\` | \`${warning.href}\` | \`${warning.route}\` | ${warning.count} |`,
+      );
+    }
+    lines.push('');
+  }
+  lines.push(
+    '## Link rewrites',
+    '',
+    '| Target | From | To | Count |',
+    '| --- | --- | --- | ---: |',
+  );
+  if (report.links.length === 0) {
+    lines.push('| None |  |  | 0 |');
+  } else {
+    for (const record of report.links) {
+      lines.push(
+        `| \`${record.targetPath}\` | \`${record.from}\` | \`${record.to}\` | ${record.count} |`,
+      );
+    }
+  }
+  lines.push(
     '',
     '## Operations',
     '',
     '| Target | Operation ID | Normalized description |',
     '| --- | --- | --- |',
-  ];
+  );
   for (const record of report.operations) {
     lines.push(
       `| \`${record.targetPath}\` | \`${record.operationId}\` | ${record.normalizedDescription.replace(/\|/g, '\\|')} |`,
@@ -355,7 +605,8 @@ export async function runOpenApiNormalizer({
     await fs.readFile(path.resolve(root, manifestPath), 'utf8'),
   );
   const previous = await readJson(path.resolve(root, ownershipPath), {
-    schemaVersion: 1,
+    schemaVersion: 2,
+    links: [],
     operations: [],
   });
   const previousByKey = new Map(
@@ -365,11 +616,20 @@ export async function runOpenApiNormalizer({
     ]),
   );
   const targetPaths = uniqueTargetPaths(manifest);
+  const routeAliases = new Map(
+    rehomeRouteAliases(buildApiReferenceRehomePlan(manifest)).map((alias) => [
+      alias.from,
+      alias.to,
+    ]),
+  );
+  const fragmentIndex = await buildLocalFragmentIndex({ repoRoot: root });
   const authoritativeDescriptions = await authoritativeDescriptionMap(
     manifest,
     oldRoot,
   );
   const nextRecords = [];
+  const linkChanges = [];
+  const linkWarnings = [];
   const outputs = [];
 
   for (const targetPath of targetPaths) {
@@ -417,6 +677,23 @@ export async function runOpenApiNormalizer({
           prior?.originalDescriptionHash ?? sha256(originalDescription),
       });
     }
+    const normalizedLinks = await rewriteOpenApiMarkdownLinks(nextRaw, {
+      fragmentIndex,
+      routeAliases,
+    });
+    nextRaw = normalizedLinks.contents;
+    linkChanges.push(
+      ...normalizedLinks.changes.map((change) => ({
+        ...change,
+        targetPath,
+      })),
+    );
+    linkWarnings.push(
+      ...normalizedLinks.warnings.map((warning) => ({
+        ...warning,
+        targetPath,
+      })),
+    );
     outputs.push({ absolute, targetPath, contents: nextRaw });
   }
 
@@ -425,21 +702,34 @@ export async function runOpenApiNormalizer({
       left.targetPath.localeCompare(right.targetPath) ||
       left.operationId.localeCompare(right.operationId),
   );
+  const links = reconcileLinkRecords(previous.links, linkChanges, outputs);
+  const warnings = aggregateWarnings(linkWarnings);
   const ownership = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     sourceCommit: manifest.source?.commit ?? null,
+    links,
     operations: nextRecords,
   };
   const report = stableJson({
-    schemaVersion: 1,
+    schemaVersion: 2,
     sourceCommit: manifest.source?.commit ?? null,
     counts: {
       normalizedFiles: uniqueTargetCount(nextRecords),
       normalizedOperations: nextRecords.length,
-      warnings: 0,
+      normalizedLinkFiles: uniqueTargetCount(links),
+      rewrittenLinks: sumRecordCounts(links),
+      routeRewrites: sumRecordCounts(
+        links.filter((record) => record.routeRewritten),
+      ),
+      fragmentRewrites: sumRecordCounts(
+        links.filter((record) => record.fragmentRewritten),
+      ),
+      warnings: sumRecordCounts(warnings),
       errors: 0,
     },
+    links,
     operations: nextRecords,
+    warnings,
   });
   const generated = [
     [ownershipPath, json(ownership)],
@@ -491,4 +781,8 @@ function uniqueTargetPaths(manifest) {
 
 function uniqueTargetCount(records) {
   return new Set(records.map((record) => record.targetPath)).size;
+}
+
+function sumRecordCounts(records) {
+  return records.reduce((sum, record) => sum + Number(record.count ?? 0), 0);
 }
