@@ -15,6 +15,7 @@ import {
   resolvePlatformGroupParentPage,
 } from './platforms/platform-group-pages';
 import {
+  buildCanonicalPlatformLLMText,
   buildPlatformLLMText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
@@ -117,9 +118,11 @@ export async function getLLMText(page: InferPageType<typeof source>) {
       ? await page.data.getText('processed')
       : '';
 
-  return `# ${page.data.title} (${page.url})
-
-${processed}`;
+  return buildCanonicalPlatformLLMText({
+    pageTitle: page.data.title,
+    pageUrl: page.url,
+    processedText: processed,
+  });
 }
 
 export async function getPlatformLLMText(

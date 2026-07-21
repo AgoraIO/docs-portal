@@ -40,6 +40,7 @@ type PlatformPanelProps = {
   children?: ReactNode;
   platform: PlatformKey;
   activePlatform?: PlatformKey;
+  renderInactivePanels?: boolean;
 };
 
 const ControlledTabs = Tabs as React.ComponentType<ControlledTabsProps>;
@@ -133,6 +134,11 @@ export function PlatformTabsGroup({
     parsedPlatforms,
     syncPath: shouldSyncPlatformPath,
   });
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   if (activePlatform === undefined) {
     return null;
@@ -145,6 +151,7 @@ export function PlatformTabsGroup({
 
     return cloneElement(child as ReactElement<PlatformPanelProps>, {
       activePlatform,
+      renderInactivePanels: groupMode !== 'structured' || hasHydrated,
     });
   });
 
@@ -904,8 +911,13 @@ export function PlatformPanel({
   activePlatform,
   children,
   platform,
+  renderInactivePanels = true,
 }: PlatformPanelProps) {
   const isActive = activePlatform === undefined || activePlatform === platform;
+
+  if (!isActive && !renderInactivePanels) {
+    return null;
+  }
 
   return (
     <section

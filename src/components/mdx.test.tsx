@@ -17,6 +17,7 @@ import {
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
+import { renderToString } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
@@ -636,6 +637,27 @@ describe('common MDX registry', () => {
     expect(activePanel).toHaveAttribute('aria-hidden', 'false');
     expect(inactivePanel).toHaveAttribute('hidden');
     expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('omits inactive structured platform panels from server HTML', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    const html = renderToString(
+      <Group
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        groupMode="structured"
+        platforms='["android","web"]'
+      >
+        <Panel platform="android">Android instructions</Panel>
+        <Panel platform="web">Web instructions</Panel>
+      </Group>,
+    );
+
+    expect(html).toContain('Android instructions');
+    expect(html).not.toContain('Web instructions');
   });
 
   it('hides the platform tablist when a group only has one platform', () => {

@@ -59,6 +59,25 @@ export function buildPlatformLLMText({
 ${buildPlatformMarkdownText(processedText, platform)}`;
 }
 
+export function buildCanonicalPlatformLLMText({
+  pageTitle,
+  pageUrl,
+  processedText,
+}: {
+  pageTitle?: string;
+  pageUrl: string;
+  processedText: string;
+}) {
+  const platformTabs = extractStructuredPlatformTabs(processedText);
+  const markdown = platformTabs
+    ? buildPlatformMarkdownText(processedText, platformTabs.defaultPlatform)
+    : processedText;
+
+  return `# ${pageTitle ?? pageUrl} (${pageUrl})
+
+${markdown}`;
+}
+
 export function extractStructuredPlatformTabs(
   processedText: string,
 ): ProcessedPlatformTabs | undefined {

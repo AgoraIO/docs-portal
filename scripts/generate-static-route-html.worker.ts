@@ -47,6 +47,8 @@ export async function generateStaticRouteHtml() {
     generated += 1;
   }
 
+  await fs.writeFile(path.join(distRoot, '404.html'), spaHtml);
+
   console.log(`[static-seo] generated ${generated} route HTML files`);
 }
 

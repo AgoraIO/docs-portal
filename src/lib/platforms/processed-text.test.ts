@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildCanonicalPlatformLLMText,
   buildCanonicalPlatformTocText,
   buildPlatformLLMText,
   buildPlatformMarkdownText,
@@ -127,5 +128,29 @@ Shared outro`;
     ).toBe(`# Quickstart (/en/rtc/quickstart/ios)
 
 iOS body`);
+  });
+
+  it('builds canonical markdown from only the default structured platform', () => {
+    const processedText = `Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web body
+<_PlatformProcessedMarker close="true" />`;
+
+    const markdown = buildCanonicalPlatformLLMText({
+      pageTitle: 'Quickstart',
+      pageUrl: '/en/rtc/quickstart',
+      processedText,
+    });
+
+    expect(markdown).toContain('# Quickstart (/en/rtc/quickstart)');
+    expect(markdown).toContain('Shared intro');
+    expect(markdown).toContain('Android body');
+    expect(markdown).not.toContain('Web body');
+    expect(markdown).not.toContain('_PlatformProcessedMarker');
   });
 });
