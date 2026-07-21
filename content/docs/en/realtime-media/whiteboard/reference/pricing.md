@@ -29,7 +29,7 @@ If your use-case involves other Agora products or services, such as the Video Ca
 Billing for Interactive Whiteboard begins once you enable and implement the service in your project and occurs monthly.
 
 Agora calculates your monthly pricing by adding up the usage of each whiteboard feature in all
-projects under your [Agora Account](https://console.agora.io/v2), subtracting your monthly free usage allowances,
+projects under your [Agora Account](https://console.agora.io), subtracting your monthly free usage allowances,
 multiplying each resulting usage number by the corresponding price, and adding up the cost of each feature.
 
 The basic formulas are shown here:
@@ -58,7 +58,7 @@ The usage duration is calculated in minutes.
 
 ### File conversion usage
 
-Agora bills for this feature based on the model you select in [Agora Console](https://console.agora.io/v2): Per volume or per PCW.
+Agora bills for this feature based on the model you select in [Agora Console](https://console.agora.io): Per volume or per PCW.
 
 #### Per volume
 
@@ -70,7 +70,7 @@ API to get the result of a file conversion task.
 
 #### Per Peak Concurrent Workers
 
-**Peak Concurrent Workers (PCW)** are the maximum number of file conversion tasks that Interactive Whiteboard servers can process simultaneously per project per server region per file conversation mode (dynamic or static). The unit pricing is per PCW per month, with an unlimited number of files that can be converted to images or web pages. If you set PCW to 2 or 3, this means you will be able to run up to 2 or 3 conversion tasks at the same time, respectively. The hard cap on the PCW used in this model is set to 5 per project, with the ability to adjust it in the [Agora Console](https://console.agora.io/v2).
+**Peak Concurrent Workers (PCW)** are the maximum number of file conversion tasks that Interactive Whiteboard servers can process simultaneously per project per server region per file conversation mode (dynamic or static). The unit pricing is per PCW per month, with an unlimited number of files that can be converted to images or web pages. If you set PCW to 2 or 3, this means you will be able to run up to 2 or 3 conversion tasks at the same time, respectively. The hard cap on the PCW used in this model is set to 5 per project, with the ability to adjust it in the [Agora Console](https://console.agora.io).
 
 At that, if you use less PCW during the month, Agora will bill only for the actual PCW usage. Your PCW usage depends on the frequency of requests submitted to our servers and the file size. It increases when the service is processing existing file conversion tasks and a new task is submitted.
 
@@ -115,7 +115,7 @@ The hard cap is set to 5 PCW/project/region/conversion mode (dynamic or static).
 
 You can check your usage of Interactive Whiteboard in Agora Console. Perform the following steps:
 
-1. Log in to [Agora Console](https://console.agora.io/v2) and click the **Usage** button on the left navigation panel.
+1. Log in to [Agora Console](https://console.agora.io) and click the **Usage** button on the left navigation panel.
 
 2. Click the arrowhead in the top left corner, and select the project you want to check in the drop-down box.
 

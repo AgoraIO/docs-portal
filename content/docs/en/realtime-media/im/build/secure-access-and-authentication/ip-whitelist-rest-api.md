@@ -3,13 +3,13 @@ title: "RESTful API IP allowlist"
 description: "Describes the RESTful API IP allowlist function"
 ---
 
-For added security, Agora Chat provides the IP whitelist function. If only certain IP addresses are allowed to call the RESTful APIs to send messages, you can add these IP addresses to the IP whitelist on the [Agora Console](https://console.agora.io/v2). IP addresses outside the IP whitelist cannot call the RESTful API to send messages.
+For added security, Agora Chat provides the IP whitelist function. If only certain IP addresses are allowed to call the RESTful APIs to send messages, you can add these IP addresses to the IP whitelist on the [Agora Console](https://console.agora.io). IP addresses outside the IP whitelist cannot call the RESTful API to send messages.
 
 ### Add an IP address to the IP whitelist
 
-1. Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io).
 
-2. In the left navigation bar of the [Agora Console](https://console.agora.io/v2), choose **Chat** > **Features** > **IP Whitelist** to open the **Security Setting** page.
+2. In the left navigation bar of the [Agora Console](https://console.agora.io), choose **Chat** > **Features** > **IP Whitelist** to open the **Security Setting** page.
 
 3. On the **Security Setting** page, click **Add** and enter the IP address in the **Add IP Address** dialog box that is displayed.
 
@@ -25,9 +25,9 @@ For added security, Agora Chat provides the IP whitelist function. If only certa
 
 If you no longer allow an IP address to send messages via the RESTful APIs, you can remove it from the IP whitelist. If you delete all IP addresses in the IP whitelist, that is, the whitelist is empty, all IP addresses can send messages via the RESTful APIs by default.
 
-1. Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io).
 
-2. In the left navigation bar of the [Agora Console](https://console.agora.io/v2), choose **Chat** > **Features** > **IP Whitelist** to open the **Security Setting** page.
+2. In the left navigation bar of the [Agora Console](https://console.agora.io), choose **Chat** > **Features** > **IP Whitelist** to open the **Security Setting** page.
 
 3. In the IP Whitelist list, click **Delete** to the right of an IP address.
 

@@ -36,7 +36,7 @@ When a user logs in to the Chat app, the Chat server sends a callback to your ap
 | --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
 | `reason` | String | The reason that triggers the callback. `login` indicates that a user logs in to the app. |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `os` | String | The operating system of the device. Valid values: `ios`, `android`, `linux`, `win`, and `other.` |
 | `ip` | String | The IP address of the user who logs in to the app. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
@@ -70,7 +70,7 @@ When a user logs out of the Chat app, the Chat server sends a callback to your a
 | --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
 | `reason` | String | The reason that triggers the callback. `logout` indicates that a user logs out of the app. |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `os` | String | The operating system of the device. Valid values: `ios`, `android`, `linux`, `win`, and `other.` |
 | `ip` | String | The IP address of the user who logs out of the app. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
@@ -103,7 +103,7 @@ When a user logs out of the Chat app due to being kicked out by another device, 
 | --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
 | `reason` | String | The reason that triggers the callback. `replaced` indicates that a user logs out of the app due to being kicked out by another device. |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `os` | String | The operating system of the device. Valid values: `ios`, `android`, `linux`, `win`, and `other.` |
 | `ip` | String | The IP address of the user. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
@@ -149,7 +149,7 @@ When a user sends a message in a one-to-one chat, chat group, or chat room of th
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when the message is sent. |
 | `payload` | Object | The structure of the callback event. This field varies according to the type of the message sent in a one-to-one chat, chat group, or chat room. See payload example below for details. |
 | `securityVersion` | String | This parameter is reserved for future use.  |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 
@@ -404,7 +404,7 @@ When a user recalls a message in a one-to-one chat, chat group, or chat room of 
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when the end user sends the message. |
 | `payload` | Object | The structure of the callback event that contains the following fields: `ext`: The message extension. This field is empty when recalling a message. `ack_message_id`: The ID of the message to recall. This ID is the same as `recall_id`. `bodies`: The body of the message callback. This field is empty when recalling a message. |
 | `securityVersion` | String | This parameter is reserved for future use.  |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 
@@ -443,7 +443,7 @@ When a user performs operations on a chat group or chat room in the Chat app, th
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when sending the message. |
 | `payload` | Object | The content structure of the callback event that contains the following fields: `muc_id`: The unique identifier of the chat group or chat room in the Chat server, in the format of `{appkey}_{group_ID}@conference.easemob.com`. `reason`: Optional. The detailed information about the current operation. See payload example below for details. `is_chatroom`: Whether this event occurs in a chat room. `true`: Yes. `false`: No, this event occurs in a chat group. `operation`: The current operation. See payload example below for details. `status`: The status of the current operation. `description`: The status description. `error_code`: The status code.|
 | `securityVersion` | String | This parameter is reserved for future use.  |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 
@@ -1060,7 +1060,7 @@ When a user performs operations on the contacts in the Chat app, the Chat server
 | `to`  | String | The contact who is operated by the user. |
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when sending the message. |
 | `payload` | Object | The structure of the callback event. See payload example below for details. |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 
@@ -1201,7 +1201,7 @@ When a user sends an receipt, the Chat server sends a callback to your app serve
 | :---------- | :------- | :----------------------------------------------------------- |
 | `chat_type` | String   | The type of the event. `read_ack`: Read receipts. `delivery_ack`: Delivery receipts.                                        |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
-| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
+| `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io).|
 | `payload`   | Object   | The structure of the callback event that contains the following fields: `ext`: The message extension field. `ack_message_id`: The message ID of the receipt callback. `bodies`: The message body. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
@@ -1244,7 +1244,7 @@ The sample code is as follows:
 | `callId` | String| The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated.|
 | `moderationResult`  | String  | The message handling result:  - `PASS`: Send the message.  - `REJECT`: Reject sending the message.  - `EXCHANGE`: Replace the sensitive content in the message. - `RECALL`: Recall the voice or video that is sent. |
 | `providerResult` | String | The message moderation result: - `PASS`: The message does not contain inappropriate content.  - `REVIEWED`: The message is suspected of containing inappropriate content.  - `REJECT`: The message contains inappropriate content. |
-| `security`       | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of secret can be found on [Agora Console](https://console.agora.io/v2). |
+| `security`       | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of secret can be found on [Agora Console](https://console.agora.io). |
 | `messageType`       | String | The message text: - `txt`: Text message. - `img`: Image message. - `audio`: Voice message. - `video`: Video message. - `custom`: Custom message.   |
 | `messageId`       | String  | Message ID.   |
 | `targetType`       | String | Conversation type: - `chat`: One-to-one chat. - `groupchat`: Group chat. - `chatroom`: Chat room.  |

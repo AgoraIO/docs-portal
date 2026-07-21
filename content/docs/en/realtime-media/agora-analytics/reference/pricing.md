@@ -96,9 +96,9 @@ This section tells you how to subscribe and unsubscribe to an Agora Analytics pr
 
 To subscribe to an Agora Analytics pricing plan, do the following:
 
-1. Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io).
 
-2. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+2. In [Agora Console](https://console.agora.io), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
 3. Choose the plan you want to use, and click **Subscribe**.
 
@@ -116,7 +116,7 @@ Agora Analytics charges are billed to your account on the first of every month u
 
 To unsubscribe from an Agora Analytics pricing plan, do the following:
 
-1. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+1. In [Agora Console](https://console.agora.io), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
 2. On the upper right corner, click **My Package Subscription**.
 
@@ -124,7 +124,7 @@ To unsubscribe from an Agora Analytics pricing plan, do the following:
 
 To switch to another plan, do the following:
 
-1. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+1. In [Agora Console](https://console.agora.io), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
 2. Choose the plan you want to switch to, and click **Subscribe**.
 For the Enterprise pricing plan, contact support@agora.io to subscribe.

@@ -17,7 +17,7 @@ To use Agora SDKs, create an audio and video project in the Agora Console first.
 
 #### Agora Console
 
-[Agora Console](https://console.agora.io/v2) is the main dashboard where you manage your Agora projects and services.
+[Agora Console](https://console.agora.io) is the main dashboard where you manage your Agora projects and services.
 
 ## General concepts
 

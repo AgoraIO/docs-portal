@@ -29,7 +29,7 @@ This process includes calling the following RESTful API methods:
 
 To follow this procedure, you must:
 
-- Have a valid [Agora Account](https://console.agora.io/v2).
+- Have a valid [Agora Account](https://console.agora.io).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
 server. For details, see [Agora account management](/en/introduction/account).
@@ -40,7 +40,7 @@ server. For details, see [Agora account management](/en/introduction/account).
 
 ## Project setup
 
-Enable Real-Time STT before using it for the first time. In [Agora Console](https://console.agora.io/v2) go to **Realtime Services**, select **Real-Time STT** under **Media Services**, and turn on the **Active** toggle. Read the prompt and click **Confirm**.
+Enable Real-Time STT before using it for the first time. In [Agora Console](https://console.agora.io) go to **Realtime Services**, select **Real-Time STT** under **Media Services**, and turn on the **Active** toggle. Read the prompt and click **Confirm**.
 
 Now you can use Agora Real-Time STT and see the usage statistics on the **Usage** page.
 

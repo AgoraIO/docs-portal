@@ -26,7 +26,7 @@ On the first day of each month, Agora issues your bill for the previous calendar
 
 To view billing information for your projects:
 
-1. In [Agora Console](https://console.agora.io/v2), click home.
+1. In [Agora Console](https://console.agora.io), click home.
 
 2. Click **Billing**.
 

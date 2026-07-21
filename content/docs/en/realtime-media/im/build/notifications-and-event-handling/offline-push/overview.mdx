@@ -13,7 +13,7 @@ Chat supports integration of Apple Push Notification service (APNs), which enabl
 
 When a user goes offline because of client disconnection or the app process closing, Chat will push notifications to the offline user's device through the APNs message push service.
 
-To use APNs offline push, configure the push certificate information in [Agora Console](https://console.agora.io/v2) and call `bindDeviceToken` provided by the client SDK to upload the device token to the Agora server.
+To use APNs offline push, configure the push certificate information in [Agora Console](https://console.agora.io) and call `bindDeviceToken` provided by the client SDK to upload the device token to the Agora server.
 
 To test the offline push function, download our [demo](https://testflight.apple.com/join/MO0UuYJH).
 
@@ -64,13 +64,13 @@ When the user is online again, the server will send the messages received while 
 
 For example, when you are offline and another user sends you a message, a notification will pop up on your phone. When you open the app and log in successfully, Chat will actively pull the messages sent when you were offline.
 
-If the app is running in the background and the user is still online, Chat will not push notifications. When multiple devices are logged in, you can configure the push certificate page in the [Agora Console](https://console.agora.io/v2) to send push notifications when either all or some of them are offline. This configuration is effective for all push channels.
+If the app is running in the background and the user is still online, Chat will not push notifications. When multiple devices are logged in, you can configure the push certificate page in the [Agora Console](https://console.agora.io) to send push notifications when either all or some of them are offline. This configuration is effective for all push channels.
 
 :::info
 When the app is running in the background or the phone is locked and the client has not disconnected from the Agora server, Chat will not receive offline push notifications. When multiple devices are logged in, if a device is forced offline, the notifications will not be received even if offline push is configured.
 :::
 
-To use third-party offline push, configure the push certificate information in [Agora Console](https://console.agora.io/v2). For example, for FCM push configure the FCM push certificate information, such as **Private Key** and **Certificate Name**. Then call `updatePushConfig` provided by the client SDK to upload the device token to the Agora server.
+To use third-party offline push, configure the push certificate information in [Agora Console](https://console.agora.io). For example, for FCM push configure the FCM push certificate information, such as **Private Key** and **Certificate Name**. Then call `updatePushConfig` provided by the client SDK to upload the device token to the Agora server.
 
 ``` javascript
 const  params  = {
@@ -118,7 +118,7 @@ Chat SDK provides the following features:
 
 Chat supports integration of Google Firebase Cloud Messaging (FCM), which enables developers to use an offline push notification service. The service features low latency, high delivery, high concurrency, and no violation of the users' personal data.
 
-To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io/v2). Then call the API provided by the client SDK to upload the device token to the Agora server.
+To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io). Then call the API provided by the client SDK to upload the device token to the Agora server.
 
 To test the offline push feature, download our [demo](https://download.agora.io/sdk/release/agorachatdemo_android_1.1.0.apk).
 
@@ -146,7 +146,7 @@ The following figure shows the basic workflow of offline push:
 
 Chat supports integration of Google Firebase Cloud Messaging (FCM), which enables developers to use an offline push notification service. The service features low latency, high delivery, high concurrency, and no violation of the users' personal data.
 
-To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io/v2). Then call `updateFCMPushToken` provided by the client SDK to upload the device token to the Agora server.
+To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io). Then call `updateFCMPushToken` provided by the client SDK to upload the device token to the Agora server.
 
 ## Understand the tech
 
@@ -176,7 +176,7 @@ The device token is the push token provided by FCM push. That is, the registrati
 
 Chat supports integration of Google Firebase Cloud Messaging (FCM), which enables developers to use an offline push notification service. The service features low latency, high delivery, high concurrency, and no violation of the users' personal data.
 
-To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io/v2). Then call `updatePushConfig` provided by the client SDK to upload the device token to the Agora server.
+To use FCM offline push, configure the FCM push certificate information, such as **Private Key** and **Certificate Name** in [Agora Console](https://console.agora.io). Then call `updatePushConfig` provided by the client SDK to upload the device token to the Agora server.
 
 To test the offline push feature, download our [demo](https://github.com/AgoraIO/Agora-Chat-API-Examples/tree/main/Chat-RN/firebase_push_demo).
 

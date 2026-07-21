@@ -21,7 +21,7 @@ To access the Alert Notifications page, do the following:
 
 1. Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Alert Notifications** service.
 
-2. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Alert Notifications**.
+2. In [Agora Console](https://console.agora.io), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Alert Notifications**.
 
 ## Alert rules
 

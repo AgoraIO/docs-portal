@@ -310,7 +310,7 @@ You need to set an appropriate expiration timestamp. For example, if the expirat
 
 Refer to the following steps to enable this function in Agora Console: 
 
-1. Log on to [Agora Console](https://console.agora.io/v2). Under **Projects**, choose a project for which you want to enable co-host authentication, click the **Edit** icon, and enter the **Edit Project** page.
+1. Log on to [Agora Console](https://console.agora.io). Under **Projects**, choose a project for which you want to enable co-host authentication, click the **Edit** icon, and enter the **Edit Project** page.
 2. In the Features area, click **Enable authentication**.
 3. Follow the on-screen instructions to know more about this function, check the box, and click **Enable**. 
 

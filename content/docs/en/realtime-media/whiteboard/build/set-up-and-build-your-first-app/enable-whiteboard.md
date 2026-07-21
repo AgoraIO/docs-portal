@@ -3,7 +3,7 @@ title: "Enable whiteboard"
 description: "Enable and configure Interactive Whiteboard and its server-side features in Agora Console."
 ---
 
-To use Interactive Whiteboard, enable and configure it for your project in [Agora Console](https://console.agora.io/v2).
+To use Interactive Whiteboard, enable and configure it for your project in [Agora Console](https://console.agora.io).
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ Before you enable Interactive Whiteboard, ensure that you have:
 
 ## Enable Interactive Whiteboard
 
-To enable Interactive Whiteboard, in [Agora Console](https://console.agora.io/v2) go to **Realtime Services**, select **Interactive Whiteboard** under **Core RTC**, and turn on the **Active** toggle.
+To enable Interactive Whiteboard, in [Agora Console](https://console.agora.io) go to **Realtime Services**, select **Interactive Whiteboard** under **Core RTC**, and turn on the **Active** toggle.
 
 ![Interactive Whiteboard settings on the Realtime Services page](/console-tmp/whiteboard-config.png)
 

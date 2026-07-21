@@ -140,7 +140,7 @@ To obtain an auth token, [sign up](https://dashboard.ngrok.com/signup) with ngro
 
 To enable Notifications for Media Gateway events:
 
-1. In [Agora Console](https://console.agora.io/v2), go to **Realtime Services** and select **Notifications** under **Media Services**.
+1. In [Agora Console](https://console.agora.io), go to **Realtime Services** and select **Notifications** under **Media Services**.
 
 1. In the notification type list, select **Media Gateway**.
 

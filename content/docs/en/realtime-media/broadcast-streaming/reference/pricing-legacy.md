@@ -28,7 +28,7 @@ The unit prices for audio and video usage are as follows. Prices are in US$ per 
 
 ## Cost calculation
 
-Billing occurs monthly. At the end of each month, Agora calculates the total duration of the audio and video usage (in minutes) for that month in all projects under your [Agora account](https://console.agora.io/v2).
+Billing occurs monthly. At the end of each month, Agora calculates the total duration of the audio and video usage (in minutes) for that month in all projects under your [Agora account](https://console.agora.io).
 
 Video usage is divided into four different types based on aggregate resolution and priced individually. After deducting the monthly [10,000 free-of-charge minutes](billing-policies) that Agora grants to every account, Agora multiplies any remaining usage by its corresponding unit price and adds up the costs to get the total cost for that month.
 
@@ -96,7 +96,7 @@ The minimum monthly base fee for each tier is:
 | Tier 1 - Default | 200 or fewer        | 500  |
 | Tier 2      | From 201 to 1,000  | 1,000 |
 | Tier 3      | From 1,001 to 2,000 | 2,000 |
-| Tier 4      | 2,001 or more  | [Contact Sales](https://www.agora.io/en/talk-to-us/) or request support through the [Agora Console](https://console.agora.io/v2) |
+| Tier 4      | 2,001 or more  | [Contact Sales](https://www.agora.io/en/talk-to-us/) or request support through the [Agora Console](https://console.agora.io) |
 
 Force UDP or Force TCP cloud proxy usage is measured in minutes and calculated separately according to the media type. The unit prices are as follows:
 
@@ -113,7 +113,7 @@ When Force UDP or Force TCP is enabled at a specified capacity, Agora charges ac
 - **Minimum monthly fee** - monthly usage-based fee including volume discounts is lower than the minimum monthly base fee.
 - **Usage monthly fee** - monthly usage-based fee including volume discounts exceeds the minimum monthly base fee.
 
-You activate Cloud proxy for Tier 1 directly in [Agora Console](https://console.agora.io/v2). Once Force UDP or Force TCP Cloud proxy is activated, you are billed according to the minimum monthly base fee or based upon minutes of usage, whichever is greater. You can deactivate the Cloud Proxy Force UDP or Force TCP modes at any time in the [Agora Console](https://console.agora.io/v2). Deactivation takes effect immediately.
+You activate Cloud proxy for Tier 1 directly in [Agora Console](https://console.agora.io). Once Force UDP or Force TCP Cloud proxy is activated, you are billed according to the minimum monthly base fee or based upon minutes of usage, whichever is greater. You can deactivate the Cloud Proxy Force UDP or Force TCP modes at any time in the [Agora Console](https://console.agora.io). Deactivation takes effect immediately.
 
 Agora offers a 10% overage allowance for all tiers of PCU at no additional charge. Agora notifies you when your PCU exceeds the 10% overage allowance. Upon receiving this notice, contact [Agora Customer Support](mailto:support@agora.io) to upgrade to the next tier to ensure you have sufficient capacity in the future. Before your upgrade, Agora does try to provide the required capacity beyond the 10% overage allowance; however, the quality of service for an overage of greater than 10% is not guaranteed.
 

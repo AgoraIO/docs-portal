@@ -61,7 +61,7 @@ Before starting, make sure you have configured your domain name by contacting [t
 
 To generate a stream key locally, you use the following information:
 
-- The app ID of the Agora project from [Agora Console](https://console.agora.io/v2)
+- The app ID of the Agora project from [Agora Console](https://console.agora.io)
 - The app certificate corresponding to your app ID
 - `channelName`: The channel name
 - `uid`: The user ID of the host in the channel

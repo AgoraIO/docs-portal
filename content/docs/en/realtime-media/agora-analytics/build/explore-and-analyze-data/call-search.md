@@ -26,7 +26,7 @@ On the Call Search page, you can apply multiple filters such as channel name, ca
 
 To search calls, follow these steps:
 
-1. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Call Inspector**.
+1. In [Agora Console](https://console.agora.io), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Call Inspector**.
 2. In the upper-left corner, select a project. You see all the available calls under the project.
 3. Start a search in one of the following ways:
 

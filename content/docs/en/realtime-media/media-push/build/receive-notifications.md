@@ -204,7 +204,7 @@ To do this, take the following steps:
 
 To enable Notifications for Media Push events:
 
-1. In [Agora Console](https://console.agora.io/v2), go to **Realtime Services** and select **Notifications** under **Media Services**.
+1. In [Agora Console](https://console.agora.io), go to **Realtime Services** and select **Notifications** under **Media Services**.
 
 1. In the notification type list, select **Media Push**.
 
