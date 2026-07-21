@@ -9,6 +9,9 @@ export type ApiReferenceCardEntry = {
   platformId: string;
   product: string;
   productId: string;
+  solutionDescription?: string;
+  solutionId?: string;
+  solutionTitle?: string;
 };
 
 export const zhCNApiReferenceCards: Record<
@@ -281,6 +284,60 @@ export const zhCNApiReferenceCards: Record<
       '/zh-CN/api-reference/private-room/ios',
     ),
     entry(
+      '在线 K 歌',
+      'online-ktv',
+      'Android',
+      'android',
+      'client-api',
+      '/zh-CN/api-reference/rtc/android/class-musiccontentcenterconfiguration',
+      {
+        solutionDescription:
+          '将实时互动 SDK API 封装成专为 K 歌场景设计的 API。',
+        solutionId: 'scenario-api',
+        solutionTitle: '场景化 API 方案',
+      },
+    ),
+    entry(
+      '在线 K 歌',
+      'online-ktv',
+      'iOS',
+      'ios',
+      'client-api',
+      '/zh-CN/api-reference/rtc/ios/class-musiccontentcenterconfiguration',
+      {
+        solutionDescription:
+          '将实时互动 SDK API 封装成专为 K 歌场景设计的 API。',
+        solutionId: 'scenario-api',
+        solutionTitle: '场景化 API 方案',
+      },
+    ),
+    entry(
+      '在线 K 歌',
+      'online-ktv',
+      'Android',
+      'android',
+      'client-api',
+      '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+      {
+        solutionDescription: 'PaaS 方案中高频调用的实时互动 SDK API。',
+        solutionId: 'paas',
+        solutionTitle: 'PaaS 方案',
+      },
+    ),
+    entry(
+      '在线 K 歌',
+      'online-ktv',
+      'iOS',
+      'ios',
+      'client-api',
+      '/zh-CN/api-reference/rtc/ios/rtc-api-overview',
+      {
+        solutionDescription: 'PaaS 方案中高频调用的实时互动 SDK API。',
+        solutionId: 'paas',
+        solutionTitle: 'PaaS 方案',
+      },
+    ),
+    entry(
       '灵动课堂',
       'flexible-classroom',
       'Android',
@@ -419,6 +476,33 @@ export const zhCNApiReferenceCards: Record<
       '/zh-CN/api-reference/local-server-recording/cpp/api-overview',
     ),
     entry(
+      '在线 K 歌',
+      'online-ktv',
+      'RESTful API',
+      'restful-api',
+      'restful-api',
+      '/zh-CN/api-reference/api-ref/rtc',
+      {
+        solutionDescription:
+          '将实时互动 SDK API 封装成专为 K 歌场景设计的 API。',
+        solutionId: 'scenario-api',
+        solutionTitle: '场景化 API 方案',
+      },
+    ),
+    entry(
+      '在线 K 歌',
+      'online-ktv',
+      'RESTful API',
+      'restful-api',
+      'restful-api',
+      '/zh-CN/api-reference/api-ref/rtc',
+      {
+        solutionDescription: 'PaaS 方案中高频调用的实时互动 SDK API。',
+        solutionId: 'paas',
+        solutionTitle: 'PaaS 方案',
+      },
+    ),
+    entry(
       '实时互动 RTC',
       'rtc',
       'RESTful API',
@@ -548,6 +632,18 @@ function entry(
   platformId: string,
   apiType: ApiReferenceKind,
   href: string,
+  solution?: Pick<
+    ApiReferenceCardEntry,
+    'solutionDescription' | 'solutionId' | 'solutionTitle'
+  >,
 ): ApiReferenceCardEntry {
-  return { apiType, href, platform, platformId, product, productId };
+  return {
+    apiType,
+    href,
+    platform,
+    platformId,
+    product,
+    productId,
+    ...solution,
+  };
 }
