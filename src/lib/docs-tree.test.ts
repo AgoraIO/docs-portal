@@ -639,6 +639,63 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('keeps structural-only groups in the page tree but out of the sidebar', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'reference-folder',
+        children: [
+          {
+            $id: 'reference-structural-separator',
+            name: 'Product reference{hidden}',
+            type: 'separator',
+          },
+          {
+            $id: 'reference-structural-page',
+            name: 'RTC implementation root',
+            type: 'page',
+            url: '/en/api-reference/rtc',
+          },
+          {
+            $id: 'reference-visible-separator',
+            name: 'RTC{flat}',
+            type: 'separator',
+          },
+          {
+            $id: 'reference-visible-page',
+            name: 'Android',
+            type: 'page',
+            url: '/en/api-reference/rtc/android',
+          },
+        ],
+        name: 'Reference',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/api-reference/rtc/android',
+                title: 'Android',
+                type: 'page',
+                url: '/en/api-reference/rtc/android',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-RTC',
+            title: 'RTC',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-reference-folder',
+        title: 'Reference',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('builds recursive sidebar nodes from nested product folders', () => {
     const productTree: Root = {
       children: [

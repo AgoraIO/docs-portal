@@ -23,6 +23,7 @@ const docsMetaPageGroupSchema = z.object({
   pages: z
     .array(z.union([z.string().min(1), docsMetaExternalPageLinkSchema]))
     .min(1),
+  sidebarHidden: z.boolean().optional(),
   title: z.string().min(1),
   type: z.literal('group'),
 });
@@ -36,8 +37,9 @@ const docsMetaPageEntrySchema = z.union([
   ),
   docsMetaPageGroupSchema.transform((entry) => {
     const iconPrefix = entry.icon ? `[${entry.icon}]` : '';
-    const flags =
-      entry.collapsible === undefined
+    const flags = entry.sidebarHidden
+      ? '{hidden}'
+      : entry.collapsible === undefined
         ? ''
         : entry.collapsible
           ? '{dropdown}'

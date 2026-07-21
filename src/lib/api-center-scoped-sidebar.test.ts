@@ -43,11 +43,49 @@ describe('API Center scoped sidebars', () => {
   it('keeps hidden implementation roots out of the Reference sidebar', async () => {
     const sidebar = await loadApiReferenceSidebar(['overview']);
     const titles = collectTitles(sidebar);
-
+    const rootTitles = sidebar.flatMap((node) =>
+      node.title ? [node.title] : [],
+    );
     expect(titles.filter((title) => title === 'API 参考')).toHaveLength(1);
     expect(titles.filter((title) => title === '实时互动 RTC')).toHaveLength(1);
     expect(titles.filter((title) => title === '实时消息 RTM')).toHaveLength(1);
+    expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
+    expect(rootTitles).toEqual(
+      expect.arrayContaining([
+        '对话式 AI',
+        '实时互动 RTC',
+        '实时消息 RTM',
+        '互动白板',
+        '云端录制',
+        '本地服务端录制',
+        'RTC 服务端 SDK',
+        '灵动课堂',
+      ]),
+    );
+    expect(
+      collectTitles(findNode(sidebar, '对话式 AI')?.children ?? []),
+    ).toEqual(expect.arrayContaining(['agent-go', 'Android', 'RESTful API']));
+  });
+
+  it('keeps the same flat product labels on the Recipes page', async () => {
+    const sidebar = await loadApiReferenceSidebar(['recipes']);
+    const titles = collectTitles(sidebar);
+    const rootTitles = sidebar.flatMap((node) =>
+      node.title ? [node.title] : [],
+    );
+
+    expect(titles).not.toContain('产品参考');
+    expect(titles).not.toContain('Whiteboard SDK');
+    expect(rootTitles).toEqual(
+      expect.arrayContaining([
+        '对话式 AI',
+        '实时互动 RTC',
+        '实时消息 RTM',
+        '互动白板',
+        '灵动课堂',
+      ]),
+    );
   });
 
   it('uses the generated RTC Android current-version categories', async () => {

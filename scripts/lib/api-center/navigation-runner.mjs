@@ -943,7 +943,26 @@ function buildOverviewBody(entries, live) {
 
 function scopedRootMetaPages(pages, entries) {
   const preserved = [...(pages ?? [])];
-  const requiredHiddenRoots = [
+  const productReferenceIndex = preserved.findIndex(
+    (page) =>
+      page === '---产品参考---' ||
+      (page &&
+        typeof page === 'object' &&
+        page.type === 'group' &&
+        page.title === '产品参考' &&
+        page.sidebarHidden === true),
+  );
+  if (productReferenceIndex < 0) return preserved;
+
+  const productReferenceEntry = preserved[productReferenceIndex];
+  const productReferencePages =
+    productReferenceEntry &&
+    typeof productReferenceEntry === 'object' &&
+    Array.isArray(productReferenceEntry.pages)
+      ? productReferenceEntry.pages
+      : [];
+  const tail = preserved.slice(productReferenceIndex + 1);
+  const structuralRoots = unique([
     ...(entries.some((entry) =>
       entry.targetRoute?.startsWith('/zh-CN/api-reference/api-ref/'),
     )
@@ -956,16 +975,35 @@ function scopedRootMetaPages(pages, entries) {
     )
       ? ['whiteboard']
       : []),
-  ].filter((root) => !preserved.includes(root));
-  if (requiredHiddenRoots.length > 0) {
-    const productReferenceIndex = preserved.indexOf('---产品参考---');
-    preserved.splice(
-      productReferenceIndex >= 0 ? productReferenceIndex + 1 : preserved.length,
-      0,
-      ...requiredHiddenRoots,
-    );
-  }
-  return preserved;
+    ...productReferencePages,
+    ...tail.filter(
+      (page) =>
+        typeof page === 'string' &&
+        !page.startsWith('---') &&
+        !page.startsWith('['),
+    ),
+  ]);
+  const visibleProductPages = tail.filter(
+    (page) =>
+      typeof page !== 'string' ||
+      page.startsWith('---') ||
+      page.startsWith('['),
+  );
+
+  return [
+    ...preserved.slice(0, productReferenceIndex),
+    ...(structuralRoots.length > 0
+      ? [
+          {
+            type: 'group',
+            title: '产品参考',
+            sidebarHidden: true,
+            pages: structuralRoots,
+          },
+        ]
+      : []),
+    ...visibleProductPages,
+  ];
 }
 
 async function readMeta(repoRoot, metaPath, fallbackTitle) {
@@ -1021,7 +1059,13 @@ function navigationParityReport({
     .map((entry) => ({ product: entry.product, label: entry.label }));
   const overviewActions = (overviewBody.match(/"href":/g) ?? []).length;
   const rootActions = rootPages
-    .filter((page) => page && typeof page === 'object' && page.type === 'group')
+    .filter(
+      (page) =>
+        page &&
+        typeof page === 'object' &&
+        page.type === 'group' &&
+        page.sidebarHidden !== true,
+    )
     .reduce((count, page) => count + countMetaLinks(page.pages), 0);
   const visibleLeaves = internalEntries.flatMap((entry) => {
     const navigation =

@@ -292,14 +292,16 @@ function flattenParentNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -312,6 +314,10 @@ function flattenParentNavScopeSidebarNodes(
         nodes.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -388,14 +394,16 @@ function flattenNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -408,6 +416,10 @@ function flattenNavScopeSidebarNodes(
         nodes.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -565,14 +577,16 @@ function pageTreeFolderToParentSidebarNodes(
     null;
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of node.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -585,6 +599,10 @@ function pageTreeFolderToParentSidebarNodes(
         children.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -798,7 +816,34 @@ function resolveVersionSwitcherLinks({
 
 function findTabFolder(root: Root, activeTab: string): Folder | null {
   for (const child of root.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  for (const child of root.children) {
     const result = findTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+function findRootTabFolderInNode(node: Node, activeTab: string): Folder | null {
+  if (node.type !== 'folder') {
+    return null;
+  }
+
+  const index = getFolderIndex(node);
+  if (node.root === true && index && getTabIdFromUrl(index.url) === activeTab) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
     if (result) {
       return result;
     }

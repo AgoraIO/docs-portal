@@ -288,7 +288,10 @@ describe('API Center navigation runner', () => {
           'overview',
           'api',
           '---产品参考---',
+          'api-ref',
+          'whiteboard',
           'rtc',
+          'cloud-recording',
           {
             type: 'group',
             title: '实时互动 RTC',
@@ -431,10 +434,29 @@ describe('API Center navigation runner', () => {
     expect(overview).toContain('https://im.shengwang.cn/docs/sdk/web.html');
     expect(rootMeta.root).toBe(true);
     expect(rootMeta.pages).toContain('api');
-    expect(rootMeta.pages).toContain('---产品参考---');
-    expect(rootMeta.pages).toContain('api-ref');
-    expect(rootMeta.pages).toContain('rtc');
-    expect(rootMeta.pages).toContain('whiteboard');
+    expect(
+      rootMeta.pages.filter((page: unknown) => typeof page === 'string'),
+    ).toEqual(['overview', 'api']);
+    expect(rootMeta.pages).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          pages: expect.arrayContaining([
+            'api-ref',
+            'whiteboard',
+            'rtc',
+            'cloud-recording',
+          ]),
+          sidebarHidden: true,
+          title: '产品参考',
+          type: 'group',
+        }),
+      ]),
+    );
+    expect(rootMeta.pages).not.toContain('---产品参考---');
+    expect(rootMeta.pages).not.toContain('api-ref');
+    expect(rootMeta.pages).not.toContain('rtc');
+    expect(rootMeta.pages).not.toContain('whiteboard');
+    expect(rootMeta.pages).not.toContain('cloud-recording');
     expect(rootMeta.pages).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ title: '实时互动 RTC' }),

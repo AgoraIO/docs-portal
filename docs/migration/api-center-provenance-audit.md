@@ -68,7 +68,7 @@
 - `explicit-route-projection`: 54 platform routes project to shared local MDX through explicit existing-target mappings.
 - `openapi-lanes`: 130 pages remain generated from maintained local OpenAPI sources; 5 changed short descriptions derive from legacy text and 0 preserve pre-existing target copy with formatting-only changes.
 - `runtime-source-labels`: 7 runtime product/platform labels are injected from the API Center source inventory instead of inferred from directory slugs.
-- `preserved-root-navigation`: 7 non-product root navigation items keep their exact base-branch labels and routes.
+- `preserved-root-navigation`: 6 non-product root navigation items keep their exact base-branch labels and routes.
 - `api-group-action-labels`: 客户端 and 服务端 action qualifiers are shortened from the live source group headings 客户端 API and 服务端 API.
 - `current-directory-elision`: (current) remains a filesystem grouping and is omitted from public routes.
 - `root-shared-target-collapse`: undefined root actions share targets; the overview retains all 91 live actions.

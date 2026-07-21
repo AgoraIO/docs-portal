@@ -73,10 +73,11 @@ export type DocsBreadcrumbItem = {
 
 export type DocsSidebarGroupMetadata = {
   collapsible?: boolean;
+  sidebarHidden?: boolean;
   title: string;
 };
 
-const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat)\}$/;
+const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat|hidden)\}$/;
 
 // Tabs whose second-level folders are genuine products (Voice, Video, …) and so
 // expand into per-product search scopes. Other tabs are offered as a single
@@ -204,7 +205,19 @@ export function getSidebarEntries(
     entries.push(pageTreeItemToSidebarEntry(indexItem, activeTab));
   }
 
+  let hideCurrentGroup = false;
   for (const node of tabNode.children) {
+    if (node.type === 'separator') {
+      hideCurrentGroup =
+        parseSidebarGroupMetadata(node.name).sidebarHidden === true;
+    } else if (hideCurrentGroup) {
+      continue;
+    }
+
+    if (hideCurrentGroup) {
+      continue;
+    }
+
     entries.push(
       ...flattenSidebarNode(node).filter(
         (entry) => entry.type !== 'page' || entry.url !== indexUrl,
@@ -245,14 +258,16 @@ export function getSidebarNodes(
   }
 
   let currentSection: DocsSidebarSectionNode | null = null;
+  let hideCurrentGroup = false;
 
   for (const child of tabNode.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -265,6 +280,10 @@ export function getSidebarNodes(
         nodes.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -417,6 +436,7 @@ export function pageTreeNodeToSidebarNodes(
         })
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
+  let hideCurrentGroup = false;
 
   // A folder's own index can also appear in its `children` (e.g. when meta lists
   // `pages: ["index"]`). Skip that duplicate so the index is only represented once
@@ -456,8 +476,9 @@ export function pageTreeNodeToSidebarNodes(
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -470,6 +491,10 @@ export function pageTreeNodeToSidebarNodes(
         children.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -762,7 +787,19 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
 
   const childEntries: SidebarEntry[] = [];
 
+  let hideCurrentGroup = false;
   for (const child of node.children) {
+    if (child.type === 'separator') {
+      hideCurrentGroup =
+        parseSidebarGroupMetadata(child.name).sidebarHidden === true;
+    } else if (hideCurrentGroup) {
+      continue;
+    }
+
+    if (hideCurrentGroup) {
+      continue;
+    }
+
     childEntries.push(
       ...flattenSidebarNode(child, `${node.$id ?? node.name}-`),
     );
@@ -1029,7 +1066,9 @@ export function parseSidebarGroupMetadata(
   }
 
   return {
-    collapsible: flagMatch[1] === 'dropdown',
+    ...(flagMatch[1] === 'hidden'
+      ? { sidebarHidden: true }
+      : { collapsible: flagMatch[1] === 'dropdown' }),
     title: value.slice(0, flagMatch.index).trimEnd(),
   };
 }
