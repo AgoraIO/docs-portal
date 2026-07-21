@@ -11,7 +11,7 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 - Task 6 additional fixes applied: 18 baseline rows, 33 total occurrences resolved or reduced.
 - Task 6 approved removal: removed the RTMP Gateway best-practices legacy link from `content/openapi/media-gateway/media-gateway.zh-CN.yaml` after user confirmation on 2026-07-21.
 - Current focused audit: `openapiFiles: 15`, `totalLinks: 424`, `legacyShengwangDocHostLinks: 3`, `invalidInternalLinks: 36`.
-- Remaining review scope: 2 unique legacy-link rows (3 occurrences) and 5 unique broken-link rows (33 occurrences).
+- Remaining deferred scope: 2 unique legacy-link rows (3 occurrences) and 5 unique broken-link rows (33 occurrences). These are either `danmaku.zh-CN.yaml` items that are intentionally out of scope, or API Reference migration items whose target pages may not exist yet.
 - Reproducibility: run `bun run docs:links:openapi-zh -- --max-samples=200`. Use the bundled Node runtime if the default shell lacks Node 22.
 - CI gate: `bun run docs:links:openapi-zh:baseline` is wired into `.github/workflows/vercel-deploy.yml`. It allows the review baseline below but fails on new or increased zh-CN OpenAPI invalid-link rows.
 
@@ -119,11 +119,11 @@ Generated from `content/openapi/**/*.zh-CN.yaml`.
 | Source | Old href | Occurrences | Context | Suggested action |
 | --- | --- | ---: | --- | --- |
 | `content/openapi/danmaku/danmaku.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption` | 1 | content/openapi/danmaku/danmaku.zh-CN.yaml:247 description: RTC 内置加密设置。详见[`enableEncrption`](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption)。 | Danmaku file is intentionally out of scope for the current cleanup per user direction; keep for later review. |
-| `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync` | 2 | content/openapi/whiteboard/restful-wb.zh-CN.yaml:544 markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync)。 | No current API reference page was confirmed for `screenshotToCanvasAsync`; keep for user review. Do not remove without approval. |
+| `content/openapi/whiteboard/restful-wb.zh-CN.yaml` | `https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync` | 2 | content/openapi/whiteboard/restful-wb.zh-CN.yaml:544 markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync)。 | API Reference migration is not complete, so the equivalent current page may not exist yet; defer until API Reference migration catches up. Do not remove without approval. |
 
 ## Needs User Review: Broken Internal Links
 
-These are the remaining non-legacy `invalidInternalLinks` from the focused audit. `content/openapi/danmaku/danmaku.zh-CN.yaml` is intentionally left unchanged for now per user direction.
+These are the remaining non-legacy `invalidInternalLinks` from the focused audit. `content/openapi/danmaku/danmaku.zh-CN.yaml` is intentionally left unchanged for now per user direction. API Reference links are also deferred because that migration is not complete and the target pages may not exist yet.
 
 | Source | Href | Audit target | Reason | Occurrences | Suggested action |
 | --- | --- | --- | --- | ---: | --- |
@@ -131,7 +131,7 @@ These are the remaining non-legacy `invalidInternalLinks` from the focused audit
 | `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/danmaku/response-code` | `/zh-CN/realtime-media/danmaku/response-code` | `missing-internal-path` | 2 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
 | `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` | `missing-internal-path` | 2 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
 | `content/openapi/danmaku/danmaku.zh-CN.yaml` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `/zh-CN/realtime-media/rtc/best-practice/rest-availability` | `missing-internal-path` | 10 | Danmaku file is intentionally out of scope for the current cleanup per user direction. |
-| `content/openapi/rtc/channel-management.zh-CN.yaml` | `/zh-CN/api-reference/response-code` | `/zh-CN/api-reference/response-code` | `missing-internal-path` | 9 | Find the current route or create the missing route/redirect; avoid guessing from path similarity alone. |
+| `content/openapi/rtc/channel-management.zh-CN.yaml` | `/zh-CN/api-reference/response-code` | `/zh-CN/api-reference/response-code` | `missing-internal-path` | 9 | API Reference migration is not complete, so defer until the corresponding API Reference content or redirect exists. |
 
 ## Approved Removals
 
