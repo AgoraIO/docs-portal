@@ -327,9 +327,7 @@ describe('DocsContent', () => {
 
     expect(html).toContain('data-testid="docs-content-body"');
     expect(html).toContain('en/introduction/about-agora.md');
-    expect(html).toContain('data-agent-docs-directive="true"');
-    expect(html).toContain('href="/llms.txt"');
-    expect(html).toContain('For AI agents:');
+    expect(html).not.toContain('data-agent-docs-directive="true"');
     expect(html).not.toContain('data-testid="docs-content-skeleton"');
   });
 
