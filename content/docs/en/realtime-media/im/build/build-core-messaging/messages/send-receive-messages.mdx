@@ -149,6 +149,11 @@ After a message is sent, you can recall it. The `recallMessage` method recalls a
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
+
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 :::info
@@ -241,6 +246,36 @@ Uri thumbnailLocalUri = imgBody.thumbnailLocalUri();
 If `ChatClient.getInstance().getOptions().getAutodownloadThumbnail()` is set as `true` on the recipient's client, the SDK automatically downloads the thumbnail after receiving the message. If not, you need to call `ChatClient.getInstance().chatManager().downloadThumbnail(message)` to download the thumbnail and get the path from the `thumbnailLocalUri` member in `messageBody`.
 If the file does not exist in `imgLocalUri`, you can manually call `ChatClient.getInstance().chatManager().downloadAttachment(message)` to download the attachment, and call the `message. SetMessageStatusCallback (the callback)`to see if the download succeeds.
 :::
+
+#### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a special type of image message. Unlike a regular image message, a GIF image is **not compressed** when sent. Thumbnail generation is the same as for a regular image message; see [Send and receive an image message](#send-and-receive-an-image-message).
+
+To send a GIF image message, call `createGifImageMessage` to construct the message body, then call `sendMessage`. The SDK uploads the image to the Agora Chat server, which automatically generates the thumbnail.
+
+```java
+// Set imageUri as the URI of the GIF image file on the local device.
+ChatMessage message = ChatMessage.createGifImageMessage(imageUri, conversationId);
+// Sets the chat type as one-to-one chat, group chat, or chatroom. The default is one-to-one chat.
+if (chatType == CHATTYPE_GROUP)
+    message.setChatType(ChatType.GroupChat);
+ChatClient.getInstance().chatManager().sendMessage(message);
+```
+
+As with a regular message, the recipient receives the `onMessageReceived` callback. After confirming that the message is an image message, read the `isGif()` property of the message body. If it returns `true`, the message is a GIF image message.
+
+```java
+public void onMessageReceived(List<ChatMessage> messages) {
+    for (ChatMessage message : messages) {
+        if (message.getType() == ChatMessage.Type.IMAGE) {
+            ImageMessageBody body = (ImageMessageBody) message.getBody();
+            if (body.isGif()) {
+                // Handle the GIF image message according to your business logic, for example, download and display it.
+            }
+        }
+    }
+}
+```
 
 #### Send and receive a video message
 
@@ -517,34 +552,79 @@ To forward and receive combined messages, refer to the following code:
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension fields, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
 To modify a sent message, refer to the following code:
 
-1. Call `asyncModifyMessage` with the message ID and the new message body:
+1. Call `asyncModifyMessage` with the message ID, the new message body, and the new extension fields:
 
     ```java
-    String newContent="new content";
-    TextMessageBody newTextMessageBody = new TextMessageBody(newContent);
-    ChatClient.getInstance().chatManager().asyncModifyMessage(targetMessage.getMsgId(), newTextMessageBody, new ValueCallBack() {
+    // Text message: you can modify both the message body and the message extension fields.
+    TextMessageBody textBody = new TextMessageBody("new content");
+    Map<String, Object> ext = new HashMap<>();
+    ext.put("newkey", "new value");
+
+    // textBody and ext cannot both be null.
+    ChatClient.getInstance().chatManager().asyncModifyMessage(this.messageId, textBody, ext, new ValueCallBack<ChatMessage>() {
         @Override
         public void onSuccess(ChatMessage value) {
-
+            // Modification succeeded.
         }
 
         @Override
         public void onError(int error, String errorMsg) {
+            // Modification failed.
+        }
+    });
 
+    // Custom message: you can modify both the message body and the message extension fields.
+    CustomMessageBody customBody = new CustomMessageBody("new action");
+    Map<String, Object> customExt = new HashMap<>();
+    customExt.put("newkey1", "new value 1");
+    customExt.put("newkey2", 123);
+
+    ChatClient.getInstance().chatManager().asyncModifyMessage(this.messageId, customBody, customExt, new ValueCallBack<ChatMessage>() {
+        @Override
+        public void onSuccess(ChatMessage value) {
+            // Modification succeeded.
+        }
+
+        @Override
+        public void onError(int error, String errorMsg) {
+            // Modification failed.
+        }
+    });
+
+    // File, video, voice, image, location, or combined message: you can modify the extension fields only. Pass null as the message body.
+    Map<String, Object> attachmentExt = new HashMap<>();
+    attachmentExt.put("newkey1", false);
+    attachmentExt.put("newkey2", "new value");
+
+    ChatClient.getInstance().chatManager().asyncModifyMessage(this.messageId, null, attachmentExt, new ValueCallBack<ChatMessage>() {
+        @Override
+        public void onSuccess(ChatMessage value) {
+            // Modification succeeded.
+        }
+
+        @Override
+        public void onError(int error, String errorMsg) {
+            // Modification failed.
         }
     });
     ```
@@ -729,6 +809,11 @@ After a message is sent, you can recall it. The `recallMessageWithMessageId` met
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
+
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 :::info
@@ -833,6 +918,39 @@ NSString *thumbnailLocalPath = body.thumbnailLocalPath;
 :::info
 If `[AgoraChatClient sharedClient].options.isAutoDownloadThumbnail` is set as `YES` on the recipient's client, the SDK automatically downloads the thumbnail after receiving the message. If not, you need to call `[[AgoraChatClient sharedClient].chatManager downloadMessageThumbnail:message progress:nil completion:nil];` to download the thumbnail and get the path from the `thumbnailLocalPath` member in `messageBody`.
 :::
+
+#### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation and download are the same as for a regular image message.
+
+To send a GIF image message, set the `isGif` property of the `AgoraChatImageMessageBody` to `YES`, or construct the body with `initWithGifFilePath:displayName:`:
+
+```objc
+// Option 1: set isGif on an image message body created from data.
+AgoraChatImageMessageBody *body = [[AgoraChatImageMessageBody alloc] initWithData:imageData displayName:displayName];
+body.isGif = YES;
+
+// Option 2: create the body from a local GIF file path.
+AgoraChatImageMessageBody *body = [[AgoraChatImageMessageBody alloc] initWithGifFilePath:@"localGifFilePath" displayName:displayName];
+
+AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername from:fromChatUsername to:toChatUsername body:body ext:messageExt];
+[[AgoraChatClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+```
+
+As with a regular message, the recipient receives the `messagesDidReceive` callback. After confirming that the message is an image message, read the `isGif` property of the message body. If it returns `YES`, the message is a GIF image message.
+
+```objc
+- (void)messagesDidReceive:(NSArray<AgoraChatMessage *> *)aMessages {
+    for (AgoraChatMessage *message in aMessages) {
+        if (message.body.type == AgoraChatMessageBodyTypeImage) {
+            AgoraChatImageMessageBody *body = (AgoraChatImageMessageBody *)message.body;
+            if (body.isGif) {
+                // Handle the GIF image message according to your business logic, for example, download and display it.
+            }
+        }
+    }
+}
+```
 
 #### Send and receive a video message
 
@@ -1080,25 +1198,45 @@ To forward and receive combined messages, refer to the following code:
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension fields, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
 To modify a sent message, refer to the following code:
-1. Call `modifyMessage` with the message ID and the new message body:
+1. Call `modifyMessage` with the message ID, the new message body, and the new extension fields:
     ```objc
-    AgoraChatTextMessageBody* newBody = [[AgoraChatTextMessageBody alloc] initWithText:@"new content"];
-        [AgoraChatClient.sharedClient.chatManager modifyMessage:msgId body:newBody completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
+    // Text message: you can modify both the message body and the extension fields.
+    AgoraChatTextMessageBody *newBody = [[AgoraChatTextMessageBody alloc] initWithText:@"new content"];
+    NSDictionary *newExt = @{@"newKey": @"newValue"};
+    // newBody and newExt cannot both be nil.
+    [AgoraChatClient.sharedClient.chatManager modifyMessage:@"messageId" body:newBody ext:newExt completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
 
-        }];
+    }];
+
+    // Custom message: you can modify both the message body and the extension fields.
+    AgoraChatCustomMessageBody *newCustomBody = [[AgoraChatCustomMessageBody alloc] initWithEvent:@"event" customExt:@{@"key": @"value"}];
+    [AgoraChatClient.sharedClient.chatManager modifyMessage:@"messageId" body:newCustomBody ext:@{@"newKey": @"newValue"} completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
+
+    }];
+
+    // File, video, voice, image, location, or combined message: you can modify the extension fields only. Pass nil as the message body.
+    [AgoraChatClient.sharedClient.chatManager modifyMessage:@"messageId" body:nil ext:@{@"newKey": @"newValue"} completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
+
+    }];
     ```
 1. Receive notification of messages modified by other users:
     ```objc
@@ -1323,6 +1461,11 @@ After a message is sent, you can recall it. The `recallMessage` method recalls a
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
+
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 :::info
@@ -1512,6 +1655,36 @@ function sendImgMessage() {
       });
   }
 }
+```
+
+#### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation is the same as for a regular image message.
+
+To send a GIF image message, set `isGif` to `true` in the message options when you create the image message:
+
+```javascript
+const options = {
+  chatType: "singleChat",
+  type: "img",
+  to: "userId",
+  file: file,
+  isGif: true,
+};
+const msg = AgoraChat.message.create(options);
+chatClient.send(msg);
+```
+
+When the recipient receives the message, they receive the `onImageMessage` callback. Read the `isGif` property of the message. If it is `true`, the message is a GIF image message.
+
+```javascript
+chatClient.addEventHandler("handlerId", {
+  onImageMessage: function (message) {
+    if (message.isGif) {
+      // The image is a GIF image.
+    }
+  },
+});
 ```
 
 #### Send a video message
@@ -1825,47 +1998,64 @@ For further details see [Multiple messages forwarding limitations](../../limitat
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
 
-There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+To modify a sent message, create a message that contains the new content and pass it to `modifyMessage` with the ID of the original message. To listen for messages modified by other users, register the `onModifiedMessage` event.
 
-- The operator ID of the user performing the action.
-- The operation time that indicates when the message was edited.
-- The number of times a message is edited (up to 10 times).
+```javascript
+// Register the message modification event.
+chatClient.addEventHandler("modifiedMessage", {
+  onModifiedMessage: (message) => {
+    console.log("onModifiedMessage", message);
+  },
+});
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+// Text message: you can modify the msg and ext fields.
+const textMessage = AgoraChat.message.create({
+  chatType: "singleChat",
+  type: "txt",
+  to: "to",
+  msg: "message content",
+  ext: { key: "new value" },
+});
 
-1. Call `modifyMessage` with the message ID and the new message body:
+// Custom message: you can modify the customEvent, customExts, and ext fields.
+const customMessage = AgoraChat.message.create({
+  chatType: "singleChat",
+  type: "custom",
+  to: "to",
+  customEvent: "new event",
+  customExts: { key: "new value" },
+  ext: { key: "new value" },
+});
 
-   ```javascript
-   const textMessage = AgoraChat.message.create({
-     type: "txt",
-     msg: "message content",
-     to: "username",
-     chatType: "singleChat",
-   });
+// File, image, voice, video, location, or combined message: you can modify the ext field only.
+const imageMessage = AgoraChat.message.create({
+  chatType: "singleChat",
+  type: "img",
+  url: "origin message url",
+  to: "to",
+  ext: { key: "new value" },
+});
 
-   chatClient
-     .modifyMessage({ messageId: "messageId", modifiedMessage: textMessage })
-     .then((res) => {
-       console.log(res.message);
-     })
-     .catch((e) => {
-       console.log(e);
-     });
-   ```
-
-1. Receive notification of messages modified by other users:
-   ```javascript
-   // Adds the message modification event
-   chatClient.addEventHandler("modifiedMessage", {
-     onModifiedMessage: (message) => {
-       console.log("onModifiedMessage", message);
-     },
-   });
-   ```
+chatClient
+  .modifyMessage({
+    messageId: "origin message id",
+    modifiedMessage: textMessage,
+  })
+  .then((res) => {
+    console.log("modify msg success", res.modifiedInfo);
+  })
+  .catch((e) => {
+    console.log("modify failed", e);
+  });
+```
 
 For further details see [Sent message modification limitations](../../limitations#sent-message-modification-limitations).
 
@@ -2202,11 +2392,52 @@ String? thumbnailLocalPath = imgBody.thumbnailLocalPath;
   String? localPath = fileBody.localPath;
   ```
 
+### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation and download are the same as for a regular image message.
+
+To send a GIF image message, set `isGif` to `true` when you create the image message with `createImageSendMessage`:
+
+```dart
+final msg = ChatMessage.createImageSendMessage(
+  targetId: targetId,
+  filePath: filePath,
+  isGif: true,
+);
+
+ChatClient.getInstance.chatManager.sendMessage(msg);
+```
+
+As with a regular message, the recipient receives the `onMessagesReceived` callback. After confirming that the message is an image message, read the `isGif` property of the message body. If it returns `true`, the message is a GIF image message.
+
+```dart
+final handler = ChatEventHandler(
+  onMessagesReceived: (messages) {
+    for (final message in messages) {
+      final body = message.body;
+      if (body is ChatImageMessageBody && body.isGif) {
+        // Handle the GIF image message according to your business logic, for example, download and display it.
+      }
+    }
+  },
+);
+
+ChatClient.getInstance.chatManager.addEventHandler(
+  'UNIQUE_HANDLER_ID',
+  handler,
+);
+```
+
 ### Recall a message
 
 After a message is sent, you can recall it. The `recallMessage` method recalls a message that is saved both locally and on the server, whether it is a historical message, offline message or a roaming message on the server, or a message in the memory or local database of the message sender or recipient.
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
+
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
 
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
@@ -2306,27 +2537,49 @@ For further details see [Multiple messages forwarding limitations](../../limitat
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension attributes, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
 To modify a sent message, refer to the following code:
 
-1. Call `modifyMessage` with the message ID and the new message body:
+1. Call `modifyMessage` with the message ID, the new message body, and the new extension attributes:
 
     ```dart
-    ChatTextMessageBody body = ChatTextMessageBody(content: "new content");
+    // Text message: you can modify both the message body and the extension attributes.
+    final txtBody = ChatTextMessageBody(content: 'new content');
     await ChatClient.getInstance.chatManager.modifyMessage(
-        messageId: msgId,
-        msgBody: body,
+      messageId: messageId,
+      msgBody: txtBody,
+      attributes: {'newKey': 'new value'},
+    );
+
+    // Custom message: you can modify both the message body and the extension attributes.
+    final customBody = ChatCustomMessageBody(event: 'new event');
+    await ChatClient.getInstance.chatManager.modifyMessage(
+      messageId: messageId,
+      msgBody: customBody,
+      attributes: {'newKey': 'new value'},
+    );
+
+    // File, video, voice, image, location, or combined message: you can modify the extension attributes only. Omit the message body.
+    await ChatClient.getInstance.chatManager.modifyMessage(
+      messageId: messageId,
+      attributes: {'newKey': 'new value'},
     );
     ```
 
@@ -2599,8 +2852,8 @@ class ChatMessageEvent implements ChatMessageEventListener {
   onMessagesDelivered(messages: ChatMessage[]): void {
     console.log(`onMessagesDelivered: ${messages.length}: `, messages);
   }
-  onMessagesRecalled(messages: ChatMessage[]): void {
-    console.log(`onMessagesRecalled: `, messages);
+  onMessagesRecalledInfo(info: ChatRecalledMessageInfo[]): void {
+    console.log(`onMessagesRecalledInfo: `, info);
   }
   onConversationsUpdate(): void {
     console.log(`onConversationsUpdate: `);
@@ -2617,11 +2870,53 @@ ChatClient.getInstance().chatManager.removeMessageListener(listener);
 // Remove all the message listeners.
 ChatClient.getInstance().chatManager.removeAllMessageListener();
 ```
+### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation and download are the same as for a regular image message.
+
+To send a GIF image message, set `isGif` to `true` in the options when you create the image message with `createImageMessage`:
+
+```typescript
+const message = ChatMessage.createImageMessage(targetId, filePath, chatType, {
+  isGif: true,
+  displayName: displayName,
+  width: 100,
+  height: 100,
+});
+ChatClient.getInstance().chatManager.sendMessage(message, {
+  onError(localMsgId, error) {},
+  onSuccess(msg) {},
+});
+```
+
+As with a regular message, the recipient receives the `onMessagesReceived` event. After confirming that the message is an image message, read the `isGif` property of the message body. If it returns `true`, the message is a GIF image message.
+
+```typescript
+ChatClient.getInstance().chatManager.addMessageListener({
+  onMessagesReceived(messages) {
+    for (const message of messages) {
+      if (message.body.type === ChatMessageType.IMAGE) {
+        const body = message.body as ChatImageMessageBody;
+        if (body.isGif === true) {
+          // Download the attachment to display the GIF image message.
+          ChatClient.getInstance().chatManager.downloadAttachment(message);
+        }
+      }
+    }
+  },
+});
+```
+
 ### Recall a message
 
 After a message is sent, you can recall it. The `recallMessage` method recalls a message that is saved both locally and on the server, whether it is a historical message, offline message or a roaming message on the server, or a message in the memory or local database of the message sender or recipient.
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
+
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
 
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
@@ -2639,10 +2934,10 @@ ChatClient.getInstance()
     console.log("recall message fail.", reason);
   });
 ```
-You can also use `ChatMessageEventListener` to listen for the state of recalling the message:
+You can also use `ChatMessageEventListener` to listen for the state of recalling the message. Since SDK v1.4.0, the `onMessagesRecalled` event is removed; use `onMessagesRecalledInfo` instead:
 ```typescript
-// Occurs when the message is recalled.
-onMessagesRecalled(messages: ChatMessage[]): void;
+// Occurs when a received message is recalled. info contains the recalled message information.
+onMessagesRecalledInfo(info: ChatRecalledMessageInfo[]): void;
 ```
 
 ### Use message extensions
@@ -2729,29 +3024,49 @@ For further details see [Multiple messages forwarding limitations](../../limitat
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension fields, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
-To modify a sent message, refer to the following code:
-1. Call `modifyMessageBody` with the message ID and the new message body:
+To modify a sent message, refer to the following code. Since SDK v1.4.0, call `modifyMsgBody`, which replaces the deprecated `modifyMessageBody`.
+1. Call `modifyMsgBody` with the message ID, the new message body, and the new extension fields:
     ```typescript
+    // Text message: you can modify both the message body and the extension fields.
+    const body = new ChatTextMessageBody({ content: "Updated message content" });
+    const ext = { customKey: "customValue" };
+    // body and ext cannot both be null.
     ChatClient.getInstance()
-      .chatManager.modifyMessageBody(msgId, body)
+      .chatManager.modifyMsgBody({ msgId, body, ext })
       .then((message) => {
         console.log("modify success:", message);
       })
       .catch((error) => {
         console.warn(error);
       });
+
+    // Custom message: you can modify both the message body and the extension fields.
+    const customBody = new ChatCustomMessageBody({
+      event: "<CUSTOM_EVENT>",
+      params: { key1: "value1", key2: "value2" },
+    });
+    ChatClient.getInstance().chatManager.modifyMsgBody({ msgId, body: customBody });
+
+    // File, video, voice, image, location, or combined message: you can modify the extension fields only. Omit the message body.
+    ChatClient.getInstance().chatManager.modifyMsgBody({ msgId, ext });
     ```
 1. Receive notification of messages modified by other users:
     ```typescript
@@ -2923,6 +3238,11 @@ After a message is sent, you can recall it. The `RecallMessage` method recalls a
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in [Agora Console](https://console.agora.io/v2). To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
+
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 :::info
@@ -3055,6 +3375,41 @@ else {
 :::info
 If `Options.IsAutoDownload` is set as `true` on the recipient's client, the SDK automatically downloads the thumbnail after receiving the message. If not, you need to call `SDKClient.Instance.ChatManager.DownloadThumbnail` to download the thumbnail and get the path from the `ThumbnailLocalPath` member in `msg.Body`.
 :::
+
+#### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation and download are the same as for a regular image message.
+
+To send a GIF image message, set the `isGif` property of the `ImageBody` to `true`:
+
+```csharp
+Message msg = Message.CreateImageSendMessage(toChatUsername, localPath);
+// Set the isGif property of the image body to true.
+ImageBody imageBody = (ImageBody)msg.Body;
+imageBody.isGif = true;
+SDKClient.Instance.ChatManager.SendMessage(ref msg, new CallBack(
+  onSuccess: () => { },
+  onError: (code, desc) => { }
+));
+```
+
+As with a regular message, the recipient receives the `OnMessagesReceived` callback. After confirming that the message is an image message, read the `isGif` property of the message body. If it returns `true`, the message is a GIF image message.
+
+```csharp
+public void OnMessagesReceived(List<Message> messages)
+{
+    foreach (var msg in messages)
+    {
+        if (msg.Body is ImageBody imageBody)
+        {
+            if (imageBody.isGif == true)
+            {
+                // Handle the GIF image message according to your business logic, for example, download and display it.
+            }
+        }
+    }
+}
+```
 
 #### Send and receive a video message
 
@@ -3347,33 +3702,50 @@ For further details see [Multiple messages forwarding limitations](../../limitat
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension attributes, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
 To modify a sent message, refer to the following code:
 
-1. Call `ModifyMessage` with the message ID and the new message body:
+1. Call `ModifyMessage` with the message ID, the new message body, and the new extension attributes:
 
     ```csharp
-    TextBody tb = new TextBody("new content");
-    SDKClient.Instance.ChatManager.ModifyMessage(msgId, tb, new ValueCallBack(
-         onSuccess: (dmsg) =>
-         {
+    // Text message: you can modify both the message body and the extension attributes.
+    TextBody textBody = new TextBody("new content");
+    Dictionary<string, AttributeValue> attributes = new Dictionary<string, AttributeValue>();
+    attributes["newkey"] = AttributeValue.Of("new value", AttributeValueType.STRING);
+    // The body and attributes cannot both be null.
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", textBody, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
+    ));
 
-         },
-         onError: (code, desc) =>
-         {
+    // Custom message: you can modify both the message body and the extension attributes.
+    CustomMessageBody customBody = new CustomMessageBody("new action");
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", customBody, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
+    ));
 
-         }
+    // File, video, voice, image, location, or combined message: you can modify the extension attributes only. Pass null as the message body.
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", null, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
     ));
     ```
 
@@ -3551,6 +3923,11 @@ After a message is sent, you can recall it. The `RecallMessage` method recalls a
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in Agora Console. To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
+The following permission rules apply to message recall:
+
+- In one-to-one chats, only the message sender can recall a message they sent. If the message has expired, the recall fails.
+- In chat groups and chat rooms, regular members can recall only the messages they sent, and the recall fails if the message has expired. Since SDK v1.4.0, the chat group owner, chat room owner, and admins can recall messages sent by other members, even after those messages have expired.
+
 ![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 :::info
@@ -3683,6 +4060,41 @@ else {
 :::info
 If `Options.IsAutoDownload` is set as `true` on the recipient's client, the SDK automatically downloads the thumbnail after receiving the message. If not, you need to call `SDKClient.Instance.ChatManager.DownloadThumbnail` to download the thumbnail and get the path from the `ThumbnailLocalPath` member in `msg.Body`.
 :::
+
+#### Send and receive a GIF image message
+
+Since SDK v1.4.0, you can send and receive GIF image messages. A GIF image message is a subtype of image message that is **not compressed** when sent. Thumbnail generation and download are the same as for a regular image message.
+
+To send a GIF image message, set the `isGif` property of the `ImageBody` to `true`:
+
+```csharp
+Message msg = Message.CreateImageSendMessage(toChatUsername, localPath);
+// Set the isGif property of the image body to true.
+ImageBody imageBody = (ImageBody)msg.Body;
+imageBody.isGif = true;
+SDKClient.Instance.ChatManager.SendMessage(ref msg, new CallBack(
+  onSuccess: () => { },
+  onError: (code, desc) => { }
+));
+```
+
+As with a regular message, the recipient receives the `OnMessagesReceived` callback. After confirming that the message is an image message, read the `isGif` property of the message body. If it returns `true`, the message is a GIF image message.
+
+```csharp
+public void OnMessagesReceived(List<Message> messages)
+{
+    foreach (var msg in messages)
+    {
+        if (msg.Body is ImageBody imageBody)
+        {
+            if (imageBody.isGif == true)
+            {
+                // Handle the GIF image message according to your business logic, for example, download and display it.
+            }
+        }
+    }
+}
+```
 
 #### Send and receive a video message
 
@@ -3975,33 +4387,50 @@ For further details see [Multiple messages forwarding limitations](../../limitat
 
 ### Modify sent messages
 
-Every end user or chat group member may edit messages that they have sent. The client API below, when called, will allow the SDK to modify a message.
+For messages that have been sent successfully, the SDK supports modifying the message content.
+
+- Before SDK v1.4.0, you could only modify text messages sent in one-to-one chats and chat groups.
+- Since SDK v1.4.0, you can modify various message types sent in one-to-one chats, chat groups, and chat rooms:
+  - Text and custom messages: modify both the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
 
 There is no time limit for modifying a message, that is, it can be modified as long as the message is still stored on the server. After the message is modified, the message life cycle, that is, its storage time on the server, is recalculated. For example, a message can be stored on the server for 180 days, and the user modifies it on the 30th day after the message was sent. Instead of remaining 150 days, the message can be now stored on the server for 180 days after successful modification.
 
-In the modified message, the message ID remains unchanged. Only the message content is edited and the following items are added:
+In the modified message, the message ID remains unchanged. The message body, the extension attributes, or both are edited and the following items are added:
 
 * The operator ID of the user performing the action.
 * The operation time that indicates when the message was edited.
 * The number of times a message is edited (up to 10 times).
 
-For the edited message, except the message body, other information included in the message like the message sender, recipient, and message extension attributes remain unchanged.
+For the edited message, other information included in the message, such as the message sender and recipient, remains unchanged.
 
 To modify a sent message, refer to the following code:
 
-1. Call `ModifyMessage` with the message ID and the new message body:
+1. Call `ModifyMessage` with the message ID, the new message body, and the new extension attributes:
 
     ```csharp
-    TextBody tb = new TextBody("new content");
-    SDKClient.Instance.ChatManager.ModifyMessage(msgId, tb, new ValueCallBack(
-        onSuccess: (dmsg) =>
-        {
+    // Text message: you can modify both the message body and the extension attributes.
+    TextBody textBody = new TextBody("new content");
+    Dictionary<string, AttributeValue> attributes = new Dictionary<string, AttributeValue>();
+    attributes["newkey"] = AttributeValue.Of("new value", AttributeValueType.STRING);
+    // The body and attributes cannot both be null.
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", textBody, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
+    ));
 
-        },
-        onError: (code, desc) =>
-        {
+    // Custom message: you can modify both the message body and the extension attributes.
+    CustomMessageBody customBody = new CustomMessageBody("new action");
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", customBody, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
+    ));
 
-        }
+    // File, video, voice, image, location, or combined message: you can modify the extension attributes only. Pass null as the message body.
+    SDKClient.Instance.ChatManager.ModifyMessage("msgId", null, attributes, new ValueCallBack<Message>(
+        onSuccess: (msg) => { },
+        onError: (code, desc) => { }
     ));
     ```
 

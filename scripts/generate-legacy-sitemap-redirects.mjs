@@ -298,7 +298,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'advanced/low-bitrate-hd':
       '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/pvc-and-super-quality-configuration',
     'best-practices/best-practice':
-      '/en/realtime-media/rtmp-gateway/build/set-up-and-authenticate/quickstart-best-practices',
+      '/en/realtime-media/rtmp-gateway/quickstart',
     'overview/product-features':
       '/en/realtime-media/rtmp-gateway/reference/media-gateway-features',
     'overview/product-overview': '/en/realtime-media/rtmp-gateway',

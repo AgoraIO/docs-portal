@@ -24,7 +24,7 @@ await fs.mkdir(tempRoot, {
 await fs.writeFile(
   bundledEntry,
   `
-import { generateStaticRouteHtml } from '../../../scripts/generate-static-route-html.worker.mjs';
+import { generateStaticRouteHtml } from '../../../scripts/generate-static-route-html.worker.ts';
 
 await generateStaticRouteHtml();
 `,

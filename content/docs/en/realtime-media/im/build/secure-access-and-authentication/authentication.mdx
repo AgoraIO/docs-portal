@@ -65,7 +65,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `onTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -143,7 +143,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `onTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -221,7 +221,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `onTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -299,7 +299,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `onTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -377,7 +377,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `OnTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -455,7 +455,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `OnTokenWillExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 ## Reference
 
@@ -533,7 +533,7 @@ The following code fetches and replaces an expired token for the Agora Chat SDK.
     At the start of the application, it fetches a valid token for the user from a token server.
 
 2. **Listens for `tokenDidExpire` event**:
-    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK.
+    The app sets up a listener to monitor when the token is about to expire. Upon receiving this event, it fetches a new token from the token server and renews the token with the Agora Chat SDK. Since SDK v1.4.0, the SDK triggers this event when 80% of the token's validity period has elapsed (previously 50%).
 
 To execute the code, ensure you set the following values in the code:
 
@@ -546,7 +546,7 @@ To execute the code, ensure you set the following values in the code:
 To create a new user, use the following `curl` command:
 
 ```bash
-curl -X POST -H "Authorization: Bearer " -i "https://XXXX/XXXX/XXXX/users" -d '[
+curl -X POST -H "Authorization: Bearer " -i "https://XXXX/app-id/XXXX/users" -d '[
     {
         "username": "user1",
         "password": "123",

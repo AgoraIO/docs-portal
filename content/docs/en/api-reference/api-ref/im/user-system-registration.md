@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type    | Description      | Required |
 | :-------- | :------ |:-----------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).              | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).    | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).        | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -29,7 +28,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 :::
 
 </Slot>
@@ -39,9 +38,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter            | Type       | Description              |
 |:---------------------|:-----------|:-------------------------|
 | `action`             | String     | The request method.      |
-| `organization`       | String     | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`.      |
+| `organization`       | String     | The unique identifier assigned to each company (organization) by the Chat service.      |
 | `application`        | String     | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter.     |
-| `applicationName`    | String     | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`.         |
+| `applicationName`    | String     | The unique identifier assigned to each app by the Chat service .         |
 | `uri` | String     | The request URI.         |
 | `path`| String     | The request path, which is part of the request URL. You can safely ignore this parameter.           |
 | `entities `          | JSON Array | The response entity.     |
@@ -73,7 +72,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users
+POST https://{host}/app-id/{app_id}/users
 ```
 
 #### Path parameter
@@ -109,7 +108,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/app-id/XXXX/users" -d '
     {
       "username": "user1"
     }'
@@ -149,7 +148,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users
+POST https://{host}/app-id/{app_id}/users
 ```
 
 #### Path parameter
@@ -193,7 +192,7 @@ Registering 2 users:
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '[
+curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/app-id/XXXX/users" -d '[
     {
         "username":"user1"
     },
@@ -210,7 +209,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourA
     "action": "post",
     "application": "22bcffa0-XXXX-XXXX-9df8-516f6df68c6d",
     "path": "/users",
-    "uri": "https://XXXX/XXXX/XXXX/users",
+    "uri": "https://XXXX/app-id/XXXX/users",
     "entities": [
         {
             "uuid": "278b5e60-XXXX-XXXX-8f9b-d5d83ebec806",
@@ -243,7 +242,7 @@ If the request body contains a user3 that has previously been registered, the re
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '[
+curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/app-id/XXXX/users" -d '[
     {
         "username":"user1"
     },
@@ -263,7 +262,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourA
     "action": "post",
     "application": "22bcffa0-XXXX-XXXX-9df8-516f6df68c6d",
     "path": "/users",
-    "uri": "https://XXXX/XXXX/XXXX/users",
+    "uri": "https://XXXX/app-id/XXXX/users",
     "entities": [
         {
             "uuid": "278b5e60-XXXX-XXXX-8f9b-d5d83ebec806",
@@ -304,7 +303,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{username}
+GET https://{host}/app-id/{app_id}/users/{username}
 ```
 
 #### Path parameter
@@ -338,7 +337,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/XXXX'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/XXXX'
 ```
 
 #### Response example
@@ -347,7 +346,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToke
 {
     "action": "get",
     "path": "/users",
-    "uri": "http://XXXX/XXXX/XXXX/users/XXXX",
+    "uri": "http://XXXX/app-id/XXXX/users/XXXX",
     "entities": [
         {
             "uuid": "0ffe2d80-XXXX-XXXX-8d66-279e3e1c214b",
@@ -374,7 +373,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users?limit={N}&{cursor}
+GET https://{host}/app-id/{app_id}/users?limit={N}&{cursor}
 ```
 
 #### Path parameter
@@ -418,7 +417,7 @@ Querying the information list of two users in ascending order of their registrat
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users?limit=2'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users?limit=2'
 ```
 
 #### Response example 1
@@ -432,7 +431,7 @@ Return the information list of the 2 users:
         "limit": ["2"]
     },
     "path": "/users",
-    "uri": "http://XXXX/XXXX/XXXX/users",
+    "uri": "http://XXXX/app-id/XXXX/users",
     "entities": [
         {
             "uuid": "ab90eff0-XXXX-XXXX-9174-8f161649a182",
@@ -466,7 +465,7 @@ Use the `cursor` in response example 1 to query the user list on the next page i
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users?limit=2&cursor=LTgzNDAxMjM3OToxTEFnNE9sNEVlaVQ0UEdhdmJNR2tB'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users?limit=2&cursor=LTgzNDAxMjM3OToxTEFnNE9sNEVlaVQ0UEdhdmJNR2tB'
 ```
 
 #### Response example 2
@@ -481,7 +480,7 @@ Continue to return a list of information for two users:
         "limit": ["2"]
     },
     "path": "/users",
-    "uri": "http://XXXX/XXXX/XXXX/users",
+    "uri": "http://XXXX/app-id/XXXX/users",
     "entities": [
         {
             "uuid": "fef7f250-XXXX-XXXX-ba39-0fed7dcc3cdd",
@@ -517,7 +516,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/users/{username}
+DELETE https://{host}/app-id/{app_id}/users/{username}
 ```
 
 #### Path parameter
@@ -545,7 +544,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1'
 ```
 
 #### Response example
@@ -555,7 +554,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppT
     "action": "delete",
     "applicationName": "XXXX"
     "path": "/users",
-    "uri": "https://XXXX/XXXX/XXXX/users",
+    "uri": "https://XXXX/app-id/XXXX/users",
     "entities": [
         {
             "uuid": "ab90eff0-XXXX-XXXX-9174-8f161649a182",
@@ -585,7 +584,7 @@ For each App Key, the call frequency limit of this method is 30 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/users?limit={N}&cursor={cursor}
+DELETE https://{host}/app-id/{app_id}/users?limit={N}&cursor={cursor}
 ```
 
 #### Path parameter
@@ -620,7 +619,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https://XXXX/XXXX/XXXX/users?limit=2'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https://XXXX/app-id/XXXX/users?limit=2'
 ```
 
 #### Response example
@@ -671,7 +670,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/users/{username}/password
+PUT https://{host}/app-id/{app_id}/users/{username}/password
 ```
 
 #### Path parameter
@@ -710,7 +709,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token you generated on the server, and {YourPassword} with the new password you set
-curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' -d '{ "newpassword": "{YourPassword}" }' ' http://XXXX/XXXX/XXXX/users/user1/password'
+curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' -d '{ "newpassword": "{YourPassword}" }' ' http://XXXX/app-id/XXXX/users/user1/password'
 ```
 
 #### Response example
@@ -732,7 +731,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/{username}/deactivate
+POST https://{host}/app-id/{app_id}/users/{username}/deactivate
 ```
 
 #### Path parameter
@@ -763,7 +762,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/deactivate'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1/deactivate'
 ```
 
 #### Response example
@@ -796,7 +795,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/{username}/activate
+POST https://{host}/app-id/{app_id}/users/{username}/activate
 ```
 
 #### Path parameter
@@ -828,7 +827,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/activate'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1/activate'
 ```
 
 #### Response example
@@ -851,7 +850,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{username}/disconnect
+GET https://{host}/app-id/{app_id}/users/{username}/disconnect
 ```
 
 #### Path parameter
@@ -887,14 +886,14 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/XXXX/disconnect'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/XXXX/disconnect'
 ```
 
 #### Response example
 
 ```json
 {
-    "uri": "http://XXXX/XXXX/XXXX/users/XXXX/disconnect",
+    "uri": "http://XXXX/app-id/XXXX/users/XXXX/disconnect",
     "timestamp": 1642053735842,
     "organization": "1122161011178276",
     "application": "22bcffa0-XXXX-XXXX-9df8-516f6df68c6d",
@@ -917,7 +916,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{username}/status
+GET https://{host}/app-id/{app_id}/users/{username}/status
 ```
 
 #### Path parameter
@@ -951,7 +950,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/status'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1/status'
 ```
 
 #### Response example
@@ -959,7 +958,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToke
 ```json
 {
     "action": "get",
-    "uri": "http://XXXX/XXXX/XXXX/users/user1/status",
+    "uri": "http://XXXX/app-id/XXXX/users/user1/status",
     "entities": [],
     "data": {
         "user1": "offline"
@@ -979,7 +978,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/batch/status
+POST https://{host}/app-id/{app_id}/users/batch/status
 ```
 
 #### Path parameter
@@ -1017,7 +1016,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X POST http://XXXX/XXXX/XXXX/users/batch/status -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' -d '{"usernames":["user1","user2"]}'
+curl -X POST http://XXXX/app-id/XXXX/users/batch/status -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' -d '{"usernames":["user1","user2"]}'
 ```
 
 #### Response example
@@ -1049,7 +1048,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{owner_username}/offline_msg_count
+GET https://{host}/app-id/{app_id}/users/{owner_username}/offline_msg_count
 ```
 
 #### Path parameter
@@ -1085,7 +1084,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/offline_msg_count'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1/offline_msg_count'
 ```
 
 #### Response example
@@ -1113,7 +1112,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{username}/offline_msg_status/{msg_id}
+GET https://{host}/app-id/{app_id}/users/{username}/offline_msg_status/{msg_id}
 ```
 
 #### Path parameter
@@ -1150,7 +1149,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/offline_msg_status/123'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/users/user1/offline_msg_status/123'
 ```
 
 #### Response example
@@ -1158,7 +1157,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToke
 ```json
 {
     "action": "get",
-    "uri": "http://XXXX/XXXX/XXXX/users/user1/offline_msg_status/123",
+    "uri": "http://XXXX/app-id/XXXX/users/user1/offline_msg_status/123",
     "entities": [],
     "data": {
         "123": "delivered"

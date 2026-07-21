@@ -18,8 +18,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                      | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                             | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -31,7 +30,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 :::
 
 </Slot>
@@ -41,9 +40,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
 | `data`  | JSON | The response details.  |
@@ -69,7 +68,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{orgName}/{appName}/mutes
+POST https://{host}/app-id/{app_id}/mutes
 ```
 
 #### Path parameter
@@ -109,7 +108,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -L -X POST 'https://XXXX/XXXX/XXXX/mutes' \
+curl -L -X POST 'https://XXXX/app-id/XXXX/mutes' \
 -H 'Authorization: Bearer {YourAppToken}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -125,7 +124,7 @@ curl -L -X POST 'https://XXXX/XXXX/XXXX/mutes' \
 ```json
 {
     "path": "/mutes",
-    "uri": "https://XXXX/XXXX/XXXX/mutes",
+    "uri": "https://XXXX/app-id/XXXX/mutes",
     "timestamp": 1631609754727,
     "organization": "XXXX",
     "application": "XXXX",
@@ -147,7 +146,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{orgName}/{appName}/mutes/{username}
+GET https://{host}/app-id/{app_id}/mutes/{username}
 ```
 
 #### Path parameter
@@ -186,7 +185,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -L -X GET 'https://XXXX/XXXX/XXXX/mutes/{username}' \
+curl -L -X GET 'https://XXXX/app-id/XXXX/mutes/{username}' \
 -H 'Authorization: Bearer {YourAppToken}' \
 -H 'Content-Type: application/json'
 ```
@@ -196,7 +195,7 @@ curl -L -X GET 'https://XXXX/XXXX/XXXX/mutes/{username}' \
 ```json
 {
     "path": "/mutes",
-    "uri": "https://XXXX/XXXX/XXXX/mutes",
+    "uri": "https://XXXX/app-id/XXXX/mutes",
     "timestamp": 1631609831800,
     "organization": "XXXX",
     "application": "XXXX",
@@ -222,7 +221,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{orgName}/{appName}/mutes
+GET https://{host}/app-id/{app_id}/mutes
 ```
 
 #### Path parameter
@@ -264,7 +263,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -L -X GET 'https://XXXX/XXXX/XXXX/mutes?pageNum=1&pageSize=10' \
+curl -L -X GET 'https://XXXX/app-id/XXXX/mutes?pageNum=1&pageSize=10' \
 -H 'Authorization: Bearer {YourAppToken}' \
 -H 'Content-Type: application/json'
 ```
@@ -274,7 +273,7 @@ curl -L -X GET 'https://XXXX/XXXX/XXXX/mutes?pageNum=1&pageSize=10' \
 ```json
 {
     "path": "/mutes",
-    "uri": "https://XXXX/XXXX/XXXX/mutes",
+    "uri": "https://XXXX/app-id/XXXX/mutes",
     "timestamp": 1631609858771,
     "organization": "XXXX",
     "application": "XXXX",

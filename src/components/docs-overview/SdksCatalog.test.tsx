@@ -96,7 +96,7 @@ describe('SdksCatalog', () => {
       within(chatCard).getByRole('link', { name: /download sdk/i }),
     ).toHaveAttribute(
       'href',
-      'https://download.agora.io/sdk/release/AgoraChat1_3_1.xcframework.zip',
+      'https://download.agora.io/sdk/release/AgoraChat1_4_0.zip',
     );
   });
 

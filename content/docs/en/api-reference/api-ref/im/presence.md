@@ -14,8 +14,7 @@ This page shows how to use the Chat RESTful APIs to implement presence in your p
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `uid`      | String | The unique login account of the user.         | Yes |
 
 ## Authorization
@@ -37,7 +36,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/{uid}/presence/{resource}/{status}
+POST https://{host}/app-id/{app_id}/users/{uid}/presence/{resource}/{status}
 ```
 
 #### Path parameter
@@ -80,7 +79,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```json
-curl -X POST 'http://XXXX/XXXX/XXXX/users/c1/presence/android_123423453246/0' \
+curl -X POST 'http://XXXX/app-id/XXXX/users/c1/presence/android_123423453246/0' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
 -d '{"ext":"123"}'
@@ -101,7 +100,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/{uid}/presence/{expiry}
+POST https://{host}/app-id/{app_id}/users/{uid}/presence/{expiry}
 ```
 
 #### Path parameter
@@ -148,7 +147,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```json
-curl -X POST 'http://XXXX/XXXX/XXXX/users/wzy/presence/1000' \
+curl -X POST 'http://XXXX/app-id/XXXX/users/wzy/presence/1000' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
 -d '{"usernames":["c2","c3"]}'
@@ -173,7 +172,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/users/{uid}/presence
+POST https://{host}/app-id/{app_id}/users/{uid}/presence
 ```
 
 #### Path parameter
@@ -218,7 +217,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```json
-curl -X POST 'http://XXXX/XXXX/XXXX/users/wzy/presence' \
+curl -X POST 'http://XXXX/app-id/XXXX/users/wzy/presence' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
 -d '{"usernames":["c2","c3"]}'
@@ -253,7 +252,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/users/{uid}/presence
+DELETE https://{host}/app-id/{app_id}/users/{uid}/presence
 ```
 
 #### Path parameter
@@ -294,7 +293,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```json
-curl -X DELETE 'http://XXXX/XXXX/XXXX/users/wzy/presence' \
+curl -X DELETE 'http://XXXX/app-id/XXXX/users/wzy/presence' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
 -d '["c1"]'
@@ -315,7 +314,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/users/{uid}/presence/sublist?pageNum=1&pageSize=100
+GET https://{host}/app-id/{app_id}/users/{uid}/presence/sublist?pageNum=1&pageSize=100
 ```
 
 #### Path parameter
@@ -361,7 +360,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```json
-curl -X GET 'http://XXXX/XXXX/XXXX/users/wzy/presence/sublist?pageNum=1&pageSize=100' \
+curl -X GET 'http://XXXX/app-id/XXXX/users/wzy/presence/sublist?pageNum=1&pageSize=100' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' 
 ```

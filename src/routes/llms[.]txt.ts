@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { llms } from 'fumadocs-core/source';
+import { createMarkdownLlmsIndex } from '@/lib/llms-index';
 import { MACHINE_READABLE_LOCALE } from '@/lib/machine-readable-docs';
+import { getSitemapBaseUrl } from '@/lib/sitemap';
 
 export const Route = createFileRoute('/llms.txt')({
   server: {
@@ -11,12 +13,13 @@ export const Route = createFileRoute('/llms.txt')({
           '@/lib/openapi/markdown'
         );
         const openApiPages = await getOpenApiMarkdownPages();
-        const openApiIndex = openApiPages
-          .map((page) => `- [${page.title}](${page.url})`)
-          .join('\n');
 
         return new Response(
-          `${llms(source).index(MACHINE_READABLE_LOCALE)}\n\n${openApiIndex}\n`,
+          createMarkdownLlmsIndex({
+            baseUrl: getSitemapBaseUrl(),
+            docsIndex: llms(source).index(MACHINE_READABLE_LOCALE),
+            openApiPages,
+          }),
         );
       },
     },

@@ -35,7 +35,7 @@ You also need:
 
 Select your preferred language and install the corresponding SDK.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
@@ -73,20 +73,20 @@ This section introduces the basic RESTful API requests you use to start and stop
 
 ### Start a conversational AI agent
 
-Call the `join` endpoint to create an agent instance that joins an Agora channel. 
+Call the `join` endpoint to create an agent instance that joins an Agora channel. This example uses [managed mode](/en/ai/build/custom-model-integration/managed-mode) for ASR, LLM, and TTS, so you don't need to supply your own provider API keys. If you want to use your own API key (BYOK) instead, see the vendor pages under Models, for example [Deepgram](/en/ai/models/asr/deepgram).
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
 
 ```python
-from agora_agent import Agent, Agora, Area, DeepgramSTT, OpenAI, MicrosoftTTS
+from agora_agent import Agent, Agora, Area, DeepgramSTT, OpenAI, MiniMaxTTS
 
 client = Agora(
     area=Area.US,
@@ -94,22 +94,23 @@ client = Agora(
     app_certificate='your-app-certificate',
 )
 
+# Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
 agent = (
     Agent(client)
-    .with_stt(DeepgramSTT(model='nova-3', language='en-US'))
+    .with_stt(DeepgramSTT(
+        model='nova-3',
+        language='en-US',
+    ))
     .with_llm(OpenAI(
-        api_key='your-llm-api-key',
-        base_url='https://api.openai.com/v1/chat/completions',
         model='gpt-4o-mini',
         system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
         greeting_message='Hello, how can I help you?',
         failure_message="Sorry, I don't know how to answer this question.",
         max_history=10,
     ))
-    .with_tts(MicrosoftTTS(
-        key='your-tts-api-key',
-        region='eastus',
-        voice_name='en-US-AndrewMultilingualNeural',
+    .with_tts(MiniMaxTTS(
+        model='speech-2.6-turbo',
+        voice_id='English_captivating_female1',
     ))
 )
 
@@ -130,7 +131,7 @@ print(f'Agent started: {agent_id}')
 <TabsContent value="typescript">
 
 ```typescript
-import { Agent, AgoraClient, Area, DeepgramSTT, OpenAI, MicrosoftTTS } from 'agora-agents';
+import { Agent, AgoraClient, Area, DeepgramSTT, OpenAI, MiniMaxTTS } from 'agora-agents';
 
 const client = new AgoraClient({
   area: Area.US,
@@ -138,21 +139,22 @@ const client = new AgoraClient({
   appCertificate: 'your-app-certificate',
 });
 
+// Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
 const agent = new Agent({ client })
-  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withStt(new DeepgramSTT({
+    model: 'nova-3',
+    language: 'en-US',
+  }))
   .withLlm(new OpenAI({
-    apiKey: 'your-llm-api-key',
-    url: 'https://api.openai.com/v1/chat/completions',
     model: 'gpt-4o-mini',
     systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
     greetingMessage: 'Hello, how can I help you?',
     failureMessage: 'Sorry, I don't know how to answer this question.',
     maxHistory: 10,
   }))
-  .withTts(new MicrosoftTTS({
-    key: 'your-tts-api-key',
-    region: 'eastus',
-    voiceName: 'en-US-AndrewMultilingualNeural',
+  .withTts(new MiniMaxTTS({
+    model: 'speech-2.6-turbo',
+    voiceId: 'English_captivating_female1',
   }));
 
 const session = agent.createSession({
@@ -195,6 +197,7 @@ func main() {
         AppCertificate: "your-app-certificate",
     })
 
+    // Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
     agent := agentkit.NewAgent(client).WithStt(
         vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
             Model:    "nova-3",
@@ -202,9 +205,7 @@ func main() {
         }),
     ).WithLlm(
         vendors.NewOpenAI(vendors.OpenAIOptions{
-            APIKey: "your-llm-api-key",
-            URL:    "https://api.openai.com/v1/chat/completions",
-            Model:  "gpt-4o-mini",
+            Model: "gpt-4o-mini",
             SystemMessages: []map[string]interface{}{
                 {"role": "system", "content": "You are a helpful chatbot."},
             },
@@ -213,10 +214,9 @@ func main() {
             MaxHistory:      Agora.Int(10),
         }),
     ).WithTts(
-        vendors.NewMicrosoftTTS(vendors.MicrosoftTTSOptions{
-            Key:       "your-tts-api-key",
-            Region:    "eastus",
-            VoiceName: "en-US-AndrewMultilingualNeural",
+        vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+            Model:   "speech-2.6-turbo",
+            VoiceID: "English_captivating_female1",
         }),
     )
 
@@ -238,8 +238,10 @@ func main() {
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
+
+Set `credential_mode` to `"managed"` in the `asr`, `llm`, and `tts` blocks to use Agora-managed credentials instead of your own API keys.
 
 ```bash
 curl --request POST \
@@ -256,9 +258,20 @@ curl --request POST \
     "remote_rtc_uids": ["1002"],
     "enable_string_uid": false,
     "idle_timeout": 120,
+    "asr": {
+      "credential_mode": "managed",
+      "vendor": "deepgram",
+      "params": {
+        "url": "wss://api.deepgram.com/v1/listen",
+        "model": "nova-3",
+        "language": "en-US"
+      }
+    },
     "llm": {
+      "credential_mode": "managed",
+      "vendor": "openai",
+      "style": "openai",
       "url": "https://api.openai.com/v1/chat/completions",
-      "api_key": "<your_llm_api_key>",
       "system_messages": [
         {
           "role": "system",
@@ -272,15 +285,15 @@ curl --request POST \
         "model": "gpt-4o-mini"
       }
     },
-    "asr": {
-      "language": "en-US"
-    },
     "tts": {
-      "vendor": "microsoft",
+      "credential_mode": "managed",
+      "vendor": "minimax",
       "params": {
-        "key": "<your_tts_api_key>",
-        "region": "eastus",
-        "voice_name": "en-US-AndrewMultilingualNeural"
+        "url": "wss://api.minimax.io/ws/v1/t2a_v2",
+        "model": "speech-2.6-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1"
+        }
       }
     }
   }
@@ -307,12 +320,12 @@ If the request is successful, the agent ID is returned. Store the agent ID to ma
 
 To end the conversation with the AI agent, call the `leave` endpoint. This causes the agent to leave the Agora channel.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -341,7 +354,7 @@ if err := session.Stop(ctx); err != nil {
 
 </TabsContent>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 
 ```bash
 curl --request POST \
@@ -366,6 +379,8 @@ The number of Peak Concurrent Users (PCU) allowed to call the server API under a
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+- [Use managed mode](/en/ai/build/custom-model-integration/managed-mode)
 
 ### API reference
 

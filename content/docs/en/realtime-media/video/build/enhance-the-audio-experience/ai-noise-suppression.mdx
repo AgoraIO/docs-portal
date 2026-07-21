@@ -129,9 +129,24 @@ Call `setAINSMode` to enable the AI noise suppression feature, and select a nois
 let result = agoraKit.setAINSMode(true, mode: 2)
 ```
 
+When AI Noise Suppression is enabled, if Video SDK detects that the device performance is not sufficient, it:
+
+- Disables AI Noise Suppression
+- Enables traditional noise reduction
+- Throws the `WARN_APM_AINS_CLOSED` (-1054) error code
+
 ## Reference
 
 This section completes the information on this page, or points you to documentation that explains other aspects about this product.
+
+### Minimum device requirements
+
+- iOS iPhone 6S
+- iPadOS
+- iPad Pro (2nd generation)
+- iPad mini (5th generation)
+- iPad Air (3rd generation)
+- macOS MacBook Pro 2015
 
 ### API reference
 
@@ -183,24 +198,9 @@ Call `setAINSMode` to enable the AI noise suppression feature, and select a nois
 let result = agoraKit.setAINSMode(true, mode: 2)
 ```
 
-When AI Noise Suppression is enabled, if Video SDK detects that the device performance is not sufficient, it:
-
-- Disables AI Noise Suppression
-- Enables traditional noise reduction
-- Throws the `WARN_APM_AINS_CLOSED` (-1054) error code
-
 ## Reference
 
 This section completes the information on this page, or points you to documentation that explains other aspects about this product.
-
-### Minimum device requirements
-
-- iOS iPhone 6S
-- iPadOS
-- iPad Pro (2nd generation)
-- iPad mini (5th generation)
-- iPad Air (3rd generation)
-- macOS MacBook Pro 2015
 
 ### API reference
 
@@ -744,7 +744,11 @@ This section shows you how to integrate AI Noise Suppression into your app.
 Call `setAINSMode` to enable the AI noise suppression feature, and select a noise suppression mode:
 
 ```cpp
+// Enable Audio AI Noise Suppression
 bool enableAINS = true;
+
+// Set the mode for Audio AI Noise Suppression
+// Choose one of the available modes: AINS_MODE_BALANCED, AINS_MODE_AGGRESSIVE, AINS_MODE_ULTRALOWLATENCY
 AUDIO_AINS_MODE mode = AINS_MODE_BALANCED;
 
 int result = rtcEngine->setAINSMode(enableAINS, mode);
@@ -921,9 +925,13 @@ Call `setAINSMode` to enable the AI noise suppression feature, and select a nois
 
 ```dart
 Future<void> enableNoiseSuppression() async {
-  const enabled = true;
-  const mode = AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+  // Enable or disable AINS
+  bool enabled = true;
 
+  // Choose the AINS mode based on your requirements
+  AudioAinsMode mode = AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+
+  // Call setAINSMode method
   await _engine.setAINSMode(enabled: enabled, mode: mode);
 }
 ```
@@ -1079,7 +1087,11 @@ This section shows you how to integrate AI Noise Suppression into your app.
 Call `SetAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
 
 ```csharp
+// Enable Audio AI Noise Suppression
 bool enableAINS = true;
+
+// Set the mode for Audio AI Noise Suppression
+// Choose one of the available modes: AINS_MODE_BALANCED, AINS_MODE_AGGRESSIVE, AINS_MODE_ULTRALOWLATENCY
 AUDIO_AINS_MODE mode = AUDIO_AINS_MODE.AINS_MODE_BALANCED;
 
 int result = rtcEngine.SetAINSMode(enableAINS, mode);

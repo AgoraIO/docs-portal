@@ -52,6 +52,7 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
   PlatformProcessedMarker,
@@ -956,6 +957,22 @@ function createDocsCard(contentPath?: string) {
   return DocsCard;
 }
 
+function createPlanCardsComponent(contentPath?: string) {
+  function DocsPlanCards(props: ComponentProps<typeof PlanCards>) {
+    return <PlanCards {...props} contentPath={contentPath} />;
+  }
+
+  return DocsPlanCards;
+}
+
+function createPricingCardsComponent(contentPath?: string) {
+  function DocsPricingCards(props: ComponentProps<typeof PricingCards>) {
+    return <PricingCards {...props} contentPath={contentPath} />;
+  }
+
+  return DocsPricingCards;
+}
+
 function shouldUseRouterLink(
   normalized: NormalizedDocsHref,
   props:
@@ -1025,6 +1042,9 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
+  const DocsPlanCards = createPlanCardsComponent(context?.contentPath);
+  const DocsPricingCards = createPricingCardsComponent(context?.contentPath);
+
   return {
     ...defaultMdxComponents,
     img: ZoomableImage,
@@ -1051,6 +1071,8 @@ export function getMDXComponents(
     Step,
     Steps,
     RTCMinutesCalculator,
+    PlanCards: DocsPlanCards,
+    PricingCards: DocsPricingCards,
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,

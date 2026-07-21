@@ -1,6 +1,6 @@
 ---
 title: "Security"
-description: "How Agora approaches security, encryption, access control, and compliance for realtime services."
+description: "How Agora approaches security, encryption, access control, and compliance for real-time services."
 ---
 ## Information security policy
 

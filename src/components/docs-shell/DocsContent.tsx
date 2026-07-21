@@ -288,13 +288,14 @@ export function DocsContent({
         ) : null}
       </header>
       {isOpenApiBody ? (
-        <div onClickCapture={handleArticleBodyLinkClick}>
+        <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
         </div>
       ) : (
         <div
           className="prose prose-neutral dark:prose-invert max-w-none"
           data-platform-header-tabs={platformTabs ? 'true' : undefined}
+          data-static-docs-body
           onClickCapture={handleArticleBodyLinkClick}
         >
           {resolvedBody?.kind === 'mdx' ? (

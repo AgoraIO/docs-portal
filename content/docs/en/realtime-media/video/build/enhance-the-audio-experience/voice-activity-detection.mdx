@@ -97,11 +97,12 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
    Call the <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link> method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
 
-:::warning
+   :::warning
 
-Agora recommends that you create only one instance of `VADExtension`.
+   Agora recommends that you create only one instance of `VADExtension`.
 
-:::
+   :::
+
    ```ts
    import AgoraRTC from "agora-rtc-sdk-ng";
    import { VADExtension } from "agora-extension-vad";
@@ -182,10 +183,10 @@ Agora recommends that you create only one instance of `VADExtension`.
    }
    ```
 
-:::note
-`voiceProb` and `musicProb` are floating-point numbers from 0 to 1 that represent the probability that someone is speaking and that music is playing.
+   :::note
+   `voiceProb` and `musicProb` are floating-point numbers from 0 to 1 that represent the probability that someone is speaking and that music is playing.
+   :::
 
-:::
 6. Disable the plugin.
 
    When you no longer need the VAD plugin, call the `disable` method to disable the plugin.

@@ -9,7 +9,7 @@ Set up a working voice agent in under five minutes. This page walks you through 
 Agora skills teaches your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the CLI in the next section, or ask your assistant to run the installer for you.
 
 ```bash
-npx skills add https://github.com/agoraio/skills --skill agora
+npx skills add AgoraIO/skills
 ```
 
 Paste the following prompt into your assistant's chat. You can replace Python with TypeScript or Go depending on your language preference:
@@ -24,7 +24,7 @@ Your assistant installs the CLI, signs you in, scaffolds the official starter, a
 
 The Agora CLI is a native Go binary available at [AgoraIO-Community/cli](https://github.com/AgoraIO-Community/cli).
 
-<Tabs>
+<Tabs defaultValue="mac-linux" groupId="ai-install-os" persist>
 <TabsList>
   <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
   <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
@@ -33,7 +33,7 @@ The Agora CLI is a native Go binary available at [AgoraIO-Community/cli](https:/
 <TabsContent value="mac-linux">
 
 ```bash
-curl -fsSL https://agoraio.github.io/cli/install.sh | sh
+curl -fsSL https://dl.agora.io/cli/install.sh | sh
 agora --help
 ```
 
@@ -45,7 +45,7 @@ manually add the install directory to your shell profile.
 <TabsContent value="windows-powershell">
 
 ```powershell
-irm https://agoraio.github.io/cli/install.ps1 | iex
+irm https://dl.agora.io/cli/install.ps1 | iex
 agora --help
 ```
 
@@ -71,7 +71,7 @@ Sign in with the Agora CLI, clone the starter project, and configure it for your
 2. Use `agora init` to clone the official starter for your chosen template, bind it to your
 Agora project, and write the runtime-specific environment file.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript</TabsTrigger>

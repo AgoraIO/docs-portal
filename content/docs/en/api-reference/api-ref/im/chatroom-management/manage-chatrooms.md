@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -29,7 +28,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique.
 :::
 
 </Slot>
@@ -39,9 +38,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -65,7 +64,7 @@ Creates a chat room.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/chatrooms
+POST https://{host}/app-id/{app_id}/chatrooms
 ```
 
 #### Path parameter
@@ -120,7 +119,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
    "members": [
      "user2"
    ]
- }' 'http://XXXX/XXXX/XXXX/chatrooms'
+ }' 'http://XXXX/app-id/XXXX/chatrooms'
 ```
 
 #### Response example
@@ -139,7 +138,7 @@ Retrieves the basic information of all chat rooms under the app by page.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatrooms?limit={N}&cursor={cursor}
+GET https://{host}/app-id/{app_id}/chatrooms?limit={N}&cursor={cursor}
 ```
 
 #### Path parameter
@@ -187,7 +186,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace  with the app token you generated on the server
-curl --location --request GET 'http://XXXX/XXXX/XXXX/chatrooms?limit=10' \
+curl --location --request GET 'http://XXXX/app-id/XXXX/chatrooms?limit=10' \
 --header 'Authorization: Bearer '
 ```
 
@@ -198,7 +197,7 @@ Retrieves all the chat rooms that a user joins.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/users/{username}/joined_chatrooms?pagenum={N}&pagesize={N}
+GET https://{host}/app-id/{app_id}/users/{username}/joined_chatrooms?pagenum={N}&pagesize={N}
 ```
 
 #### Path parameter
@@ -244,7 +243,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/users/XXXX/joined_chatrooms'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/users/XXXX/joined_chatrooms'
 ```
 
 #### Response example
@@ -265,7 +264,7 @@ Retrieves the detailed information of one or more specified chat rooms.
 ### HTTP request
 
 ```json
-GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
+GET https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}
 ```
 
 #### Path parameter
@@ -314,7 +313,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX%2CXXXX'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX%2CXXXX'
 ```
 
 #### Response example
@@ -370,7 +369,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
     "entities": [],
     "organization": "XXXX",
     "timestamp": 1642064417048,
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX%2CXXXX"
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX%2CXXXX"
 }
 ```
 
@@ -381,7 +380,7 @@ Modifies the information of the specified chat room. You can only modify the `na
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
+PUT https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}
 ```
 
 #### Path parameter
@@ -435,7 +434,7 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
    "name": "testchatroom",
    "description": "test",
    "maxusers": 300,
- }' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX'
+ }' 'http://XXXX/app-id/XXXX/chatrooms/XXXX'
 ```
 
 #### Response example
@@ -456,7 +455,7 @@ Deletes the specified chat room. If the specified chat room does not exist, an e
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
+DELETE https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}
 ```
 
 #### Path parameter
@@ -495,7 +494,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX'
 ```
 
 #### Response example
@@ -504,7 +503,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX",
     "entities": [],
     "data": {
         "success": true,
@@ -525,7 +524,7 @@ Retrieves the announcement text for the specified chat room.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
+GET https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/announcement
 ```
 
 #### Path parameter
@@ -556,7 +555,7 @@ The response body contains the following fields:
 #### Request example
 
 ```bash
-curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/announcement'
+curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/announcement'
 ```
 
 #### Response example
@@ -565,7 +564,7 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 {
   "action": "get",
   "application": "52XXXXf0",
-  "uri": "http://XXXX/XXXX/XXXX/chatrooms/12XXXX11/announcement",
+  "uri": "http://XXXX/app-id/XXXX/chatrooms/12XXXX11/announcement",
   "entities": [],
   "data": {
     "announcement" : " announcement text"
@@ -583,7 +582,7 @@ Modifies the announcement text of the specified chat room. The length cannot exc
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
+POST https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/announcement
 ```
 
 #### Path parameter
@@ -627,7 +626,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/12XXXX11/announcement' -d '{"announcement" : "chat room announcement"}'
+curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/app-id/XXXX/chatrooms/12XXXX11/announcement' -d '{"announcement" : "chat room announcement"}'
 ```
 
 #### Response example
@@ -636,7 +635,7 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 {
   "action": "post",
   "application": "52XXXXf0",
-  "uri": "http://XXXX/XXXX/XXXX/chatrooms/12XXXX11/announcement",
+  "uri": "http://XXXX/app-id/XXXX/chatrooms/12XXXX11/announcement",
   "entities": [],
   "data": {
     "id": "12XXXX11",

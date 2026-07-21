@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Agora Ch
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Required |
 | :--------- | :----- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                 | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Agora Chat service.  For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                     | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Agora Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                         | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -29,7 +28,7 @@ The unique login account of the user. The username must be 64 characters or less
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each username under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each username under the same App ID is unique.
 :::
 
 </Slot>
@@ -39,9 +38,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each usern
 | Parameter | Type | Description |
 | :---------------- | :----- | :---------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Agora Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Agora Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Agora Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Agora Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Agora Chat service. |
 | `uri` | String | The request URI. |
 | `entities ` | JSON | The response entity. |
 | `data` | JSON | The details of the response. |
@@ -69,7 +68,7 @@ This method is only used to modify the existing key-value pairs set by the curre
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}
+PUT https://{host}/app-id/{app_id}/metadata/chatroom/{chatroom_id}/user/{username}
 ```
 
 #### Path parameter
@@ -114,14 +113,14 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 		    "key2": "value2"
       },
     "autoDelete": "DELETE"
- }' 'http://XXXX/XXXX/XXXX/metadata/chatroom/662XXXX13/user/user1'
+ }' 'http://XXXX/app-id/XXXX/metadata/chatroom/662XXXX13/user/user1'
 ```
 
 #### Response example
 
 ```json
 {
-  "uri":"https://XXXX/XXXX/XXXX/metadata/chatroom",
+  "uri":"https://XXXX/app-id/XXXX/metadata/chatroom",
   "timestamp":1716887320215,
   "action":"put",
   "data":
@@ -139,7 +138,7 @@ Retrieves the specified custom attributes of a chat room.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}
+POST https://{host}/app-id/{app_id}/metadata/chatroom/{chatroom_id}
 ```
 
 #### Path parameter
@@ -178,14 +177,14 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 # Replaces  with the app token generated from your token server.
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "keys": ["key1","key2"]
- }' 'http://XXXX/XXXX/XXXX/metadata/chatroom/662XXXX13'
+ }' 'http://XXXX/app-id/XXXX/metadata/chatroom/662XXXX13'
 ```
 
 #### Response example
 
 ```json
 {
-  "uri": "https://XXXX/XXXX/XXXX/metadata/chatroom",
+  "uri": "https://XXXX/app-id/XXXX/metadata/chatroom",
   "timestamp": 1716891388636,
   "action": "post",
   "data":
@@ -209,7 +208,7 @@ You can remove a maximum of 10 custom attributes at each call of this API.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}
+DELETE https://{host}/app-id/{app_id}/metadata/chatroom/{chatroom_id}/user/{username}
 ```
 
 #### Path parameter
@@ -249,14 +248,14 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 # Replaces  with the app token generated from your token server.
 DELETE -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "keys": ["key1","key2"]
- }' 'http://XXXX/XXXX/XXXX/metadata/chatroom/662XXXX13/user/user1'
+ }' 'http://XXXX/app-id/XXXX/metadata/chatroom/662XXXX13/user/user1'
 ```
 
 #### Response example
 
 ```json
 {
-  "uri":"https://XXXX/XXXX/XXXX/metadata/chatroom",
+  "uri":"https://XXXX/app-id/XXXX/metadata/chatroom",
   "status":"ok",
   "timestamp":1716887320215,
   "action":"delete",
@@ -275,7 +274,7 @@ In addition to adding new custom attributes or modifying the existing ones set b
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}/forced
+PUT https://{host}/app-id/{app_id}/metadata/chatroom/{chatroom_id}/user/{username}/forced
 ```
 
 #### Path parameter
@@ -320,7 +319,7 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 		    "key2": "value2"
       },
     "autoDelete": "DELETE"
- }' 'http://XXXX/XXXX/XXXX/metadata/chatroom/662XXXX13/user/user1/forced'
+ }' 'http://XXXX/app-id/XXXX/metadata/chatroom/662XXXX13/user/user1/forced'
 ```
 
 #### Response example
@@ -342,7 +341,7 @@ In addition to removing the custom attributes set by the current user, this meth
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}/forced
+DELETE https://{host}/app-id/{app_id}/metadata/chatroom/{chatroom_id}/user/{username}/forced
 ```
 
 #### Path parameter
@@ -382,7 +381,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 # Replaces  with the app token generated from your token server.
 curl  -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
     "keys": ["key1","key2"]
- }' 'https://XXXX/XXXX/XXXX/metadata/chatroom/662XXXX13/user/user1/forced'
+ }' 'https://XXXX/app-id/XXXX/metadata/chatroom/662XXXX13/user/user1/forced'
 ```
 
 #### Response example
