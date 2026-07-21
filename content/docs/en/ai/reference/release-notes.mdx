@@ -9,6 +9,62 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ## Releases
 
+### v2.10
+
+Released on July XX, 2026.
+
+#### New features
+
+Included in this release:
+
+- **Generic HTTP TTS provider (Beta)**
+
+  Integrate a custom TTS service that implements the OpenAI TTS protocol using the new `generic_http` TTS vendor. Configure `tts.url`, `tts.headers`, and `tts.params` when starting the agent. For details, see [Generic TTS](/en/ai/models/tts/generic-http).
+
+- **Client toolkit support for manual turn control**
+
+  The Android, iOS, and Web client toolkits now provide dedicated APIs for manual Start of Speech (SoS) and End of Speech (EoS) control. Call `manualSOS`/`manualEOS` to send requests, and register the new result callbacks to handle the server's response.  This capability is suitable for scenarios that require explicit control of user turn boundary from the client side, such as AI interviews, interactive quizzes, and walkie-talkie. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
+
+#### Toolkit API
+
+This release adds the following APIs to the client toolkit for manual turn control:
+
+- Android:
+  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualsos)
+  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#manualeos)
+  - [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualsosevent)
+  - [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onusermanualeosevent)
+  - [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmanualeosevent)
+  - `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
+- iOS:
+  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualsos)
+  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#manualeos)
+  - [`onUserManualSosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualsosevent)
+  - [`onUserManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onusermanualeosevent)
+  - [`onAgentManualEosEvent`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmanualeosevent)
+  - `UserManualEventPayload`, `UserManualSosEvent`, `UserManualEosEvent`, `AgentManualEosPayload`, `AgentManualEosEvent`
+- Web:
+  - [`manualSOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualsos)
+  - [`manualEOS`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#manualeos)
+  - [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents) values `USER_MANUAL_SOS_RESULT`, `USER_MANUAL_EOS_RESULT`, and `AGENT_MANUAL_EOS_RESULT`
+  - `TUserManualEventPayload`, `TUserManualSosEvent`, `TUserManualEosEvent`, `TAgentManualEosPayload`, `TAgentManualEosEvent`
+
+#### API changes
+
+This release introduces the following changes to the RESTful API.
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`tts.url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-url): The OpenAI TTS protocol compatible service endpoint. Required only when `tts.vendor` is `generic_http`.
+    - [`tts.headers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-headers): Custom request headers to include in requests to the TTS service. Required only when `tts.vendor` is `generic_http`.
+
+  - **Updated parameters**
+
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `generic_http`: Integrate a custom TTS service using the OpenAI TTS protocol. See [Generic TTS](/en/ai/models/tts/generic-http).
+    - [`tts.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-params): Now required when `tts.vendor` is `generic_http`.
+
 ### v2.9
 
 Released on July 1, 2026.
@@ -19,7 +75,7 @@ Included in this release:
 
 - **Manual turn control**
 
-  You can now explicitly control when a user's speech starts and ends by sending manual Start of Speech (SoS) and End of Speech (EoS) requests over Signaling (RTM), instead of relying on automatic detection. This supports scenarios with strict turn-boundary requirements, such as AI interviews, interactive quizzes, or push-to-talk. Set [`start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech-mode) and [`end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode) to `manual` when starting the agent. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
+  You can now explicitly control when a user's speech starts and ends by sending manual Start of Speech (SoS) and End of Speech (EoS) requests over Signaling (RTM), instead of relying on automatic detection. This supports scenarios with strict turn-boundary requirements, such as AI interviews, interactive quizzes, or push-to-talk. Set [`start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-start-of-speech-mode) and [`end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech-mode) to `manual` when starting the agent. For details, see [Manually control start and end of speech](/en/ai/best-practices/manual-turn-control).
 
 - **Agent state notifications over RTM Message**
 
@@ -27,11 +83,11 @@ Included in this release:
 
 - **Pre-recorded greeting audio**
 
-  You can now play a pre-recorded audio file as the agent's greeting instead of synthesizing it with TTS. Set [`properties.llm.greeting_audio_url`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-audio-url) to the URL of an `mp3`, `wav`, or `pcm` file when starting the agent. If the audio fails to download, decode, or is in an unsupported format, the agent automatically falls back to TTS synthesis using `greeting_message`.
+  You can now play a pre-recorded audio file as the agent's greeting instead of synthesizing it with TTS. Set [`properties.llm.greeting_audio_url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-audio-url) to the URL of an `mp3`, `wav`, or `pcm` file when starting the agent. If the audio fails to download, decode, or is in an unsupported format, the agent automatically falls back to TTS synthesis using `greeting_message`.
 
 - **Managed mode**
 
-  You can now use supported ASR, LLM, and TTS providers with Agora-managed credentials, without supplying your own API keys. Set [`credential_mode`](/en/api-reference/api-ref/conversational-ai/join#properties-asr-credential-mode) to `"managed"` within the `asr`, `llm`, or `tts` block when starting an agent. Managed mode replaces the deprecated `preset` parameter. For details, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  You can now use supported ASR, LLM, and TTS providers with Agora-managed credentials, without supplying your own API keys. Set [`credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-credential-mode) to `"managed"` within the `asr`, `llm`, or `tts` block when starting an agent. Managed mode replaces the deprecated `preset` parameter. For details, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
 
 #### Improvements
 
@@ -39,7 +95,7 @@ This release includes the following enhancements.
 
 - **Speech captured during an uninterruptible greeting**
 
-  When [`properties.llm.greeting_configs.interruptable`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-interruptable) is set to `false`, the agent now silently collects the user's ASR results while the greeting plays. After the greeting ends, the system concatenates the collected speech segments into a single user message and sends it to the LLM for a unified response, instead of discarding speech that occurs during playback.
+  When [`properties.llm.greeting_configs.interruptable`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-configs-interruptable) is set to `false`, the agent now silently collects the user's ASR results while the greeting plays. After the greeting ends, the system concatenates the collected speech segments into a single user message and sends it to the LLM for a unified response, instead of discarding speech that occurs during playback.
 
 #### API changes
 
@@ -49,16 +105,16 @@ This release introduces the following changes to the RESTful API.
 
   - **New parameters**
 
-    - [`properties.llm.greeting_audio_url`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-audio-url): The URL of a pre-recorded audio file (`mp3`, `wav`, or `pcm`) to play as the agent's greeting instead of synthesizing it with TTS.
-    - [`properties.llm.greeting_configs.audio_download_timeout_ms`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-audio-download-timeout-ms): The timeout in milliseconds for downloading the greeting audio file. Defaults to `1000`.
-    - [`properties.llm.greeting_configs.audio_pcm_sample_rate`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-audio-pcm-sample-rate): The sample rate in Hz of the greeting audio file when the format is PCM. Defaults to `16000`.
-    - [`properties.asr.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#properties-asr-credential-mode), [`properties.llm.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-credential-mode), and [`properties.tts.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#properties-tts-credential-mode): Set to `"managed"` to use Agora-managed credentials for the provider without supplying your own API key.
+    - [`properties.llm.greeting_audio_url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-audio-url): The URL of a pre-recorded audio file (`mp3`, `wav`, or `pcm`) to play as the agent's greeting instead of synthesizing it with TTS.
+    - [`properties.llm.greeting_configs.audio_download_timeout_ms`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-configs-audio-download-timeout-ms): The timeout in milliseconds for downloading the greeting audio file. Defaults to `1000`.
+    - [`properties.llm.greeting_configs.audio_pcm_sample_rate`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-configs-audio-pcm-sample-rate): The sample rate in Hz of the greeting audio file when the format is PCM. Defaults to `16000`.
+    - [`properties.asr.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-credential-mode), [`properties.llm.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-credential-mode), and [`properties.tts.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-credential-mode): Set to `"managed"` to use Agora-managed credentials for the provider without supplying your own API key.
 
   - **Updated parameters**
 
-    - [`properties.turn_detection.config.start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech-mode): Now accepts `manual`, which disables automatic start-of-speech detection so the client can explicitly signal the start of user speech over RTM.
-    - [`properties.turn_detection.config.end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode): Now accepts `manual`, which disables automatic end-of-speech detection so the client can explicitly signal the end of user speech over RTM.
-    - [`properties.llm.greeting_message`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-message): In addition to serving as a standalone greeting, this field is now required as a fallback when `greeting_audio_url` is configured, and is used to maintain conversation context when an audio greeting is interrupted.
+    - [`properties.turn_detection.config.start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-start-of-speech-mode): Now accepts `manual`, which disables automatic start-of-speech detection so the client can explicitly signal the start of user speech over RTM.
+    - [`properties.turn_detection.config.end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech-mode): Now accepts `manual`, which disables automatic end-of-speech detection so the client can explicitly signal the end of user speech over RTM.
+    - [`properties.llm.greeting_message`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-message): In addition to serving as a standalone greeting, this field is now required as a fallback when `greeting_audio_url` is configured, and is used to maintain conversation context when an audio greeting is interrupted.
 
   - **Deprecated parameters**
 
@@ -80,7 +136,7 @@ Included in this release:
 
 - **Session data retention control**
 
-  By default, session interaction text and audio are temporarily retained for the minimum necessary period to support service operation, agent optimization, and troubleshooting. To disable data retention for a session, set [`properties.parameters.opt_out`](/en/api-reference/api-ref/conversational-ai/join#properties-parameters-opt-out) to `true` when starting an agent.
+  By default, session interaction text and audio are temporarily retained for the minimum necessary period to support service operation, agent optimization, and troubleshooting. To disable data retention for a session, set [`properties.parameters.opt_out`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-opt-out) to `true` when starting an agent.
 
 - **RTC token expiry warning**
 
@@ -120,11 +176,11 @@ This release introduces the following changes to the RESTful API.
 
   - **New parameters**
 
-    - [`properties.parameters.opt_out`](/en/api-reference/api-ref/conversational-ai/join#properties-parameters-opt-out): Set to `true` to disable data retention for the current session.
+    - [`properties.parameters.opt_out`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-opt-out): Set to `true` to disable data retention for the current session.
 
   - **Updated parameters**
 
-    - [`properties.idle_timeout`](/en/api-reference/api-ref/conversational-ai/join#properties-idle-timeout): Valid range is now `0` to `259200` seconds (72 hours). Regardless of the value set, the maximum running time for a single session is 72 hours.
+    - [`properties.idle_timeout`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-idle-timeout): Valid range is now `0` to `259200` seconds (72 hours). Regardless of the value set, the maximum running time for a single session is 72 hours.
 
 - Changes to [**Retrieve agent history**](/en/api-reference/api-ref/conversational-ai/history)
 
@@ -205,7 +261,7 @@ This release introduces the following changes to the RESTful API.
 
   - **New parameters**
 
-    - [`properties.llm.greeting_configs.interruptable`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-interruptable): Controls whether user speech can interrupt a greeting during playback.
+    - [`properties.llm.greeting_configs.interruptable`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-configs-interruptable): Controls whether user speech can interrupt a greeting during playback.
 
 - Changes to [**Query conversation turn information**](/en/api-reference/api-ref/conversational-ai/turns)
 
@@ -253,14 +309,14 @@ Included in this release:
 
 - **MLLM turn detection refactoring**
 
-  Introduces a new [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection) object for configuring turn detection when using MLLM. When defined, this overrides the top-level `turn_detection` object. Supported modes vary by vendor:
+  Introduces a new [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-turn-detection) object for configuring turn detection when using MLLM. When defined, this overrides the top-level `turn_detection` object. Supported modes vary by vendor:
 
   - OpenAI Realtime API: `agora_vad`, `server_vad`, `semantic_vad`
   - Google Gemini Live: `agora_vad`, `server_vad`
 
 - **Interruption control**
 
-  Adds a new top-level [`interruption`](/en/api-reference/api-ref/conversational-ai/join#properties-interruption) object for unified management of agent interruption behavior. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
+  Adds a new top-level [`interruption`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-interruption) object for unified management of agent interruption behavior. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
 
 #### Improvements
 
@@ -290,13 +346,13 @@ This release introduces the following changes to the RESTful API.
 
   - **New parameters**
 
-    - [`interruption`](/en/api-reference/api-ref/conversational-ai/join#properties-interruption): Unified interruption control configuration. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
-    - [`greeting_configs.delay_ms`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-delay-ms): Specifies the delay in milliseconds before the agent plays the greeting message after the user joins the channel.
-    - [`llm.headers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-headers): Allows you to pass custom headers in LLM requests, such as business-specific fields or tenant identifiers.
-    - [`mllm.enable`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-enable): Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
-    - [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection): Turn detection configuration for the MLLM module. When defined, overrides the top-level `turn_detection` object.
-    - [`mllm.turn_detection.server_vad_config.idle_timeout_ms`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection-server-vad-config-idle-timeout-ms): Idle timeout in milliseconds for server VAD mode. Applicable to OpenAI Realtime API only.
-    - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-vendor) value `gemini`: Enables Google Gemini Live integration using the Gemini Developer API.
+    - [`interruption`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-interruption): Unified interruption control configuration. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
+    - [`greeting_configs.delay_ms`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-greeting-configs-delay-ms): Specifies the delay in milliseconds before the agent plays the greeting message after the user joins the channel.
+    - [`llm.headers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-headers): Allows you to pass custom headers in LLM requests, such as business-specific fields or tenant identifiers.
+    - [`mllm.enable`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-enable): Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+    - [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-turn-detection): Turn detection configuration for the MLLM module. When defined, overrides the top-level `turn_detection` object.
+    - [`mllm.turn_detection.server_vad_config.idle_timeout_ms`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-turn-detection-server-vad-config-idle-timeout-ms): Idle timeout in milliseconds for server VAD mode. Applicable to OpenAI Realtime API only.
+    - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-vendor) value `gemini`: Enables Google Gemini Live integration using the Gemini Developer API.
 
   - **Behavior changes**
 
@@ -341,7 +397,7 @@ Included in this release:
 
 - **Pause state detection**
 
-  When enabled, the agent uses semantic understanding to detect when a user intends to pause the conversation. For example, if the user says "hold on" or "just a moment", the agent waits for further input instead of forwarding the utterance to the LLM. Controlled by the new [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled) parameter.
+  When enabled, the agent uses semantic understanding to detect when a user intends to pause the conversation. For example, if the user says "hold on" or "just a moment", the agent waits for further input instead of forwarding the utterance to the LLM. Controlled by the new [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled) parameter.
 
 - **Conversation turn insights**
 
@@ -385,7 +441,7 @@ This release introduces the following changes to the RESTful API.
   - **New parameters added**
 
     - [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset)
-    - [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled)
+    - [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled)
 
   - **Deprecated fields deleted**
 
@@ -405,11 +461,11 @@ Included in this release:
 
 - **MCP integration**
 
-  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality.
+  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality.
 
 - **Filler phrases**
 
-  Adds a [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#properties-filler-words) field to insert pre-set or LLM-generated filler phrases during conversations to fill periods of silence while waiting for LLM output. This feature smooths dialogue flow, reduces user anxiety, and makes agent speech sound more natural.
+  Adds a [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words) field to insert pre-set or LLM-generated filler phrases during conversations to fill periods of silence while waiting for LLM output. This feature smooths dialogue flow, reduces user anxiety, and makes agent speech sound more natural.
 
 #### Improvements
 
@@ -428,7 +484,7 @@ This release includes the following enhancements:
 
   Detects when the user begins speaking. When SoS is detected while the agent is speaking, an interruption occurs.
 
-  The [`config.start_of_speech`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech) parameter supports three detection modes:
+  The [`config.start_of_speech`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-start-of-speech) parameter supports three detection modes:
 
   - **VAD mode** (`vad`): Triggered by voice activity detection. Supports configuration of interruption threshold, prefix padding, and ignore word list.
   - **Keyword mode (Beta)** (`keywords`): Based on keyword triggering. The agent begins conversation after detecting a specified keyword.
@@ -438,7 +494,7 @@ This release includes the following enhancements:
 
   Detects when the user finishes speaking. When EoS is detected, the agent generates a response.
 
-  The [`config.end_of_speech`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech) parameter supports two detection modes:
+  The [`config.end_of_speech`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech) parameter supports two detection modes:
 
   - **VAD mode** (`vad`): Determines conversation end based on silence duration.
   - **Semantic mode** (`semantic`): Determines conversation end based on semantic understanding. Supports configurable maximum wait time.
@@ -449,7 +505,7 @@ This release introduces the following changes to the RESTful API.
 
 - Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
-  - **[`turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection) has a revamped structure**
+  - **[`turn_detection`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection) has a revamped structure**
 
     All previous fields under `turn_detection` have been deprecated and replaced with a new data structure.
 
@@ -464,15 +520,15 @@ This release introduces the following changes to the RESTful API.
 
   - **AIVAD activation**
 
-    The `advanced_features.enable_aivad` field is now deprecated; to configure AIVAD activation use [`turn_detection.config.end_of_speech.mode = "sematic"`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode).
+    The `advanced_features.enable_aivad` field is now deprecated; to configure AIVAD activation use [`turn_detection.config.end_of_speech.mode = "sematic"`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech-mode).
 
   - **New parameters added**
 
-    - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#properties-advanced-features-enable-tools)
-    - [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers)
-    - [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#properties-filler-words)
-    - [`turn_detection.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-mode)
-    - [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config)
+    - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools)
+    - [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers)
+    - [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words)
+    - [`turn_detection.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-mode)
+    - [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config)
 
 ### v2.3
 

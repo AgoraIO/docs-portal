@@ -1507,7 +1507,7 @@ paths:
                           type: boolean
                           default: false
                           description: >-
-                            Use [mllm.enable](#properties-mllm-enable) instead.
+                            Use [mllm.enable](#request-body-properties-mllm-enable) instead.
 
 
                             Enable Multimodal Large Language Model for voice-to-voice processing.
@@ -2386,7 +2386,7 @@ paths:
                           position: after-description
                           markdown: |
                             This object has no effect when `mllm.enable` is true. Use
-                            [mllm.turn_detection](#properties-mllm-turn-detection) instead.
+                            [mllm.turn_detection](#request-body-properties-mllm-turn-detection) instead.
                         - type: info
                           title: Note
                           position: after-description
@@ -2399,7 +2399,7 @@ paths:
 
                             keyword-based interruption and disabling interruption, have moved to the
 
-                            top-level [`interruption`](#properties-interruption) field.
+                            top-level [`interruption`](#request-body-properties-interruption) field.
 
 
                             This configuration supports multiple combinations of detection modes:
@@ -2552,11 +2552,11 @@ paths:
                                     via RTM.
 
                                     - `keywords`: Deprecated. Use [`interruption.mode =
-                                    "keywords"`](#properties-interruption-mode) instead.
+                                    "keywords"`](#request-body-properties-interruption-mode) instead.
 
                                     - `disabled`: Deprecated. Use [`interruption.enable =
-                                    false`](#properties-interruption-enable) with
-                                    [`interruption.disabled_config.strategy`](#properties-interruption-disabled-config-strategy)
+                                    false`](#request-body-properties-interruption-enable) with
+                                    [`interruption.disabled_config.strategy`](#request-body-properties-interruption-disabled-config-strategy)
                                     to configure the handling strategy.
                                   x-docs-callouts:
                                     - type: info
@@ -3036,7 +3036,7 @@ paths:
                         waiting to be played, they are played in the order they arrive.
 
                         - **Interruption control**: Inherits the interruption mode setting from the
-                        [`interruption`](#properties-interruption) field.
+                        [`interruption`](#request-body-properties-interruption) field.
                       properties:
                         enable:
                           type: boolean
@@ -4911,12 +4911,12 @@ paths:
                                     - `semantic`: The turn was ignored because semantic
                                     end-of-speech detection determined no response was required.
                                     Applies when
-                                    [`turn_detection.config.end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode)
+                                    [`turn_detection.config.end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-end-of-speech-mode)
                                     is set to `semantic`.
 
                                     - `keywords`: The turn was ignored because the start keyword was
                                     not detected. Applies when
-                                    [`turn_detection.config.start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech-mode)
+                                    [`turn_detection.config.start_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config-start-of-speech-mode)
                                     is set to `keywords`.
 
                                     - `disable`: The turn was ignored because interruption is
