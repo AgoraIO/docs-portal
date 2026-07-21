@@ -191,7 +191,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### close
 
-- close():void
+<ApiSignature>
+
+close(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#close)
 
@@ -199,13 +203,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getlisteners"></a>
 
 ### getListeners
 
-- getListeners(event:string):Function[]
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
 
 Inherited from EventEmitter.getListeners
 
@@ -219,27 +235,51 @@ Inherited from EventEmitter.getListeners
 </Parameter>
 </ParameterList>
 
-Returns Function[]
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getmediastreamtrack"></a>
 
 ### getMediaStreamTrack
 
-- getMediaStreamTrack():MediaStreamTrack
+<ApiSignature>
+
+getMediaStreamTrack(): MediaStreamTrack
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-Returns MediaStreamTrack
+<ApiReturns>
+
+<ApiReturnType>
+
+MediaStreamTrack
+
+</ApiReturnType>
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+</ApiReturns>
 
 <a id="getrtcrtptransceiver"></a>
 
 ### getRTCRtpTransceiver
 
-- getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)):RTCRtpTransceiver|undefined
+<ApiSignature>
+
+getRTCRtpTransceiver(type?: [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)): RTCRtpTransceiver | undefined
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
@@ -266,15 +306,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns RTCRtpTransceiver | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+RTCRtpTransceiver | undefined
+
+</ApiReturnType>
 
 当前轨道的 `RTCRtpTransceiver` 实例。
+
+</ApiReturns>
 
 <a id="getstats"></a>
 
 ### getStats
 
-- getStats():[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiSignature>
+
+getStats(): [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getStats](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getstats)
 
@@ -286,33 +338,63 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[ge
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
 
-Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="gettrackid"></a>
 
 ### getTrackId
 
-- getTrackId():string
+<ApiSignature>
+
+getTrackId(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 媒体轨道 ID。
+
+</ApiReturns>
 
 <a id="gettracklabel"></a>
 
 ### getTrackLabel
 
-- getTrackLabel():string
+<ApiSignature>
+
+getTrackLabel(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettracklabel)
 
 获取本地轨道的来源描述。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 可能返回以下值：
 
@@ -320,25 +402,43 @@ Returns string
 - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
 - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
+</ApiReturns>
+
 <a id="getvolumelevel"></a>
 
 ### getVolumeLevel
 
-- getVolumeLevel():number
+<ApiSignature>
+
+getVolumeLevel(): number
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getvolumelevel)
 
 获取本地音频轨道的音量等级。
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
 
 音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
+
+</ApiReturns>
 
 <a id="off"></a>
 
 ### off
 
-- off(event:string, listener:Function):void
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.off
 
@@ -357,15 +457,37 @@ Inherited from EventEmitter.off
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"track-updated", listener:typeof event_track_updated):void
-- on(event:"track-ended", listener:typeof event_track_ended):void
-- on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
+<ApiSignature>
+
+on(event: "track-updated", listener: typeof event_track_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
@@ -384,7 +506,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
@@ -403,7 +533,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
@@ -424,13 +562,25 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="once"></a>
 
 ### once
 
-- once(event:string, listener:Function):void
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.once
 
@@ -451,13 +601,25 @@ Inherited from EventEmitter.once
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="pipe"></a>
 
 ### pipe
 
-- pipe(processor:IAudioProcessor):IAudioProcessor
+<ApiSignature>
+
+pipe(processor: IAudioProcessor): IAudioProcessor
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[pipe](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#pipe)
 
@@ -475,15 +637,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns IAudioProcessor
+<ApiReturns>
+
+<ApiReturnType>
+
+IAudioProcessor
+
+</ApiReturnType>
 
 `Processor` 实例。
+
+</ApiReturns>
 
 <a id="play"></a>
 
 ### play
 
-- play():void
+<ApiSignature>
+
+play(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#play)
 
@@ -493,13 +667,25 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[pl
 
 > 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
-- removeAllListeners(event?:string):void
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.removeAllListeners
 
@@ -513,13 +699,25 @@ Inherited from EventEmitter.removeAllListeners
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setaudioframecallback"></a>
 
 ### setAudioFrameCallback
 
-- setAudioFrameCallback(audioFrameCallback:null|function, frameSize?:number):void
+<ApiSignature>
+
+setAudioFrameCallback(audioFrameCallback: null | function, frameSize?: number): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setAudioFrameCallback](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setaudioframecallback)
 
@@ -556,13 +754,25 @@ track.setAudioFrameCallback(null);
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setdevice"></a>
 
 ### setDevice
 
-- setDevice(deviceId:string):Promise&lt;void&gt;
+<ApiSignature>
+
+setDevice(deviceId: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置负责采集音频数据的麦克风设备。
 
@@ -576,13 +786,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setenabled"></a>
 
 ### setEnabled
 
-- setEnabled(enabled:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setEnabled(enabled: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setenabled)
 
@@ -609,13 +831,25 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setmuted"></a>
 
 ### setMuted
 
-- setMuted(muted:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setMuted(muted: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setmuted)
 
@@ -641,13 +875,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setplaybackdevice"></a>
 
 ### setPlaybackDevice
 
-- setPlaybackDevice(deviceId:string):Promise&lt;void&gt;
+<ApiSignature>
+
+setPlaybackDevice(deviceId: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setPlaybackDevice](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setplaybackdevice)
 
@@ -669,13 +915,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setvolume"></a>
 
 ### setVolume
 
-- setVolume(volume:number):void
+<ApiSignature>
+
+setVolume(volume: number): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[setVolume](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#setvolume)
 
@@ -689,25 +947,49 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stop"></a>
 
 ### stop
 
-- stop():void
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
 
 停止播放。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpipe"></a>
 
 ### unpipe
 
-- unpipe():void
+<ApiSignature>
+
+unpipe(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[unpipe](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#unpipe)
 
@@ -717,4 +999,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 取消本地音频轨道上注入的 `Processor`。
 :::
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

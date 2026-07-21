@@ -38,15 +38,27 @@ CallbackAudioTrackSubscribed: (track:IRemoteAudioTrack, streamUuid:string, chann
 
 #### Type declaration
 
-- - (track:IRemoteAudioTrack, streamUuid:string, channelName:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="track" type="IRemoteAudioTrack" required />
-  <Parameter name="streamUuid" type="string" required />
-  <Parameter name="channelName" type="string" required />
-  </ParameterList>
+(track: IRemoteAudioTrack, streamUuid: string, channelName: string): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="track" type="IRemoteAudioTrack" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackAudioTrackUnsubscribed"></a>
 
@@ -56,14 +68,26 @@ CallbackAudioTrackUnsubscribed: (streamUuid:string, channelName:string)=&gt;void
 
 #### Type declaration
 
-- - (streamUuid:string, channelName:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="streamUuid" type="string" required />
-  <Parameter name="channelName" type="string" required />
-  </ParameterList>
+(streamUuid: string, channelName: string): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackMicrophoneTrackCreated"></a>
 
@@ -73,13 +97,25 @@ CallbackMicrophoneTrackCreated: (track:ILocalAudioTrack)=&gt;void
 
 #### Type declaration
 
-- - (track:ILocalAudioTrack):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="track" type="ILocalAudioTrack" required />
-  </ParameterList>
+(track: ILocalAudioTrack): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="track" type="ILocalAudioTrack" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackMicrophoneTrackDestroyed"></a>
 
@@ -89,9 +125,21 @@ CallbackMicrophoneTrackDestroyed: ()=&gt;void
 
 #### Type declaration
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackObserverChanged"></a>
 
@@ -101,21 +149,33 @@ CallbackObserverChanged: (position:[AgoraRteAudioRawDataPosition](/zh-CN/api-ref
 
 #### Type declaration
 
-- - (position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="position" required>
+(position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+<ParameterList title="Parameters">
+<Parameter name="position" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackRawDataBeforeMixed"></a>
 
@@ -125,23 +185,35 @@ CallbackRawDataBeforeMixed: (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference
 
 #### Type declaration
 
-- - (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData), streamUuid:string, channelName:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="rawData" required>
+(rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData), streamUuid: string, channelName: string): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+<ParameterList title="Parameters">
+<Parameter name="rawData" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="streamUuid" type="string" required />
-  <Parameter name="channelName" type="string" required />
-  </ParameterList>
+[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackRawDataRecorded"></a>
 
@@ -151,21 +223,33 @@ CallbackRawDataRecorded: (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/fl
 
 #### Type declaration
 
-- - (rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="rawData" required>
+(rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
+<ParameterList title="Parameters">
+<Parameter name="rawData" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackStart"></a>
 
@@ -175,9 +259,21 @@ CallbackStart: ()=&gt;void
 
 #### Type declaration
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="CallbackStop"></a>
 
@@ -187,6 +283,18 @@ CallbackStop: ()=&gt;void
 
 #### Type declaration
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

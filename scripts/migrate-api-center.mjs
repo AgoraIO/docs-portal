@@ -92,8 +92,16 @@ if (isMain) {
     const parameterFields = Object.values(
       result.structuredParameterCounts,
     ).reduce((sum, counts) => sum + counts.fields, 0);
+    const signatures = Object.values(result.structuredApiMemberCounts).reduce(
+      (sum, counts) => sum + counts.signatures,
+      0,
+    );
+    const returns = Object.values(result.structuredApiMemberCounts).reduce(
+      (sum, counts) => sum + counts.returns,
+      0,
+    );
     console.log(
-      `API Center HTML: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, parameter lists ${parameterLists}, parameter fields ${parameterFields}, existing ${result.report.counts.preservedExistingFiles}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
+      `API Center HTML: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, signatures ${signatures}, returns ${returns}, parameter lists ${parameterLists}, parameter fields ${parameterFields}, existing ${result.report.counts.preservedExistingFiles}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
     );
   } catch (error) {
     console.error(`migrate-api-center: ${error.message}`);

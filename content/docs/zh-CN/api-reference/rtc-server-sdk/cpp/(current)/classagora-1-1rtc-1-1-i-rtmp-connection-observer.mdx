@@ -23,8 +23,11 @@ _migration:
 
 ### ~IRtmpConnectionObserver()
 
-| virtual agora::rtc::IRtmpConnectionObserver::~IRtmpConnectionObserver () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IRtmpConnectionObserver::~IRtmpConnectionObserver()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -32,8 +35,11 @@ _migration:
 
 ### onConnected()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onConnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onConnected(const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*)
+
+</ApiSignature>
 
 SDK 与 CDN 的连接状态变更为 `STATE_CONNECTED(3)` 时触发。
 
@@ -49,8 +55,11 @@ SDK 与 CDN 的连接状态变更为 `STATE_CONNECTED(3)` 时触发。
 
 ### onDisconnected()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onDisconnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onDisconnected(const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*)
+
+</ApiSignature>
 
 SDK 与 CDN 的连接状态变更为 `STATE_DISCONNECTED(1)` 时触发。
 
@@ -66,8 +75,11 @@ SDK 与 CDN 的连接状态变更为 `STATE_DISCONNECTED(1)` 时触发。
 
 ### onReconnecting()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onReconnecting ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onReconnecting(const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*)
+
+</ApiSignature>
 
 SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTING(4)` 时触发。
 
@@ -83,8 +95,11 @@ SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTING(4)` 时触发。
 
 ### onReconnected()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onReconnected ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onReconnected(const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*)
+
+</ApiSignature>
 
 SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTED(6)` 时触发。
 
@@ -100,8 +115,11 @@ SDK 与 CDN 的连接状态变更为 `STATE_RECONNECTED(6)` 时触发。
 
 ### onConnectionFailure()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onConnectionFailure ( const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*, [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) *errCode*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onConnectionFailure(const [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) & *connectionInfo*, [RTMP_CONNECTION_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aff7596486950cd8ca8a3010d8c8710de) *errCode*)
+
+</ApiSignature>
 
 SDK 与 CDN 的连接状态变更为 `STATE_FAILED(5)` 时触发。
 
@@ -122,8 +140,11 @@ SDK 与 CDN 的连接状态变更为 `STATE_FAILED(5)` 时触发。
 
 ### onTransferStatistics()
 
-| virtual void agora::rtc::IRtmpConnectionObserver::onTransferStatistics ( uint64_t *video_width*, uint64_t *video_height*, uint64_t *video_bitrate*, uint64_t *audio_bitrate*, uint64_t *video_frame_rate*, uint64_t *push_video_frame_cnt*, uint64_t *pop_video_frame_cnt*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpConnectionObserver::onTransferStatistics(uint64_t *video_width*, uint64_t *video_height*, uint64_t *video_bitrate*, uint64_t *audio_bitrate*, uint64_t *video_frame_rate*, uint64_t *push_video_frame_cnt*, uint64_t *pop_video_frame_cnt*)
+
+</ApiSignature>
 
 CDN 推流统计数据回调。
 

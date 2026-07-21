@@ -33,8 +33,11 @@ _migration:
 
 ### ~IRtmpConnection()
 
-| agora::rtc::IRtmpConnection::~IRtmpConnection () | inline |
-| --- | --- |
+<ApiSignature labels="inline">
+
+agora::rtc::IRtmpConnection::~IRtmpConnection()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -42,8 +45,11 @@ _migration:
 
 ### connect()
 
-| virtual int agora::rtc::IRtmpConnection::connect ( const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::connect(const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 连接 CDN。
 
@@ -79,8 +85,11 @@ CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不�
 
 ### disconnect()
 
-| virtual int agora::rtc::IRtmpConnection::disconnect ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::disconnect(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 与 CDN 断开连接。
 
@@ -103,8 +112,11 @@ CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不�
 
 ### getConnectionInfo()
 
-| virtual [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) agora::rtc::IRtmpConnection::getConnectionInfo () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) agora::rtc::IRtmpConnection::getConnectionInfo()
+
+</ApiSignature>
 
 获取连接信息。
 
@@ -117,8 +129,11 @@ CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不�
 
 ### getRtmpLocalUser()
 
-| virtual [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user)* agora::rtc::IRtmpConnection::getRtmpLocalUser () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user)* agora::rtc::IRtmpConnection::getRtmpLocalUser()
+
+</ApiSignature>
 
 获取本地用户对象的指针。每个连接仅对应一个本地用户。
 
@@ -131,8 +146,11 @@ CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不�
 
 ### registerObserver()
 
-| virtual int agora::rtc::IRtmpConnection::registerObserver ( [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*, void(*)([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) *) *safeDeleter* = `NULL`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::registerObserver([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*, void(*)([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) *) *safeDeleter* = `NULL`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 注册 CDN 连接 observer。
 
@@ -160,8 +178,11 @@ CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不�
 
 ### unregisterObserver()
 
-| virtual int agora::rtc::IRtmpConnection::unregisterObserver ( [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::unregisterObserver([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*)
+
+</ApiSignature>
 
 销毁 CDN 连接 observer。
 

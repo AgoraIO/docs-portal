@@ -43,9 +43,21 @@ _migration:
 
 ### constructor
 
-- new WorkerInteractor():[WorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
+<ApiSignature>
 
-Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
+new WorkerInteractor(): [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[WorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-worker-interactor-orker-interactor)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -53,17 +65,33 @@ Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-
 
 ### clearTempLogs
 
-- clearTempLogs():Promise&lt;void&gt;
+<ApiSignature>
+
+clearTempLogs(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[clearTempLogs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#clearTempLogs)
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="collectLogs"></a>
 
 ### collectLogs
 
-- collectLogs(labels:string[]):Promise&lt;\{file:File;lastId:number\}&gt;
+<ApiSignature>
+
+collectLogs(labels: string[]): Promise&lt;\{ file: File; lastId: number \}&gt;
+
+</ApiSignature>
 
 Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[collectLogs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#collectLogs)
 
@@ -71,13 +99,25 @@ Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/
 <Parameter name="labels" type="string[]" required />
 </ParameterList>
 
-Returns Promise&lt;\{file:File;lastId:number\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ file: File; lastId: number \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="deleteLogs"></a>
 
 ### deleteLogs
 
-- deleteLogs(labels:string[], lastId:number):Promise&lt;void&gt;
+<ApiSignature>
+
+deleteLogs(labels: string[], lastId: number): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[deleteLogs](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#deleteLogs)
 
@@ -86,13 +126,25 @@ Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/
 <Parameter name="lastId" type="number" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getBinary"></a>
 
 ### getBinary
 
-- getBinary(id:number):Promise&lt;null|Buffer&gt;
+<ApiSignature>
+
+getBinary(id: number): Promise&lt;null | Buffer&gt;
+
+</ApiSignature>
 
 Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[getBinary](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#getBinary)
 
@@ -100,13 +152,25 @@ Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-class
 <Parameter name="id" type="number" required />
 </ParameterList>
 
-Returns Promise&lt;null|Buffer&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;null | Buffer&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="persistBinary"></a>
 
 ### persistBinary
 
-- persistBinary(id:number, buffer:Buffer):Promise&lt;void&gt;
+<ApiSignature>
+
+persistBinary(id: number, buffer: Buffer): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[persistBinary](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#persistBinary)
 
@@ -115,13 +179,25 @@ Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-class
 <Parameter name="buffer" type="Buffer" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendLog"></a>
 
 ### sendLog
 
-- sendLog(message:string, label:string):void
+<ApiSignature>
+
+sendLog(message: string, label: string): void
+
+</ApiSignature>
 
 Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[sendLog](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#sendLog)
 
@@ -130,13 +206,25 @@ Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/
 <Parameter name="label" type="string" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setMaxRecords"></a>
 
 ### setMaxRecords
 
-- setMaxRecords(maxRecords:number):Promise&lt;void&gt;
+<ApiSignature>
+
+setMaxRecords(maxRecords: number): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor).[setMaxRecords](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-og-worker-interactor#setMaxRecords)
 
@@ -144,13 +232,25 @@ Implementation of [LogWorkerInteractor](/zh-CN/api-reference/flexible-classroom/
 <Parameter name="maxRecords" type="number" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpersistBinary"></a>
 
 ### unpersistBinary
 
-- unpersistBinary(id:number):Promise&lt;void&gt;
+<ApiSignature>
+
+unpersistBinary(id: number): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor).[unpersistBinary](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-log-upload-type-ogs-temp-worker-interactor#unpersistBinary)
 
@@ -158,4 +258,12 @@ Implementation of [LogsTempWorkerInteractor](/zh-CN/api-reference/flexible-class
 <Parameter name="id" type="number" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

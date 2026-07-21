@@ -31,8 +31,11 @@ _migration:
 
 ### ~IVideoTrack()
 
-| agora::rtc::IVideoTrack::~IVideoTrack () | inlineprotected |
-| --- | --- |
+<ApiSignature labels="inline protected">
+
+agora::rtc::IVideoTrack::~IVideoTrack()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -40,8 +43,11 @@ _migration:
 
 ### addRenderer()
 
-| virtual bool agora::rtc::IVideoTrack::addRenderer ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IVideoTrack::addRenderer([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 将视频接收模块加入视频轨道，用于接收视频帧。
 
@@ -77,8 +83,11 @@ _migration:
 
 ### removeRenderer()
 
-| virtual bool agora::rtc::IVideoTrack::removeRenderer ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IVideoTrack::removeRenderer([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 从视频轨道中删除视频接收模块。
 
@@ -109,8 +118,11 @@ _migration:
 
 ### getType()
 
-| virtual [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) agora::rtc::IVideoTrack::getType () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) agora::rtc::IVideoTrack::getType()
+
+</ApiSignature>
 
 获取视频轨道的轨道类型。
 

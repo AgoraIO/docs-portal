@@ -31,8 +31,11 @@ _migration:
 
 ### on_audio_data
 
-| void(* on_audio_data) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, uint16_t sent_ts, const void *data_ptr, size_t data_len, const [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) *info_ptr) |
-| --- |
+<ApiSignature>
+
+void(* on_audio_data)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, uint16_t sent_ts, const void *data_ptr, size_t data_len, const [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) *info_ptr)
+
+</ApiSignature>
 
 收到频道内远端用户的音频帧回调。
 
@@ -73,8 +76,11 @@ Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_audio_data](/z
 
 ### on_connection_lost
 
-| void(* on_connection_lost) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id) |
-| --- |
+<ApiSignature>
+
+void(* on_connection_lost)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id)
+
+</ApiSignature>
 
 连接丢失回调。
 
@@ -92,8 +98,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_error
 
-| void(* on_error) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int code, const char *msg) |
-| --- |
+<ApiSignature>
+
+void(* on_error)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int code, const char *msg)
+
+</ApiSignature>
 
 发生错误回调。
 
@@ -121,8 +130,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_join_channel_success
 
-| void(* on_join_channel_success) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms) |
-| --- |
+<ApiSignature>
+
+void(* on_join_channel_success)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms)
+
+</ApiSignature>
 
 加入频道成功回调。
 
@@ -148,8 +160,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_key_frame_gen_req
 
-| void(* on_key_frame_gen_req) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) stream_type) |
-| --- |
+<ApiSignature>
+
+void(* on_key_frame_gen_req)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed) stream_type)
+
+</ApiSignature>
 
 频道内远端用户请求关键帧回调。
 
@@ -177,8 +192,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_license_validation_failure
 
-| void(* on_license_validation_failure) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int error) |
-| --- |
+<ApiSignature>
+
+void(* on_license_validation_failure)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, int error)
+
+</ApiSignature>
 
 设备 License 验证失败回调。
 
@@ -201,8 +219,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_local_user_registered
 
-| void(* on_local_user_registered) (const char *uname, uint32_t uid) |
-| --- |
+<ApiSignature>
+
+void(* on_local_user_registered)(const char *uname, uint32_t uid)
+
+</ApiSignature>
 
 本地用户注册回调。
 
@@ -229,8 +250,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_media_ctrl_msg
 
-| void(* on_media_ctrl_msg) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, const void *payload, size_t length) |
-| --- |
+<ApiSignature>
+
+void(* on_media_ctrl_msg)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, const void *payload, size_t length)
+
+</ApiSignature>
 
 收到远端用户发来的消息回调。
 
@@ -265,8 +289,11 @@ Connection ID。
 
 ### on_mixed_audio_data
 
-| void(* on_mixed_audio_data) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const void *data_ptr, size_t data_len, const [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) *info_ptr) |
-| --- |
+<ApiSignature>
+
+void(* on_mixed_audio_data)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const void *data_ptr, size_t data_len, const [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t) *info_ptr)
+
+</ApiSignature>
 
 收到频道内本地用户和远端用户的混音数据回调。此回调每 20 ms 触发一次。
 
@@ -297,8 +324,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_rdt_msg
 
-| void(* on_rdt_msg) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) type, const void *msg, size_t len) |
-| --- |
+<ApiSignature>
+
+void(* on_rdt_msg)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [rdt_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a18e9113feef6d094da117d9341b9c24a) type, const void *msg, size_t len)
+
+</ApiSignature>
 
 收到 RDT 消息回调。
 
@@ -338,8 +368,11 @@ RDT 消息长度。
 
 ### on_rdt_state
 
-| void(* on_rdt_state) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [rdt_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab926f577ba6171a33930da45236aaa83) state) |
-| --- |
+<ApiSignature>
+
+void(* on_rdt_state)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, [rdt_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab926f577ba6171a33930da45236aaa83) state)
+
+</ApiSignature>
 
 RDT 通道的连接状态已改变回调。
 
@@ -371,8 +404,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_reconnecting
 
-| void(* on_reconnecting) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id) |
-| --- |
+<ApiSignature>
+
+void(* on_reconnecting)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id)
+
+</ApiSignature>
 
 正在重新连接回调。
 
@@ -394,8 +430,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_rejoin_channel_success
 
-| void(* on_rejoin_channel_success) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms) |
-| --- |
+<ApiSignature>
+
+void(* on_rejoin_channel_success)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms)
+
+</ApiSignature>
 
 重新加入频道成功回调。
 
@@ -423,8 +462,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_remote_user_registered
 
-| void(* on_remote_user_registered) (const char *uname, uint32_t uid) |
-| --- |
+<ApiSignature>
+
+void(* on_remote_user_registered)(const char *uname, uint32_t uid)
+
+</ApiSignature>
 
 远端用户注册回调。
 
@@ -452,8 +494,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_stream_message
 
-| void(* on_stream_message) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int stream_id, const char *data, size_t length, uint64_t sent_ts) |
-| --- |
+<ApiSignature>
+
+void(* on_stream_message)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int stream_id, const char *data, size_t length, uint64_t sent_ts)
+
+</ApiSignature>
 
 接收到远端用户数据流消息的回调。
 
@@ -500,8 +545,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_target_bitrate_changed
 
-| void(* on_target_bitrate_changed) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t target_bps) |
-| --- |
+<ApiSignature>
+
+void(* on_target_bitrate_changed)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t target_bps)
+
+</ApiSignature>
 
 编码器码率更新通知回调。你可以使用此回调提醒 App 更新编码器码率。
 
@@ -522,8 +570,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_token_privilege_will_expire
 
-| void(* on_token_privilege_will_expire) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *token) |
-| --- |
+<ApiSignature>
+
+void(* on_token_privilege_will_expire)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const char *token)
+
+</ApiSignature>
 
 Token 服务即将过期回调。
 
@@ -546,8 +597,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_info_updated
 
-| void(* on_user_info_updated) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user) |
-| --- |
+<ApiSignature>
+
+void(* on_user_info_updated)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user)
+
+</ApiSignature>
 
 远端用户信息更新回调。
 
@@ -578,8 +632,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_joined
 
-| void(* on_user_joined) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms) |
-| --- |
+<ApiSignature>
+
+void(* on_user_joined)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int elapsed_ms)
+
+</ApiSignature>
 
 远端用户加入频道回调。
 
@@ -612,8 +669,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_joined_with_user_account
 
-| void(* on_user_joined_with_user_account) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user, int elapsed_ms) |
-| --- |
+<ApiSignature>
+
+void(* on_user_joined_with_user_account)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user, int elapsed_ms)
+
+</ApiSignature>
 
 远端用户使用 User Account 加入频道回调。
 
@@ -649,8 +709,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_mute_audio
 
-| void(* on_user_mute_audio) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, bool muted) |
-| --- |
+<ApiSignature>
+
+void(* on_user_mute_audio)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, bool muted)
+
+</ApiSignature>
 
 频道内远端用户暂停/恢复发送音频流回调。
 
@@ -679,8 +742,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_mute_video
 
-| void(* on_user_mute_video) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, bool muted) |
-| --- |
+<ApiSignature>
+
+void(* on_user_mute_video)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, bool muted)
+
+</ApiSignature>
 
 频道内远端用户暂停/恢复发送视频流回调。
 
@@ -709,8 +775,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_offline
 
-| void(* on_user_offline) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int reason) |
-| --- |
+<ApiSignature>
+
+void(* on_user_offline)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, int reason)
+
+</ApiSignature>
 
 远端用户离开频道回调。
 
@@ -741,8 +810,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_user_offline_with_user_account
 
-| void(* on_user_offline_with_user_account) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user, int reason) |
-| --- |
+<ApiSignature>
+
+void(* on_user_offline_with_user_account)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, const [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de) *user, int reason)
+
+</ApiSignature>
 
 使用 User Account 场景下，远端用户离开频道回调。
 
@@ -768,8 +840,11 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 ### on_video_data
 
-| void(* on_video_data) ([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, uint16_t sent_ts, const void *data_ptr, size_t data_len, const [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) *info_ptr) |
-| --- |
+<ApiSignature>
+
+void(* on_video_data)([connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c) conn_id, uint32_t uid, uint16_t sent_ts, const void *data_ptr, size_t data_len, const [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t) *info_ptr)
+
+</ApiSignature>
 
 收到频道内远端用户的视频帧回调。
 

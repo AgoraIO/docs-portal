@@ -23,8 +23,11 @@ _migration:
 
 ### ~IRecordingEngineEventHandler()
 
-| virtual agora::recording::IRecordingEngineEventHandler::~IRecordingEngineEventHandler () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::recording::IRecordingEngineEventHandler::~IRecordingEngineEventHandler()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -32,8 +35,11 @@ _migration:
 
 ### onError()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onError ( int *error*, [agora::linuxsdk::STAT_CODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a467894afed372a4fe76594a6223869a0) *stat_code*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onError(int *error*, [agora::linuxsdk::STAT_CODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a467894afed372a4fe76594a6223869a0) *stat_code*)
+
+</ApiSignature>
 
 该回调表示 SDK 运行时出现了（网络或媒体相关的）错误。
 
@@ -56,8 +62,11 @@ _migration:
 
 ### onWarning()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onWarning ( int *warn*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onWarning(int *warn*)
+
+</ApiSignature>
 
 该回调表示 SDK 运行时出现了（网络或媒体相关的）警告。
 
@@ -75,8 +84,11 @@ _migration:
 
 ### onJoinChannelSuccess()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onJoinChannelSuccess ( const char * *channelId*, uid_t *uid*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onJoinChannelSuccess(const char * *channelId*, uid_t *uid*)
+
+</ApiSignature>
 
 该回调表示录制端成功加入了指定的频道。
 
@@ -97,8 +109,11 @@ _migration:
 
 ### onLeaveChannel()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onLeaveChannel ( [agora::linuxsdk::LEAVE_PATH_CODE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9bed76add2c986c154d0ab761a7a07ac) *code*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onLeaveChannel([agora::linuxsdk::LEAVE_PATH_CODE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9bed76add2c986c154d0ab761a7a07ac) *code*)
+
+</ApiSignature>
 
 该回调表示录制端成功离开了频道。
 
@@ -114,8 +129,11 @@ _migration:
 
 ### onUserJoined()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onUserJoined ( uid_t *uid*, [agora::linuxsdk::UserJoinInfos](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-join-infos) & *infos*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onUserJoined(uid_t *uid*, [agora::linuxsdk::UserJoinInfos](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-join-infos) & *infos*)
+
+</ApiSignature>
 
 该回调提示有远端用户加入当前频道，并返回新加入用户的 UID。
 
@@ -138,8 +156,11 @@ _migration:
 
 ### onRemoteVideoStreamStateChanged()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRemoteVideoStreamStateChanged ( uid_t *uid*, [linuxsdk::RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3) *state*, [linuxsdk::RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRemoteVideoStreamStateChanged(uid_t *uid*, [linuxsdk::RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3) *state*, [linuxsdk::RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44) *reason*)
+
+</ApiSignature>
 
 远端用户视频流状态改变回调。
 
@@ -167,8 +188,11 @@ _migration:
 
 ### onRemoteAudioStreamStateChanged()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRemoteAudioStreamStateChanged ( uid_t *uid*, [linuxsdk::RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3) *state*, [linuxsdk::RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRemoteAudioStreamStateChanged(uid_t *uid*, [linuxsdk::RemoteStreamState](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a73d1bdcfa6ead0c7de998c9abf38d5e3) *state*, [linuxsdk::RemoteStreamStateChangedReason](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ada78417cb7c1ebe12301c07677df2a44) *reason*)
+
+</ApiSignature>
 
 远端用户音频流状态改变回调。
 
@@ -196,8 +220,11 @@ _migration:
 
 ### onUserOffline()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onUserOffline ( uid_t *uid*, [agora::linuxsdk::USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a0e6e9d00d96e6ae8da87bffa12a675f4) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onUserOffline(uid_t *uid*, [agora::linuxsdk::USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a0e6e9d00d96e6ae8da87bffa12a675f4) *reason*)
+
+</ApiSignature>
 
 该回调提示有其他用户离开当前频道或掉线。
 
@@ -220,8 +247,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### audioFrameReceived()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::audioFrameReceived ( unsigned int *uid*, const [agora::linuxsdk::AudioFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-frame) * *frame*) const | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::audioFrameReceived(unsigned int *uid*, const [agora::linuxsdk::AudioFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-frame) * *frame*) const
+
+</ApiSignature>
 
 当收到原始音频数据时，会触发该回调。
 
@@ -244,8 +274,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### videoFrameReceived()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::videoFrameReceived ( unsigned int *uid*, const [agora::linuxsdk::VideoFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-frame) * *frame*) const | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::videoFrameReceived(unsigned int *uid*, const [agora::linuxsdk::VideoFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-frame) * *frame*) const
+
+</ApiSignature>
 
 当收到视频数据时，会触发该回调。
 
@@ -272,8 +305,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onActiveSpeaker()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onActiveSpeaker ( uid_t *uid*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onActiveSpeaker(uid_t *uid*)
+
+</ApiSignature>
 
 监测到活跃用户回调。
 
@@ -291,8 +327,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onAudioVolumeIndication()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onAudioVolumeIndication ( const [agora::linuxsdk::AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-volume-info) * *speakers*, unsigned int *speakerNum*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onAudioVolumeIndication(const [agora::linuxsdk::AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-audio-volume-info) * *speakers*, unsigned int *speakerNum*)
+
+</ApiSignature>
 
 该回调提示频道内谁正在说话以及说话者音量。
 
@@ -315,8 +354,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onFirstRemoteVideoDecoded()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onFirstRemoteVideoDecoded ( uid_t *uid*, int *width*, int *height*, int *elapsed*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onFirstRemoteVideoDecoded(uid_t *uid*, int *width*, int *height*, int *elapsed*)
+
+</ApiSignature>
 
 该回调提示本地已接收到首帧远端视频并完成解码。
 
@@ -349,8 +391,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onFirstRemoteAudioFrame()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onFirstRemoteAudioFrame ( uid_t *uid*, int *elapsed*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onFirstRemoteAudioFrame(uid_t *uid*, int *elapsed*)
+
+</ApiSignature>
 
 该回调提示本地已接收到首帧远端音频流。
 
@@ -371,8 +416,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onReceivingStreamStatusChanged()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onReceivingStreamStatusChanged ( bool *receivingAudio*, bool *receivingVideo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onReceivingStreamStatusChanged(bool *receivingAudio*, bool *receivingVideo*)
+
+</ApiSignature>
 
 该回调提示接收音频流或视频流的状态发生改变。
 
@@ -393,8 +441,11 @@ SDK 判断用户离开频道或掉线的依据是：在一定时间内（15 秒�
 
 ### onConnectionLost()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onConnectionLost () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onConnectionLost()
+
+</ApiSignature>
 
 网络连接丢失回调。
 
@@ -411,8 +462,11 @@ SDK 在调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/lega
 
 ### onConnectionInterrupted()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onConnectionInterrupted () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onConnectionInterrupted()
+
+</ApiSignature>
 
 网络连接中断回调。
 
@@ -429,8 +483,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRejoinChannelSuccess()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRejoinChannelSuccess ( const char * *channelId*, uid_t *uid*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRejoinChannelSuccess(const char * *channelId*, uid_t *uid*)
+
+</ApiSignature>
 
 重新加入频道回调。
 
@@ -453,8 +510,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onConnectionStateChanged()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onConnectionStateChanged ( [agora::linuxsdk::ConnectionStateType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7bb6c960800fca3b10effe482080f018) *state*, [agora::linuxsdk::ConnectionChangedReasonType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7b099b2f12ca92293f38b7b18c4239c9) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onConnectionStateChanged([agora::linuxsdk::ConnectionStateType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7bb6c960800fca3b10effe482080f018) *state*, [agora::linuxsdk::ConnectionChangedReasonType](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a7b099b2f12ca92293f38b7b18c4239c9) *reason*)
+
+</ApiSignature>
 
 网络连接状态已改变回调。
 
@@ -477,8 +537,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRemoteVideoStats()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRemoteVideoStats ( [agora::linuxsdk::uid_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8ec0e86208531827f0014a30bb4ae395) *uid*, const [agora::linuxsdk::RemoteVideoStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-video-stats) & *stats*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRemoteVideoStats([agora::linuxsdk::uid_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8ec0e86208531827f0014a30bb4ae395) *uid*, const [agora::linuxsdk::RemoteVideoStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-video-stats) & *stats*)
+
+</ApiSignature>
 
 远端视频流统计信息回调。
 
@@ -501,8 +564,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRemoteAudioStats()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRemoteAudioStats ( [agora::linuxsdk::uid_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8ec0e86208531827f0014a30bb4ae395) *uid*, const [agora::linuxsdk::RemoteAudioStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-audio-stats) & *stats*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRemoteAudioStats([agora::linuxsdk::uid_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8ec0e86208531827f0014a30bb4ae395) *uid*, const [agora::linuxsdk::RemoteAudioStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-remote-audio-stats) & *stats*)
+
+</ApiSignature>
 
 远端音频流统计信息回调。
 
@@ -525,8 +591,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRecordingStats()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onRecordingStats ( const [agora::linuxsdk::RecordingStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-recording-stats) & *stats*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onRecordingStats(const [agora::linuxsdk::RecordingStats](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-recording-stats) & *stats*)
+
+</ApiSignature>
 
 录制统计信息回调。
 
@@ -544,8 +613,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onLocalUserRegistered()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onLocalUserRegistered ( uid_t *uid*, const char * *userAccount*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onLocalUserRegistered(uid_t *uid*, const char * *userAccount*)
+
+</ApiSignature>
 
 该回调表示本地用户已成功注册 User Account。
 
@@ -568,8 +640,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onUserInfoUpdated()
 
-| virtual void agora::recording::IRecordingEngineEventHandler::onUserInfoUpdated ( uid_t *uid*, const [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) & *info*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::recording::IRecordingEngineEventHandler::onUserInfoUpdated(uid_t *uid*, const [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) & *info*)
+
+</ApiSignature>
 
 该回调提示远端用户的信息已更新。
 

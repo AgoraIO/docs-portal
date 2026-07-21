@@ -42,32 +42,70 @@ debug: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPar
 
 #### Type declaration
 
-- - (...data:any[]):void
-  - (...data:any[]):void
-  - (message?:any,...optionalParams:any[]):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+(...data: any[]): void
 
-  Returns void
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+<ApiSignature>
 
-  Returns void
+(...data: any[]): void
 
-  :::info[since]
-  v8.0.0
-  :::
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="message" type="any" optional />
-  <Parameter name="...optionalParams" type="any[]" required />
-  </ParameterList>
+<ApiSignature>
 
-  Returns void
+(message?: any, ...optionalParams: any[]): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+:::info[since]
+v8.0.0
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="any" optional />
+<Parameter name="...optionalParams" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="error"></a>
 
@@ -77,43 +115,81 @@ error: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPar
 
 #### Type declaration
 
-- - (...data:any[]):void
-  - (...data:any[]):void
-  - (message?:any,...optionalParams:any[]):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+(...data: any[]): void
 
-  Returns void
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+<ApiSignature>
 
-  Returns void
+(...data: any[]): void
 
-  Prints to `stderr` with newline. Multiple arguments can be passed, with the
-  first used as the primary message and all additional used as substitution
-  values similar to [`printf(3)`](http://man7.org/linux/man-pages/man3/printf.3.html) (the arguments are all passed to `util.format()`).
+</ApiSignature>
 
-  ```javascript
-  const code = 5;console.error('error #%d', code);// Prints: error #5, to stderrconsole.error('error', code);// Prints: error 5, to stderr
-  ```
+<ApiSignature>
 
-  If formatting elements (e.g. `%d`) are not found in the first string then `util.inspect()` is called on each argument and the resulting string
-  values are concatenated. See `util.format()` for more information.
+(message?: any, ...optionalParams: any[]): void
 
-  :::info[since]
-  v0.1.100
-  :::
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="message" type="any" optional />
-  <Parameter name="...optionalParams" type="any[]" required />
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
 
-  Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+Prints to `stderr` with newline. Multiple arguments can be passed, with the
+first used as the primary message and all additional used as substitution
+values similar to [`printf(3)`](http://man7.org/linux/man-pages/man3/printf.3.html) (the arguments are all passed to `util.format()`).
+
+```javascript
+const code = 5;console.error('error #%d', code);// Prints: error #5, to stderrconsole.error('error', code);// Prints: error 5, to stderr
+```
+
+If formatting elements (e.g. `%d`) are not found in the first string then `util.inspect()` is called on each argument and the resulting string
+values are concatenated. See `util.format()` for more information.
+
+:::info[since]
+v0.1.100
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="any" optional />
+<Parameter name="...optionalParams" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="info"></a>
 
@@ -123,34 +199,72 @@ info: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 
 #### Type declaration
 
-- - (...data:any[]):void
-  - (...data:any[]):void
-  - (message?:any,...optionalParams:any[]):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+(...data: any[]): void
 
-  Returns void
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+<ApiSignature>
 
-  Returns void
+(...data: any[]): void
 
-  The `console.info()` function is an alias for \{@link log\}.
+</ApiSignature>
 
-  :::info[since]
-  v0.1.100
-  :::
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="message" type="any" optional />
-  <Parameter name="...optionalParams" type="any[]" required />
-  </ParameterList>
+(message?: any, ...optionalParams: any[]): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+The `console.info()` function is an alias for \{@link log\}.
+
+:::info[since]
+v0.1.100
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="any" optional />
+<Parameter name="...optionalParams" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="warn"></a>
 
@@ -160,34 +274,72 @@ warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 
 #### Type declaration
 
-- - (...data:any[]):void
-  - (...data:any[]):void
-  - (message?:any,...optionalParams:any[]):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+(...data: any[]): void
 
-  Returns void
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...data" type="any[]" required />
-  </ParameterList>
+<ApiSignature>
 
-  Returns void
+(...data: any[]): void
 
-  The `console.warn()` function is an alias for [error](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error).
+</ApiSignature>
 
-  :::info[since]
-  v0.1.100
-  :::
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="message" type="any" optional />
-  <Parameter name="...optionalParams" type="any[]" required />
-  </ParameterList>
+(message?: any, ...optionalParams: any[]): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="...data" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+The `console.warn()` function is an alias for [error](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger#error).
+
+:::info[since]
+v0.1.100
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="any" optional />
+<Parameter name="...optionalParams" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -195,7 +347,11 @@ warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 
 ### setLogLevel
 
-- setLogLevel(logLevel:[LogLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)):void
+<ApiSignature>
+
+setLogLevel(logLevel: [LogLevel](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-logger-type-og-level)): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="logLevel" required>
@@ -209,4 +365,12 @@ warn: \{(...data:any[]):void;(...data:any[]):void;(message?:any, ...optionalPara
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

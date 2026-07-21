@@ -46,11 +46,23 @@ _migration:
 
 ### constructor
 
-- new AGRtmManager():[AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+<ApiSignature>
+
+new AGRtmManager(): [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+</ApiSignature>
 
 Overrides EventEmitter.constructor
 
-Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Accessors
 
@@ -58,25 +70,59 @@ Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-refe
 
 ### client
 
-- get client():RtmClient
+<ApiSignature>
 
-Returns RtmClient
+get client(): RtmClient
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+RtmClient
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="connectionState"></a>
 
 ### connectionState
 
-- get connectionState():[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+<ApiSignature>
 
-Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+get connectionState(): [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="logFilter"></a>
 
 ### logFilter
 
-- get logFilter():\{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
+<ApiSignature>
 
-Returns \{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
+get logFilter(): \{ debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean &#125;">
 <Parameter name="debug" type="boolean" required />
@@ -86,13 +132,27 @@ Returns \{debug:boolean;error:boolean;info:boolean;track:boolean;warn:boolean\}
 <Parameter name="warn" type="boolean" required />
 </ParameterList>
 
+</ApiReturns>
+
 <a id="sessionId"></a>
 
 ### sessionId
 
-- get sessionId():string
+<ApiSignature>
 
-Returns string
+get sessionId(): string
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -100,27 +160,55 @@ Returns string
 
 ### createObserverChannel
 
-- createObserverChannel(channelName:string):[RtmChannel,EventEmitter]
+<ApiSignature>
+
+createObserverChannel(channelName: string): [RtmChannel, EventEmitter]
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="channelName" type="string" required />
 </ParameterList>
 
-Returns [RtmChannel,EventEmitter]
+<ApiReturns>
+
+<ApiReturnType>
+
+[RtmChannel, EventEmitter]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="destroyRtm"></a>
 
 ### destroyRtm
 
-- destroyRtm():void
+<ApiSignature>
 
-Returns void
+destroyRtm(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="join"></a>
 
 ### join
 
-- join(channel:RtmChannel, bus:EventEmitter, channelName:string):Promise&lt;void&gt;
+<ApiSignature>
+
+join(channel: RtmChannel, bus: EventEmitter, channelName: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="channel" type="RtmChannel" required />
@@ -128,25 +216,49 @@ Returns void
 <Parameter name="channelName" type="string" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leave"></a>
 
 ### leave
 
-- leave(channelName:string):Promise&lt;void&gt;
+<ApiSignature>
+
+leave(channelName: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="channelName" type="string" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="login"></a>
 
 ### login
 
-- login(token:string, uid:string, configs:[AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)):Promise&lt;void&gt;
+<ApiSignature>
+
+login(token: string, uid: string, configs: [AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="token" type="string" required />
@@ -162,21 +274,45 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="reset"></a>
 
 ### reset
 
-- reset():void
+<ApiSignature>
 
-Returns void
+reset(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendChannelMessage"></a>
 
 ### sendChannelMessage
 
-- sendChannelMessage(channelName:string, message:any, options:any):Promise&lt;void&gt;
+<ApiSignature>
+
+sendChannelMessage(channelName: string, message: any, options: any): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="channelName" type="string" required />
@@ -184,13 +320,25 @@ Returns void
 <Parameter name="options" type="any" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendPeerMessage"></a>
 
 ### sendPeerMessage
 
-- sendPeerMessage(peerId:string, message:any, options:any):Promise&lt;boolean&gt;
+<ApiSignature>
+
+sendPeerMessage(peerId: string, message: any, options: any): Promise&lt;boolean&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="peerId" type="string" required />
@@ -198,4 +346,12 @@ Returns Promise&lt;void&gt;
 <Parameter name="options" type="any" required />
 </ParameterList>
 
-Returns Promise&lt;boolean&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

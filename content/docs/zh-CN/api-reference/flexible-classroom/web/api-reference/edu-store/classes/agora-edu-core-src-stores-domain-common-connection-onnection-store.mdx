@@ -78,21 +78,45 @@ RTC 连接状态
 
 ### scene
 
-- get scene():undefined|[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ApiSignature>
+
+get scene(): undefined | [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ApiSignature>
 
 当前场景对象
 
-Returns undefined|[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sceneId"></a>
 
 ### sceneId
 
-- get sceneId():string
+<ApiSignature>
+
+get sceneId(): string
+
+</ApiSignature>
 
 当前场景 ID
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -100,7 +124,11 @@ Returns string
 
 ### addCloudProxyObserver
 
-- addCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
+<ApiSignature>
+
+addCloudProxyObserver(observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)): void
+
+</ApiSignature>
 
 添加一个云代理观察者，joinClassroom 成功调用后才能调用此方法
 
@@ -116,13 +144,25 @@ Returns string
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="checkIn"></a>
 
 ### checkIn
 
-- checkIn(sessionInfo:[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info), sceneType:[SceneType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-cene-type), mode:"check-in"|"entry"):Promise&lt;void&gt;
+<ApiSignature>
+
+checkIn(sessionInfo: [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info), sceneType: [SceneType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-cene-type), mode: "check-in" | "entry"): Promise&lt;void&gt;
+
+</ApiSignature>
 
 进入房间预检，进入房间前请先调用此方法
 
@@ -152,25 +192,49 @@ scene 类型
 <Parameter name="mode" type="&quot;check-in&quot; | &quot;entry&quot;" required />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getEngine"></a>
 
 ### getEngine
 
-- getEngine():[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+<ApiSignature>
+
+getEngine(): [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+
+</ApiSignature>
 
 获取当前 RteEngine，调用此方法获取实例前需要先调用 connectionStore.initialize， 否则将抛出异常
 
-Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-engine-index-gora-rte-engine)
+
+</ApiReturnType>
 
 RTE engine
+
+</ApiReturns>
 
 <a id="getRtcState"></a>
 
 ### getRtcState
 
-- getRtcState(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+<ApiSignature>
+
+getRtcState(connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+</ApiSignature>
 
 获取房间 RTC 状态
 
@@ -186,23 +250,47 @@ RTE engine
 </Parameter>
 </ParameterList>
 
-Returns [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="initialize"></a>
 
 ### initialize
 
-- initialize():void
+<ApiSignature>
+
+initialize(): void
+
+</ApiSignature>
 
 初始化 RTE engine
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="joinClassroom"></a>
 
 ### joinClassroom
 
-- joinClassroom(options?:\{mode:"check-in"|"entry"\}):Promise&lt;undefined&gt;
+<ApiSignature>
+
+joinClassroom(options?: \{ mode: "check-in" | "entry" \}): Promise&lt;undefined&gt;
+
+</ApiSignature>
 
 加入房间
 
@@ -216,13 +304,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;undefined&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;undefined&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="joinRTC"></a>
 
 ### joinRTC
 
-- joinRTC(options?:[AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)):Promise&lt;void&gt;
+<ApiSignature>
+
+joinRTC(options?: [AgoraRteSceneJoinRTCOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-scene-index-gora-rte-scene-join-rtcoptions)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 加入 RTC 频道
 
@@ -240,13 +340,25 @@ RTC 配置
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="joinSubRoom"></a>
 
 ### joinSubRoom
 
-- joinSubRoom(roomUuid:string):Promise&lt;void&gt;
+<ApiSignature>
+
+joinSubRoom(roomUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 加入子房间
 
@@ -258,13 +370,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leaveClassroom"></a>
 
 ### leaveClassroom
 
-- leaveClassroom(reason:[LeaveReason](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-eave-reason), promise?:Promise&lt;void&gt;):Promise&lt;void&gt;
+<ApiSignature>
+
+leaveClassroom(reason: [LeaveReason](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-connection-eave-reason), promise?: Promise&lt;void&gt;): Promise&lt;void&gt;
+
+</ApiSignature>
 
 离开房间
 
@@ -283,13 +407,25 @@ Returns Promise&lt;void&gt;
 <Parameter name="promise" type="Promise &amp; lt;void &amp; gt;" optional />
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leaveRTC"></a>
 
 ### leaveRTC
 
-- leaveRTC(connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
+<ApiSignature>
+
+leaveRTC(connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 离开 RTC 频道
 
@@ -307,23 +443,47 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leaveSubRoom"></a>
 
 ### leaveSubRoom
 
-- leaveSubRoom():Promise&lt;void&gt;
+<ApiSignature>
+
+leaveSubRoom(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 离开子房间
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeCloudProxyObserver"></a>
 
 ### removeCloudProxyObserver
 
-- removeCloudProxyObserver(observer:[AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)):void
+<ApiSignature>
+
+removeCloudProxyObserver(observer: [AgoraCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gora-cloud-proxy-observer)): void
+
+</ApiSignature>
 
 移除一个云代理观察者，joinClassroom 成功调用后才能调用此方法
 
@@ -339,4 +499,12 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

@@ -253,6 +253,12 @@ function createState(options) {
       oxygen: { fields: 0, lists: 0 },
       typedoc: { fields: 0, lists: 0 },
     },
+    structuredApiMembers: {
+      appledoc: { returns: 0, signatures: 0 },
+      doxygen: { returns: 0, signatures: 0 },
+      oxygen: { returns: 0, signatures: 0 },
+      typedoc: { returns: 0, signatures: 0 },
+    },
   };
 }
 
@@ -430,6 +436,46 @@ async function renderInlineNode($, node, state, options = {}) {
   return content;
 }
 
+async function renderTypeDocInlineNode($, node, state) {
+  if (node.type === 'text') return escapeMdxText(node.data ?? '');
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  if (name === 'wbr') return '';
+  let content = '';
+  for (const child of element.contents().toArray()) {
+    content += await renderTypeDocInlineNode($, child, state);
+  }
+  if (name === 'a') {
+    const rawHref = element.attr('href');
+    if (!rawHref) return content;
+    const rewritten = rewriteLegacyHref(rawHref, state);
+    if (rewritten.warning) state.warnings.push(rewritten.warning);
+    if (!rewritten.href) return content;
+    const label = content.trim();
+    return label ? `[${label}](${rewritten.href})` : rewritten.href;
+  }
+  if (name === 'code' || name === 'kbd') {
+    const codeContent = content.trim();
+    const linkedCode = codeContent.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
+    if (linkedCode) {
+      return `[${renderCodeSpan(linkedCode[1])}](${linkedCode[2]})`;
+    }
+    return renderCodeSpan(codeContent);
+  }
+  if (name === 'strong' || name === 'b') return `**${content.trim()}**`;
+  if (name === 'em' || name === 'i') return `*${content.trim()}*`;
+  return content;
+}
+
+async function renderTypeDocInlineNodes($, nodes, state) {
+  let value = '';
+  for (const node of nodes) {
+    value += await renderTypeDocInlineNode($, node, state);
+  }
+  return value.replace(/\s+/g, ' ').trim();
+}
+
 function escapeMdxJsxAttribute(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -506,6 +552,110 @@ function recordStructuredParameterList(state, generator, fieldCount) {
   state.structuredParameters[generator].lists += 1;
 }
 
+function renderRichMdxComponent(name, body, attributes = '') {
+  return `<${name}${attributes}>\n\n${body}\n\n</${name}>`;
+}
+
+function normalizeGeneratedSignature(
+  value,
+  { compactOpeningParenthesis = true } = {},
+) {
+  let normalized = String(value ?? '').replace(/\s+/g, ' ');
+  if (compactOpeningParenthesis) {
+    normalized = normalized.replace(/\s+\(/g, '(');
+  }
+  return normalized
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+,/g, ',')
+    .replace(/,\s*/g, ', ')
+    .replace(/\s+\)/g, ')')
+    .replace(/\s+;/g, ';')
+    .trim();
+}
+
+async function parseDoxygenSignature($, container, state) {
+  const table = container.find('table.memname').first();
+  if (table.length === 0) return '';
+  const rows = table.children('tr').add(table.children('tbody').children('tr'));
+  const rowValues = [];
+  for (const row of rows.toArray()) {
+    const cells = [];
+    for (const cell of $(row).children('th, td').toArray()) {
+      const rendered = await renderTypeDocInlineNodes(
+        $,
+        $(cell).contents().toArray(),
+        state,
+      );
+      if (rendered) cells.push(rendered);
+    }
+    if (cells.length > 0) rowValues.push(cells.join(' '));
+  }
+  const signature = normalizeGeneratedSignature(rowValues.join(' '));
+  if (!signature) return '';
+  const labels = [
+    ...new Set(
+      container
+        .find('.mlabels-right .mlabel')
+        .toArray()
+        .map((node) => cleanText($(node).text()))
+        .filter(Boolean),
+    ),
+  ];
+  state.structuredApiMembers.doxygen.signatures += 1;
+  return renderRichMdxComponent(
+    'ApiSignature',
+    signature,
+    parameterAttribute('labels', labels.join(' ')),
+  );
+}
+
+async function parseAppledocSignature($, container, state) {
+  const code = container.children('code').first();
+  if (code.length === 0) return '';
+  const signature = normalizeGeneratedSignature(
+    await renderTypeDocInlineNodes($, code.contents().toArray(), state),
+    { compactOpeningParenthesis: false },
+  );
+  if (!signature) return '';
+  state.structuredApiMembers.appledoc.signatures += 1;
+  return renderRichMdxComponent(
+    'ApiSignature',
+    signature.replace(/^([-+])\s/, '\\$1 '),
+  );
+}
+
+async function parseTypeDocSignatures($, list, state) {
+  const signatures = [];
+  for (const item of list.children('li').toArray()) {
+    const signature = await renderTypeDocInlineNodes(
+      $,
+      $(item).contents().toArray(),
+      state,
+    );
+    if (signature) signatures.push(signature);
+  }
+  state.structuredApiMembers.typedoc.signatures += signatures.length;
+  return signatures
+    .map((signature) => renderRichMdxComponent('ApiSignature', signature))
+    .join('\n\n');
+}
+
+async function parseTypeDocReturn($, title, state, description = '') {
+  const renderedTitle = await renderTypeDocInlineNodes(
+    $,
+    title.contents().toArray(),
+    state,
+  );
+  const returnType = renderedTitle.replace(/^Returns\b\s*/i, '').trim();
+  if (!returnType) return '';
+  state.structuredApiMembers.typedoc.returns += 1;
+  const typeBlock = renderRichMdxComponent('ApiReturnType', returnType);
+  return renderRichMdxComponent(
+    'ApiReturns',
+    [typeBlock, description].filter(Boolean).join('\n\n'),
+  );
+}
+
 async function parseTypeDocParameters($, list, state) {
   const parameters = [];
   const isTypeParameterList = list.hasClass('tsd-type-parameters');
@@ -554,8 +704,20 @@ async function parseTypeDocParameters($, list, state) {
       $(node).remove();
     }
   });
-  const fallback = await renderList($, fallbackList, state, false);
-  return [structured, fallback].filter(Boolean).join('\n\n');
+  const callbackItems = fallbackList
+    .children('li.tsd-parameter-siganture, li.tsd-parameter-signature')
+    .toArray();
+  const callbackBlocks = [];
+  for (const callbackItem of callbackItems) {
+    const callback = $(callbackItem);
+    callbackBlocks.push(await renderChildren($, callback, state));
+    callback.remove();
+  }
+  const fallback =
+    fallbackList.children('li').length > 0
+      ? await renderList($, fallbackList, state, false)
+      : '';
+  return [structured, ...callbackBlocks, fallback].filter(Boolean).join('\n\n');
 }
 
 async function parseOxygenParameters($, list, state) {
@@ -780,6 +942,7 @@ async function renderList($, element, state, ordered) {
         const isTypeDocStructuralList =
           nestedList.hasClass('tsd-descriptions') ||
           nestedList.hasClass('tsd-parameters') ||
+          nestedList.hasClass('tsd-signatures') ||
           nestedList.hasClass('tsd-type-parameters');
         blocks.push(
           isTypeDocStructuralList
@@ -829,7 +992,10 @@ async function renderList($, element, state, ordered) {
 async function renderUnwrappedListItems($, element, state) {
   const blocks = [];
   for (const item of element.children('li').toArray()) {
-    const body = await renderChildren($, $(item), state);
+    const itemElement = $(item);
+    const body = itemElement.hasClass('tsd-description')
+      ? await renderTypeDocDescription($, itemElement, state)
+      : await renderChildren($, itemElement, state);
     if (body) blocks.push(body);
   }
   return blocks.join('\n\n');
@@ -960,10 +1126,10 @@ async function renderRelatedLinks($, element, state) {
   return blocks.filter(Boolean).join('\n\n');
 }
 
-async function renderChildren($, element, state) {
+async function renderNodeSequence($, nodes, state) {
   const blocks = [];
   let inline = '';
-  for (const child of element.contents().toArray()) {
+  for (const child of nodes) {
     const name = elementName(child);
     const isHeadingAnchor =
       name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
@@ -1014,6 +1180,37 @@ async function renderChildren($, element, state) {
   return normalizeBlocks(blocks.filter(Boolean).join('\n\n'));
 }
 
+async function renderChildren($, element, state) {
+  return renderNodeSequence($, element.contents().toArray(), state);
+}
+
+async function renderTypeDocDescription($, item, state) {
+  const nodes = item.contents().toArray();
+  const returnsIndex = nodes.findIndex(
+    (node) =>
+      elementName(node) === 'h4' && $(node).hasClass('tsd-returns-title'),
+  );
+  if (returnsIndex < 0) return renderNodeSequence($, nodes, state);
+
+  const beforeReturns = await renderNodeSequence(
+    $,
+    nodes.slice(0, returnsIndex),
+    state,
+  );
+  const description = await renderNodeSequence(
+    $,
+    nodes.slice(returnsIndex + 1),
+    state,
+  );
+  const returns = await parseTypeDocReturn(
+    $,
+    $(nodes[returnsIndex]),
+    state,
+    description,
+  );
+  return normalizeBlocks([beforeReturns, returns].filter(Boolean).join('\n\n'));
+}
+
 async function renderBlockNode($, node, state) {
   if (node.type === 'text') return escapeMdxText(cleanText(node.data));
   if (node.type !== 'tag') return '';
@@ -1037,6 +1234,17 @@ async function renderBlockNode($, node, state) {
       ),
     );
     return anchor;
+  }
+  const isDoxygenSignature = name === 'div' && element.hasClass('memproto');
+  if (isDoxygenSignature) {
+    const signature = await parseDoxygenSignature($, element, state);
+    if (signature) return [anchor, signature].filter(Boolean).join('\n\n');
+  }
+  const isAppledocSignature =
+    name === 'div' && element.hasClass('method-declaration');
+  if (isAppledocSignature) {
+    const signature = await parseAppledocSignature($, element, state);
+    if (signature) return [anchor, signature].filter(Boolean).join('\n\n');
   }
   const isAppledocParameters =
     name === 'div' &&
@@ -1072,10 +1280,9 @@ async function renderBlockNode($, node, state) {
       element.hasClass('tsd-parameters-title') ||
       element.hasClass('tsd-type-parameters-title');
     if (isParameterTitle) return anchor;
-    const label = cleanText(
-      await renderInlineNodes($, element.contents().toArray(), state),
-    );
-    return [anchor, label].filter(Boolean).join('\n\n');
+    return [anchor, await parseTypeDocReturn($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
   }
   const isDoxygenMemberTitle = name === 'h2' && element.hasClass('memtitle');
   if (isDoxygenMemberTitle) {
@@ -1153,6 +1360,11 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'ul' || name === 'ol') {
+    if (name === 'ul' && element.hasClass('tsd-signatures')) {
+      return [anchor, await parseTypeDocSignatures($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
     if (
       name === 'ul' &&
       (element.hasClass('tsd-parameters') ||
@@ -1341,6 +1553,7 @@ export async function convertHtmlToMdx({
     body: normalizedLinks.source,
     fragments,
     assets: state.assets,
+    structuredApiMembers: state.structuredApiMembers,
     structuredParameters: state.structuredParameters,
     warnings: state.warnings,
     sourceTextLength: cleanText(article.text()).length,

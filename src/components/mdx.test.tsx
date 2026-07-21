@@ -20,6 +20,9 @@ import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
   getMDXComponents,
   MDXAccordionProvider,
   Parameter,
@@ -125,6 +128,17 @@ type ParameterComponent = ComponentType<{
   type?: ReactNode;
 }>;
 type ParameterTypeComponent = ComponentType<{
+  children: ReactNode;
+}>;
+type ApiSignatureComponent = ComponentType<{
+  children: ReactNode;
+  labels?: string;
+}>;
+type ApiReturnsComponent = ComponentType<{
+  children: ReactNode;
+  title?: ReactNode;
+}>;
+type ApiReturnTypeComponent = ComponentType<{
   children: ReactNode;
 }>;
 
@@ -644,6 +658,57 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 
+  it('renders API signatures and return values as scroll-safe rich blocks', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Signature = components.ApiSignature as ApiSignatureComponent;
+    const Returns = components.ApiReturns as ApiReturnsComponent;
+    const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
+
+    render(
+      <>
+        <Signature labels="extern static">
+          <p>
+            onPodium(userUuid: string, source?:{' '}
+            <a href="/zh-CN/api-reference/podium-source">PodiumSource</a>):{' '}
+            Promise&lt;void&gt;
+          </p>
+        </Signature>
+        <Returns>
+          <ReturnType>
+            <p>
+              Promise&lt;
+              <a href="/zh-CN/api-reference/podium-result">PodiumResult</a>
+              &gt;
+            </p>
+          </ReturnType>
+          <p>上台操作完成后的结果。</p>
+        </Returns>
+      </>,
+    );
+
+    const signature = screen
+      .getByText(/onPodium\(userUuid/)
+      .closest('[data-api-signature]');
+    const returns = screen.getByText('Returns').closest('[data-api-returns]');
+
+    expect(signature).toBeInTheDocument();
+    expect(signature?.querySelector('ul')).toBeNull();
+    expect(within(signature as HTMLElement).getByText('extern')).toBeVisible();
+    expect(within(signature as HTMLElement).getByText('static')).toBeVisible();
+    expect(
+      within(signature as HTMLElement).getByRole('link', {
+        name: 'PodiumSource',
+      }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/podium-source');
+    expect(returns).toHaveTextContent('Promise<PodiumResult>');
+    expect(returns).toHaveTextContent('上台操作完成后的结果。');
+    expect(
+      within(returns as HTMLElement).getByRole('link', {
+        name: 'PodiumResult',
+      }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/podium-result');
+  });
+
   it('registers platform sentinels and internal platform renderers', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
@@ -653,6 +718,9 @@ describe('common MDX registry', () => {
     expect(components.ParameterList).toBeDefined();
     expect(components.Parameter).toBeDefined();
     expect(components.ParameterType).toBeDefined();
+    expect(components.ApiSignature).toBeDefined();
+    expect(components.ApiReturns).toBeDefined();
+    expect(components.ApiReturnType).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();
@@ -663,6 +731,9 @@ describe('common MDX registry', () => {
 
     expect(ParameterList).toBe(components.ParameterList);
     expect(Parameter).toBe(components.Parameter);
+    expect(ApiSignature).toBe(components.ApiSignature);
+    expect(ApiReturns).toBe(components.ApiReturns);
+    expect(ApiReturnType).toBe(components.ApiReturnType);
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {

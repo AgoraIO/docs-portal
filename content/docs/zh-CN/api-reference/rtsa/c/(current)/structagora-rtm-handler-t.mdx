@@ -31,8 +31,11 @@ RTM 事件处理回调。
 
 ### on_rtm_data
 
-| void(* on_rtm_data) (const char *rtm_uid, const void *msg, size_t msg_len) |
-| --- |
+<ApiSignature>
+
+void(* on_rtm_data)(const char *rtm_uid, const void *msg, size_t msg_len)
+
+</ApiSignature>
 
 RTM 消息回调。
 
@@ -58,8 +61,11 @@ RTM 消息回调。
 
 ### on_rtm_event
 
-| void(* on_rtm_event) (const char *rtm_uid, [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) event_type, [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) err_code) |
-| --- |
+<ApiSignature>
+
+void(* on_rtm_event)(const char *rtm_uid, [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) event_type, [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) err_code)
+
+</ApiSignature>
 
 RTM 事件回调。
 
@@ -85,8 +91,11 @@ RTM 用户 ID。
 
 ### on_rtm_send_data_result
 
-| void(* on_rtm_send_data_result) (const char *rtm_uid, uint32_t msg_id, [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) state) |
-| --- |
+<ApiSignature>
+
+void(* on_rtm_send_data_result)(const char *rtm_uid, uint32_t msg_id, [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) state)
+
+</ApiSignature>
 
 [agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) 方法调用结果回调。
 

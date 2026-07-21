@@ -44,13 +44,25 @@ AbortCallback: (e:Error)=&gt;Promise&lt;void&gt;|void
 
 #### Type declaration
 
-- - (e:Error):Promise&lt;void&gt;|void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="e" type="Error" required />
-  </ParameterList>
+(e: Error): Promise&lt;void&gt; | void
 
-  Returns Promise&lt;void&gt;|void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="e" type="Error" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt; | void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="AnyFunction"></a>
 
@@ -60,13 +72,25 @@ AnyFunction: (...args:any[])=&gt;unknown
 
 #### Type declaration
 
-- - (...args:any[]):unknown
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="...args" type="any[]" required />
-  </ParameterList>
+(...args: any[]): unknown
 
-  Returns unknown
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+unknown
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="AttemptFailCallback"></a>
 
@@ -76,21 +100,33 @@ AttemptFailCallback: (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-clas
 
 #### Type declaration
 
-- - (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\}):Promise&lt;boolean&gt;|boolean
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="args" required>
+(args: [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{ timeFn: any \}): Promise&lt;boolean&gt; | boolean
 
-  <ParameterType>
+</ApiSignature>
 
-  [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{timeFn:any\}
+<ParameterList title="Parameters">
+<Parameter name="args" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{timeFn:any\}
 
-  Returns Promise&lt;boolean&gt;|boolean
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt; | boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="RetryAttemptArgs"></a>
 
@@ -135,7 +171,11 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 
 ### Const arr2Map
 
-- arr2Map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Map&lt;string,T&gt;
+<ApiSignature>
+
+arr2Map&lt;T&gt;(arr: T[], fnKey: (ele: T) =&gt; string): Map&lt;string, T&gt;
+
+</ApiSignature>
 
 <ParameterList title="Type parameters">
 <Parameter name="T" />
@@ -145,24 +185,48 @@ RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boole
 <Parameter name="arr" type="T[]" required />
 <Parameter name="fnKey" type="(ele:T)= &amp; gt;string" required>
 
-- - (ele:T):string
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="ele" type="T" required />
-  </ParameterList>
+(ele: T): string
 
-  Returns string
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ele" type="T" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Map&lt;string,T&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, T&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="arr2map"></a>
 
 ### Const arr2map
 
-- arr2map&lt;T&gt;(arr:T[], fnKey:(ele:T)=&gt;string):Record&lt;string,T&gt;
+<ApiSignature>
+
+arr2map&lt;T&gt;(arr: T[], fnKey: (ele: T) =&gt; string): Record&lt;string, T&gt;
+
+</ApiSignature>
 
 <ParameterList title="Type parameters">
 <Parameter name="T" />
@@ -172,67 +236,139 @@ Returns Map&lt;string,T&gt;
 <Parameter name="arr" type="T[]" required />
 <Parameter name="fnKey" type="(ele:T)= &amp; gt;string" required>
 
-- - (ele:T):string
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="ele" type="T" required />
-  </ParameterList>
+(ele: T): string
 
-  Returns string
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ele" type="T" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Record&lt;string,T&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Record&lt;string, T&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="isElectron"></a>
 
 ### Const isElectron
 
-- isElectron():boolean
+<ApiSignature>
 
-Returns boolean
+isElectron(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="jsonstring"></a>
 
 ### Const jsonstring
 
-- jsonstring(json:unknown):string
+<ApiSignature>
+
+jsonstring(json: unknown): string
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="json" type="unknown" required />
 </ParameterList>
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="printarr"></a>
 
 ### Const printarr
 
-- printarr(arr:unknown[], keyFn?:(i:unknown)=&gt;string):string
+<ApiSignature>
+
+printarr(arr: unknown[], keyFn?: (i: unknown) =&gt; string): string
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="arr" type="unknown[]" required />
 <Parameter name="keyFn" type="(i:unknown)= &amp; gt;string" optional>
 
-- - (i:unknown):string
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="i" type="unknown" required />
-  </ParameterList>
+(i: unknown): string
 
-  Returns string
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="i" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="retryAttempt"></a>
 
 ### Const retryAttempt
 
-- retryAttempt(fn:["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args:unknown[], opts?:[RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)):[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiSignature>
+
+retryAttempt(fn: ["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args: unknown[], opts?: [RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)): [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="fn" required>
@@ -256,16 +392,36 @@ Returns string
 </Parameter>
 </ParameterList>
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiReturns>
+
+<ApiReturnType>
+
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sleep"></a>
 
 ### Const sleep
 
-- sleep(ms:number):Promise&lt;unknown&gt;
+<ApiSignature>
+
+sleep(ms: number): Promise&lt;unknown&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="ms" type="number" required />
 </ParameterList>
 
-Returns Promise&lt;unknown&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;unknown&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

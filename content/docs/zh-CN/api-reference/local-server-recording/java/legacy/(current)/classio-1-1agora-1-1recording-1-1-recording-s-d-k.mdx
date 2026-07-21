@@ -40,8 +40,11 @@ _migration:
 
 ### RecordingSDK()
 
-| io.agora.recording.RecordingSDK.RecordingSDK | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+io.agora.recording.RecordingSDK.RecordingSDK()
+
+</ApiSignature>
 
 录制 SDK 可调用的主要方法。
 
@@ -51,8 +54,11 @@ _migration:
 
 ### registerOberserver()
 
-| void io.agora.recording.RecordingSDK.registerOberserver | ( | [RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) | *recordingEventHandler* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingSDK.registerOberserver([RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) *recordingEventHandler*)
+
+</ApiSignature>
 
 注册观测器用来接收录制事件的通知。
 
@@ -60,8 +66,11 @@ _migration:
 
 ### unRegisterOberserver()
 
-| void io.agora.recording.RecordingSDK.unRegisterOberserver | ( | [RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) | *recordingEventHandler* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingSDK.unRegisterOberserver([RecordingEventHandler](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler) *recordingEventHandler*)
+
+</ApiSignature>
 
 删除以前注册的观测器。
 
@@ -69,14 +78,11 @@ _migration:
 
 ### createChannel()
 
-| native boolean io.agora.recording.RecordingSDK.createChannel | ( | String | *appId*, |
-| --- | --- | --- | --- |
-|  |  | String | *channelKey*, |
-|  |  | String | *name*, |
-|  |  | int | *uid*, |
-|  |  | [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) | *config*, |
-|  |  | int | *logLevel* |
-|  | ) |  |  |
+<ApiSignature>
+
+native boolean io.agora.recording.RecordingSDK.createChannel(String *appId*, String *channelKey*, String *name*, int *uid*, [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) *config*, int *logLevel*)
+
+</ApiSignature>
 
 该方法创建并让录制端加入频道，随后开始录制。
 
@@ -132,14 +138,11 @@ _migration:
 
 ### createChannelWithUserAccount()
 
-| native boolean io.agora.recording.RecordingSDK.createChannelWithUserAccount | ( | String | *appId*, |
-| --- | --- | --- | --- |
-|  |  | String | *channelKey*, |
-|  |  | String | *name*, |
-|  |  | String | *userAccount*, |
-|  |  | [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) | *config*, |
-|  |  | int | *logLevel* |
-|  | ) |  |  |
+<ApiSignature>
+
+native boolean io.agora.recording.RecordingSDK.createChannelWithUserAccount(String *appId*, String *channelKey*, String *name*, String *userAccount*, [RecordingConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config) *config*, int *logLevel*)
+
+</ApiSignature>
 
 该方法允许录制端使用 User Account 加入频道。
 
@@ -204,8 +207,11 @@ _migration:
 
 ### getUidByUserAccount()
 
-| long io.agora.recording.RecordingSDK.getUidByUserAccount | ( | String | *userAccount* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+long io.agora.recording.RecordingSDK.getUidByUserAccount(String *userAccount*)
+
+</ApiSignature>
 
 该方法通过 User Account 获取 UID。
 
@@ -229,8 +235,11 @@ _migration:
 
 ### getUserAccountByUid()
 
-| String io.agora.recording.RecordingSDK.getUserAccountByUid | ( | int | *uid* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+String io.agora.recording.RecordingSDK.getUserAccountByUid(int *uid*)
+
+</ApiSignature>
 
 该方法通过 UID 获取 User Account。
 
@@ -254,8 +263,11 @@ _migration:
 
 ### leaveChannel()
 
-| synchronized boolean io.agora.recording.RecordingSDK.leaveChannel | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+synchronized boolean io.agora.recording.RecordingSDK.leaveChannel()
+
+</ApiSignature>
 
 录制端退出频道，并释放占用的线程资源。
 
@@ -268,8 +280,11 @@ _migration:
 
 ### setVideoMixingLayout()
 
-| int io.agora.recording.RecordingSDK.setVideoMixingLayout | ( | [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout) | *layout* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.setVideoMixingLayout([VideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-mixing-layout) *layout*)
+
+</ApiSignature>
 
 该方法设置视频合流布局。
 
@@ -294,11 +309,11 @@ _migration:
 
 ### updateWatermarkConfigs()
 
-| int io.agora.recording.RecordingSDK.updateWatermarkConfigs | ( | [LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config)[] | *literaWms*, |
-| --- | --- | --- | --- |
-|  |  | [TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config)[] | *timestampWms*, |
-|  |  | [ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config)[] | *imgWms* |
-|  | ) |  |  |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.updateWatermarkConfigs([LiteraWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-litera-watermark-config)[] *literaWms*, [TimestampWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-timestamp-watermark-config)[] *timestampWms*, [ImageWatermarkConfig](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-image-watermark-config)[] *imgWms*)
+
+</ApiSignature>
 
 该方法添加、更新或删除水印设置。
 
@@ -340,8 +355,11 @@ _migration:
 
 ### updateSubscribeVideoUids()
 
-| int io.agora.recording.RecordingSDK.updateSubscribeVideoUids | ( | int[] | *uids* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.updateSubscribeVideoUids(int[] *uids*)
+
+</ApiSignature>
 
 该方法允许录制 SDK 只录制指定 UID 的视频。
 
@@ -366,8 +384,11 @@ UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### updateSubscribeAudioUids()
 
-| int io.agora.recording.RecordingSDK.updateSubscribeAudioUids | ( | int[] | *uids* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.updateSubscribeAudioUids(int[] *uids*)
+
+</ApiSignature>
 
 该方法允许录制 SDK 只录制指定 UID 的音频。
 
@@ -392,8 +413,11 @@ UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### startService()
 
-| int io.agora.recording.RecordingSDK.startService | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.startService()
+
+</ApiSignature>
 
 该方法手动启动录制。
 
@@ -408,8 +432,11 @@ UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### stopService()
 
-| int io.agora.recording.RecordingSDK.stopService | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.stopService()
+
+</ApiSignature>
 
 该方法手动暂停录制。
 
@@ -424,8 +451,11 @@ UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### getProperties()
 
-| [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-engine-properties) io.agora.recording.RecordingSDK.getProperties | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+[RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-engine-properties) io.agora.recording.RecordingSDK.getProperties()
+
+</ApiSignature>
 
 获取录制属性信息。
 
@@ -443,10 +473,11 @@ UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### setUserBackground()
 
-| int io.agora.recording.RecordingSDK.setUserBackground | ( | int | *uid*, |
-| --- | --- | --- | --- |
-|  |  | String | *imagePath* |
-|  | ) |  |  |
+<ApiSignature>
+
+int io.agora.recording.RecordingSDK.setUserBackground(int *uid*, String *imagePath*)
+
+</ApiSignature>
 
 该方法设置指定 UID 用户的背景图片。当指定 UID 用户在线且没有发送视频流时，会显示该背景图片。
 
@@ -476,8 +507,11 @@ UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
 ### setLogLevel()
 
-| void io.agora.recording.RecordingSDK.setLogLevel | ( | int | *level* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingSDK.setLogLevel(int *level*)
+
+</ApiSignature>
 
 该方法设置 log 过滤等级。
 
@@ -504,7 +538,10 @@ log 过滤等级：
 
 ### MAX_USER_ACCOUNT_LENGTH
 
-| int io.agora.recording.RecordingSDK.MAX_USER_ACCOUNT_LENGTH = 256 | static |
-| --- | --- |
+<ApiSignature labels="static">
+
+int io.agora.recording.RecordingSDK.MAX_USER_ACCOUNT_LENGTH = 256
+
+</ApiSignature>
 
 用户名的最大长度。

@@ -37,8 +37,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### AgoraService()
 
-| io.agora.rtc.AgoraService.AgoraService | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+io.agora.rtc.AgoraService.AgoraService(**)
+
+</ApiSignature>
 
 构造函数。
 
@@ -52,8 +55,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### agoraRtcConnCreate()
 
-| native [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) io.agora.rtc.AgoraService.agoraRtcConnCreate | ( | [RtcConnConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-config) | *rtc_conn_config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) io.agora.rtc.AgoraService.agoraRtcConnCreate([RtcConnConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-config) *rtc_conn_config*)
+
+</ApiSignature>
 
 创建一个 [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) 对象。
 
@@ -73,9 +79,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createCustomAudioTrackEncoded()
 
-| native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackEncoded | ( | [AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender) | *agora_audio_encoded_frame_sender*, |
-| --- | --- | --- | --- |
-|  |  | int | *mix_mode*) |
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackEncoded([AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender) *agora_audio_encoded_frame_sender*, int *mix_mode*)
+
+</ApiSignature>
 
 创建本地音频轨道对象，包含一个发送已编码音频数据的音频源。
 
@@ -102,8 +110,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createCustomAudioTrackPcm()
 
-| native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackPcm | ( | [AgoraAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender) | *agora_audio_pcm_data_sender* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackPcm([AgoraAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender) *agora_audio_pcm_data_sender*)
+
+</ApiSignature>
 
 创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
 
@@ -125,9 +136,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createCustomVideoTrackEncoded()
 
-| native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackEncoded | ( | [AgoraVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender) | *agora_video_encoded_image_sender*, |
-| --- | --- | --- | --- |
-|  |  | [SenderOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options) | *options*) |
+<ApiSignature>
+
+native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackEncoded([AgoraVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender) *agora_video_encoded_image_sender*, [SenderOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options) *options*)
+
+</ApiSignature>
 
 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。
 
@@ -154,8 +167,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createCustomVideoTrackFrame()
 
-| native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackFrame | ( | [AgoraVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender) | *agora_video_frame_sender* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackFrame([AgoraVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender) *agora_video_frame_sender*)
+
+</ApiSignature>
 
 创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。
 
@@ -177,8 +193,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createLocalAudioTrack()
 
-| native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createLocalAudioTrack | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createLocalAudioTrack(**)
+
+</ApiSignature>
 
 创建本地音频轨道对象。
 
@@ -192,8 +211,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### createMediaNodeFactory()
 
-| native [AgoraMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory) io.agora.rtc.AgoraService.createMediaNodeFactory | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory) io.agora.rtc.AgoraService.createMediaNodeFactory(**)
+
+</ApiSignature>
 
 创建一个媒体节点工厂对象。
 
@@ -205,8 +227,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### destroy()
 
-| void io.agora.rtc.AgoraService.destroy | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.rtc.AgoraService.destroy(**)
+
+</ApiSignature>
 
 析构函数。
 
@@ -218,15 +243,21 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### destroyAudioSessionConfig()
 
-| native void io.agora.rtc.AgoraService.destroyAudioSessionConfig | ( | AudioSessionConfig | *config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native void io.agora.rtc.AgoraService.destroyAudioSessionConfig(AudioSessionConfig *config*)
+
+</ApiSignature>
 
 <a id="af776ee9767ecb895b3e7aec2e38d1c0c"></a>
 
 ### getAgoraParameter()
 
-| native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraService.getAgoraParameter | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraService.getAgoraParameter(**)
+
+</ApiSignature>
 
 获取 SDK 全局的 [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) 对象。
 
@@ -245,8 +276,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### getAudioSessionConfig()
 
-| native AudioSessionConfig io.agora.rtc.AgoraService.getAudioSessionConfig | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native AudioSessionConfig io.agora.rtc.AgoraService.getAudioSessionConfig(**)
+
+</ApiSignature>
 
 获取音效设置。
 
@@ -258,8 +292,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### initialize()
 
-| native int io.agora.rtc.AgoraService.initialize | ( | [AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config) | *config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.initialize([AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config) *config*)
+
+</ApiSignature>
 
 初始化 AgoraService 对象。
 
@@ -280,8 +317,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### setAudioSessionConfig()
 
-| native int io.agora.rtc.AgoraService.setAudioSessionConfig | ( | AudioSessionConfig | *config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setAudioSessionConfig(AudioSessionConfig *config*)
+
+</ApiSignature>
 
 自定义音效设置。
 
@@ -302,8 +342,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### setAudioSessionPreset()
 
-| native int io.agora.rtc.AgoraService.setAudioSessionPreset | ( | int | *audio_scenario* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setAudioSessionPreset(int *audio_scenario*)
+
+</ApiSignature>
 
 设置预设音效。
 
@@ -324,9 +367,11 @@ AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体
 
 ### setLogFile()
 
-| native int io.agora.rtc.AgoraService.setLogFile | ( | String | *file_path*, |
-| --- | --- | --- | --- |
-|  |  | int | *file_size*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setLogFile(String *file_path*, int *file_size*)
+
+</ApiSignature>
 
 设置 SDK 日志文件的路径和大小。
 
@@ -358,8 +403,11 @@ SDK 日志文件的大小（KB）。
 
 ### setLogFilter()
 
-| native int io.agora.rtc.AgoraService.setLogFilter | ( | int | *filters* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setLogFilter(int *filters*)
+
+</ApiSignature>
 
 设置日志输出等级。
 

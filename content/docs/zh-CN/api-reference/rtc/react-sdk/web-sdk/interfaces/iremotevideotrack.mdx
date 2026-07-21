@@ -95,7 +95,11 @@ _migration:
 
 ### video-element-visible-status
 
-- video-element-visible-status(data?:[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)):void
+<ApiSignature>
+
+video-element-visible-status(data?: [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.8.0*
@@ -119,7 +123,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -167,7 +179,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### getCurrentFrameData
 
-- getCurrentFrameData():ImageData
+<ApiSignature>
+
+getCurrentFrameData(): ImageData
+
+</ApiSignature>
 
 :::info[自从]
 *4.1.0*
@@ -177,15 +193,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 则返回空数据。
 :::
 
-Returns ImageData
+<ApiReturns>
+
+<ApiReturnType>
+
+ImageData
+
+</ApiReturnType>
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
+
+</ApiReturns>
 
 <a id="getlisteners"></a>
 
 ### getListeners
 
-- getListeners(event:string):Function[]
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
 
 Inherited from EventEmitter.getListeners
 
@@ -199,27 +227,51 @@ Inherited from EventEmitter.getListeners
 </Parameter>
 </ParameterList>
 
-Returns Function[]
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getmediastreamtrack"></a>
 
 ### getMediaStreamTrack
 
-- getMediaStreamTrack():MediaStreamTrack
+<ApiSignature>
+
+getMediaStreamTrack(): MediaStreamTrack
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-Returns MediaStreamTrack
+<ApiReturns>
+
+<ApiReturnType>
+
+MediaStreamTrack
+
+</ApiReturnType>
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+</ApiReturns>
 
 <a id="getrtcrtptransceiver"></a>
 
 ### getRTCRtpTransceiver
 
-- getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)):RTCRtpTransceiver|undefined
+<ApiSignature>
+
+getRTCRtpTransceiver(type?: [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)): RTCRtpTransceiver | undefined
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
@@ -246,15 +298,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 </Parameter>
 </ParameterList>
 
-Returns RTCRtpTransceiver | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+RTCRtpTransceiver | undefined
+
+</ApiReturnType>
 
 当前轨道的 `RTCRtpTransceiver` 实例。
+
+</ApiReturns>
 
 <a id="getstats"></a>
 
 ### getStats
 
-- getStats():[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+<ApiSignature>
+
+getStats(): [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+
+</ApiSignature>
 
 Overrides [IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack).[getStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getstats)
 
@@ -262,43 +326,79 @@ Overrides [IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/i
 
 **不推荐使用** 请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getremotevideostats) 获取远端视频轨道相关信息。
 
-Returns [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+
+</ApiReturnType>
 
 一个 [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats) 对象。
+
+</ApiReturns>
 
 <a id="gettrackid"></a>
 
 ### getTrackId
 
-- getTrackId():string
+<ApiSignature>
+
+getTrackId(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettrackid)
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 媒体轨道 ID。
+
+</ApiReturns>
 
 <a id="getuserid"></a>
 
 ### getUserId
 
-- getUserId():[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+<ApiSignature>
+
+getUserId(): [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+
+</ApiSignature>
 
 Inherited from [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[getUserId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#getuserid)
 
 获取发布远端轨道的远端用户 ID。
 
-Returns [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+<ApiReturns>
+
+<ApiReturnType>
+
+[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+
+</ApiReturnType>
 
 远端轨道对应的 `uid`。
+
+</ApiReturns>
 
 <a id="getvideoelementvisiblestatus"></a>
 
 ### getVideoElementVisibleStatus
 
-- getVideoElementVisibleStatus():[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)|undefined
+<ApiSignature>
+
+getVideoElementVisibleStatus(): [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+
+</ApiSignature>
 
 - @自从
 
@@ -308,7 +408,13 @@ Returns [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
 
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
-Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+
+</ApiReturnType>
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
@@ -316,11 +422,17 @@ Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/glo
 - `<video>` 标签不存在。
 - `<video>` 标签不是通过 `play` 方法调用产生的。
 
+</ApiReturns>
+
 <a id="off"></a>
 
 ### off
 
-- off(event:string, listener:Function):void
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.off
 
@@ -339,18 +451,55 @@ Inherited from EventEmitter.off
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"track-updated", listener:typeof event_track_updated):void
-- on(event:"video-state-changed", listener:typeof event_video_state_changed):void
-- on(event:"first-frame-decoded", listener:typeof event_first_frame_decoded):void
-- on(event:"video-element-visible-status", listener:typeof event_video_element_visible_status_2):void
-- on(event:"transceiver-updated", listener:typeof event_transceiver_updated_2):void
-- on(event:"sei-received", listener:typeof event_sei_received):void
+<ApiSignature>
+
+on(event: "track-updated", listener: typeof event_track_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "video-state-changed", listener: typeof event_video_state_changed): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "first-frame-decoded", listener: typeof event_first_frame_decoded): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "video-element-visible-status", listener: typeof event_video_element_visible_status_2): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "sei-received", listener: typeof event_sei_received): void
+
+</ApiSignature>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -367,7 +516,15 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -384,7 +541,15 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -401,7 +566,15 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -418,7 +591,15 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -437,7 +618,15 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#on)
 
@@ -456,13 +645,25 @@ Overrides [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="once"></a>
 
 ### once
 
-- once(event:string, listener:Function):void
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.once
 
@@ -483,13 +684,25 @@ Inherited from EventEmitter.once
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="pipe"></a>
 
 ### pipe
 
-- pipe(processor:IBaseProcessor):IBaseProcessor
+<ApiSignature>
+
+pipe(processor: IBaseProcessor): IBaseProcessor
+
+</ApiSignature>
 
 :::info[自从]
 *4.13.0*
@@ -505,15 +718,27 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns IBaseProcessor
+<ApiReturns>
+
+<ApiReturnType>
+
+IBaseProcessor
+
+</ApiReturnType>
 
 `Processor` 实例。
+
+</ApiReturns>
 
 <a id="play"></a>
 
 ### play
 
-- play(element:string|HTMLElement, config?:[VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)):void
+<ApiSignature>
+
+play(element: string | HTMLElement, config?: [VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)): void
+
+</ApiSignature>
 
 Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
 
@@ -541,13 +766,25 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
-- removeAllListeners(event?:string):void
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.removeAllListeners
 
@@ -561,25 +798,49 @@ Inherited from EventEmitter.removeAllListeners
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stop"></a>
 
 ### stop
 
-- stop():void
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
 停止播放。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpipe"></a>
 
 ### unpipe
 
-- unpipe():void
+<ApiSignature>
+
+unpipe(): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.13.0*
@@ -587,4 +848,12 @@ Returns void
 取消远端视频轨道上注入的 `Processor`。
 :::
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

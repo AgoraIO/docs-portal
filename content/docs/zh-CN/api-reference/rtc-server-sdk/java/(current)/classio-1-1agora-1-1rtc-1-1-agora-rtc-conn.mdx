@@ -40,8 +40,11 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 ### AgoraRtcConn()
 
-| io.agora.rtc.AgoraRtcConn.AgoraRtcConn | ( | long | *cptr* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+io.agora.rtc.AgoraRtcConn.AgoraRtcConn(long *cptr*)
+
+</ApiSignature>
 
 构造函数。
 
@@ -55,10 +58,11 @@ AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
 
 ### connect()
 
-| native int io.agora.rtc.AgoraRtcConn.connect | ( | String | *token*, |
-| --- | --- | --- | --- |
-|  |  | String | *chan_id*, |
-|  |  | String | *user_id*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.connect(String *token*, String *chan_id*, String *user_id*)
+
+</ApiSignature>
 
 连接 RTC 频道。
 
@@ -110,10 +114,11 @@ RTC token。
 
 ### createDataStream()
 
-| native int io.agora.rtc.AgoraRtcConn.createDataStream | ( | Out | *stream_id*, |
-| --- | --- | --- | --- |
-|  |  | int | *reliable*, |
-|  |  | int | *ordered*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.createDataStream(Out *stream_id*, int *reliable*, int *ordered*)
+
+</ApiSignature>
 
 创建数据流。
 
@@ -157,8 +162,11 @@ RTC token。
 
 ### destroy()
 
-| void io.agora.rtc.AgoraRtcConn.destroy | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.rtc.AgoraRtcConn.destroy(**)
+
+</ApiSignature>
 
 析构函数。
 
@@ -166,29 +174,41 @@ RTC token。
 
 ### destroyConnInfo()
 
-| native void io.agora.rtc.AgoraRtcConn.destroyConnInfo | ( | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *info* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyConnInfo([RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *info*)
+
+</ApiSignature>
 
 <a id="adbb04db5feb85a156d24fa98fb8c853e"></a>
 
 ### destroyTransportStats()
 
-| native void io.agora.rtc.AgoraRtcConn.destroyTransportStats | ( | [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) | *stats* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyTransportStats([RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) *stats*)
+
+</ApiSignature>
 
 <a id="a7ef197e3bb1ba5faa9756b7d59e8acc4"></a>
 
 ### destroyUserInfo()
 
-| native void io.agora.rtc.AgoraRtcConn.destroyUserInfo | ( | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) | *info* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyUserInfo([UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) *info*)
+
+</ApiSignature>
 
 <a id="a1f16d5f0070b67c62a063c7879eafd75"></a>
 
 ### disconnect()
 
-| native int io.agora.rtc.AgoraRtcConn.disconnect | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.disconnect(**)
+
+</ApiSignature>
 
 与 RTC 频道断开连接。
 
@@ -203,9 +223,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### enableEncryption()
 
-| native int io.agora.rtc.AgoraRtcConn.enableEncryption | ( | int | *enabled*, |
-| --- | --- | --- | --- |
-|  |  | [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config) | *config*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.enableEncryption(int *enabled*, [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config) *config*)
+
+</ApiSignature>
 
 开启或关闭内置加密。
 
@@ -236,8 +258,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getAgoraParameter()
 
-| native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraRtcConn.getAgoraParameter | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraRtcConn.getAgoraParameter(**)
+
+</ApiSignature>
 
 获取某个 Connection 中的 [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) 对象。
 
@@ -252,8 +277,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getConnId()
 
-| native int io.agora.rtc.AgoraRtcConn.getConnId | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.getConnId(**)
+
+</ApiSignature>
 
 获取连接 ID。
 
@@ -265,8 +293,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getConnInfo()
 
-| native [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) io.agora.rtc.AgoraRtcConn.getConnInfo | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) io.agora.rtc.AgoraRtcConn.getConnInfo(**)
+
+</ApiSignature>
 
 获取连接信息。
 
@@ -278,8 +309,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getLocalUser()
 
-| native [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) io.agora.rtc.AgoraRtcConn.getLocalUser | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) io.agora.rtc.AgoraRtcConn.getLocalUser(**)
+
+</ApiSignature>
 
 获取 [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象。
 
@@ -292,8 +326,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getTransportStats()
 
-| native [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) io.agora.rtc.AgoraRtcConn.getTransportStats | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) io.agora.rtc.AgoraRtcConn.getTransportStats(**)
+
+</ApiSignature>
 
 获取 RTC 连接的传输状态。
 
@@ -305,8 +342,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### getUserInfo()
 
-| native [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) io.agora.rtc.AgoraRtcConn.getUserInfo | ( | String | *user_id* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) io.agora.rtc.AgoraRtcConn.getUserInfo(String *user_id*)
+
+</ApiSignature>
 
 获取频道中指定远端用户的信息。
 
@@ -326,8 +366,11 @@ SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECT
 
 ### registerNetworkObserver()
 
-| native int io.agora.rtc.AgoraRtcConn.registerNetworkObserver | ( | [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.registerNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer) *observer*)
+
+</ApiSignature>
 
 注册网络状态 observer。
 
@@ -348,8 +391,11 @@ INetworkObserver 对象。
 
 ### registerObserver()
 
-| native int io.agora.rtc.AgoraRtcConn.registerObserver | ( | [IRtcConnObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.registerObserver([IRtcConnObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer) *observer*)
+
+</ApiSignature>
 
 注册 RTC 连接 observer。你必须先创建 IRtcConnection 对象。
 
@@ -370,8 +416,11 @@ IRtcConnObserver 对象。
 
 ### renewToken()
 
-| native int io.agora.rtc.AgoraRtcConn.renewToken | ( | String | *token* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.renewToken(String *token*)
+
+</ApiSignature>
 
 更新 Token。
 
@@ -389,12 +438,11 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 
 ### sendCustomReportMessage()
 
-| native int io.agora.rtc.AgoraRtcConn.sendCustomReportMessage | ( | String | *id*, |
-| --- | --- | --- | --- |
-|  |  | String | *category*, |
-|  |  | String | *event*, |
-|  |  | String | *label*, |
-|  |  | int | *value*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.sendCustomReportMessage(String *id*, String *category*, String *event*, String *label*, int *value*)
+
+</ApiSignature>
 
 发送自定义上报消息。
 
@@ -435,10 +483,11 @@ Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-
 
 ### sendStreamMessage() [1/2]
 
-| native int io.agora.rtc.AgoraRtcConn.sendStreamMessage | ( | int | *stream_id*, |
-| --- | --- | --- | --- |
-|  |  | String | *data*, |
-|  |  | int | *length*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.sendStreamMessage(int *stream_id*, String *data*, int *length*)
+
+</ApiSignature>
 
 发送数据流消息。
 
@@ -486,9 +535,11 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 
 ### sendStreamMessage() [2/2]
 
-| int io.agora.rtc.AgoraRtcConn.sendStreamMessage | ( | int | *streamId*, |
-| --- | --- | --- | --- |
-|  |  | byte[] | *messageData*) |
+<ApiSignature>
+
+int io.agora.rtc.AgoraRtcConn.sendStreamMessage(int *streamId*, byte[] *messageData*)
+
+</ApiSignature>
 
 发送数据流消息。
 
@@ -527,8 +578,11 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN
 
 ### startLastmileProbeTest()
 
-| native int io.agora.rtc.AgoraRtcConn.startLastmileProbeTest | ( | [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config) | *config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.startLastmileProbeTest([LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config) *config*)
+
+</ApiSignature>
 
 开始通话前网络质量探测。
 
@@ -561,8 +615,11 @@ Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-refer
 
 ### stopLastmileProbeTest()
 
-| native int io.agora.rtc.AgoraRtcConn.stopLastmileProbeTest | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.stopLastmileProbeTest(**)
+
+</ApiSignature>
 
 停止通话前网络质量探测。
 
@@ -575,8 +632,11 @@ Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-refer
 
 ### unregisterNetworkObserver()
 
-| native int io.agora.rtc.AgoraRtcConn.unregisterNetworkObserver | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.unregisterNetworkObserver(**)
+
+</ApiSignature>
 
 释放 INetworkObserver 对象。
 
@@ -589,8 +649,11 @@ Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-refer
 
 ### unregisterObserver()
 
-| native int io.agora.rtc.AgoraRtcConn.unregisterObserver | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.unregisterObserver(**)
+
+</ApiSignature>
 
 释放 IRtcConnObserver 对象。
 

@@ -26,8 +26,11 @@ _migration:
 
 ### ~ILocalVideoTrack()
 
-| agora::rtc::ILocalVideoTrack::~ILocalVideoTrack () | inlineprotected |
-| --- | --- |
+<ApiSignature labels="inline protected">
+
+agora::rtc::ILocalVideoTrack::~ILocalVideoTrack()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -35,8 +38,11 @@ _migration:
 
 ### setEnabled()
 
-| virtual void agora::rtc::ILocalVideoTrack::setEnabled ( bool *enable*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalVideoTrack::setEnabled(bool *enable*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 开启或关闭本地视频轨道。
 
@@ -62,8 +68,11 @@ _migration:
 
 ### setVideoEncoderConfiguration()
 
-| virtual int agora::rtc::ILocalVideoTrack::setVideoEncoderConfiguration ( const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalVideoTrack::setVideoEncoderConfiguration(const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置视频编码属性。
 
@@ -89,8 +98,11 @@ _migration:
 
 ### setSimulcastStreamMode()
 
-| virtual int agora::rtc::ILocalVideoTrack::setSimulcastStreamMode ( [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) *mode*, const [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalVideoTrack::setSimulcastStreamMode([SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a0ec618f678ca12272679cbb93e01f3f4) *mode*, const [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 在发送端设置双流模式并设置视频小流。
 
@@ -121,8 +133,11 @@ _migration:
 
 ### getState()
 
-| virtual [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) agora::rtc::ILocalVideoTrack::getState () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) agora::rtc::ILocalVideoTrack::getState()
+
+</ApiSignature>
 
 获取本地视频流状态。
 
@@ -134,8 +149,11 @@ _migration:
 
 ### getStatistics()
 
-| virtual bool agora::rtc::ILocalVideoTrack::getStatistics ( [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) & *stats*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::ILocalVideoTrack::getStatistics([LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) & *stats*)
+
+</ApiSignature>
 
 获取本地视频轨道的统计信息。
 

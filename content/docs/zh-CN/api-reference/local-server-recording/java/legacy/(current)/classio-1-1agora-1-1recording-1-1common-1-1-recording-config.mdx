@@ -43,8 +43,11 @@ _migration:
 
 ### isAudioOnly
 
-| boolean io.agora.recording.common.RecordingConfig.isAudioOnly |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.isAudioOnly
+
+</ApiSignature>
 
 设置是否仅启用音频录制功能：
 
@@ -62,8 +65,11 @@ _migration:
 
 ### isVideoOnly
 
-| boolean io.agora.recording.common.RecordingConfig.isVideoOnly |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.isVideoOnly
+
+</ApiSignature>
 
 设置是否仅启用视频录制功能：
 
@@ -81,8 +87,11 @@ _migration:
 
 ### isMixingEnabled
 
-| boolean io.agora.recording.common.RecordingConfig.isMixingEnabled |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.isMixingEnabled
+
+</ApiSignature>
 
 设置是否启用合流模式：
 
@@ -93,8 +102,11 @@ _migration:
 
 ### mixedVideoAudio
 
-| [MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e) io.agora.recording.common.RecordingConfig.mixedVideoAudio |
-| --- |
+<ApiSignature>
+
+[MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-m-i-x-e-d-a-v-c-o-d-e-c-t-y-p-e) io.agora.recording.common.RecordingConfig.mixedVideoAudio
+
+</ApiSignature>
 
 合流模式下将一个音频录制文件和一个视频录制文件实时混合成一个既有音频也有视频的 MP4 文件。
 
@@ -109,8 +121,11 @@ _migration:
 
 ### mixResolution
 
-| String io.agora.recording.common.RecordingConfig.mixResolution |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.mixResolution
+
+</ApiSignature>
 
 如果你启用了合流模式，可以通过该参数设置录制文件的视频属性，格式为：width，hight，fps，kbps，分别对应合流的宽、高、帧率和码率。默认设置为 360 x 640, 15 fps, 500 Kbps。
 
@@ -125,8 +140,11 @@ _migration:
 
 ### decryptionMode
 
-| String io.agora.recording.common.RecordingConfig.decryptionMode |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.decryptionMode
+
+</ApiSignature>
 
 当整个频道进行加密时，录制 SDK 启用内置的解密功能。默认为 NULL。
 
@@ -146,8 +164,11 @@ _migration:
 
 ### secret
 
-| String io.agora.recording.common.RecordingConfig.secret |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.secret
+
+</ApiSignature>
 
 启用解密模式后，设置的解密密码。
 
@@ -155,8 +176,11 @@ _migration:
 
 ### appliteDir
 
-| String io.agora.recording.common.RecordingConfig.appliteDir |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.appliteDir
+
+</ApiSignature>
 
 必填，设置为 AgoraCoreServices 存放的目录。
 
@@ -166,8 +190,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### recordFileRootDir
 
-| String io.agora.recording.common.RecordingConfig.recordFileRootDir |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.recordFileRootDir
+
+</ApiSignature>
 
 设置录制文件存放的根目录。默认值为 NULL。
 
@@ -177,8 +204,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### cfgFilePath
 
-| String io.agora.recording.common.RecordingConfig.cfgFilePath |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.cfgFilePath
+
+</ApiSignature>
 
 指定 JSON 配置文件的路径。默认为 NULL。示例：`--cfgFilePath /home/guest/recording_dir/cfg.json`。 在该配置文件里，你可以设置以下参数：
 
@@ -214,8 +244,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### decodeVideo
 
-| [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e) io.agora.recording.common.RecordingConfig.decodeVideo |
-| --- |
+<ApiSignature>
+
+[VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e) io.agora.recording.common.RecordingConfig.decodeVideo
+
+</ApiSignature>
 
 设置视频解码格式。详见 [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-v-i-d-e-o-f-o-r-m-a-t-t-y-p-e)。
 
@@ -227,8 +260,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### decodeAudio
 
-| [AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-a-u-d-i-o-f-o-r-m-a-t-t-y-p-e) io.agora.recording.common.RecordingConfig.decodeAudio |
-| --- |
+<ApiSignature>
+
+[AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-a-u-d-i-o-f-o-r-m-a-t-t-y-p-e) io.agora.recording.common.RecordingConfig.decodeAudio
+
+</ApiSignature>
 
 设置音频解码格式，详见 [AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-a-u-d-i-o-f-o-r-m-a-t-t-y-p-e)。
 
@@ -240,8 +276,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### lowUdpPort
 
-| int io.agora.recording.common.RecordingConfig.lowUdpPort |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.lowUdpPort
+
+</ApiSignature>
 
 设置最低 UDP 端口。高 UDP 端口与低 UDP 端口差值不能小于 6。
 
@@ -249,8 +288,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### highUdpPort
 
-| int io.agora.recording.common.RecordingConfig.highUdpPort |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.highUdpPort
+
+</ApiSignature>
 
 设置最高 UDP 端口。高 UDP 端口与低 UDP 端口差值不能小于 6。
 
@@ -258,8 +300,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### idleLimitSec
 
-| int io.agora.recording.common.RecordingConfig.idleLimitSec |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.idleLimitSec
+
+</ApiSignature>
 
 设置空闲频道的超时退出时间。该值需大于等于 3 秒，默认值为 300 秒。
 
@@ -275,8 +320,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### captureInterval
 
-| int io.agora.recording.common.RecordingConfig.captureInterval |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.captureInterval
+
+</ApiSignature>
 
 设置视频截图的时间间隔，最小值为 1 秒，默认为 5 秒。
 
@@ -288,8 +336,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### audioIndicationInterval
 
-| int io.agora.recording.common.RecordingConfig.audioIndicationInterval |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.audioIndicationInterval
+
+</ApiSignature>
 
 说话者监测的时间间隔。
 
@@ -300,8 +351,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### channelProfile
 
-| [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-h-a-n-n-e-l-p-r-o-f-i-l-e-t-y-p-e) io.agora.recording.common.RecordingConfig.channelProfile |
-| --- |
+<ApiSignature>
+
+[CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-h-a-n-n-e-l-p-r-o-f-i-l-e-t-y-p-e) io.agora.recording.common.RecordingConfig.channelProfile
+
+</ApiSignature>
 
 设置频道模式。必须与 Native/Web SDK 的保持一致。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-h-a-n-n-e-l-p-r-o-f-i-l-e-t-y-p-e)。
 
@@ -309,8 +363,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### streamType
 
-| [REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-v-i-d-e-o-s-t-r-e-a-m-t-y-p-e) io.agora.recording.common.RecordingConfig.streamType |
-| --- |
+<ApiSignature>
+
+[REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-v-i-d-e-o-s-t-r-e-a-m-t-y-p-e) io.agora.recording.common.RecordingConfig.streamType
+
+</ApiSignature>
 
 选择大小流。仅在 Native SDK/Web SDK 选择的是双流模式时有效，详见 [REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-v-i-d-e-o-s-t-r-e-a-m-t-y-p-e)。
 
@@ -318,8 +375,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### triggerMode
 
-| int io.agora.recording.common.RecordingConfig.triggerMode |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.triggerMode
+
+</ApiSignature>
 
 选择录制启动模式。
 
@@ -330,8 +390,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### proxyType
 
-| int io.agora.recording.common.RecordingConfig.proxyType |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.proxyType
+
+</ApiSignature>
 
 设置代理服务器类型：
 
@@ -345,8 +408,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### proxyServer
 
-| String io.agora.recording.common.RecordingConfig.proxyServer |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.proxyServer
+
+</ApiSignature>
 
 根据 `proxyType` 参数中选择的代理服务器类型设置代理服务器的 IP 地址（域名）和端口，从而实现在内网进行录制：
 
@@ -360,8 +426,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### audioProfile
 
-| int io.agora.recording.common.RecordingConfig.audioProfile |
-| --- |
+<ApiSignature>
+
+int io.agora.recording.common.RecordingConfig.audioProfile
+
+</ApiSignature>
 
 如果你启用了合流模式，可以通过该参数设置录制文件的音频属性。
 
@@ -373,8 +442,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### defaultVideoBgPath
 
-| String io.agora.recording.common.RecordingConfig.defaultVideoBgPath |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.defaultVideoBgPath
+
+</ApiSignature>
 
 设置合流模式下画布的默认背景图片的路径。如不设置会显示背景色。
 
@@ -386,8 +458,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### defaultUserBgPath
 
-| String io.agora.recording.common.RecordingConfig.defaultUserBgPath |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.defaultUserBgPath
+
+</ApiSignature>
 
 设置合流模式下用户的默认背景图片的路径。如不设置会显示背景色。
 
@@ -402,8 +477,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### autoSubscribe
 
-| boolean io.agora.recording.common.RecordingConfig.autoSubscribe |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.autoSubscribe
+
+</ApiSignature>
 
 设置录制全部用户还是指定 UID 用户：
 
@@ -418,8 +496,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### enableCloudProxy
 
-| boolean io.agora.recording.common.RecordingConfig.enableCloudProxy |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.enableCloudProxy
+
+</ApiSignature>
 
 设置是否启用云代理服务：
 
@@ -432,8 +513,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### subscribeVideoUids
 
-| String io.agora.recording.common.RecordingConfig.subscribeVideoUids |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.subscribeVideoUids
+
+</ApiSignature>
 
 录制指定 UID 的视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
@@ -443,8 +527,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### subscribeAudioUids
 
-| String io.agora.recording.common.RecordingConfig.subscribeAudioUids |
-| --- |
+<ApiSignature>
+
+String io.agora.recording.common.RecordingConfig.subscribeAudioUids
+
+</ApiSignature>
 
 录制指定 UID 的音频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
@@ -454,8 +541,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### enableIntraRequest
 
-| boolean io.agora.recording.common.RecordingConfig.enableIntraRequest |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.enableIntraRequest
+
+</ApiSignature>
 
 是否启用关键帧请求。该参数默认为 true，可改善弱网下的音视频体验。如需使单流模式下录制的视频可指定播放位置，须将 `enableIntraRequest` 设为 false。
 
@@ -470,8 +560,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### enableH265Support
 
-| boolean io.agora.recording.common.RecordingConfig.enableH265Support |
-| --- |
+<ApiSignature>
+
+boolean io.agora.recording.common.RecordingConfig.enableH265Support
+
+</ApiSignature>
 
 设置是否支持录制 H.265 视频流：
 

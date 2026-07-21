@@ -29,7 +29,11 @@ _migration:
 
 白板 SDK 版本号。
 
-`+ (NSString *)version`
+<ApiSignature>
+
+\+ (NSString *)version
+
+</ApiSignature>
 
 #### Declared In
 
@@ -42,7 +46,11 @@ _migration:
 设置 RTC 混音并初始化 `WhiteSDK` 对象。
 请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
 
-`- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id<WhiteCommonCallbackDelegate>)*callback* audioMixerBridgeDelegate:(nullable id<WhiteAudioMixerBridgeDelegate>)*mixer*`
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callback* audioMixerBridgeDelegate:(nullable id&lt;WhiteAudioMixerBridgeDelegate&gt;)*mixer*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="boardView">
@@ -82,7 +90,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 初始化 `WhiteSDK` 对象。
 请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
 
-`- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id<WhiteCommonCallbackDelegate>)*callback*`
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callback*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="boardView">
@@ -114,7 +126,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 初始化 `WhiteSDK` 对象。)
 
-`- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config*`
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="boardView">
@@ -139,7 +155,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 提前选择最佳接入域名，用于加快用户首次连接速度。
 
-`+ (void)prepareWhiteConnectionForAppId:(NSString *)*appId* region:(WhiteRegionKey)*region* expireSeconds:(NSNumber *_Nullable)*expireSeconds* attachingSuperView:(UIView *_Nullable)*superView*`
+<ApiSignature>
+
+\+ (void)prepareWhiteConnectionForAppId:(NSString *)*appId* region:(WhiteRegionKey)*region* expireSeconds:(NSNumber *_Nullable)*expireSeconds* attachingSuperView:(UIView *_Nullable)*superView*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="appId">
@@ -183,7 +203,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 混音设置。
 
-`@property (nonatomic, strong, readonly, nullable) WhiteAudioMixerBridge *audioMixer`
+<ApiSignature>
+
+@property (nonatomic, strong, readonly, nullable) WhiteAudioMixerBridge *audioMixer
+
+</ApiSignature>
 
 #### Declared In
 
@@ -195,7 +219,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 声明在本地白板中可用的字体。
 
-`- (void)setupFontFaces:(NSArray<WhiteFontFace*> *)*fontFaces*`
+<ApiSignature>
+
+\- (void)setupFontFaces:(NSArray&lt;WhiteFontFace*&gt; *)*fontFaces*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="fontFaces">
@@ -231,7 +259,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 声明在本地白板中可用的字体并预加载。
 
-`- (void)loadFontFaces:(NSArray<WhiteFontFace*> *)*fontFaces* completionHandler:(void ( ^ ) ( BOOL success , WhiteFontFace *fontFace , NSError *_Nullable error ))*completionHandler*`
+<ApiSignature>
+
+\- (void)loadFontFaces:(NSArray&lt;WhiteFontFace*&gt; *)*fontFaces* completionHandler:(void (^) (BOOL success, WhiteFontFace *fontFace, NSError *_Nullable error))*completionHandler*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="fontFaces">
@@ -277,7 +309,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 设置文字工具在本地白板中使用的字体。
 
-`- (void)updateTextFont:(NSArray<NSString*> *)*fonts*`
+<ApiSignature>
+
+\- (void)updateTextFont:(NSArray&lt;NSString*&gt; *)*fonts*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="fonts">
@@ -306,7 +342,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 获取当前 PPT 的音量。
 
-`- (void)getSlideVolumeWithCompletionHandler:(void ( ^ ) ( CGFloat volume , NSError *error ))*completionHandler*`
+<ApiSignature>
+
+\- (void)getSlideVolumeWithCompletionHandler:(void (^) (CGFloat volume, NSError *error))*completionHandler*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="completionHandler">
@@ -328,7 +368,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 
 更新当前 PPT 的音量。
 
-`- (void)updateSlideVolume:(CGFloat)*volume*`
+<ApiSignature>
+
+\- (void)updateSlideVolume:(CGFloat)*volume*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="volume">
@@ -349,7 +393,11 @@ RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboar
 恢复 Slide 并跳转到其他页。
 RESOURCE_ERROR 和 RUNTIME_ERROR 可以用这种方式恢复。
 
-`- (void)recoverSlide:(NSString *)*slideId* slideIndex:(NSInteger)*slideIndex*`
+<ApiSignature>
+
+\- (void)recoverSlide:(NSString *)*slideId* slideIndex:(NSInteger)*slideIndex*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="slideId">
@@ -375,7 +423,11 @@ RESOURCE_ERROR 和 RUNTIME_ERROR 可以用这种方式恢复。
 恢复 Slide。
 RESOURCE_ERROR 可以用这种方式恢复。
 
-`- (void)recoverSlide:(NSString *)*slideId*`
+<ApiSignature>
+
+\- (void)recoverSlide:(NSString *)*slideId*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="slideId">
@@ -395,7 +447,11 @@ RESOURCE_ERROR 可以用这种方式恢复。
 
 设置通用回调事件。
 
-`- (void)setCommonCallbackDelegate:(nullable id<WhiteCommonCallbackDelegate>)*callbackDelegate*`
+<ApiSignature>
+
+\- (void)setCommonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callbackDelegate*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="callbackDelegate">
@@ -419,7 +475,11 @@ SDK 通过 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whitebo
 
 设置多窗口 PPT 回调事件。
 
-`- (void)setSlideDelegate:(nullable id<WhiteSlideDelegate>)*slideDelegate*`
+<ApiSignature>
+
+\- (void)setSlideDelegate:(nullable id&lt;WhiteSlideDelegate&gt;)*slideDelegate*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="slideDelegate">
@@ -443,7 +503,11 @@ SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/i
 
 将 Slide 日志写入到指定的文件路径。
 
-`- (void)requestSlideLogToFilePath:(NSString *)*path* result:(void ( ^ ) ( BOOL success , NSError *error ))*result*`
+<ApiSignature>
+
+\- (void)requestSlideLogToFilePath:(NSString *)*path* result:(void (^) (BOOL success, NSError *error))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="path">
@@ -472,7 +536,11 @@ SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/i
 
 创建互动白板回放房间。
 
-`- (void)createReplayerWithConfig:(WhitePlayerConfig *)*config* callbacks:(nullable id<WhitePlayerEventDelegate>)*eventCallbacks* completionHandler:(void ( ^ ) ( BOOL success , WhitePlayer *_Nullable player , NSError *_Nullable error ))*completionHandler*`
+<ApiSignature>
+
+\- (void)createReplayerWithConfig:(WhitePlayerConfig *)*config* callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)*eventCallbacks* completionHandler:(void (^) (BOOL success, WhitePlayer *_Nullable player, NSError *_Nullable error))*completionHandler*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="config">
@@ -505,7 +573,11 @@ SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/i
 
 查看房间是否能够回放。
 
-`- (void)isPlayable:(WhitePlayerConfig *)*config* result:(void ( ^ ) ( BOOL isPlayable ))*result*`
+<ApiSignature>
+
+\- (void)isPlayable:(WhitePlayerConfig *)*config* result:(void (^) (BOOL isPlayable))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="config">
@@ -545,7 +617,11 @@ SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/i
 
 设置房间参数和事件回调并加入互动白板实时房间。
 
-`- (void)joinRoomWithConfig:(WhiteRoomConfig *)*config* callbacks:(nullable id<WhiteRoomCallbackDelegate>)*callbacks* completionHandler:(void ( ^ ) ( BOOL success , WhiteRoom *_Nullable room , NSError *_Nullable error ))*completionHandler*`
+<ApiSignature>
+
+\- (void)joinRoomWithConfig:(WhiteRoomConfig *)*config* callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)*callbacks* completionHandler:(void (^) (BOOL success, WhiteRoom *_Nullable room, NSError *_Nullable error))*completionHandler*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="config">

@@ -42,15 +42,21 @@ _migration:
 
 ### RecordingConfig()
 
-| agora::recording::RecordingConfig::RecordingConfig () | inline |
-| --- | --- |
+<ApiSignature labels="inline">
+
+agora::recording::RecordingConfig::RecordingConfig()
+
+</ApiSignature>
 
 <a id="acee250ba1e85c148d3a22ab21e85e28f"></a>
 
 ### ~RecordingConfig()
 
-| virtual agora::recording::RecordingConfig::~RecordingConfig () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::recording::RecordingConfig::~RecordingConfig()
+
+</ApiSignature>
 
 ## 类成员变量说明
 
@@ -58,8 +64,11 @@ _migration:
 
 ### isAudioOnly
 
-| bool agora::recording::RecordingConfig::isAudioOnly |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::isAudioOnly
+
+</ApiSignature>
 
 是否仅启用音频录制。
 
@@ -77,8 +86,11 @@ _migration:
 
 ### isVideoOnly
 
-| bool agora::recording::RecordingConfig::isVideoOnly |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::isVideoOnly
+
+</ApiSignature>
 
 是否仅启用视频录制。
 
@@ -96,8 +108,11 @@ _migration:
 
 ### isMixingEnabled
 
-| bool agora::recording::RecordingConfig::isMixingEnabled |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::isMixingEnabled
+
+</ApiSignature>
 
 是否启用合流模式。
 
@@ -108,8 +123,11 @@ _migration:
 
 ### autoSubscribe
 
-| bool agora::recording::RecordingConfig::autoSubscribe |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::autoSubscribe
+
+</ApiSignature>
 
 设置录制全部用户还是指定 UID 用户：
 
@@ -124,8 +142,11 @@ _migration:
 
 ### enableCloudProxy
 
-| bool agora::recording::RecordingConfig::enableCloudProxy |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::enableCloudProxy
+
+</ApiSignature>
 
 设置是否启用云代理服务：
 
@@ -138,8 +159,11 @@ _migration:
 
 ### mixedVideoAudio
 
-| [agora::linuxsdk::MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af8f3a6529f57ccfa3621014808d1283a) agora::recording::RecordingConfig::mixedVideoAudio |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::MIXED_AV_CODEC_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af8f3a6529f57ccfa3621014808d1283a) agora::recording::RecordingConfig::mixedVideoAudio
+
+</ApiSignature>
 
 合流模式下将一个音频录制文件和一个视频录制文件实时混合成一个既有音频也有视频的 MP4 文件。
 
@@ -154,8 +178,11 @@ _migration:
 
 ### mixResolution
 
-| const char* agora::recording::RecordingConfig::mixResolution |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::mixResolution
+
+</ApiSignature>
 
 合流模式下设置录制文件的视频属性，格式为：width，hight，fps，kbps，分别对应录制文件的宽、高、帧率和码率。默认设置为 360 x 640, 15 fps, 500 Kbps。
 
@@ -169,8 +196,11 @@ _migration:
 
 ### decryptionMode
 
-| const char* agora::recording::RecordingConfig::decryptionMode |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::decryptionMode
+
+</ApiSignature>
 
 当整个频道进行加密时，录制 SDK 启用内置的解密功能。默认为 NULL。
 
@@ -190,8 +220,11 @@ _migration:
 
 ### secret
 
-| const char* agora::recording::RecordingConfig::secret |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::secret
+
+</ApiSignature>
 
 启用解密模式后，设置的解密密码。默认为 NULL。
 
@@ -199,8 +232,11 @@ _migration:
 
 ### appliteDir
 
-| const char* agora::recording::RecordingConfig::appliteDir |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::appliteDir
+
+</ApiSignature>
 
 必填，设置为 AgoraCoreServices 存放的目录。
 
@@ -210,8 +246,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### recordFileRootDir
 
-| const char* agora::recording::RecordingConfig::recordFileRootDir |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::recordFileRootDir
+
+</ApiSignature>
 
 设置录制文件存放的根目录。默认为 NULL。
 
@@ -221,8 +260,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### cfgFilePath
 
-| const char* agora::recording::RecordingConfig::cfgFilePath |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::cfgFilePath
+
+</ApiSignature>
 
 指定 JSON 配置文件的路径。默认为 NULL。示例：`--cfgFilePath /home/guest/recording_dir/cfg.json`。
 
@@ -261,8 +303,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### decodeVideo
 
-| [agora::linuxsdk::VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) agora::recording::RecordingConfig::decodeVideo |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) agora::recording::RecordingConfig::decodeVideo
+
+</ApiSignature>
 
 设置录制视频格式。详见 [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd)。
 
@@ -274,8 +319,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### decodeAudio
 
-| [agora::linuxsdk::AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f) agora::recording::RecordingConfig::decodeAudio |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f) agora::recording::RecordingConfig::decodeAudio
+
+</ApiSignature>
 
 设置录制音频格式。详见 [AUDIO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a97f1f8e3aa7bfe77c9c5f8d9d208bb1f)。
 
@@ -287,8 +335,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### lowUdpPort
 
-| int agora::recording::RecordingConfig::lowUdpPort |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::lowUdpPort
+
+</ApiSignature>
 
 最低 UDP 端口。默认值为 0。最高 UDP 端口与最低 UDP 端口差值不能小于 6。
 
@@ -296,8 +347,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### highUdpPort
 
-| int agora::recording::RecordingConfig::highUdpPort |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::highUdpPort
+
+</ApiSignature>
 
 最高 UDP 端口。默认值为 0。最高 UDP 端口与最低 UDP 端口差值不能小于 6。
 
@@ -305,8 +359,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### idleLimitSec
 
-| int agora::recording::RecordingConfig::idleLimitSec |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::idleLimitSec
+
+</ApiSignature>
 
 设置空闲频道的超时退出时间。默认值为 300 秒。
 
@@ -322,8 +379,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### captureInterval
 
-| int agora::recording::RecordingConfig::captureInterval |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::captureInterval
+
+</ApiSignature>
 
 设置视频截图的时间间隔。默认值为 5 秒。该值需大于等于 1 秒。
 
@@ -335,8 +395,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### audioIndicationInterval
 
-| int agora::recording::RecordingConfig::audioIndicationInterval |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::audioIndicationInterval
+
+</ApiSignature>
 
 说话者监测的时间间隔。
 
@@ -347,8 +410,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### channelProfile
 
-| [agora::linuxsdk::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ad9f9be8fcec3408e36ec870c8eb9808e) agora::recording::RecordingConfig::channelProfile |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ad9f9be8fcec3408e36ec870c8eb9808e) agora::recording::RecordingConfig::channelProfile
+
+</ApiSignature>
 
 频道模式。录制 SDK 针对不同的频道模式进行了不同的优化。目前支持的场景详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ad9f9be8fcec3408e36ec870c8eb9808e)。
 
@@ -356,8 +422,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### streamType
 
-| [agora::linuxsdk::REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d) agora::recording::RecordingConfig::streamType |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d) agora::recording::RecordingConfig::streamType
+
+</ApiSignature>
 
 设置大小流。仅在 Agora Native SDK 或 Web SDK 开启双流模式时有效。详见 [REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d)。
 
@@ -365,8 +434,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### triggerMode
 
-| [agora::linuxsdk::TRIGGER_MODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a652d8aefc1931391ff65ae7a088b932f) agora::recording::RecordingConfig::triggerMode |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::TRIGGER_MODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a652d8aefc1931391ff65ae7a088b932f) agora::recording::RecordingConfig::triggerMode
+
+</ApiSignature>
 
 选择录制启动模式。详见 [TRIGGER_MODE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a652d8aefc1931391ff65ae7a088b932f)。
 
@@ -374,8 +446,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### lang
 
-| [agora::linuxsdk::LANGUAGE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#aed12bf14a903009cb75f432d9159696f) agora::recording::RecordingConfig::lang |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::LANGUAGE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#aed12bf14a903009cb75f432d9159696f) agora::recording::RecordingConfig::lang
+
+</ApiSignature>
 
 编程语言，详见 [LANGUAGE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#aed12bf14a903009cb75f432d9159696f)。
 
@@ -383,8 +458,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### proxyType
 
-| int agora::recording::RecordingConfig::proxyType |
-| --- |
+<ApiSignature>
+
+int agora::recording::RecordingConfig::proxyType
+
+</ApiSignature>
 
 设置代理服务器类型。
 
@@ -398,8 +476,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### proxyServer
 
-| const char* agora::recording::RecordingConfig::proxyServer |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::proxyServer
+
+</ApiSignature>
 
 根据 `proxyType` 参数中选择的代理服务器类型设置代理服务器的 IP 地址（域名）和端口，从而实现在内网进行录制：
 
@@ -413,8 +494,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### audioProfile
 
-| [agora::linuxsdk::AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087) agora::recording::RecordingConfig::audioProfile |
-| --- |
+<ApiSignature>
+
+[agora::linuxsdk::AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087) agora::recording::RecordingConfig::audioProfile
+
+</ApiSignature>
 
 设置合流模式下录制文件的音频属性。详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8e652e4f981c729da31b3dbb73b8d087)。
 
@@ -426,8 +510,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### defaultVideoBg
 
-| const char* agora::recording::RecordingConfig::defaultVideoBg |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::defaultVideoBg
+
+</ApiSignature>
 
 设置合流模式下画布的默认背景图片的路径。如不设置会显示背景色。
 
@@ -439,8 +526,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### defaultUserBg
 
-| const char* agora::recording::RecordingConfig::defaultUserBg |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::defaultUserBg
+
+</ApiSignature>
 
 设置合流模式下用户的默认背景图片的路径。如不设置会显示背景色。
 
@@ -455,8 +545,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### subscribeVideoUids
 
-| const char* agora::recording::RecordingConfig::subscribeVideoUids |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::subscribeVideoUids
+
+</ApiSignature>
 
 录制指定 UID 的视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
@@ -466,8 +559,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### subscribeAudioUids
 
-| const char* agora::recording::RecordingConfig::subscribeAudioUids |
-| --- |
+<ApiSignature>
+
+const char* agora::recording::RecordingConfig::subscribeAudioUids
+
+</ApiSignature>
 
 录制指定 UID 的音频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
 
@@ -477,8 +573,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### enableIntraRequest
 
-| bool agora::recording::RecordingConfig::enableIntraRequest |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::enableIntraRequest
+
+</ApiSignature>
 
 是否启用关键帧请求。该参数默认为 true，可改善弱网下的音视频体验。如需使单流模式下录制的视频可指定播放位置，须将 `enableIntraRequest` 设为 false。
 
@@ -493,8 +592,11 @@ SDK 包内 AgoraCoreServices 的默认路径为：Agora_Recording_SDK_for_Linux_
 
 ### enableH265Support
 
-| bool agora::recording::RecordingConfig::enableH265Support |
-| --- |
+<ApiSignature>
+
+bool agora::recording::RecordingConfig::enableH265Support
+
+</ApiSignature>
 
 设置是否支持录制 H.265 视频流：
 

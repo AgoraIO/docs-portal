@@ -60,11 +60,11 @@ _migration:
 
 ### RoomParams() [1/3]
 
-| com.herewhite.sdk.RoomParams.RoomParams | ( | String | *uuid*, |
-| --- | --- | --- | --- |
-|  |  | String | *roomToken*, |
-|  |  | String | *uid* |
-|  | ) |  |  |
+<ApiSignature>
+
+com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*)
+
+</ApiSignature>
 
 初始化房间配置参数。
 
@@ -90,12 +90,11 @@ _migration:
 
 ### RoomParams() [2/3]
 
-| com.herewhite.sdk.RoomParams.RoomParams | ( | String | *uuid*, |
-| --- | --- | --- | --- |
-|  |  | String | *roomToken*, |
-|  |  | String | *uid*, |
-|  |  | [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) | *memberInfo* |
-|  | ) |  |  |
+<ApiSignature>
+
+com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*, [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) *memberInfo*)
+
+</ApiSignature>
 
 初始化房间配置参数并传入用户信息。
 
@@ -130,12 +129,11 @@ _migration:
 
 ### RoomParams() [3/3]
 
-| com.herewhite.sdk.RoomParams.RoomParams | ( | String | *uuid*, |
-| --- | --- | --- | --- |
-|  |  | String | *roomToken*, |
-|  |  | String | *uid*, |
-|  |  | Object | *userPayload* |
-|  | ) |  |  |
+<ApiSignature>
+
+com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*, Object *userPayload*)
+
+</ApiSignature>
 
 初始化房间配置参数并传入自定义的用户信息。
 
@@ -172,8 +170,11 @@ _migration:
 
 ### setRegion()
 
-| void com.herewhite.sdk.RoomParams.setRegion | ( | [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) | *region* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setRegion([Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) *region*)
+
+</ApiSignature>
 
 设置数据中心。
 
@@ -194,8 +195,11 @@ _migration:
 
 ### getRegion()
 
-| [Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.RoomParams.getRegion | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+[Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.RoomParams.getRegion()
+
+</ApiSignature>
 
 获取设置的数据中心。
 
@@ -207,8 +211,11 @@ _migration:
 
 ### isWritable()
 
-| boolean com.herewhite.sdk.RoomParams.isWritable | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isWritable()
+
+</ApiSignature>
 
 获取用户是否以互动模式加入白板房间。
 
@@ -223,8 +230,11 @@ _migration:
 
 ### setWritable()
 
-| void com.herewhite.sdk.RoomParams.setWritable | ( | boolean | *writable* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setWritable(boolean *writable*)
+
+</ApiSignature>
 
 设置用户是否以互动模式加入白板房间。
 
@@ -248,8 +258,11 @@ _migration:
 
 ### getDisableEraseImage()
 
-| boolean com.herewhite.sdk.RoomParams.getDisableEraseImage | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.getDisableEraseImage()
+
+</ApiSignature>
 
 获取是否关闭橡皮擦擦除图片功能。
 
@@ -264,8 +277,11 @@ _migration:
 
 ### setDisableEraseImage()
 
-| void com.herewhite.sdk.RoomParams.setDisableEraseImage | ( | boolean | *disableEraseImage* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableEraseImage(boolean *disableEraseImage*)
+
+</ApiSignature>
 
 设置是否关闭橡皮擦擦除图片功能。
 
@@ -286,10 +302,11 @@ _migration:
 
 ### setTimeout()
 
-| void com.herewhite.sdk.RoomParams.setTimeout | ( | long | *timeout*, |
-| --- | --- | --- | --- |
-|  |  | TimeUnit | *timeUnit* |
-|  | ) |  |  |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setTimeout(long *timeout*, TimeUnit *timeUnit*)
+
+</ApiSignature>
 
 设置加入房间的超时时间。
 
@@ -310,8 +327,11 @@ _migration:
 
 ### isDisableDeviceInputs()
 
-| boolean com.herewhite.sdk.RoomParams.isDisableDeviceInputs | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isDisableDeviceInputs()
+
+</ApiSignature>
 
 获取是否禁止白板工具响应用户输入。
 
@@ -326,8 +346,11 @@ _migration:
 
 ### setDisableDeviceInputs()
 
-| void com.herewhite.sdk.RoomParams.setDisableDeviceInputs | ( | boolean | *disableDeviceInputs* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableDeviceInputs(boolean *disableDeviceInputs*)
+
+</ApiSignature>
 
 开启/禁止白板工具响应用户输入。
 
@@ -350,8 +373,11 @@ _migration:
 
 ### isDisableOperations()
 
-| boolean com.herewhite.sdk.RoomParams.isDisableOperations | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isDisableOperations()
+
+</ApiSignature>
 
 获取是否禁止白板响应用户的操作。
 
@@ -366,8 +392,11 @@ _migration:
 
 ### setDisableOperations()
 
-| void com.herewhite.sdk.RoomParams.setDisableOperations | ( | boolean | *disableOperations* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableOperations(boolean *disableOperations*)
+
+</ApiSignature>
 
 允许/禁止白板响应用户任何操作。
 
@@ -396,8 +425,11 @@ _migration:
 
 ### isDisableBezier()
 
-| boolean com.herewhite.sdk.RoomParams.isDisableBezier | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isDisableBezier()
+
+</ApiSignature>
 
 获取是否关闭贝塞尔曲线优化。
 
@@ -412,8 +444,11 @@ _migration:
 
 ### setDisableBezier()
 
-| void com.herewhite.sdk.RoomParams.setDisableBezier | ( | boolean | *disableBezier* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableBezier(boolean *disableBezier*)
+
+</ApiSignature>
 
 设置是否关闭贝塞尔曲线优化。
 
@@ -436,8 +471,11 @@ _migration:
 
 ### isDisableCameraTransform()
 
-| boolean com.herewhite.sdk.RoomParams.isDisableCameraTransform | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isDisableCameraTransform()
+
+</ApiSignature>
 
 获取是否禁止本地用户操作白板视角。
 
@@ -452,8 +490,11 @@ _migration:
 
 ### setDisableCameraTransform()
 
-| void com.herewhite.sdk.RoomParams.setDisableCameraTransform | ( | boolean | *disableCameraTransform* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableCameraTransform(boolean *disableCameraTransform*)
+
+</ApiSignature>
 
 禁止/允许本地用户操作白板的视角，包括缩放和移动视角。
 
@@ -472,8 +513,11 @@ _migration:
 
 ### isDisableNewPencil()
 
-| boolean com.herewhite.sdk.RoomParams.isDisableNewPencil | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isDisableNewPencil()
+
+</ApiSignature>
 
 获取是否关闭新铅笔工具。
 
@@ -488,8 +532,11 @@ _migration:
 
 ### setDisableNewPencil()
 
-| void com.herewhite.sdk.RoomParams.setDisableNewPencil | ( | boolean | *disableNewPencil* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean *disableNewPencil*)
+
+</ApiSignature>
 
 关闭/开启新铅笔工具。
 
@@ -521,8 +568,11 @@ _migration:
 
 ### getCameraBound()
 
-| [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) com.herewhite.sdk.RoomParams.getCameraBound | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) com.herewhite.sdk.RoomParams.getCameraBound()
+
+</ApiSignature>
 
 获取视角边界。
 
@@ -534,8 +584,11 @@ _migration:
 
 ### setCameraBound()
 
-| void com.herewhite.sdk.RoomParams.setCameraBound | ( | [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) | *cameraBound* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setCameraBound([CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) *cameraBound*)
+
+</ApiSignature>
 
 设置本地用户的视角边界。
 
@@ -555,8 +608,11 @@ _migration:
 
 ### getUserPayload()
 
-| Object com.herewhite.sdk.RoomParams.getUserPayload | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+Object com.herewhite.sdk.RoomParams.getUserPayload()
+
+</ApiSignature>
 
 获取自定义用户信息。
 
@@ -568,8 +624,11 @@ _migration:
 
 ### setUserPayload()
 
-| void com.herewhite.sdk.RoomParams.setUserPayload | ( | Object | *userPayload* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setUserPayload(Object *userPayload*)
+
+</ApiSignature>
 
 自定义用户信息。
 
@@ -595,8 +654,11 @@ _migration:
 
 ### getMemberInfo()
 
-| [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) com.herewhite.sdk.RoomParams.getMemberInfo | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+[MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) com.herewhite.sdk.RoomParams.getMemberInfo()
+
+</ApiSignature>
 
 获取自定义的用户信息。
 
@@ -612,8 +674,11 @@ _migration:
 
 ### setMemberInfo()
 
-| void com.herewhite.sdk.RoomParams.setMemberInfo | ( | [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) | *memberInfo* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setMemberInfo([MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) *memberInfo*)
+
+</ApiSignature>
 
 自定义用户信息。
 
@@ -633,8 +698,11 @@ _migration:
 
 ### getUuid()
 
-| String com.herewhite.sdk.RoomParams.getUuid | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+String com.herewhite.sdk.RoomParams.getUuid()
+
+</ApiSignature>
 
 获取房间 UUID。
 
@@ -646,8 +714,11 @@ _migration:
 
 ### setUuid()
 
-| void com.herewhite.sdk.RoomParams.setUuid | ( | String | *uuid* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setUuid(String *uuid*)
+
+</ApiSignature>
 
 设置房间 UUID。
 
@@ -663,8 +734,11 @@ _migration:
 
 ### getRoomToken()
 
-| String com.herewhite.sdk.RoomParams.getRoomToken | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+String com.herewhite.sdk.RoomParams.getRoomToken()
+
+</ApiSignature>
 
 获取 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
 
@@ -676,8 +750,11 @@ _migration:
 
 ### setRoomToken()
 
-| void com.herewhite.sdk.RoomParams.setRoomToken | ( | String | *roomToken* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setRoomToken(String *roomToken*)
+
+</ApiSignature>
 
 设置 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
 
@@ -693,8 +770,11 @@ _migration:
 
 ### setUseNativeWebSocket()
 
-| void com.herewhite.sdk.RoomParams.setUseNativeWebSocket | ( | boolean | *nativeWebSocket* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setUseNativeWebSocket(boolean *nativeWebSocket*)
+
+</ApiSignature>
 
 开启全链路加速功能。
 
@@ -715,8 +795,11 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 ### isUseNativeWebSocket()
 
-| boolean com.herewhite.sdk.RoomParams.isUseNativeWebSocket | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isUseNativeWebSocket()
+
+</ApiSignature>
 
 获取是否开启全链路加速功能。
 
@@ -731,8 +814,11 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 ### isUsingFloatBar()
 
-| boolean com.herewhite.sdk.RoomParams.isUsingFloatBar | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+boolean com.herewhite.sdk.RoomParams.isUsingFloatBar()
+
+</ApiSignature>
 
 获取浮动条功能是否已开启。
 
@@ -747,8 +833,11 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 ### setUsingFloatBar()
 
-| void com.herewhite.sdk.RoomParams.setUsingFloatBar | ( | boolean | *floatBar* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setUsingFloatBar(boolean *floatBar*)
+
+</ApiSignature>
 
 设置是否开启开启浮动条功能。
 
@@ -767,8 +856,11 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 ### getModulesOrigin()
 
-| String com.herewhite.sdk.RoomParams.getModulesOrigin | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+String com.herewhite.sdk.RoomParams.getModulesOrigin()
+
+</ApiSignature>
 
 获取白板请求 modules 数据的地址。
 
@@ -780,8 +872,11 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 
 ### setModulesOrigin()
 
-| void com.herewhite.sdk.RoomParams.setModulesOrigin | ( | String | *modulesOrigin* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void com.herewhite.sdk.RoomParams.setModulesOrigin(String *modulesOrigin*)
+
+</ApiSignature>
 
 设置白板请求 modules 数据的地址。 配置后不会请求白板默认地址。
 

@@ -39,7 +39,11 @@ _migration:
 
 ### constructor
 
-- new EduUser(user:[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)):[EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
+<ApiSignature>
+
+new EduUser(user: [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)): [EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="user" required>
@@ -53,7 +57,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns [EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
+<ApiReturns>
+
+<ApiReturnType>
+
+[EduUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-user-struct-du-user)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -87,9 +99,19 @@ userUuid: string
 
 ### toPlainObject
 
-- toPlainObject():\{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);userUuid:string\}
+<ApiSignature>
 
-Returns \{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);userUuid:string\}
+toPlainObject(): \{ userName: string; userProperties: Map&lt;string, any&gt;; userRole: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum); userUuid: string \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ userName: string; userProperties: Map&lt;string, any&gt;; userRole: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum); userUuid: string \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; userName: string; userProperties: Map&lt;string, any&gt;; userRole: EduRoleTypeEnum; userUuid: string &#125;">
 <Parameter name="userName" type="string" required />
@@ -105,3 +127,5 @@ Returns \{userName:string;userProperties:Map&lt;string,any&gt;;userRole:[EduRole
 </Parameter>
 <Parameter name="userUuid" type="string" required />
 </ParameterList>
+
+</ApiReturns>

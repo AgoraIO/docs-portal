@@ -23,7 +23,11 @@ _migration:
 
 ### Const iterateMap
 
-- iterateMap&lt;K,V,T,E&gt;(map:Map&lt;K,V&gt;, processors?:\{onFilter?:(key:K, item:V)=&gt;boolean;onMap?:(key:K, item:V)=&gt;T;onReduce?:(prev:E, key:K, item:V)=&gt;E\}):\{list:T[];prev:E\}
+<ApiSignature>
+
+iterateMap&lt;K, V, T, E&gt;(map: Map&lt;K, V&gt;, processors?: \{ onFilter?: (key: K, item: V) =&gt; boolean; onMap?: (key: K, item: V) =&gt; T; onReduce?: (prev: E, key: K, item: V) =&gt; E \}): \{ list: T[]; prev: E \}
+
+</ApiSignature>
 
 <ParameterList title="Type parameters">
 <Parameter name="K" />
@@ -39,39 +43,75 @@ _migration:
 <ParameterList>
 <Parameter name="onFilter" type="(key:K, item:V)= &amp; gt;boolean" optional>
 
-- - (key:K, item:V):boolean
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="key" type="K" required />
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(key: K, item: V): boolean
 
-  Returns boolean
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="K" required />
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onMap" type="(key:K, item:V)= &amp; gt;T" optional>
 
-- - (key:K, item:V):T
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="key" type="K" required />
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(key: K, item: V): T
 
-  Returns T
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="K" required />
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+T
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onReduce" type="(prev:E, key:K, item:V)= &amp; gt;E" optional>
 
-- - (prev:E, key:K, item:V):E
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="prev" type="E" required />
-  <Parameter name="key" type="K" required />
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(prev: E, key: K, item: V): E
 
-  Returns E
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="prev" type="E" required />
+<Parameter name="key" type="K" required />
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+E
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -79,18 +119,30 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns \{list:T[];prev:E\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ list: T[]; prev: E \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; list: T[]; prev: E &#125;">
 <Parameter name="list" type="T[]" required />
 <Parameter name="prev" type="E" required />
 </ParameterList>
 
+</ApiReturns>
+
 <a id="iterateSet"></a>
 
 ### Const iterateSet
 
-- iterateSet&lt;V,T,E&gt;(map:Set&lt;V&gt;, processors?:\{onFilter?:(item:V)=&gt;boolean;onMap?:(item:V)=&gt;T;onReduce?:(prev:E, item:V)=&gt;E\}):\{list:T[];prev:E\}
+<ApiSignature>
+
+iterateSet&lt;V, T, E&gt;(map: Set&lt;V&gt;, processors?: \{ onFilter?: (item: V) =&gt; boolean; onMap?: (item: V) =&gt; T; onReduce?: (prev: E, item: V) =&gt; E \}): \{ list: T[]; prev: E \}
+
+</ApiSignature>
 
 <ParameterList title="Type parameters">
 <Parameter name="V" />
@@ -105,36 +157,72 @@ Returns \{list:T[];prev:E\}
 <ParameterList>
 <Parameter name="onFilter" type="(item:V)= &amp; gt;boolean" optional>
 
-- - (item:V):boolean
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(item: V): boolean
 
-  Returns boolean
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onMap" type="(item:V)= &amp; gt;T" optional>
 
-- - (item:V):T
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(item: V): T
 
-  Returns T
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+T
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onReduce" type="(prev:E, item:V)= &amp; gt;E" optional>
 
-- - (prev:E, item:V):E
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="prev" type="E" required />
-  <Parameter name="item" type="V" required />
-  </ParameterList>
+(prev: E, item: V): E
 
-  Returns E
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="prev" type="E" required />
+<Parameter name="item" type="V" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+E
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -142,9 +230,17 @@ Returns \{list:T[];prev:E\}
 </Parameter>
 </ParameterList>
 
-Returns \{list:T[];prev:E\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ list: T[]; prev: E \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; list: T[]; prev: E &#125;">
 <Parameter name="list" type="T[]" required />
 <Parameter name="prev" type="E" required />
 </ParameterList>
+
+</ApiReturns>

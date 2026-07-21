@@ -2,14 +2,19 @@
 title: 歌词打分组件 Objective-C API
 _migration:
   type: manual-mdx
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/api/lyrics-api
   sourcePath: docs/online-ktv/auikaraoke/api/lyrics-api.ios.mdx
   generator: legacy-mdx
   warnings:
     - code: manual-fragment-normalized
       severity: info
-      message: Normalized 3 legacy fragment link(s) to stable local anchors.
+      message: Normalized 2 legacy fragment link(s) to stable local anchors.
+    - code: unresolved-fragment
+      severity: warning
+      message: >-
+        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
+        links.
 ---
 
 本文提供在线 K 歌房歌词打分组件相关 API。
@@ -506,7 +511,7 @@ public class LyricsFileDownloader: NSObject {
 
 **参数：**
 
-- `urlString`：需要下载的歌词文件的 URL。如果你需要下载声网版权音乐的歌词，你需要先调用 [`getLyricWithSongCode`](/zh-CN/api-reference/rtc/ios/play/drm#songcode) 获取指定歌曲的歌词下载地址，然后通过由此触发的 [`onLyricResult`](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调来获取歌词的 `url`。
+- `urlString`：需要下载的歌词文件的 URL。如果你需要下载声网版权音乐的歌词，你需要先调用 [`getLyricWithSongCode`](/zh-CN/api-reference/rtc/ios/play/drm) 获取指定歌曲的歌词下载地址，然后通过由此触发的 [`onLyricResult`](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调来获取歌词的 `url`。
 
 **返回值：**
 

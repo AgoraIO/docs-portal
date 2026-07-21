@@ -276,6 +276,57 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
+  it('renders TypeDoc signatures and returns as structured API member blocks', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>HandUpStore</h1>
+        <h3>on<wbr/>Podium</h3>
+        <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+          <li class="tsd-signature tsd-kind-icon">on<wbr/>Podium<span class="tsd-signature-symbol">(</span>userUuid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, source<span class="tsd-signature-symbol">?: </span><a href="../enums/podium-source.html" class="tsd-signature-type">PodiumSource</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+        </ul>
+        <ul class="tsd-descriptions"><li class="tsd-description">
+          <p>同意学生上讲台。</p>
+          <h4 class="tsd-returns-title">Returns <a href="../interfaces/podium-result.html" class="tsd-signature-type">PodiumResult</a></h4>
+          <p>上台操作完成后的结果。</p>
+        </li></ul>
+      </article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/hand-up-store.html',
+      sourcePath:
+        'html-docs/flexible-classroom/Electron/classes/hand-up-store.html',
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/enums/podium-source.html',
+          '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/podium-source',
+        ],
+        [
+          'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/interfaces/podium-result.html',
+          '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/podium-result',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain('<ApiSignature>');
+    expect(result.body).toContain(
+      'onPodium(userUuid: string, source?: [PodiumSource](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/podium-source)): Promise&lt;void&gt;',
+    );
+    expect(result.body).toContain('<ApiReturns>');
+    expect(result.body).toContain(
+      '[PodiumResult](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/podium-result)',
+    );
+    expect(result.body).toContain(
+      '<ApiReturnType>\n\n[PodiumResult](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/podium-result)\n\n</ApiReturnType>\n\n上台操作完成后的结果。',
+    );
+    expect(result.body).not.toContain('- onPodium');
+    expect(result.body).not.toContain('Returns [PodiumResult]');
+    expect(result.structuredApiMembers.typedoc).toEqual({
+      returns: 1,
+      signatures: 1,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ApiSignature',
+    );
+  });
+
   it('renders Oxygen parameter definition lists as structured MDX fields', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Channel relay</h1><section id="set-destination__parameters"><h2>参数</h2>
@@ -338,7 +389,10 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(
       '<Parameter name="event" type="object" required>',
     );
-    expect(result.body).toContain('Returns void');
+    expect(result.body).toContain('<ApiSignature>');
+    expect(result.body).toContain('<ApiReturns>');
+    expect(result.body).toContain('<ApiReturnType>\n\nvoid');
+    expect(result.body).not.toContain('- <ApiSignature>');
     expect(result.structuredParameters.typedoc).toEqual({
       fields: 1,
       lists: 1,
@@ -406,6 +460,70 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
+  it('renders Doxygen member prototypes as linked API signatures', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>RTSA</h1><div class="memitem"><div class="memproto"><table class="mlabels"><tr><td class="mlabels-left"><table class="memname">
+        <tr><td class="memname"><a href="#api">__agora_api__</a> int agora_rtc_request_video_key_frame </td><td>(</td><td class="paramtype"><a href="structconnection.html">connection_id_t</a></td><td class="paramname"><em>conn_id</em>, </td></tr>
+        <tr><td class="paramkey"></td><td></td><td class="paramtype">uint32_t</td><td class="paramname"><em>remote_uid</em>, </td></tr>
+        <tr><td class="paramkey"></td><td></td><td class="paramtype">int</td><td class="paramname"><em>mode</em> = <code><a href="default-mode.html">DEFAULT_MODE</a></code>&nbsp;)</td></tr>
+      </table></td><td class="mlabels-right"><span class="mlabels"><span class="mlabel extern">extern</span></span></td></tr></table></div></div></article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h',
+      sourcePath: 'html-docs/rtsa/c/agora__rtc__api_8h.html',
+      fragmentMap: new Map([['api', 'api']]),
+      routeMap: new Map([
+        [
+          'https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h',
+          '/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h',
+        ],
+        [
+          'https://doc.shengwang.cn/api-ref/rtsa/c/structconnection.html',
+          '/zh-CN/api-reference/rtsa/c/structconnection',
+        ],
+        [
+          'https://doc.shengwang.cn/api-ref/rtsa/c/default-mode.html',
+          '/zh-CN/api-reference/rtsa/c/default-mode',
+        ],
+      ]),
+    });
+
+    expect(result.body).toContain('<ApiSignature labels="extern">');
+    expect(result.body).toContain(
+      '[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#api) int agora_rtc_request_video_key_frame([connection_id_t](/zh-CN/api-reference/rtsa/c/structconnection) *conn_id*, uint32_t *remote_uid*, int *mode* = [`DEFAULT_MODE`](/zh-CN/api-reference/rtsa/c/default-mode))',
+    );
+    expect(result.body).not.toContain('| __agora_api__');
+    expect(result.structuredApiMembers.doxygen).toEqual({
+      returns: 0,
+      signatures: 1,
+    });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ApiSignature',
+    );
+  });
+
+  it('renders Appledoc declarations as API signatures', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>WhiteSlideDelegate</h1><div class="method-subsection method-declaration"><code>- (void)onSlideError:(WhiteSlideErrorType)<em>slideError</em> errorMessage:(NSString *)<em>errorMessage</em></code></div></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteSlideDelegate',
+      sourcePath: 'html-docs/whiteboard/iOS/Protocols/WhiteSlideDelegate.html',
+    });
+
+    expect(result.body).toContain('<ApiSignature>');
+    expect(result.body).toContain(
+      '\\- (void)onSlideError:(WhiteSlideErrorType)*slideError* errorMessage:(NSString *)*errorMessage*',
+    );
+    expect(result.body).not.toContain(
+      '`- (void)onSlideError:(WhiteSlideErrorType)',
+    );
+    expect(result.structuredApiMembers.appledoc).toEqual({
+      returns: 0,
+      signatures: 1,
+    });
+    const compiled = await compileGeneratedMdx(result.body);
+    expect(compiled).toContain('ApiSignature');
+    expect(compiled).not.toContain('_components.ul');
+  });
+
   it('renders Oxygen, Doxygen, and TypeDoc since definitions as info callouts', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>API</h1>
@@ -434,7 +552,7 @@ describe('API Center shared HTML to MDX converter', () => {
     );
     expect(result.body).toContain('### deprecated\n\nUse the replacement.');
     expect(result.body).toContain(
-      'Returns [Replacement](/zh-CN/api-reference/rtc/electron/replacement)',
+      '<ApiReturnType>\n\n[Replacement](/zh-CN/api-reference/rtc/electron/replacement)\n\n</ApiReturnType>',
     );
     expect(result.body).not.toContain('#### Returns');
     expect(result.body).toContain('Following content.');

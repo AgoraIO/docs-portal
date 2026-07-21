@@ -275,6 +275,11 @@ export async function runHtmlGenerators({
       .sort()
       .map((generator) => [generator, { fields: 0, lists: 0 }]),
   );
+  const structuredApiMemberCounts = Object.fromEntries(
+    [...requestedGenerators]
+      .sort()
+      .map((generator) => [generator, { returns: 0, signatures: 0 }]),
+  );
 
   for (const page of manifest.pageEvidence.filter((page) => !page.aliasOf)) {
     const resolution = page.sourceResolution;
@@ -317,6 +322,14 @@ export async function runHtmlGenerators({
       if (!aggregate) continue;
       aggregate.fields += counts.fields;
       aggregate.lists += counts.lists;
+    }
+    for (const [generator, counts] of Object.entries(
+      converted.structuredApiMembers,
+    )) {
+      const aggregate = structuredApiMemberCounts[generator];
+      if (!aggregate) continue;
+      aggregate.returns += counts.returns;
+      aggregate.signatures += counts.signatures;
     }
     const warnings = converted.warnings.map((warning) =>
       warning.code === 'unresolved-link'
@@ -431,9 +444,11 @@ export async function runHtmlGenerators({
     });
   }
   run.setReportDetail('structuredParameters', structuredParameterCounts);
+  run.setReportDetail('structuredApiMembers', structuredApiMemberCounts);
   const report = await run.finish();
   return {
     report,
+    structuredApiMemberCounts,
     structuredParameterCounts,
     selectedCount: selected.size,
     matchedCount: matched.length,
@@ -506,7 +521,7 @@ Options:
     generators: [generator],
   });
   console.log(
-    `${generator}: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, parameter lists ${result.structuredParameterCounts[generator]?.lists ?? 0}, parameter fields ${result.structuredParameterCounts[generator]?.fields ?? 0}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
+    `${generator}: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, signatures ${result.structuredApiMemberCounts[generator]?.signatures ?? 0}, returns ${result.structuredApiMemberCounts[generator]?.returns ?? 0}, parameter lists ${result.structuredParameterCounts[generator]?.lists ?? 0}, parameter fields ${result.structuredParameterCounts[generator]?.fields ?? 0}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
   );
   return result;
 }

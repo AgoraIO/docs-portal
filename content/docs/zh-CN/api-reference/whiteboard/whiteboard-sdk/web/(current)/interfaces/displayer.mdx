@@ -277,8 +277,17 @@ version: string
 
 ### addMagixEventListener
 
-- addMagixEventListener(event:string, listener:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?:[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)):void
-- addMagixEventListener(event:string, listener:[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval:number):void
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval: number): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1818](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1818)
 
@@ -320,7 +329,15 @@ version: string
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 - Defined in [index-zh.d.ts\:1844](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1844)
 
@@ -368,13 +385,25 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="bindhtmlelement"></a>
 
 ### bindHtmlElement
 
-- bindHtmlElement(element:HTMLDivElement|null):void
+<ApiSignature>
+
+bindHtmlElement(element: HTMLDivElement | null): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1701](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1701)
 
@@ -388,13 +417,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="converttopointinworld"></a>
 
 ### convertToPointInWorld
 
-- convertToPointInWorld(point:\{x:number;y:number\}):\{x:number;y:number\}
+<ApiSignature>
+
+convertToPointInWorld(point: \{ x: number; y: number \}): \{ x: number; y: number \}
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1721](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1721)
 
@@ -425,7 +466,13 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns \{x:number;y:number\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ x: number; y: number \}
+
+</ApiReturnType>
 
 点在世界坐标系中的坐标。
 
@@ -442,11 +489,17 @@ Returns \{x:number;y:number\}
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="createscenescallback"></a>
 
 ### createScenesCallback
 
-- createScenesCallback(path:string, callbacks?:Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;):[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+<ApiSignature>
+
+createScenesCallback(path: string, callbacks?: Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;): [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) | null
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1668](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1668)
 
@@ -479,30 +532,54 @@ Partial & lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/we
 </Parameter>
 </ParameterList>
 
-Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)|null
+<ApiReturns>
+
+<ApiReturnType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) | null
+
+</ApiReturnType>
 
 - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) 对象。
 - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
+
+</ApiReturns>
 
 <a id="entirescenes"></a>
 
 ### entireScenes
 
-- entireScenes():[SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+<ApiSignature>
+
+entireScenes(): [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1884](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1884)
 
 获取当前房间内所有场景的信息。
 
-Returns [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+<ApiReturns>
+
+<ApiReturnType>
+
+[SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+
+</ApiReturnType>
 
 当前房间内所有场景的信息。
+
+</ApiReturns>
 
 <a id="fillscenesnapshot"></a>
 
 ### fillSceneSnapshot
 
-- fillSceneSnapshot(scenePath:string, div:HTMLElement, width:number, height:number):void
+<ApiSignature>
+
+fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1774)
 
@@ -531,13 +608,25 @@ Returns [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#sc
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="generatescreenshot"></a>
 
 ### generateScreenshot
 
-- generateScreenshot(scenePath?:string, width?:number, height?:number):Promise&lt;string&gt;
+<ApiSignature>
+
+generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1765](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1765)
 
@@ -565,7 +654,13 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;string&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
 
 截图的 URL 地址。
 
@@ -573,11 +668,17 @@ Returns Promise&lt;string&gt;
 
 如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
 
+</ApiReturns>
+
 <a id="getinvisibleplugin"></a>
 
 ### getInvisiblePlugin
 
-- getInvisiblePlugin&lt;A&gt;(kind:string):[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
+<ApiSignature>
+
+getInvisiblePlugin&lt;A&gt;(kind: string): [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt; | null
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1709](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1709)
 
@@ -595,15 +696,27 @@ Returns Promise&lt;string&gt;
 </Parameter>
 </ParameterList>
 
-Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt;|null
+<ApiReturns>
+
+<ApiReturnType>
+
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt; | null
+
+</ApiReturnType>
 
 指定的不可见插件。
+
+</ApiReturns>
 
 <a id="getscene"></a>
 
 ### getScene
 
-- getScene(path:string):[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+<ApiSignature>
+
+getScene(path: string): [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene) | undefined
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1892](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1892)
 
@@ -617,15 +730,27 @@ Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/cla
 </Parameter>
 </ParameterList>
 
-Returns [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)|undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene) | undefined
+
+</ApiReturnType>
 
 场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)。
+
+</ApiReturns>
 
 <a id="memberstate"></a>
 
 ### memberState
 
-- memberState(memberId:number):[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+<ApiSignature>
+
+memberState(memberId: number): [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1676](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1676)
 
@@ -639,15 +764,27 @@ Returns [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#
 </Parameter>
 </ParameterList>
 
-Returns [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+<ApiReturns>
+
+<ApiReturnType>
+
+[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+</ApiReturnType>
 
 指定用户的白板工具状态。
+
+</ApiReturns>
 
 <a id="movecamera"></a>
 
 ### moveCamera
 
-- moveCamera(camera:Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt;&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
+<ApiSignature>
+
+moveCamera(camera: Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt; & Readonly&lt;\{ animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode) \}&gt;): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1683](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1683)
 
@@ -667,13 +804,25 @@ Partial & lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="movecameratocontain"></a>
 
 ### moveCameraToContain
 
-- moveCameraToContain(rectangle:[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)&Readonly&lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\}&gt;):void
+<ApiSignature>
+
+moveCameraToContain(rectangle: [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle) & Readonly&lt;\{ animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode) \}&gt;): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1692](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1692)
 
@@ -693,13 +842,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="refreshviewsize"></a>
 
 ### refreshViewSize
 
-- refreshViewSize():void
+<ApiSignature>
+
+refreshViewSize(): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1643)
 
@@ -708,13 +869,25 @@ Returns void
 当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
  该方法仅在 `autoResize` 为 `false` 时生效。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removemagixeventlistener"></a>
 
 ### removeMagixEventListener
 
-- removeMagixEventListener(event:string, listener?:[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)):void
+<ApiSignature>
+
+removeMagixEventListener(event: string, listener?: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1852](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1852)
 
@@ -739,13 +912,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="scaleppttofit"></a>
 
 ### scalePptToFit
 
-- scalePptToFit(animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)):void
+<ApiSignature>
+
+scalePptToFit(animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1869](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1869)
 
@@ -769,13 +954,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="scenepathtype"></a>
 
 ### scenePathType
 
-- scenePathType(path:string):[ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+<ApiSignature>
+
+scenePathType(path: string): [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1877](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1877)
 
@@ -789,15 +986,27 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+
+</ApiReturnType>
 
 场景路径的类型。
+
+</ApiReturns>
 
 <a id="scenepreview"></a>
 
 ### scenePreview
 
-- scenePreview(scenePath:string, div:HTMLElement, width:number|undefined, height:number|undefined):void
+<ApiSignature>
+
+scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1749](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1749)
 
@@ -826,13 +1035,25 @@ Returns [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="screenshottocanvas"></a>
 
 ### screenshotToCanvas
 
-- screenshotToCanvas(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number):void
+<ApiSignature>
+
+screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?: number): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1785](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1785)
 
@@ -877,13 +1098,25 @@ CanvasRenderingContext2D 对象。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="screenshottocanvasasync"></a>
 
 ### screenshotToCanvasAsync
 
-- screenshotToCanvasAsync(context:CanvasRenderingContext2D, scenePath:string, width:number, height:number, camera:[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?:number, timeout?:number):Promise&lt;void&gt;
+<ApiSignature>
+
+screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?: number, timeout?: number): Promise&lt;void&gt;
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1803](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1803)
 
@@ -939,13 +1172,25 @@ CanvasRenderingContext2D 对象。
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setcamerabound"></a>
 
 ### setCameraBound
 
-- setCameraBound(cameraBound:[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)):void
+<ApiSignature>
+
+setCameraBound(cameraBound: [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1649](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1649)
 
@@ -965,13 +1210,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="waitmagixevent"></a>
 
 ### waitMagixEvent
 
-- waitMagixEvent(filter:[EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)):Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+<ApiSignature>
+
+waitMagixEvent(filter: [EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)): Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1860](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1860)
 
@@ -991,6 +1248,14 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+
+</ApiReturnType>
 
 当特定自定义事件发生时，返回该事件。
+
+</ApiReturns>

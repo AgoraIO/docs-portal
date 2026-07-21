@@ -27,7 +27,11 @@ _migration:
 
 白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
 
-`@property (nonatomic, strong, nullable, readwrite) WhitePlayer *whitePlayer`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable, readwrite) WhitePlayer *whitePlayer
+
+</ApiSignature>
 
 #### Declared In
 
@@ -39,7 +43,11 @@ _migration:
 
 白板回放回调。详见 [WhiteCombineDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-combine-delegate)。
 
-`@property (nonatomic, weak, nullable) id<WhiteCombineDelegate> delegate`
+<ApiSignature>
+
+@property (nonatomic, weak, nullable) id&lt;WhiteCombineDelegate&gt; delegate
+
+</ApiSignature>
 
 #### Declared In
 
@@ -51,7 +59,11 @@ _migration:
 
 白板回放的播放速率。即使暂停回放，该值也不会变为 0。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
 
-`@property (nonatomic, assign) CGFloat playbackSpeed`
+<ApiSignature>
+
+@property (nonatomic, assign) CGFloat playbackSpeed
+
+</ApiSignature>
 
 #### Declared In
 
@@ -63,7 +75,11 @@ _migration:
 
 初始化一个同时持有本地音视频播放器与白板回放播放器的混合播放器对象。
 
-`- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer* whitePlayer:(WhitePlayer *)*replayer*`
+<ApiSignature>
+
+\- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer* whitePlayer:(WhitePlayer *)*replayer*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="nativePlayer">
@@ -92,7 +108,11 @@ _migration:
 
 指定媒体资源地址并初始化混合播放器。
 
-`- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl* whitePlayer:(WhitePlayer *)*replayer*`
+<ApiSignature>
+
+\- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl* whitePlayer:(WhitePlayer *)*replayer*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mediaUrl">
@@ -121,7 +141,11 @@ _migration:
 
 指定媒体资源地址并初始化本地播放器（AV Player），需要在生成后，自行设置白板播放器属性。
 
-`- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl*`
+<ApiSignature>
+
+\- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mediaUrl">
@@ -145,7 +169,11 @@ _migration:
 
 初始化本地视频播放器（AV Player），需要在生成后，自行设置白板播放器属性。
 
-`- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer*`
+<ApiSignature>
+
+\- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="nativePlayer">
@@ -169,7 +197,11 @@ _migration:
 
 视频回放的持续时长。
 
-`- (NSTimeInterval)videoDuration`
+<ApiSignature>
+
+\- (NSTimeInterval)videoDuration
+
+</ApiSignature>
 
 #### Declared In
 
@@ -181,7 +213,11 @@ _migration:
 
 播放视频。
 
-`- (void)play`
+<ApiSignature>
+
+\- (void)play
+
+</ApiSignature>
 
 #### Declared In
 
@@ -193,7 +229,11 @@ _migration:
 
 暂停播放视频。
 
-`- (void)pause`
+<ApiSignature>
+
+\- (void)pause
+
+</ApiSignature>
 
 #### Declared In
 
@@ -205,7 +245,11 @@ _migration:
 
 定位到视频指定位置。
 
-`- (void)seekToTime:(CMTime)*time* completionHandler:(void ( ^ ) ( BOOL finished ))*completionHandler*`
+<ApiSignature>
+
+\- (void)seekToTime:(CMTime)*time* completionHandler:(void (^) (BOOL finished))*completionHandler*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="time">
@@ -237,7 +281,11 @@ _migration:
 
 更新白板回放播放器的播放状态。
 
-`- (void)updateWhitePlayerPhase:(WhitePlayerPhase)*phase*`
+<ApiSignature>
+
+\- (void)updateWhitePlayerPhase:(WhitePlayerPhase)*phase*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="phase">

@@ -25,8 +25,11 @@ _migration:
 
 ### VIDEO_BUFFER_TYPE
 
-| enum [agora::ExternalVideoFrame::VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7) |
-| --- |
+<ApiSignature>
+
+enum [agora::ExternalVideoFrame::VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7)
+
+</ApiSignature>
 
 视频类型。
 
@@ -78,8 +81,11 @@ _migration:
 
 ### ExternalVideoFrame()
 
-| agora::ExternalVideoFrame::ExternalVideoFrame () | inline |
-| --- | --- |
+<ApiSignature labels="inline">
+
+agora::ExternalVideoFrame::ExternalVideoFrame()
+
+</ApiSignature>
 
 ## 类成员变量说明
 
@@ -88,8 +94,11 @@ _migration:
 <a id="pub-types"></a>
 ### type
 
-| [VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7) agora::ExternalVideoFrame::type |
-| --- |
+<ApiSignature>
+
+[VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7) agora::ExternalVideoFrame::type
+
+</ApiSignature>
 
 视频类型： [VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7)。
 
@@ -97,8 +106,11 @@ _migration:
 
 ### format
 
-| [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a08597f4fe6a0ef1ad7b53538fd27d119) agora::ExternalVideoFrame::format |
-| --- |
+<ApiSignature>
+
+[VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a08597f4fe6a0ef1ad7b53538fd27d119) agora::ExternalVideoFrame::format
+
+</ApiSignature>
 
 像素格式： [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a08597f4fe6a0ef1ad7b53538fd27d119)。
 
@@ -106,8 +118,11 @@ _migration:
 
 ### buffer
 
-| void* agora::ExternalVideoFrame::buffer |
-| --- |
+<ApiSignature>
+
+void* agora::ExternalVideoFrame::buffer
+
+</ApiSignature>
 
 视频缓冲区。
 
@@ -115,8 +130,11 @@ _migration:
 
 ### stride
 
-| int agora::ExternalVideoFrame::stride |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::stride
+
+</ApiSignature>
 
 传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。
 
@@ -124,8 +142,11 @@ _migration:
 
 ### height
 
-| int agora::ExternalVideoFrame::height |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::height
+
+</ApiSignature>
 
 传入视频帧的高度。
 
@@ -133,8 +154,11 @@ _migration:
 
 ### cropLeft
 
-| int agora::ExternalVideoFrame::cropLeft |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::cropLeft
+
+</ApiSignature>
 
 [原始数据相关字段] 指定左边裁剪掉的像素数量。默认为 0。
 
@@ -142,8 +166,11 @@ _migration:
 
 ### cropTop
 
-| int agora::ExternalVideoFrame::cropTop |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::cropTop
+
+</ApiSignature>
 
 [原始数据相关字段] 指定顶边裁剪掉的像素数量。默认为 0。
 
@@ -151,8 +178,11 @@ _migration:
 
 ### cropRight
 
-| int agora::ExternalVideoFrame::cropRight |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::cropRight
+
+</ApiSignature>
 
 [原始数据相关字段] 指定右边裁剪掉的像素数量。默认为 0。
 
@@ -160,8 +190,11 @@ _migration:
 
 ### cropBottom
 
-| int agora::ExternalVideoFrame::cropBottom |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::cropBottom
+
+</ApiSignature>
 
 [原始数据相关字段] 指定底边裁剪掉的像素数量。默认为 0。
 
@@ -169,8 +202,11 @@ _migration:
 
 ### rotation
 
-| int agora::ExternalVideoFrame::rotation |
-| --- |
+<ApiSignature>
+
+int agora::ExternalVideoFrame::rotation
+
+</ApiSignature>
 
 [原始数据相关字段] 指定是否对传入的视频组做顺时针旋转操作，可选值为 0， 90， 180， 270。默认为 0。
 
@@ -178,8 +214,11 @@ _migration:
 
 ### timestamp
 
-| long long agora::ExternalVideoFrame::timestamp |
-| --- |
+<ApiSignature>
+
+long long agora::ExternalVideoFrame::timestamp
+
+</ApiSignature>
 
 传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。
 
@@ -187,8 +226,11 @@ _migration:
 
 ### alphaBuffer
 
-| uint8_t* agora::ExternalVideoFrame::alphaBuffer |
-| --- |
+<ApiSignature>
+
+uint8_t* agora::ExternalVideoFrame::alphaBuffer
+
+</ApiSignature>
 
 表示人像分割算法的输出数据，跟视频帧的尺寸一致。每个像素点的取值范围为 [0,255]，其中 0 表示背景；255 代表前景（人像）。
 

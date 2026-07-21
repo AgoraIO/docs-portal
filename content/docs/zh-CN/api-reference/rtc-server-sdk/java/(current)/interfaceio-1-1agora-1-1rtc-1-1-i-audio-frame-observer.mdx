@@ -32,10 +32,11 @@ IAudioFrameObserver 接口。
 
 ### onMixedAudioFrame()
 
-| int io.agora.rtc.IAudioFrameObserver.onMixedAudioFrame | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
-| --- | --- | --- | --- |
-|  |  | String | *channel_id*, |
-|  |  | [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) | *frame*) |
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onMixedAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
 
 获取采集和播放声音混音后的数据。
 
@@ -66,10 +67,11 @@ IAudioFrameObserver 接口。
 
 ### onPlaybackAudioFrame()
 
-| int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrame | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
-| --- | --- | --- | --- |
-|  |  | String | *channel_id*, |
-|  |  | [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) | *frame*) |
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
 
 获得播放的声音。
 
@@ -100,12 +102,11 @@ IAudioFrameObserver 接口。
 
 ### onPlaybackAudioFrameBeforeMixing()
 
-| int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrameBeforeMixing | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agoraLocalUser*, |
-| --- | --- | --- | --- |
-|  |  | String | *channelId*, |
-|  |  | String | *userId*, |
-|  |  | [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) | *frame*, |
-|  |  | [VadProcessResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-vad-process-result) | *vadResult*) |
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrameBeforeMixing([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agoraLocalUser*, String *channelId*, String *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*, [VadProcessResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-vad-process-result) *vadResult*)
+
+</ApiSignature>
 
 获得播放声音混音前的数据。
 
@@ -146,10 +147,11 @@ VAD（语音活动检测）结果：[VadProcessResult](/zh-CN/api-reference/rtc-
 
 ### onRecordAudioFrame()
 
-| int io.agora.rtc.IAudioFrameObserver.onRecordAudioFrame | ( | [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) | *agora_local_user*, |
-| --- | --- | --- | --- |
-|  |  | String | *channel_id*, |
-|  |  | [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) | *frame*) |
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onRecordAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
 
 获得录制的声音。
 

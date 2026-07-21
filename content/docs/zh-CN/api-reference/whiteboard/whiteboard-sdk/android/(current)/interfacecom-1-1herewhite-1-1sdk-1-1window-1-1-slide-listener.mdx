@@ -17,10 +17,11 @@ _migration:
 
 ### slideUrlInterrupter()
 
-| void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter | ( | String | *sourceUrl*, |
-| --- | --- | --- | --- |
-|  |  | ResultCaller&lt; String &gt; | *resultCaller* |
-|  | ) |  |  |
+<ApiSignature>
+
+void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter(String *sourceUrl*, ResultCaller&lt; String &gt; *resultCaller*)
+
+</ApiSignature>
 
 拦截 PPT 资源 URL 回调。
 
@@ -53,12 +54,11 @@ _migration:
 
 ### onSlideError()
 
-| default void com.herewhite.sdk.window.SlideListener.onSlideError | ( | [SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) | *errorType*, |
-| --- | --- | --- | --- |
-|  |  | String | *errorMsg*, |
-|  |  | String | *slideId*, |
-|  |  | int | *slideIndex* |
-|  | ) |  |  |
+<ApiSignature>
+
+default void com.herewhite.sdk.window.SlideListener.onSlideError([SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) *errorType*, String *errorMsg*, String *slideId*, int *slideIndex*)
+
+</ApiSignature>
 
 PPT 加载错误回调，用于监听 PPT 渲染错误事件。
 

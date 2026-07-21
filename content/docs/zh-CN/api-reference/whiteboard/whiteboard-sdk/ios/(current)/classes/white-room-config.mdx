@@ -36,7 +36,11 @@ _migration:
 
 设置房间 UUID 并初始化 `WhiteRoomConfig` 对象。
 
-`- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid*`
+<ApiSignature>
+
+\- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="uuid">
@@ -70,7 +74,11 @@ _migration:
 
 设置房间 UUID 和用户信息并初始化 `WhiteRoomConfig` 对象。
 
-`- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid* userPayload:(id _Nullable)*userPayload*`
+<ApiSignature>
+
+\- (instancetype)initWithUUID:(NSString *)*uuid* roomToken:(NSString *)*roomToken* uid:(NSString *)*uid* userPayload:(id _Nullable)*userPayload*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="uuid">
@@ -109,7 +117,11 @@ _migration:
 
 房间 UUID，即房间唯一标识符。
 
-`@property (nonatomic, copy) NSString *uuid`
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *uuid
+
+</ApiSignature>
 
 #### Declared In
 
@@ -121,7 +133,11 @@ _migration:
 
 用于鉴权的 Room Token。
 
-`@property (nonatomic, copy) NSString *roomToken`
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *roomToken
+
+</ApiSignature>
 
 #### Declared In
 
@@ -133,7 +149,11 @@ _migration:
 
 用户唯一标识符，字符串格式，长度不超过 1024 字节。自从 v2.15.0。
 
-`@property (nonatomic, copy, readonly) NSString *uid`
+<ApiSignature>
+
+@property (nonatomic, copy, readonly) NSString *uid
+
+</ApiSignature>
 
 #### Declared In
 
@@ -145,7 +165,11 @@ _migration:
 
 互动白板房间所在的数据中心。
 
-`@property (nonatomic, strong, nullable) WhiteRegionKey region`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+
+</ApiSignature>
 
 #### Availability
 
@@ -177,7 +201,11 @@ _migration:
 白板请求 modules 数据的地址。配置后不会请求白板默认地址。
 @example [https://modules.example.com](https://modules.example.com/)
 
-`@property (nonatomic, copy, nullable) NSString *modulesOrigin`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *modulesOrigin
+
+</ApiSignature>
 
 #### Declared In
 
@@ -189,7 +217,11 @@ _migration:
 
 禁止/允许工具响应用户输入。
 
-`@property (nonatomic, assign) BOOL disableDeviceInputs`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableDeviceInputs
+
+</ApiSignature>
 
 #### Discussion
 
@@ -206,7 +238,11 @@ _migration:
 
 禁止/允许本地用户操作白板的视角，包括缩放和移动视角。
 
-`@property (nonatomic, assign) BOOL disableCameraTransform`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableCameraTransform
+
+</ApiSignature>
 
 #### Discussion
 
@@ -223,7 +259,11 @@ _migration:
 
 是否关闭贝塞尔曲线优化。
 
-`@property (nonatomic, assign) BOOL disableBezier`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableBezier
+
+</ApiSignature>
 
 #### Discussion
 
@@ -240,7 +280,11 @@ _migration:
 
 该方法已废弃。请使用 [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/disableDeviceInputs:) 和 [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/disableCameraTransform:)。
 
-`@property (nonatomic, assign) BOOL disableOperations`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableOperations
+
+</ApiSignature>
 
 #### Discussion
 
@@ -258,7 +302,11 @@ _migration:
 
 是否关闭橡皮擦擦除图片功能。
 
-`@property (nonatomic, assign) BOOL disableEraseImage`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableEraseImage
+
+</ApiSignature>
 
 #### Discussion
 
@@ -275,7 +323,11 @@ _migration:
 
 是否开启浮动条。浮动条会在使用选择工具选中单个物体或者同类物体时出现。
 
-`@property (nonatomic, assign) BOOL floatBar`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL floatBar
+
+</ApiSignature>
 
 #### Discussion
 
@@ -292,7 +344,11 @@ _migration:
 
 本地用户的视角边界。详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
 
-`@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound
+
+</ApiSignature>
 
 #### Declared In
 
@@ -304,7 +360,11 @@ _migration:
 
 自定义的用户信息，可以为 JSON、NSString、NSNumber 格式，推荐格式为 NSDictionary。
 
-`@property (nonatomic, copy, nullable) id userPayload`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) id userPayload
+
+</ApiSignature>
 
 #### Discussion
 
@@ -325,7 +385,11 @@ _migration:
 
 已废弃，请使用 [`userPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/userPayload)。
 
-`@property (nonatomic, copy, nullable) WhiteMemberInformation *memberInfo`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) WhiteMemberInformation *memberInfo
+
+</ApiSignature>
 
 #### Discussion
 
@@ -341,7 +405,11 @@ _migration:
 
 用户是否以互动模式加入白板房间。
 
-`@property (nonatomic, assign) BOOL isWritable`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL isWritable
+
+</ApiSignature>
 
 #### Discussion
 
@@ -360,7 +428,11 @@ _migration:
 
 关闭/开启新铅笔工具。
 
-`@property (nonatomic, assign) BOOL disableNewPencil`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableNewPencil
+
+</ApiSignature>
 
 #### Availability
 
@@ -392,7 +464,11 @@ _migration:
 
 加入房间的超时时间。单位为毫秒。
 
-`@property (nonatomic, strong) NSNumber *timeout`
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *timeout
+
+</ApiSignature>
 
 #### Discussion
 
@@ -408,7 +484,11 @@ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference
 
 是否只允许用户使用 Apple Pencil 在白板上绘制和书写。
 
-`@property (nonatomic, assign) BOOL drawOnlyApplePencil`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL drawOnlyApplePencil
+
+</ApiSignature>
 
 #### Discussion
 
@@ -434,7 +514,11 @@ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference
 
 是否开启全链路加速。
 
-`@property (nonatomic, assign) BOOL nativeWebSocket`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL nativeWebSocket
+
+</ApiSignature>
 
 #### Discussion
 

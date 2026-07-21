@@ -70,7 +70,11 @@ _migration:
 
 ### constructor
 
-- new Client(options:object):[Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+<ApiSignature>
+
+new Client(options: object): [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+
+</ApiSignature>
 
 **NOTE**：加解密功能仅在 IoT 场景适用。
 
@@ -104,7 +108,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+<ApiReturns>
+
+<ApiReturnType>
+
+[Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -112,7 +124,11 @@ Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
 
 ### destroy
 
-- destroy(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+destroy(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 销毁客户端对象。
 
@@ -121,40 +137,76 @@ Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
 
 方法调用成功时执行的回调函数。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="init"></a>
 
 ### init
 
-- init(appId:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+init(appId: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 初始化客户端对象。
 
@@ -168,40 +220,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="join"></a>
 
 ### join
 
-- join(channelKey:string, channel:string, uid:number|string, isAudioOnly:boolean, UidType?:[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boolean, UidType?: [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 加入频道。
 
@@ -250,44 +338,80 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。返回值为用户 ID。
 
-- - (uid:number):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+(uid: number): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leave"></a>
 
 ### leave
 
-- leave(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+leave(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 退出频道。
 
@@ -296,40 +420,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="mute"></a>
 
 ### mute
 
-- mute(uid:number, target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+mute(uid: number, target: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 停止接收远端用户的音视频流。
 
@@ -352,40 +512,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="mutelocal"></a>
 
 ### muteLocal
 
-- muteLocal(target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+muteLocal(target: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 停止发送本地用户的音视频流。
 
@@ -403,40 +599,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="off"></a>
 
 ### off
 
-- off(event:string):void
+<ApiSignature>
+
+off(event: string): void
+
+</ApiSignature>
 
 取消监听流事件。
 
@@ -448,26 +680,103 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"client-banned"):void
-- on(event:"error", callback:function):void
-- on(event:"stream-added", callback:function):void
-- on(event:"stream-removed", callback:function):void
-- on(event:"update-url", callback:function):void
-- on(event:"video-rotation", callback:function):void
-- on(event:"token-privilege-did-expire"):void
-- on(event:"token-privilege-will-expire"):void
-- on(event:"mute-audio", callback:function):void
-- on(event:"mute-video", callback:function):void
-- on(event:"unmute-audio", callback:function):void
-- on(event:"unmute-video", callback:function):void
-- on(event:"channel-media-relay-event", callback:function):void
-- on(event:"channel-media-relay-state", callback:function):void
+<ApiSignature>
+
+on(event: "client-banned"): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "error", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "stream-added", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "stream-removed", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "update-url", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "video-rotation", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "token-privilege-did-expire"): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "token-privilege-will-expire"): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "mute-audio", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "mute-video", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "unmute-audio", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "unmute-video", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "channel-media-relay-event", callback: function): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "channel-media-relay-state", callback: function): void
+
+</ApiSignature>
 
 用户被服务器禁止。
 
@@ -485,7 +794,15 @@ v2.5.4
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序发生错误。
  该回调中会包含详细的错误码和错误信息。
@@ -500,25 +817,45 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序已添加远端音视频流。
  该回调中会包含已添加的远端用户 ID。
@@ -533,24 +870,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序已删除远端音视频流。
  该回调中会包含已删除的远端用户 ID。
@@ -565,24 +922,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序已更新 URL 地址。
  该回调中会包含远端用户的 ID 和更新后的拉流地址。
@@ -597,25 +974,45 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  <Parameter name="url" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+<Parameter name="url" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序远端视频已旋转。
  该回调中会包含视频的旋转信息以及远端用户的 ID。
@@ -630,25 +1027,45 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="rotation" type="number" required />
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="rotation" type="number" required />
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Token 已过期回调。
 
@@ -668,7 +1085,15 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Token 服务即将过期回调。
 
@@ -687,7 +1112,15 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序远端用户已停止发送音频流。
  该回调中会包含停止发送音频流的用户 ID。
@@ -702,24 +1135,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序远端用户已停止发送视频流。
  该回调中会包含停止发送视频流的用户 ID。
@@ -734,24 +1187,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序远端用户已恢复发送音频流。
  该回调中会包含恢复发送音频流的用户 ID。
@@ -766,24 +1239,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 通知应用程序远端用户已恢复发送视频流。
  该回调中会包含恢复发送视频流的用户 ID。
@@ -798,24 +1291,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="uid" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 跨频道媒体流转发事件回调。
 
@@ -831,24 +1344,44 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 跨频道媒体流转发状态回调。
 
@@ -864,31 +1397,55 @@ Returns void
 
 具体的事件详情。
 
-- - (evt:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="evt" type="object" required>
+(evt: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="state" type="number" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="evt" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="state" type="number" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="publish"></a>
 
 ### publish
 
-- publish(onSuccess?:function, onFailure?:function):Promise&lt;string&gt;
+<ApiSignature>
+
+publish(onSuccess?: function, onFailure?: function): Promise&lt;string&gt;
+
+</ApiSignature>
 
 发布本地音视频流。
 
@@ -899,46 +1456,82 @@ Returns void
 
 方法调用成功时执行的回调函数。返回值为音视频流的推流地址。
 
-- - (url:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="url" type="string" required />
-  </ParameterList>
+(url: string): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;string&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
 
 string 型，音视频流的推流地址。
+
+</ApiReturns>
 
 <a id="rejoin"></a>
 
 ### rejoin
 
-- rejoin(channelKey:string, channel:string, uid:number|string, uids:number, isAudioOnly:boolean, UidType?:[UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+rejoin(channelKey: string, channel: string, uid: number | string, uids: number, isAudioOnly: boolean, UidType?: [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uidtype), onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 重新加入频道。
 
@@ -994,44 +1587,80 @@ string 型，音视频流的推流地址。
 
 方法调用成功时执行的回调函数。返回值为用户 ID。
 
-- - (uid:number):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="uid" type="number" required />
-  </ParameterList>
+(uid: number): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="uid" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="renewtoken"></a>
 
 ### renewToken
 
-- renewToken(token:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+renewToken(token: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新 Token。
 
@@ -1052,40 +1681,76 @@ v2.5.3
 
 方法调用成功时执行的回调函数。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setaudiocodec"></a>
 
 ### setAudioCodec
 
-- setAudioCodec(audioCodec:[AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)):void
+<ApiSignature>
+
+setAudioCodec(audioCodec: [AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audiocodec)): void
+
+</ApiSignature>
 
 设置 IoT 设备使用的音频编码格式。
 
@@ -1111,13 +1776,25 @@ IoT 设备使用的音频编码格式，详见[AudioCodec](/zh-CN/api-reference/
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setremotevideostreamtype"></a>
 
 ### setRemoteVideoStreamType
 
-- setRemoteVideoStreamType(uid:number, streamType:0|1, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+setRemoteVideoStreamType(uid: number, streamType: 0 | 1, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置订阅的视频流类型。
 
@@ -1138,37 +1815,73 @@ v2.5.3
 
 方法调用成功时执行的回调函数。
 
-- - (url:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="url" type="string" required />
-  </ParameterList>
+(url: string): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:any):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="any" required />
-  </ParameterList>
+(err: any): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="err" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setrole"></a>
 
 ### setRole
 
-- setRole(role:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+setRole(role: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置用户角色。
 
@@ -1187,40 +1900,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="startchannelmediarelay"></a>
 
 ### startChannelMediaRelay
 
-- startChannelMediaRelay(config:[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback:function):void
+<ApiSignature>
+
+startChannelMediaRelay(config: [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback: function): void
+
+</ApiSignature>
 
 开始跨频道媒体流转发。
 
@@ -1277,32 +2026,56 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 - `null`：媒体流转发成功。
 - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" required>
+(err: null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+<ParameterList title="Parameters">
+<Parameter name="err" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stopchannelmediarelay"></a>
 
 ### stopChannelMediaRelay
 
-- stopChannelMediaRelay(callback:function):void
+<ApiSignature>
+
+stopChannelMediaRelay(callback: function): void
+
+</ApiSignature>
 
 停止跨频道媒体流转发。
 
@@ -1337,32 +2110,56 @@ stopChannelMediaRelay: function() {
 - `null`：停止跨频道媒体流转发成功。
 - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" required>
+(err: null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+<ParameterList title="Parameters">
+<Parameter name="err" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="subscribe"></a>
 
 ### subscribe
 
-- subscribe(uid:number, options?:object, onSuccess?:function, onFailure?:function):Promise&lt;object&gt;
+<ApiSignature>
+
+subscribe(uid: number, options?: object, onSuccess?: function, onFailure?: function): Promise&lt;object&gt;
+
+</ApiSignature>
 
 订阅远端音视频流。
 
@@ -1388,43 +2185,79 @@ Returns void
 
 方法调用成功时执行的回调函数。返回值为音视频的拉流地址。
 
-- - (url:string, rotation:number):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="url" type="string" required />
-  <Parameter name="rotation" type="number" required />
-  </ParameterList>
+(url: string, rotation: number): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+<Parameter name="rotation" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:any):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="any" required />
-  </ParameterList>
+(err: any): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="err" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;object&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;object&gt;
+
+</ApiReturnType>
 
 一个对象，包含以下数据：
 
 - `url`：string 型，音视频流的拉流地址
 - `rotation`：number 型，视频帧顺时针旋转角度。
 
+</ApiReturns>
+
 <a id="unmute"></a>
 
 ### unmute
 
-- unmute(uid:number, target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+unmute(uid: number, target: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 恢复接收远端用户的音视频流。
 
@@ -1447,40 +2280,76 @@ Returns Promise&lt;object&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unmutelocal"></a>
 
 ### unmuteLocal
 
-- unmuteLocal(target:string, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+unmuteLocal(target: string, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 恢复发送本地用户的音视频流。
 
@@ -1498,40 +2367,76 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpublish"></a>
 
 ### unpublish
 
-- unpublish(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+unpublish(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 停止发布本地音视频流。
 
@@ -1540,33 +2445,69 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:any):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="any" required />
-  </ParameterList>
+(err: any): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="err" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unsubscribe"></a>
 
 ### unsubscribe
 
-- unsubscribe(uid:number, onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+unsubscribe(uid: number, onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 停止订阅远端音视频流。
 
@@ -1582,33 +2523,69 @@ Returns Promise&lt;void&gt;
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用成功时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:any):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="any" required />
-  </ParameterList>
+(err: any): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="err" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updatechannelmediarelay"></a>
 
 ### updateChannelMediaRelay
 
-- updateChannelMediaRelay(config:[ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback:function):void
+<ApiSignature>
+
+updateChannelMediaRelay(config: [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channelmediarelayconfiguration), callback: function): void
+
+</ApiSignature>
 
 更新媒体流转发的目标频道。
 
@@ -1657,32 +2634,56 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 - `null`：更新目标频道成功。
 - 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror) 提供错误信息。
 
-- - (err:null|[ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" required>
+(err: null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
+<ParameterList title="Parameters">
+<Parameter name="err" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channelmediaerror)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateplayernetstatus"></a>
 
 ### updatePlayerNetStatus
 
-- updatePlayerNetStatus(uid:number, detail:any):void
+<ApiSignature>
+
+updatePlayerNetStatus(uid: number, detail: any): void
+
+</ApiSignature>
 
 上报拉流过程中的网络状态。
 
@@ -1706,13 +2707,25 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateplayerstatechange"></a>
 
 ### updatePlayerStateChange
 
-- updatePlayerStateChange(uid:number, detail:any):void
+<ApiSignature>
+
+updatePlayerStateChange(uid: number, detail: any): void
+
+</ApiSignature>
 
 上报拉流状态。
 
@@ -1736,13 +2749,25 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updatepushernetstatus"></a>
 
 ### updatePusherNetStatus
 
-- updatePusherNetStatus(detail:any):void
+<ApiSignature>
+
+updatePusherNetStatus(detail: any): void
+
+</ApiSignature>
 
 上报推流过程中的网络状态。
 
@@ -1761,13 +2786,25 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updatepusherstatechange"></a>
 
 ### updatePusherStateChange
 
-- updatePusherStateChange(detail:any):void
+<ApiSignature>
+
+updatePusherStateChange(detail: any): void
+
+</ApiSignature>
 
 上报推流状态。
 
@@ -1786,4 +2823,12 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

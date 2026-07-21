@@ -164,7 +164,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### clone
 
-- clone(config?:[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset), cloneTrack?:boolean):[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)
+<ApiSignature>
+
+clone(config?: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) | [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset), cloneTrack?: boolean): [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)
+
+</ApiSignature>
 
 Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack).[clone](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#clone)
 
@@ -195,15 +199,27 @@ Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 </Parameter>
 </ParameterList>
 
-Returns [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack)
+
+</ApiReturnType>
 
 新生成的视频轨道。
+
+</ApiReturns>
 
 <a id="close"></a>
 
 ### close
 
-- close():void
+<ApiSignature>
+
+close(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[close](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#close)
 
@@ -211,13 +227,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getcurrentframedata"></a>
 
 ### getCurrentFrameData
 
-- getCurrentFrameData():ImageData
+<ApiSignature>
+
+getCurrentFrameData(): ImageData
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[getCurrentFrameData](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#getcurrentframedata)
 
@@ -229,15 +257,27 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#play) 则返回空数据。
 :::
 
-Returns ImageData
+<ApiReturns>
+
+<ApiReturnType>
+
+ImageData
+
+</ApiReturnType>
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
+
+</ApiReturns>
 
 <a id="getlisteners"></a>
 
 ### getListeners
 
-- getListeners(event:string):Function[]
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
 
 Inherited from EventEmitter.getListeners
 
@@ -251,27 +291,51 @@ Inherited from EventEmitter.getListeners
 </Parameter>
 </ParameterList>
 
-Returns Function[]
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getmediastreamtrack"></a>
 
 ### getMediaStreamTrack
 
-- getMediaStreamTrack():MediaStreamTrack
+<ApiSignature>
+
+getMediaStreamTrack(): MediaStreamTrack
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-Returns MediaStreamTrack
+<ApiReturns>
+
+<ApiReturnType>
+
+MediaStreamTrack
+
+</ApiReturnType>
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+</ApiReturns>
 
 <a id="getrtcrtptransceiver"></a>
 
 ### getRTCRtpTransceiver
 
-- getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)):RTCRtpTransceiver|undefined
+<ApiSignature>
+
+getRTCRtpTransceiver(type?: [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)): RTCRtpTransceiver | undefined
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
@@ -298,15 +362,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 </Parameter>
 </ParameterList>
 
-Returns RTCRtpTransceiver | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+RTCRtpTransceiver | undefined
+
+</ApiReturnType>
 
 当前轨道的 `RTCRtpTransceiver` 实例。
+
+</ApiReturns>
 
 <a id="getstats"></a>
 
 ### getStats
 
-- getStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
+<ApiSignature>
+
+getStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[getStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#getstats)
 
@@ -318,33 +394,63 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="gettrackid"></a>
 
 ### getTrackId
 
-- getTrackId():string
+<ApiSignature>
+
+getTrackId(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettrackid)
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 媒体轨道 ID。
+
+</ApiReturns>
 
 <a id="gettracklabel"></a>
 
 ### getTrackLabel
 
-- getTrackLabel():string
+<ApiSignature>
+
+getTrackLabel(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackLabel](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettracklabel)
 
 获取本地轨道的来源描述。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 可能返回以下值：
 
@@ -352,11 +458,17 @@ Returns string
 - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
 - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
+</ApiReturns>
+
 <a id="getvideoelementvisiblestatus"></a>
 
 ### getVideoElementVisibleStatus
 
-- getVideoElementVisibleStatus():[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult)|undefined
+<ApiSignature>
+
+getVideoElementVisibleStatus(): [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[getVideoElementVisibleStatus](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#getvideoelementvisiblestatus)
 
@@ -368,7 +480,13 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
-Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) | undefined
+
+</ApiReturnType>
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
@@ -376,11 +494,17 @@ Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/web-sdk/glo
 - `<video>` 标签不存在。
 - `<video>` 标签不是通过 `play` 方法调用产生的。
 
+</ApiReturns>
+
 <a id="off"></a>
 
 ### off
 
-- off(event:string, listener:Function):void
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.off
 
@@ -399,16 +523,43 @@ Inherited from EventEmitter.off
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"track-updated", listener:typeof event_track_updated):void
-- on(event:"track-ended", listener:typeof event_track_ended):void
-- on(event:"video-element-visible-status", listener:typeof event_video_element_visible_status):void
-- on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
+<ApiSignature>
+
+on(event: "track-updated", listener: typeof event_track_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "video-element-visible-status", listener: typeof event_video_element_visible_status): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
@@ -427,7 +578,15 @@ Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
@@ -446,7 +605,15 @@ Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
@@ -465,7 +632,15 @@ Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
@@ -486,13 +661,25 @@ Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="once"></a>
 
 ### once
 
-- once(event:string, listener:Function):void
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.once
 
@@ -513,13 +700,25 @@ Inherited from EventEmitter.once
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="pipe"></a>
 
 ### pipe
 
-- pipe(processor:IBaseProcessor):IBaseProcessor
+<ApiSignature>
+
+pipe(processor: IBaseProcessor): IBaseProcessor
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[pipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#pipe)
 
@@ -537,15 +736,27 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 </Parameter>
 </ParameterList>
 
-Returns IBaseProcessor
+<ApiReturns>
+
+<ApiReturnType>
+
+IBaseProcessor
+
+</ApiReturnType>
 
 `Processor` 实例。
+
+</ApiReturns>
 
 <a id="play"></a>
 
 ### play
 
-- play(element:string|HTMLElement, config?:[VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)):void
+<ApiSignature>
+
+play(element: string | HTMLElement, config?: [VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)): void
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#play)
 
@@ -575,13 +786,25 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
-- removeAllListeners(event?:string):void
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.removeAllListeners
 
@@ -595,13 +818,25 @@ Inherited from EventEmitter.removeAllListeners
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="replacetrack"></a>
 
 ### replaceTrack
 
-- replaceTrack(track:MediaStreamTrack, stopOldTrack:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+replaceTrack(track: MediaStreamTrack, stopOldTrack: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[replaceTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#replacetrack)
 
@@ -658,13 +893,25 @@ await localVideoTrack.replaceTrack(newTrack, true);
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendseidata"></a>
 
 ### sendSeiData
 
-- sendSeiData(sei:Uint8Array):void
+<ApiSignature>
+
+sendSeiData(sei: Uint8Array): void
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[sendSeiData](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#sendseidata)
 
@@ -678,13 +925,25 @@ SEI 数据。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setdevice"></a>
 
 ### setDevice
 
-- setDevice(deviceId:string|[RequiredOnlyOneOf](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#requiredonlyoneof)&lt;object&gt;):Promise&lt;void&gt;
+<ApiSignature>
+
+setDevice(deviceId: string | [RequiredOnlyOneOf](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#requiredonlyoneof)&lt;object&gt;): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置负责采集视频数据的摄像头设备。
 
@@ -710,13 +969,25 @@ string | [RequiredOnlyOneOf](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setenabled"></a>
 
 ### setEnabled
 
-- setEnabled(enabled:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setEnabled(enabled: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setenabled)
 
@@ -743,13 +1014,25 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/i
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setencoderconfiguration"></a>
 
 ### setEncoderConfiguration
 
-- setEncoderConfiguration(config:[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration)|[VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset)):Promise&lt;void&gt;
+<ApiSignature>
+
+setEncoderConfiguration(config: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) | [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#videoencoderconfigurationpreset)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[setEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setencoderconfiguration)
 
@@ -769,13 +1052,25 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setmuted"></a>
 
 ### setMuted
 
-- setMuted(muted:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setMuted(muted: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[setMuted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#setmuted)
 
@@ -801,13 +1096,25 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setoptimizationmode"></a>
 
 ### setOptimizationMode
 
-- setOptimizationMode(mode:"balanced"|"motion"|"detail"):Promise&lt;void&gt;
+<ApiSignature>
+
+setOptimizationMode(mode: "balanced" | "motion" | "detail"): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[setOptimizationMode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setoptimizationmode)
 
@@ -842,25 +1149,49 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stop"></a>
 
 ### stop
 
-- stop():void
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
 
 停止播放。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpipe"></a>
 
 ### unpipe
 
-- unpipe():void
+<ApiSignature>
+
+unpipe(): void
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[unpipe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#unpipe)
 
@@ -870,4 +1201,12 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 取消本地视频轨道上注入的 `Processor`。
 :::
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

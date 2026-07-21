@@ -32,8 +32,11 @@ IRtcConnObserver 接口。
 
 ### onChangeRoleFailure()
 
-| void io.agora.rtc.IRtcConnObserver.onChangeRoleFailure | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onChangeRoleFailure([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*)
+
+</ApiSignature>
 
 本地用户角色切换失败时触发。
 
@@ -49,10 +52,11 @@ IRtcConnObserver 接口。
 
 ### onChangeRoleSuccess()
 
-| void io.agora.rtc.IRtcConnObserver.onChangeRoleSuccess | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | int | *old_role*, |
-|  |  | int | *new_role*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onChangeRoleSuccess([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, int *old_role*, int *new_role*)
+
+</ApiSignature>
 
 本地用户角色变更时触发。
 
@@ -84,10 +88,11 @@ IRtcConnObserver 接口。
 
 ### onConnected()
 
-| void io.agora.rtc.IRtcConnObserver.onConnected | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onConnected([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*, int *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
 
@@ -133,10 +138,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
 
 ### onConnecting()
 
-| void io.agora.rtc.IRtcConnObserver.onConnecting | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onConnecting([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*, int *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发。
 
@@ -162,10 +168,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发�
 
 ### onConnectionFailure()
 
-| void io.agora.rtc.IRtcConnObserver.onConnectionFailure | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onConnectionFailure([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*, int *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
 
@@ -191,9 +198,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
 
 ### onConnectionLost()
 
-| void io.agora.rtc.IRtcConnObserver.onConnectionLost | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onConnectionLost([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*)
+
+</ApiSignature>
 
 SDK 失去与频道的连接时触发。
 
@@ -214,10 +223,11 @@ SDK 失去与频道的连接时触发。
 
 ### onDisconnected()
 
-| void io.agora.rtc.IRtcConnObserver.onDisconnected | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onDisconnected([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*, int *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发。
 
@@ -243,9 +253,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 ### onEncryptionError()
 
-| void io.agora.rtc.IRtcConnObserver.onEncryptionError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | int | *error_type*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onEncryptionError([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, int *error_type*)
+
+</ApiSignature>
 
 加密出错回调。
 
@@ -266,10 +278,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 ### onError()
 
-| void io.agora.rtc.IRtcConnObserver.onError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | int | *error*, |
-|  |  | String | *msg*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onError([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, int *error*, String *msg*)
+
+</ApiSignature>
 
 发生错误回调。
 
@@ -297,9 +310,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 ### onLastmileProbeResult()
 
-| void io.agora.rtc.IRtcConnObserver.onLastmileProbeResult | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-result) | *result*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onLastmileProbeResult([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-result) *result*)
+
+</ApiSignature>
 
 通话前网络上下行 Last mile 质量探测报告回调。
 
@@ -322,9 +337,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发
 
 ### onLastmileQuality()
 
-| void io.agora.rtc.IRtcConnObserver.onLastmileQuality | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | int | *quality*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onLastmileQuality([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, int *quality*)
+
+</ApiSignature>
 
 报告 last-mile 网络质量。
 
@@ -355,9 +372,11 @@ Last-mile 网络质量。
 
 ### onNetworkTypeChanged()
 
-| void io.agora.rtc.IRtcConnObserver.onNetworkTypeChanged | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | int | *type*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onNetworkTypeChanged([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, int *type*)
+
+</ApiSignature>
 
 本地网络类型发生改变回调。
 
@@ -386,10 +405,11 @@ Last-mile 网络质量。
 
 ### onReconnecting()
 
-| void io.agora.rtc.IRtcConnObserver.onReconnecting | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) | *conn_info*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onReconnecting([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *conn_info*, int *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发。
 
@@ -415,13 +435,11 @@ SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发
 
 ### onStreamMessageError()
 
-| void io.agora.rtc.IRtcConnObserver.onStreamMessageError | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *user_id*, |
-|  |  | int | *stream_id*, |
-|  |  | int | *code*, |
-|  |  | int | *missed*, |
-|  |  | int | *cached*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onStreamMessageError([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *user_id*, int *stream_id*, int *code*, int *missed*, int *cached*)
+
+</ApiSignature>
 
 接收数据流消息发生错误的回调。该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) 方法发送的流消息。
 
@@ -462,8 +480,11 @@ RTC 连接对象。
 
 ### onTokenPrivilegeDidExpire()
 
-| void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeDidExpire | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeDidExpire([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*)
+
+</ApiSignature>
 
 Token 已过期时触发。 当收到该回调时，你需要重新在服务端生成新的 Token，然后重新连接频道。
 
@@ -479,9 +500,11 @@ Token 已过期时触发。 当收到该回调时，你需要重新在服务端�
 
 ### onTokenPrivilegeWillExpire()
 
-| void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeWillExpire | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *token*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeWillExpire([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *token*)
+
+</ApiSignature>
 
 Token 将在 30s 内过期时触发。
 
@@ -504,9 +527,11 @@ Token 将在 30s 内过期时触发。
 
 ### onTransportStats()
 
-| void io.agora.rtc.IRtcConnObserver.onTransportStats | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) | *stats*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onTransportStats([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) *stats*)
+
+</ApiSignature>
 
 报告连接的传输统计信息。
 
@@ -529,19 +554,21 @@ Token 将在 30s 内过期时触发。
 
 ### onUploadLogResult()
 
-| void io.agora.rtc.IRtcConnObserver.onUploadLogResult | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *request_id*, |
-|  |  | int | *success*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onUploadLogResult([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *request_id*, int *success*, int *reason*)
+
+</ApiSignature>
 
 <a id="a868be93b5f0663aad464ef17a799ea37"></a>
 
 ### onUserJoined()
 
-| void io.agora.rtc.IRtcConnObserver.onUserJoined | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *user_id*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onUserJoined([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *user_id*)
+
+</ApiSignature>
 
 远端用户加入频道时触发。
 
@@ -564,10 +591,11 @@ Token 将在 30s 内过期时触发。
 
 ### onUserLeft()
 
-| void io.agora.rtc.IRtcConnObserver.onUserLeft | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *user_id*, |
-|  |  | int | *reason*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onUserLeft([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *user_id*, int *reason*)
+
+</ApiSignature>
 
 远端用户离开频道时触发。
 
@@ -595,11 +623,11 @@ Token 将在 30s 内过期时触发。
 
 ### onUserNetworkQuality()
 
-| void io.agora.rtc.IRtcConnObserver.onUserNetworkQuality | ( | [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) | *agora_rtc_conn*, |
-| --- | --- | --- | --- |
-|  |  | String | *user_id*, |
-|  |  | int | *tx_quality*, |
-|  |  | int | *rx_quality*) |
+<ApiSignature>
+
+void io.agora.rtc.IRtcConnObserver.onUserNetworkQuality([AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) *agora_rtc_conn*, String *user_id*, int *tx_quality*, int *rx_quality*)
+
+</ApiSignature>
 
 通话中每个用户的网络上下行 last mile 质量报告回调。
 

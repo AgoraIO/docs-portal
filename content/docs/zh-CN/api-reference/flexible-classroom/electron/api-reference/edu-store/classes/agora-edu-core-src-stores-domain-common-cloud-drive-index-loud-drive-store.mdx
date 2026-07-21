@@ -60,7 +60,11 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 
 ### addPersonalResource
 
-- addPersonalResource(resourceUuid:string, resourceInfo:[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)):Promise&lt;any&gt;
+<ApiSignature>
+
+addPersonalResource(resourceUuid: string, resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)): Promise&lt;any&gt;
+
+</ApiSignature>
 
 将已上传的资源文件映射为云盘内的一个文件
 
@@ -83,13 +87,25 @@ uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;any&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="calcResourceUuid"></a>
 
 ### calcResourceUuid
 
-- calcResourceUuid(resource:string|File):Promise&lt;string&gt;
+<ApiSignature>
+
+calcResourceUuid(resource: string | File): Promise&lt;string&gt;
+
+</ApiSignature>
 
 计算资源文件 UUID
 
@@ -97,15 +113,27 @@ Returns Promise&lt;any&gt;
 <Parameter name="resource" type="string | File" required />
 </ParameterList>
 
-Returns Promise&lt;string&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
 
 资源文件 UUID
+
+</ApiReturns>
 
 <a id="cancelUpload"></a>
 
 ### cancelUpload
 
-- cancelUpload(resourceUuid:string):Promise&lt;void&gt;
+<ApiSignature>
+
+cancelUpload(resourceUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 取消上传资源
 
@@ -117,13 +145,25 @@ Returns Promise&lt;string&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="fetchPersonalResources"></a>
 
 ### fetchPersonalResources
 
-- fetchPersonalResources(options:[CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)):Promise&lt;\{list:never[];total:number\}&gt;
+<ApiSignature>
+
+fetchPersonalResources(options: [CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)): Promise&lt;\{ list: never[]; total: number \}&gt;
+
+</ApiSignature>
 
 获取个人云盘资源
 
@@ -141,15 +181,27 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;\{list:never[];total:number\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ list: never[]; total: number \}&gt;
+
+</ApiReturnType>
 
 云盘资源分页信息
+
+</ApiReturns>
 
 <a id="removePersonalResources"></a>
 
 ### removePersonalResources
 
-- removePersonalResources(resourceUuids:string[]):Promise&lt;undefined&gt;
+<ApiSignature>
+
+removePersonalResources(resourceUuids: string[]): Promise&lt;undefined&gt;
+
+</ApiSignature>
 
 移除个人资源
 
@@ -161,13 +213,25 @@ Returns Promise&lt;\{list:never[];total:number\}&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;undefined&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;undefined&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="retryUpload"></a>
 
 ### retryUpload
 
-- retryUpload(resourceUuid:string):void
+<ApiSignature>
+
+retryUpload(resourceUuid: string): void
+
+</ApiSignature>
 
 重新上传资源
 
@@ -179,13 +243,25 @@ Returns Promise&lt;undefined&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updatePersonalResource"></a>
 
 ### updatePersonalResource
 
-- updatePersonalResource(resourceUuid:string, resourceInfo:Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName"&gt;):Promise&lt;any&gt;
+<ApiSignature>
+
+updatePersonalResource(resourceUuid: string, resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info), "resourceName"&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
 
 更新云盘文件信息
 
@@ -202,13 +278,25 @@ Pick & lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/elect
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;any&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="uploadPersonalResource"></a>
 
 ### uploadPersonalResource
 
-- uploadPersonalResource(file:File, progressUuid:string, ext:string, contentType:string, conversion?:Partial&lt;\{canvasVersion:boolean;outputFormat:string;preview:boolean;scale:number;type:string\}&gt;):Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+<ApiSignature>
+
+uploadPersonalResource(file: File, progressUuid: string, ext: string, contentType: string, conversion?: Partial&lt;\{ canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \}&gt;): Promise&lt;undefined | \{ ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \}&gt;
+
+</ApiSignature>
 
 上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
 
@@ -240,6 +328,14 @@ static: 静态， dynamic：动态
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;undefined|\{ext:string;resourceName:string;resourceUuid:any;url:string\}|\{ext?:undefined;resourceName?:undefined;resourceUuid?:undefined;url?:undefined\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;undefined | \{ ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \}&gt;
+
+</ApiReturnType>
 
 上传成功后的文件信息
+
+</ApiReturns>

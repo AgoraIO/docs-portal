@@ -27,7 +27,11 @@ _migration:
 
 初始化 `WhiteSdkConfiguration` 对象。
 
-`- (instancetype)initWithApp:(NSString *)*appIdentifier*`
+<ApiSignature>
+
+\- (instancetype)initWithApp:(NSString *)*appIdentifier*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="appIdentifier">
@@ -51,7 +55,11 @@ _migration:
 
 白板项目的唯一标识。
 
-`@property (nonatomic, copy) NSString *appIdentifier`
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *appIdentifier
+
+</ApiSignature>
 
 #### Availability
 
@@ -67,7 +75,11 @@ _migration:
 
 是否监听图片加载失败事件。
 
-`@property (nonatomic, assign) BOOL enableImgErrorCallback`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableImgErrorCallback
+
+</ApiSignature>
 
 #### Availability
 
@@ -88,7 +100,11 @@ _migration:
 
 是否启用 iframe 插件。
 
-`@property (nonatomic, assign) BOOL enableIFramePlugin`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableIFramePlugin
+
+</ApiSignature>
 
 #### Discussion
 
@@ -107,7 +123,11 @@ _migration:
 
 互动白板房间所在的数据中心。
 
-`@property (nonatomic, strong, nullable) WhiteRegionKey region`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+
+</ApiSignature>
 
 #### Availability
 
@@ -139,7 +159,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 - `WhiteSdkRenderEngineSvg`：SVG 渲染模式。2.8.0 及之前版本默认使用渲染模式，该模式兼容性较好，但性能较差。
 - `WhiteSdkRenderEngineCanvas`：Canvas 渲染模式。2.8.0 版本起新增 `canvas` 渲染模式，该模式性能较好，但兼容性较差。2.9.0 及之后版本的 `WhiteSdk` 默认使用 `canvas` 渲染模式。
 
-`@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine`
+<ApiSignature>
+
+@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine
+
+</ApiSignature>
 
 #### Availability
 
@@ -157,7 +181,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 是否显示用户头像。
 
-`@property (nonatomic, assign) BOOL userCursor`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL userCursor
+
+</ApiSignature>
 
 #### Discussion
 
@@ -176,7 +204,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 自定义字体名称和地址。
 
-`@property (nonatomic, copy, nullable) NSDictionary *fonts`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSDictionary *fonts
+
+</ApiSignature>
 
 #### Declared In
 
@@ -188,7 +220,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源。
 
-`@property (nonatomic, assign) BOOL preloadDynamicPPT`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL preloadDynamicPPT
+
+</ApiSignature>
 
 #### Discussion
 
@@ -209,7 +245,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 是否开启图片拦截和替换功能。
 
-`@property (nonatomic, assign) BOOL enableInterrupterAPI`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableInterrupterAPI
+
+</ApiSignature>
 
 #### Discussion
 
@@ -226,7 +266,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 是否开启调试日志回调。
 
-`@property (nonatomic, assign) BOOL log`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL log
+
+</ApiSignature>
 
 #### Discussion
 
@@ -243,7 +287,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 日志等级。
 
-`@property (nonatomic, copy) NSDictionary *loggerOptions`
+<ApiSignature>
+
+@property (nonatomic, copy) NSDictionary *loggerOptions
+
+</ApiSignature>
 
 #### Discussion
 
@@ -261,7 +309,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 该属性已废弃。请使用 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params) (**Deprecated:**该属性已废弃。请使用 WhiteSlideAppParams)
 
-`@property (nonatomic, strong) WhitePptParams *__deprecated_msg ( "use WhiteSlideAppParams instead" )`
+<ApiSignature>
+
+@property (nonatomic, strong) WhitePptParams *__deprecated_msg ("use WhiteSlideAppParams instead")
+
+</ApiSignature>
 
 #### Declared In
 
@@ -273,7 +325,11 @@ SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/
 
 PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params)。
 
-`@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams`
+<ApiSignature>
+
+@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams
+
+</ApiSignature>
 
 #### Declared In
 
@@ -286,7 +342,11 @@ PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference
 是否开启 PPT 资源 URL 拦截替换功能。
 开启之后，你需要通过 `WhiteSDK.setSlideDelegate` 设置多窗口 PPT 回调事件，并在 `slideUrlInterrupter` 回调中添加 URL 的替换处理逻辑。
 
-`@property (nonatomic, assign) BOOL enableSlideInterrupterAPI`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableSlideInterrupterAPI
+
+</ApiSignature>
 
 #### Discussion
 
@@ -303,7 +363,11 @@ PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference
 
 是否关闭新铅笔工具（`AppliancePencil`）的笔锋效果。
 
-`@property (nonatomic, assign) BOOL disableNewPencilStroke`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableNewPencilStroke
+
+</ApiSignature>
 
 #### Discussion
 
@@ -324,7 +388,11 @@ PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference
 启用后，原基础教具将被替换。请确保同一房间的所有终端使用相同配置。
 默认为 NO。
 
-`@property (nonatomic, assign) BOOL enableAppliancePlugin`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableAppliancePlugin
+
+</ApiSignature>
 
 #### Declared In
 
@@ -338,7 +406,11 @@ PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference
 @example
 [api.example.com]
 
-`@property (nonatomic, copy, nullable) NSArray<NSString*> *apiHosts`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSArray&lt;NSString*&gt; *apiHosts
+
+</ApiSignature>
 
 #### Declared In
 
@@ -352,7 +424,11 @@ PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference
 - `YES`：（默认）允许。
 - `NO`：不允许。
 
-`@property (nonatomic, assign) BOOL useWebKeyboardInjection`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL useWebKeyboardInjection
+
+</ApiSignature>
 
 #### Discussion
 

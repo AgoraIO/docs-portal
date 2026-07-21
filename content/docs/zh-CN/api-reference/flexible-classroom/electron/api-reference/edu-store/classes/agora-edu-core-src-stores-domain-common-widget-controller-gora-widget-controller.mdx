@@ -62,7 +62,11 @@ _migration:
 
 ### constructor
 
-- new AgoraWidgetController(_scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), _api:[EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service), _stateListeners:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)[]):[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+<ApiSignature>
+
+new AgoraWidgetController(_scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), _api: [EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service), _stateListeners: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)[]): [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="_scene" required>
@@ -94,7 +98,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-controller)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -110,39 +122,87 @@ logger: LoggerFacade
 
 ### classroomConfig
 
-- get classroomConfig():[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+<ApiSignature>
 
-Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+get classroomConfig(): [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="eventBus"></a>
 
 ### eventBus
 
-- get eventBus():[AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
+<ApiSignature>
+
+get eventBus(): [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
+
+</ApiSignature>
 
 widget消息总线
 
-Returns [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGEventEmitter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="widgetIds"></a>
 
 ### widgetIds
 
-- get widgetIds():string[]
+<ApiSignature>
+
+get widgetIds(): string[]
+
+</ApiSignature>
 
 当前存在的 Widget 实例ID列表
 
-Returns string[]
+<ApiReturns>
+
+<ApiReturnType>
+
+string[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="zIndexController"></a>
 
 ### zIndexController
 
-- get zIndexController():[AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
+<ApiSignature>
+
+get zIndexController(): [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
+
+</ApiSignature>
 
 层级控制器
 
-Returns [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-controller-gora-widget-zindex-controller)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -150,7 +210,11 @@ Returns [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/el
 
 ### addBroadcastListener
 
-- addBroadcastListener(listener:Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;):void
+<ApiSignature>
+
+addBroadcastListener(listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;, "widgetId"&gt;): void
+
+</ApiSignature>
 
 监听广播消息
 
@@ -166,13 +230,25 @@ Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/e
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="addWidgetMessageListener"></a>
 
 ### addWidgetMessageListener
 
-- addWidgetMessageListener(listener:[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;):void
+<ApiSignature>
+
+addWidgetMessageListener(listener: [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;): void
+
+</ApiSignature>
 
 增加一个消息监听器
 
@@ -188,13 +264,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="addWidgetStateListener"></a>
 
 ### addWidgetStateListener
 
-- addWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
+<ApiSignature>
+
+addWidgetStateListener(listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)): void
+
+</ApiSignature>
 
 添加一个组件状态监听器
 
@@ -210,13 +298,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="broadcast"></a>
 
 ### broadcast
 
-- broadcast(messageType:string, message?:unknown):void
+<ApiSignature>
+
+broadcast(messageType: string, message?: unknown): void
+
+</ApiSignature>
 
 广播消息
 
@@ -225,13 +325,25 @@ Returns void
 <Parameter name="message" type="unknown" optional />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="deleteWidget"></a>
 
 ### deleteWidget
 
-- deleteWidget(widgetId:string):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+deleteWidget(widgetId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 删除房间 Widget
 
@@ -239,23 +351,47 @@ Returns void
 <Parameter name="widgetId" type="string" required />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="destroy"></a>
 
 ### destroy
 
-- destroy():void
+<ApiSignature>
+
+destroy(): void
+
+</ApiSignature>
 
 销毁
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getWidgetProperties"></a>
 
 ### getWidgetProperties
 
-- getWidgetProperties(widgetId:string):any
+<ApiSignature>
+
+getWidgetProperties(widgetId: string): any
+
+</ApiSignature>
 
 获取 Widget 属性
 
@@ -263,13 +399,25 @@ Returns void
 <Parameter name="widgetId" type="string" required />
 </ParameterList>
 
-Returns any
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getWidgetState"></a>
 
 ### getWidgetState
 
-- getWidgetState(widgetId:string):any
+<ApiSignature>
+
+getWidgetState(widgetId: string): any
+
+</ApiSignature>
 
 获取 Widget 状态
 
@@ -277,13 +425,25 @@ Returns any
 <Parameter name="widgetId" type="string" required />
 </ParameterList>
 
-Returns any
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getWidgetTrack"></a>
 
 ### getWidgetTrack
 
-- getWidgetTrack(widgetId:string):any
+<ApiSignature>
+
+getWidgetTrack(widgetId: string): any
+
+</ApiSignature>
 
 获取 Widget 轨迹同步信息
 
@@ -291,13 +451,25 @@ Returns any
 <Parameter name="widgetId" type="string" required />
 </ParameterList>
 
-Returns any
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getWidgetUserProperties"></a>
 
 ### getWidgetUserProperties
 
-- getWidgetUserProperties(widgetId:string):any
+<ApiSignature>
+
+getWidgetUserProperties(widgetId: string): any
+
+</ApiSignature>
 
 获取 Widget 用户属性
 
@@ -305,13 +477,25 @@ Returns any
 <Parameter name="widgetId" type="string" required />
 </ParameterList>
 
-Returns any
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeBroadcastListener"></a>
 
 ### removeBroadcastListener
 
-- removeBroadcastListener(listener:Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;,"widgetId"&gt;):void
+<ApiSignature>
+
+removeBroadcastListener(listener: Omit&lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;, "widgetId"&gt;): void
+
+</ApiSignature>
 
 移除一个广播消息监听器
 
@@ -327,13 +511,25 @@ Omit & lt;[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/e
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeWidgetExtraProperties"></a>
 
 ### removeWidgetExtraProperties
 
-- removeWidgetExtraProperties(widgetId:string, keys?:string[]):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+removeWidgetExtraProperties(widgetId: string, keys?: string[]): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 删除扩展信息字段
 
@@ -342,13 +538,25 @@ Returns void
 <Parameter name="keys" type="string[]" optional />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeWidgetMessageListener"></a>
 
 ### removeWidgetMessageListener
 
-- removeWidgetMessageListener(listener:[AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;):void
+<ApiSignature>
+
+removeWidgetMessageListener(listener: [AgoraWidgetMessageListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-message-listener)&lt;unknown&gt;): void
+
+</ApiSignature>
 
 移除一个消息监听器
 
@@ -364,13 +572,25 @@ Returns Promise&lt;\{data:any\}&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeWidgetStateListener"></a>
 
 ### removeWidgetStateListener
 
-- removeWidgetStateListener(listener:[AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)):void
+<ApiSignature>
+
+removeWidgetStateListener(listener: [AgoraWidgetStateListener](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-widget-type-gora-widget-state-listener)): void
+
+</ApiSignature>
 
 移除一个组件状态监听器
 
@@ -386,13 +606,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removeWidgetUserProperties"></a>
 
 ### removeWidgetUserProperties
 
-- removeWidgetUserProperties(widgetId:string, keys?:string[]):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+removeWidgetUserProperties(widgetId: string, keys?: string[]): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 删除用户属性字段
 
@@ -401,13 +633,25 @@ Returns void
 <Parameter name="keys" type="string[]" optional />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendMessage"></a>
 
 ### sendMessage
 
-- sendMessage(toWidgetId:string, messageType:string, message?:unknown):void
+<ApiSignature>
+
+sendMessage(toWidgetId: string, messageType: string, message?: unknown): void
+
+</ApiSignature>
 
 向指定 Widget 发送消息
 
@@ -417,13 +661,25 @@ Returns Promise&lt;\{data:any\}&gt;
 <Parameter name="message" type="unknown" optional />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setWidegtActive"></a>
 
 ### setWidegtActive
 
-- setWidegtActive(widgetId:string, props?:any, ownerUserUuid?:string):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+setWidegtActive(widgetId: string, props?: any, ownerUserUuid?: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 设置 widget 为活跃
 
@@ -433,13 +689,25 @@ Returns void
 <Parameter name="ownerUserUuid" type="string" optional />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setWidgetInactive"></a>
 
 ### setWidgetInactive
 
-- setWidgetInactive(widgetId:string, props?:any):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+setWidgetInactive(widgetId: string, props?: any): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 设置 widget 为不活跃
 
@@ -448,13 +716,25 @@ Returns Promise&lt;\{data:any\}&gt;
 <Parameter name="props" type="any" optional />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateWidgetProperties"></a>
 
 ### updateWidgetProperties
 
-- updateWidgetProperties(widgetId:string, props:any):Promise&lt;\{data:any\}&gt;
+<ApiSignature>
+
+updateWidgetProperties(widgetId: string, props: any): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
 
 更新 widget 属性
 
@@ -463,13 +743,25 @@ Returns Promise&lt;\{data:any\}&gt;
 <Parameter name="props" type="any" required />
 </ParameterList>
 
-Returns Promise&lt;\{data:any\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateWidgetUserProperties"></a>
 
 ### updateWidgetUserProperties
 
-- updateWidgetUserProperties(widgetId:string, props:any):void
+<ApiSignature>
+
+updateWidgetUserProperties(widgetId: string, props: any): void
+
+</ApiSignature>
 
 更新 widget 用户属性
 
@@ -478,4 +770,12 @@ Returns Promise&lt;\{data:any\}&gt;
 <Parameter name="props" type="any" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

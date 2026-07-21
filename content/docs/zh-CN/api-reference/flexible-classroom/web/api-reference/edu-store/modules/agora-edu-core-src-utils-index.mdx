@@ -35,19 +35,35 @@ _migration:
 
 ### Const CustomBtoa
 
-- CustomBtoa(input:any):string
+<ApiSignature>
+
+CustomBtoa(input: any): string
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="input" type="any" required />
 </ParameterList>
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="EduRole2RteRole"></a>
 
 ### Const EduRole2RteRole
 
-- EduRole2RteRole(roomType:[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), roleType:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)):"audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
+<ApiSignature>
+
+EduRole2RteRole(roomType: [EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), roleType: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)): "audience" | "host" | "assistant" | "broadcaster" | "invisible" | "observer"
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="roomType" required>
@@ -70,13 +86,25 @@ Returns string
 </Parameter>
 </ParameterList>
 
-Returns "audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
+<ApiReturns>
+
+<ApiReturnType>
+
+"audience" | "host" | "assistant" | "broadcaster" | "invisible" | "observer"
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="RteRole2EduRole"></a>
 
 ### Const RteRole2EduRole
 
-- RteRole2EduRole(roomType:[EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), role:string):[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+<ApiSignature>
+
+RteRole2EduRole(roomType: [EduRoomTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-room-type-enum), role: string): [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="roomType" required>
@@ -91,37 +119,81 @@ Returns "audience"|"host"|"assistant"|"broadcaster"|"invisible"|"observer"
 <Parameter name="role" type="string" required />
 </ParameterList>
 
-Returns [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+<ApiReturns>
+
+<ApiReturnType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getImageSize"></a>
 
 ### getImageSize
 
-- getImageSize(file:File):Promise&lt;\{height:number;width:number\}&gt;
+<ApiSignature>
+
+getImageSize(file: File): Promise&lt;\{ height: number; width: number \}&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="file" type="File" required />
 </ParameterList>
 
-Returns Promise&lt;\{height:number;width:number\}&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ height: number; width: number \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getPlatform"></a>
 
 ### Const getPlatform
 
-- getPlatform():[WEB](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB)|[MACOS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS)|[WINDOWS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS)|[H5](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
+<ApiSignature>
 
-Returns [WEB](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB)|[MACOS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS)|[WINDOWS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS)|[H5](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
+getPlatform(): [WEB](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB) | [MACOS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS) | [WINDOWS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS) | [H5](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[WEB](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WEB) | [MACOS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#MACOS) | [WINDOWS](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#WINDOWS) | [H5](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-utils-index-evice-platform#H5)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="number2Percent"></a>
 
 ### Const number2Percent
 
-- number2Percent(v:number, fixed?:number):string
+<ApiSignature>
+
+number2Percent(v: number, fixed?: number): string
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="v" type="number" required />
 <Parameter name="fixed" type="number" optional />
 </ParameterList>
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>

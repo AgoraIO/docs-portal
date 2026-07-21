@@ -11,7 +11,7 @@
 - Missing local paths: 0
 - Missing fragments: 0
 - Errors: 0
-- Warning-severity frontmatter signals: 119
+- Warning-severity frontmatter signals: 123
 
 ## Migration/output types
 
@@ -28,12 +28,12 @@
 - `generated-fragment-alias` (1, info): A stable alias was added so a legacy generated-page fragment remains reachable.
 - `generated-fragment-normalized` (4, info): A generated-page fragment was rewritten to the unique stable anchor exposed by its local target.
 - `manual-fragment-alias` (7, info): Stable aliases were added for legacy fragments that identify migrated headings.
-- `manual-fragment-normalized` (77, info): A legacy fragment was rewritten to the unique stable anchor exposed by its local target.
+- `manual-fragment-normalized` (74, info): A legacy fragment was rewritten to the unique stable anchor exposed by its local target.
 - `manual-mdx-normalized` (161, info): Legacy MDX syntax was normalized to the repository Markdown/MDX authoring standard.
 - `manual-platform-merge` (10, info): Multiple platform-specific legacy MDX sources were merged with PlatformStructured blocks.
 - `missing-source-text` (70, warning): The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.
 - `source-only-link-removed` (642, info): A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.
-- `unresolved-fragment` (20, warning): A legacy fragment could not be mapped to a stable target fragment.
+- `unresolved-fragment` (24, warning): A legacy fragment could not be mapped to a stable target fragment.
 - `unresolved-link` (29, warning): A legacy internal link has no resolved local target route.
 
 ## Link issues

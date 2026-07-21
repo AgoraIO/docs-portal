@@ -26,8 +26,11 @@ _migration:
 
 ### ~IAgoraService()
 
-| virtual agora::base::IAgoraService::~IAgoraService () | inlineprotectedvirtual |
-| --- | --- |
+<ApiSignature labels="inline protected virtual">
+
+virtual agora::base::IAgoraService::~IAgoraService()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -35,8 +38,11 @@ _migration:
 
 ### initialize()
 
-| virtual int agora::base::IAgoraService::initialize ( const [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::initialize(const [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration) & *config*)
+
+</ApiSignature>
 
 初始化 [IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
 
@@ -57,8 +63,11 @@ _migration:
 
 ### release()
 
-| virtual int agora::base::IAgoraService::release () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::release()
+
+</ApiSignature>
 
 释放 [IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
 
@@ -75,8 +84,11 @@ _migration:
 
 ### setAudioSessionPreset()
 
-| virtual int agora::base::IAgoraService::setAudioSessionPreset ( [agora::rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) *scenario*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setAudioSessionPreset([agora::rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) *scenario*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置预设音效。
 
@@ -102,8 +114,11 @@ _migration:
 
 ### setLogFile()
 
-| virtual int agora::base::IAgoraService::setLogFile ( const char * *filePath*, unsigned int *fileSize*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setLogFile(const char * *filePath*, unsigned int *fileSize*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置 SDK 日志文件的路径和大小。
 
@@ -146,8 +161,11 @@ _migration:
 
 ### setLogFilter()
 
-| virtual int agora::base::IAgoraService::setLogFilter ( unsigned int *filters*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setLogFilter(unsigned int *filters*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置日志输出等级。
 
@@ -177,8 +195,11 @@ _migration:
 
 ### createRtcConnection()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection)&gt; agora::base::IAgoraService::createRtcConnection ( const [rtc::RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) & *cfg*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection)&gt; agora::base::IAgoraService::createRtcConnection(const [rtc::RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) & *cfg*)
+
+</ApiSignature>
 
 创建一个 [RtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
 
@@ -199,8 +220,11 @@ RTC 连接配置： [RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server
 
 ### createRtmpConnection()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection)&gt; agora::base::IAgoraService::createRtmpConnection ( const [rtc::RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration) & *cfg*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection)&gt; agora::base::IAgoraService::createRtmpConnection(const [rtc::RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration) & *cfg*)
+
+</ApiSignature>
 
 创建一个 [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) 对象。
 
@@ -221,8 +245,11 @@ CDN 连接配置： [RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-serve
 
 ### createLocalAudioTrack()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createLocalAudioTrack () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createLocalAudioTrack()
+
+</ApiSignature>
 
 创建本地音频轨道对象。
 
@@ -237,8 +264,11 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 ### createCustomAudioTrack() [1/2]
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*)
+
+</ApiSignature>
 
 创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
 
@@ -261,8 +291,11 @@ PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-s
 
 ### createDirectCustomAudioTrack()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createDirectCustomAudioTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createDirectCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*)
+
+</ApiSignature>
 
 创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
 
@@ -285,8 +318,11 @@ PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-s
 
 ### createCustomAudioTrack() [2/2]
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender) &gt; *audioSource*, [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87) *mixMode*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender) &gt; *audioSource*, [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87) *mixMode*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 创建本地音频轨道对象，包含一个发送编码音频数据的音频源。
 
@@ -319,8 +355,11 @@ PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-s
 
 ### createMediaNodeFactory()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory)&gt; agora::base::IAgoraService::createMediaNodeFactory () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory)&gt; agora::base::IAgoraService::createMediaNodeFactory()
+
+</ApiSignature>
 
 创建一个媒体节点工厂对象。
 
@@ -333,8 +372,11 @@ PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-s
 
 ### createMixedVideoTrack()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createMixedVideoTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createMixedVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
 
 创建本地视频轨道对象，包含一个合图器。
 
@@ -362,8 +404,11 @@ PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-s
 
 ### createCustomVideoTrack() [1/2]
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
 
 创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。
 
@@ -391,8 +436,11 @@ YUV 格式视频源对象 [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sd
 
 ### createCustomVideoTrack() [2/2]
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender) &gt; *videoSource*, const rtc::SenderOptions & *options*, const char * *id* = `OPTIONAL_NULLPTR`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender) &gt; *videoSource*, const rtc::SenderOptions & *options*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
 
 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。
 
@@ -425,8 +473,11 @@ YUV 格式视频源对象 [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sd
 
 ### getAgoraParameter()
 
-| virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)&gt; agora::base::IAgoraService::getAgoraParameter () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)&gt; agora::base::IAgoraService::getAgoraParameter()
+
+</ApiSignature>
 
 获取 SDK 全局的 [IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象。
 

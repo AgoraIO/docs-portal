@@ -27,6 +27,13 @@
 - `oxygen`: 8389 lists, 26894 fields
 - `typedoc`: 3683 lists, 6896 fields
 
+## Structured API member rendering
+
+- `appledoc`: 353 signatures, 0 returns
+- `doxygen`: 2949 signatures, 0 returns
+- `oxygen`: 0 signatures, 0 returns
+- `typedoc`: 4447 signatures, 4447 returns
+
 ## Warning explanations
 
 - `broken-live-body-link` (27, warning): The live source body contains a link that currently returns HTTP 400/404.

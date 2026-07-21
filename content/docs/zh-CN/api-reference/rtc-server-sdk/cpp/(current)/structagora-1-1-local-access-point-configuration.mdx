@@ -23,8 +23,11 @@ Local Access Point 配置。
 
 ### LocalAccessPointConfiguration()
 
-| agora::LocalAccessPointConfiguration::LocalAccessPointConfiguration () | inline |
-| --- | --- |
+<ApiSignature labels="inline">
+
+agora::LocalAccessPointConfiguration::LocalAccessPointConfiguration()
+
+</ApiSignature>
 
 ## 类成员变量说明
 
@@ -32,8 +35,11 @@ Local Access Point 配置。
 
 ### ipList
 
-| const char** agora::LocalAccessPointConfiguration::ipList |
-| --- |
+<ApiSignature>
+
+const char** agora::LocalAccessPointConfiguration::ipList
+
+</ApiSignature>
 
 Local Access Point 的对内 IP 地址列表。`ipList` 和 `domainList` 必须至少填一个。
 
@@ -41,8 +47,11 @@ Local Access Point 的对内 IP 地址列表。`ipList` 和 `domainList` 必须�
 
 ### ipListSize
 
-| int agora::LocalAccessPointConfiguration::ipListSize |
-| --- |
+<ApiSignature>
+
+int agora::LocalAccessPointConfiguration::ipListSize
+
+</ApiSignature>
 
 Local Access Point 对内 IP 地址的数量。该参数的值必须和你填入的 IP 地址的数量一致。
 
@@ -50,8 +59,11 @@ Local Access Point 对内 IP 地址的数量。该参数的值必须和你填入
 
 ### domainList
 
-| const char** agora::LocalAccessPointConfiguration::domainList |
-| --- |
+<ApiSignature>
+
+const char** agora::LocalAccessPointConfiguration::domainList
+
+</ApiSignature>
 
 Local Access Point 的域名列表。SDK 会根据你填入的域名解析出 Local Access Point 的 IP 地址。域名解析的超时时间为 10 秒。`ipList` 和 `domainList` 必须至少填一个。如果你同时指定 IP 地址和域名，SDK 会将根据域名解析出来的 IP 地址和你指定的 IP 地址合并、去重，然后随机连接一个 IP 来实现负载均衡。
 
@@ -59,8 +71,11 @@ Local Access Point 的域名列表。SDK 会根据你填入的域名解析出 Lo
 
 ### domainListSize
 
-| int agora::LocalAccessPointConfiguration::domainListSize |
-| --- |
+<ApiSignature>
+
+int agora::LocalAccessPointConfiguration::domainListSize
+
+</ApiSignature>
 
 Local Access Point 域名的数量。该参数的值必须和你填入的域名的数量一致。
 
@@ -68,8 +83,11 @@ Local Access Point 域名的数量。该参数的值必须和你填入的域名�
 
 ### verifyDomainName
 
-| const char* agora::LocalAccessPointConfiguration::verifyDomainName |
-| --- |
+<ApiSignature>
+
+const char* agora::LocalAccessPointConfiguration::verifyDomainName
+
+</ApiSignature>
 
 内网证书验证域名。如果传值为空，则用 SDK 默认的证书验证域名 `secure-edge.local`。
 
@@ -77,8 +95,11 @@ Local Access Point 域名的数量。该参数的值必须和你填入的域名�
 
 ### mode
 
-| [LOCAL_PROXY_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a2c4d7294b18a6b4c3169f7199d390a10) agora::LocalAccessPointConfiguration::mode |
-| --- |
+<ApiSignature>
+
+[LOCAL_PROXY_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a2c4d7294b18a6b4c3169f7199d390a10) agora::LocalAccessPointConfiguration::mode
+
+</ApiSignature>
 
 连接模式。详见 [LOCAL_PROXY_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a2c4d7294b18a6b4c3169f7199d390a10)。
 
@@ -86,7 +107,10 @@ Local Access Point 域名的数量。该参数的值必须和你填入的域名�
 
 ### advancedConfig
 
-| [AdvancedConfigInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-advanced-config-info) agora::LocalAccessPointConfiguration::advancedConfig |
-| --- |
+<ApiSignature>
+
+[AdvancedConfigInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-advanced-config-info) agora::LocalAccessPointConfiguration::advancedConfig
+
+</ApiSignature>
 
 Local Access Point 的高级选项。详见 [AdvancedConfigInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-advanced-config-info)。

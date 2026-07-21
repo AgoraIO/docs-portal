@@ -29,8 +29,11 @@ _migration:
 
 ### setProperty()
 
-| virtual int agora::rtc::IVideoSinkBase::setProperty ( const char * *key*, const void * *buf*, int *buf_size*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::IVideoSinkBase::setProperty(const char * *key*, const void * *buf*, int *buf_size*)
+
+</ApiSignature>
 
 设置私有属性。
 
@@ -61,8 +64,11 @@ _migration:
 
 ### getProperty()
 
-| virtual int agora::rtc::IVideoSinkBase::getProperty ( const char * *key*, void * *buf*, int *buf_size*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::IVideoSinkBase::getProperty(const char * *key*, void * *buf*, int *buf_size*)
+
+</ApiSignature>
 
 获取私有属性。
 
@@ -93,8 +99,11 @@ _migration:
 
 ### onFrame()
 
-| virtual int agora::rtc::IVideoSinkBase::onFrame ( const media::base::VideoFrame & *videoFrame*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoSinkBase::onFrame(const media::base::VideoFrame & *videoFrame*)
+
+</ApiSignature>
 
 在 [`IVideoSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 对象收到视频帧时触发。
 
@@ -110,8 +119,11 @@ VideoFrame 对象的引用。
 
 ### applyMirror()
 
-| virtual bool agora::rtc::IVideoSinkBase::applyMirror () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual bool agora::rtc::IVideoSinkBase::applyMirror()
+
+</ApiSignature>
 
 是否将视频帧转为镜像。
 
@@ -124,8 +136,11 @@ VideoFrame 对象的引用。
 
 ### applyRotation()
 
-| virtual bool agora::rtc::IVideoSinkBase::applyRotation () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual bool agora::rtc::IVideoSinkBase::applyRotation()
+
+</ApiSignature>
 
 是否旋转视频帧。
 

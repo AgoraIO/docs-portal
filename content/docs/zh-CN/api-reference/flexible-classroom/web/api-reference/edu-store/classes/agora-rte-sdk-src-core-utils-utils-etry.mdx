@@ -33,7 +33,11 @@ _migration:
 
 ### constructor
 
-- new Retry(fn:["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args:unknown[], opts?:[RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)):[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiSignature>
+
+new Retry(fn: ["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args: unknown[], opts?: [RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)): [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="fn" required>
@@ -63,7 +67,15 @@ options
 </Parameter>
 </ParameterList>
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiReturns>
+
+<ApiReturnType>
+
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -71,7 +83,11 @@ Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-st
 
 ### abort
 
-- abort(fn:[AbortCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AbortCallback)):[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiSignature>
+
+abort(fn: [AbortCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AbortCallback)): [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiSignature>
 
 Registers a callback to be called when the target function and all retries fail
 
@@ -89,24 +105,48 @@ callback function to be called
 </Parameter>
 </ParameterList>
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiReturns>
+
+<ApiReturnType>
+
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="exec"></a>
 
 ### exec
 
-- exec():Promise&lt;void&gt;
+<ApiSignature>
+
+exec(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 Starts executes the target function
 retriesMax would be 3 and maxBackoff would be 10000(10 sceonds) by default
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="fail"></a>
 
 ### fail
 
-- fail(fn:[AttemptFailCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AttemptFailCallback)):[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiSignature>
+
+fail(fn: [AttemptFailCallback](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AttemptFailCallback)): [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiSignature>
 
 Registers a callback to be called when the target function fails
 This callback function can be used to manage, by yourself, the retry system. It's called when an error occurred and before to retry. This method can have three behaviors:
@@ -128,4 +168,12 @@ callback function to be called
 </Parameter>
 </ParameterList>
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+<ApiReturns>
+
+<ApiReturnType>
+
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiReturnType>
+
+</ApiReturns>

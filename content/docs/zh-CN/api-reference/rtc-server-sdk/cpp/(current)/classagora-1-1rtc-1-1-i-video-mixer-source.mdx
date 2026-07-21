@@ -27,8 +27,11 @@ _migration:
 
 ### addVideoTrack()
 
-| virtual int agora::rtc::IVideoMixerSource::addVideoTrack ( const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::addVideoTrack(const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 向流增加视频轨道。
 
@@ -59,8 +62,11 @@ _migration:
 
 ### removeVideoTrack()
 
-| virtual int agora::rtc::IVideoMixerSource::removeVideoTrack ( const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::removeVideoTrack(const char * *id*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) &gt; *track*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 从流中删除视频轨道。
 
@@ -91,8 +97,11 @@ _migration:
 
 ### setStreamLayout()
 
-| virtual int agora::rtc::IVideoMixerSource::setStreamLayout ( const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::setStreamLayout(const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 配置流中的视频布局。
 
@@ -123,8 +132,11 @@ _migration:
 
 ### delStreamLayout()
 
-| virtual int agora::rtc::IVideoMixerSource::delStreamLayout ( const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::delStreamLayout(const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 删除视频布局。
 
@@ -150,8 +162,11 @@ _migration:
 
 ### addImageSource()
 
-| virtual int agora::rtc::IVideoMixerSource::addImageSource ( const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, [ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) *type* = [`kPng`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173), aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::addImageSource(const char * *id*, const [MixerLayoutConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-mixer-layout-config) & *config*, [ImageType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75) *type* = [`kPng`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2bb24f13233850a63fb152366902bd75a81830984dc6493ee9dc1f20cfecab173), aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 向流添加图像源。
 
@@ -187,8 +202,11 @@ _migration:
 
 ### delImageSource()
 
-| virtual int agora::rtc::IVideoMixerSource::delImageSource ( const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::delImageSource(const char * *id*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 删除图像源。
 
@@ -214,8 +232,11 @@ _migration:
 
 ### clearLayout()
 
-| virtual int agora::rtc::IVideoMixerSource::clearLayout ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::clearLayout(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 删除全部布局设置。
 
@@ -236,8 +257,11 @@ _migration:
 
 ### refresh()
 
-| virtual int agora::rtc::IVideoMixerSource::refresh ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::refresh(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 刷新布局。
 
@@ -258,8 +282,11 @@ _migration:
 
 ### setBackground() [1/2]
 
-| virtual int agora::rtc::IVideoMixerSource::setBackground ( uint32_t *width*, uint32_t *height*, int *fps*, uint32_t *color_argb* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::setBackground(uint32_t *width*, uint32_t *height*, int *fps*, uint32_t *color_argb* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置合图背景。
 
@@ -300,8 +327,11 @@ _migration:
 
 ### setBackground() [2/2]
 
-| virtual int agora::rtc::IVideoMixerSource::setBackground ( uint32_t *width*, uint32_t *height*, int *fps*, const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::setBackground(uint32_t *width*, uint32_t *height*, int *fps*, const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置合图背景图片。
 
@@ -342,8 +372,11 @@ _migration:
 
 ### setRotation()
 
-| virtual int agora::rtc::IVideoMixerSource::setRotation ( uint8_t *rotation*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::setRotation(uint8_t *rotation*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置合图旋转角度。
 
@@ -374,8 +407,11 @@ _migration:
 
 ### getAvgMixerDelay()
 
-| virtual int agora::rtc::IVideoMixerSource::getAvgMixerDelay () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoMixerSource::getAvgMixerDelay()
+
+</ApiSignature>
 
 获取合图模块造成的平均延迟（ms），包括合图功能延迟和编码器延迟。
 

@@ -57,89 +57,185 @@ _migration:
 
 ### localCameraStreamUuid
 
-- get localCameraStreamUuid():undefined|string
+<ApiSignature>
+
+get localCameraStreamUuid(): undefined | string
+
+</ApiSignature>
 
 本地摄像头视频流 UUID
 
-Returns undefined|string
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="localMicStreamUuid"></a>
 
 ### localMicStreamUuid
 
-- get localMicStreamUuid():undefined|string
+<ApiSignature>
+
+get localMicStreamUuid(): undefined | string
+
+</ApiSignature>
 
 本地麦克风音频流 UUID
 
-Returns undefined|string
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="localShareStreamUuid"></a>
 
 ### localShareStreamUuid
 
-- get localShareStreamUuid():undefined|string
+<ApiSignature>
+
+get localShareStreamUuid(): undefined | string
+
+</ApiSignature>
 
 本地屏幕共享视频流 UUID
 
-Returns undefined|string
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="shareStreamToken"></a>
 
 ### shareStreamToken
 
-- get shareStreamToken():undefined|string
+<ApiSignature>
+
+get shareStreamToken(): undefined | string
+
+</ApiSignature>
 
 本地屏幕共享 Token
 
-Returns undefined|string
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="shareStreamTokens"></a>
 
 ### shareStreamTokens
 
-- get shareStreamTokens():Map&lt;string,string&gt;
+<ApiSignature>
+
+get shareStreamTokens(): Map&lt;string, string&gt;
+
+</ApiSignature>
 
 屏幕共享 Tokens
 key: 流 UUID
 value: RTC Token
 
-Returns Map&lt;string,string&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="streamByStreamUuid"></a>
 
 ### streamByStreamUuid
 
-- get streamByStreamUuid():Map&lt;string,[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
+<ApiSignature>
+
+get streamByStreamUuid(): Map&lt;string, [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
+
+</ApiSignature>
 
 房间内流信息列表
 key: 流 UUID
 value: 流对象
 
-Returns Map&lt;string,[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="streamByUserUuid"></a>
 
 ### streamByUserUuid
 
-- get streamByUserUuid():Map&lt;string,Set&lt;string&gt;&gt;
+<ApiSignature>
+
+get streamByUserUuid(): Map&lt;string, Set&lt;string&gt;&gt;
+
+</ApiSignature>
 
 房间内用户流信息列表
 key: 用户 UUID
 value: 流 UUID 集合
 
-Returns Map&lt;string,Set&lt;string&gt;&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, Set&lt;string&gt;&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="streamVolumes"></a>
 
 ### streamVolumes
 
-- get streamVolumes():Map&lt;string,number&gt;
+<ApiSignature>
+
+get streamVolumes(): Map&lt;string, number&gt;
+
+</ApiSignature>
 
 音量列表
 key: 流 UUID
 value: 音量值，范围：0 ~ 1
 
-Returns Map&lt;string,number&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, number&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Methods
 
@@ -147,7 +243,11 @@ Returns Map&lt;string,number&gt;
 
 ### destroyScreenShareStream
 
-- destroyScreenShareStream(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
+<ApiSignature>
+
+destroyScreenShareStream(scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): void
+
+</ApiSignature>
 
 销毁屏幕共享流
 
@@ -165,13 +265,25 @@ Returns Map&lt;string,number&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="initializeScreenShareStream"></a>
 
 ### initializeScreenShareStream
 
-- initializeScreenShareStream(scene:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamUuid:string, rtcToken:string):void
+<ApiSignature>
+
+initializeScreenShareStream(scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamUuid: string, rtcToken: string): void
+
+</ApiSignature>
 
 初始化屏幕共享流
 
@@ -199,13 +311,25 @@ RTC Token
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteAudioStream"></a>
 
 ### muteRemoteAudioStream
 
-- muteRemoteAudioStream(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
+<ApiSignature>
+
+muteRemoteAudioStream(stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted: boolean, fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): void
+
+</ApiSignature>
 
 订阅/取消远端音频流
 
@@ -239,13 +363,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteVideoStream"></a>
 
 ### muteRemoteVideoStream
 
-- muteRemoteVideoStream(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
+<ApiSignature>
+
+muteRemoteVideoStream(stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), muted: boolean, fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): void
+
+</ApiSignature>
 
 订阅/取消远端视频流
 
@@ -279,13 +415,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteVideoStreamMass"></a>
 
 ### muteRemoteVideoStreamMass
 
-- muteRemoteVideoStreamMass(streams:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)[], muted:boolean, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):undefined|Promise&lt;string[]&gt;
+<ApiSignature>
+
+muteRemoteVideoStreamMass(streams: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream)[], muted: boolean, fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): undefined | Promise&lt;string[]&gt;
+
+</ApiSignature>
 
 批量订阅
 
@@ -319,13 +467,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns undefined|Promise&lt;string[]&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | Promise&lt;string[]&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="publishScreenShare"></a>
 
 ### publishScreenShare
 
-- publishScreenShare(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamOptions?:Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;):Promise&lt;any&gt;
+<ApiSignature>
+
+publishScreenShare(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), streamOptions?: Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
 
 为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
 此方法只允许房间内创建一路屏幕共享流，若房间内需要同时存在多路屏幕流，请使用 publishScreenShareStateless
@@ -355,13 +515,25 @@ Partial & lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electro
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;any&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="publishScreenShareStateless"></a>
 
 ### publishScreenShareStateless
 
-- publishScreenShareStateless(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;any&gt;
+<ApiSignature>
+
+publishScreenShareStateless(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;any&gt;
+
+</ApiSignature>
 
 为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。
 此方法允许房间内创建多路屏幕共享流
@@ -380,13 +552,25 @@ Returns Promise&lt;any&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;any&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="publishStreamToCdn"></a>
 
 ### publishStreamToCdn
 
-- publishStreamToCdn(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+publishStreamToCdn(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 旁路推流，将当前已发布的流推送到CDN
 
@@ -404,13 +588,25 @@ Returns Promise&lt;any&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setLatencyLevel"></a>
 
 ### setLatencyLevel
 
-- setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+setLatencyLevel(level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level), fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置延时等级（仅可在当前端没有发布音视频流的情况下使用）
 
@@ -439,13 +635,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setRemoteVideoStreamType"></a>
 
 ### setRemoteVideoStreamType
 
-- setRemoteVideoStreamType(streamUuid:string, remoteVideoStreamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+setRemoteVideoStreamType(streamUuid: string, remoteVideoStreamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置远端视频质量
 
@@ -479,13 +687,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setupRemoteVideo"></a>
 
 ### setupRemoteVideo
 
-- setupRemoteVideo(stream:[EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), dom:HTMLElement, mirror:boolean, renderMode?:[AGRenderMode](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode), fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):void
+<ApiSignature>
+
+setupRemoteVideo(stream: [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-struct-du-stream), dom: HTMLElement, mirror: boolean, renderMode?: [AGRenderMode](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode), fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): void
+
+</ApiSignature>
 
 渲染远端视频
 
@@ -535,13 +755,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpublishScreenShare"></a>
 
 ### unpublishScreenShare
 
-- unpublishScreenShare(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+unpublishScreenShare(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 取消发布屏幕共享流
 
@@ -559,13 +791,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unpublishScreenShareStateless"></a>
 
 ### unpublishScreenShareStateless
 
-- unpublishScreenShareStateless(fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+unpublishScreenShareStateless(fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 取消发布屏幕共享流
 
@@ -583,13 +827,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateExpandedScopeAndStreams"></a>
 
 ### updateExpandedScopeAndStreams
 
-- updateExpandedScopeAndStreams(state:0|1, data:\{userUuids:string[]\}):Promise&lt;void&gt;
+<ApiSignature>
+
+updateExpandedScopeAndStreams(state: 0 | 1, data: \{ userUuids: string[] \}): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新视频墙开关状态和发流用户列表
 
@@ -610,13 +866,25 @@ userUuids 发流用户列表
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateLocalPublishState"></a>
 
 ### updateLocalPublishState
 
-- updateLocalPublishState(state:\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+updateLocalPublishState(state: \{ audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}, fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新本地音频和视频发布状态
 
@@ -666,13 +934,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateRemotePublishState"></a>
 
 ### updateRemotePublishState
 
-- updateRemotePublishState(userUuid:string, streamUuid:string, state:\{audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}, fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+updateRemotePublishState(userUuid: string, streamUuid: string, state: \{ audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}, fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新远端音频和视频发布状态
 
@@ -732,13 +1012,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="updateRemotePublishStateBatch"></a>
 
 ### updateRemotePublishStateBatch
 
-- updateRemotePublishStateBatch(streams:\{audioSourceType?:[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type);audioState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state);streamUuid:string;userUuid:string;videoSourceType?:[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type);videoState?:[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)\}[], fromScene?:[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)):Promise&lt;void&gt;
+<ApiSignature>
+
+updateRemotePublishStateBatch(streams: \{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); streamUuid: string; userUuid: string; videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}[], fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 批量更新远端音频和视频发布状态
 
@@ -765,4 +1057,12 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

@@ -29,7 +29,11 @@ _migration:
 
 设置 Room Token 并初始化 `WhitePlayerConfig` 对象。
 
-`- (instancetype)initWithRoom:(NSString *)*roomUuid* roomToken:(NSString *)*roomToken*`
+<ApiSignature>
+
+\- (instancetype)initWithRoom:(NSString *)*roomUuid* roomToken:(NSString *)*roomToken*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="roomUuid">
@@ -58,7 +62,11 @@ _migration:
 
 待回放的互动白板房间所在的数据中心。
 
-`@property (nonatomic, strong, nullable) WhiteRegionKey region`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+
+</ApiSignature>
 
 #### Availability
 
@@ -85,7 +93,11 @@ _migration:
 白板请求 modules 数据的地址。配置后不会请求白板默认地址。
 @example [https://modules.example.com](https://modules.example.com/)
 
-`@property (nonatomic, copy, nullable) NSString *modulesOrigin`
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *modulesOrigin
+
+</ApiSignature>
 
 #### Declared In
 
@@ -97,7 +109,11 @@ _migration:
 
 房间 UUID，即房间唯一标识符。
 
-`@property (nonatomic, copy) NSString *room`
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *room
+
+</ApiSignature>
 
 #### Declared In
 
@@ -109,7 +125,11 @@ _migration:
 
 用于鉴权的 Room Token。
 
-`@property (nonatomic, copy) NSString *roomToken`
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *roomToken
+
+</ApiSignature>
 
 #### Declared In
 
@@ -121,7 +141,11 @@ _migration:
 
 白板回放的起始时间。
 
-`@property (nonatomic, strong, nullable) NSNumber *beginTimestamp`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *beginTimestamp
+
+</ApiSignature>
 
 #### Discussion
 
@@ -137,7 +161,11 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，`161537
 
 白板回放的持续时长（秒）。如果没有设置，回放会从起始时间一直持续到退出房间。
 
-`@property (nonatomic, strong, nullable) NSNumber *duration`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *duration
+
+</ApiSignature>
 
 #### Declared In
 
@@ -149,7 +177,11 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，`161537
 
 白板回放的音频地址。
 
-`@property (nonatomic, strong, nullable) NSString *mediaURL`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSString *mediaURL
+
+</ApiSignature>
 
 #### Discussion
 
@@ -168,7 +200,11 @@ Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，`161537
 
 SDK 回调播放进度的频率（秒）。默认为 0.5 秒。
 
-`@property (nonatomic, strong) NSNumber *step`
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *step
+
+</ApiSignature>
 
 #### Declared In
 
@@ -180,7 +216,11 @@ SDK 回调播放进度的频率（秒）。默认为 0.5 秒。
 
 视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
 
-`@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound
+
+</ApiSignature>
 
 #### Declared In
 
@@ -196,7 +236,11 @@ SDK 回调播放进度的频率（秒）。默认为 0.5 秒。
 
 已废弃，请使用 [mediaURL](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/mediaURL)。
 
-`@property (nonatomic, strong, nullable) NSString *DEPRECATED_MSG_ATTRIBUTE ( "use mediaURL property" )`
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSString *DEPRECATED_MSG_ATTRIBUTE ("use mediaURL property")
+
+</ApiSignature>
 
 #### Declared In
 

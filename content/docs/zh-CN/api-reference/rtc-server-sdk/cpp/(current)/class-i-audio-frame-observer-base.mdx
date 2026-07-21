@@ -24,8 +24,11 @@ _migration:
 
 ### AUDIO_FRAME_TYPE
 
-| enum [IAudioFrameObserverBase::AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7f) |
-| --- |
+<ApiSignature>
+
+enum [IAudioFrameObserverBase::AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7f)
+
+</ApiSignature>
 
 音频帧类型。
 
@@ -51,8 +54,11 @@ _migration:
 
 ### ~IAudioFrameObserverBase()
 
-| virtual IAudioFrameObserverBase::~IAudioFrameObserverBase () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual IAudioFrameObserverBase::~IAudioFrameObserverBase()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -60,8 +66,11 @@ _migration:
 
 ### onRecordAudioFrame()
 
-| virtual bool IAudioFrameObserverBase::onRecordAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onRecordAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
 
 获得录制的声音。
 
@@ -87,8 +96,11 @@ _migration:
 
 ### onPlaybackAudioFrame()
 
-| virtual bool IAudioFrameObserverBase::onPlaybackAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
 
 获得播放的声音。
 
@@ -114,8 +126,11 @@ _migration:
 
 ### onMixedAudioFrame()
 
-| virtual bool IAudioFrameObserverBase::onMixedAudioFrame ( const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onMixedAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
 
 获取采集和播放声音混音后的数据。
 
@@ -141,8 +156,11 @@ _migration:
 
 ### onPlaybackAudioFrameBeforeMixing()
 
-| virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing ( const char * *channelId*, base::user_id_t *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing(const char * *channelId*, base::user_id_t *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
 
 获得播放声音混音前的数据。
 

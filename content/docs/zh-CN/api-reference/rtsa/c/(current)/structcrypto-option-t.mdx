@@ -31,8 +31,11 @@ _migration:
 
 ### enable
 
-| bool enable |
-| --- |
+<ApiSignature>
+
+bool enable
+
+</ApiSignature>
 
 是否开启媒体流加密：
 
@@ -43,8 +46,11 @@ _migration:
 
 ### key
 
-| char key[128+1] |
-| --- |
+<ApiSignature>
+
+char key[128+1]
+
+</ApiSignature>
 
 媒体流加密密钥，字符串类型，长度至多为 128 字节。建议使用 32 字节的密钥。
 
@@ -56,8 +62,11 @@ _migration:
 
 ### mode
 
-| [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) mode |
-| --- |
+<ApiSignature>
+
+[crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e) mode
+
+</ApiSignature>
 
 媒体流加密模式。详见 [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44e)。建议使用 AES_128_GCM2 或 AES_256_GCM2 加密模式。这两种模式支持使用盐，安全性更高。
 
@@ -65,8 +74,11 @@ _migration:
 
 ### salt
 
-| uint8_t salt[32] |
-| --- |
+<ApiSignature>
+
+uint8_t salt[32]
+
+</ApiSignature>
 
 盐，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。详见《媒体流加密》。
 

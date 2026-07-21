@@ -52,7 +52,11 @@ AgoraMiniappSDK.LOG.onLog = (text) => {
 
 ### setLogLevel
 
-- setLogLevel(level:number):void
+<ApiSignature>
+
+setLogLevel(level: number): void
+
+</ApiSignature>
 
 设置小程序 SDK 输出日志等级。
 
@@ -71,13 +75,25 @@ AgoraMiniappSDK.LOG.onLog = (text) => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="uploadlogs"></a>
 
 ### uploadLogs
 
-- uploadLogs(onSuccess?:function, onFailure?:function):Promise&lt;void&gt;
+<ApiSignature>
+
+uploadLogs(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
+
+</ApiSignature>
 
 上传 SDK 日志至服务器。
 
@@ -92,31 +108,63 @@ v2.6.0
 
 方法调用成功时执行的回调函数。无返回值。
 
-- - ():void
+<ApiSignature>
 
-  Returns void
+(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onFailure" type="function" optional>
 
 方法调用失败时执行的回调函数。返回值为错误码和错误信息。
 
-- - (err:object):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="err" type="object" required>
+(err: object): void
 
-  <ParameterList>
-  <Parameter name="code" type="number" required />
-  <Parameter name="reason" type="string" required />
-  </ParameterList>
+</ApiSignature>
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="err" type="object" required>
 
-  Returns void
+<ParameterList>
+<Parameter name="code" type="number" required />
+<Parameter name="reason" type="string" required />
+</ParameterList>
 
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

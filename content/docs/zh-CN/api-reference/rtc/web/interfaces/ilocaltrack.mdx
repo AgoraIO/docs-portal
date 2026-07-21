@@ -127,7 +127,11 @@ _migration:
 
 ### track-ended
 
-- track-ended():void
+<ApiSignature>
+
+track-ended(): void
+
+</ApiSignature>
 
 音频或视频轨道被终止，终止的原因可能是：
 
@@ -138,13 +142,25 @@ _migration:
 - 媒体设备故障
 - 正在使用中的媒体设备的权限被收回
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_transceiver_updated"></a>
 
 ### transceiver-updated
 
-- transceiver-updated(transceiver:RTCRtpTransceiver, type?:[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)):void
+<ApiSignature>
+
+transceiver-updated(transceiver: RTCRtpTransceiver, type?: [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)): void
+
+</ApiSignature>
 
 当前轨道的 `RTCRtpTransceiver` 实例更新回调。
 
@@ -167,7 +183,15 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -219,19 +243,35 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### close
 
-- close():void
+<ApiSignature>
+
+close(): void
+
+</ApiSignature>
 
 关闭本地轨道，并释放相关采集设备。
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getlisteners"></a>
 
 ### getListeners
 
-- getListeners(event:string):Function[]
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
 
 Inherited from EventEmitter.getListeners
 
@@ -245,27 +285,51 @@ Inherited from EventEmitter.getListeners
 </Parameter>
 </ParameterList>
 
-Returns Function[]
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getmediastreamtrack"></a>
 
 ### getMediaStreamTrack
 
-- getMediaStreamTrack():MediaStreamTrack
+<ApiSignature>
+
+getMediaStreamTrack(): MediaStreamTrack
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-Returns MediaStreamTrack
+<ApiReturns>
+
+<ApiReturnType>
+
+MediaStreamTrack
+
+</ApiReturnType>
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+</ApiReturns>
 
 <a id="getrtcrtptransceiver"></a>
 
 ### getRTCRtpTransceiver
 
-- getRTCRtpTransceiver(type?:[StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)):RTCRtpTransceiver|undefined
+<ApiSignature>
+
+getRTCRtpTransceiver(type?: [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)): RTCRtpTransceiver | undefined
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
 
@@ -292,15 +356,27 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 </Parameter>
 </ParameterList>
 
-Returns RTCRtpTransceiver | undefined
+<ApiReturns>
+
+<ApiReturnType>
+
+RTCRtpTransceiver | undefined
+
+</ApiReturnType>
 
 当前轨道的 `RTCRtpTransceiver` 实例。
+
+</ApiReturns>
 
 <a id="getstats"></a>
 
 ### getStats
 
-- getStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)|[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiSignature>
+
+getStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiSignature>
 
 ### deprecated
 
@@ -310,31 +386,61 @@ Returns RTCRtpTransceiver | undefined
 
 > 注意事项：获取本地视频轨道数据时，iOS 上无法获取到 `encodeDelay` 字段。
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="gettrackid"></a>
 
 ### getTrackId
 
-- getTrackId():string
+<ApiSignature>
+
+getTrackId(): string
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#gettrackid)
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 媒体轨道 ID。
+
+</ApiReturns>
 
 <a id="gettracklabel"></a>
 
 ### getTrackLabel
 
-- getTrackLabel():string
+<ApiSignature>
+
+getTrackLabel(): string
+
+</ApiSignature>
 
 获取本地轨道的来源描述。
 
-Returns string
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
 
 可能返回以下值：
 
@@ -342,11 +448,17 @@ Returns string
 - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
 - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
+</ApiReturns>
+
 <a id="off"></a>
 
 ### off
 
-- off(event:string, listener:Function):void
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.off
 
@@ -365,15 +477,37 @@ Inherited from EventEmitter.off
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"track-updated", listener:typeof event_track_updated):void
-- on(event:"track-ended", listener:typeof event_track_ended):void
-- on(event:"transceiver-updated", listener:typeof event_transceiver_updated):void
+<ApiSignature>
+
+on(event: "track-updated", listener: typeof event_track_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -390,7 +524,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -407,7 +549,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -426,13 +576,25 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="once"></a>
 
 ### once
 
-- once(event:string, listener:Function):void
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.once
 
@@ -453,13 +615,25 @@ Inherited from EventEmitter.once
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="play"></a>
 
 ### play
 
-- play(element?:string|HTMLElement):void
+<ApiSignature>
+
+play(element?: string | HTMLElement): void
+
+</ApiSignature>
 
 Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#play)
 
@@ -476,13 +650,25 @@ Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
-- removeAllListeners(event?:string):void
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.removeAllListeners
 
@@ -496,13 +682,25 @@ Inherited from EventEmitter.removeAllListeners
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setenabled"></a>
 
 ### setEnabled
 
-- setEnabled(enabled:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setEnabled(enabled: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 :::info[自从]
 *4.0.0*
@@ -527,13 +725,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setmuted"></a>
 
 ### setMuted
 
-- setMuted(muted:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+setMuted(muted: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 发送或暂停发送该轨道的媒体数据。
 
@@ -557,16 +767,36 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stop"></a>
 
 ### stop
 
-- stop():void
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#stop)
 
 停止播放。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

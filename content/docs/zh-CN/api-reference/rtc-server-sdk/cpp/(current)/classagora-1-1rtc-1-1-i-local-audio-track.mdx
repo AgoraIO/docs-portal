@@ -29,8 +29,11 @@ _migration:
 
 ### ~ILocalAudioTrack()
 
-| agora::rtc::ILocalAudioTrack::~ILocalAudioTrack () | inlineprotected |
-| --- | --- |
+<ApiSignature labels="inline protected">
+
+agora::rtc::ILocalAudioTrack::~ILocalAudioTrack()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -38,8 +41,11 @@ _migration:
 
 ### setEnabled()
 
-| virtual void agora::rtc::ILocalAudioTrack::setEnabled ( bool *enable*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalAudioTrack::setEnabled(bool *enable*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 开启或关闭本地音频轨道。
 
@@ -65,8 +71,11 @@ _migration:
 
 ### isEnabled()
 
-| virtual bool agora::rtc::ILocalAudioTrack::isEnabled () const | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::ILocalAudioTrack::isEnabled() const
+
+</ApiSignature>
 
 获取本地音频轨道的开启状态。
 
@@ -81,8 +90,11 @@ _migration:
 
 ### getState()
 
-| virtual [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332) agora::rtc::ILocalAudioTrack::getState () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332) agora::rtc::ILocalAudioTrack::getState()
+
+</ApiSignature>
 
 获取本地音频状态。
 
@@ -94,8 +106,11 @@ _migration:
 
 ### GetStats()
 
-| virtual [LocalAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-local-audio-track-1-1-local-audio-track-stats) agora::rtc::ILocalAudioTrack::GetStats () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [LocalAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-local-audio-track-1-1-local-audio-track-stats) agora::rtc::ILocalAudioTrack::GetStats()
+
+</ApiSignature>
 
 获取本地音频轨道的统计信息。
 
@@ -107,8 +122,11 @@ _migration:
 
 ### adjustPublishVolume()
 
-| virtual int agora::rtc::ILocalAudioTrack::adjustPublishVolume ( int *volume*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalAudioTrack::adjustPublishVolume(int *volume*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 调整音频发布音量。
 
@@ -134,8 +152,11 @@ _migration:
 
 ### getPublishVolume()
 
-| virtual int agora::rtc::ILocalAudioTrack::getPublishVolume ( int * *volume*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalAudioTrack::getPublishVolume(int * *volume*)
+
+</ApiSignature>
 
 获取音频发布音量。
 
@@ -156,8 +177,11 @@ _migration:
 
 ### setMaxBufferedAudioFrameNumber()
 
-| virtual void agora::rtc::ILocalAudioTrack::setMaxBufferedAudioFrameNumber ( int *number*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalAudioTrack::setMaxBufferedAudioFrameNumber(int *number*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置音频发送缓冲区的最大容量。
 
@@ -190,8 +214,11 @@ SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最�
 
 ### ClearSenderBuffer()
 
-| virtual int agora::rtc::ILocalAudioTrack::ClearSenderBuffer () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalAudioTrack::ClearSenderBuffer()
+
+</ApiSignature>
 
 清除当前音频发送缓冲区。
 
@@ -210,8 +237,11 @@ SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最�
 
 ### setAudioFrameSendDelayMs()
 
-| virtual void agora::rtc::ILocalAudioTrack::setAudioFrameSendDelayMs ( int32_t *delay_ms*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalAudioTrack::setAudioFrameSendDelayMs(int32_t *delay_ms*)
+
+</ApiSignature>
 
 设置音频发送缓冲区允许发送的最小数据时长。
 

@@ -9,7 +9,7 @@
 - Pending pages: 0
 - Excluded pages: 0
 - Removed stale owned files: 0
-- Warnings: 71
+- Warnings: 75
 - Errors: 0
 
 ## Migration types
@@ -21,12 +21,12 @@
 
 - `existing-target-preserved` (403, info): An existing local MDX or OpenAPI target was preserved and queued for parity audit.
 - `manual-fragment-alias` (7, info): Stable aliases were added for legacy fragments that identify migrated headings.
-- `manual-fragment-normalized` (77, info): A legacy fragment was rewritten to the unique stable anchor exposed by its local target.
+- `manual-fragment-normalized` (74, info): A legacy fragment was rewritten to the unique stable anchor exposed by its local target.
 - `manual-mdx-normalized` (161, info): Legacy MDX syntax was normalized to the repository Markdown/MDX authoring standard.
 - `manual-platform-merge` (10, info): Multiple platform-specific legacy MDX sources were merged with PlatformStructured blocks.
 - `missing-source-text` (26, warning): The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.
 - `source-only-link-removed` (29, info): A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.
-- `unresolved-fragment` (16, warning): A legacy fragment could not be mapped to a stable target fragment.
+- `unresolved-fragment` (20, warning): A legacy fragment could not be mapped to a stable target fragment.
 - `unresolved-link` (29, warning): A legacy internal link has no resolved local target route.
 
 ## Page/file results
@@ -161,7 +161,7 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/auikaraoke/advanced-features/lyrics-scoring.android.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/advanced-features/lyrics-syncing.mdx` | `docs/online-ktv/auikaraoke/advanced-features/lyrics-syncing.android.mdx` |  |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/api/auikaraoke-api.mdx` | `docs/online-ktv/auikaraoke/api/auikaraoke-api.android.mdx` |  |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/api/lyrics-api.mdx` | `docs/online-ktv/auikaraoke/api/lyrics-api.android.mdx` | manual-fragment-normalized, unresolved-fragment |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/api/lyrics-api.mdx` | `docs/online-ktv/auikaraoke/api/lyrics-api.android.mdx` | unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/enable-service.mdx` | `docs/online-ktv/auikaraoke/get-started/enable-service.mdx` | missing-source-text, missing-source-text, manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/integrate.mdx` | `docs/online-ktv/auikaraoke/get-started/integrate.android.mdx` | missing-source-text, missing-source-text, manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/kit-demo.mdx` | `docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx` | missing-source-text, missing-source-text, manual-mdx-normalized |
@@ -174,7 +174,7 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/advanced-features/get-music.mdx` | `docs/online-ktv/ktv-scenario/advanced-features/get-music.android.mdx` | manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/ktv-scenario/advanced-features/lyrics-scoring.android.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api.mdx` | `docs/online-ktv/ktv-scenario/api/ktv-api.android.mdx` | manual-mdx-normalized, manual-fragment-normalized, unresolved-fragment |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/lyrics-api.mdx` | `docs/online-ktv/ktv-scenario/api/lyrics-api.android.mdx` | manual-fragment-normalized, unresolved-fragment |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/lyrics-api.mdx` | `docs/online-ktv/ktv-scenario/api/lyrics-api.android.mdx` | unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center.mdx` | `docs/online-ktv/ktv-scenario/api/music-content-center.mdx` | manual-mdx-normalized, manual-fragment-alias, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/rtc-api.mdx` | `docs/online-ktv/ktv-scenario/api/rtc-api.android.mdx` | manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/get-started/enable-service.mdx` | `docs/online-ktv/ktv-scenario/get-started/enable-service.mdx` |  |
@@ -191,7 +191,7 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/advanced-features/get-music.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/get-music.android.mdx` | manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/lyrics-scoring.android.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/advanced-features/lyrics-syncing.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing.android.mdx` |  |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/lyrics-api.android.mdx` | manual-fragment-normalized, unresolved-fragment |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/lyrics-api.android.mdx` | unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center.mdx` | `docs/online-ktv/online-ktv-sdk/api/music-content-center.mdx` | manual-mdx-normalized, manual-fragment-alias, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/rtc-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/rtc-api.android.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/get-started/enable-service.mdx` | `docs/online-ktv/online-ktv-sdk/get-started/enable-service.mdx` |  |
@@ -203,7 +203,7 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/auikaraoke/advanced-features/lyrics-scoring.ios.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/advanced-features/lyrics-syncing.mdx` | `docs/online-ktv/auikaraoke/advanced-features/lyrics-syncing.ios.mdx` |  |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/api/auikaraoke-api.mdx` | `docs/online-ktv/auikaraoke/api/auikaraoke-api.ios.mdx` | manual-fragment-alias |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/api/lyrics-api.mdx` | `docs/online-ktv/auikaraoke/api/lyrics-api.ios.mdx` | manual-fragment-normalized |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/api/lyrics-api.mdx` | `docs/online-ktv/auikaraoke/api/lyrics-api.ios.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service.mdx` | `docs/online-ktv/auikaraoke/get-started/enable-service.mdx` | missing-source-text, missing-source-text, manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | `docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx` | missing-source-text, missing-source-text, missing-source-text, missing-source-text, missing-source-text, manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/kit-demo.mdx` | `docs/online-ktv/auikaraoke/get-started/kit-demo.ios.mdx` | missing-source-text, missing-source-text, missing-source-text, manual-mdx-normalized |
@@ -216,7 +216,7 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/advanced-features/get-music.mdx` | `docs/online-ktv/ktv-scenario/advanced-features/get-music.ios.mdx` | manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/ktv-scenario/advanced-features/lyrics-scoring.ios.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/ktv-api.mdx` | `docs/online-ktv/ktv-scenario/api/ktv-api.ios.mdx` | manual-mdx-normalized, manual-fragment-alias, manual-fragment-normalized, unresolved-fragment |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/lyrics-api.mdx` | `docs/online-ktv/ktv-scenario/api/lyrics-api.ios.mdx` | manual-fragment-normalized |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/lyrics-api.mdx` | `docs/online-ktv/ktv-scenario/api/lyrics-api.ios.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/music-content-center.mdx` | `docs/online-ktv/ktv-scenario/api/music-content-center.mdx` | manual-mdx-normalized, manual-fragment-alias, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/rtc-api.mdx` | `docs/online-ktv/ktv-scenario/api/rtc-api.ios.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/get-started/enable-service.mdx` | `docs/online-ktv/ktv-scenario/get-started/enable-service.mdx` |  |
@@ -230,10 +230,10 @@
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/overview/introduction.mdx` | `docs/online-ktv/ktv-scenario/overview/introduction.mdx` | missing-source-text, missing-source-text, manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/overview/solution-compare.mdx` | `docs/online-ktv/ktv-scenario/overview/solution-compare.mdx` | manual-mdx-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/resources.mdx` | `docs/online-ktv/ktv-scenario/resources.mdx` | manual-mdx-normalized |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/advanced-features/get-music.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/get-music.ios.mdx` | manual-mdx-normalized, manual-fragment-normalized |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/advanced-features/get-music.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/get-music.ios.mdx` | manual-mdx-normalized, manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/advanced-features/lyrics-scoring.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/lyrics-scoring.ios.mdx` | manual-mdx-normalized, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/advanced-features/lyrics-syncing.mdx` | `docs/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing.ios.mdx` |  |
-| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/api/lyrics-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/lyrics-api.ios.mdx` | manual-fragment-normalized |
+| generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/api/lyrics-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/lyrics-api.ios.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/api/music-content-center.mdx` | `docs/online-ktv/online-ktv-sdk/api/music-content-center.mdx` | manual-mdx-normalized, manual-fragment-alias, manual-fragment-normalized |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/api/rtc-api.mdx` | `docs/online-ktv/online-ktv-sdk/api/rtc-api.ios.mdx` | manual-fragment-normalized, unresolved-fragment |
 | generated | manual-mdx | `content/docs/zh-CN/api-reference/online-ktv/ios/online-ktv-sdk/get-started/enable-service.mdx` | `docs/online-ktv/online-ktv-sdk/get-started/enable-service.mdx` |  |

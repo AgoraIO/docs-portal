@@ -23,8 +23,11 @@ _migration:
 
 ### ~IRtcConnectionObserver()
 
-| virtual agora::rtc::IRtcConnectionObserver::~IRtcConnectionObserver () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IRtcConnectionObserver::~IRtcConnectionObserver()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -32,8 +35,11 @@ _migration:
 
 ### onConnected()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onConnected ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnected(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTED(3)` 时触发。
 
@@ -54,8 +60,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTED(3)` 时触发�
 
 ### onDisconnected()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onDisconnected ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onDisconnected(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 `CONNECTION_STATE_DISCONNECTED(1)` 时触发。
 
@@ -76,8 +85,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_DISCONNECTED(1)` 时触�
 
 ### onConnecting()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onConnecting ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnecting(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTING(2)` 时触发。
 
@@ -98,8 +110,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTING(2)` 时触发
 
 ### onReconnecting()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onReconnecting ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onReconnecting(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 `CONNECTION_STATE_RECONNECTING(4)` 时触发。
 
@@ -120,8 +135,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_RECONNECTING(4)` 时触�
 
 ### onConnectionLost()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onConnectionLost ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnectionLost(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*)
+
+</ApiSignature>
 
 SDK 与频道断开连接时触发。
 
@@ -137,8 +155,11 @@ SDK 与频道断开连接时触发。
 
 ### onLastmileQuality()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onLastmileQuality ( const [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *quality*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onLastmileQuality(const [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *quality*)
+
+</ApiSignature>
 
 报告 last-mile 网络质量。
 
@@ -156,8 +177,11 @@ last-mile 网络质量： [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp
 
 ### onLastmileProbeResult()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onLastmileProbeResult ( const [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-result) & *result*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onLastmileProbeResult(const [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-result) & *result*)
+
+</ApiSignature>
 
 通话前网络上下行 Last mile 质量探测报告回调。
 
@@ -175,8 +199,11 @@ last-mile 网络质量： [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp
 
 ### onTokenPrivilegeWillExpire()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeWillExpire ( const char * *token*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeWillExpire(const char * *token*)
+
+</ApiSignature>
 
 Token 服务将在 30s 内过期回调。
 
@@ -196,8 +223,11 @@ Token 服务将在 30s 内过期回调。
 
 ### onTokenPrivilegeDidExpire()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeDidExpire () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeDidExpire()
+
+</ApiSignature>
 
 Token 已过期回调。
 
@@ -209,8 +239,11 @@ Token 已过期回调。
 
 ### onConnectionFailure()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onConnectionFailure ( const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnectionFailure(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
 
 SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
@@ -231,8 +264,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onUserJoined()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onUserJoined ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserJoined([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*)
+
+</ApiSignature>
 
 远端用户加入频道时触发。
 
@@ -250,8 +286,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onUserLeft()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onUserLeft ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) *reason*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserLeft([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) *reason*)
+
+</ApiSignature>
 
 远端用户离开频道时触发。
 
@@ -274,8 +313,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onTransportStats()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onTransportStats ( const [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) & *stats*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTransportStats(const [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) & *stats*)
+
+</ApiSignature>
 
 报告连接的传输统计信息。
 
@@ -293,8 +335,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onChangeRoleSuccess()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleSuccess ( [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *oldRole*, [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *newRole*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleSuccess([CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *oldRole*, [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *newRole*)
+
+</ApiSignature>
 
 本地用户角色变更时触发。
 
@@ -315,8 +360,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onChangeRoleFailure()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleFailure () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleFailure()
+
+</ApiSignature>
 
 本地用户角色切换失败时触发。
 
@@ -324,8 +372,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onUserNetworkQuality()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onUserNetworkQuality ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *txQuality*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *rxQuality*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserNetworkQuality([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *txQuality*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *rxQuality*)
+
+</ApiSignature>
 
 通话中每个用户的网络上下行 last mile 质量报告回调。
 
@@ -355,8 +406,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onNetworkTypeChanged()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onNetworkTypeChanged ( [NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) *type*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onNetworkTypeChanged([NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) *type*)
+
+</ApiSignature>
 
 本地网络类型发生改变回调。
 
@@ -374,8 +428,11 @@ SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
 
 ### onApiCallExecuted()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onApiCallExecuted ( int *err*, const char * *api*, const char * *result*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onApiCallExecuted(int *err*, const char * *api*, const char * *result*)
+
+</ApiSignature>
 
 API 方法已执行回调。
 
@@ -401,8 +458,11 @@ SDK 调用 API 的结果。
 
 ### onError()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onError ( ERROR_CODE_TYPE *error*, const char * *msg*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onError(ERROR_CODE_TYPE *error*, const char * *msg*)
+
+</ApiSignature>
 
 发生错误回调。
 
@@ -425,8 +485,11 @@ SDK 调用 API 的结果。
 
 ### onChannelMediaRelayStateChanged()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onChannelMediaRelayStateChanged ( int *state*, int *code*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChannelMediaRelayStateChanged(int *state*, int *code*)
+
+</ApiSignature>
 
 跨频道媒体流转发状态发生改变回调。
 
@@ -469,8 +532,11 @@ SDK 调用 API 的结果。
 
 ### onEncryptionError()
 
-| virtual void agora::rtc::IRtcConnectionObserver::onEncryptionError ( [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521) *errorType*) | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onEncryptionError([ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521) *errorType*)
+
+</ApiSignature>
 
 内置加密出错回调。
 

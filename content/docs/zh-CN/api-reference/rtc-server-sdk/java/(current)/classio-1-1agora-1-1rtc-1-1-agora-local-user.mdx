@@ -26,8 +26,11 @@ _migration:
 
 ### AgoraLocalUser()
 
-| io.agora.rtc.AgoraLocalUser.AgoraLocalUser | ( | long | *cptr* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+io.agora.rtc.AgoraLocalUser.AgoraLocalUser(long *cptr*)
+
+</ApiSignature>
 
 构造函数。
 
@@ -41,8 +44,11 @@ _migration:
 
 ### getUserRole()
 
-| native int io.agora.rtc.AgoraLocalUser.getUserRole | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.getUserRole(**)
+
+</ApiSignature>
 
 获取用户角色。
 
@@ -54,8 +60,11 @@ _migration:
 
 ### publishAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.publishAudio | ( | [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) | *agora_local_audio_track* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.publishAudio([AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) *agora_local_audio_track*)
+
+</ApiSignature>
 
 发布本地音频轨道至频道。
 
@@ -78,8 +87,11 @@ _migration:
 
 ### publishVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.publishVideo | ( | [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) | *agora_local_video_track* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.publishVideo([AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) *agora_local_video_track*)
+
+</ApiSignature>
 
 发布本地视频轨道至频道。
 
@@ -100,8 +112,11 @@ _migration:
 
 ### registerAudioEncodedFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.registerAudioEncodedFrameObserver | ( | [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerAudioEncodedFrameObserver([IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) *observer*)
+
+</ApiSignature>
 
 注册一个编码后的音频数据观测器。
 
@@ -126,8 +141,11 @@ _migration:
 
 ### registerAudioFrameObserver() [1/2]
 
-| native int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver | ( | [IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver([IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) *observer*)
+
+</ApiSignature>
 
 注册音频数据观测器。
 
@@ -155,10 +173,11 @@ _migration:
 
 ### registerAudioFrameObserver() [2/2]
 
-| int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver | ( | [IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) | *observer*, |
-| --- | --- | --- | --- |
-|  |  | boolean | *enableVad*, |
-|  |  | [AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2) | *vadConfig*) |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver([IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) *observer*, boolean *enableVad*, [AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2) *vadConfig*)
+
+</ApiSignature>
 
 注册一个开启了 VAD （语音活动检测）能力的音频数据观测器对象。
 
@@ -194,8 +213,11 @@ VAD 配置信息：[AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/j
 
 ### registerObserver()
 
-| native int io.agora.rtc.AgoraLocalUser.registerObserver | ( | [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.registerObserver([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer) *observer*)
+
+</ApiSignature>
 
 注册本地用户观测器。
 
@@ -218,8 +240,11 @@ ILocalUserObserver 对象。
 
 ### registerVideoEncodedFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.registerVideoEncodedFrameObserver | ( | [AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) | *agoraVideoEncodedFrameObserver* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerVideoEncodedFrameObserver([AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) *agoraVideoEncodedFrameObserver*)
+
+</ApiSignature>
 
 注册一个编码后的视频数据观测器。
 
@@ -240,8 +265,11 @@ ILocalUserObserver 对象。
 
 ### registerVideoFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.registerVideoFrameObserver | ( | [AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) | *agoraVideoFrameObserver2* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerVideoFrameObserver([AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) *agoraVideoFrameObserver2*)
+
+</ApiSignature>
 
 注册视频数据观测器。
 
@@ -262,8 +290,11 @@ ILocalUserObserver 对象。
 
 ### sendAudioMetaData()
 
-| int io.agora.rtc.AgoraLocalUser.sendAudioMetaData | ( | byte[] | *metaData* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.sendAudioMetaData(byte[] *metaData*)
+
+</ApiSignature>
 
 发送音频 Metadata 数据。
 
@@ -286,8 +317,11 @@ ILocalUserObserver 对象。
 
 ### sendIntraRequest()
 
-| native int io.agora.rtc.AgoraLocalUser.sendIntraRequest | ( | String | *uid* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.sendIntraRequest(String *uid*)
+
+</ApiSignature>
 
 向指定主播发送关键帧请求。
 
@@ -310,8 +344,11 @@ ILocalUserObserver 对象。
 
 ### setAudioEncoderConfig()
 
-| native int io.agora.rtc.AgoraLocalUser.setAudioEncoderConfig | ( | [AudioEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-encoder-config) | *config* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioEncoderConfig([AudioEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-encoder-config) *config*)
+
+</ApiSignature>
 
 配置音频编码属性。
 
@@ -334,8 +371,11 @@ ILocalUserObserver 对象。
 
 ### setAudioScenario()
 
-| native int io.agora.rtc.AgoraLocalUser.setAudioScenario | ( | int | *scenarioType* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioScenario(int *scenarioType*)
+
+</ApiSignature>
 
 设置音频应用场景。
 
@@ -364,20 +404,21 @@ ILocalUserObserver 对象。
 
 ### setAudioVolumeIndicationParameters()
 
-| native int io.agora.rtc.AgoraLocalUser.setAudioVolumeIndicationParameters | ( | int | *interval_in_ms*, |
-| --- | --- | --- | --- |
-|  |  | int | *smooth*, |
-|  |  | boolean | *report_vad*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioVolumeIndicationParameters(int *interval_in_ms*, int *smooth*, boolean *report_vad*)
+
+</ApiSignature>
 
 <a id="a70d505bcb7a5636f91d4156636ec3d3c"></a>
 
 ### setMixedAudioFrameParameters()
 
-| native int io.agora.rtc.AgoraLocalUser.setMixedAudioFrameParameters | ( | int | *channels*, |
-| --- | --- | --- | --- |
-|  |  | int | *sample_rate_hz*, |
-|  |  | int | *mode*, |
-|  |  | int | *samples_per_call*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setMixedAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
 
 设置 onMixedAudioFrame 回调中返回的音频数据的参数。
 
@@ -420,9 +461,11 @@ onMixedAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### setPlaybackAudioFrameBeforeMixingParameters()
 
-| native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameBeforeMixingParameters | ( | int | *channels*, |
-| --- | --- | --- | --- |
-|  |  | int | *sample_rate_hz*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameBeforeMixingParameters(int *channels*, int *sample_rate_hz*)
+
+</ApiSignature>
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中返回的音频数据的参数。
 
@@ -451,11 +494,11 @@ onPlaybackAudioFrameBeforeMixing 中音频数据的采样率（Hz）。可设为
 
 ### setPlaybackAudioFrameParameters()
 
-| native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameParameters | ( | int | *channels*, |
-| --- | --- | --- | --- |
-|  |  | int | *sample_rate_hz*, |
-|  |  | int | *mode*, |
-|  |  | int | *samples_per_call*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
 
 设置 onPlaybackAudioFrame 回调中返回的音频数据的参数。
 
@@ -498,11 +541,11 @@ onPlaybackAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景�
 
 ### setRecordingAudioFrameParameters()
 
-| native int io.agora.rtc.AgoraLocalUser.setRecordingAudioFrameParameters | ( | int | *channels*, |
-| --- | --- | --- | --- |
-|  |  | int | *sample_rate_hz*, |
-|  |  | int | *mode*, |
-|  |  | int | *samples_per_call*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setRecordingAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
 
 设置 onRecordAudioFrame 回调中返回的音频数据的参数。
 
@@ -545,8 +588,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### setUserRole()
 
-| native void io.agora.rtc.AgoraLocalUser.setUserRole | ( | int | *role* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native void io.agora.rtc.AgoraLocalUser.setUserRole(int *role*)
+
+</ApiSignature>
 
 设置用户角色。
 
@@ -573,8 +619,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### subscribeAllAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.subscribeAllAudio | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAllAudio(**)
+
+</ApiSignature>
 
 订阅频道内所有用户的音频。
 
@@ -589,8 +638,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### subscribeAllVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.subscribeAllVideo | ( | [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) | *options* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAllVideo([VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) *options*)
+
+</ApiSignature>
 
 订阅频道中所有用户的视频。
 
@@ -613,8 +665,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### subscribeAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.subscribeAudio | ( | String | *user_id* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAudio(String *user_id*)
+
+</ApiSignature>
 
 订阅频道内指定用户的音频。
 
@@ -635,9 +690,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### subscribeVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.subscribeVideo | ( | String | *user_id*, |
-| --- | --- | --- | --- |
-|  |  | [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) | *options*) |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeVideo(String *user_id*, [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) *options*)
+
+</ApiSignature>
 
 订阅远端指定用户的视频。
 
@@ -663,8 +720,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### unpublishAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.unpublishAudio | ( | [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) | *agora_local_audio_track* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unpublishAudio([AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) *agora_local_audio_track*)
+
+</ApiSignature>
 
 停止向频道内发布本地音频轨道。
 
@@ -685,8 +745,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### unpublishVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.unpublishVideo | ( | [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) | *agora_local_video_track* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unpublishVideo([AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) *agora_local_video_track*)
+
+</ApiSignature>
 
 停止发布本地视频轨道至频道。
 
@@ -707,8 +770,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### unregisterAudioEncodedFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.unregisterAudioEncodedFrameObserver | ( | [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) | *observer* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterAudioEncodedFrameObserver([IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) *observer*)
+
+</ApiSignature>
 
 取消注册编码后的音频数据观测器。
 
@@ -733,8 +799,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### unregisterAudioFrameObserver()
 
-| native int io.agora.rtc.AgoraLocalUser.unregisterAudioFrameObserver | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unregisterAudioFrameObserver(**)
+
+</ApiSignature>
 
 释放音频数据观测器。
 
@@ -755,8 +824,11 @@ onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中�
 
 ### unregisterObserver()
 
-| native int io.agora.rtc.AgoraLocalUser.unregisterObserver | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unregisterObserver(**)
+
+</ApiSignature>
 
 释放本地用户观测器 ILocalUserObserver 对象。
 
@@ -777,8 +849,11 @@ ILocalUserObserver 对象。
 
 ### unregisterVideoEncodedFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.unregisterVideoEncodedFrameObserver | ( | [AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) | *agoraVideoEncodedFrameObserver* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterVideoEncodedFrameObserver([AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) *agoraVideoEncodedFrameObserver*)
+
+</ApiSignature>
 
 取消注册编码后的视频数据观测器。
 
@@ -799,8 +874,11 @@ ILocalUserObserver 对象。
 
 ### unregisterVideoFrameObserver()
 
-| int io.agora.rtc.AgoraLocalUser.unregisterVideoFrameObserver | ( | [AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) | *agoraVideoFrameObserver2* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterVideoFrameObserver([AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) *agoraVideoFrameObserver2*)
+
+</ApiSignature>
 
 取消注册视频数据观测器。
 
@@ -821,8 +899,11 @@ ILocalUserObserver 对象。
 
 ### unsubscribeAllAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.unsubscribeAllAudio | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAllAudio(**)
+
+</ApiSignature>
 
 停止订阅频道内所有远端音频。
 
@@ -837,8 +918,11 @@ ILocalUserObserver 对象。
 
 ### unsubscribeAllVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.unsubscribeAllVideo | ( | ** | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAllVideo(**)
+
+</ApiSignature>
 
 停止订阅频道内所有用户的视频。
 
@@ -853,8 +937,11 @@ ILocalUserObserver 对象。
 
 ### unsubscribeAudio()
 
-| native int io.agora.rtc.AgoraLocalUser.unsubscribeAudio | ( | String | *user_id* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAudio(String *user_id*)
+
+</ApiSignature>
 
 停止订阅频道内指定用户的音频。
 
@@ -875,8 +962,11 @@ ILocalUserObserver 对象。
 
 ### unsubscribeVideo()
 
-| native int io.agora.rtc.AgoraLocalUser.unsubscribeVideo | ( | String | *user_id* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeVideo(String *user_id*)
+
+</ApiSignature>
 
 停止订阅频道内指定用户的视频。
 

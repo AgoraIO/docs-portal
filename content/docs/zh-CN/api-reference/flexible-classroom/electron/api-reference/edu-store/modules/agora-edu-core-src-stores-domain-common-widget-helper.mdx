@@ -31,7 +31,11 @@ _migration:
 
 ### Const convertLocalDimensionsToRatio
 
-- convertLocalDimensionsToRatio(dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)):\{ratioDimensions:\{height:number;width:number\}\}
+<ApiSignature>
+
+convertLocalDimensionsToRatio(dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)): \{ ratioDimensions: \{ height: number; width: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="dimensions" required>
@@ -54,7 +58,13 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns \{ratioDimensions:\{height:number;width:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ ratioDimensions: \{ height: number; width: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125; &#125;">
 <Parameter name="ratioDimensions" type="\&#123;height:number;width:number\&#125;" required>
@@ -67,11 +77,17 @@ Returns \{ratioDimensions:\{height:number;width:number\}\}
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertLocalPositionToRatio"></a>
 
 ### Const convertLocalPositionToRatio
 
-- convertLocalPositionToRatio(position:[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), medX:number, medY:number):\{ratioPosition:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertLocalPositionToRatio(position: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), medX: number, medY: number): \{ ratioPosition: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="position" required>
@@ -87,7 +103,13 @@ Returns \{ratioDimensions:\{height:number;width:number\}\}
 <Parameter name="medY" type="number" required />
 </ParameterList>
 
-Returns \{ratioPosition:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ ratioPosition: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; ratioPosition: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="ratioPosition" type="\&#123;x:number;y:number\&#125;" required>
@@ -100,11 +122,17 @@ Returns \{ratioPosition:\{x:number;y:number\}\}
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertLocalToRatio"></a>
 
 ### Const convertLocalToRatio
 
-- convertLocalToRatio(position:[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), medX:number, medY:number, outerSize:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)):\{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertLocalToRatio(position: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), medX: number, medY: number, outerSize: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)): \{ ratioDimensions: \{ height: number; width: number \}; ratioPosition: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="position" required>
@@ -138,7 +166,13 @@ Returns \{ratioPosition:\{x:number;y:number\}\}
 </Parameter>
 </ParameterList>
 
-Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ ratioDimensions: \{ height: number; width: number \}; ratioPosition: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125;; ratioPosition: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="ratioDimensions" type="\&#123;height:number;width:number\&#125;" required>
@@ -159,11 +193,17 @@ Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:numbe
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertRatioToLocal"></a>
 
 ### Const convertRatioToLocal
 
-- convertRatioToLocal(diffRatio:\{ratioX:number;ratioY:number\}, sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertRatioToLocal(diffRatio: \{ ratioX: number; ratioY: number \}, sizeRatio: \{ ratioHeight: number; ratioWidth: number \}, outerSize: \{ height: number; width: number \}, resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)): \{ dimensions: \{ height: number; width: number \}; position: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
@@ -201,7 +241,13 @@ Returns \{ratioDimensions:\{height:number;width:number\};ratioPosition:\{x:numbe
 </Parameter>
 </ParameterList>
 
-Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ dimensions: \{ height: number; width: number \}; position: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125;; position: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="dimensions" type="\&#123;height:number;width:number\&#125;" required>
@@ -222,11 +268,17 @@ Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertRatioToLocalDimensions"></a>
 
 ### Const convertRatioToLocalDimensions
 
-- convertRatioToLocalDimensions(sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:\{height:number;width:number\}\}
+<ApiSignature>
+
+convertRatioToLocalDimensions(sizeRatio: \{ ratioHeight: number; ratioWidth: number \}, outerSize: \{ height: number; width: number \}, resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)): \{ dimensions: \{ height: number; width: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="sizeRatio" type="\&#123;ratioHeight:number;ratioWidth:number\&#125;" required>
@@ -256,7 +308,13 @@ Returns \{dimensions:\{height:number;width:number\};position:\{x:number;y:number
 </Parameter>
 </ParameterList>
 
-Returns \{dimensions:\{height:number;width:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ dimensions: \{ height: number; width: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125; &#125;">
 <Parameter name="dimensions" type="\&#123;height:number;width:number\&#125;" required>
@@ -269,11 +327,17 @@ Returns \{dimensions:\{height:number;width:number\}\}
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertRatioToLocalPosition"></a>
 
 ### Const convertRatioToLocalPosition
 
-- convertRatioToLocalPosition(diffRatio:\{ratioX:number;ratioY:number\}, sizeRatio:\{ratioHeight:number;ratioWidth:number\}, outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{position:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertRatioToLocalPosition(diffRatio: \{ ratioX: number; ratioY: number \}, sizeRatio: \{ ratioHeight: number; ratioWidth: number \}, outerSize: \{ height: number; width: number \}, resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)): \{ position: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
@@ -311,7 +375,13 @@ Returns \{dimensions:\{height:number;width:number\}\}
 </Parameter>
 </ParameterList>
 
-Returns \{position:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ position: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; position: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
@@ -323,12 +393,18 @@ Returns \{position:\{x:number;y:number\}\}
 
 </Parameter>
 </ParameterList>
+
+</ApiReturns>
 
 <a id="convertRatioToLocalPositionWithFixedDimensions"></a>
 
 ### Const convertRatioToLocalPositionWithFixedDimensions
 
-- convertRatioToLocalPositionWithFixedDimensions(diffRatio:\{ratioX:number;ratioY:number\}, dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{position:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertRatioToLocalPositionWithFixedDimensions(diffRatio: \{ ratioX: number; ratioY: number \}, dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize: \{ height: number; width: number \}, resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)): \{ position: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
@@ -367,7 +443,13 @@ Returns \{position:\{x:number;y:number\}\}
 </Parameter>
 </ParameterList>
 
-Returns \{position:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ position: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; position: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="position" type="\&#123;x:number;y:number\&#125;" required>
@@ -380,11 +462,17 @@ Returns \{position:\{x:number;y:number\}\}
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="convertRatioToLocalWithFixedDimensions"></a>
 
 ### Const convertRatioToLocalWithFixedDimensions
 
-- convertRatioToLocalWithFixedDimensions(diffRatio:\{ratioX:number;ratioY:number\}, dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize:\{height:number;width:number\}, resizeBounds:[ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)):\{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions);position:\{x:number;y:number\}\}
+<ApiSignature>
+
+convertRatioToLocalWithFixedDimensions(diffRatio: \{ ratioX: number; ratioY: number \}, dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), outerSize: \{ height: number; width: number \}, resizeBounds: [ResizeBounds](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#ResizeBounds)): \{ dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions); position: \{ x: number; y: number \} \}
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="diffRatio" type="\&#123;ratioX:number;ratioY:number\&#125;" required>
@@ -423,7 +511,13 @@ Returns \{position:\{x:number;y:number\}\}
 </Parameter>
 </ParameterList>
 
-Returns \{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions);position:\{x:number;y:number\}\}
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions); position: \{ x: number; y: number \} \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; dimensions: Dimensions; position: &#123; x: number; y: number &#125; &#125;">
 <Parameter name="dimensions" required>
@@ -445,36 +539,74 @@ Returns \{dimensions:[Dimensions](/zh-CN/api-reference/flexible-classroom/electr
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="createClosure"></a>
 
 ### Const createClosure
 
-- createClosure():\{next:any;prev:any\}
+<ApiSignature>
 
-Returns \{next:any;prev:any\}
+createClosure(): \{ next: any; prev: any \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ next: any; prev: any \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; next: any; prev: any &#125;">
 <Parameter name="next" type="function" required>
 
-- next(key:string, value:any):void
+<ApiSignature>
+
+next(key: string, value: any): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="key" type="string" required />
 <Parameter name="value" type="any" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="prev" type="function" required>
 
-- prev(key:string):any
+<ApiSignature>
+
+prev(key: string): any
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="key" type="string" required />
 </ParameterList>
 
-Returns any
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
+
+</ApiReturns>

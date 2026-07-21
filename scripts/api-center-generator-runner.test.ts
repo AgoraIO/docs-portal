@@ -29,8 +29,12 @@ describe('API Center generated HTML runner', () => {
       path.join(oldRoot, sourcePath),
       `<header><div class="tsd-page-title"><h1>Interface Client</h1></div></header>
        <div class="col-content"><p>Client body.</p><a name="join"></a><h2>Join</h2>
+         <ul class="tsd-signatures"><li class="tsd-signature">join(uid: string): Promise&lt;void&gt;</li></ul>
+         <ul class="tsd-descriptions"><li class="tsd-description"><p>Join a channel.</p>
          <h4 class="tsd-parameters-title">Parameters</h4>
          <ul class="tsd-parameters"><li><h5>uid: <span class="tsd-signature-type">string</span></h5><p>User ID.</p></li></ul>
+         <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+         </li></ul>
        </div>`,
     );
     const manifest = {
@@ -88,12 +92,22 @@ describe('API Center generated HTML runner', () => {
       fields: 1,
       lists: 1,
     });
+    expect(result.structuredApiMemberCounts.typedoc).toEqual({
+      returns: 1,
+      signatures: 1,
+    });
+    expect(result.report.details.structuredApiMembers.typedoc).toEqual({
+      returns: 1,
+      signatures: 1,
+    });
     expect(output).toContain('title: Interface Client');
     expect(output).toContain('Client body.');
     expect(output).toContain('<a id="join"></a>');
     expect(output).toContain('## Join');
     expect(output).toContain('<ParameterList title="Parameters">');
     expect(output).toContain('<Parameter name="uid" type="string" required>');
+    expect(output).toContain('<ApiSignature>');
+    expect(output).toContain('<ApiReturns>');
     expect(output).not.toContain('<header');
     expect(
       await fs.readFile(
@@ -101,6 +115,12 @@ describe('API Center generated HTML runner', () => {
         'utf8',
       ),
     ).toContain('`typedoc`: 1 lists, 1 fields');
+    expect(
+      await fs.readFile(
+        path.join(repoRoot, 'docs/migration/api-center-migration-report.md'),
+        'utf8',
+      ),
+    ).toContain('`typedoc`: 1 signatures, 1 returns');
   });
 
   it('overwrites an existing zh-CN MDX target from its authoritative HTML source', async () => {

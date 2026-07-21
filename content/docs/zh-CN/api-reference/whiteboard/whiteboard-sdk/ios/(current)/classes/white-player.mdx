@@ -29,7 +29,11 @@ _migration:
 
 白板回放的阶段。详见 [WhitePlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-player-phase)。
 
-`@property (nonatomic, assign, readonly) WhitePlayerPhase phase`
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) WhitePlayerPhase phase
+
+</ApiSignature>
 
 #### Declared In
 
@@ -41,7 +45,11 @@ _migration:
 
 白板回放的状态。详见 [WhitePlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-state)。
 
-`@property (nonatomic, strong, readonly, nullable) WhitePlayerState *state`
+<ApiSignature>
+
+@property (nonatomic, strong, readonly, nullable) WhitePlayerState *state
+
+</ApiSignature>
 
 #### Declared In
 
@@ -53,7 +61,11 @@ _migration:
 
 白板回放的时间信息。详见 [WhitePlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-time-info)。
 
-`@property (nonatomic, strong, readonly) WhitePlayerTimeInfo *timeInfo`
+<ApiSignature>
+
+@property (nonatomic, strong, readonly) WhitePlayerTimeInfo *timeInfo
+
+</ApiSignature>
 
 #### Declared In
 
@@ -65,7 +77,11 @@ _migration:
 
 开始白板回放。
 
-`- (void)play`
+<ApiSignature>
+
+\- (void)play
+
+</ApiSignature>
 
 #### Declared In
 
@@ -77,7 +93,11 @@ _migration:
 
 暂停白板回放。
 
-`- (void)pause`
+<ApiSignature>
+
+\- (void)pause
+
+</ApiSignature>
 
 #### Declared In
 
@@ -89,7 +109,11 @@ _migration:
 
 停止白板回放。
 
-`- (void)stop`
+<ApiSignature>
+
+\- (void)stop
+
+</ApiSignature>
 
 #### Discussion
 
@@ -108,7 +132,11 @@ _migration:
 白板回放的播放倍速，如 1.0、1.5、2.0 倍速，默认为 1.0。
 回放暂停时，返回值不会为 0。
 
-`@property (nonatomic, assign) CGFloat playbackSpeed`
+<ApiSignature>
+
+@property (nonatomic, assign) CGFloat playbackSpeed
+
+</ApiSignature>
 
 #### Declared In
 
@@ -120,7 +148,11 @@ _migration:
 
 设置白板回放的起始播放位置。
 
-`- (void)seekToScheduleTime:(NSTimeInterval)*beginTime*`
+<ApiSignature>
+
+\- (void)seekToScheduleTime:(NSTimeInterval)*beginTime*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="beginTime">
@@ -144,7 +176,11 @@ _migration:
 
 设置白板回放的查看模式。
 
-`- (void)setObserverMode:(WhiteObserverMode)*mode*`
+<ApiSignature>
+
+\- (void)setObserverMode:(WhiteObserverMode)*mode*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mode">
@@ -168,7 +204,11 @@ _migration:
 
 获取白板回放的阶段。
 
-`- (void)getPhaseWithResult:(void ( ^ ) ( WhitePlayerPhase phase ))*result*`
+<ApiSignature>
+
+\- (void)getPhaseWithResult:(void (^) (WhitePlayerPhase phase))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="result">
@@ -192,7 +232,11 @@ _migration:
 
 获取白板回放的状态。
 
-`- (void)getPlayerStateWithResult:(void ( ^ ) ( WhitePlayerState *_Nullable state ))*result*`
+<ApiSignature>
+
+\- (void)getPlayerStateWithResult:(void (^) (WhitePlayerState *_Nullable state))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="result">
@@ -216,7 +260,11 @@ _migration:
 
 获取白板回放的时间信息。
 
-`- (void)getPlayerTimeInfoWithResult:(void ( ^ ) ( WhitePlayerTimeInfo *info ))*result*`
+<ApiSignature>
+
+\- (void)getPlayerTimeInfoWithResult:(void (^) (WhitePlayerTimeInfo *info))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="result">
@@ -240,7 +288,11 @@ _migration:
 
 设置白板回放的倍速。
 
-`- (void)getPlaybackSpeed:(void ( ^ ) ( CGFloat speed ))*result*`
+<ApiSignature>
+
+\- (void)getPlaybackSpeed:(void (^) (CGFloat speed))*result*
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="result">

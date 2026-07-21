@@ -38,8 +38,11 @@ _migration:
 
 ### ~IRtcConnection()
 
-| agora::rtc::IRtcConnection::~IRtcConnection () | inlineprotected |
-| --- | --- |
+<ApiSignature labels="inline protected">
+
+agora::rtc::IRtcConnection::~IRtcConnection()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -47,8 +50,11 @@ _migration:
 
 ### connect()
 
-| virtual int agora::rtc::IRtcConnection::connect ( const char * *token*, const char * *channelId*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::connect(const char * *token*, const char * *channelId*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*)
+
+</ApiSignature>
 
 连接 RTC 频道。
 
@@ -103,8 +109,11 @@ RTC Token。详见 使用 Token 鉴权 。如果你的项目中未开启 App 证
 
 ### disconnect()
 
-| virtual int agora::rtc::IRtcConnection::disconnect () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::disconnect()
+
+</ApiSignature>
 
 与 RTC 频道断开连接。
 
@@ -119,8 +128,11 @@ SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNEC
 
 ### startLastmileProbeTest()
 
-| virtual int agora::rtc::IRtcConnection::startLastmileProbeTest ( const [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::startLastmileProbeTest(const [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) & *config*)
+
+</ApiSignature>
 
 开始通话前网络质量探测。
 
@@ -154,8 +166,11 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 ### stopLastmileProbeTest()
 
-| virtual int agora::rtc::IRtcConnection::stopLastmileProbeTest () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::stopLastmileProbeTest()
+
+</ApiSignature>
 
 停止通话前网络质量探测。
 
@@ -168,8 +183,11 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 ### renewToken()
 
-| virtual int agora::rtc::IRtcConnection::renewToken ( const char * *token*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::renewToken(const char * *token*)
+
+</ApiSignature>
 
 更新 Token。
 
@@ -189,8 +207,11 @@ Token 会在一定时间后过期。
 
 ### getConnectionInfo()
 
-| virtual [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) agora::rtc::IRtcConnection::getConnectionInfo () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) agora::rtc::IRtcConnection::getConnectionInfo()
+
+</ApiSignature>
 
 获取连接信息。
 
@@ -203,8 +224,11 @@ Token 会在一定时间后过期。
 
 ### getLocalUser()
 
-| virtual [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user)* agora::rtc::IRtcConnection::getLocalUser () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user)* agora::rtc::IRtcConnection::getLocalUser()
+
+</ApiSignature>
 
 获取本地用户对象的指针。每个连接仅对应一个本地用户。
 
@@ -217,8 +241,11 @@ Token 会在一定时间后过期。
 
 ### getRemoteUsers()
 
-| virtual int agora::rtc::IRtcConnection::getRemoteUsers ( [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) & *users*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getRemoteUsers([UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) & *users*)
+
+</ApiSignature>
 
 获取频道中全部远端用户的信息。
 
@@ -239,8 +266,11 @@ Token 会在一定时间后过期。
 
 ### getUserInfo()
 
-| virtual int agora::rtc::IRtcConnection::getUserInfo ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) & *userInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfo([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) & *userInfo*)
+
+</ApiSignature>
 
 获取频道中指定远端用户的信息。
 
@@ -266,8 +296,11 @@ Token 会在一定时间后过期。
 
 ### registerObserver()
 
-| virtual int agora::rtc::IRtcConnection::registerObserver ( [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*, void(*)([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *) *safeDeleter* = `NULL`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::registerObserver([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*, void(*)([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *) *safeDeleter* = `NULL`)
+
+</ApiSignature>
 
 注册 RTC 连接 observer。你必须先创建 [`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
 
@@ -288,8 +321,11 @@ Token 会在一定时间后过期。
 
 ### unregisterObserver()
 
-| virtual int agora::rtc::IRtcConnection::unregisterObserver ( [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::unregisterObserver([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*)
+
+</ApiSignature>
 
 销毁 RTC 连接 observer。
 
@@ -310,8 +346,11 @@ Token 会在一定时间后过期。
 
 ### registerNetworkObserver()
 
-| virtual int agora::rtc::IRtcConnection::registerNetworkObserver ( [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*, void(*)([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *) *safeDeleter* = `NULL`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::registerNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*, void(*)([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *) *safeDeleter* = `NULL`)
+
+</ApiSignature>
 
 注册网络状态 observer。
 
@@ -332,8 +371,11 @@ Token 会在一定时间后过期。
 
 ### unregisterNetworkObserver()
 
-| virtual int agora::rtc::IRtcConnection::unregisterNetworkObserver ( [INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::unregisterNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*)
+
+</ApiSignature>
 
 销毁网络状态 observer。
 
@@ -354,8 +396,11 @@ Token 会在一定时间后过期。
 
 ### getConnId()
 
-| virtual [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) agora::rtc::IRtcConnection::getConnId () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) agora::rtc::IRtcConnection::getConnId()
+
+</ApiSignature>
 
 获取连接 ID。
 
@@ -368,8 +413,11 @@ Token 会在一定时间后过期。
 
 ### getTransportStats()
 
-| virtual [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) agora::rtc::IRtcConnection::getTransportStats () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) agora::rtc::IRtcConnection::getTransportStats()
+
+</ApiSignature>
 
 获取 RTC 连接的传输状态。
 
@@ -382,8 +430,11 @@ Token 会在一定时间后过期。
 
 ### getAgoraParameter()
 
-| virtual [agora::base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)* agora::rtc::IRtcConnection::getAgoraParameter () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [agora::base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)* agora::rtc::IRtcConnection::getAgoraParameter()
+
+</ApiSignature>
 
 获取某个 Connection 中的 [IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象。
 
@@ -398,8 +449,11 @@ Token 会在一定时间后过期。
 
 ### createDataStream()
 
-| virtual int agora::rtc::IRtcConnection::createDataStream ( int * *streamId*, bool *reliable*, bool *ordered*, bool *sync*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::createDataStream(int * *streamId*, bool *reliable*, bool *ordered*, bool *sync*)
+
+</ApiSignature>
 
 创建数据流。
 
@@ -452,8 +506,11 @@ Token 会在一定时间后过期。
 
 ### sendStreamMessage()
 
-| virtual int agora::rtc::IRtcConnection::sendStreamMessage ( int *streamId*, const char * *data*, size_t *length*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::sendStreamMessage(int *streamId*, const char * *data*, size_t *length*)
+
+</ApiSignature>
 
 发送数据流消息。
 
@@ -497,8 +554,11 @@ Token 会在一定时间后过期。
 
 ### enableEncryption()
 
-| virtual int agora::rtc::IRtcConnection::enableEncryption ( bool *enabled*, const [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::enableEncryption(bool *enabled*, const [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) & *config*)
+
+</ApiSignature>
 
 开启或关闭内置加密。
 
@@ -535,8 +595,11 @@ Token 会在一定时间后过期。
 
 ### getUserInfoByUserAccount()
 
-| virtual int agora::rtc::IRtcConnection::getUserInfoByUserAccount ( const char * *userAccount*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfoByUserAccount(const char * *userAccount*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*)
+
+</ApiSignature>
 
 根据 user account（String 型用户 ID） 获取用户信息。
 
@@ -565,8 +628,11 @@ Token 会在一定时间后过期。
 
 ### getUserInfoByUid()
 
-| virtual int agora::rtc::IRtcConnection::getUserInfoByUid ( [uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) *uid*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfoByUid([uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) *uid*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*)
+
+</ApiSignature>
 
 根据用户 ID 获取用户信息。
 

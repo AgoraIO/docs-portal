@@ -477,30 +477,42 @@ ContentMode: (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/w
 
 #### Type declaration
 
-- - (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size), boundSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)):number
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="screenSize" required>
+(screenSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size), boundSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)): number
 
-  <ParameterType>
+</ApiSignature>
 
-  [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+<ParameterList title="Parameters">
+<Parameter name="screenSize" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="boundSize" required>
+[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
 
-  <ParameterType>
+</ParameterType>
 
-  [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+</Parameter>
+<Parameter name="boundSize" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
 
-  Returns number
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="convertedfile"></a>
 
@@ -589,96 +601,156 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
 加载背景图片失败回调。
 
-- - (url:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="url" type="string" required />
-  </ParameterList>
+(url: string): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onCatchErrorWhenAppendFrame" type="(userId:number, error:Error)= &amp; gt;void" required>
 
-- - (userId:number, error:Error):void
+<ApiSignature>
 
-  同步用户行为发生错误的回调。
+(userId: number, error: Error): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="userId" type="number" required>
+</ApiSignature>
 
-  该用户的用户 ID。
+同步用户行为发生错误的回调。
 
-  </Parameter>
-  <Parameter name="error" type="Error" required>
+<ParameterList title="Parameters">
+<Parameter name="userId" type="number" required>
 
-  错误信息。
+该用户的用户 ID。
 
-  </Parameter>
-  </ParameterList>
+</Parameter>
+<Parameter name="error" type="Error" required>
 
-  Returns void
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onCatchErrorWhenRender" type="(error:Error)= &amp; gt;void" required>
 
-- - (error:Error):void
+<ApiSignature>
 
-  渲染发生错误回调。
+(error: Error): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="error" type="Error" required>
+</ApiSignature>
 
-  错误信息。
+渲染发生错误回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="error" type="Error" required>
 
-  Returns void
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onEnableWriteNowChanged" type="(enableWriteNow:boolean)= &amp; gt;void" required>
 
-- - (enableWriteNow:boolean):void
+<ApiSignature>
 
-  用户的可写权限发生改变的回调。
+(enableWriteNow: boolean): void
 
-  :::info[since]
-  2.10.0
-  :::
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="enableWriteNow" type="boolean" required>
+用户的可写权限发生改变的回调。
 
-  用户当前是否有写的权限：
+:::info[since]
+2.10.0
+:::
 
-  - `true`：有写的权限。
-  - `false`：没有写的权限。
+<ParameterList title="Parameters">
+<Parameter name="enableWriteNow" type="boolean" required>
 
-  </Parameter>
-  </ParameterList>
+用户当前是否有写的权限：
 
-  Returns void
+- `true`：有写的权限。
+- `false`：没有写的权限。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onHandToolActive" type="(active:boolean)= &amp; gt;void" required>
 
-- - (active:boolean):void
+<ApiSignature>
 
-  抓手工具的启用状态发生改变的回调。
+(active: boolean): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="active" type="boolean" required>
+</ApiSignature>
 
-  抓手工具是否启用:
+抓手工具的启用状态发生改变的回调。
 
-  - `true`：启用。
-  - `false`：不启用。
+<ParameterList title="Parameters">
+<Parameter name="active" type="boolean" required>
 
-  </Parameter>
-  </ParameterList>
+抓手工具是否启用:
 
-  Returns void
+- `true`：启用。
+- `false`：不启用。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onPPTMediaPause" required>
@@ -689,30 +761,42 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
 </ParameterType>
 
-- - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)):void
+<ApiSignature>
 
-  暂停播放动态 PPT 中媒体文件的回调。
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="shapeId" type="string" required>
+</ApiSignature>
 
-  插入媒体文件的 shape 对象的 ID。
+暂停播放动态 PPT 中媒体文件的回调。
 
-  </Parameter>
-  <Parameter name="type" required>
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
 
-  <ParameterType>
+插入媒体文件的 shape 对象的 ID。
 
-  [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+</Parameter>
+<Parameter name="type" required>
 
-  </ParameterType>
+<ParameterType>
 
-  媒体文件的类型。
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
 
-  </Parameter>
-  </ParameterList>
+</ParameterType>
 
-  Returns void
+媒体文件的类型。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onPPTMediaPlay" required>
@@ -723,30 +807,42 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
 </ParameterType>
 
-- - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)):void
+<ApiSignature>
 
-  播放动态 PPT 中媒体文件的回调。
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="shapeId" type="string" required>
+</ApiSignature>
 
-  插入媒体文件的 shape 对象的 ID。
+播放动态 PPT 中媒体文件的回调。
 
-  </Parameter>
-  <Parameter name="type" required>
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
 
-  <ParameterType>
+插入媒体文件的 shape 对象的 ID。
 
-  [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+</Parameter>
+<Parameter name="type" required>
 
-  </ParameterType>
+<ParameterType>
 
-  媒体文件的类型。
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
 
-  </Parameter>
-  </ParameterList>
+</ParameterType>
 
-  Returns void
+媒体文件的类型。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onPPTMediaPlayError" required>
@@ -757,69 +853,105 @@ DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAp
 
 </ParameterType>
 
-- - (shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error:Error):void
+<ApiSignature>
 
-  动态 PPT 中的媒体文件播放出错回调。
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error: Error): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="shapeId" type="string" required>
+</ApiSignature>
 
-  插入媒体文件的 shape 对象的 ID。
+动态 PPT 中的媒体文件播放出错回调。
 
-  </Parameter>
-  <Parameter name="type" required>
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
 
-  <ParameterType>
+插入媒体文件的 shape 对象的 ID。
 
-  [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+</Parameter>
+<Parameter name="type" required>
 
-  </ParameterType>
+<ParameterType>
 
-  媒体文件的类型。
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
 
-  </Parameter>
-  <Parameter name="error" type="Error" required>
+</ParameterType>
 
-  错误提示。
+媒体文件的类型。
 
-  </Parameter>
-  </ParameterList>
+</Parameter>
+<Parameter name="error" type="Error" required>
 
-  Returns void
+错误提示。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onRenderDuration" type="(renderDuration:number)= &amp; gt;void" required>
 
-- - (renderDuration:number):void
+<ApiSignature>
 
-  渲染时长回调。
+(renderDuration: number): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="renderDuration" type="number" required>
+</ApiSignature>
 
-  渲染时长。
+渲染时长回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="renderDuration" type="number" required>
 
-  Returns void
+渲染时长。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onSliceChanged" type="(slice:string)= &amp; gt;void" required>
 
-- - (slice:string):void
+<ApiSignature>
 
-  所处分片发生改变的回调。
+(slice: string): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="slice" type="string" required>
+</ApiSignature>
 
-  所处分片的 UUID。
+所处分片发生改变的回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="slice" type="string" required>
 
-  Returns void
+所处分片的 UUID。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -951,21 +1083,33 @@ EventFilter: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/g
 
 #### Type declaration
 
-- - (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)):boolean
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="event" required>
+(event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)): boolean
 
-  <ParameterType>
+</ApiSignature>
 
-  [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+<ParameterList title="Parameters">
+<Parameter name="event" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
 
-  Returns boolean
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="eventlistener"></a>
 
@@ -979,21 +1123,33 @@ EventListener: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web
 
 #### Type declaration
 
-- - (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="event" required>
+(event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+<ParameterList title="Parameters">
+<Parameter name="event" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="eventslistener"></a>
 
@@ -1007,21 +1163,33 @@ EventsListener: (events:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/w
 
 #### Type declaration
 
-- - (events:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="events" required>
+(events: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]
+<ParameterList title="Parameters">
+<Parameter name="events" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="floatbaroptions"></a>
 
@@ -1100,30 +1268,42 @@ HotKeyChecker: (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-s
 
 #### Type declaration
 
-- - (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent), kind:[KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)):boolean
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="event" required>
+(event: [HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent), kind: [KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)): boolean
 
-  <ParameterType>
+</ApiSignature>
 
-  [HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent)
+<ParameterList title="Parameters">
+<Parameter name="event" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="kind" required>
+[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent)
 
-  <ParameterType>
+</ParameterType>
 
-  [KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)
+</Parameter>
+<Parameter name="kind" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)
 
-  Returns boolean
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="hotkeydescription"></a>
 
@@ -1598,28 +1778,52 @@ InvisibleCallbacks&lt;A&gt;: \{onAttributesUpdate:(attributes:A)=&gt;void;onDest
 <ParameterList title="Type declaration">
 <Parameter name="onAttributesUpdate" type="(attributes:A)= &amp; gt;void" required>
 
-- - (attributes:A):void
+<ApiSignature>
 
-  不可见插件属性更新的回调。
+(attributes: A): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="attributes" type="A" required>
+</ApiSignature>
 
-  更新的插件属性。
+不可见插件属性更新的回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="attributes" type="A" required>
 
-  Returns void
+更新的插件属性。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onDestroy" type="()= &amp; gt;void" required>
 
-- - ():void
+<ApiSignature>
 
-  删除不可见插件的回调。
+(): void
 
-  Returns void
+</ApiSignature>
+
+删除不可见插件的回调。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -1658,36 +1862,60 @@ InvisiblePluginClass&lt;K, A, P&gt;: \{kind:K;onCreate?:(plugin:P)=&gt;void;onDe
 </Parameter>
 <Parameter name="onCreate" type="(plugin:P)= &amp; gt;void" optional>
 
-- - (plugin:P):void
+<ApiSignature>
 
-  创建插件对象的回调。
+(plugin: P): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" type="P" required>
+</ApiSignature>
 
-  创建的插件对象。
+创建插件对象的回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="plugin" type="P" required>
 
-  Returns void
+创建的插件对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onDestroy" type="(plugin:P)= &amp; gt;void" optional>
 
-- - (plugin:P):void
+<ApiSignature>
 
-  删除插件对象的回调。
+(plugin: P): void
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" type="P" required>
+</ApiSignature>
 
-  删除的插件对象。
+删除插件对象的回调。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="plugin" type="P" required>
 
-  Returns void
+删除的插件对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -2415,45 +2643,57 @@ Plugin&lt;C, T&gt;: \{defaultAttributes?:T;hitTest?:(plugin:[PluginInstance](/zh
 
 </ParameterType>
 
-- - (plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, x:number, y:number, selectorRadius:number):boolean
+<ApiSignature>
 
-  碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, x: number, y: number, selectorRadius: number): boolean
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" required>
+</ApiSignature>
 
-  <ParameterType>
+碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
 
-  [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
 
-  </ParameterType>
+<ParameterType>
 
-  组件插件对象。
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
 
-  </Parameter>
-  <Parameter name="x" type="number" required>
+</ParameterType>
 
-  可选中区域的中心点的 X 轴坐标。
+组件插件对象。
 
-  </Parameter>
-  <Parameter name="y" type="number" required>
+</Parameter>
+<Parameter name="x" type="number" required>
 
-  可选中区域的中心点的 Y 轴坐标。
+可选中区域的中心点的 X 轴坐标。
 
-  </Parameter>
-  <Parameter name="selectorRadius" type="number" required>
+</Parameter>
+<Parameter name="y" type="number" required>
 
-  可选中区域的半径。
+可选中区域的中心点的 Y 轴坐标。
 
-  </Parameter>
-  </ParameterList>
+</Parameter>
+<Parameter name="selectorRadius" type="number" required>
 
-  Returns boolean
+可选中区域的半径。
 
-  碰撞检测的结果：
+</Parameter>
+</ParameterList>
 
-  - `true`：检测成功。
-  - `false`：检测失败。
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+碰撞检测的结果：
+
+- `true`：检测成功。
+- `false`：检测失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="kind" type="string" optional>
@@ -2480,41 +2720,53 @@ ComponentType & lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/
 
 </ParameterType>
 
-- - (plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)):boolean
+<ApiSignature>
 
-  设置是否拦截该组件插件的原生事件。
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, event: [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)): boolean
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" required>
+</ApiSignature>
 
-  <ParameterType>
+设置是否拦截该组件插件的原生事件。
 
-  [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
 
-  </ParameterType>
+<ParameterType>
 
-  组件插件对象。
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
 
-  </Parameter>
-  <Parameter name="event" required>
+</ParameterType>
 
-  <ParameterType>
+组件插件对象。
 
-  [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
+</Parameter>
+<Parameter name="event" required>
 
-  </ParameterType>
+<ParameterType>
 
-  原生事件。
+[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
 
-  </Parameter>
-  </ParameterList>
+</ParameterType>
 
-  Returns boolean
+原生事件。
 
-  是否拦截该组件插件的原生事件：
+</Parameter>
+</ParameterList>
 
-  - `true`：拦截。
-  - `false`：不拦截。
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否拦截该组件插件的原生事件：
+
+- `true`：拦截。
+- `false`：不拦截。
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -2819,253 +3071,421 @@ RTCClient: \{adjustAudioMixingPlayoutVolume?:(volume:number)=&gt;number;adjustAu
 <ParameterList title="Type declaration">
 <Parameter name="adjustAudioMixingPlayoutVolume" type="(volume:number)= &amp; gt;number" optional>
 
-- - (volume:number):number
+<ApiSignature>
 
-  调节音乐文件的本地播放音量。
+(volume: number): number
 
-  <ParameterList title="Parameters">
-  <Parameter name="volume" type="number" required>
+</ApiSignature>
 
-  音乐文件在本端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+调节音乐文件的本地播放音量。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
 
-  Returns number
+音乐文件在本端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="adjustAudioMixingPublishVolume" type="(volume:number)= &amp; gt;number" optional>
 
-- - (volume:number):number
+<ApiSignature>
 
-  调节音乐文件的远端播放音量。
+(volume: number): number
 
-  <ParameterList title="Parameters">
-  <Parameter name="volume" type="number" required>
+</ApiSignature>
 
-  音乐文件在远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+调节音乐文件的远端播放音量。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
 
-  Returns number
+音乐文件在远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="adjustAudioMixingVolume" type="(volume:number)= &amp; gt;number" optional>
 
-- - (volume:number):number
+<ApiSignature>
 
-  调节音乐文件的播放音量。
+(volume: number): number
 
-  该方法调节混音里伴奏在本端和远端播放的音量。
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="volume" type="number" required>
+调节音乐文件的播放音量。
 
-  伴奏在本端和远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+该方法调节混音里伴奏在本端和远端播放的音量。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
 
-  Returns number
+伴奏在本端和远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="getAudioMixingCurrentPosition" type="()= &amp; gt;number" optional>
 
-- - ():number
+<ApiSignature>
 
-  获取音乐文件的播放进度。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 方法调用成功则返回播放进度，单位为毫秒。
-  - &lt; 0：方法调用失败。
+获取音乐文件的播放进度。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回播放进度，单位为毫秒。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="getAudioMixingDuration" type="()= &amp; gt;number" optional>
 
-- - ():number
+<ApiSignature>
 
-  获取指定音乐文件的总时长。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 方法调用成功则返回总时长，单位为毫秒。
-  - &lt; 0：方法调用失败。
+获取指定音乐文件的总时长。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回总时长，单位为毫秒。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="getAudioMixingPlayoutVolume" type="()= &amp; gt;number" optional>
 
-- - ():number
+<ApiSignature>
 
-  获取音乐文件的本地播放音量。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
-  - &lt; 0：方法调用失败。
+获取音乐文件的本地播放音量。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="getAudioMixingPublishVolume" type="()= &amp; gt;number" optional>
 
-- - ():number
+<ApiSignature>
 
-  获取音乐文件的远端播放音量。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
-  - &lt; 0：方法调用失败。
+获取音乐文件的远端播放音量。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="pauseAudioMixing" type="()= &amp; gt;number" required>
 
-- - ():number
+<ApiSignature>
 
-  暂停播放音乐文件及混音。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+暂停播放音乐文件及混音。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="resumeAudioMixing" type="()= &amp; gt;number" required>
 
-- - ():number
+<ApiSignature>
 
-  恢复播放音乐文件及混音。
+(): number
 
-  Returns number
+</ApiSignature>
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+恢复播放音乐文件及混音。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="setAudioMixingPosition" type="(position:number)= &amp; gt;number" required>
 
-- - (position:number):number
+<ApiSignature>
 
-  设置音乐文件的播放位置。
+(position: number): number
 
-  该方法可以设置音频文件的播放位置，这样你可以根据实际情况播放文件，而不是非得从头到尾播放一个文件。
+</ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="position" type="number" required>
+设置音乐文件的播放位置。
 
-  设置的播放位置，单位为毫秒，取值必须为整数。
+该方法可以设置音频文件的播放位置，这样你可以根据实际情况播放文件，而不是非得从头到尾播放一个文件。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="position" type="number" required>
 
-  Returns number
+设置的播放位置，单位为毫秒，取值必须为整数。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="startAudioMixing" type="(filePath:string, loopback:boolean, replace:boolean, cycle:number, callback?:(state:number, errorCode:number)= &amp; gt;void)= &amp; gt;number" required>
 
-- - (filePath:string, loopback:boolean, replace:boolean, cycle:number, callback?:(state:number, errorCode:number)=&gt;void):number
+<ApiSignature>
 
-  开始播放音乐文件及混音。
+(filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number) =&gt; void): number
 
-  <ParameterList title="Parameters">
-  <Parameter name="filePath" type="string" required>
+</ApiSignature>
 
-  指定需要混音的本地或在线音频文件的绝对路径。
+开始播放音乐文件及混音。
 
-  </Parameter>
-  <Parameter name="loopback" type="boolean" required>
+<ParameterList title="Parameters">
+<Parameter name="filePath" type="string" required>
 
-  是否只有本地用户可以听到混音后的音频流：
+指定需要混音的本地或在线音频文件的绝对路径。
 
-  - `true`：只有本地可以听到混音的音频流。
-  - `false`：本地和对方都可以听到混音的音频流。
+</Parameter>
+<Parameter name="loopback" type="boolean" required>
 
-  </Parameter>
-  <Parameter name="replace" type="boolean" required>
+是否只有本地用户可以听到混音后的音频流：
 
-  是否播放麦克风采集的音频：
+- `true`：只有本地可以听到混音的音频流。
+- `false`：本地和对方都可以听到混音的音频流。
 
-  - `true`： 只播放音频文件，不播放麦克风采集的音频。
-  - `false`: 将音频文件和麦克风采集的音频混音后播放。
+</Parameter>
+<Parameter name="replace" type="boolean" required>
 
-  </Parameter>
-  <Parameter name="cycle" type="number" required>
+是否播放麦克风采集的音频：
 
-  音乐文件的播放次数。
+- `true`： 只播放音频文件，不播放麦克风采集的音频。
+- `false`: 将音频文件和麦克风采集的音频混音后播放。
 
-  - ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
-  - -1: 无限循环播放。
+</Parameter>
+<Parameter name="cycle" type="number" required>
 
-  </Parameter>
-  <Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
+音乐文件的播放次数。
 
-  开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-   `errorCode: number` 为错误码。
+- ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
+- -1: 无限循环播放。
 
-  - - (state:number, errorCode:number):void
+</Parameter>
+<Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
 
-    开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-     `errorCode: number` 为错误码。
+开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
 
-    <ParameterList title="Parameters">
-    <Parameter name="state" type="number" required />
-    <Parameter name="errorCode" type="number" required />
-    </ParameterList>
+<ApiSignature>
 
-    Returns void
+(state: number, errorCode: number): void
 
-  </Parameter>
-  </ParameterList>
+</ApiSignature>
 
-  Returns number
+开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+<ParameterList title="Parameters">
+<Parameter name="state" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="stopAudioMixing" type="(callback?:(state:number, errorCode:number)= &amp; gt;void)= &amp; gt;number" required>
 
-- - (callback?:(state:number, errorCode:number)=&gt;void):number
+<ApiSignature>
 
-  停止播放音乐文件及混音。
+(callback?: (state: number, errorCode: number) =&gt; void): number
 
-  <ParameterList title="Parameters">
-  <Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
+</ApiSignature>
 
-  停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-   `errorCode: number` 为错误码。
+停止播放音乐文件及混音。
 
-  - - (state:number, errorCode:number):void
+<ParameterList title="Parameters">
+<Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
 
-    停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
-     `errorCode: number` 为错误码。
+停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
 
-    <ParameterList title="Parameters">
-    <Parameter name="state" type="number" required />
-    <Parameter name="errorCode" type="number" required />
-    </ParameterList>
+<ApiSignature>
 
-    Returns void
+(state: number, errorCode: number): void
 
-  </Parameter>
-  </ParameterList>
+</ApiSignature>
 
-  Returns number
+停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
 
-  - 0：方法调用成功。
-  - &lt; 0：方法调用失败。
+<ParameterList title="Parameters">
+<Parameter name="state" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -3141,45 +3561,57 @@ RenderPlugin&lt;C, T&gt;: \{defaultAttributes?:T;hitTest?:(plugin:[PluginInstanc
 
 </ParameterType>
 
-- - (plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, x:number, y:number, selectorRadius:number):boolean
+<ApiSignature>
 
-  碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, x: number, y: number, selectorRadius: number): boolean
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" required>
+</ApiSignature>
 
-  <ParameterType>
+碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
 
-  [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
 
-  </ParameterType>
+<ParameterType>
 
-  组件插件对象。
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
 
-  </Parameter>
-  <Parameter name="x" type="number" required>
+</ParameterType>
 
-  可选中区域的中心点的 X 轴坐标。
+组件插件对象。
 
-  </Parameter>
-  <Parameter name="y" type="number" required>
+</Parameter>
+<Parameter name="x" type="number" required>
 
-  可选中区域的中心点的 Y 轴坐标。
+可选中区域的中心点的 X 轴坐标。
 
-  </Parameter>
-  <Parameter name="selectorRadius" type="number" required>
+</Parameter>
+<Parameter name="y" type="number" required>
 
-  可选中区域的半径。
+可选中区域的中心点的 Y 轴坐标。
 
-  </Parameter>
-  </ParameterList>
+</Parameter>
+<Parameter name="selectorRadius" type="number" required>
 
-  Returns boolean
+可选中区域的半径。
 
-  碰撞检测的结果：
+</Parameter>
+</ParameterList>
 
-  - `true`：检测成功。
-  - `false`：检测失败。
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+碰撞检测的结果：
+
+- `true`：检测成功。
+- `false`：检测失败。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="kind" type="string" required>
@@ -3206,41 +3638,53 @@ ComponentType & lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/
 
 </ParameterType>
 
-- - (plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)):boolean
+<ApiSignature>
 
-  设置是否拦截该组件插件的原生事件。
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, event: [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)): boolean
 
-  <ParameterList title="Parameters">
-  <Parameter name="plugin" required>
+</ApiSignature>
 
-  <ParameterType>
+设置是否拦截该组件插件的原生事件。
 
-  [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
 
-  </ParameterType>
+<ParameterType>
 
-  组件插件对象。
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
 
-  </Parameter>
-  <Parameter name="event" required>
+</ParameterType>
 
-  <ParameterType>
+组件插件对象。
 
-  [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
+</Parameter>
+<Parameter name="event" required>
 
-  </ParameterType>
+<ParameterType>
 
-  原生事件。
+[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
 
-  </Parameter>
-  </ParameterList>
+</ParameterType>
 
-  Returns boolean
+原生事件。
 
-  是否拦截该组件插件的原生事件：
+</Parameter>
+</ParameterList>
 
-  - `true`：拦截。
-  - `false`：不拦截。
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否拦截该组件插件的原生事件：
+
+- `true`：拦截。
+- `false`：不拦截。
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -3645,22 +4089,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 新增场景的场景名称。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="name" type="string" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onAddSceneGroup" required>
@@ -3681,22 +4137,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 新增的子场景目录的名称。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="name" type="string" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onRemoveScene" required>
@@ -3717,22 +4185,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 被删除场景的场景名称。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="name" type="string" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onRemoveSceneGroup" required>
@@ -3753,22 +4233,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 被删除的子场景目录的名称。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="name" type="string" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onScenesCountUpdate" required>
@@ -3789,22 +4281,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 指定场景目录下当前的场景数量。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount:number):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount: number): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="scenesCount" type="number" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="scenesCount" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onScenesGroupCountUpdate" required>
@@ -3825,22 +4329,34 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 指定场景目录下当前子场景目录的数量。
 
-- - (scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount:number):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="scenesCallbacks" required>
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount: number): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="sceneGroupsCount" type="number" required />
-  </ParameterList>
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="sceneGroupsCount" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
@@ -4139,32 +4655,44 @@ SDK 上报日志的选项，详见 [LoggerOptions](/zh-CN/api-reference/whiteboa
 </Parameter>
 <Parameter name="onWhiteSetupFailed" type="(error:Error)= &amp; gt;void" optional>
 
-- - (error:Error):void
+<ApiSignature>
 
-  `WhiteWebSdk` 初始化失败的回调。
+(error: Error): void
 
-  ### example
+</ApiSignature>
 
-  ```ts
-  const whiteWebSdk = new WhiteWebSdk({
-      appIdentifier: "$APP_IDENTIFIER",
-      onWhiteSetupFailed: function(error) {
-          console.error(error);
-      },
-  });
-  ```
+`WhiteWebSdk` 初始化失败的回调。
 
-  该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk({...})` 时提示发生错误。
+### example
 
-  <ParameterList title="Parameters">
-  <Parameter name="error" type="Error" required>
+```ts
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    onWhiteSetupFailed: function(error) {
+        console.error(error);
+    },
+});
+```
 
-  错误信息。
+该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk({...})` 时提示发生错误。
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="error" type="Error" required>
 
-  Returns void
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="onlyCallbackRemoteStateModify" type="boolean" optional>
@@ -4253,34 +4781,46 @@ Partial & lt;[ReconnectionOptions](/zh-CN/api-reference/whiteboard/whiteboard-sd
 </Parameter>
 <Parameter name="urlInterrupter" type="(url:string)= &amp; gt;string" optional>
 
-- - (url:string):string
+<ApiSignature>
 
-  将白板中图片等资源的 URL 拦截并替换。
+(url: string): string
 
-  例如，你可以使用如下代码给所有图片的 URL 增加尾缀：
+</ApiSignature>
 
-  ### example
+将白板中图片等资源的 URL 拦截并替换。
 
-  ```ts
-  const whiteWebSdk = new WhiteWebSdk({
-      appIdentifier: "$APP_IDENTIFIER",
-      urlInterrupter: function(url) {
-          return url + "?token=bm1n4pisugWrWK";
-      },
-  });
-  ```
+例如，你可以使用如下代码给所有图片的 URL 增加尾缀：
 
-  <ParameterList title="Parameters">
-  <Parameter name="url" type="string" required>
+### example
 
-  图片等资源原来的 URL。
+```ts
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    urlInterrupter: function(url) {
+        return url + "?token=bm1n4pisugWrWK";
+    },
+});
+```
 
-  </Parameter>
-  </ParameterList>
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required>
 
-  Returns string
+图片等资源原来的 URL。
 
-  替换后的 URL。
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+替换后的 URL。
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="useMobXState" type="boolean" optional>
@@ -4469,21 +5009,37 @@ WhiteVersion: string
 
 ### contentModeAspectFill
 
-- contentModeAspectFill():[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeAspectFill(): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1421](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1421)
 
 等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕。
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 视角的实时缩放比例。
+
+</ApiReturns>
 
 <a id="contentmodeaspectfillscale"></a>
 
 ### contentModeAspectFillScale
 
-- contentModeAspectFillScale(scale:number):[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeAspectFillScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1429](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1429)
 
@@ -4497,29 +5053,53 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 视角的实时缩放比例。
+
+</ApiReturns>
 
 <a id="contentmodeaspectfit"></a>
 
 ### contentModeAspectFit
 
-- contentModeAspectFit():[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeAspectFit(): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1398](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1398)
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界。
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 实时缩放比例。
+
+</ApiReturns>
 
 <a id="contentmodeaspectfitscale"></a>
 
 ### contentModeAspectFitScale
 
-- contentModeAspectFitScale(scale:number):[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeAspectFitScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1406](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1406)
 
@@ -4533,15 +5113,27 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 实时缩放比例。
+
+</ApiReturns>
 
 <a id="contentmodeaspectfitspace"></a>
 
 ### contentModeAspectFitSpace
 
-- contentModeAspectFitSpace(space:number):[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeAspectFitSpace(space: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1414](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1414)
 
@@ -4555,15 +5147,27 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 实时缩放比例。
+
+</ApiReturns>
 
 <a id="contentmodescale"></a>
 
 ### contentModeScale
 
-- contentModeScale(scale:number):[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiSignature>
+
+contentModeScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:1392](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1392)
 
@@ -4577,15 +5181,27 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
 
 实时缩放比例。
+
+</ApiReturns>
 
 <a id="createplugins"></a>
 
 ### createPlugins
 
-- createPlugins&lt;C_MAP&gt;(plugins:Readonly&lt;\{\}&gt;):[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+<ApiSignature>
+
+createPlugins&lt;C_MAP&gt;(plugins: Readonly&lt;\{\}&gt;): [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:542](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L542)
 
@@ -4603,13 +5219,25 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals
 </Parameter>
 </ParameterList>
 
-Returns [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="injectcustomstyle"></a>
 
 ### injectCustomStyle
 
-- injectCustomStyle(icons:[UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)):void
+<ApiSignature>
+
+injectCustomStyle(icons: [UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:3600](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3600)
 
@@ -4629,13 +5257,25 @@ Returns [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="isplayer"></a>
 
 ### isPlayer
 
-- isPlayer(displayer:[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)):boolean
+<ApiSignature>
+
+isPlayer(displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)): boolean
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:929](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L929)
 
@@ -4655,18 +5295,30 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns boolean
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
 
 该 `Displayer` 对象是否为 `Player` 对象：
 
 - `true`：该 `Displayer` 对象是 `Player` 对象。
 - `false`：该 `Displayer` 对象不是 `Player` 对象。
 
+</ApiReturns>
+
 <a id="isroom"></a>
 
 ### isRoom
 
-- isRoom(displayer:[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)):boolean
+<ApiSignature>
+
+isRoom(displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)): boolean
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:918](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L918)
 
@@ -4686,18 +5338,30 @@ Returns boolean
 </Parameter>
 </ParameterList>
 
-Returns boolean
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
 
 `Displayer` 对象是否为 `Room` 对象：
 
 - `true`：该 `Displayer` 对象是 `Room` 对象。
 - `false`：该 `Displayer` 对象不是 `Room` 对象。
 
+</ApiReturns>
+
 <a id="setasyncmoduleloadmode"></a>
 
 ### setAsyncModuleLoadMode
 
-- setAsyncModuleLoadMode(mode:[AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)):void
+<ApiSignature>
+
+setAsyncModuleLoadMode(mode: [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)): void
+
+</ApiSignature>
 
 - Defined in [index-zh.d.ts\:835](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L835)
 
@@ -4717,4 +5381,12 @@ Returns boolean
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

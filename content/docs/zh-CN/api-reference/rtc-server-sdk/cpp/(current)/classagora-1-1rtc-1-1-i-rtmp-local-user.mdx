@@ -24,8 +24,11 @@ _migration:
 
 ### VideoBitrateAdjustType
 
-| enum [agora::rtc::IRtmpLocalUser::VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6) |
-| --- |
+<ApiSignature>
+
+enum [agora::rtc::IRtmpLocalUser::VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6)
+
+</ApiSignature>
 
 视频编码码率的调节类型。
 
@@ -77,8 +80,11 @@ _migration:
 
 ### ~IRtmpLocalUser()
 
-| virtual agora::rtc::IRtmpLocalUser::~IRtmpLocalUser () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IRtmpLocalUser::~IRtmpLocalUser()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -86,8 +92,11 @@ _migration:
 
 ### setAudioStreamConfiguration()
 
-| virtual int agora::rtc::IRtmpLocalUser::setAudioStreamConfiguration ( const [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::setAudioStreamConfiguration(const [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration) & *config*)
+
+</ApiSignature>
 
 设置主播端直接向 CDN 推流时的音频编码属性。
 
@@ -108,8 +117,11 @@ CDN 推流的音频编码属性，详见 [RtmpStreamingAudioConfiguration](/zh-C
 
 ### setVideoStreamConfiguration()
 
-| virtual int agora::rtc::IRtmpLocalUser::setVideoStreamConfiguration ( const [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::setVideoStreamConfiguration(const [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration) & *config*)
+
+</ApiSignature>
 
 设置主播端直接向 CDN 推流时的视频编码属性。
 
@@ -130,8 +142,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### adjustRecordingSignalVolume()
 
-| virtual int agora::rtc::IRtmpLocalUser::adjustRecordingSignalVolume ( int *volume*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::adjustRecordingSignalVolume(int *volume*)
+
+</ApiSignature>
 
 调节主播端直接向 CDN 推流时的音频采集信号音量。
 
@@ -155,8 +170,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### getRecordingSignalVolume()
 
-| virtual int agora::rtc::IRtmpLocalUser::getRecordingSignalVolume ( int32_t * *volume*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::getRecordingSignalVolume(int32_t * *volume*)
+
+</ApiSignature>
 
 获取主播端直接向 CDN 推流时的音频采集信号音量。
 
@@ -177,8 +195,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### setAudioEnabled()
 
-| virtual int agora::rtc::IRtmpLocalUser::setAudioEnabled ( bool *enabled*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::setAudioEnabled(bool *enabled*)
+
+</ApiSignature>
 
 在 CDN 推流中开启或关闭本地音频。
 
@@ -204,8 +225,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### adjustVideoBitrate()
 
-| virtual void agora::rtc::IRtmpLocalUser::adjustVideoBitrate ( [VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6) *type*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpLocalUser::adjustVideoBitrate([VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6) *type*)
+
+</ApiSignature>
 
 调节主播端直接向 CDN 推流时的视频编码码率。
 
@@ -226,8 +250,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### setVideoEnabled()
 
-| virtual int agora::rtc::IRtmpLocalUser::setVideoEnabled ( bool *enabled*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::setVideoEnabled(bool *enabled*)
+
+</ApiSignature>
 
 在 CDN 推流中开启或关闭本地视频。
 
@@ -253,8 +280,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### publishAudio()
 
-| virtual int agora::rtc::IRtmpLocalUser::publishAudio ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::publishAudio([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*)
+
+</ApiSignature>
 
 向 CDN 推送本地音频流。
 
@@ -275,8 +305,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### unpublishAudio()
 
-| virtual int agora::rtc::IRtmpLocalUser::unpublishAudio ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::unpublishAudio([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*)
+
+</ApiSignature>
 
 停止向 CDN 推送本地音频流。
 
@@ -297,8 +330,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### publishVideo()
 
-| virtual int agora::rtc::IRtmpLocalUser::publishVideo ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::publishVideo([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*)
+
+</ApiSignature>
 
 向 CDN 推送本地视频流。
 
@@ -319,8 +355,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### unpublishVideo()
 
-| virtual int agora::rtc::IRtmpLocalUser::unpublishVideo ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::unpublishVideo([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*)
+
+</ApiSignature>
 
 停止向 CDN 推送本地视频流。
 
@@ -341,8 +380,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### registerRtmpUserObserver()
 
-| virtual int agora::rtc::IRtmpLocalUser::registerRtmpUserObserver ( [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) * *observer*, void(*)([IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) *) *safeDeleter* = `NULL`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::registerRtmpUserObserver([IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) * *observer*, void(*)([IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) *) *safeDeleter* = `NULL`)
+
+</ApiSignature>
 
 注册 CDN 推流用户观测器。
 
@@ -365,8 +407,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### unregisteRtmpUserObserver()
 
-| virtual int agora::rtc::IRtmpLocalUser::unregisteRtmpUserObserver ( [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::unregisteRtmpUserObserver([IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) * *observer*)
+
+</ApiSignature>
 
 注销 CDN 推流用户观测器。
 
@@ -389,8 +434,11 @@ CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-C
 
 ### registerAudioFrameObserver()
 
-| virtual int agora::rtc::IRtmpLocalUser::registerAudioFrameObserver ( media::base::IAudioFrameObserver * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::registerAudioFrameObserver(media::base::IAudioFrameObserver * *observer*)
+
+</ApiSignature>
 
 注册音频观测器。
 
@@ -411,8 +459,11 @@ IAudioFrameObserver 对象的指针。
 
 ### unregisterAudioFrameObserver()
 
-| virtual void agora::rtc::IRtmpLocalUser::unregisterAudioFrameObserver ( media::base::IAudioFrameObserver * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpLocalUser::unregisterAudioFrameObserver(media::base::IAudioFrameObserver * *observer*)
+
+</ApiSignature>
 
 注销音频观测器。
 
@@ -428,8 +479,11 @@ IAudioFrameObserver 对象的指针。
 
 ### registerVideoFrameObserver()
 
-| virtual int agora::rtc::IRtmpLocalUser::registerVideoFrameObserver ( media::base::IVideoFrameObserver * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpLocalUser::registerVideoFrameObserver(media::base::IVideoFrameObserver * *observer*)
+
+</ApiSignature>
 
 注册视频观测器。
 
@@ -450,8 +504,11 @@ IVideoFrameObserver 对象的指针。
 
 ### unregisterVideoFrameObserver()
 
-| virtual void agora::rtc::IRtmpLocalUser::unregisterVideoFrameObserver ( media::base::IVideoFrameObserver * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtmpLocalUser::unregisterVideoFrameObserver(media::base::IVideoFrameObserver * *observer*)
+
+</ApiSignature>
 
 注销视频观测器。
 

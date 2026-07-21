@@ -131,6 +131,17 @@ type ParameterProps = ComponentProps<'div'> & {
 type ParameterTypeProps = ComponentProps<'div'> & {
   children?: ReactNode;
 };
+type ApiSignatureProps = ComponentProps<'div'> & {
+  children?: ReactNode;
+  labels?: string;
+};
+type ApiReturnsProps = ComponentProps<'section'> & {
+  children?: ReactNode;
+  title?: ReactNode;
+};
+type ApiReturnTypeProps = ComponentProps<'div'> & {
+  children?: ReactNode;
+};
 type TabValueElement = ReactElement<{
   children?: ReactNode;
   value?: unknown;
@@ -906,6 +917,103 @@ function ParameterType({ children, className, ...props }: ParameterTypeProps) {
   );
 }
 
+function ApiSignature({
+  children,
+  className,
+  labels,
+  ...props
+}: ApiSignatureProps) {
+  const labelItems = labels?.split(/\s+/).filter(Boolean) ?? [];
+
+  return (
+    <div
+      className={cn(
+        'not-prose my-4 overflow-x-auto rounded-lg border border-fd-border bg-fd-muted/35 shadow-sm',
+        className,
+      )}
+      data-api-signature=""
+      {...props}
+    >
+      {labelItems.length > 0 ? (
+        <div className="flex flex-wrap justify-end gap-1.5 border-fd-border border-b px-3 py-2">
+          {labelItems.map((label) => (
+            <span
+              className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-medium text-[0.68rem] text-fd-muted-foreground"
+              key={label}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      <div className="w-max min-w-full whitespace-pre px-4 py-3 font-mono text-[0.82rem] text-fd-foreground leading-6 [&_a]:text-fd-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p]:whitespace-pre">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ApiReturns({
+  children,
+  className,
+  title = 'Returns',
+  ...props
+}: ApiReturnsProps) {
+  const childNodes = Children.toArray(children);
+  const returnType = childNodes.find(isApiReturnTypeBlock);
+  const description = childNodes.filter(
+    (child) => !isApiReturnTypeBlock(child) && !isBlankTextNode(child),
+  );
+
+  return (
+    <section
+      className={cn(
+        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
+        className,
+      )}
+      data-api-returns=""
+      {...props}
+    >
+      <div className="border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+        {title}
+      </div>
+      <div
+        className={cn(
+          'grid gap-3 px-4 py-4',
+          returnType &&
+            description.length > 0 &&
+            'sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]',
+        )}
+      >
+        {returnType}
+        {description.length > 0 ? (
+          <div
+            className="prose-no-margin min-w-0 text-fd-muted-foreground [&_a]:font-medium [&_a]:text-fd-primary"
+            data-api-return-description=""
+          >
+            {description}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function ApiReturnType({ children, className, ...props }: ApiReturnTypeProps) {
+  return (
+    <div
+      className={cn(
+        'min-w-0 overflow-x-auto whitespace-pre rounded-md border border-fd-border bg-fd-background px-3 py-2 font-mono text-[0.78rem] text-fd-foreground leading-5 [&_a]:text-fd-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p]:w-max [&_p]:min-w-full [&_p]:whitespace-pre',
+        className,
+      )}
+      data-api-return-type=""
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
 function renderPossibleValues(
   possibleValues: ReactNode,
   parameterLabel?: string,
@@ -978,6 +1086,12 @@ function isParameterTypeBlock(
   return isValidElement(child) && child.type === ParameterType;
 }
 
+function isApiReturnTypeBlock(
+  child: ReactNode,
+): child is ReactElement<ApiReturnTypeProps> {
+  return isValidElement(child) && child.type === ApiReturnType;
+}
+
 function isBlankTextNode(child: ReactNode) {
   return typeof child === 'string' && child.trim().length === 0;
 }
@@ -990,7 +1104,14 @@ function getPlainTextLabel(value: ReactNode) {
   return undefined;
 }
 
-export { Parameter, ParameterList, ParameterType };
+export {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+};
 
 function getRequiredState({
   optional,
@@ -1200,6 +1321,9 @@ export function getMDXComponents(
     CodeBlockTabsList,
     CodeBlockTab,
     pre: Pre,
+    ApiReturns,
+    ApiReturnType,
+    ApiSignature,
     ParameterList,
     Parameter,
     ParameterType,

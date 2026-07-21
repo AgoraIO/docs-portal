@@ -17,8 +17,11 @@ _migration:
 
 ### onLeaveChannel()
 
-| void io.agora.recording.RecordingEventHandler.onLeaveChannel | ( | int | *reason* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onLeaveChannel(int *reason*)
+
+</ApiSignature>
 
 该回调方法提示离开频道成功。
 
@@ -34,10 +37,11 @@ _migration:
 
 ### onError()
 
-| void io.agora.recording.RecordingEventHandler.onError | ( | int | *error*, |
-| --- | --- | --- | --- |
-|  |  | int | *stat_code* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onError(int *error*, int *stat_code*)
+
+</ApiSignature>
 
 该回调方法表示 SDK 运行时出现了（网络或媒体相关的）错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
 
@@ -58,8 +62,11 @@ _migration:
 
 ### onWarning()
 
-| void io.agora.recording.RecordingEventHandler.onWarning | ( | int | *warn* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onWarning(int *warn*)
+
+</ApiSignature>
 
 该回调方法表示 SDK 运行时出现了（网络或媒体相关的）警告。通常情况下，SDK 上报的警告信息应用程序可以忽略，SDK 会自动恢复。
 
@@ -75,10 +82,11 @@ _migration:
 
 ### onJoinChannelSuccess()
 
-| void io.agora.recording.RecordingEventHandler.onJoinChannelSuccess | ( | String | *channelId*, |
-| --- | --- | --- | --- |
-|  |  | long | *uid* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onJoinChannelSuccess(String *channelId*, long *uid*)
+
+</ApiSignature>
 
 该回调方法表示录制端成功加入了指定频道。
 
@@ -99,11 +107,11 @@ _migration:
 
 ### onRemoteVideoStreamStateChanged()
 
-| void io.agora.recording.RecordingEventHandler.onRemoteVideoStreamStateChanged | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) | *state*, |
-|  |  | [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) | *reason* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRemoteVideoStreamStateChanged(long *uid*, [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) *state*, [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) *reason*)
+
+</ApiSignature>
 
 远端用户视频流状态改变回调。
 
@@ -131,11 +139,11 @@ _migration:
 
 ### onRemoteAudioStreamStateChanged()
 
-| void io.agora.recording.RecordingEventHandler.onRemoteAudioStreamStateChanged | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) | *state*, |
-|  |  | [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) | *reason* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRemoteAudioStreamStateChanged(long *uid*, [REMOTE_STREAM_STATE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e) *state*, [REMOTE_STREAM_STATE_CHANGED_REASON](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-r-e-m-o-t-e-s-t-r-e-a-m-s-t-a-t-e-c-h-a-n-g-e-d-r-e-a-s-o-n) *reason*)
+
+</ApiSignature>
 
 远端用户音频流状态改变回调。
 
@@ -163,10 +171,11 @@ _migration:
 
 ### onUserOffline()
 
-| void io.agora.recording.RecordingEventHandler.onUserOffline | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | int | *reason* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onUserOffline(long *uid*, int *reason*)
+
+</ApiSignature>
 
 该回调方法提示有用户离开了频道（或掉线）。
 
@@ -189,10 +198,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onUserJoined()
 
-| void io.agora.recording.RecordingEventHandler.onUserJoined | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | String | *recordingDir* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onUserJoined(long *uid*, String *recordingDir*)
+
+</ApiSignature>
 
 该回调方法提示有用户加入了频道，并返回新加入用户的 UID。
 
@@ -215,8 +225,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onActiveSpeaker()
 
-| void io.agora.recording.RecordingEventHandler.onActiveSpeaker | ( | long | *uid* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onActiveSpeaker(long *uid*)
+
+</ApiSignature>
 
 监测到活跃用户回调。
 
@@ -234,10 +247,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### audioFrameReceived()
 
-| void io.agora.recording.RecordingEventHandler.audioFrameReceived | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | [AudioFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-frame) | *frame* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.audioFrameReceived(long *uid*, [AudioFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-frame) *frame*)
+
+</ApiSignature>
 
 当收到原始音频数据时，会触发该回调。
 
@@ -260,12 +274,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### videoFrameReceived()
 
-| void io.agora.recording.RecordingEventHandler.videoFrameReceived | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | int | *type*, |
-|  |  | [VideoFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-frame) | *frame*, |
-|  |  | int | *rotation* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.videoFrameReceived(long *uid*, int *type*, [VideoFrame](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-video-frame) *frame*, int *rotation*)
+
+</ApiSignature>
 
 当收到视频数据时，会触发该回调。
 
@@ -308,8 +321,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### recordingPathCallBack()
 
-| void io.agora.recording.RecordingEventHandler.recordingPathCallBack | ( | String | *path* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.recordingPathCallBack(String *path*)
+
+</ApiSignature>
 
 该回调方法获取录制文件的存放路径。
 
@@ -325,8 +341,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onAudioVolumeIndication()
 
-| void io.agora.recording.RecordingEventHandler.onAudioVolumeIndication | ( | [AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-volume-info)[] | *infos* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onAudioVolumeIndication([AudioVolumeInfo](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-audio-volume-info)[] *infos*)
+
+</ApiSignature>
 
 该回调提示频道内谁正在说话以及说话者音量。
 
@@ -344,12 +363,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onFirstRemoteVideoDecoded()
 
-| void io.agora.recording.RecordingEventHandler.onFirstRemoteVideoDecoded | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | int | *width*, |
-|  |  | int | *height*, |
-|  |  | int | *elapsed* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onFirstRemoteVideoDecoded(long *uid*, int *width*, int *height*, int *elapsed*)
+
+</ApiSignature>
 
 该回调提示本地已接收到首帧远端视频并完成解码。
 
@@ -382,10 +400,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onFirstRemoteAudioFrame()
 
-| void io.agora.recording.RecordingEventHandler.onFirstRemoteAudioFrame | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | int | *elapsed* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onFirstRemoteAudioFrame(long *uid*, int *elapsed*)
+
+</ApiSignature>
 
 该回调提示本地已接收到首帧远端音频流。
 
@@ -406,10 +425,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onReceivingStreamStatusChanged()
 
-| void io.agora.recording.RecordingEventHandler.onReceivingStreamStatusChanged | ( | boolean | *receivingAudio*, |
-| --- | --- | --- | --- |
-|  |  | boolean | *receivingVideo* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onReceivingStreamStatusChanged(boolean *receivingAudio*, boolean *receivingVideo*)
+
+</ApiSignature>
 
 该回调提示接收音频流或视频流的状态发生改变。
 
@@ -430,8 +450,11 @@ SDK 判断用户离开频道（或掉线）的依据是：在一定时间内（1
 
 ### onConnectionLost()
 
-| void io.agora.recording.RecordingEventHandler.onConnectionLost | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onConnectionLost()
+
+</ApiSignature>
 
 网络连接丢失回调。
 
@@ -448,8 +471,11 @@ SDK 在调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/l
 
 ### onConnectionInterrupted()
 
-| void io.agora.recording.RecordingEventHandler.onConnectionInterrupted | ( |  | ) |  |
-| --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onConnectionInterrupted()
+
+</ApiSignature>
 
 网络连接中断回调。
 
@@ -464,10 +490,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRejoinChannelSuccess()
 
-| void io.agora.recording.RecordingEventHandler.onRejoinChannelSuccess | ( | String | *channelId*, |
-| --- | --- | --- | --- |
-|  |  | long | *uid* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRejoinChannelSuccess(String *channelId*, long *uid*)
+
+</ApiSignature>
 
 重新加入频道回调。
 
@@ -490,10 +517,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onConnectionStateChanged()
 
-| void io.agora.recording.RecordingEventHandler.onConnectionStateChanged | ( | [CONNECTION_STATE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e) | *state*, |
-| --- | --- | --- | --- |
-|  |  | [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-c-h-a-n-g-e-d-r-e-a-s-o-n-t-y-p-e) | *reason* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onConnectionStateChanged([CONNECTION_STATE_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e) *state*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-c-h-a-n-g-e-d-r-e-a-s-o-n-t-y-p-e) *reason*)
+
+</ApiSignature>
 
 网络连接状态已改变回调。
 
@@ -516,10 +544,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRemoteVideoStats()
 
-| void io.agora.recording.RecordingEventHandler.onRemoteVideoStats | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | [RemoteVideoStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-video-stats) | *stats* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRemoteVideoStats(long *uid*, [RemoteVideoStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-video-stats) *stats*)
+
+</ApiSignature>
 
 远端视频流统计信息回调。
 
@@ -542,10 +571,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRemoteAudioStats()
 
-| void io.agora.recording.RecordingEventHandler.onRemoteAudioStats | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | [RemoteAudioStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-audio-stats) | *stats* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRemoteAudioStats(long *uid*, [RemoteAudioStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-remote-audio-stats) *stats*)
+
+</ApiSignature>
 
 远端音频流统计信息回调。
 
@@ -568,8 +598,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onRecordingStats()
 
-| void io.agora.recording.RecordingEventHandler.onRecordingStats | ( | [RecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-recording-stats) | *stats* | ) |  |
-| --- | --- | --- | --- | --- | --- |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onRecordingStats([RecordingStats](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-common-1-1-recording-stats) *stats*)
+
+</ApiSignature>
 
 录制统计信息回调。
 
@@ -587,10 +620,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onLocalUserRegistered()
 
-| void io.agora.recording.RecordingEventHandler.onLocalUserRegistered | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | String | *userAccount* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onLocalUserRegistered(long *uid*, String *userAccount*)
+
+</ApiSignature>
 
 该回调表示本地用户已成功注册 User Account。
 
@@ -613,10 +647,11 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 ### onUserInfoUpdated()
 
-| void io.agora.recording.RecordingEventHandler.onUserInfoUpdated | ( | long | *uid*, |
-| --- | --- | --- | --- |
-|  |  | String | *userAccount* |
-|  | ) |  |  |
+<ApiSignature>
+
+void io.agora.recording.RecordingEventHandler.onUserInfoUpdated(long *uid*, String *userAccount*)
+
+</ApiSignature>
 
 该回调提示远端用户的信息已更新。
 

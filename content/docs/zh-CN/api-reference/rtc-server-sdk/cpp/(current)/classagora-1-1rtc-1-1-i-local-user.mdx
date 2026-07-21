@@ -26,8 +26,11 @@ _migration:
 
 ### ~ILocalUser()
 
-| virtual agora::rtc::ILocalUser::~ILocalUser () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::ILocalUser::~ILocalUser()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -35,8 +38,11 @@ _migration:
 
 ### setUserRole()
 
-| virtual void agora::rtc::ILocalUser::setUserRole ( [rtc::CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *role*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUser::setUserRole([rtc::CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *role*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置用户角色。
 
@@ -63,8 +69,11 @@ _migration:
 
 ### getUserRole()
 
-| virtual [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) agora::rtc::ILocalUser::getUserRole () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) agora::rtc::ILocalUser::getUserRole()
+
+</ApiSignature>
 
 获取用户角色。
 
@@ -76,8 +85,11 @@ _migration:
 
 ### setAudioEncoderConfiguration()
 
-| virtual int agora::rtc::ILocalUser::setAudioEncoderConfiguration ( const [rtc::AudioEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-encoder-configuration) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::setAudioEncoderConfiguration(const [rtc::AudioEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-encoder-configuration) & *config*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置音频编码。
 
@@ -105,8 +117,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### publishAudio()
 
-| virtual int agora::rtc::ILocalUser::publishAudio ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::publishAudio([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 将本地音频轨道发送到频道。
 
@@ -136,8 +151,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### unpublishAudio()
 
-| virtual int agora::rtc::ILocalUser::unpublishAudio ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unpublishAudio([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止将本地音频轨道发送到频道。
 
@@ -163,8 +181,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### publishVideo()
 
-| virtual int agora::rtc::ILocalUser::publishVideo ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::publishVideo([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 将本地视频轨道发送到频道。
 
@@ -190,8 +211,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### unpublishVideo()
 
-| virtual int agora::rtc::ILocalUser::unpublishVideo ( [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unpublishVideo([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止将本地视频轨道发送到频道。
 
@@ -217,8 +241,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### subscribeAudio()
 
-| virtual int agora::rtc::ILocalUser::subscribeAudio ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::subscribeAudio([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 订阅频道中特定的远端用户发送的音频流。
 
@@ -246,8 +273,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### subscribeAllAudio()
 
-| virtual int agora::rtc::ILocalUser::subscribeAllAudio ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::subscribeAllAudio(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 订阅频道中全部远端用户发送的音频流。
 
@@ -270,8 +300,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### unsubscribeAudio()
 
-| virtual int agora::rtc::ILocalUser::unsubscribeAudio ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unsubscribeAudio([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止订阅频道中特定的远端用户发送的音频流。
 
@@ -299,8 +332,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### unsubscribeAllAudio()
 
-| virtual int agora::rtc::ILocalUser::unsubscribeAllAudio ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unsubscribeAllAudio(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止订阅频道中全部远端用户发送的音频流。
 
@@ -323,8 +359,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### setPlaybackAudioFrameParameters()
 
-| virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameParameters ( size_t *numberOfChannels*, uint32_t *sampleRateHz*, [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) *mode* = [`RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52), int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameParameters(size_t *numberOfChannels*, uint32_t *sampleRateHz*, [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) *mode* = [`RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52), int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置播放的音频格式。
 
@@ -367,8 +406,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### setRecordingAudioFrameParameters()
 
-| virtual int agora::rtc::ILocalUser::setRecordingAudioFrameParameters ( size_t *numberOfChannels*, uint32_t *sampleRateHz*, [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) *mode* = [`RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52), int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::setRecordingAudioFrameParameters(size_t *numberOfChannels*, uint32_t *sampleRateHz*, [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb) *mode* = [`RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bbac46b5a2a6a1bcf560cdd0cad3c888d52), int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置采集的原始音频数据格式。
 
@@ -411,8 +453,11 @@ SDK 会将配置应用于全部发送的音频轨道。
 
 ### setMixedAudioFrameParameters()
 
-| virtual int agora::rtc::ILocalUser::setMixedAudioFrameParameters ( size_t *numberOfChannels*, uint32_t *sampleRateHz*, int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::setMixedAudioFrameParameters(size_t *numberOfChannels*, uint32_t *sampleRateHz*, int *samplesPerCall* = `0`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd) 报告的音频数据格式。
 
@@ -455,8 +500,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### setPlaybackAudioFrameBeforeMixingParameters()
 
-| virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameBeforeMixingParameters ( size_t *numberOfChannels*, uint32_t *sampleRateHz*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameBeforeMixingParameters(size_t *numberOfChannels*, uint32_t *sampleRateHz*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer#a12ad526eb7356640f67137f2cdb6c128) 报告的音频数据格式。
 
@@ -487,8 +535,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### registerAudioFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::registerAudioFrameObserver ( agora::media::IAudioFrameObserverBase * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::registerAudioFrameObserver(agora::media::IAudioFrameObserverBase * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 注册音频帧 observer。
 
@@ -521,8 +572,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unregisterAudioFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::unregisterAudioFrameObserver ( agora::media::IAudioFrameObserverBase * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unregisterAudioFrameObserver(agora::media::IAudioFrameObserverBase * *observer*)
+
+</ApiSignature>
 
 销毁音频帧 observer。
 
@@ -543,8 +597,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### registerVideoEncodedFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::registerVideoEncodedFrameObserver ( agora::media::IVideoEncodedFrameObserver * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::registerVideoEncodedFrameObserver(agora::media::IVideoEncodedFrameObserver * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 为编码后的视频图像注册视频帧接收 observer。
 
@@ -570,8 +627,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unregisterVideoEncodedFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::unregisterVideoEncodedFrameObserver ( agora::media::IVideoEncodedFrameObserver * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unregisterVideoEncodedFrameObserver(agora::media::IVideoEncodedFrameObserver * *observer*)
+
+</ApiSignature>
 
 销毁视频帧接收 observer。
 
@@ -592,8 +652,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### registerVideoFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::registerVideoFrameObserver ( [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::registerVideoFrameObserver([IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) * *observer*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 注册 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
 
@@ -619,8 +682,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unregisterVideoFrameObserver()
 
-| virtual int agora::rtc::ILocalUser::unregisterVideoFrameObserver ( [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unregisterVideoFrameObserver([IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) * *observer*)
+
+</ApiSignature>
 
 销毁 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
 
@@ -641,8 +707,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### subscribeVideo()
 
-| virtual int agora::rtc::ILocalUser::subscribeVideo ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, const [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) & *subscriptionOptions*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::subscribeVideo([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, const [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) & *subscriptionOptions*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 订阅频道中指定远端用户发送的视频流。
 
@@ -675,8 +744,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### subscribeAllVideo()
 
-| virtual int agora::rtc::ILocalUser::subscribeAllVideo ( const [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) & *subscriptionOptions*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::subscribeAllVideo(const [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-subscription-options) & *subscriptionOptions*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 订阅频道中全部远端用户发送的视频流。
 
@@ -704,8 +776,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unsubscribeVideo()
 
-| virtual int agora::rtc::ILocalUser::unsubscribeVideo ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unsubscribeVideo([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止订阅频道中指定远端用户发送的视频流。
 
@@ -733,8 +808,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unsubscribeAllVideo()
 
-| virtual int agora::rtc::ILocalUser::unsubscribeAllVideo ( aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unsubscribeAllVideo(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 停止订阅频道中全部远端用户发送的视频流。
 
@@ -757,8 +835,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### registerLocalUserObserver()
 
-| virtual int agora::rtc::ILocalUser::registerLocalUserObserver ( [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) * *observer*, void(*)([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) *) *safeDeleter* = `NULL`, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::registerLocalUserObserver([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) * *observer*, void(*)([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) *) *safeDeleter* = `NULL`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 注册本地用户 observer。
 
@@ -784,8 +865,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### unregisterLocalUserObserver()
 
-| virtual int agora::rtc::ILocalUser::unregisterLocalUserObserver ( [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) * *observer*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::unregisterLocalUserObserver([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) * *observer*)
+
+</ApiSignature>
 
 销毁本地用户 observer。
 
@@ -806,8 +890,11 @@ SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFr
 
 ### sendIntraRequest()
 
-| virtual int agora::rtc::ILocalUser::sendIntraRequest ( [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::ILocalUser::sendIntraRequest([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
 
 向指定主播用户发送关键帧请求。
 

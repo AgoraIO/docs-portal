@@ -482,7 +482,11 @@ _migration:
 
 ### channel-media-relay-event
 
-- channel-media-relay-event(event:[ChannelMediaRelayEvent](/zh-CN/api-reference/rtc/web/enums/channelmediarelayevent)):void
+<ApiSignature>
+
+channel-media-relay-event(event: [ChannelMediaRelayEvent](/zh-CN/api-reference/rtc/web/enums/channelmediarelayevent)): void
+
+</ApiSignature>
 
 跨频道媒体流转发事件回调。
 
@@ -500,13 +504,25 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_channel_media_relay_state"></a>
 
 ### channel-media-relay-state
 
-- channel-media-relay-state(state:[ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate), code:[ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channelmediarelayerror)):void
+<ApiSignature>
+
+channel-media-relay-state(state: [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate), code: [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channelmediarelayerror)): void
+
+</ApiSignature>
 
 跨频道媒体流转发状态回调。
 
@@ -539,13 +555,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_connection_state_change"></a>
 
 ### connection-state-change
 
-- connection-state-change(curState:[ConnectionState](/zh-CN/api-reference/rtc/web/globals#connectionstate), revState:[ConnectionState](/zh-CN/api-reference/rtc/web/globals#connectionstate), reason?:[ConnectionDisconnectedReason](/zh-CN/api-reference/rtc/web/enums/connectiondisconnectedreason)):void
+<ApiSignature>
+
+connection-state-change(curState: [ConnectionState](/zh-CN/api-reference/rtc/web/globals#connectionstate), revState: [ConnectionState](/zh-CN/api-reference/rtc/web/globals#connectionstate), reason?: [ConnectionDisconnectedReason](/zh-CN/api-reference/rtc/web/enums/connectiondisconnectedreason)): void
+
+</ApiSignature>
 
 SDK 与服务器的连接状态发生改变回调。
 
@@ -585,13 +613,25 @@ SDK 与服务器的连接状态发生改变回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_content_inspect_connection_state_change"></a>
 
 ### content-inspect-connection-state-change
 
-- content-inspect-connection-state-change(preState:[InspectState](/zh-CN/api-reference/rtc/web/enums/inspectstate), newState:[InspectState](/zh-CN/api-reference/rtc/web/enums/inspectstate)):void
+<ApiSignature>
+
+content-inspect-connection-state-change(preState: [InspectState](/zh-CN/api-reference/rtc/web/enums/inspectstate), newState: [InspectState](/zh-CN/api-reference/rtc/web/enums/inspectstate)): void
+
+</ApiSignature>
 
 视频截图上传服务的连接状态发生改变回调。
 
@@ -626,13 +666,25 @@ client.on("content-inspect-connection-state-change", (preState, state) => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_content_inspect_error"></a>
 
 ### content-inspect-error
 
-- content-inspect-error(error?:AgoraRTCError):void
+<ApiSignature>
+
+content-inspect-error(error?: AgoraRTCError): void
+
+</ApiSignature>
 
 开启视频截图上传服务出错回调。
 
@@ -661,25 +713,49 @@ client.on("content-inspect-error", error => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_crypt_error"></a>
 
 ### crypt-error
 
-- crypt-error():void
+<ApiSignature>
+
+crypt-error(): void
+
+</ApiSignature>
 
 解密失败回调。
 
 该回调表示用户在订阅过程中出现了解密失败，通常是由于和发布端设置的加密参数不一致导致的。详见 [setEncryptionConfig](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setencryptionconfig)。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_exception"></a>
 
 ### exception
 
-- exception(event:object):void
+<ApiSignature>
+
+exception(event: object): void
+
+</ApiSignature>
 
 SDK 监测到异常事件回调。
 
@@ -745,13 +821,25 @@ SDK 监测到异常事件回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_image_moderation_connection_state_change"></a>
 
 ### image-moderation-connection-state-change
 
-- image-moderation-connection-state-change(newState:[ImageModerationConnectionState](/zh-CN/api-reference/rtc/web/enums/imagemoderationconnectionstate), preState:[ImageModerationConnectionState](/zh-CN/api-reference/rtc/web/enums/imagemoderationconnectionstate)):void
+<ApiSignature>
+
+image-moderation-connection-state-change(newState: [ImageModerationConnectionState](/zh-CN/api-reference/rtc/web/enums/imagemoderationconnectionstate), preState: [ImageModerationConnectionState](/zh-CN/api-reference/rtc/web/enums/imagemoderationconnectionstate)): void
+
+</ApiSignature>
 
 第三方视频审核服务连接状态发生改变回调。
 
@@ -787,13 +875,25 @@ client.on("image-moderation-connection-state-change", (curState, preState) => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_is_using_cloud_proxy"></a>
 
 ### is-using-cloud-proxy
 
-- is-using-cloud-proxy(isUsingProxy:boolean):void
+<ApiSignature>
+
+is-using-cloud-proxy(isUsingProxy: boolean): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.4.0*
@@ -815,13 +915,25 @@ SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触�
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_join_fallback_to_proxy"></a>
 
 ### join-fallback-to-proxy
 
-- join-fallback-to-proxy(proxyServer:string):void
+<ApiSignature>
+
+join-fallback-to-proxy(proxyServer: string): void
+
+</ApiSignature>
 
 ### deprecated
 
@@ -839,13 +951,25 @@ SDK 自动切换至 TCP/TLS 443 回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_live_streaming_error"></a>
 
 ### live-streaming-error
 
-- live-streaming-error(url:string, err:AgoraRTCError):void
+<ApiSignature>
+
+live-streaming-error(url: string, err: AgoraRTCError): void
+
+</ApiSignature>
 
 推流发生错误回调。
 
@@ -873,13 +997,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_live_streaming_warning"></a>
 
 ### live-streaming-warning
 
-- live-streaming-warning(url:string, warning:AgoraRTCError):void
+<ApiSignature>
+
+live-streaming-warning(url: string, warning: AgoraRTCError): void
+
+</ApiSignature>
 
 推流发生警告回调。
 
@@ -904,13 +1040,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_media_reconnect_end"></a>
 
 ### media-reconnect-end
 
-- media-reconnect-end(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid)):void
+<ApiSignature>
+
+media-reconnect-end(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)): void
+
+</ApiSignature>
 
 SDK 重新建立媒体连接（用于发布和订阅）结束的回调。
 
@@ -928,13 +1076,25 @@ SDK 重新建立媒体连接（用于发布和订阅）结束的回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_media_reconnect_start"></a>
 
 ### media-reconnect-start
 
-- media-reconnect-start(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid)):void
+<ApiSignature>
+
+media-reconnect-start(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)): void
+
+</ApiSignature>
 
 SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 
@@ -952,13 +1112,25 @@ SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_network_quality"></a>
 
 ### network-quality
 
-- network-quality(stats:[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)):void
+<ApiSignature>
+
+network-quality(stats: [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)): void
+
+</ApiSignature>
 
 网络上下行质量报告回调。
 
@@ -980,13 +1152,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_peerconnection_state_change"></a>
 
 ### peerconnection-state-change
 
-- peerconnection-state-change(curState:RTCPeerConnectionState, revState:RTCPeerConnectionState):void
+<ApiSignature>
+
+peerconnection-state-change(curState: RTCPeerConnectionState, revState: RTCPeerConnectionState): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.23.0*
@@ -1007,13 +1191,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_published_user_list"></a>
 
 ### published-user-list
 
-- published-user-list(users:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)[]):void
+<ApiSignature>
+
+published-user-list(users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)[]): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.11.0*
@@ -1043,13 +1239,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_stream_fallback"></a>
 
 ### stream-fallback
 
-- stream-fallback(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), isFallbackOrRecover:"fallback"|"recover"):void
+<ApiSignature>
+
+stream-fallback(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), isFallbackOrRecover: "fallback" | "recover"): void
+
+</ApiSignature>
 
 订阅的音视频流回退为音频流或恢复为音视频流回调。
 
@@ -1077,13 +1285,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_stream_message"></a>
 
 ### stream-message
 
-- stream-message(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), payload:Uint8Array):void
+<ApiSignature>
+
+stream-message(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), payload: Uint8Array): void
+
+</ApiSignature>
 
 收到数据流消息的回调。
 
@@ -1112,13 +1332,25 @@ client.on("stream-message", (uid, payload) => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_stream_type_changed"></a>
 
 ### stream-type-changed
 
-- stream-type-changed(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), streamType:[RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)):void
+<ApiSignature>
+
+stream-type-changed(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), streamType: [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)): void
+
+</ApiSignature>
 
 订阅的视频流类型发生改变回调。
 
@@ -1152,13 +1384,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_token_privilege_did_expire"></a>
 
 ### token-privilege-did-expire
 
-- token-privilege-did-expire():void
+<ApiSignature>
+
+token-privilege-did-expire(): void
+
+</ApiSignature>
 
 Token 已过期回调。
 
@@ -1173,13 +1417,25 @@ client.on("token-privilege-did-expire", async () => {
 });
 ```
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_token_privilege_will_expire"></a>
 
 ### token-privilege-will-expire
 
-- token-privilege-will-expire():void
+<ApiSignature>
+
+token-privilege-will-expire(): void
+
+</ApiSignature>
 
 Token 即将过期回调。
 
@@ -1194,13 +1450,25 @@ client.on("token-privilege-will-expire", async function(){
 });
 ```
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_user_info_updated"></a>
 
 ### user-info-updated
 
-- user-info-updated(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), msg:"mute-audio"|"mute-video"|"enable-local-video"|"unmute-audio"|"unmute-video"|"disable-local-video"):void
+<ApiSignature>
+
+user-info-updated(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), msg: "mute-audio" | "mute-video" | "enable-local-video" | "unmute-audio" | "unmute-video" | "disable-local-video"): void
+
+</ApiSignature>
 
 该回调用于提示用户状态变化。
 
@@ -1227,13 +1495,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_user_joined"></a>
 
 ### user-joined
 
-- user-joined(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)):void
+<ApiSignature>
+
+user-joined(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)): void
+
+</ApiSignature>
 
 远端用户或主播加入频道回调。
 
@@ -1260,13 +1540,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_user_left"></a>
 
 ### user-left
 
-- user-left(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), reason:string):void
+<ApiSignature>
+
+user-left(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), reason: string): void
+
+</ApiSignature>
 
 远端用户离线回调。
 
@@ -1301,13 +1593,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_user_published"></a>
 
 ### user-published
 
-- user-published(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), mediaType:"audio"|"video"|"datachannel", config?:IDataChannelConfig):void
+<ApiSignature>
+
+user-published(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), mediaType: "audio" | "video" | "datachannel", config?: IDataChannelConfig): void
+
+</ApiSignature>
 
 该回调通知远端用户发布了新的音频轨道或者视频轨道。
 
@@ -1357,13 +1661,25 @@ client.on("user-published", async (user, mediaType) => {
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_user_unpublished"></a>
 
 ### user-unpublished
 
-- user-unpublished(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), mediaType:"audio"|"video"|"datachannel", config?:IDataChannelConfig):void
+<ApiSignature>
+
+user-unpublished(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser), mediaType: "audio" | "video" | "datachannel", config?: IDataChannelConfig): void
+
+</ApiSignature>
 
 该回调通知远端用户取消发布了音频或视频轨道。
 
@@ -1395,13 +1711,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="event_volume_indicator"></a>
 
 ### volume-indicator
 
-- volume-indicator(result:object[]):void
+<ApiSignature>
+
+volume-indicator(result: object[]): void
+
+</ApiSignature>
 
 报告频道内正在说话的本地和远端用户及其音量的回调。
 
@@ -1428,7 +1756,15 @@ client.on("volume-indicator", function(result){
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -1491,7 +1827,11 @@ uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)
 
 ### join
 
-- join(appid:string, channel:string, token:string|null, uid?:[UID](/zh-CN/api-reference/rtc/web/globals#uid)|null, options?:object):Promise&lt;[UID](/zh-CN/api-reference/rtc/web/globals#uid)&gt;
+<ApiSignature>
+
+join(appid: string, channel: string, token: string | null, uid?: [UID](/zh-CN/api-reference/rtc/web/globals#uid) | null, options?: object): Promise&lt;[UID](/zh-CN/api-reference/rtc/web/globals#uid)&gt;
+
+</ApiSignature>
 
 加入频道。
 
@@ -1561,7 +1901,13 @@ uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;[UID](/zh-CN/api-reference/rtc/web/globals#uid)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[UID](/zh-CN/api-reference/rtc/web/globals#uid)&gt;
+
+</ApiReturnType>
 
 Promise 对象，包含本地用户的 ID：
 
@@ -1569,11 +1915,17 @@ Promise 对象，包含本地用户的 ID：
 - 如果你使用字符串型 uid 加入频道，则返回字符串型 uid。
 - 如果你不指定或设为 `null`，声网服务器自动分配一个整数型 uid 并返回。
 
+</ApiReturns>
+
 <a id="leave"></a>
 
 ### leave
 
-- leave():Promise&lt;void&gt;
+<ApiSignature>
+
+leave(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 离开频道。
 
@@ -1583,13 +1935,25 @@ Promise 对象，包含本地用户的 ID：
 
 通信场景下的用户和直播场景下的主播离开频道后，远端会触发 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_left) 回调。
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="publish"></a>
 
 ### publish
 
-- publish(tracks:[ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)|[ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)[]):Promise&lt;void&gt;
+<ApiSignature>
+
+publish(tracks: [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack) | [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)[]): Promise&lt;void&gt;
+
+</ApiSignature>
 
 发布本地音视频轨道。
 
@@ -1618,15 +1982,37 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="subscribe"></a>
 
 ### subscribe
 
-- subscribe(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)|[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"video"):Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
-- subscribe(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)|[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"audio"):Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
-- subscribe(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)|[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"video"|"audio"|"datachannel", channelId?:number):Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)|IRemoteDataChannel&gt;
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+
+</ApiSignature>
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+
+</ApiSignature>
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack) | IRemoteDataChannel&gt;
+
+</ApiSignature>
 
 订阅远端用户的音视频轨道。
 
@@ -1657,12 +2043,20 @@ user.audioTrack.play();
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+
+</ApiReturnType>
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 就可以播放了。
 
 > 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+
+</ApiReturns>
 
 订阅远端用户的音视频轨道。
 
@@ -1697,12 +2091,20 @@ Agora Core
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+
+</ApiReturnType>
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 就可以播放了。
 
 > 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+
+</ApiReturns>
 
 订阅远端用户的音视频轨道。
 
@@ -1739,18 +2141,30 @@ Agora Core
 <Parameter name="channelId" type="number" optional />
 </ParameterList>
 
-Returns Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)|IRemoteDataChannel&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack) | IRemoteDataChannel&gt;
+
+</ApiReturnType>
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 就可以播放了。
 
 > 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
 
+</ApiReturns>
+
 <a id="unpublish"></a>
 
 ### unpublish
 
-- unpublish(tracks?:[ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)|[ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)[]):Promise&lt;void&gt;
+<ApiSignature>
+
+unpublish(tracks?: [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack) | [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)[]): Promise&lt;void&gt;
+
+</ApiSignature>
 
 取消发布本地音视频轨道。
 
@@ -1772,13 +2186,25 @@ Returns Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremot
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="unsubscribe"></a>
 
 ### unsubscribe
 
-- unsubscribe(user:[IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)|[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType?:"video"|"audio"|"datachannel", channelId?:number):Promise&lt;void&gt;
+<ApiSignature>
+
+unsubscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType?: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;void&gt;
+
+</ApiSignature>
 
 取消订阅远端用户的音视频轨道。
 
@@ -1811,9 +2237,17 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
 
 如果指定的音视频轨道不存在会抛出 `TRACK_IS_NOT_SUBSCRIBED` 错误。
+
+</ApiReturns>
 
 ## Channel Media Relay Methods
 
@@ -1821,7 +2255,11 @@ Returns Promise&lt;void&gt;
 
 ### startChannelMediaRelay
 
-- startChannelMediaRelay(config:[IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)):Promise&lt;void&gt;
+<ApiSignature>
+
+startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 开始跨频道媒体流转发。
 
@@ -1864,29 +2302,53 @@ client.startChannelMediaRelay(config).then(() => {
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
 
 Promise 对象。当 Promise resolve 后，表示成功开启了跨频道服务。
+
+</ApiReturns>
 
 <a id="stopchannelmediarelay"></a>
 
 ### stopChannelMediaRelay
 
-- stopChannelMediaRelay():Promise&lt;void&gt;
+<ApiSignature>
+
+stopChannelMediaRelay(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 停止跨频道媒体流转发。
 
 一旦停止转发，用户会退出所有的目标频道。
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
 
 Promise 对象。当 Promise resolve 后，表示成功停止了跨频道服务。
+
+</ApiReturns>
 
 <a id="updatechannelmediarelay"></a>
 
 ### updateChannelMediaRelay
 
-- updateChannelMediaRelay(config:[IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)):Promise&lt;void&gt;
+<ApiSignature>
+
+updateChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新媒体流转发的目标频道。
 
@@ -1911,9 +2373,17 @@ Promise 对象。当 Promise resolve 后，表示成功停止了跨频道服务�
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
 
 Promise 对象。当 Promise resolve 后，表示更新成功，否则更新失败。出错后跨频道媒体流转发状态会被重置，你需要调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startchannelmediarelay) 重新开始跨频道媒体流转发。
+
+</ApiReturns>
 
 ## Dual Stream Methods
 
@@ -1921,17 +2391,33 @@ Promise 对象。当 Promise resolve 后，表示更新成功，否则更新失�
 
 ### disableDualStream
 
-- disableDualStream():Promise&lt;void&gt;
+<ApiSignature>
+
+disableDualStream(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 关闭双流模式。
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="enabledualstream"></a>
 
 ### enableDualStream
 
-- enableDualStream():Promise&lt;void&gt;
+<ApiSignature>
+
+enableDualStream(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 开启双流模式。
 
@@ -1954,13 +2440,25 @@ client.enableDualStream().then(() => {
 })
 ```
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setlowstreamparameter"></a>
 
 ### setLowStreamParameter
 
-- setLowStreamParameter(streamParameter:[LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)):void
+<ApiSignature>
+
+setLowStreamParameter(streamParameter: [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)): void
+
+</ApiSignature>
 
 设置小流视频属性。
 
@@ -1990,13 +2488,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setremotedefaultvideostreamtype"></a>
 
 ### setRemoteDefaultVideoStreamType
 
-- setRemoteDefaultVideoStreamType(streamType:[RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)):Promise&lt;void&gt;
+<ApiSignature>
+
+setRemoteDefaultVideoStreamType(streamType: [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置订阅所有远端用户的视频类型。
 
@@ -2019,13 +2529,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setremotevideostreamtype"></a>
 
 ### setRemoteVideoStreamType
 
-- setRemoteVideoStreamType(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), streamType:[RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)):Promise&lt;void&gt;
+<ApiSignature>
+
+setRemoteVideoStreamType(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), streamType: [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置订阅特定远端用户的视频类型。
 
@@ -2062,13 +2584,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setstreamfallbackoption"></a>
 
 ### setStreamFallbackOption
 
-- setStreamFallbackOption(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), fallbackType:[RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remotestreamfallbacktype)):Promise&lt;void&gt;
+<ApiSignature>
+
+setStreamFallbackOption(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), fallbackType: [RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remotestreamfallbacktype)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置媒体流回退策略。
 
@@ -2105,7 +2639,15 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Live Streaming Methods
 
@@ -2113,7 +2655,11 @@ Returns Promise&lt;void&gt;
 
 ### setLiveTranscoding
 
-- setLiveTranscoding(config:[LiveStreamingTranscodingConfig](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig)):Promise&lt;void&gt;
+<ApiSignature>
+
+setLiveTranscoding(config: [LiveStreamingTranscodingConfig](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置直播推流转码的配置。
 
@@ -2135,13 +2681,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="startlivestreaming"></a>
 
 ### startLiveStreaming
 
-- startLiveStreaming(url:string, transcodingEnabled?:boolean):Promise&lt;void&gt;
+<ApiSignature>
+
+startLiveStreaming(url: string, transcodingEnabled?: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
 
 将本地流发布到 CDN。
 
@@ -2172,13 +2730,25 @@ await client.startLiveStreaming("rtmp://xxxx", true);
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stoplivestreaming"></a>
 
 ### stopLiveStreaming
 
-- stopLiveStreaming(url:string):Promise&lt;void&gt;
+<ApiSignature>
+
+stopLiveStreaming(url: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 删除旁路推流地址。
 
@@ -2192,7 +2762,15 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Other Methods
 
@@ -2200,38 +2778,78 @@ Returns Promise&lt;void&gt;
 
 ### _isPreRender
 
-- _isPreRender():boolean
+<ApiSignature>
 
-Returns boolean
+_isPreRender(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="_setrteinfo"></a>
 
 ### _setRteInfo
 
-- _setRteInfo(rteUrl:string, rteSid:string):void
+<ApiSignature>
+
+_setRteInfo(rteUrl: string, rteSid: string): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="rteUrl" type="string" required />
 <Parameter name="rteSid" type="string" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="disablecontentinspect"></a>
 
 ### disableContentInspect
 
-- disableContentInspect():Promise&lt;void&gt;
+<ApiSignature>
+
+disableContentInspect(): Promise&lt;void&gt;
+
+</ApiSignature>
 
 关闭视频截图上传。
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="enableaudiovolumeindicator"></a>
 
 ### enableAudioVolumeIndicator
 
-- enableAudioVolumeIndicator():void
+<ApiSignature>
+
+enableAudioVolumeIndicator(): void
+
+</ApiSignature>
 
 启用说话者音量提示。
 
@@ -2250,13 +2868,25 @@ client.on("volume-indicator", volumes => {
 })
 ```
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="enablecontentinspect"></a>
 
 ### enableContentInspect
 
-- enableContentInspect(inspectConfig:[InspectConfiguration](/zh-CN/api-reference/rtc/web/interfaces/inspectconfiguration)):Promise&lt;void&gt;
+<ApiSignature>
+
+enableContentInspect(inspectConfig: [InspectConfiguration](/zh-CN/api-reference/rtc/web/interfaces/inspectconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 开启视频截图上传。
 
@@ -2290,13 +2920,25 @@ client.enableContentInspect({
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getlisteners"></a>
 
 ### getListeners
 
-- getListeners(event:string):Function[]
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
 
 Inherited from EventEmitter.getListeners
 
@@ -2310,13 +2952,25 @@ Inherited from EventEmitter.getListeners
 </Parameter>
 </ParameterList>
 
-Returns Function[]
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getlocalaudiostats"></a>
 
 ### getLocalAudioStats
 
-- getLocalAudioStats():[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiSignature>
+
+getLocalAudioStats(): [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiSignature>
 
 :::info[自从]
 *4.1.0*
@@ -2324,33 +2978,69 @@ Returns Function[]
 获取本地音频相关信息。
 :::
 
-Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getlocalvideostats"></a>
 
 ### getLocalVideoStats
 
-- getLocalVideoStats():[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+<ApiSignature>
+
+getLocalVideoStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+
+</ApiSignature>
 
 获取本地视频相关信息。
 
 > 注意事项：iOS 14.4 及更早版本上无法获取到 `encodeDelay` 字段。
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getnetworkquality"></a>
 
 ### getNetworkQuality
 
-- getNetworkQuality():[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+<ApiSignature>
 
-Returns [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+getNetworkQuality(): [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getntpwalltimeinms"></a>
 
 ### getNtpWallTimeInMs
 
-- getNtpWallTimeInMs():number
+<ApiSignature>
+
+getNtpWallTimeInMs(): number
+
+</ApiSignature>
 
 **自从**
 
@@ -2359,25 +3049,49 @@ Returns [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
 在实时合唱的场景中，特别是在各个接收端由于网络原因导致下行链路不一致的情况下，
  可以调用该方法来获取当前的 NTP 时间作为基准时间，以对齐多个接收端的歌词和音乐。
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getrtcstats"></a>
 
 ### getRTCStats
 
-- getRTCStats():[AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
+<ApiSignature>
+
+getRTCStats(): [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
+
+</ApiSignature>
 
 获取当前通话的统计信息。
 
-Returns [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
+
+</ApiReturnType>
 
 通话相关的统计信息。
+
+</ApiReturns>
 
 <a id="getremoteaudiostats"></a>
 
 ### getRemoteAudioStats
 
-- getRemoteAudioStats():object
+<ApiSignature>
+
+getRemoteAudioStats(): object
+
+</ApiSignature>
 
 :::info[自从]
 *4.1.0*
@@ -2387,7 +3101,13 @@ Returns [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
-Returns object
+<ApiReturns>
+
+<ApiReturnType>
+
+object
+
+</ApiReturnType>
 
 <ParameterList title="Returns object">
 <Parameter name="[uid" required>
@@ -2401,11 +3121,17 @@ string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteau
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="getremotenetworkquality"></a>
 
 ### getRemoteNetworkQuality
 
-- getRemoteNetworkQuality():object
+<ApiSignature>
+
+getRemoteNetworkQuality(): object
+
+</ApiSignature>
 
 :::info[自从]
 *4.2.0*
@@ -2413,7 +3139,13 @@ string]:[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteau
 获取本地订阅的所有远端用户的上下行网络质量。
 :::
 
-Returns object
+<ApiReturns>
+
+<ApiReturnType>
+
+object
+
+</ApiReturnType>
 
 <ParameterList title="Returns object">
 <Parameter name="[uid" required>
@@ -2427,11 +3159,17 @@ string]:[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="getremotevideostats"></a>
 
 ### getRemoteVideoStats
 
-- getRemoteVideoStats():object
+<ApiSignature>
+
+getRemoteVideoStats(): object
+
+</ApiSignature>
 
 :::info[自从]
 *4.1.0*
@@ -2441,7 +3179,13 @@ string]:[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
 > Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
-Returns object
+<ApiReturns>
+
+<ApiReturnType>
+
+object
+
+</ApiReturnType>
 
 <ParameterList title="Returns object">
 <Parameter name="[uid" required>
@@ -2455,11 +3199,17 @@ string]:[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remotevi
 </Parameter>
 </ParameterList>
 
+</ApiReturns>
+
 <a id="masssubscribe"></a>
 
 ### massSubscribe
 
-- massSubscribe(subscribeList:object[]):Promise&lt;object[]&gt;
+<ApiSignature>
+
+massSubscribe(subscribeList: object[]): Promise&lt;object[]&gt;
+
+</ApiSignature>
 
 :::info[自从]
 *4.11.0*
@@ -2500,7 +3250,13 @@ for(const {track, mediaType, error} of result) {
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;object[]&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;object[]&gt;
+
+</ApiReturnType>
 
 正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
 
@@ -2512,11 +3268,17 @@ Returns Promise&lt;object[]&gt;
 - `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)。
 - `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
 
+</ApiReturns>
+
 <a id="massunsubscribe"></a>
 
 ### massUnsubscribe
 
-- massUnsubscribe(unsubscribeList:object[]):Promise&lt;void&gt;
+<ApiSignature>
+
+massUnsubscribe(unsubscribeList: object[]): Promise&lt;void&gt;
+
+</ApiSignature>
 
 :::info[自从]
 *4.11.0*
@@ -2543,13 +3305,25 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="off"></a>
 
 ### off
 
-- off(event:string, listener:Function):void
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.off
 
@@ -2568,41 +3342,193 @@ Inherited from EventEmitter.off
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="on"></a>
 
 ### on
 
-- on(event:"peerconnection-state-change", listener:typeof event_peerconnection_state_change):void
-- on(event:"connection-state-change", listener:typeof event_connection_state_change):void
-- on(event:"user-joined", listener:typeof event_user_joined):void
-- on(event:"user-left", listener:typeof event_user_left):void
-- on(event:"user-published", listener:typeof event_user_published):void
-- on(event:"user-unpublished", listener:typeof event_user_unpublished):void
-- on(event:"user-info-updated", listener:typeof event_user_info_updated):void
-- on(event:"media-reconnect-start", listener:typeof event_media_reconnect_start):void
-- on(event:"media-reconnect-end", listener:typeof event_media_reconnect_end):void
-- on(event:"stream-type-changed", listener:typeof event_stream_type_changed):void
-- on(event:"stream-fallback", listener:typeof event_stream_fallback):void
-- on(event:"channel-media-relay-state", listener:typeof event_channel_media_relay_state):void
-- on(event:"channel-media-relay-event", listener:typeof event_channel_media_relay_event):void
-- on(event:"volume-indicator", listener:typeof event_volume_indicator):void
-- on(event:"crypt-error", listener:typeof event_crypt_error):void
-- on(event:"token-privilege-will-expire", listener:typeof event_token_privilege_will_expire):void
-- on(event:"token-privilege-did-expire", listener:typeof event_token_privilege_did_expire):void
-- on(event:"network-quality", listener:typeof event_network_quality):void
-- on(event:"live-streaming-error", listener:typeof event_live_streaming_error):void
-- on(event:"live-streaming-warning", listener:typeof event_live_streaming_warning):void
-- on(event:"exception", listener:typeof event_exception):void
-- on(event:"is-using-cloud-proxy", listener:typeof event_is_using_cloud_proxy):void
-- on(event:"join-fallback-to-proxy", listener:typeof event_join_fallback_to_proxy):void
-- on(event:"published-user-list", listener:typeof event_published_user_list):void
-- on(event:"content-inspect-connection-state-change", listener:typeof event_content_inspect_connection_state_change):void
-- on(event:"content-inspect-error", listener:typeof event_content_inspect_error):void
-- on(event:"image-moderation-connection-state-change", listener:typeof event_image_moderation_connection_state_change):void
-- on(event:"stream-message", listener:typeof event_stream_message):void
-- on(event:string, listener:Function):void
+<ApiSignature>
+
+on(event: "peerconnection-state-change", listener: typeof event_peerconnection_state_change): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "connection-state-change", listener: typeof event_connection_state_change): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "user-joined", listener: typeof event_user_joined): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "user-left", listener: typeof event_user_left): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "user-published", listener: typeof event_user_published): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "user-unpublished", listener: typeof event_user_unpublished): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "user-info-updated", listener: typeof event_user_info_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "stream-fallback", listener: typeof event_stream_fallback): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "volume-indicator", listener: typeof event_volume_indicator): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "crypt-error", listener: typeof event_crypt_error): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "network-quality", listener: typeof event_network_quality): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "exception", listener: typeof event_exception): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "published-user-list", listener: typeof event_published_user_list): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "stream-message", listener: typeof event_stream_message): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -2625,7 +3551,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2644,7 +3578,15 @@ SDK 与服务器的连接状态发生改变回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2663,7 +3605,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2682,7 +3632,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2701,7 +3659,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2720,7 +3686,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2739,7 +3713,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2758,7 +3740,15 @@ SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2777,7 +3767,15 @@ SDk 重新建立媒体连接（用于发布和订阅）结束的回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2796,7 +3794,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2815,7 +3821,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2834,7 +3848,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2853,7 +3875,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2872,7 +3902,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2891,7 +3929,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2910,7 +3956,15 @@ Token 即将过期回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2929,7 +3983,15 @@ Token 已过期回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2948,7 +4010,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2967,7 +4037,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -2986,7 +4064,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3005,7 +4091,15 @@ SDk 检测到异常事件回调。
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3024,7 +4118,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3046,7 +4148,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3065,7 +4175,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3084,7 +4202,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3103,7 +4229,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3122,7 +4256,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3141,7 +4283,15 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 Overrides EventEmitter.on
 
@@ -3160,13 +4310,25 @@ Overrides EventEmitter.on
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="once"></a>
 
 ### once
 
-- once(event:string, listener:Function):void
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.once
 
@@ -3187,15 +4349,37 @@ Inherited from EventEmitter.once
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="presubscribe"></a>
 
 ### presubscribe
 
-- presubscribe(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"audio"):Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
-- presubscribe(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"video"):Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
-- presubscribe(uid:[UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType:"video"|"audio"):Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+
+</ApiSignature>
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+
+</ApiSignature>
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio"): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -3210,7 +4394,15 @@ Returns void
 <Parameter name="mediaType" type="&quot;audio&quot;" required />
 </ParameterList>
 
-Returns Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -3225,7 +4417,15 @@ Returns Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/i
 <Parameter name="mediaType" type="&quot;video&quot;" required />
 </ParameterList>
 
-Returns Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -3240,13 +4440,25 @@ Returns Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/i
 <Parameter name="mediaType" type="&quot;video&quot; | &quot;audio&quot;" required />
 </ParameterList>
 
-Returns Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="removealllisteners"></a>
 
 ### removeAllListeners
 
-- removeAllListeners(event?:string):void
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
 
 Inherited from EventEmitter.removeAllListeners
 
@@ -3260,13 +4472,25 @@ Inherited from EventEmitter.removeAllListeners
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="renewtoken"></a>
 
 ### renewToken
 
-- renewToken(token:string):Promise&lt;void&gt;
+<ApiSignature>
+
+renewToken(token: string): Promise&lt;void&gt;
+
+</ApiSignature>
 
 更新 token。
 
@@ -3280,13 +4504,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="sendcustomreportmessage"></a>
 
 ### sendCustomReportMessage
 
-- sendCustomReportMessage(reports:[EventCustomReportParams](/zh-CN/api-reference/rtc/web/interfaces/eventcustomreportparams)[]|[EventCustomReportParams](/zh-CN/api-reference/rtc/web/interfaces/eventcustomreportparams)):Promise&lt;void&gt;
+<ApiSignature>
+
+sendCustomReportMessage(reports: [EventCustomReportParams](/zh-CN/api-reference/rtc/web/interfaces/eventcustomreportparams)[] | [EventCustomReportParams](/zh-CN/api-reference/rtc/web/interfaces/eventcustomreportparams)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 自定义事件上报，用于将自定义的数据格式上报到声网的数据中心。
 
@@ -3316,13 +4552,25 @@ client.sendCustomReportMessage({
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setclientrole"></a>
 
 ### setClientRole
 
-- setClientRole(role:[ClientRole](/zh-CN/api-reference/rtc/web/globals#clientrole), options?:[ClientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientroleoptions)):Promise&lt;void&gt;
+<ApiSignature>
+
+setClientRole(role: [ClientRole](/zh-CN/api-reference/rtc/web/globals#clientrole), options?: [ClientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientroleoptions)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 设置直播场景中（[mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode) 设为 `"live"`）的用户角色。
 
@@ -3360,13 +4608,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setdualstreammode"></a>
 
 ### setDualStreamMode
 
-- setDualStreamMode(mode:[SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode), streamParameter?:[LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)):Promise&lt;void&gt;
+<ApiSignature>
+
+setDualStreamMode(mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode), streamParameter?: [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 在发送端设置双流模式和视频小流属性。
 
@@ -3417,13 +4677,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setencryptionconfig"></a>
 
 ### setEncryptionConfig
 
-- setEncryptionConfig(encryptionMode:[EncryptionMode](/zh-CN/api-reference/rtc/web/globals#encryptionmode), secret:string, salt?:Uint8Array, encryptDataStream?:boolean):void
+<ApiSignature>
+
+setEncryptionConfig(encryptionMode: [EncryptionMode](/zh-CN/api-reference/rtc/web/globals#encryptionmode), secret: string, salt?: Uint8Array, encryptDataStream?: boolean): void
+
+</ApiSignature>
 
 设置加密方案。
 
@@ -3470,14 +4742,31 @@ ASCII 字符。当用户设置的密码为弱密码时，SDK 会在控制台打�
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setimagemoderation"></a>
 
 ### setImageModeration
 
-- setImageModeration(enabled:false):Promise&lt;void&gt;
-- setImageModeration(enabled:true, config:[ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)):Promise&lt;void&gt;
+<ApiSignature>
+
+setImageModeration(enabled: false): Promise&lt;void&gt;
+
+</ApiSignature>
+
+<ApiSignature>
+
+setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 关闭第三方视频审核服务。
 
@@ -3489,7 +4778,15 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 开启和配置第三方视频审核服务。
 
@@ -3519,13 +4816,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setlocalaccesspointsv2"></a>
 
 ### setLocalAccessPointsV2
 
-- setLocalAccessPointsV2(config:[LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)):void
+<ApiSignature>
+
+setLocalAccessPointsV2(config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.16.0*
@@ -3573,7 +4882,15 @@ client.setLocalAccessPointsV2({
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Proxy Methods
 
@@ -3581,7 +4898,11 @@ Returns void
 
 ### setProxyServer
 
-- setProxyServer(proxyServer:string):void
+<ApiSignature>
+
+setProxyServer(proxyServer: string): void
+
+</ApiSignature>
 
 :::info[自从]
 *4.18.0*
@@ -3607,13 +4928,25 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="startproxyserver"></a>
 
 ### startProxyServer
 
-- startProxyServer(mode?:number):void
+<ApiSignature>
+
+startProxyServer(mode?: number): void
+
+</ApiSignature>
 
 开启云代理服务。
 
@@ -3635,16 +4968,36 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="stopproxyserver"></a>
 
 ### stopProxyServer
 
-- stopProxyServer():void
+<ApiSignature>
+
+stopProxyServer(): void
+
+</ApiSignature>
 
 关闭云代理服务。
 
 该方法必须在加入频道前或离开频道后调用。
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

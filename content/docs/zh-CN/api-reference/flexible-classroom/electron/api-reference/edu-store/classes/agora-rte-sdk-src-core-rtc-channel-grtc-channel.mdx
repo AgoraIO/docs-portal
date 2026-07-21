@@ -54,7 +54,11 @@ _migration:
 
 ### constructor
 
-- new AGRtcChannel(channelName:string, adapter:[RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base)):[AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
+<ApiSignature>
+
+new AGRtcChannel(channelName: string, adapter: [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-base-tc-channel-adapter-base)): [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="channelName" type="string" required />
@@ -69,7 +73,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-channel-grtc-channel)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -85,7 +97,11 @@ channelName: string
 
 ### enableDualStream
 
-- enableDualStream(enable:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
+<ApiSignature>
+
+enableDualStream(enable: boolean, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="enable" type="boolean" required />
@@ -100,21 +116,45 @@ channelName: string
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="getRtcSid"></a>
 
 ### getRtcSid
 
-- getRtcSid():string
+<ApiSignature>
 
-Returns string
+getRtcSid(): string
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="join"></a>
 
 ### join
 
-- join(token:string, streamUuid:string, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
+<ApiSignature>
+
+join(token: string, streamUuid: string, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="token" type="string" required />
@@ -130,13 +170,25 @@ Returns string
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="leave"></a>
 
 ### leave
 
-- leave(connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):Promise&lt;void&gt;
+<ApiSignature>
+
+leave(connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="connectionType" optional>
@@ -150,13 +202,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns Promise&lt;void&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteLocalAudioStream"></a>
 
 ### muteLocalAudioStream
 
-- muteLocalAudioStream(mute:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
+<ApiSignature>
+
+muteLocalAudioStream(mute: boolean, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mute" type="boolean" required />
@@ -171,13 +235,25 @@ Returns Promise&lt;void&gt;
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteLocalScreenStream"></a>
 
 ### muteLocalScreenStream
 
-- muteLocalScreenStream(mute:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
+<ApiSignature>
+
+muteLocalScreenStream(mute: boolean, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mute" type="boolean" required />
@@ -192,13 +268,25 @@ Returns number
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteLocalVideoStream"></a>
 
 ### muteLocalVideoStream
 
-- muteLocalVideoStream(mute:boolean, connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
+<ApiSignature>
+
+muteLocalVideoStream(mute: boolean, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="mute" type="boolean" required />
@@ -213,74 +301,146 @@ Returns number
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteAudioStream"></a>
 
 ### muteRemoteAudioStream
 
-- muteRemoteAudioStream(streamUuid:string, mute:boolean):number
+<ApiSignature>
+
+muteRemoteAudioStream(streamUuid: string, mute: boolean): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamUuid" type="string" required />
 <Parameter name="mute" type="boolean" required />
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteVideoStream"></a>
 
 ### muteRemoteVideoStream
 
-- muteRemoteVideoStream(streamUuid:string, mute:boolean):number
+<ApiSignature>
+
+muteRemoteVideoStream(streamUuid: string, mute: boolean): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamUuid" type="string" required />
 <Parameter name="mute" type="boolean" required />
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="muteRemoteVideoStreamMass"></a>
 
 ### muteRemoteVideoStreamMass
 
-- muteRemoteVideoStreamMass(streamUuids:string[], mute:boolean):Promise&lt;string[]&gt;
+<ApiSignature>
+
+muteRemoteVideoStreamMass(streamUuids: string[], mute: boolean): Promise&lt;string[]&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamUuids" type="string[]" required />
 <Parameter name="mute" type="boolean" required />
 </ParameterList>
 
-Returns Promise&lt;string[]&gt;
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string[]&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="onAudioVolumeIndication"></a>
 
 ### onAudioVolumeIndication
 
-- onAudioVolumeIndication(cb:(volumes:Map&lt;string,number&gt;)=&gt;void):number
+<ApiSignature>
+
+onAudioVolumeIndication(cb: (volumes: Map&lt;string, number&gt;) =&gt; void): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="cb" type="(volumes:Map &amp; lt;string,number &amp; gt;)= &amp; gt;void" required>
 
-- - (volumes:Map&lt;string,number&gt;):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="volumes" type="Map &amp; lt;string,number &amp; gt;" required />
-  </ParameterList>
+(volumes: Map&lt;string, number&gt;): void
 
-  Returns void
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="volumes" type="Map &amp; lt;string,number &amp; gt;" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="onConnectedThroughCloudProxy"></a>
 
 ### onConnectedThroughCloudProxy
 
-- onConnectedThroughCloudProxy(cb:(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void):number
+<ApiSignature>
+
+onConnectedThroughCloudProxy(cb: (connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)) =&gt; void): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="cb" required>
@@ -291,32 +451,56 @@ Returns number
 
 </ParameterType>
 
-- - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="connectionType" required>
+(connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="connectionType" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="onConnectionStageChanged"></a>
 
 ### onConnectionStageChanged
 
-- onConnectionStageChanged(cb:(state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type))=&gt;void):number
+<ApiSignature>
+
+onConnectionStageChanged(cb: (state: [AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)) =&gt; void): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="cb" required>
@@ -327,41 +511,65 @@ Returns number
 
 </ParameterType>
 
-- - (state:[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="state" required>
+(state: [AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state), connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
+<ParameterList title="Parameters">
+<Parameter name="state" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="connectionType" required>
+[AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grtc-state)
 
-  <ParameterType>
+</ParameterType>
 
-  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+</Parameter>
+<Parameter name="connectionType" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="onNetworkStats"></a>
 
 ### onNetworkStats
 
-- onNetworkStats(cb:(stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats))=&gt;void):number
+<ApiSignature>
+
+onNetworkStats(cb: (stats: [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)) =&gt; void): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="cb" required>
@@ -372,32 +580,56 @@ Returns number
 
 </ParameterType>
 
-- - (stats:[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="stats" required>
+(stats: [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)
+<ParameterList title="Parameters">
+<Parameter name="stats" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  </ParameterList>
+[AGNetworkStats](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gnetwork-stats)
 
-  Returns void
+</ParameterType>
 
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="onPublishedThroughCloudProxy"></a>
 
 ### onPublishedThroughCloudProxy
 
-- onPublishedThroughCloudProxy(cb:(connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy:boolean)=&gt;void):number
+<ApiSignature>
+
+onPublishedThroughCloudProxy(cb: (connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy: boolean) =&gt; void): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="cb" required>
@@ -408,33 +640,57 @@ Returns number
 
 </ParameterType>
 
-- - (connectionType:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy:boolean):void
+<ApiSignature>
 
-  <ParameterList title="Parameters">
-  <Parameter name="connectionType" required>
+(connectionType: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), isUsingCloudProxy: boolean): void
 
-  <ParameterType>
+</ApiSignature>
 
-  [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+<ParameterList title="Parameters">
+<Parameter name="connectionType" required>
 
-  </ParameterType>
+<ParameterType>
 
-  </Parameter>
-  <Parameter name="isUsingCloudProxy" type="boolean" required />
-  </ParameterList>
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
 
-  Returns void
+</ParameterType>
+
+</Parameter>
+<Parameter name="isUsingCloudProxy" type="boolean" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setCloudProxy"></a>
 
 ### setCloudProxy
 
-- setCloudProxy(proxyType:[AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)):number
+<ApiSignature>
+
+setCloudProxy(proxyType: [AgoraCloudProxyType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-cloud-proxy-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="proxyType" required>
@@ -448,13 +704,25 @@ Returns number
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setLatencyLevel"></a>
 
 ### setLatencyLevel
 
-- setLatencyLevel(level:[AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)):void
+<ApiSignature>
+
+setLatencyLevel(level: [AgoraLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-type-gora-latency-level)): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="level" required>
@@ -468,13 +736,25 @@ Returns number
 </Parameter>
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setLowStreamParameter"></a>
 
 ### setLowStreamParameter
 
-- setLowStreamParameter(streamParameter:[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
+<ApiSignature>
+
+setLowStreamParameter(streamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamParameter" required>
@@ -497,26 +777,50 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setRemoteTrackVolume"></a>
 
 ### setRemoteTrackVolume
 
-- setRemoteTrackVolume(streamUuid:string, volume:number):void
+<ApiSignature>
+
+setRemoteTrackVolume(streamUuid: string, volume: number): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamUuid" type="string" required />
 <Parameter name="volume" type="number" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 <a id="setRemoteVideoStreamType"></a>
 
 ### setRemoteVideoStreamType
 
-- setRemoteVideoStreamType(streamUuid:string, streamType:[AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), connectionType?:[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)):number
+<ApiSignature>
+
+setRemoteVideoStreamType(streamUuid: string, streamType: [AGRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gremote-video-stream-type), connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): number
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="streamUuid" type="string" required />
@@ -540,4 +844,12 @@ Returns void
 </Parameter>
 </ParameterList>
 
-Returns number
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>

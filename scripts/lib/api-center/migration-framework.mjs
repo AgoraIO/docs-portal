@@ -873,6 +873,16 @@ function reportToMarkdown(report) {
     }
     lines.push('');
   }
+  const structuredApiMembers = report.details?.structuredApiMembers;
+  if (structuredApiMembers) {
+    lines.push('## Structured API member rendering', '');
+    for (const [generator, counts] of Object.entries(structuredApiMembers)) {
+      lines.push(
+        `- \`${generator}\`: ${counts.signatures} signatures, ${counts.returns} returns`,
+      );
+    }
+    lines.push('');
+  }
   lines.push('## Warning explanations', '');
   const warningEntries = Object.entries(report.warningSummary);
   lines.push(

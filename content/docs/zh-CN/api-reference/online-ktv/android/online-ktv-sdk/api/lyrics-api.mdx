@@ -7,13 +7,10 @@ _migration:
   sourcePath: docs/online-ktv/online-ktv-sdk/api/lyrics-api.android.mdx
   generator: legacy-mdx
   warnings:
-    - code: manual-fragment-normalized
-      severity: info
-      message: Normalized 1 legacy fragment link(s) to stable local anchors.
     - code: unresolved-fragment
       severity: warning
       message: >-
-        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
+        Removed 2 fragment(s) that could not be mapped uniquely while preserving their local page
         links.
 ---
 
@@ -723,7 +720,7 @@ public int download(final String url)
 
 **参数**
 
-- `url`：需要下载的歌词文件的 URL。如果你需要下载声网版权音乐的歌词，你需要先调用 [`getLyricWithSongCode`](/zh-CN/api-reference/rtc/android/play/drm#songcode) 获取指定歌曲的歌词下载地址，然后通过由此触发的 [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调来获取歌词的 `url`。
+- `url`：需要下载的歌词文件的 URL。如果你需要下载声网版权音乐的歌词，你需要先调用 [`getLyricWithSongCode`](/zh-CN/api-reference/rtc/android/play/drm) 获取指定歌曲的歌词下载地址，然后通过由此触发的 [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调来获取歌词的 `url`。
 
 **返回值**
 

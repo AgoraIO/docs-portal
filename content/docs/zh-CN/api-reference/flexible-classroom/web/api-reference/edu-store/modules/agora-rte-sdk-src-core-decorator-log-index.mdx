@@ -29,7 +29,11 @@ Log: \{attach:any;silence:any;trace:any\}
 <ParameterList title="Type declaration">
 <Parameter name="attach" type="function" required>
 
-- attach(options?:\{label?:string;proxyMethods?:boolean\}):&lt;T&gt;(constructor:T)=&gt;T
+<ApiSignature>
+
+attach(options?: \{ label?: string; proxyMethods?: boolean \}): &lt;T&gt;(constructor: T) =&gt; T
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="options" type="\&#123;label?:string;proxyMethods?:boolean\&#125;" optional>
@@ -42,36 +46,72 @@ Log: \{attach:any;silence:any;trace:any\}
 </Parameter>
 </ParameterList>
 
-Returns &lt;T&gt;(constructor:T)=&gt;T
+<ApiReturns>
 
-- - &lt;T&gt;(constructor:T):T
+<ApiReturnType>
 
-  <ParameterList title="Type parameters">
-  <Parameter name="T" type="new(...args:any[])= &amp; gt;void" />
-  </ParameterList>
+&lt;T&gt;(constructor: T) =&gt; T
 
-  <ParameterList title="Parameters">
-  <Parameter name="constructor" type="T" required />
-  </ParameterList>
+</ApiReturnType>
 
-  Returns T
+<ApiSignature>
+
+&lt;T&gt;(constructor: T): T
+
+</ApiSignature>
+
+<ParameterList title="Type parameters">
+<Parameter name="T" type="new(...args:any[])= &amp; gt;void" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="constructor" type="T" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+T
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="silence" type="function" required>
 
-- silence(proto:any, propertyName:string):void
+<ApiSignature>
+
+silence(proto: any, propertyName: string): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="proto" type="any" required />
 <Parameter name="propertyName" type="string" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 <Parameter name="trace" type="function" required>
 
-- trace(proto:any, propertyName:string, descriptor:PropertyDescriptor):void
+<ApiSignature>
+
+trace(proto: any, propertyName: string, descriptor: PropertyDescriptor): void
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="proto" type="any" required />
@@ -79,7 +119,15 @@ Returns void
 <Parameter name="descriptor" type="PropertyDescriptor" required />
 </ParameterList>
 
-Returns void
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
 
 </Parameter>
 </ParameterList>

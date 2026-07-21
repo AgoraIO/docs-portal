@@ -44,7 +44,11 @@ _migration:
 
 ### constructor
 
-- new MessageItem(data:\{content:string;id:string;isBroadcast:boolean;isOwn?:boolean;messageId:string;role:[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum);ts:number;unread?:boolean;userName:string\}):[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+<ApiSignature>
+
+new MessageItem(data: \{ content: string; id: string; isBroadcast: boolean; isOwn?: boolean; messageId: string; role: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum); ts: number; unread?: boolean; userName: string \}): [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="data" required>
@@ -78,7 +82,15 @@ _migration:
 </Parameter>
 </ParameterList>
 
-Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+<ApiReturns>
+
+<ApiReturnType>
+
+[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ApiReturnType>
+
+</ApiReturns>
 
 ## Properties
 
@@ -142,9 +154,19 @@ userName: string
 
 ### toMessage
 
-- toMessage():\{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;role:string;timestamp:number;uid:string;unread:undefined|boolean;userName:string\}
+<ApiSignature>
 
-Returns \{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;role:string;timestamp:number;uid:string;unread:undefined|boolean;userName:string\}
+toMessage(): \{ content: string; id: string; isBroadcast: boolean; isOwn: undefined | boolean; role: string; timestamp: number; uid: string; unread: undefined | boolean; userName: string \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ content: string; id: string; isBroadcast: boolean; isOwn: undefined | boolean; role: string; timestamp: number; uid: string; unread: undefined | boolean; userName: string \}
+
+</ApiReturnType>
 
 <ParameterList title="Returns &#123; content: string; id: string; isBroadcast: boolean; isOwn: undefined | boolean; role: string; timestamp: number; uid: string; unread: undefined | boolean; userName: string &#125;">
 <Parameter name="content" type="string" required />
@@ -157,3 +179,5 @@ Returns \{content:string;id:string;isBroadcast:boolean;isOwn:undefined|boolean;r
 <Parameter name="unread" type="undefined | boolean" required />
 <Parameter name="userName" type="string" required />
 </ParameterList>
+
+</ApiReturns>

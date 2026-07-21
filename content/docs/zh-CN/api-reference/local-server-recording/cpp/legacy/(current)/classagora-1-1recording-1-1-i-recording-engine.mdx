@@ -40,8 +40,11 @@ _migration:
 
 ### ~IRecordingEngine()
 
-| virtual agora::recording::IRecordingEngine::~IRecordingEngine () | inlinevirtual |
-| --- | --- |
+<ApiSignature labels="inline virtual">
+
+virtual agora::recording::IRecordingEngine::~IRecordingEngine()
+
+</ApiSignature>
 
 ## 成员函数说明
 
@@ -49,8 +52,11 @@ _migration:
 
 ### createAgoraRecordingEngine()
 
-| static [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine)* agora::recording::IRecordingEngine::createAgoraRecordingEngine ( const char * *appId*, [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) * *eventHandler*) | static |
-| --- | --- |
+<ApiSignature labels="static">
+
+static [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine)* agora::recording::IRecordingEngine::createAgoraRecordingEngine(const char * *appId*, [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler) * *eventHandler*)
+
+</ApiSignature>
 
 该方法创建 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 实例。
 
@@ -75,8 +81,11 @@ _migration:
 
 ### joinChannel()
 
-| virtual int agora::recording::IRecordingEngine::joinChannel ( const char * *channelKey*, const char * *channelId*, uid_t *uid*, const [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::joinChannel(const char * *channelKey*, const char * *channelId*, uid_t *uid*, const [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) & *config*)
+
+</ApiSignature>
 
 该方法让录制端加入频道，并开始录制。
 
@@ -120,8 +129,11 @@ _migration:
 
 ### joinChannelWithUserAccount()
 
-| virtual int agora::recording::IRecordingEngine::joinChannelWithUserAccount ( const char * *token*, const char * *channelId*, const char * *userAccount*, const [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) & *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::joinChannelWithUserAccount(const char * *token*, const char * *channelId*, const char * *userAccount*, const [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config) & *config*)
+
+</ApiSignature>
 
 该方法允许录制端使用 User Account 加入频道。
 
@@ -169,8 +181,11 @@ _migration:
 
 ### getUserInfoByUserAccount()
 
-| virtual int agora::recording::IRecordingEngine::getUserInfoByUserAccount ( const char * *userAccount*, [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) * *userinfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::getUserInfoByUserAccount(const char * *userAccount*, [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) * *userinfo*)
+
+</ApiSignature>
 
 该方法通过 User Account 获取远端用户信息。
 
@@ -203,8 +218,11 @@ _migration:
 
 ### getUserInfoByUid()
 
-| virtual int agora::recording::IRecordingEngine::getUserInfoByUid ( uid_t *uid*, [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) * *userInfo*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::getUserInfoByUid(uid_t *uid*, [agora::linuxsdk::UserInfo](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-user-info) * *userInfo*)
+
+</ApiSignature>
 
 该方法通过 UID 获取远端用户信息。
 
@@ -237,8 +255,11 @@ _migration:
 
 ### setVideoMixingLayout()
 
-| virtual int agora::recording::IRecordingEngine::setVideoMixingLayout ( const [agora::linuxsdk::VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout) & *layout*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::setVideoMixingLayout(const [agora::linuxsdk::VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout) & *layout*)
+
+</ApiSignature>
 
 该方法设置视频合流布局。
 
@@ -261,8 +282,11 @@ _migration:
 
 ### stoppedOnError()
 
-| virtual int agora::recording::IRecordingEngine::stoppedOnError () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::stoppedOnError()
+
+</ApiSignature>
 
 该方法在 [onError](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) 中调用。当遇到无法解决的错误时，手动停止 [onError](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) 回调。
 
@@ -275,8 +299,11 @@ _migration:
 
 ### leaveChannel()
 
-| virtual int agora::recording::IRecordingEngine::leaveChannel () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::leaveChannel()
+
+</ApiSignature>
 
 该方法让录制端退出频道，并释放占用的线程资源。
 
@@ -289,8 +316,11 @@ _migration:
 
 ### release()
 
-| virtual int agora::recording::IRecordingEngine::release () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::release()
+
+</ApiSignature>
 
 该方法销毁 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine) 实例。
 
@@ -303,8 +333,11 @@ _migration:
 
 ### getProperties()
 
-| virtual const [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-engine-properties)* agora::recording::IRecordingEngine::getProperties () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual const [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-engine-properties)* agora::recording::IRecordingEngine::getProperties()
+
+</ApiSignature>
 
 该方法获取录制属性。
 
@@ -321,8 +354,11 @@ _migration:
 
 ### startService()
 
-| virtual int agora::recording::IRecordingEngine::startService () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::startService()
+
+</ApiSignature>
 
 该方法手动启动录制。
 
@@ -337,8 +373,11 @@ _migration:
 
 ### stopService()
 
-| virtual int agora::recording::IRecordingEngine::stopService () | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::stopService()
+
+</ApiSignature>
 
 该方法手动暂停录制。
 
@@ -353,8 +392,11 @@ _migration:
 
 ### setUserBackground()
 
-| virtual int agora::recording::IRecordingEngine::setUserBackground ( uid_t *uid*, const char * *img_path*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::setUserBackground(uid_t *uid*, const char * *img_path*)
+
+</ApiSignature>
 
 该方法设置指定 UID 用户的背景图片。当指定 UID 用户在线且没有发送视频流时，会显示该背景图片。
 
@@ -384,8 +426,11 @@ _migration:
 
 ### setLogLevel()
 
-| virtual int agora::recording::IRecordingEngine::setLogLevel ( [agora::linuxsdk::agora_log_level](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a08e209290d684d21a48648bd755d0334) *level*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::setLogLevel([agora::linuxsdk::agora_log_level](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a08e209290d684d21a48648bd755d0334) *level*)
+
+</ApiSignature>
 
 该方法设置 log 过滤等级。设置完成后，只有等级低于和等于所设 level 的 log 才会被生成。默认值为 5。
 
@@ -406,8 +451,11 @@ _migration:
 
 ### updateSubscribeVideoUids()
 
-| virtual int agora::recording::IRecordingEngine::updateSubscribeVideoUids ( uid_t * *uids*, uint32_t *num*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::updateSubscribeVideoUids(uid_t * *uids*, uint32_t *num*)
+
+</ApiSignature>
 
 该方法允许录制 SDK 只录制指定 UID 的视频。
 
@@ -437,8 +485,11 @@ UID 的个数。
 
 ### updateSubscribeAudioUids()
 
-| virtual int agora::recording::IRecordingEngine::updateSubscribeAudioUids ( uid_t * *uids*, uint32_t *num*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::updateSubscribeAudioUids(uid_t * *uids*, uint32_t *num*)
+
+</ApiSignature>
 
 该方法允许录制 SDK 只录制指定 UID 的音频。
 
@@ -468,8 +519,11 @@ UID 的个数。
 
 ### updateWatermarkConfigs()
 
-| virtual int agora::recording::IRecordingEngine::updateWatermarkConfigs ( uint32_t *wm_num*, [linuxsdk::WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config) * *config*) | pure virtual |
-| --- | --- |
+<ApiSignature labels="pure virtual">
+
+virtual int agora::recording::IRecordingEngine::updateWatermarkConfigs(uint32_t *wm_num*, [linuxsdk::WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-watermark-config) * *config*)
+
+</ApiSignature>
 
 该方法添加、更新或删除水印设置。
 
