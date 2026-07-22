@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   type ApiReferenceCardEntry,
   type ApiReferenceCardType,
@@ -7,10 +7,10 @@ import {
 } from '@/lib/api-reference-cards-data.zh-cn';
 
 type ApiReferenceCardsLocale = 'zh-CN';
-type ApiReferenceTypeFilter = 'all' | 'client' | 'server';
+type ApiReferenceTypeFilter = 'all' | 'client' | 'restful' | 'server';
 
 const apiTypeLabels = {
-  'client-api': '客户端 API',
+  'client-api': '客户端 SDK',
   'restful-api': 'RESTful API',
   'server-sdk': '服务端 SDK',
 } as const;
@@ -26,6 +26,7 @@ export function ApiReferenceCards({
   const [productId, setProductId] = useState('all');
   const [platformId, setPlatformId] = useState('all');
   const [apiType, setApiType] = useState<ApiReferenceTypeFilter>('all');
+  const [filtersReady, setFiltersReady] = useState(false);
 
   const productOptions = useMemo(
     () => buildOptions(entries, 'product'),
@@ -45,6 +46,30 @@ export function ApiReferenceCards({
   const hasFilter =
     productId !== 'all' || platformId !== 'all' || apiType !== 'all';
 
+  useEffect(() => {
+    const filters = readApiReferenceFilters(
+      window.location.search,
+      entries,
+      type === 'all',
+    );
+
+    setProductId(filters.productId);
+    setPlatformId(filters.platformId);
+    setApiType(filters.apiType);
+    setFiltersReady(true);
+  }, [entries, type]);
+
+  useEffect(() => {
+    if (!filtersReady) {
+      return;
+    }
+
+    writeApiReferenceFilters(
+      { apiType, platformId, productId },
+      type === 'all',
+    );
+  }, [apiType, filtersReady, platformId, productId, type]);
+
   function clearFilters() {
     setProductId('all');
     setPlatformId('all');
@@ -52,9 +77,12 @@ export function ApiReferenceCards({
   }
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-4">
-      <div className="flex flex-col gap-2 border-border border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2">
+    <section className="not-prose my-8 flex flex-col gap-5">
+      <section
+        aria-label="API 筛选"
+        className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:flex-wrap sm:items-end"
+      >
+        <div className="flex flex-wrap items-end gap-4">
           <FilterSelect
             label="产品"
             onChange={setProductId}
@@ -71,13 +99,13 @@ export function ApiReferenceCards({
             <ApiTypeSegmentedControl onChange={setApiType} value={apiType} />
           ) : null}
         </div>
-        <span className="text-xs font-medium text-muted-foreground">
-          {visibleEntries.length} / {entries.length}
+        <span className="pb-2 text-xs font-medium text-muted-foreground sm:ml-auto">
+          {visibleEntries.length} 个入口
         </span>
-      </div>
+      </section>
 
       {visibleEntries.length > 0 ? (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-[18px]">
           {visibleGroups.map((group) => (
             <ApiReferenceGroup group={group} key={group.productId} />
           ))}
@@ -113,8 +141,8 @@ function ApiTypeSegmentedControl({
   value: ApiReferenceTypeFilter;
 }) {
   return (
-    <fieldset className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-      <legend className="contents">API 类型</legend>
+    <fieldset className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
+      <legend>API 类型</legend>
       <div className="inline-flex h-8 rounded-md border border-border bg-muted/50 p-0.5">
         {apiTypeOptions.map((option) => {
           const isActive = option.id === value;
@@ -123,7 +151,7 @@ function ApiTypeSegmentedControl({
             <button
               aria-pressed={isActive}
               className={[
-                'rounded-[5px] px-2.5 text-sm font-medium transition-colors',
+                'rounded-[4px] px-2.5 text-xs font-medium transition-colors',
                 isActive
                   ? 'bg-foreground text-background shadow-sm'
                   : 'text-muted-foreground hover:bg-background/80 hover:text-foreground',
@@ -155,11 +183,11 @@ function FilterSelect({
   const id = `api-reference-${label}`;
 
   return (
-    <label className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+    <label className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
       <span>{label}</span>
       <span className="relative">
         <select
-          className="h-8 min-w-36 appearance-none rounded-md border border-border bg-background py-1 pr-8 pl-2 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+          className="h-8 min-w-40 appearance-none rounded-md border border-border bg-background py-1 pr-8 pl-2 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
           id={id}
           onChange={(event) => onChange(event.target.value)}
           value={value}
@@ -182,12 +210,18 @@ function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
     return <ApiReferenceSolutionGroup group={group} />;
   }
 
+  if (group.productId === 'conversational-ai') {
+    return <ConversationalAiReferenceGroup group={group} />;
+  }
+
   const clientEntries = group.entries.filter(
     (entry) => entry.apiType === 'client-api',
   );
-  const serverEntries = group.entries.filter(
-    (entry) =>
-      entry.apiType === 'server-sdk' || entry.apiType === 'restful-api',
+  const serverSdkEntries = group.entries.filter(
+    (entry) => entry.apiType === 'server-sdk',
+  );
+  const restfulEntries = group.entries.filter(
+    (entry) => entry.apiType === 'restful-api',
   );
 
   return (
@@ -202,17 +236,75 @@ function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="divide-y divide-border">
         {clientEntries.length > 0 ? (
           <ApiReferenceEntrySection
             entries={clientEntries}
-            title="客户端 API"
+            title="客户端 SDK"
           />
         ) : null}
-        {serverEntries.length > 0 ? (
+        {serverSdkEntries.length > 0 ? (
           <ApiReferenceEntrySection
-            entries={serverEntries}
-            title="服务端 API"
+            entries={serverSdkEntries}
+            title="服务端 SDK"
+          />
+        ) : null}
+        {restfulEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={restfulEntries}
+            title="RESTful API"
+          />
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function ConversationalAiReferenceGroup({
+  group,
+}: {
+  group: ApiReferenceProductGroup;
+}) {
+  const clientEntries = group.entries.filter(
+    (entry) => entry.apiType === 'client-api',
+  );
+  const serverSdkEntries = group.entries.filter(
+    (entry) => entry.apiType === 'server-sdk',
+  );
+  const restfulEntries = group.entries.filter(
+    (entry) => entry.apiType === 'restful-api',
+  );
+
+  return (
+    <section className="rounded-lg border border-border bg-muted/25 p-5 sm:p-6">
+      <div className="mb-5 max-w-3xl">
+        <h3 className="m-0 text-lg font-semibold text-foreground">
+          {group.product}
+        </h3>
+        <p className="m-0 mt-2 text-sm leading-6 text-muted-foreground">
+          {productDescriptions[group.productId]}
+        </p>
+      </div>
+
+      <div className="divide-y divide-border">
+        {clientEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={clientEntries}
+            subtitle="客户端 SDK"
+            title="对话式 AI Toolkit"
+          />
+        ) : null}
+        {serverSdkEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={serverSdkEntries}
+            subtitle="服务端 SDK"
+            title="Agora Agents"
+          />
+        ) : null}
+        {restfulEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={restfulEntries}
+            title="RESTful API"
           />
         ) : null}
       </div>
@@ -260,9 +352,11 @@ function ApiReferenceSolutionCard({
   const clientEntries = group.entries.filter(
     (entry) => entry.apiType === 'client-api',
   );
-  const serverEntries = group.entries.filter(
-    (entry) =>
-      entry.apiType === 'server-sdk' || entry.apiType === 'restful-api',
+  const serverSdkEntries = group.entries.filter(
+    (entry) => entry.apiType === 'server-sdk',
+  );
+  const restfulEntries = group.entries.filter(
+    (entry) => entry.apiType === 'restful-api',
   );
 
   return (
@@ -284,19 +378,26 @@ function ApiReferenceSolutionCard({
         ) : null}
       </div>
 
-      <div className="space-y-6">
+      <div className="divide-y divide-border">
         {clientEntries.length > 0 ? (
           <ApiReferenceEntrySection
             entries={clientEntries}
             headingLevel="h5"
-            title="客户端 API"
+            title="客户端 SDK"
           />
         ) : null}
-        {serverEntries.length > 0 ? (
+        {serverSdkEntries.length > 0 ? (
           <ApiReferenceEntrySection
-            entries={serverEntries}
+            entries={serverSdkEntries}
             headingLevel="h5"
-            title="服务端 API"
+            title="服务端 SDK"
+          />
+        ) : null}
+        {restfulEntries.length > 0 ? (
+          <ApiReferenceEntrySection
+            entries={restfulEntries}
+            headingLevel="h5"
+            title="RESTful API"
           />
         ) : null}
       </div>
@@ -307,19 +408,26 @@ function ApiReferenceSolutionCard({
 function ApiReferenceEntrySection({
   entries,
   headingLevel = 'h4',
+  subtitle,
   title,
 }: {
   entries: ApiReferenceCardEntry[];
   headingLevel?: 'h4' | 'h5';
+  subtitle?: string;
   title: string;
 }) {
   const Heading = headingLevel;
 
   return (
-    <section>
-      <Heading className="m-0 mb-3 text-sm font-semibold text-foreground">
-        {title}
-      </Heading>
+    <section className="py-5 first:pt-0 last:pb-0">
+      <div className="mb-3 flex items-baseline gap-2.5">
+        <Heading className="m-0 text-sm font-semibold text-foreground">
+          {title}
+        </Heading>
+        {subtitle ? (
+          <span className="text-xs text-muted-foreground">{subtitle}</span>
+        ) : null}
+      </div>
       <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
         {entries.map((entry) => (
           <ApiReferenceChip entry={entry} key={entryKey(entry)} />
@@ -341,7 +449,7 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
   return (
     <a
       aria-label={`${entry.product} ${solutionLabel}${entry.platform}${entryLabel}${typeLabel}`}
-      className="group inline-flex min-h-14 max-w-full items-center gap-3 rounded-md border border-border bg-background px-3.5 py-2.5 text-sm transition-colors hover:border-foreground/20 hover:bg-background/80"
+      className="group inline-flex min-h-12 max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30"
       href={entry.href}
     >
       <PlatformLabel entry={entry} />
@@ -351,21 +459,27 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
   const iconSrc = platformIcons[entry.platformId] ?? defaultPlatformIconSrc;
+  const displayName =
+    entry.apiType === 'restful-api' && entry.label === entry.platform
+      ? `${entry.product} RESTful API`
+      : entry.platform;
+  const showEntryLabel =
+    entry.productId !== 'conversational-ai' && entry.label !== entry.platform;
 
   return (
     <span className="flex min-w-0 items-center gap-2 text-sm text-foreground">
-      <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md">
+      <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
         <img
           alt=""
           aria-hidden
-          className="size-8"
+          className="size-7"
           loading="lazy"
           src={iconSrc}
         />
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-medium">{entry.platform}</span>
-        {entry.label !== entry.platform ? (
+        <span className="truncate text-sm font-medium">{displayName}</span>
+        {showEntryLabel ? (
           <span className="truncate text-xs text-muted-foreground">
             {entry.label}
           </span>
@@ -428,8 +542,9 @@ const apiTypeOptions: Array<{
   label: string;
 }> = [
   { id: 'all', label: '全部' },
-  { id: 'client', label: '客户端 API' },
-  { id: 'server', label: '服务端 API' },
+  { id: 'client', label: '客户端 SDK' },
+  { id: 'server', label: '服务端 SDK' },
+  { id: 'restful', label: 'RESTful API' },
 ];
 
 const productDescriptions: Record<string, string> = {
@@ -497,7 +612,80 @@ function matchesApiTypeFilter(
     return entry.apiType === 'client-api';
   }
 
-  return entry.apiType === 'server-sdk' || entry.apiType === 'restful-api';
+  if (filter === 'server') {
+    return entry.apiType === 'server-sdk';
+  }
+
+  return entry.apiType === 'restful-api';
+}
+
+type ApiReferenceFilters = {
+  apiType: ApiReferenceTypeFilter;
+  platformId: string;
+  productId: string;
+};
+
+function readApiReferenceFilters(
+  search: string,
+  entries: readonly ApiReferenceCardEntry[],
+  supportsApiType: boolean,
+): ApiReferenceFilters {
+  const params = new URLSearchParams(search);
+  const requestedProduct = params.get('product');
+  const requestedPlatform = params.get('platform');
+  const requestedApiType = params.get('apiType');
+
+  return {
+    apiType:
+      supportsApiType &&
+      (requestedApiType === 'client' ||
+        requestedApiType === 'server' ||
+        requestedApiType === 'restful')
+        ? requestedApiType
+        : 'all',
+    platformId:
+      requestedPlatform &&
+      entries.some((entry) => entry.platformId === requestedPlatform)
+        ? requestedPlatform
+        : 'all',
+    productId:
+      requestedProduct &&
+      entries.some((entry) => entry.productId === requestedProduct)
+        ? requestedProduct
+        : 'all',
+  };
+}
+
+function writeApiReferenceFilters(
+  filters: ApiReferenceFilters,
+  supportsApiType: boolean,
+) {
+  const params = new URLSearchParams(window.location.search);
+
+  setOptionalSearchParam(params, 'product', filters.productId);
+  setOptionalSearchParam(params, 'platform', filters.platformId);
+  setOptionalSearchParam(
+    params,
+    'apiType',
+    supportsApiType ? filters.apiType : 'all',
+  );
+
+  const search = params.toString();
+  const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+  window.history.replaceState(window.history.state, '', nextUrl);
+}
+
+function setOptionalSearchParam(
+  params: URLSearchParams,
+  name: string,
+  value: string,
+) {
+  if (value === 'all') {
+    params.delete(name);
+    return;
+  }
+
+  params.set(name, value);
 }
 
 function groupEntriesByProduct(

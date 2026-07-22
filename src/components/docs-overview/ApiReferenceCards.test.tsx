@@ -1,16 +1,26 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { zhCNApiReferenceCards } from '@/lib/api-reference-cards-data.zh-cn';
 import { ApiReferenceCards } from './ApiReferenceCards';
 
 describe('ApiReferenceCards', () => {
+  beforeEach(() => {
+    window.history.replaceState({}, '', '/zh-CN/api-reference/api');
+  });
+
   it('renders compact client API cards with product, platform, and API type', () => {
     render(<ApiReferenceCards locale="zh-CN" type="client" />);
 
     const rtcAndroidCard = screen
-      .getByRole('link', { name: /实时互动 RTC Android 客户端 API/i })
+      .getByRole('link', { name: /实时互动 RTC Android 客户端 SDK/i })
       .closest('a');
 
     expect(screen.getByLabelText('产品')).toBeVisible();
@@ -21,9 +31,7 @@ describe('ApiReferenceCards', () => {
       '/zh-CN/api-reference/rtc/android/rtc-api-overview',
     );
     expect(
-      screen.getByText(
-        `${zhCNApiReferenceCards.client.length} / ${zhCNApiReferenceCards.client.length}`,
-      ),
+      screen.getByText(`${zhCNApiReferenceCards.client.length} 个入口`),
     ).toBeVisible();
   });
 
@@ -39,15 +47,13 @@ describe('ApiReferenceCards', () => {
 
     expect(
       screen.getByRole('link', {
-        name: /实时消息 RTM JavaScript 客户端 API/i,
+        name: /实时消息 RTM JavaScript 客户端 SDK/i,
       }),
     ).toHaveAttribute('href', '/zh-CN/api-reference/rtm/web/configuration');
     expect(
-      screen.queryByRole('link', { name: /实时互动 RTC Web 客户端 API/i }),
+      screen.queryByRole('link', { name: /实时互动 RTC Web 客户端 SDK/i }),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByText(`1 / ${zhCNApiReferenceCards.client.length}`),
-    ).toBeVisible();
+    expect(screen.getByText('1 个入口')).toBeVisible();
   });
 
   it('renders server API cards for server SDK and RESTful API entries', () => {
@@ -66,7 +72,7 @@ describe('ApiReferenceCards', () => {
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/rtc');
   });
 
-  it('renders merged API reference groups and filters by API type', () => {
+  it('renders merged API reference groups and filters by API type', async () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
     expect(screen.getByRole('group', { name: 'API 类型' })).toBeVisible();
@@ -77,13 +83,11 @@ describe('ApiReferenceCards', () => {
       screen.getByRole('button', { name: '全部', pressed: true }),
     ).toBeVisible();
     expect(
-      screen.getByText(
-        `${zhCNApiReferenceCards.all.length} / ${zhCNApiReferenceCards.all.length}`,
-      ),
+      screen.getByText(`${zhCNApiReferenceCards.all.length} 个入口`),
     ).toBeVisible();
     expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
-      screen.getByRole('link', { name: /对话式 AI Android 客户端 API/i }),
+      screen.getByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/conversational-ai/android/overview',
@@ -97,18 +101,18 @@ describe('ApiReferenceCards', () => {
       '/zh-CN/api-reference/conversational-ai/agent-python',
     );
 
-    fireEvent.click(screen.getByRole('button', { name: '服务端 API' }));
+    fireEvent.click(screen.getByRole('button', { name: '服务端 SDK' }));
 
+    const serverSdkCount = zhCNApiReferenceCards.all.filter(
+      (entry) => entry.apiType === 'server-sdk',
+    ).length;
+
+    expect(screen.getByText(`${serverSdkCount} 个入口`)).toBeVisible();
     expect(
-      screen.getByText(
-        `${zhCNApiReferenceCards.server.length} / ${zhCNApiReferenceCards.all.length}`,
-      ),
+      screen.getByRole('button', { name: '服务端 SDK', pressed: true }),
     ).toBeVisible();
     expect(
-      screen.getByRole('button', { name: '服务端 API', pressed: true }),
-    ).toBeVisible();
-    expect(
-      screen.queryByRole('link', { name: /对话式 AI Android 客户端 API/i }),
+      screen.queryByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
     ).not.toBeInTheDocument();
     expect(
       screen.getByRole('link', {
@@ -119,8 +123,88 @@ describe('ApiReferenceCards', () => {
       '/zh-CN/api-reference/conversational-ai/agent-python',
     );
     expect(
+      screen.queryByRole('link', { name: /对话式 AI RESTful API/i }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'RESTful API' }));
+
+    expect(
       screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/conversational-ai');
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get('apiType')).toBe(
+        'restful',
+      );
+    });
+  });
+
+  it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'conversational-ai' },
+    });
+
+    const aiCard = screen
+      .getByRole('heading', { name: '对话式 AI' })
+      .closest('section');
+
+    expect(
+      within(aiCard as HTMLElement).getByRole('heading', {
+        name: '对话式 AI Toolkit',
+      }),
+    ).toBeVisible();
+    expect(within(aiCard as HTMLElement).getByText('客户端 SDK')).toBeVisible();
+    expect(
+      within(aiCard as HTMLElement).getByRole('heading', {
+        name: 'Agora Agents',
+      }),
+    ).toBeVisible();
+    expect(within(aiCard as HTMLElement).getByText('服务端 SDK')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'RESTful API' })).toBeVisible();
+    expect(
+      within(
+        screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
+      ).getByText('对话式 AI RESTful API'),
+    ).toBeVisible();
+  });
+
+  it('loads RTC client filters from the URL and keeps changes shareable', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=rtc&apiType=client',
+    );
+
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const rtcClientCount = zhCNApiReferenceCards.client.filter(
+      (entry) => entry.productId === 'rtc',
+    ).length;
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('产品')).toHaveValue('rtc');
+      expect(
+        screen.getByRole('button', { name: '客户端 SDK', pressed: true }),
+      ).toBeVisible();
+    });
+
+    expect(screen.getByText(`${rtcClientCount} 个入口`)).toBeVisible();
+    expect(screen.getByRole('heading', { name: '实时互动 RTC' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '实时消息 RTM' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'web' },
+    });
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get('product')).toBe('rtc');
+      expect(params.get('apiType')).toBe('client');
+      expect(params.get('platform')).toBe('web');
+    });
   });
 
   it('renders every IM API as an external link immediately after RTM', () => {
@@ -201,9 +285,7 @@ describe('ApiReferenceCards', () => {
     fireEvent.click(screen.getByRole('button', { name: '清除筛选' }));
 
     expect(
-      screen.getByText(
-        `${zhCNApiReferenceCards.server.length} / ${zhCNApiReferenceCards.server.length}`,
-      ),
+      screen.getByText(`${zhCNApiReferenceCards.server.length} 个入口`),
     ).toBeVisible();
     expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
   });
@@ -222,7 +304,7 @@ describe('ApiReferenceCards', () => {
 
     expect(
       within(
-        screen.getByRole('link', { name: /实时互动 RTC Android 客户端 API/i }),
+        screen.getByRole('link', { name: /实时互动 RTC Android 客户端 SDK/i }),
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
@@ -248,9 +330,9 @@ describe('ApiReferenceCards', () => {
     });
 
     expect(screen.getByRole('heading', { name: '云端录制' })).toBeVisible();
-    expect(within(cloudRecordingCard).getAllByText('RESTful API')).toHaveLength(
-      1,
-    );
+    expect(
+      within(cloudRecordingCard).getByText('云端录制 RESTful API'),
+    ).toBeVisible();
   });
 
   it('renders stacked solution groups inside one product card', () => {
@@ -260,9 +342,7 @@ describe('ApiReferenceCards', () => {
       target: { value: 'online-ktv' },
     });
 
-    expect(
-      screen.getByText(`8 / ${zhCNApiReferenceCards.all.length}`),
-    ).toBeVisible();
+    expect(screen.getByText('8 个入口')).toBeVisible();
     expect(screen.getByRole('heading', { name: '在线 K 歌房' })).toBeVisible();
     expect(
       screen.getByRole('heading', { name: '场景化 API 方案' }),
@@ -270,7 +350,7 @@ describe('ApiReferenceCards', () => {
     expect(screen.getByRole('heading', { name: 'PaaS 方案' })).toBeVisible();
     expect(
       screen.getByRole('link', {
-        name: /在线 K 歌房 场景化 API 方案 Android 客户端 API/i,
+        name: /在线 K 歌房 场景化 API 方案 Android 客户端 SDK/i,
       }),
     ).toHaveAttribute(
       'href',
@@ -278,7 +358,7 @@ describe('ApiReferenceCards', () => {
     );
     expect(
       screen.getByRole('link', {
-        name: /在线 K 歌房 PaaS 方案 Android 客户端 API/i,
+        name: /在线 K 歌房 PaaS 方案 Android 客户端 SDK/i,
       }),
     ).toHaveAttribute(
       'href',

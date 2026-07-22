@@ -44,6 +44,54 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('links the RTC client API entry to the filtered API reference page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: 'rtc-client-api-reference',
+            linked: true,
+            search: {
+              apiType: 'client',
+              product: 'rtc',
+            },
+            title: '客户端 API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            id: 'rtc-rest-api',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/rtc',
+          },
+        ],
+        id: 'rtc-reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/realtime-media/rtc');
+
+    const clientApiLink = await screen.findByRole('link', {
+      name: '客户端 API',
+    });
+    const clientApiUrl = new URL(
+      clientApiLink.getAttribute('href') ?? '',
+      window.location.origin,
+    );
+
+    expect(clientApiUrl.pathname).toBe('/zh-CN/api-reference/api');
+    expect(clientApiUrl.searchParams.get('product')).toBe('rtc');
+    expect(clientApiUrl.searchParams.get('apiType')).toBe('client');
+    expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/rtc',
+    );
+  });
+
   it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
       {

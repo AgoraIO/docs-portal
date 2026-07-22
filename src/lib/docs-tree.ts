@@ -45,6 +45,7 @@ export type DocsSidebarPageNode = {
   id: string;
   linked?: boolean;
   method?: string;
+  search?: Record<string, string>;
   title: string;
   type: 'page';
   url: string;
