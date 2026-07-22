@@ -3,7 +3,33 @@ export function resolveMovedDocsRedirect(
   tab: string,
   slugSegments: string[],
 ) {
-  if (locale !== 'zh-CN' || tab !== 'introduction') {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  if (
+    tab === 'realtime-media' &&
+    slugSegments.join('/') === 'rtc/reference/release'
+  ) {
+    return '/zh-CN/realtime-media/rtc/build/extensions/release';
+  }
+
+  if (
+    tab === 'realtime-media' &&
+    slugSegments.join('/') ===
+      'rtc/build/initialize-and-channel/channel-management'
+  ) {
+    return '/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management';
+  }
+
+  if (
+    tab === 'realtime-media' &&
+    slugSegments.join('/') === 'rtc/build/media/media-player'
+  ) {
+    return '/zh-CN/realtime-media/rtc/build/audio/media-player';
+  }
+
+  if (tab !== 'introduction') {
     return null;
   }
 
