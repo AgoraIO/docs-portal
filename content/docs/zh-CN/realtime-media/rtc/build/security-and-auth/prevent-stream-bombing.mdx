@@ -96,7 +96,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -112,7 +112,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -216,7 +216,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -232,7 +232,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -336,7 +336,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -352,7 +352,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -456,7 +456,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -472,7 +472,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -576,7 +576,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -592,7 +592,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -696,7 +696,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -712,7 +712,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -816,7 +816,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -832,7 +832,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -936,7 +936,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -952,7 +952,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
@@ -1056,7 +1056,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 定位非法用户
 
-在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/zh-CN/api-reference/api-ref/rtc/query-host-list) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
 
 :::warning[注意]
 - RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)。
@@ -1072,7 +1072,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **将非法用户踢出频道**
 
-如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
 
 声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
 
