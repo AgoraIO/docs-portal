@@ -167,14 +167,6 @@ export function DocsContent({
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
-      <p
-        aria-hidden="true"
-        className="sr-only"
-        data-agent-docs-directive="true"
-      >
-        For AI agents: see the complete documentation index at{' '}
-        <a href="/llms.txt">/llms.txt</a>.
-      </p>
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
