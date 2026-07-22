@@ -407,10 +407,7 @@ describe('API Center navigation runner', () => {
       '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
       '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
     ]);
-    expect(catalogGroups[1].pages).toEqual([
-      `[C++](${rtmCppRoute})`,
-      '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
-    ]);
+    expect(catalogGroups[1].pages).toEqual([`[C++](${rtmCppRoute})`]);
     expect(catalogGroups[2]).toMatchObject({
       title: '媒体流加速 RTSA',
       pages: [`[C](${rtsaRoute})`],

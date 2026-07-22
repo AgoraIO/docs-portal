@@ -320,6 +320,41 @@ describe('ApiReferenceCards', () => {
       'src',
       'https://assets-docs.agora.io/images/api-reference/platforms/restful.svg',
     );
+    expect(
+      within(
+        screen.getByRole('link', {
+          name: /媒体流加速 RTSA C 客户端 SDK/i,
+        }),
+      ).getByRole('presentation', { hidden: true }),
+    ).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/api-reference/platforms/c.svg',
+    );
+    expect(
+      within(
+        screen.getByRole('link', {
+          name: /在线美术教学 Windows 客户端 SDK/i,
+        }),
+      ).getByRole('presentation', { hidden: true }),
+    ).toHaveAttribute(
+      'src',
+      'https://doc.shengwang.cn/img/platforms/windows.svg',
+    );
+  });
+
+  it('does not expose Swift as an RTM API entry', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtm' },
+    });
+
+    expect(
+      screen.queryByRole('link', { name: /实时消息 RTM Swift/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('option', { name: 'Swift' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps product groups and API chips scan-friendly', () => {

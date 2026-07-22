@@ -37,10 +37,11 @@ const API_CENTER_SCOPED_LOCAL_ROOT_PREFIXES = [
 const API_CENTER_SIDEBAR_LABELS = new Map([
   ['/zh-CN/api-reference/rtc-server-sdk/error-code', '通用错误码'],
 ]);
-// The legacy API Center intentionally omitted RTM React Native even though its
-// generated API pages still exist and must remain directly reachable.
+// These generated RTM API pages remain directly reachable, but they are not
+// platform entries in the API Center.
 const LEGACY_HIDDEN_ROOT_ACTION_ROUTES = new Set([
   '/zh-CN/api-reference/rtm/react-native/configuration',
+  '/zh-CN/api-reference/rtm/swift/configuration',
 ]);
 
 const PRODUCT_ICONS = new Map([

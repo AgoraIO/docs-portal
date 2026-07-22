@@ -512,6 +512,7 @@ const defaultPlatformIconSrc = `${platformIconBaseUrl}/all.svg`;
 
 const platformIcons: Record<string, string> = {
   android: `${platformIconBaseUrl}/android.svg`,
+  c: `${platformIconBaseUrl}/c.svg`,
   cpp: `${platformIconBaseUrl}/cpp.svg`,
   csharp: `${platformIconBaseUrl}/csharp.svg`,
   electron: `${platformIconBaseUrl}/electron.svg`,
@@ -531,6 +532,7 @@ const platformIcons: Record<string, string> = {
   'unreal-blueprint': `${platformIconBaseUrl}/unreal-engine.svg`,
   'unreal-cpp': `${platformIconBaseUrl}/unreal-engine.svg`,
   web: `${platformIconBaseUrl}/js.svg`,
+  windows: 'https://doc.shengwang.cn/img/platforms/windows.svg',
 };
 
 const apiTypeOptions: Array<{
