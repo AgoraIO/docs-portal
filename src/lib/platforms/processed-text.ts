@@ -33,13 +33,17 @@ export function buildCanonicalPlatformTocText(processedText: string) {
 export function buildPlatformMarkdownText(
   processedText: string,
   platform: PlatformKey,
+  preserveSourceFormatting = false,
 ) {
-  return stripGeneratedHeadingAnchors(
-    filterPlatformBlocks(
-      processedText,
-      (_mode, _canonical, blockPlatform) => blockPlatform === platform,
-    ),
+  const markdown = filterPlatformBlocks(
+    processedText,
+    (_mode, _canonical, blockPlatform) => blockPlatform === platform,
+    preserveSourceFormatting,
   );
+
+  return preserveSourceFormatting
+    ? markdown
+    : stripGeneratedHeadingAnchors(markdown);
 }
 
 export function buildPlatformLLMText({
@@ -47,15 +51,21 @@ export function buildPlatformLLMText({
   pageUrl,
   platform,
   processedText,
+  preserveSourceFormatting = false,
 }: {
   pageTitle?: string;
   pageUrl: string;
   platform: PlatformKey;
   processedText: string;
+  preserveSourceFormatting?: boolean;
 }) {
   return `# ${pageTitle ?? pageUrl} (${pageUrl}/${platform})
 
-${buildPlatformMarkdownText(processedText, platform)}`;
+${buildPlatformMarkdownText(
+  processedText,
+  platform,
+  preserveSourceFormatting,
+)}`;
 }
 
 export function buildCanonicalPlatformLLMText({
@@ -144,6 +154,7 @@ function buildPlatformVariantsMarkdown(
 function filterPlatformBlocks(
   processedText: string,
   include: (mode: string, canonical: string, platform: string) => boolean,
+  preserveSourceFormatting = false,
 ) {
   return processedText
     .replace(
@@ -155,7 +166,11 @@ function filterPlatformBlocks(
         platform: string,
         body: string,
       ) =>
-        include(mode, canonical, platform) ? dedentMarkdownBlock(body) : '',
+        include(mode, canonical, platform)
+          ? preserveSourceFormatting
+            ? body
+            : dedentMarkdownBlock(body)
+          : '',
     )
     .replace(/<\/?_PlatformTabsGroup\b[^>]*>\n?/g, '')
     .replace(/<\/?_PlatformPanel\b[^>]*>\n?/g, '');

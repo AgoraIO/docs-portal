@@ -78,6 +78,33 @@ describe('fumadocs source loader', () => {
 ${processed}`);
   });
 
+  it('preserves source formatting for Chinese platform Markdown', async () => {
+    const page = {
+      data: {
+        getText:
+          async () => `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+    ## Android 设置 [#android]
+    Android 内容
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+    ## Web 设置 [#web]
+    Web 内容
+<_PlatformProcessedMarker close="true" />`,
+        title: '快速开始',
+      },
+      path: 'zh-CN/test.mdx',
+      url: '/zh-CN/test',
+    } as unknown as Parameters<typeof getPlatformLLMText>[0];
+
+    await expect(
+      getPlatformLLMText(page, 'android'),
+    ).resolves.toBe(`# 快速开始 (/zh-CN/test/android)
+
+    ## Android 设置 [#android]
+    Android 内容
+`);
+  });
+
   it('links platform-specific Markdown variants from canonical pages', async () => {
     const page = source.getPage(
       [
