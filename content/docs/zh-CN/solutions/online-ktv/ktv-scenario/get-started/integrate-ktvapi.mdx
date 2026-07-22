@@ -77,7 +77,7 @@ K 歌场景下主唱及独唱的业务流程图如下：
 
 ### 1. 创建并初始化 KTV API 模块
 
-1. 调用 [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_create) 初始化 `RtcEngine`。
+1. 调用 [`create`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_create) 初始化 `RtcEngine`。
 
    :::warning[注意]
    为避免引发程序异常甚至崩溃，请确保 `RtcEngine` 的生命周期大于 KTV API 模块的生命周期。
@@ -157,9 +157,9 @@ val ktvApiProtocol =
 ```
 
 :::info[信息]
-- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [onTokenPrivilegeWillExpire](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/android/API/toc_channel#renewToken) 来更新 Token。
-- 如需更新加入合唱子频道的 Token，直接调用 [KTVApi](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 下的 `renewToken` 来更新 Token。
-- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [`onTokenPrivilegeWillExpire`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [`renewToken`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
+- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/zh-CN/api-reference/rtc/android/channel#renewtoken) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，直接调用 [KTVApi](/zh-CN/api-reference/online-ktv) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/online-ktv) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [`renewToken`](/zh-CN/api-reference/online-ktv) 来更新 Token。
 :::
 
 ### 2. 订阅事件回调
@@ -261,7 +261,7 @@ RtcEngine.destroy()
 
 ### 获取歌曲进度和音高信息
 
-1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 [ILrcView](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api#lyricsview)，并实现该类中的回调。
+1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 [ILrcView](/zh-CN/api-reference/online-ktv)，并实现该类中的回调。
 
    ```kotlin
    class LrcView: ILrcView {
@@ -286,8 +286,8 @@ RtcEngine.destroy()
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ### 相关文档
 
@@ -362,7 +362,7 @@ K 歌场景下主唱及独唱的业务流程图如下：
 
 ### 1. 创建并初始化 KTV API 模块
 
-1. 调用 [`sharedEngineWithAppId`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) 初始化 `AgoraRtcEngineKit`。请确保 `AgoraRtcEngineKit` 的生命周期大于 KTV API 模块的生命周期。
+1. 调用 [`sharedEngineWithAppId`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 初始化 `AgoraRtcEngineKit`。请确保 `AgoraRtcEngineKit` 的生命周期大于 KTV API 模块的生命周期。
 
    ```objc
    // 初始化 AgoraRtcEngineKit
@@ -424,9 +424,9 @@ self.ktvApi = [[KTVApiImpl alloc] initWithConfig:apiConfig];
 ```
 
 :::info[信息]
-- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/ios/API/toc_channel#renewToken) 来更新 Token。
-- 如需更新加入合唱子频道的 Token，[KTVApi](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 下的 `renewToken` 来更新 Token。
-- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 来更新 Token。
+- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/zh-CN/api-reference/rtc/ios/channel#renewtoken) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，[KTVApi](/zh-CN/api-reference/online-ktv) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/online-ktv) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/api-reference/online-ktv) 来更新 Token。
 :::
 
 ### 2. 订阅事件回调
@@ -561,8 +561,8 @@ KTV API 模块内部会自动处理播放器同步，因此你也可以通过 `o
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ### 相关文档
 

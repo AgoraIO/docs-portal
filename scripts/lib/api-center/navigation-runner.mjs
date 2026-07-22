@@ -575,18 +575,38 @@ function addRtcServerSdkScopeMetaPlans(metaByPath, entries) {
   }
 }
 
-function addOnlineKtvScopeMetaPlans(metaByPath, entries) {
+function addOnlineKtvScopeMetaPlans(metaByPath, manifest) {
   const prefix = '/zh-CN/api-reference/online-ktv/';
   const platformSolutions = new Map();
-  for (const entry of entries) {
-    if (!entry.targetRoute?.startsWith(prefix)) continue;
-    const [platform, solution] = entry.targetRoute
-      .slice(prefix.length)
-      .split('/');
-    if (!platform || !solution) continue;
-    const solutions = platformSolutions.get(platform) ?? [];
-    if (!solutions.includes(solution)) solutions.push(solution);
-    platformSolutions.set(platform, solutions);
+  const evidence = evidenceIndex(manifest);
+  for (const entry of manifest.entries ?? []) {
+    if (entry.product !== '在线 K 歌房') continue;
+    for (const page of entry.pageGraph?.pages ?? []) {
+      const resolution = resolveEvidence(
+        evidence.get(normalizeLegacyKey(page.url)),
+        evidence,
+      )?.sourceResolution;
+      if (!resolution?.targetRoute?.startsWith(prefix)) continue;
+      const [platform, solution, apiFolder, ...leafParts] =
+        resolution.targetRoute.slice(prefix.length).split('/');
+      if (
+        !platform ||
+        !solution ||
+        apiFolder !== 'api' ||
+        leafParts.length === 0
+      ) {
+        continue;
+      }
+      const solutions = platformSolutions.get(platform) ?? new Map();
+      const pages = solutions.get(solution) ?? [];
+      if (
+        !pages.some((candidate) => candidate.route === resolution.targetRoute)
+      ) {
+        pages.push({ label: page.label, route: resolution.targetRoute });
+      }
+      solutions.set(solution, pages);
+      platformSolutions.set(platform, solutions);
+    }
   }
   if (platformSolutions.size === 0) return;
 
@@ -596,16 +616,29 @@ function addOnlineKtvScopeMetaPlans(metaByPath, entries) {
     rootRoute: '/zh-CN/api-reference/online-ktv',
     title: '在线 K 歌',
     pages: platforms,
-    preserveExistingPages: true,
   });
-  for (const [platform, solutions] of platformSolutions) {
+  for (const [platform, solutionsById] of platformSolutions) {
     createMetaAccumulator(metaByPath, {
       metaPath: `${API_REFERENCE_ROOT}/online-ktv/${platform}/meta.json`,
       rootRoute: `/zh-CN/api-reference/online-ktv/${platform}`,
       title: platform === 'ios' ? 'iOS' : 'Android',
-      pages: solutions,
-      preserveExistingPages: true,
+      pages: [...solutionsById.keys()],
     });
+    for (const [solution, apiPages] of solutionsById) {
+      const rootRoute = `/zh-CN/api-reference/online-ktv/${platform}/${solution}`;
+      createMetaAccumulator(metaByPath, {
+        metaPath: `${API_REFERENCE_ROOT}/online-ktv/${platform}/${solution}/meta.json`,
+        rootRoute,
+        title: `在线 K 歌房 ${platform === 'ios' ? 'iOS' : 'Android'}`,
+        pages: apiPages.map(({ route }) => route.slice(rootRoute.length + 1)),
+        metaPatch: {
+          navScope: {},
+          sidebarLabels: Object.fromEntries(
+            apiPages.map(({ label, route }) => [route, label]),
+          ),
+        },
+      });
+    }
   }
 }
 
@@ -637,7 +670,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
     const evidence = entryEvidence(entry, byUrl);
     const roots = [];
     const localRoot = landingLocalRoot(entry, evidence);
-    if (localRoot) {
+    if (localRoot && entry.product !== '在线 K 歌房') {
       roots.push({
         metaPath: `${localRoot}/meta.json`,
         rootRoute: routeForDocsDirectory(localRoot),
@@ -697,7 +730,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
 
   addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
-  addOnlineKtvScopeMetaPlans(metaByPath, manifest.entries ?? []);
+  addOnlineKtvScopeMetaPlans(metaByPath, manifest);
   addOpenApiLaneRootMetaPlans(metaByPath, lanes);
 
   return { metaByPath, openApiEntries };
@@ -2015,8 +2048,14 @@ export async function runApiCenterNavigation({
       type: 'navigation',
       adoptExisting: run.ownsTarget(landing.targetPath),
     });
+    const landingMetaPath = `${path.posix.dirname(landing.targetPath)}/meta.json`;
+    const existingMetaPlan = metaByPath.get(landingMetaPath);
+    if (existingMetaPlan) {
+      existingMetaPlan.includeIndex = true;
+      continue;
+    }
     createMetaAccumulator(metaByPath, {
-      metaPath: `${path.posix.dirname(landing.targetPath)}/meta.json`,
+      metaPath: landingMetaPath,
       rootRoute: landing.route,
       title: landing.title,
       pages: [],

@@ -58,7 +58,7 @@ val ktvApiProtocol =
 ```
 
 :::info[信息]
-当用于音乐内容中心鉴权的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
+当用于音乐内容中心鉴权的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/online-ktv) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/api-reference/online-ktv) 来更新 Token。
 :::
 
 <a id="步骤2"></a>
@@ -110,7 +110,7 @@ fun searchSongWithRankingChartId(type: Int, page: Int) {
 ```
 
 :::warning[注意]
-你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [`searchMusicByKeyword`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusicbykeyword) 及 [`searchMusicByMusicChartId`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusicbymusicchartid) 的 API 文档。
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [`searchMusicByKeyword`](/zh-CN/api-reference/online-ktv) 及 [`searchMusicByMusicChartId`](/zh-CN/api-reference/online-ktv) 的 API 文档。
 :::
 
 #### 使用 RESTful API 获取
@@ -123,7 +123,7 @@ fun searchSongWithRankingChartId(type: Int, page: Int) {
 
 2. 获取歌曲列表
 
-   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等，调用说明及示例详见 [API 文档](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)。
+   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等，调用说明及示例详见 [API 文档](/zh-CN/api-reference/online-ktv)。
 
 ### 3. 加载及播放版权音乐
 
@@ -178,8 +178,8 @@ ktvApiProtocol.removeMusic(songCode)
 
 本节介绍获取版权音乐使用的 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [RESTful API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
@@ -245,7 +245,7 @@ KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared
 ```
 
 :::info[信息]
-当用于音乐内容中心鉴权的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
+当用于音乐内容中心鉴权的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/online-ktv) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/api-reference/online-ktv) 来更新 Token。
 :::
 
 <a id="步骤2"></a>
@@ -307,7 +307,7 @@ KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared
 ```
 
 :::warning[注意]
-你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [`searchMusic`[1/2]](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusic) 及 [`searchMusic`[2/2]](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusic2) 的 API 文档。
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [`searchMusic`[1/2]](/zh-CN/api-reference/online-ktv) 及 [`searchMusic`[2/2]](/zh-CN/api-reference/online-ktv) 的 API 文档。
 :::
 
 #### 使用 RESTful API 获取
@@ -318,13 +318,13 @@ KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared
    RESTful API 仅支持 HTTPS 协议。发送请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[ HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
 
 2. 获取歌曲列表
-   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等，调用说明及示例详见 [API 文档](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)。
+   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等，调用说明及示例详见 [API 文档](/zh-CN/api-reference/online-ktv)。
 
 ### 3. 加载及播放版权音乐
 
 成功获取版权音乐后，调用 `loadMusic`[1/2] 加载歌曲。该方法中你需要传入歌曲编号并进行歌曲加载配置。歌曲加载结果会通过 `IMusicLoadStateListener` 接口类下的回调通知你。在调用 `loadMusic`[1/2] 时，你需要传入下列参数：
 
-- `songCode`：歌曲编号，可参考[步骤 2](#步骤2)获取。如果你需要播放歌曲的副歌片段，需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic` 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
+- `songCode`：歌曲编号，可参考[步骤 2](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)获取。如果你需要播放歌曲的副歌片段，需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic` 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
 
 - `config`：歌曲加载配置，包含下列参数：
   - `songIdentifier`：歌曲的唯一标识。如果你使用的是自行维护的曲库，你需要传入该参数，并需确保唯一性。如果你使用的是声网提供的版权音乐，向 `songCode` 传参即可，此参数传空。
@@ -382,8 +382,8 @@ songConfig.mainSingerUid = mainSingerUid;
 
 本节介绍获取及播放版权音乐使用的 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [RESTful API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 

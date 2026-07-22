@@ -22,7 +22,7 @@ description: "了解 K 歌场景化方案在不同平台上的合唱方式，包
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
 
 ```kotlin
 // 加入频道
@@ -85,7 +85,7 @@ ktvApiProtocol.switchSingerRole(KTVSingRole.Audience, null);
 
 ### 4. 根据角色更新媒体选项
 
-通过 [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 方法在加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 ```kotlin
 val channelMediaOption = ChannelMediaOptions()
@@ -103,7 +103,7 @@ mRtcEngine.updateChannelMediaOptions(channelMediaOption)
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 让伴唱加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 让伴唱加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
 
 ```kotlin
 // 加入频道
@@ -146,7 +146,7 @@ ktvApiProtocol.switchSingerRole(KTVSingRole.Audience, null);
 
 ### 4. 根据角色更新媒体选项
 
-通过 [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在伴唱加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 方法在伴唱加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 ```kotlin
 val channelMediaOption = ChannelMediaOptions()
@@ -164,7 +164,7 @@ mRtcEngine.updateChannelMediaOptions(channelMediaOption)
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 让听众加入频道，订阅音频流。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 让听众加入频道，订阅音频流。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `MUSIC_HIGH_QUALITY`，将音频场景设为 `AUDIO_SCENARIO_GAME_STREAMING`。
 
 ```kotlin
 // 加入频道
@@ -195,7 +195,7 @@ ktvApiProtocol.loadMusic(songCode, KTVLoadMusicConfiguration("<SongId>", "<MainS
 
 ### 3. 根据角色更新媒体选项
 
-通过 [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在听众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 方法在听众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 听众的用户角色为 `CLIENT_ROLE_AUDIENCE`，因此无法在频道内发布音频流。如果听众想上麦与演唱者语聊，需要将用户角色修改为 `CLIENT_ROLE_BROADCASTER`。修改角色后，SDK 默认发布该连麦听众的音频流，主唱、伴唱、其他听众都能听到连麦听众的声音。
 
@@ -232,8 +232,8 @@ mRtcEngine.updateChannelMediaOptions(channelMediaOption)
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
@@ -242,7 +242,7 @@ mRtcEngine.updateChannelMediaOptions(channelMediaOption)
 - [合唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)
 - [抢唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/gaming)
 - [接唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/relay)
-- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api)
+- [歌词打分组件](/zh-CN/api-reference/online-ktv)
 
 </PlatformStructured>
 
@@ -266,7 +266,7 @@ mRtcEngine.updateChannelMediaOptions(channelMediaOption)
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `AgoraAudioProfileMusicHighQuality`，调用 [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario) 将音频场景设为 `AgoraAudioScenarioGameStreaming`。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `AgoraAudioProfileMusicHighQuality`，调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为 `AgoraAudioScenarioGameStreaming`。
 
 ```objc
 // 加入频道
@@ -348,7 +348,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 4. 根据角色更新媒体选项
 
-通过 [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在主播加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) 方法在主播加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 ```objc
 AgoraRtcChannelMediaOptions* options = [AgoraRtcChannelMediaOptions new];
@@ -366,7 +366,7 @@ options.clientRoleType = AgoraClientRoleBroadcaster;
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 让伴唱加入频道。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 让伴唱加入频道。
 
 ```objc
 // 加入频道
@@ -416,7 +416,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 4. 根据角色更新媒体选项
 
-通过 [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在伴唱加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) 方法在伴唱加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 ```objc
 AgoraRtcChannelMediaOptions* options = [AgoraRtcChannelMediaOptions new];
@@ -434,7 +434,7 @@ options.clientRoleType = AgoraClientRoleBroadcaster;
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 让听众加入频道。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 让听众加入频道。
 
 ```objc
 // 加入频道
@@ -478,7 +478,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 3. 根据角色更新媒体选项
 
-通过 [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 方法在听众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
+通过 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) 方法在听众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。
 
 听众的用户角色为 `AgoraClientRoleAudience`，因此无法在频道内发布音频流。如果听众想上麦与主唱/伴唱语聊，需要将用户角色修改为 `AgoraClientRoleBroadcaster`。修改角色后，SDK 默认发布该连麦听众的音频流，主唱、伴唱、其他听众都能听到连麦听众的声音。
 
@@ -515,8 +515,8 @@ options.clientRoleType = AgoraClientRoleAudience;
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
@@ -525,6 +525,6 @@ options.clientRoleType = AgoraClientRoleAudience;
 - [大合唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/grand-chorus)
 - [抢唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/gaming)
 - [接唱](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/relay)
-- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api)
+- [歌词打分组件](/zh-CN/api-reference/online-ktv)
 
 </PlatformStructured>

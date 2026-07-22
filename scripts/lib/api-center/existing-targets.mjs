@@ -53,6 +53,79 @@ function publicPlatform(value) {
   return value === 'javascript' ? 'web' : value;
 }
 
+function onlineKtvTarget(pathname) {
+  const match = pathname.match(
+    /^\/doc\/online-ktv\/(?:(android|ios)\/)?(auikaraoke|ktv-scenario|online-ktv-sdk)\/(.+)$/i,
+  );
+  if (!match) return null;
+  const platform = match[1]?.toLowerCase() ?? null;
+  const solution = match[2].toLowerCase();
+  const relative = match[3].toLowerCase();
+  if (relative.startsWith('api/')) return null;
+
+  const direct = new Map([
+    ['landing-page', 'index.mdx'],
+    ['overview/introduction', 'index.mdx'],
+    ['overview/solution-compare', 'reference/solution-compare.mdx'],
+    ['advanced-features/get-music', 'build/extend-karaoke/get-music.mdx'],
+    [
+      'advanced-features/lyrics-scoring',
+      'build/extend-karaoke/lyrics-scoring.mdx',
+    ],
+    [
+      'advanced-features/lyrics-syncing',
+      'build/extend-karaoke/lyrics-syncing.mdx',
+    ],
+    ['get-started/enable-service', 'build/setup-and-access/enable-service.mdx'],
+    ['get-started/integrate', 'get-started/integrate.mdx'],
+    ['get-started/integrate-ktvapi', 'get-started/integrate-ktvapi.mdx'],
+    ['get-started/karaoke', 'get-started/karaoke.mdx'],
+    ['get-started/kit-demo', 'get-started/kit-demo.mdx'],
+    [
+      'get-started/run-github-project-backend',
+      'build/manage-karaoke/run-github-project-backend.mdx',
+    ],
+    ['overview/uikitkaraoke', 'build/manage-karaoke/uikitkaraoke.mdx'],
+  ]);
+  let targetRelative = direct.get(relative);
+  if (relative.startsWith('implementation/')) {
+    targetRelative = `build/implementation/${relative.slice(
+      'implementation/'.length,
+    )}.mdx`;
+  }
+  if (relative === 'resources') {
+    targetRelative =
+      solution === 'online-ktv-sdk' && platform
+        ? `reference/downloads/${platform}.mdx`
+        : 'reference/downloads.mdx';
+  }
+  if (!targetRelative) return null;
+
+  const routeRelative = targetRelative
+    .replace(/\.mdx$/, '')
+    .replace(/(^|\/)index$/, '')
+    .replace(/\/$/, '');
+  return targetForPath(
+    `content/docs/zh-CN/solutions/online-ktv/${solution}/${targetRelative}`,
+    `/zh-CN/solutions/online-ktv/${solution}${
+      routeRelative ? `/${routeRelative}` : ''
+    }`,
+  );
+}
+
+export function resolveSupersededApiCenterTarget(value) {
+  const pathname = normalizeLegacyPath(value);
+  const match = pathname.match(
+    /^\/doc\/online-ktv\/(?:android|ios)\/(auikaraoke|ktv-scenario|online-ktv-sdk)\/api\/([^/]+)$/i,
+  );
+  if (!match) return null;
+  const solution = match[1].toLowerCase();
+  const leaf = match[2].toLowerCase();
+  return targetForPath(
+    `content/docs/zh-CN/solutions/online-ktv/${solution}/reference/${leaf}.mdx`,
+  );
+}
+
 /**
  * Prefer already-migrated canonical MDX when the legacy repository path map
  * still points at an obsolete or duplicate destination.
@@ -78,6 +151,9 @@ export function resolveExistingApiCenterTarget(value) {
       'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication.mdx',
   };
   if (routeAliases[pathname]) return targetForPath(routeAliases[pathname]);
+
+  const onlineKtv = onlineKtvTarget(pathname);
+  if (onlineKtv) return onlineKtv;
 
   let match = pathname.match(
     /^\/api-ref\/meeting\/(android|electron|ios)\/client-api$/i,

@@ -183,7 +183,7 @@ mKaraokeView.setKaraokeEvent(new KaraokeEvent() {
 
 2. **歌词同步**
 
-   当播放器开始播放歌曲后，你可以通过内置媒体播放器的 [`getPlayPosition`](/api-ref/rtc/android/API/toc_mediaplayer_info#getPlayPosition) 获取歌曲当前的播放进度，然后通过 `setProgress` 来把歌词的播放进度同步给歌词组件，从而实现歌词同步。
+   当播放器开始播放歌曲后，你可以通过内置媒体播放器的 [`getPlayPosition`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#getplayposition) 获取歌曲当前的播放进度，然后通过 `setProgress` 来把歌词的播放进度同步给歌词组件，从而实现歌词同步。
 
    声网歌词组件还支持歌词拖动，当拖动到指定时间的歌词时，歌曲进度随之改变。当你设置允许歌词拖动后（即 `enableDragging` 设为 `true`），SDK 会触发 `onDragTo` 回调报告歌词拖动后的位置，然后你需要调用 `setProgress` 方法同步此时歌曲的播放位置给歌词组件，从而实现歌词同步。
 
@@ -230,7 +230,7 @@ mKaraokeView.setKaraokeEvent(new KaraokeEvent() {
 ```
 
 :::info[信息]
-你还可以通过 [`LyricsView`](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api#lyricsview) 类下的 API 来自定义更多界面元素。
+你还可以通过 [`LyricsView`](/zh-CN/api-reference/online-ktv) 类下的 API 来自定义更多界面元素。
 :::
 
 ## 实现打分组件
@@ -245,7 +245,7 @@ mKaraokeView.setKaraokeEvent(new KaraokeEvent() {
 
 ### 同步人声音调
 
-当演唱者开始唱歌，你可以通过 `RtcEngine` 下的 [`onAudioVolumeIndication`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 来获取本地用户的人声音调，然后通过 `setPitch` 来将用户实时的人声音调同步给打分组件。
+当演唱者开始唱歌，你可以通过 `RtcEngine` 下的 [`onAudioVolumeIndication`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 来获取本地用户的人声音调，然后通过 `setPitch` 来将用户实时的人声音调同步给打分组件。
 
 ```java
 mKaraokeView.setPitch(pitch);
@@ -273,7 +273,7 @@ mKaraokeView.setKaraokeEvent(new KaraokeEvent() {
 
 **设置得分难易程度**
 
-调用 `setScoringLevel` 来设置演唱者得分的难易程度。你可以通过 `level` 参数来调节难易程度，取值范围为 [0,100]，默认值为 15。值越小难度越低，演唱者越容易得分。你也可以参考[不同难度的推荐取值](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api#setscoringlevel)来进行设置。
+调用 `setScoringLevel` 来设置演唱者得分的难易程度。你可以通过 `level` 参数来调节难易程度，取值范围为 [0,100]，默认值为 15。值越小难度越低，演唱者越容易得分。你也可以参考[不同难度的推荐取值](/zh-CN/api-reference/online-ktv)来进行设置。
 
 ```java
 mKaraokeView.setScoringLevel(15);
@@ -383,7 +383,7 @@ mScoringView.enableParticleEffect(false);
 ```
 
 :::info[信息]
-你还可以通过 [`ScoringView`](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api#scoringview) 类下的 API 来自定义更多界面元素。
+你还可以通过 [`ScoringView`](/zh-CN/api-reference/online-ktv) 类下的 API 来自定义更多界面元素。
 :::
 
 下图展示歌词打分组件的 API 调用时序：
@@ -557,7 +557,7 @@ func onKaraokeView(view: KaraokeView, didDragTo position: Int)
 
 2. **歌词同步**
 
-   当播放器开始播放歌曲后，你可以通过内置媒体播放器的 [`getPosition`](/api-ref/rtc/ios/API/toc_mediaplayer_info#getPosition) 获取歌曲当前的播放进度，然后通过 `setProgress` 来把歌词的播放进度设置给歌词组件，从而实现歌词同步。
+   当播放器开始播放歌曲后，你可以通过内置媒体播放器的 [`getPosition`](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#getposition) 获取歌曲当前的播放进度，然后通过 `setProgress` 来把歌词的播放进度设置给歌词组件，从而实现歌词同步。
 
    声网歌词组件还支持歌词拖动，当拖动到指定时间的歌词时，歌曲进度随之改变。当你设置允许歌词拖动后（把 `LyricsView` 类下的 `draggable` 设为 `true`），SDK 会触发 `onKaraokeView`[1/2] 回调报告歌词拖动后的位置，然后你需要调用 `setProgress` 方法同步此时歌曲的播放位置给歌词组件，从而实现歌词同步。
 
@@ -630,7 +630,7 @@ public class LyricsView: UIView {
 
 ### 同步人声音调
 
-当演唱者开始唱歌，你可以通过 `AgoraRtcEngineDelegate` 下的 [`reportAudioVolumeIndicationOfSpeakers`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 来获取本地用户的人声音调，然后通过 `setPitch` 来将用户实时的人声音调同步给打分组件。
+当演唱者开始唱歌，你可以通过 `AgoraRtcEngineDelegate` 下的 [`reportAudioVolumeIndicationOfSpeakers`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 来获取本地用户的人声音调，然后通过 `setPitch` 来将用户实时的人声音调同步给打分组件。
 
 ```swift
 karaokeView.setPitch(pitch: pitch)
@@ -655,7 +655,7 @@ func onKaraokeView(view: KaraokeView,
 
 **设置得分难易程度**
 
-调用 `setScoreLevel` 来设置演唱者得分的难易程度。你可以通过 `level` 参数来调节难易程度，取值范围为 [0,100]，默认值为 15。值越小难度越低，演唱者越容易得分。你也可以参考[不同难度的推荐取值](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api#setscorelevel)来进行设置。
+调用 `setScoreLevel` 来设置演唱者得分的难易程度。你可以通过 `level` 参数来调节难易程度，取值范围为 [0,100]，默认值为 15。值越小难度越低，演唱者越容易得分。你也可以参考[不同难度的推荐取值](/zh-CN/api-reference/online-ktv)来进行设置。
 
 ```swift
 // 设置打分难易程度

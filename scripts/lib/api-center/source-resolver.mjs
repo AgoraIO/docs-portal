@@ -3,7 +3,10 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
 import yaml from 'js-yaml';
-import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
+import {
+  resolveExistingApiCenterTarget,
+  resolveSupersededApiCenterTarget,
+} from './existing-targets.mjs';
 
 const require = createRequire(import.meta.url);
 const HTTP_METHODS = new Set([
@@ -971,14 +974,6 @@ async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
   const mappedOutsideReferenceCenter =
     mapped?.targetPath?.startsWith('content/docs/zh-CN/') &&
     !mapped.targetPath.startsWith('content/docs/zh-CN/api-reference/');
-  if (isApiSource && mappedOutsideReferenceCenter) {
-    return {
-      ...inferred,
-      targetDecision: 'api-reference-over-section-path-map',
-      supersededTargetPath: mapped.targetPath,
-      supersededTargetRoute: mapped.targetRoute,
-    };
-  }
   const existingTarget = async (target) => {
     if (!target?.targetPath) return null;
     if (await fileExists(path.resolve(newRoot, target.targetPath)))
@@ -1000,6 +995,16 @@ async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
       targetDecision: `${target.targetDecision}-alternate-extension`,
     };
   };
+  if (isApiSource && mappedOutsideReferenceCenter) {
+    const superseded =
+      resolveSupersededApiCenterTarget(route.pathname) ?? mapped;
+    return {
+      ...inferred,
+      targetDecision: 'api-reference-over-section-path-map',
+      supersededTargetPath: superseded.targetPath,
+      supersededTargetRoute: superseded.targetRoute,
+    };
+  }
   const existingMapped = await existingTarget(mapped);
   if (existingMapped) return existingMapped;
   const existingInferred = await existingTarget(inferred);

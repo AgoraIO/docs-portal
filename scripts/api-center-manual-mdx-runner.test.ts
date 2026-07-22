@@ -373,4 +373,73 @@ describe('API Center manual MDX runner', () => {
       preservedExistingFiles: 1,
     });
   });
+
+  it('reconciles a formerly generated Online KTV guide after ownership moves back to Solutions', async () => {
+    const { oldRoot, repoRoot } = await createFixture();
+    const staleTarget =
+      'content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/overview/introduction.mdx';
+    const canonicalTarget =
+      'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/index.mdx';
+    const staleContents = 'stale generated guide\n';
+    await fs.mkdir(path.dirname(path.join(repoRoot, staleTarget)), {
+      recursive: true,
+    });
+    await fs.writeFile(path.join(repoRoot, staleTarget), staleContents);
+    await fs.mkdir(path.dirname(path.join(repoRoot, canonicalTarget)), {
+      recursive: true,
+    });
+    await fs.writeFile(
+      path.join(repoRoot, canonicalTarget),
+      'canonical solution guide\n',
+    );
+    const { createHash } = await import('node:crypto');
+    await fs.writeFile(
+      path.join(
+        repoRoot,
+        'docs/migration/api-center-manual-generated-files.json',
+      ),
+      JSON.stringify({
+        schemaVersion: 1,
+        files: [
+          {
+            targetPath: staleTarget,
+            contentHash: createHash('sha256')
+              .update(staleContents)
+              .digest('hex'),
+            sourcePath:
+              'docs/online-ktv/ktv-scenario/overview/introduction.mdx',
+            sourceUrl:
+              'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction',
+            type: 'manual-mdx',
+          },
+        ],
+      }),
+    );
+    await writeManifest(repoRoot, [
+      manualPage({
+        platform: 'android',
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction',
+        sourcePath: 'docs/online-ktv/ktv-scenario/overview/introduction.mdx',
+        targetExists: true,
+        targetPath: canonicalTarget,
+      }),
+    ]);
+
+    const result = await runManualMdxMigration({
+      repoRoot,
+      oldRoot,
+      reconcile: true,
+    });
+
+    await expect(fs.access(path.join(repoRoot, staleTarget))).rejects.toThrow();
+    expect(
+      await fs.readFile(path.join(repoRoot, canonicalTarget), 'utf8'),
+    ).toBe('canonical solution guide\n');
+    expect(result.report.counts).toMatchObject({
+      generatedFiles: 0,
+      preservedExistingFiles: 1,
+      removedOwnedFiles: 1,
+    });
+  });
 });

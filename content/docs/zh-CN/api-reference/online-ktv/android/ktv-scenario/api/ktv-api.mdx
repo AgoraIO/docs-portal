@@ -370,7 +370,7 @@ fun switchSingerRole(
 
 切换 K 歌时的用户角色。
 
-KTV API 初始化时默认用户角色为听众，如果需要开始独唱或加入合唱，需要调用 `switchSingerRole` 来切换至相应的角色。你可以参考[切换说明](/zh-CN/api-reference/online-ktv/android/ktv-scenario/get-started/integrate-ktvapi#5-切换角色)来进行角色切换。
+KTV API 初始化时默认用户角色为听众，如果需要开始独唱或加入合唱，需要调用 `switchSingerRole` 来切换至相应的角色。你可以参考[切换说明](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi#5-切换角色)来进行角色切换。
 
 KTV API 内部会根据角色的切换来控制演唱过程中音乐播放器的播放、同步，以及订阅和发布音频流的行为。角色切换的结果会通过 `ISwitchRoleStateListener` 回调异步通知你。
 
@@ -825,7 +825,7 @@ enum class KTVSwitchRoleFailReason(val value: Int) {
 用户角色切换失败的原因：
 
 - `JOIN_CHANNEL_FAIL`：(0) 加入频道失败。
-- `NO_PERMISSION`：(1) 不支持从当前角色切换为目标角色，请参考[切换说明](/zh-CN/api-reference/online-ktv/android/ktv-scenario/get-started/integrate-ktvapi#5-切换角色)进行角色切换。
+- `NO_PERMISSION`：(1) 不支持从当前角色切换为目标角色，请参考[切换说明](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi#5-切换角色)进行角色切换。
 
 <a id="KTVLoadMusicMode"></a>
 ### KTVLoadMusicMode

@@ -28,15 +28,61 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
-  it('keeps the online KTV platform API pages in a scoped sidebar', async () => {
+  it.each([
+    [
+      'android',
+      'ktv-scenario',
+      [
+        'api/ktv-api',
+        'api/lyrics-api',
+        'api/rtc-api',
+        'api/music-content-center',
+      ],
+    ],
+    [
+      'ios',
+      'ktv-scenario',
+      [
+        'api/ktv-api',
+        'api/lyrics-api',
+        'api/rtc-api',
+        'api/music-content-center',
+      ],
+    ],
+    [
+      'android',
+      'online-ktv-sdk',
+      ['api/rtc-api', 'api/lyrics-api', 'api/music-content-center'],
+    ],
+    [
+      'ios',
+      'online-ktv-sdk',
+      ['api/rtc-api', 'api/lyrics-api', 'api/music-content-center'],
+    ],
+    ['android', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
+    ['ios', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
+  ] as const)('keeps only Online KTV API documents in the %s/%s scoped sidebar', async (platform, solution, expectedPages) => {
     const solutionMeta = JSON.parse(
       await fs.readFile(
         path.resolve(
-          'content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/meta.json',
+          `content/docs/zh-CN/api-reference/online-ktv/${platform}/${solution}/meta.json`,
         ),
         'utf8',
       ),
     );
+    expect(solutionMeta.navScope).toEqual({});
+    expect(solutionMeta.pages).toEqual(expectedPages);
+    expect(solutionMeta.pages).not.toEqual(
+      expect.arrayContaining([
+        'landing-page',
+        'overview/introduction',
+        'get-started/enable-service',
+        'advanced-features/get-music',
+      ]),
+    );
+  });
+
+  it('keeps Online KTV product and platform navigation exact', async () => {
     const productMeta = JSON.parse(
       await fs.readFile(
         path.resolve('content/docs/zh-CN/api-reference/online-ktv/meta.json'),
@@ -52,17 +98,12 @@ describe('API Center navigation runner', () => {
       ),
     );
 
-    expect(productMeta.pages).toContain('android');
-    expect(platformMeta.pages).toContain('ktv-scenario');
-    expect(solutionMeta.navScope).toEqual({});
-    expect(
-      solutionMeta.sidebarLabels[
-        '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api'
-      ],
-    ).toBe('场景化 API');
-    expect(solutionMeta.pages).toEqual(
-      expect.arrayContaining(['api/ktv-api', 'api/lyrics-api', 'api/rtc-api']),
-    );
+    expect(productMeta.pages).toEqual(['index', 'android', 'ios']);
+    expect(platformMeta.pages).toEqual([
+      'ktv-scenario',
+      'online-ktv-sdk',
+      'auikaraoke',
+    ]);
   });
 
   it('moves every rehomed private-room API leaf from the root sidebar into the API catalog', () => {

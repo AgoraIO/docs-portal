@@ -41,7 +41,7 @@ description: "了解如何快速接入在线 K 歌 SDK，完成环境准备、�
    加入歌房前，调用 `create [2/2]` 方法创建并初始化 `RtcEngine` 实例，并将实例的音频场景设置为合唱（`CHORUS`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `BROADCASTER`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/api-reference/online-ktv)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `IMediaPlayer` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelEx` 方法，实现合唱。
 6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring)。
@@ -88,7 +88,7 @@ description: "了解如何快速接入在线 K 歌 SDK，完成环境准备、�
 - [Python](https://www.python.org/) 3.X。
 - 第三方云服务[命令行工具](https://leancloud.cn/docs/leanengine_faq.html#hash-864044521)。
 - 有效的声网[开发者账号](https://sso2.agora.io/cn/v4/signup/with-sms)。
-- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考[使用 RTM Token 鉴权](https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考)。
+- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考使用 RTM Token 鉴权。
 
 :::info[信息]
 在线 K 歌房仅使用 RTM Token 进行鉴权，不会产生云信令服务费用。
@@ -246,7 +246,7 @@ int ret = engine.joinChannelEx(null, rtcConnection, mediaOptions, iRtcEngineEven
    }
    ```
 
-你可以参考[版权音乐 API 文档](/api-ref/rtc/android/API/toc_drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[媒体播放器 API 文档](/api-ref/rtc/android/API/toc_mediaplayer_initialize)。
+你可以参考[版权音乐 API 文档](/zh-CN/api-reference/rtc/android/play/drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[媒体播放器 API 文档](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-initialize)。
 
 ### 歌曲/歌词同步
 
@@ -340,9 +340,9 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 
 ### 相关文档
 
-- [RESTful API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 - [歌词打分组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring)
-- [实时互动 API 参考](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api)
+- [实时互动 API 参考](/zh-CN/api-reference/online-ktv)
 
 </PlatformStructured>
 
@@ -386,7 +386,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
    加入歌房前，调用 `sharedEngineWithConfig` 方法创建并初始化 `AgoraRtcEngineKit` 实例，并将实例的音频场景设置为合唱（`AgoraAudioScenarioChorus`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `AgoraClientRoleBroadcaster`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/api-reference/online-ktv)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `AgoraRtcMediaPlayerProtocol` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelExByToken` 方法，实现合唱。
 6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring)。
@@ -434,7 +434,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 - [Python](https://www.python.org/) 3.X。
 - 第三方云服务[命令行工具](https://leancloud.cn/docs/leanengine_cli.html)。
 - 有效的声网[开发者账号](https://sso2.agora.io/cn/v4/signup/with-sms)。
-- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考[使用 RTM Token 鉴权](https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考)。
+- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考使用 RTM Token 鉴权。
 
 :::info[信息]
 在线 K 歌房仅使用 RTM Token 进行鉴权，不会产生云信令服务费用。
@@ -608,7 +608,7 @@ int ret = rtcEngine?.joinChannelEx(byToken: nil, connection: connection, delegat
 }
 ```
 
-你可以参考[版权音乐 API 文档](/api-ref/rtc/ios/API/toc_drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[内置媒体播放器 API 文档](/api-ref/rtc/ios/API/toc_mediaplayer_initialize)。
+你可以参考[版权音乐 API 文档](/zh-CN/api-reference/rtc/ios/play/drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[内置媒体播放器 API 文档](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize)。
 
 ### 歌曲/歌词同步
 
@@ -697,8 +697,8 @@ func rtcEngine(_: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, stre
 
 ### 相关文档
 
-- [RESTful API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 - [歌词打分组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring)
-- [实时互动 API 参考](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api)
+- [实时互动 API 参考](/zh-CN/api-reference/online-ktv)
 
 </PlatformStructured>

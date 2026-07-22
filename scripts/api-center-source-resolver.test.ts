@@ -102,6 +102,43 @@ async function resolve(
 }
 
 describe('API Center source resolver', () => {
+  it('reuses existing Online KTV solution pages instead of duplicating them under API Reference', () => {
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/index.mdx',
+      targetRoute: '/zh-CN/solutions/online-ktv/ktv-scenario',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/run-github-project-backend',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend.mdx',
+      targetRoute:
+        '/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/resources',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads/android.mdx',
+      targetRoute:
+        '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads/android',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/ktv-api',
+      ),
+    ).toBeNull();
+  });
+
   it('adds the complete Edu Store TypeDoc trees with portable source paths', async () => {
     const root = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-edu-store-source-'),
@@ -776,6 +813,68 @@ describe('API Center source resolver', () => {
       supersededTargetPath:
         'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
       supersededTargetRoute: '/zh-CN/solutions/meeting/reference/create-room',
+    });
+  });
+
+  it('rehomes Online KTV API pages from their current Solutions canonical paths', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-ktv-reference-ownership-'),
+    );
+    temporaryDirectories.push(root);
+    const legacyRoot = path.join(root, 'legacy');
+    const portalRoot = path.join(root, 'portal');
+    const currentSolutionTarget =
+      'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api.mdx';
+    const sourceIndex = {
+      ...baseIndex(),
+      oldRoot: legacyRoot,
+      platforms: new Map([
+        ['doc/online-ktv/android', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/online-ktv/android/ktv-scenario/api/ktv-api',
+          [
+            {
+              sourcePath:
+                'docs/online-ktv/ktv-scenario/api/ktv-api.android.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/online-ktv/android/ktv-scenario/api/ktv-api.html',
+        source_path: 'docs/online-ktv/ktv-scenario/api/ktv-api.android.mdx',
+        target_path:
+          'content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api.mdx',
+        new_url:
+          '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/ktv-api',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: portalRoot,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api.mdx',
+      targetRoute:
+        '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api',
+      targetDecision: 'api-reference-over-section-path-map',
+      supersededTargetPath: currentSolutionTarget,
+      supersededTargetRoute:
+        '/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api',
     });
   });
 

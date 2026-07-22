@@ -21,7 +21,7 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 
 ## 抢唱实现
 
-与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](#play)有差异。因此，你可以参考[独唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
+与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/gaming)有差异。因此，你可以参考[独唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
 
 <a id="play"></a>
 ### 加载及播放
@@ -34,7 +34,7 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 
 1. 通过 `onHighPartTime` 回调获取副歌片段开始和结束时间。
 
-2. 调用歌词组件中的 [`parseLyricsData`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api#parselyricsdata) 方法解析歌词文件数据，获取歌词数据模型。
+2. 调用歌词组件中的 [`parseLyricsData`](/zh-CN/api-reference/online-ktv) 方法解析歌词文件数据，获取歌词数据模型。
 
 3. 通过歌词的行数来计算副歌片段的总分，示例代码如下：
 
@@ -58,9 +58,9 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
-- [歌词打分组件 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
+- [歌词打分组件 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
@@ -92,7 +92,7 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 
 ## 抢唱实现
 
-与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](#play)有差异。因此，你可以参考[独唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
+与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/gaming)有差异。因此，你可以参考[独唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
 
 <a id="play"></a>
 ### 加载及播放
@@ -104,7 +104,7 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 抢唱场景下播放和演唱的音乐资源为副歌片段，你可以参考下列步骤来获取副歌片段的总分：
 
 1. 通过 `onHighPartTime` 回调获取副歌片段开始和结束时间。
-2. 调用歌词组件中的 [`parseLyricData`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api#parselyricdata) 方法解析歌词文件数据，获取歌词数据模型。
+2. 调用歌词组件中的 [`parseLyricData`](/zh-CN/api-reference/online-ktv) 方法解析歌词文件数据，获取歌词数据模型。
 3. 通过歌词的行数来计算副歌片段的总分，示例代码如下：
 
    ```objc
@@ -140,9 +140,9 @@ description: "了解 K 歌场景化方案在不同平台上的抢唱方式，包
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
-- [歌词打分组件 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
+- [歌词打分组件 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
