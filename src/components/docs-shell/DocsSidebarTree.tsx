@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { RtcClientApiSidebarPicker } from './RtcClientApiSidebarPicker';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -102,6 +103,19 @@ function SidebarNodeRenderer({
         node={node}
         onSelectPath={onSelectPath}
       />
+    );
+  }
+
+  if (node.pickerItems) {
+    return (
+      <SidebarMenuItem>
+        <RtcClientApiSidebarPicker
+          items={node.pickerItems}
+          mode="desktop"
+          onSelectPath={onSelectPath}
+          triggerClassName={sidebarPageButtonClassName}
+        />
+      </SidebarMenuItem>
     );
   }
 

@@ -6,7 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -44,6 +44,80 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('opens the grouped RTC client API picker from the sidebar', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: 'rtc-client-api-picker',
+            pickerItems: [
+              {
+                platformId: 'android',
+                title: 'Android',
+                url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+              },
+              {
+                platformId: 'web',
+                title: 'Web',
+                url: '/zh-CN/api-reference/rtc/web/overview',
+              },
+              {
+                platformId: 'unity',
+                title: 'Unity',
+                url: '/zh-CN/api-reference/rtc/unity/rtc-api-overview',
+              },
+            ],
+            title: '客户端 API',
+            type: 'page',
+            url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+          },
+          {
+            id: 'rtc-rest-api',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/rtc',
+          },
+        ],
+        id: 'rtc-reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/realtime-media/rtc');
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: '客户端 API，选择平台或语言',
+      }),
+    );
+
+    const picker = await screen.findByRole('dialog', {
+      name: '选择 RTC 客户端 API 平台或语言',
+    });
+
+    expect(within(picker).getByText('移动端')).toBeVisible();
+    expect(within(picker).getByText('桌面端与 Web')).toBeVisible();
+    expect(within(picker).getByText('跨平台与游戏引擎')).toBeVisible();
+    expect(
+      within(picker).queryByText('RTC 客户端 API'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(picker).queryByText('按开发环境选择'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(picker).getByRole('link', { name: /Android/ }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+    );
+    expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/rtc',
+    );
+  });
+
   it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
       {

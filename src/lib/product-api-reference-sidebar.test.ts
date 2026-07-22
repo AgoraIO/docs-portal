@@ -70,11 +70,44 @@ describe('product API reference sidebar links', () => {
     const sidebar = await loadSidebar('zh-CN', 'realtime-media', [productSlug]);
     const reference = findSection(sidebar, ['参考', '参考信息']);
 
-    expect(reference?.children?.[0]).toMatchObject({
+    const restApiNode = reference?.children?.find(
+      (child) => child.title === 'RESTful API',
+    );
+
+    expect(restApiNode).toMatchObject({
       title: 'RESTful API',
       type: 'page',
       url,
     });
+  });
+
+  it('adds the RTC client API picker before its RESTful API link', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
+    const reference = findSection(sidebar, ['参考', '参考信息']);
+
+    expect(reference?.children?.slice(0, 2)).toMatchObject([
+      {
+        pickerItems: expect.arrayContaining([
+          {
+            platformId: 'android',
+            title: 'Android',
+            url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+          },
+          {
+            platformId: 'unreal-blueprint',
+            title: 'Unreal (Blueprint)',
+            url: '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
+          },
+        ]),
+        title: '客户端 API',
+        type: 'page',
+      },
+      {
+        title: 'RESTful API',
+        type: 'page',
+        url: '/zh-CN/api-reference/api-ref/rtc',
+      },
+    ]);
   });
 
   it('adds a RESTful API leaf to nested Chinese whiteboard reference sections', async () => {

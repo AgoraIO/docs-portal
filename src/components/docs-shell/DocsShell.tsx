@@ -57,6 +57,7 @@ import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
+import { RtcClientApiSidebarPicker } from './RtcClientApiSidebarPicker';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -707,6 +708,17 @@ function MobileSidebarNode({
         ? mobileActivePageLinkClassName
         : mobileInactivePageLinkClassName,
     );
+
+    if (node.pickerItems) {
+      return (
+        <RtcClientApiSidebarPicker
+          items={node.pickerItems}
+          mode="mobile"
+          onSelectPath={onSelectPath}
+          triggerClassName={className}
+        />
+      );
+    }
 
     if (node.external) {
       return (
