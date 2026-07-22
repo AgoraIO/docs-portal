@@ -1,6 +1,6 @@
 ---
 title: Console Setup
-description: Use Agora Console to activate services, collect credentials, and prepare the project settings your first integration will rely on.
+description: Use Agora Console to activate services, collect credentials, and prepare the project settings your integration will rely on.
 ---
 
 Use Agora Console to manage your projects and account settings. Console settings are organized into two groups:
@@ -8,28 +8,33 @@ Use Agora Console to manage your projects and account settings. Console settings
 - **Project settings**: Apply to the currently selected project.
 - **Account settings**: Apply across your entire Agora account.
 
-## Project settings
+## Project level view
 
 When you log in to Agora Console, you land on the project-level view for the selected project. Use the project dropdown at the top of the page to switch between projects. Agora creates a default project for you when you create a new account.
 
-![Project Settings page](/console-tmp/project-settings.png)
+![Project Overview page](/console-tmp/project-overview.png)
 
-### Basics
+### Overview 
+
+The **Overview** page is the landing page for a project in Agora Console. It shows your project credentials (App ID and certificate), quick links to get started with agents, campaigns, and phone numbers, shortcuts to services, usage, and billing, and a summary of your plan quotas across RTC, Signaling, and Conversational AI.
+
+### Project settings
 
 The **Project Settings** page shows the basic identity and security configuration for the selected project.
 
-- **Project Name**: An editable, human-readable name for the project. Select the pencil icon to rename the project.
-- **App ID**: A unique, non-editable identifier for the project. Select the eye icon to reveal the App ID, or the copy icon to copy it to your clipboard.
+- **Project Name**: An editable, human-readable name for the project. Select **Edit** to rename the project.
 
-### Security
+- **App ID**: A unique, non-editable identifier for the project. Select the copy icon to copy the ID to your clipboard.
 
-- **Primary Certificate**: The project's primary server-side secret, used to generate authentication tokens. Enabling the primary certificate sets the project's status to **Secure** and requires clients to authenticate with a token. Treat the primary certificate like a database password.
+- **Primary Certificate**: The project's primary server-side secret, used to generate authentication tokens. Enabling the primary certificate (default) secures the project and requires clients to authenticate with a token. Treat the primary certificate like a database password.
 
-- **Secondary Certificate**: An optional fallback certificate used during certificate rotation. Enable it using the toggle. While enabled, the secondary certificate can't be deleted; disable it first to allow deletion.
+- **Secondary Certificate**: An optional fallback certificate used during certificate rotation. Enable it using the **Add a Certificate** button. You can't delete a secondary certificate while it is enabled; disable it first before deleting.
 
-Each certificate displays its creation date. Select the eye icon to reveal a certificate, or the copy icon to copy it.
+You can copy your **App ID** and **Primary certificate** individually or download your Agora `env` file for use in your projects.
 
-![Primary and Secondary Certificate settings](/console-tmp/security-certificates.png)
+![Primary and Secondary Certificate settings](/console-tmp/project-settings.png)
+
+You can also disable your project from the **Project Settings** page.
 
 ### Rotate certificates
 
