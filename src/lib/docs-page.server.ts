@@ -2160,57 +2160,127 @@ const PRODUCT_API_REFERENCE_LINKS = [
 
 type ProductApiReferenceLink = (typeof PRODUCT_API_REFERENCE_LINKS)[number];
 
+const PRODUCT_CLIENT_API_REFERENCE_LINKS = [
+  {
+    productId: 'rtc',
+    productSlug: 'rtc',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtm',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtsa',
+    productSlug: 'rtsa',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'whiteboard',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'flexible-classroom',
+    productSlug: 'flexible-classroom',
+    tab: 'solutions',
+  },
+  {
+    productId: 'meeting',
+    productSlug: 'meeting',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-art-teaching',
+    productSlug: 'art-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-ktv',
+    productSlug: 'online-ktv',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-music-teaching',
+    productSlug: 'online-music-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'teleoperation',
+    productSlug: 'teleoperation',
+    tab: 'solutions',
+  },
+] as const;
+
+type ProductClientApiReferenceLink =
+  (typeof PRODUCT_CLIENT_API_REFERENCE_LINKS)[number];
+
+function createZhCnClientApiReferencePage(
+  productId: string,
+): DocsSidebarPageNode {
+  return {
+    id: `zh-CN-${productId}-client-api-reference`,
+    linked: true,
+    search: {
+      apiType: 'client',
+      product: productId,
+    },
+    title: '客户端 API',
+    type: 'page',
+    url: '/zh-CN/api-reference/api',
+  };
+}
+
 function addRealtimeMediaApiReferenceSidebarItem(
   nodes: DocsSidebarNode[],
   activePath?: string,
 ): DocsSidebarNode[] {
-  const link = getProductApiReferenceLink(activePath);
+  const restApiLink = getProductApiReferenceLink(activePath);
+  const clientApiLink = getProductClientApiReferenceLink(activePath);
 
-  if (!link) {
+  if (!restApiLink && !clientApiLink) {
     return nodes;
   }
 
-  const pageNode = {
-    id: link.url,
-    linked: true,
-    title: link.title,
-    type: 'page',
-    url: link.url,
-  } satisfies DocsSidebarPageNode;
-
-  const existingUrls = new Set([
-    link.url,
-    ...getProductLegacyApiReferenceUrls(link),
-  ]);
-  const rtcClientApiPageNode =
-    link.locale === 'zh-CN' && link.productSlug === 'rtc'
-      ? ({
-          id: 'zh-CN-rtc-client-api-reference',
-          linked: true,
-          search: {
-            apiType: 'client',
-            product: 'rtc',
-          },
-          title: '客户端 API',
-          type: 'page',
-          url: '/zh-CN/api-reference/api',
-        } satisfies DocsSidebarPageNode)
-      : null;
+  const restApiPageNode = restApiLink
+    ? ({
+        id: restApiLink.url,
+        linked: true,
+        title: restApiLink.title,
+        type: 'page',
+        url: restApiLink.url,
+      } satisfies DocsSidebarPageNode)
+    : null;
+  const clientApiPageNode = clientApiLink
+    ? createZhCnClientApiReferencePage(clientApiLink.productId)
+    : null;
+  const existingRestApiUrls = restApiLink
+    ? new Set([
+        restApiLink.url,
+        ...getProductLegacyApiReferenceUrls(restApiLink),
+      ])
+    : new Set<string>();
 
   return nodes.map((node) => {
     if (node.type !== 'section') {
       return node;
     }
 
-    if (isProductReferenceSectionTitle(node.title, link.locale)) {
+    if (
+      isProductReferenceSectionTitle(node.title, restApiLink?.locale ?? 'zh-CN')
+    ) {
       return {
         ...node,
         children: [
-          ...(rtcClientApiPageNode ? [rtcClientApiPageNode] : []),
-          pageNode,
+          ...(clientApiPageNode ? [clientApiPageNode] : []),
+          ...(restApiPageNode ? [restApiPageNode] : []),
           ...filterSidebarNodes(
             node.children,
-            (child) => child.type !== 'page' || !existingUrls.has(child.url),
+            (child) =>
+              child.type !== 'page' ||
+              (child.title !== '客户端 API' &&
+                !existingRestApiUrls.has(child.url)),
           ),
         ],
       };
@@ -2224,6 +2294,22 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ),
     };
   });
+}
+
+function getProductClientApiReferenceLink(
+  activePath?: string,
+): ProductClientApiReferenceLink | null {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
+
+  if (locale !== 'zh-CN' || !tab || !productSlug) {
+    return null;
+  }
+
+  return (
+    PRODUCT_CLIENT_API_REFERENCE_LINKS.find(
+      (link) => link.tab === tab && link.productSlug === productSlug,
+    ) ?? null
+  );
 }
 
 function getProductApiReferenceLink(activePath?: string) {
@@ -2495,6 +2581,9 @@ function buildAiProductSidebar(
     type: 'page',
     url: restApiUrl,
   } satisfies DocsSidebarPageNode;
+  const clientApiPage = isZhCn
+    ? createZhCnClientApiReferencePage('conversational-ai')
+    : null;
   const serverSdkTypescriptUrl = isZhCn
     ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
     : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
@@ -2534,6 +2623,7 @@ function buildAiProductSidebar(
   const mergedReferenceSection: DocsSidebarSectionNode = {
     ...stripSidebarSectionMeta(referenceSection),
     children: [
+      ...(clientApiPage ? [clientApiPage] : []),
       restApiPage,
       serverSdkTypescriptPage,
       ...referenceLeadingChildren,
@@ -2611,6 +2701,10 @@ function addAiRestApiReferenceSidebarItem(
     type: 'page',
     url: restApiUrl,
   } satisfies DocsSidebarPageNode;
+  const clientApiPage =
+    locale === 'zh-CN'
+      ? createZhCnClientApiReferencePage('conversational-ai')
+      : null;
   const existingUrls = new Set([
     restApiUrl,
     `/${locale}/ai/reference/restful-api`,
@@ -2631,7 +2725,7 @@ function addAiRestApiReferenceSidebarItem(
       ...node,
       children: addAiRestApiReferenceToReferenceSection(
         node.children,
-        restApiPage,
+        [...(clientApiPage ? [clientApiPage] : []), restApiPage],
         existingUrls,
         locale,
       ),
@@ -2641,7 +2735,7 @@ function addAiRestApiReferenceSidebarItem(
 
 function addAiRestApiReferenceToReferenceSection(
   nodes: DocsSidebarNode[],
-  restApiPage: DocsSidebarPageNode,
+  apiReferencePages: DocsSidebarPageNode[],
   existingUrls: Set<string>,
   locale: AppLocale,
 ): DocsSidebarNode[] {
@@ -2654,10 +2748,12 @@ function addAiRestApiReferenceToReferenceSection(
       return {
         ...node,
         children: [
-          restApiPage,
+          ...apiReferencePages,
           ...filterSidebarNodes(
             node.children,
-            (child) => child.type !== 'page' || !existingUrls.has(child.url),
+            (child) =>
+              child.type !== 'page' ||
+              (child.title !== '客户端 API' && !existingUrls.has(child.url)),
           ),
         ],
       };
@@ -2667,7 +2763,7 @@ function addAiRestApiReferenceToReferenceSection(
       ...node,
       children: addAiRestApiReferenceToReferenceSection(
         node.children,
-        restApiPage,
+        apiReferencePages,
         existingUrls,
         locale,
       ),
