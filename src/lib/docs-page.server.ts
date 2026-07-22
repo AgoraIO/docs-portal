@@ -2207,6 +2207,11 @@ const PRODUCT_CLIENT_API_REFERENCE_LINKS = [
     tab: 'solutions',
   },
   {
+    productId: 'private-room',
+    productSlug: 'one-to-one-live',
+    tab: 'solutions',
+  },
+  {
     productId: 'teleoperation',
     productSlug: 'teleoperation',
     tab: 'solutions',

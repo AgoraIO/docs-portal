@@ -30,6 +30,22 @@ function findSection(
   return undefined;
 }
 
+function findSections(nodes: SidebarNode[], titles: string[]): SidebarNode[] {
+  const sections: SidebarNode[] = [];
+
+  for (const node of nodes) {
+    if (node.type === 'section' && node.title && titles.includes(node.title)) {
+      sections.push(node);
+    }
+
+    if (node.children) {
+      sections.push(...findSections(node.children, titles));
+    }
+  }
+
+  return sections;
+}
+
 function findTopLevelSection(
   nodes: SidebarNode[],
   titles: string[],
@@ -94,6 +110,7 @@ describe('product API reference sidebar links', () => {
     ['solutions', ['art-class'], 'online-art-teaching'],
     ['solutions', ['online-ktv', 'online-ktv-sdk'], 'online-ktv'],
     ['solutions', ['online-music-class'], 'online-music-teaching'],
+    ['solutions', ['one-to-one-live', 'rtm'], 'private-room'],
     ['solutions', ['teleoperation'], 'teleoperation'],
   ])('adds the %s/%s client API link for %s', async (tab, slugs, productId) => {
     const sidebar = await loadSidebar('zh-CN', tab, slugs);
@@ -112,6 +129,26 @@ describe('product API reference sidebar links', () => {
       type: 'page',
       url: '/zh-CN/api-reference/api',
     });
+  });
+
+  it('replaces both one-to-one live legacy API links with the filtered client API link', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'solutions', [
+      'one-to-one-live',
+      'rtm',
+    ]);
+    const references = findSections(sidebar, ['参考', '参考信息']);
+
+    expect(references).toHaveLength(2);
+    for (const reference of references) {
+      expect(
+        reference.children?.filter((child) => child.title === '客户端 API'),
+      ).toHaveLength(1);
+      expect(
+        reference.children?.some(
+          (child) => child.title === '1v1 私密房 API 参考',
+        ),
+      ).toBe(false);
+    }
   });
 
   it('adds the RTC client API link before its RESTful API link', async () => {
