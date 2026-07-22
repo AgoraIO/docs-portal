@@ -4,8 +4,11 @@ export type ApiReferenceCardType = 'client' | 'server';
 
 export type ApiReferenceKind = 'client-api' | 'restful-api' | 'server-sdk';
 
+export type ApiReferenceBreadcrumbRole = 'document' | 'platform-landing';
+
 export type ApiReferenceCardEntry = {
   apiType: ApiReferenceKind;
+  breadcrumbRole: ApiReferenceBreadcrumbRole;
   href: string;
   label: string;
   platform: string;

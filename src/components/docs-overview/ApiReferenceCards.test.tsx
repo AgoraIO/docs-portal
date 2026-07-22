@@ -2,8 +2,8 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { zhCNApiReferenceCards } from '@/lib/api-reference-cards-data.zh-cn';
 import { ApiReferenceCards } from './ApiReferenceCards';
-import { zhCNApiReferenceCards } from './api-reference-cards-data.zh-cn';
 
 describe('ApiReferenceCards', () => {
   it('renders compact client API cards with product, platform, and API type', () => {

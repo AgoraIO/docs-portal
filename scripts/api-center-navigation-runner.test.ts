@@ -28,6 +28,24 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it('records whether a catalog action is a platform landing or a document', () => {
+    const catalog = buildApiReferenceCatalogData([
+      {
+        pages: [
+          '[RESTful API](/zh-CN/api-reference/api-ref/cloud-recording)',
+          '[RESTful API](/zh-CN/api-reference/api-ref/signaling/publish)',
+        ],
+        title: '云端录制',
+      },
+    ]);
+
+    expect(
+      (catalog.all as Array<{ breadcrumbRole: string }>).map(
+        (entry) => entry.breadcrumbRole,
+      ),
+    ).toEqual(['platform-landing', 'document']);
+  });
+
   it.each([
     [
       'android',
@@ -799,10 +817,7 @@ describe('API Center navigation runner', () => {
     );
     const catalog = JSON.parse(
       await fs.readFile(
-        path.join(
-          repoRoot,
-          'src/components/docs-overview/api-reference-cards-data.zh-cn.json',
-        ),
+        path.join(repoRoot, 'src/lib/api-reference-cards-data.zh-cn.json'),
         'utf8',
       ),
     );

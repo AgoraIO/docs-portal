@@ -16,7 +16,7 @@ import {
 const API_CENTER_URL = 'https://doc.shengwang.cn/api-center';
 const API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference';
 const API_REFERENCE_CATALOG_DATA =
-  'src/components/docs-overview/api-reference-cards-data.zh-cn.json';
+  'src/lib/api-reference-cards-data.zh-cn.json';
 const MANIFEST_SOURCE = 'docs/migration/api-center-html-manifest.json';
 const OUT_OF_SCOPE_SHARED_ROUTES = new Set([
   '/zh-CN/introduction/mcp-integrate',
@@ -1374,8 +1374,16 @@ function catalogApiType(product, sourceLabel, route, platform) {
   return 'client-api';
 }
 
-export function buildApiReferenceCatalogData(groups) {
+export function buildApiReferenceCatalogData(
+  groups,
+  { lanes = OPENAPI_LANES } = {},
+) {
   const data = { all: [], client: [], server: [] };
+  const platformLandingRoutes = new Set(
+    lanes
+      .filter((lane) => !lane.locales || lane.locales.includes('zh-CN'))
+      .map((lane) => lane.parentUrl['zh-CN']),
+  );
   for (const group of groups) {
     const product = group.title;
     const productId = API_REFERENCE_CATALOG_PRODUCT_IDS.get(product);
@@ -1395,6 +1403,9 @@ export function buildApiReferenceCatalogData(groups) {
       );
       const entry = {
         apiType,
+        breadcrumbRole: platformLandingRoutes.has(action.route)
+          ? 'platform-landing'
+          : 'document',
         href: action.route,
         label: projection.label,
         platform: projection.platform,
@@ -2070,7 +2081,7 @@ export async function runApiCenterNavigation({
     entries,
     apiReferenceRehome,
   );
-  const catalogData = buildApiReferenceCatalogData(catalogGroups);
+  const catalogData = buildApiReferenceCatalogData(catalogGroups, { lanes });
   const rootPages = scopedRootMetaPages(
     rootMeta.pages,
     entries,

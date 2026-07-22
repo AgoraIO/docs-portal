@@ -326,8 +326,7 @@ export async function auditApiCenterMigration({
       try {
         const data = JSON.parse(contents.toString('utf8'));
         if (
-          targetPath !==
-            'src/components/docs-overview/api-reference-cards-data.zh-cn.json' ||
+          targetPath !== 'src/lib/api-reference-cards-data.zh-cn.json' ||
           !Array.isArray(data.all)
         ) {
           issues.push(

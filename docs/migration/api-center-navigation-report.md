@@ -136,5 +136,5 @@
 | generated | navigation-meta | `content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/restful/meta.json` | `docs/migration/api-center-html-manifest.json` |  |
 | generated | navigation-meta | `content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/(current)/meta.json` | `docs/migration/api-center-html-manifest.json` |  |
 | generated | navigation-meta | `content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/meta.json` | `docs/migration/api-center-html-manifest.json` |  |
-| generated | navigation-data | `src/components/docs-overview/api-reference-cards-data.zh-cn.json` | `docs/migration/api-center-html-manifest.json` |  |
+| generated | navigation-data | `src/lib/api-reference-cards-data.zh-cn.json` | `docs/migration/api-center-html-manifest.json` |  |
 

@@ -127,6 +127,7 @@ export const API_CENTER_WARNING_DEFINITIONS = {
 export const API_CENTER_OUTPUT_ROOTS = [
   'content/docs/zh-CN/api-reference',
   'public/img/api-center-generated',
+  'src/lib/api-reference-cards-data.zh-cn.json',
   'src/components/docs-overview/api-reference-cards-data.zh-cn.json',
 ];
 

@@ -4,7 +4,7 @@ import {
   type ApiReferenceCardEntry,
   type ApiReferenceCardType,
   zhCNApiReferenceCards,
-} from './api-reference-cards-data.zh-cn';
+} from '@/lib/api-reference-cards-data.zh-cn';
 
 type ApiReferenceCardsLocale = 'zh-CN';
 type ApiReferenceTypeFilter = 'all' | 'client' | 'server';

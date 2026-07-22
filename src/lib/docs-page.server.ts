@@ -3,6 +3,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -15,7 +16,7 @@ import {
   getSharedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
-import { getSourceSlugs } from './docs-routing';
+import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -723,6 +724,13 @@ export async function loadDocsPagePayload(
       ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
       : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const apiReferenceBreadcrumb =
+    locale === 'zh-CN' && tab === 'api-reference'
+      ? resolveZhCnApiReferenceBreadcrumb({
+          activePath: page.url,
+          title,
+        })
+      : null;
   const platformGroup = resolvePlatformGroupDefinition(page, localePages);
   const mdxBody = platformGroup
     ? {
@@ -780,7 +788,8 @@ export async function loadDocsPagePayload(
     activeTab: tab,
     body,
     breadcrumb:
-      navScope?.scope.meta.sidebarIndexTitle &&
+      apiReferenceBreadcrumb ??
+      (navScope?.scope.meta.sidebarIndexTitle &&
       page.url === navScope.scope.node.index?.url
         ? [
             {
@@ -795,7 +804,7 @@ export async function loadDocsPagePayload(
                 title,
                 url: page.url,
               },
-            ],
+            ]),
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, artifactPlatform).url,
@@ -3015,10 +3024,6 @@ function resolveFocusedOpenApiLaneSidebarHeader(
     backLabel: referenceBackLink.label,
     title: 'RESTful API',
   };
-}
-
-function isSamePathOrDescendant(activePath: string, prefix: string) {
-  return activePath === prefix || activePath.startsWith(`${prefix}/`);
 }
 
 function isZhCnRtmRestApiPage(

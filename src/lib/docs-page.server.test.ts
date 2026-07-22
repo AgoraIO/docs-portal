@@ -3809,6 +3809,22 @@ Web body
       backLabel: '实时消息 RTM',
       title: '实时消息 RTM',
     });
+    expect(payload.breadcrumb).toEqual([
+      {
+        title: 'API 参考',
+        url: '/zh-CN/api-reference/api',
+      },
+      {
+        title: '实时消息 RTM',
+      },
+      {
+        title: 'RESTful API',
+      },
+      {
+        title: '发送消息',
+        url: '/zh-CN/api-reference/api-ref/signaling/publish',
+      },
+    ]);
     expect(payload.navigation.previous).toBeUndefined();
     expect(payload.navigation.next).toEqual({
       title: '接收历史消息',
