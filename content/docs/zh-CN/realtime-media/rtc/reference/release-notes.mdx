@@ -140,7 +140,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 直推 CDN 相关接口废弃
 
-   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
    - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
    - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -284,7 +284,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### URL 拉流播放
 
-   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见[观众端 URL 拉流](https://doc.shengwang.cn/doc/rtc/android/best-practice/playing-url)。
+   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见[观众端 URL 拉流](/zh-CN/realtime-media/rtc/build/optimize-and-operate/playing-url)。
 
 #### 媒体播放器信息属性可访问
 
@@ -1140,7 +1140,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 支持仅播放副歌片段
 
-   该版本新增 [`getInternalSongCode`](/api-ref/rtc/android/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/doc/online-ktv/android/landing-page)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode`](/api-ref/rtc/android/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/zh-CN/solutions/online-ktv)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -1497,7 +1497,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 版权音乐
 
-为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`IAgoraMusicContentCenter`](/api-ref/rtc/android/API/rtc_interface_class#class_imusiccontentcenter) 类、[`IAgoraMusicPlayer`](/api-ref/rtc/android/API/rtc_interface_class#class_imusicplayer) 类、[`IMusicContentCenterEventHandler`](/api-ref/rtc/android/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=Android)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`IAgoraMusicContentCenter`](/api-ref/rtc/android/API/rtc_interface_class#class_imusiccontentcenter) 类、[`IAgoraMusicPlayer`](/api-ref/rtc/android/API/rtc_interface_class#class_imusicplayer) 类、[`IMusicContentCenterEventHandler`](/api-ref/rtc/android/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/zh-CN/solutions/online-ktv)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
 
 #### 耳机均衡器
 
@@ -1854,7 +1854,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 方便集成：只需执行简单统一的 API 即可实现模块化功能的集成，将实时互动模块集成效率提高约 95%。
 - 可扩展性设计：模块化和可扩展的 SDK 设计风格赋予了声网 SDK 良好的可扩展性，更有利于开发者基于声网云市场插件生态快速搭建好用的实时互动应用。
 - 打造生态系统：可容纳众多开发者的实时音视频 App 社区，提供多种扩展组合。添加并开启云市场插件后，开发者可以实现更为丰富的实时音视频互动功能。
-- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace#如何使用和开发插件)。
+- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace/build/create-extensions/publish)。
 
 #### 增强的频道管理
 
@@ -2036,7 +2036,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 直推 CDN 相关接口废弃
 
-   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
    - [`setDirectCdnStreamingAudioConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
    - [`setDirectCdnStreamingVideoConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -2178,7 +2178,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### URL 拉流播放
 
-   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见 [观众端 URL 拉流](https://doc.shengwang.cn/doc/rtc/ios/best-practice/playing-url)。
+   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见 [观众端 URL 拉流](/zh-CN/realtime-media/rtc/build/optimize-and-operate/playing-url)。
 
 ### 问题修复
 
@@ -2262,7 +2262,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    - 美型：调用 [`setFaceShapeBeautyOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions) 方法，可对人脸各部位进行修饰，你可以使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，并微调整体的修饰力度。如果预设的美型效果不能满足你的需求，你可以调用 [`setFaceShapeAreaOptions:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions) 方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
    - 美妆：调用 [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/ios/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
-   有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/ios/advanced-features/advanced-beauty)。
+   有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
    目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
@@ -2270,7 +2270,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 秀场直播场景
 
-   该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/ios/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplicationLiveShowScenario`(3)（秀场直播），你可以调用 [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)，此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/ios/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplicationLiveShowScenario`(3)（秀场直播），你可以调用 [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)，此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -2395,7 +2395,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    另外，[`AgoraAdvancedVideoOptions`](/api-ref/rtc/ios/API/class_advanceoptions) 中新增成员 `encodeAlpha`，用于设置是否将 Alpha 信息编码并发送到远端。SDK 默认不对 Alpha 信息进行编码发送；如果需要对 Alpha 信息编码发送至远端（例如开启了虚拟背景功能），请显式调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，并将 `encodeAlpha` 设置为 `YES`。
 
    :::info[信息]
-   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](https://doc.shengwang.cn/doc/rtc/ios/best-practice/alpha-effect)。
+   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](/zh-CN/realtime-media/rtc/build/video/alpha-effect)。
    :::
 
 #### AI 调音器
@@ -2993,7 +2993,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 支持仅播放副歌片段
 
-   该版本新增 [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=Android)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/zh-CN/solutions/online-ktv)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -3377,7 +3377,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 版权音乐
 
-为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 、[`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 、[`AgoraMusicContentCenterEventDelegate`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=iOS)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 、[`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 、[`AgoraMusicContentCenterEventDelegate`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/zh-CN/solutions/online-ktv)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
 
 #### 耳机均衡器
 
@@ -3732,7 +3732,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 方便集成：只需执行简单统一的 API 即可实现模块化功能的集成，将实时互动模块集成效率提高约 95%。
 - 可扩展性设计：模块化和可扩展的 SDK 设计风格赋予了声网 SDK 良好的可扩展性，更有利于开发者基于声网云市场插件生态快速搭建好用的实时互动应用。
 - 打造生态系统：可容纳众多开发者的实时音视频 App 社区，提供多种扩展组合。添加并开启云市场插件后，开发者可以实现更为丰富的实时音视频互动功能。
-- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace#如何使用和开发插件)。
+- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace/build/create-extensions/publish)。
 
 #### 增强的频道管理
 
@@ -3881,7 +3881,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 直推 CDN 相关接口废弃
 
-   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
    - [`setDirectCdnStreamingAudioConfiguration:`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
    - [`setDirectCdnStreamingVideoConfiguration:`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -4017,7 +4017,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### URL 拉流播放
 
-   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见 [观众端 URL 拉流](https://doc.shengwang.cn/doc/rtc/macos/best-practice/playing-url)。
+   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见 [观众端 URL 拉流](/zh-CN/realtime-media/rtc/build/optimize-and-operate/playing-url)。
 
 ### 问题修复
 
@@ -4100,7 +4100,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    - 美型：调用 [`setFaceShapeBeautyOptions:options:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions) 方法，可对人脸各部位进行修饰，你可以使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，并微调整体的修饰力度。如果预设的美型效果不能满足你的需求，你可以调用 [`setFaceShapeAreaOptions:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions) 方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
    - 美妆：调用 [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/macos/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
-   有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/macos/advanced-features/advanced-beauty)。
+   有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
    目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
@@ -4108,7 +4108,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 秀场直播场景
 
-   该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/macos/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplicationLiveShowScenario`(3)（秀场直播），你可以调用 [`setVideoScenario:`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [`enableInstantMediaRendering`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)，此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/macos/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplicationLiveShowScenario`(3)（秀场直播），你可以调用 [`setVideoScenario:`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [`enableInstantMediaRendering`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)，此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -4208,7 +4208,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    另外，[`AgoraAdvancedVideoOptions`](/api-ref/rtc/macos/API/class_advanceoptions) 中新增成员 `encodeAlpha`，用于设置是否将 Alpha 信息编码并发送到远端。SDK 默认不对 Alpha 信息进行编码发送；如果需要对 Alpha 信息编码发送至远端（例如开启了虚拟背景功能），请显式调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，并将 `encodeAlpha` 设置为 `YES`。
 
    :::info[信息]
-   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](https://doc.shengwang.cn/doc/rtc/macos/best-practice/alpha-effect)。
+   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](/zh-CN/realtime-media/rtc/build/video/alpha-effect)。
    :::
 
 #### AI 调音器
@@ -5421,7 +5421,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 方便集成：只需执行简单统一的 API 即可实现模块化功能的集成，将实时互动模块集成效率提高约 95%。
 - 可扩展性设计：模块化和可扩展的 SDK 设计风格赋予了声网 SDK 良好的可扩展性，更有利于开发者基于声网云市场插件生态快速搭建好用的实时互动应用。
 - 打造生态系统：可容纳众多开发者的实时音视频 App 社区，提供多种扩展组合。添加并开启云市场插件后，开发者可以实现更为丰富的实时音视频互动功能。
-- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace#如何使用和开发插件)。
+- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace/build/create-extensions/publish)。
 
 #### 增强的频道管理
 
@@ -5580,7 +5580,7 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 
 #### AI 降噪插件低延迟模式
 
-AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 升级至 v2.0.1 版本，新增低延迟模式和设置 WASM 模块的日志等级等特性，详见 [AI 降噪插件发版说明](/zh-CN/realtime-media/rtc/reference/release#ai-降噪插件)。
+AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 升级至 v2.0.1 版本，新增低延迟模式和设置 WASM 模块的日志等级等特性，详见 [AI 降噪插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release#ai-降噪插件)。
 
 ### 改进
 
@@ -5588,6 +5588,8 @@ AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agor
 
 - 该版本优化了 H.264 编码场景下的视频互动体验。
 - AI 画质插件升级至 v2.0.1 版本，优化了锐化算法，提升了部分场景下的视频体验。
+
+<a id="v4.24.2"></a>
 
 ## v4.24.2
 
@@ -5657,11 +5659,13 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 #### AI 画质插件升级
 
-该版本对 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) 的算法进行了升级，在减小插件体积、提升视频体验、扩展浏览器兼容性等方面均有改进。新版本的插件需要在支持 SIMD 的浏览器中才能正常运行。具体变更及改进点可以参考 [AI 画质插件发版说明](/zh-CN/realtime-media/rtc/reference/release#ai-画质插件)。
+该版本对 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) 的算法进行了升级，在减小插件体积、提升视频体验、扩展浏览器兼容性等方面均有改进。新版本的插件需要在支持 SIMD 的浏览器中才能正常运行。具体变更及改进点可以参考 [AI 画质插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release#ai-画质插件)。
 
 ### 问题修复
 
 修复了 iOS 系统上，音频流销毁后，系统音量无法设置为 0 的问题。
+
+<a id="v4.24.0"></a>
 
 ## v4.24.0
 
@@ -5814,6 +5818,8 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 该版本于 2024 年 9 月 19 日发布，进行了一些内部改进。
 
+<a id="v4.22.0"></a>
+
 ## v4.22.0
 
 该版本于 2024 年 8 月 15 日发布。
@@ -5945,6 +5951,8 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 - `RemoteVideoTrack.on("sei-received")`
 - `RemoteVideoTrack.on("video-state-changed")`
 - `AgoraRTCClient.setEncryptionConfig` 中新增 `encryptDataStream` 参数
+
+<a id="v4.20.0"></a>
 
 ## v4.20.0
 
@@ -6340,7 +6348,7 @@ v4.18.0 修复了以下问题：
 
 该版本还有以下改进：
 
-- 提升了[水晶球](https://docs.agora.io/cn/Agora%20Analytics/aa_guide?platform=All%20Platforms)上 SDK 相关质量指标的准确性。
+- 提升了[水晶球](/zh-CN/realtime-media/usage-analytics)上 SDK 相关质量指标的准确性。
 - 缩短了加入频道所需的时间。由于 Firefox 自身限制，暂时无法在 Firefox 浏览器上体验该优化。
 
 ### API 变更
@@ -7340,7 +7348,7 @@ v4.0.0 修复了以下问题：
 
 #### 直推 CDN 相关接口废弃
 
-   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
    - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
    - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -7488,7 +7496,7 @@ v4.0.0 修复了以下问题：
 
 #### URL 拉流播放
 
-   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见[观众端 URL 拉流](https://doc.shengwang.cn/doc/rtc/windows/best-practice/playing-url)。
+   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见[观众端 URL 拉流](/zh-CN/realtime-media/rtc/build/optimize-and-operate/playing-url)。
 
 ### 问题修复
 
@@ -7735,7 +7743,7 @@ v4.0.0 修复了以下问题：
    另外，[`AdvanceOptions`](/api-ref/rtc/windows/API/class_advanceoptions) 中新增成员 `encodeAlpha`，用于设置是否将 Alpha 信息编码并发送到远端。SDK 默认不对 Alpha 信息进行编码发送；如果需要对 Alpha 信息编码发送至远端（例如开启了虚拟背景功能），请显式调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，并将 `encodeAlpha` 设置为 `true`。
 
    :::info[信息]
-   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](https://doc.shengwang.cn/doc/rtc/windows/best-practice/alpha-effect)。
+   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](/zh-CN/realtime-media/rtc/build/video/alpha-effect)。
    :::
 
 #### AI 调音器
@@ -8676,7 +8684,7 @@ v4.0.0 修复了以下问题：
 
 #### 屏幕共享
 
-该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#bugfix)。
+该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#windows-v4.1.0-bugfix)。
 
 - 在 [`ScreenCaptureSourceInfo`](/api-ref/rtc/windows/API/class_screencapturesourceinfo) 中增加了 `minimizeWindow` 成员，用于表示目标窗口是否已最小化。
 - 在 [`ScreenCaptureParameters`](/api-ref/rtc/windows/API/class_screencaptureparameters) 中增加了 `enableHighLight`、`highLightColor` 和 `highLightWidth` 成员，支持你在屏幕共享时对目标窗口或屏幕进行描边。
@@ -8715,6 +8723,8 @@ v4.0.0 修复了以下问题：
 - 提升了 SDK 视频渲染的流畅度。
 - 降低了当主播调用 [`muteLocalVideoStream`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法时本地设备的 CPU 占用率和耗电量。
 - 增强对不同网络协议栈的识别能力，在多种运营商网络场景下提升 SDK 的接入能力。
+
+<a id="windows-v4.1.0-bugfix"></a>
 
 ### 问题修复
 
@@ -9343,7 +9353,7 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 SDK 新增支持如下集成方式：
 
-- 支持以小程序原生 npm 方式集成 SDK。详见[通过 npm 集成](/zh-CN/realtime-media/rtc/get-started/quick-start#integrate)。
+- 支持以小程序原生 npm 方式集成 SDK。详见[通过 npm 集成](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
 - 支持使用第三方小程序框架（如 [Taro](https://taro-docs.jd.com/docs)，[WePY](https://wepyjs.github.io/wepy-docs)）集成小程序 SDK。
 
 ### 改进
@@ -9650,7 +9660,7 @@ https://miniapp-4.agoraio.cn
 
 #### 直推 CDN 相关接口废弃
 
-该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
 - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
 - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -9871,12 +9881,12 @@ https://miniapp-4.agoraio.cn
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/electron/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
 
-   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/electron/API/enum_videoapplicationscenariotype) 类下新增枚举 `ApplicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/electron/API/enum_videoapplicationscenariotype) 类下新增枚举 `ApplicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -11375,7 +11385,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
 
 #### 直推 CDN 相关接口废弃
 
-该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
 - [`SetDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
 - [`SetDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -11649,12 +11659,12 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
    - 美妆：调用 [`SetExtensionProperty`](/api-ref/rtc/unity/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
 
-   该版本在 [`VIDEO_APPLICATION_SCENARIO_TYPE`](/api-ref/rtc/unity/API/enum_videoapplicationscenariotype) 类下新增枚举 `APPLICATION_SCENARIO_LIVESHOW`(3)（秀场直播），你可以调用 [`SetVideoScenario`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`VIDEO_APPLICATION_SCENARIO_TYPE`](/api-ref/rtc/unity/API/enum_videoapplicationscenariotype) 类下新增枚举 `APPLICATION_SCENARIO_LIVESHOW`(3)（秀场直播），你可以调用 [`SetVideoScenario`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -12097,7 +12107,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
 
    通过该特性，接收端可以灵活调整本地的视图布局。当在多人视频场景下应用时，接收端只需接收并解码一路合图视频流，可以有效降低接收端解码多路视频时的 CPU 占用率和网络带宽。
 
-   **注：** 关于该特性在多主播场景下的最佳实践，详见[多主播场景下的视频体验优化](https://doc.shengwang.cn/doc/rtc/android/best-practice/custom-layout)。
+   **注：** 关于该特性在多主播场景下的最佳实践，详见[多主播场景下的视频体验优化](/zh-CN/realtime-media/rtc/build/video/custom-layout)。
 
 #### 多视图本地预览
 
@@ -12468,7 +12478,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
 
 #### 支持仅播放副歌片段 (Android, iOS)
 
-   该版本新增 [`GetInternalSongCode`](/api-ref/rtc/unity/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/doc/online-ktv/android/landing-page)了解更多 K 歌场景方案。
+   该版本新增 [`GetInternalSongCode`](/api-ref/rtc/unity/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/zh-CN/solutions/online-ktv)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -12986,7 +12996,7 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 #### 版权音乐 （iOS，Android）
 
-为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`IMusicContentCenter`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusiccontentcenter) 类、[`IMusicPlayer`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusicplayer) 类、[`IMusicContentCenterEventHandler`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/doc/online-ktv/android/landing-page)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`IMusicContentCenter`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusiccontentcenter) 类、[`IMusicPlayer`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusicplayer) 类、[`IMusicContentCenterEventHandler`](/api-ref/rtc/unity/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/zh-CN/solutions/online-ktv)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
 
 #### 耳机均衡器
 
@@ -13066,7 +13076,7 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 #### 屏幕共享
 
-该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#fix)。
+该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#unity-v4.1.0-fix)。
 
 Windows：
 
@@ -13116,6 +13126,8 @@ macOS：
 - 提升了 SDK 视频渲染的流畅度。
 - 增强对不同网络协议栈的识别能力，在多种运营商网络场景下提升 SDK 的接入能力。
 - 降低了当主播调用 [`MuteLocalVideoStream`](/api-ref/rtc/unity/API/toc_publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法时本地设备的 CPU 占用率和耗电量。（Window，macOS）
+
+<a id="unity-v4.1.0-fix"></a>
 
 ### 问题修复
 
@@ -13470,7 +13482,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
 
 #### 直推 CDN 相关接口废弃
 
-该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
 - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
 - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -13758,12 +13770,12 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/flutter/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
 
-   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/flutter/API/enum_videoapplicationscenariotype) 类下新增枚举 `applicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/flutter/API/enum_videoapplicationscenariotype) 类下新增枚举 `applicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -14514,7 +14526,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
 
 #### 支持仅播放副歌片段 (Android, iOS)
 
-   该版本新增 [`getInternalSongCode`](/api-ref/rtc/flutter/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/doc/online-ktv/android/landing-page)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode`](/api-ref/rtc/flutter/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/zh-CN/solutions/online-ktv)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -15007,7 +15019,7 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 #### 版权音乐 (iOS, Android)
 
-为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`MusicContentCenter`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusiccontentcenter) 类、[`MusicPlayer`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusicplayer) 类、[`MusicContentCenterEventHandler`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](https://docs.agora.io/cn/online-ktv/ktv_overview)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`MusicContentCenter`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusiccontentcenter) 类、[`MusicPlayer`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusicplayer) 类、[`MusicContentCenterEventHandler`](/api-ref/rtc/flutter/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/zh-CN/solutions/online-ktv)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
 
 #### 已编码视频帧观测器
 
@@ -15511,7 +15523,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 #### 直推 CDN 相关接口废弃
 
-该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
 - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
 - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
@@ -15755,12 +15767,12 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/rn/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
 
-   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/rn/API/enum_videoapplicationscenariotype) 类下新增枚举 `ApplicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
+   该版本在 [`VideoApplicationScenarioType`](/api-ref/rtc/rn/API/enum_videoapplicationscenariotype) 类下新增枚举 `ApplicationScenarioLiveshow`(3)（秀场直播），你可以调用 [`setVideoScenario`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](/zh-CN/solutions/showroom)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，重点提升了首帧出图体验和画质表现，同时增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 #### 限制视频渲染帧率
 
@@ -16431,7 +16443,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 #### 支持仅播放副歌片段
 
-   该版本新增 [`getInternalSongCode`](/api-ref/rtc/rn/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=Android)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode`](/api-ref/rtc/rn/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](/zh-CN/solutions/online-ktv)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -16855,7 +16867,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 #### 版权音乐
 
-为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 `MusicContentCenter` 类、[`IMusicPlayer`](/api-ref/rtc/rn/API/rtc_interface_class#class_imusicplayer) 类、`MusicContentCenterEventHandler` 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](https://docs.agora.io/cn/online-ktv/ktv_overview)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 `MusicContentCenter` 类、[`IMusicPlayer`](/api-ref/rtc/rn/API/rtc_interface_class#class_imusicplayer) 类、`MusicContentCenterEventHandler` 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](/zh-CN/solutions/online-ktv)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
 
 #### 耳机均衡器
 

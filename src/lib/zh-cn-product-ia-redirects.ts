@@ -425,7 +425,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/advanced-features/extensions/overview':
     '/zh-CN/realtime-media/rtc/build/extensions/overview',
   'realtime-media/rtc/advanced-features/extensions/release':
-    '/zh-CN/realtime-media/rtc/reference/release',
+    '/zh-CN/realtime-media/rtc/build/extensions/release',
   'realtime-media/rtc/advanced-features/extensions/super-clarity':
     '/zh-CN/realtime-media/rtc/build/extensions/super-clarity',
   'realtime-media/rtc/advanced-features/extensions/video-compositing':
@@ -443,7 +443,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/advanced-features/media-fallback':
     '/zh-CN/realtime-media/rtc/build/quality-and-operations/media-fallback',
   'realtime-media/rtc/advanced-features/media-player':
-    '/zh-CN/realtime-media/rtc/build/media/media-player',
+    '/zh-CN/realtime-media/rtc/build/audio/media-player',
   'realtime-media/rtc/advanced-features/media-relay':
     '/zh-CN/realtime-media/rtc/build/channel-and-connection/media-relay',
   'realtime-media/rtc/advanced-features/multipath':
@@ -583,7 +583,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/response-code':
     '/zh-CN/realtime-media/rtc/reference/response-code',
   'realtime-media/rtc/user-guides/channel-management':
-    '/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-management',
+    '/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management',
   'realtime-media/rtc/user-guides/http-basic-auth':
     '/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth',
   'realtime-media/rtc/webhook/events':
