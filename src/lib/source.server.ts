@@ -108,16 +108,25 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
+  const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
   const platformGroupText = await getPlatformGroupLLMText(page);
 
   if (platformGroupText) {
-    return normalizeAgentMarkdownLinks(platformGroupText);
+    return locale === 'en'
+      ? normalizeAgentMarkdownLinks(platformGroupText)
+      : platformGroupText;
   }
 
   const processed =
     'getText' in page.data && typeof page.data.getText === 'function'
       ? await page.data.getText('processed')
       : '';
+
+  if (locale !== 'en') {
+    return `# ${page.data.title} (${page.url})
+
+${processed}`;
+  }
 
   return normalizeAgentMarkdownLinks(
     buildCanonicalPlatformLLMText({

@@ -61,6 +61,23 @@ describe('fumadocs source loader', () => {
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
 
+  it('preserves processed Markdown for Chinese pages', async () => {
+    const page = source.getPage(['introduction'], 'zh-CN');
+
+    expect(page).toBeDefined();
+    if (!page || !('getText' in page.data)) {
+      throw new Error('Expected the Chinese introduction page');
+    }
+
+    const processed = await page.data.getText('processed');
+
+    await expect(
+      getLLMText(page),
+    ).resolves.toBe(`# ${page.data.title} (${page.url})
+
+${processed}`);
+  });
+
   it('links platform-specific Markdown variants from canonical pages', async () => {
     const page = source.getPage(
       [
