@@ -241,8 +241,11 @@ _migration:
       'Technical decisions (not recorded as user requirements)',
     );
 
-    manifest.pageEvidence[1].sourceResolution.apiReferenceSupplement.parentRoute =
-      '/zh-CN/solutions/example';
+    const supplement =
+      manifest.pageEvidence[1]?.sourceResolution.apiReferenceSupplement;
+    if (!supplement)
+      throw new Error('Missing API reference supplement fixture.');
+    supplement.parentRoute = '/zh-CN/solutions/example';
     await fs.writeFile(
       path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
       JSON.stringify(manifest),
@@ -256,8 +259,7 @@ _migration:
     expect(invalidSupplementReport.errors).toContainEqual(
       expect.objectContaining({ code: 'invalid-api-reference-supplement' }),
     );
-    manifest.pageEvidence[1].sourceResolution.apiReferenceSupplement.parentRoute =
-      '/zh-CN/api-reference/example';
+    supplement.parentRoute = '/zh-CN/api-reference/example';
     await fs.writeFile(
       path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
       JSON.stringify(manifest),
