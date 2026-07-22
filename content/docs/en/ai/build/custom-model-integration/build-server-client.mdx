@@ -190,7 +190,7 @@ The backend exposes three endpoints, one for each operation the frontend needs.
 
 <TabsContent value="typescript">
 
-### Generate tokens with TypeScript
+### Generate tokens
 
 Endpoint: `POST /api/token`
 
@@ -233,7 +233,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-### Start an agent session with TypeScript
+### Start an agent session
 
 Endpoint: `POST /api/invite-agent`
 
@@ -303,7 +303,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-### Stop an agent session with TypeScript
+### Stop an agent session
 
 Endpoint: `POST /api/stop-conversation`
 
@@ -342,7 +342,7 @@ export async function POST(req: NextRequest) {
 
 All backend code lives in `server-python/main.py`.
 
-### Generate tokens with Python
+### Generate tokens
 
 Endpoint: `POST /api/token`
 
@@ -397,7 +397,7 @@ def token(body: TokenRequest):
     return {"rtcToken": rtc_token, "rtmToken": rtm_token, "expireAt": expire_at}
 ```
 
-### Start an agent session with Python
+### Start an agent session
 
 Endpoint: `POST /api/invite-agent`
 
@@ -464,7 +464,7 @@ def invite_agent(body: InviteRequest):
         raise HTTPException(status_code=502, detail=f"start failed: {exc}")
 ```
 
-### Stop an agent session with Python
+### Stop an agent session
 
 Endpoint: `POST /api/stop-conversation`
 

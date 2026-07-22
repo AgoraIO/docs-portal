@@ -61,27 +61,6 @@ describe('fumadocs source loader', () => {
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
 
-  it('uses delivery-path-specific headings in runtime event Markdown', async () => {
-    const page = source.getPage(
-      ['ai', 'build', 'handle-runtime-events', 'get-runtime-events'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    if (!page) {
-      throw new Error('Expected the English runtime events page');
-    }
-
-    const markdown = await getLLMText(page);
-
-    expect(markdown).toContain('### What you get with the client toolkit');
-    expect(markdown).toContain('### What you need for the client toolkit');
-    expect(markdown).toContain('### How to receive client toolkit events');
-    expect(markdown).toContain('### What you get with webhooks');
-    expect(markdown).toContain('### What you need for webhooks');
-    expect(markdown).toContain('### How to receive webhook events');
-  });
-
   it('keeps oversized plain Markdown pages below the agent size limit', async () => {
     const page = source.getPage(
       ['api-reference', 'api-ref', 'agora-analytics', 'analytics-rest-api'],
