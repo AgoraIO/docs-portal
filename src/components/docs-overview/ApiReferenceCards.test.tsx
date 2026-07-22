@@ -1,11 +1,21 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { zhCNApiReferenceCards } from '@/lib/api-reference-cards-data.zh-cn';
 import { ApiReferenceCards } from './ApiReferenceCards';
 
 describe('ApiReferenceCards', () => {
+  beforeEach(() => {
+    window.history.replaceState({}, '', '/zh-CN/api-reference/api');
+  });
+
   it('renders compact client API cards with product, platform, and API type', () => {
     render(<ApiReferenceCards locale="zh-CN" type="client" />);
 
@@ -121,6 +131,48 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/conversational-ai');
+  });
+
+  it('loads RTC client filters from the URL and keeps changes shareable', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=rtc&apiType=client',
+    );
+
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const rtcClientCount = zhCNApiReferenceCards.client.filter(
+      (entry) => entry.productId === 'rtc',
+    ).length;
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('产品')).toHaveValue('rtc');
+      expect(
+        screen.getByRole('button', { name: '客户端 API', pressed: true }),
+      ).toBeVisible();
+    });
+
+    expect(
+      screen.getByText(
+        `${rtcClientCount} / ${zhCNApiReferenceCards.all.length}`,
+      ),
+    ).toBeVisible();
+    expect(screen.getByRole('heading', { name: '实时互动 RTC' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '实时消息 RTM' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'web' },
+    });
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get('product')).toBe('rtc');
+      expect(params.get('apiType')).toBe('client');
+      expect(params.get('platform')).toBe('web');
+    });
   });
 
   it('renders every IM API as an external link immediately after RTM', () => {

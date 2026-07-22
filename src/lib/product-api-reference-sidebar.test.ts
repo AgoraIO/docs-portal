@@ -87,20 +87,14 @@ describe('product API reference sidebar links', () => {
 
     expect(reference?.children?.slice(0, 2)).toMatchObject([
       {
-        pickerItems: expect.arrayContaining([
-          {
-            platformId: 'android',
-            title: 'Android',
-            url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
-          },
-          {
-            platformId: 'unreal-blueprint',
-            title: 'Unreal (Blueprint)',
-            url: '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
-          },
-        ]),
+        linked: true,
+        search: {
+          apiType: 'client',
+          product: 'rtc',
+        },
         title: '客户端 API',
         type: 'page',
+        url: '/zh-CN/api-reference/api',
       },
       {
         title: 'RESTful API',

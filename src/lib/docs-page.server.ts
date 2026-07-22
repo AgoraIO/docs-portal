@@ -4,7 +4,6 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
-import { zhCNApiReferenceCards } from './api-reference-cards-data.zh-cn';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -90,14 +89,6 @@ const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
   'mcp-integrate',
   'skills-integrate',
 ]);
-
-const ZH_CN_RTC_CLIENT_API_PICKER_ITEMS = zhCNApiReferenceCards.client
-  .filter((entry) => entry.productId === 'rtc')
-  .map((entry) => ({
-    platformId: entry.platformId,
-    title: entry.platform,
-    url: entry.href,
-  }));
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
@@ -2191,16 +2182,18 @@ function addRealtimeMediaApiReferenceSidebarItem(
     link.url,
     ...getProductLegacyApiReferenceUrls(link),
   ]);
-  const rtcClientApiPickerNode =
+  const rtcClientApiPageNode =
     link.locale === 'zh-CN' && link.productSlug === 'rtc'
       ? ({
-          id: 'zh-CN-rtc-client-api-picker',
-          pickerItems: ZH_CN_RTC_CLIENT_API_PICKER_ITEMS,
+          id: 'zh-CN-rtc-client-api-reference',
+          linked: true,
+          search: {
+            apiType: 'client',
+            product: 'rtc',
+          },
           title: '客户端 API',
           type: 'page',
-          url:
-            ZH_CN_RTC_CLIENT_API_PICKER_ITEMS[0]?.url ??
-            '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+          url: '/zh-CN/api-reference/api',
         } satisfies DocsSidebarPageNode)
       : null;
 
@@ -2213,7 +2206,7 @@ function addRealtimeMediaApiReferenceSidebarItem(
       return {
         ...node,
         children: [
-          ...(rtcClientApiPickerNode ? [rtcClientApiPickerNode] : []),
+          ...(rtcClientApiPageNode ? [rtcClientApiPageNode] : []),
           pageNode,
           ...filterSidebarNodes(
             node.children,

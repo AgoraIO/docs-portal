@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   type ApiReferenceCardEntry,
   type ApiReferenceCardType,
@@ -26,6 +26,7 @@ export function ApiReferenceCards({
   const [productId, setProductId] = useState('all');
   const [platformId, setPlatformId] = useState('all');
   const [apiType, setApiType] = useState<ApiReferenceTypeFilter>('all');
+  const [filtersReady, setFiltersReady] = useState(false);
 
   const productOptions = useMemo(
     () => buildOptions(entries, 'product'),
@@ -44,6 +45,30 @@ export function ApiReferenceCards({
   const visibleGroups = groupEntriesByProduct(visibleEntries);
   const hasFilter =
     productId !== 'all' || platformId !== 'all' || apiType !== 'all';
+
+  useEffect(() => {
+    const filters = readApiReferenceFilters(
+      window.location.search,
+      entries,
+      type === 'all',
+    );
+
+    setProductId(filters.productId);
+    setPlatformId(filters.platformId);
+    setApiType(filters.apiType);
+    setFiltersReady(true);
+  }, [entries, type]);
+
+  useEffect(() => {
+    if (!filtersReady) {
+      return;
+    }
+
+    writeApiReferenceFilters(
+      { apiType, platformId, productId },
+      type === 'all',
+    );
+  }, [apiType, filtersReady, platformId, productId, type]);
 
   function clearFilters() {
     setProductId('all');
@@ -498,6 +523,73 @@ function matchesApiTypeFilter(
   }
 
   return entry.apiType === 'server-sdk' || entry.apiType === 'restful-api';
+}
+
+type ApiReferenceFilters = {
+  apiType: ApiReferenceTypeFilter;
+  platformId: string;
+  productId: string;
+};
+
+function readApiReferenceFilters(
+  search: string,
+  entries: readonly ApiReferenceCardEntry[],
+  supportsApiType: boolean,
+): ApiReferenceFilters {
+  const params = new URLSearchParams(search);
+  const requestedProduct = params.get('product');
+  const requestedPlatform = params.get('platform');
+  const requestedApiType = params.get('apiType');
+
+  return {
+    apiType:
+      supportsApiType &&
+      (requestedApiType === 'client' || requestedApiType === 'server')
+        ? requestedApiType
+        : 'all',
+    platformId:
+      requestedPlatform &&
+      entries.some((entry) => entry.platformId === requestedPlatform)
+        ? requestedPlatform
+        : 'all',
+    productId:
+      requestedProduct &&
+      entries.some((entry) => entry.productId === requestedProduct)
+        ? requestedProduct
+        : 'all',
+  };
+}
+
+function writeApiReferenceFilters(
+  filters: ApiReferenceFilters,
+  supportsApiType: boolean,
+) {
+  const params = new URLSearchParams(window.location.search);
+
+  setOptionalSearchParam(params, 'product', filters.productId);
+  setOptionalSearchParam(params, 'platform', filters.platformId);
+  setOptionalSearchParam(
+    params,
+    'apiType',
+    supportsApiType ? filters.apiType : 'all',
+  );
+
+  const search = params.toString();
+  const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+  window.history.replaceState(window.history.state, '', nextUrl);
+}
+
+function setOptionalSearchParam(
+  params: URLSearchParams,
+  name: string,
+  value: string,
+) {
+  if (value === 'all') {
+    params.delete(name);
+    return;
+  }
+
+  params.set(name, value);
 }
 
 function groupEntriesByProduct(

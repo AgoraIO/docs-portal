@@ -6,7 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -44,32 +44,20 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
-  it('opens the grouped RTC client API picker from the sidebar', async () => {
+  it('links the RTC client API entry to the filtered API reference page', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
           {
-            id: 'rtc-client-api-picker',
-            pickerItems: [
-              {
-                platformId: 'android',
-                title: 'Android',
-                url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
-              },
-              {
-                platformId: 'web',
-                title: 'Web',
-                url: '/zh-CN/api-reference/rtc/web/overview',
-              },
-              {
-                platformId: 'unity',
-                title: 'Unity',
-                url: '/zh-CN/api-reference/rtc/unity/rtc-api-overview',
-              },
-            ],
+            id: 'rtc-client-api-reference',
+            linked: true,
+            search: {
+              apiType: 'client',
+              product: 'rtc',
+            },
             title: '客户端 API',
             type: 'page',
-            url: '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+            url: '/zh-CN/api-reference/api',
           },
           {
             id: 'rtc-rest-api',
@@ -87,31 +75,17 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/zh-CN/realtime-media/rtc');
 
-    fireEvent.click(
-      await screen.findByRole('button', {
-        name: '客户端 API，选择平台或语言',
-      }),
-    );
-
-    const picker = await screen.findByRole('dialog', {
-      name: '选择 RTC 客户端 API 平台或语言',
+    const clientApiLink = await screen.findByRole('link', {
+      name: '客户端 API',
     });
-
-    expect(within(picker).getByText('移动端')).toBeVisible();
-    expect(within(picker).getByText('桌面端与 Web')).toBeVisible();
-    expect(within(picker).getByText('跨平台与游戏引擎')).toBeVisible();
-    expect(
-      within(picker).queryByText('RTC 客户端 API'),
-    ).not.toBeInTheDocument();
-    expect(
-      within(picker).queryByText('按开发环境选择'),
-    ).not.toBeInTheDocument();
-    expect(
-      within(picker).getByRole('link', { name: /Android/ }),
-    ).toHaveAttribute(
-      'href',
-      '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+    const clientApiUrl = new URL(
+      clientApiLink.getAttribute('href') ?? '',
+      window.location.origin,
     );
+
+    expect(clientApiUrl.pathname).toBe('/zh-CN/api-reference/api');
+    expect(clientApiUrl.searchParams.get('product')).toBe('rtc');
+    expect(clientApiUrl.searchParams.get('apiType')).toBe('client');
     expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/api-ref/rtc',

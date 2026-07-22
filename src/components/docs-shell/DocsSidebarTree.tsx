@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
-import { RtcClientApiSidebarPicker } from './RtcClientApiSidebarPicker';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -106,19 +105,6 @@ function SidebarNodeRenderer({
     );
   }
 
-  if (node.pickerItems) {
-    return (
-      <SidebarMenuItem>
-        <RtcClientApiSidebarPicker
-          items={node.pickerItems}
-          mode="desktop"
-          onSelectPath={onSelectPath}
-          triggerClassName={sidebarPageButtonClassName}
-        />
-      </SidebarMenuItem>
-    );
-  }
-
   return (
     <SidebarPageLink
       activePath={activePath}
@@ -127,6 +113,7 @@ function SidebarNodeRenderer({
       linked={node.linked}
       method={node.method}
       onSelectPath={onSelectPath}
+      search={node.search}
       title={node.title}
       url={node.url}
     />
@@ -273,6 +260,7 @@ function SidebarSection({
                     external={child.external}
                     href={child.href}
                     onSelectPath={onSelectPath}
+                    search={child.search}
                     url={child.url}
                   >
                     <SidebarPageLabel
@@ -380,6 +368,7 @@ function SidebarLinkedSection({
                     external={child.external}
                     href={child.href}
                     onSelectPath={onSelectPath}
+                    search={child.search}
                     url={child.url}
                   >
                     <SidebarPageLabel
@@ -542,6 +531,7 @@ function SidebarNestedSection({
                   external={child.external}
                   href={child.href}
                   onSelectPath={onSelectPath}
+                  search={child.search}
                   url={child.url}
                 >
                   <SidebarPageLabel
@@ -752,6 +742,7 @@ function SidebarPageLink({
   linked,
   method,
   onSelectPath,
+  search,
   title,
   url,
 }: {
@@ -761,6 +752,7 @@ function SidebarPageLink({
   linked?: boolean;
   method?: string;
   onSelectPath: () => void;
+  search?: Record<string, string>;
   title: string;
   url: string;
 }) {
@@ -778,6 +770,7 @@ function SidebarPageLink({
           external={external}
           href={href}
           onSelectPath={onSelectPath}
+          search={search}
           url={url}
         >
           <SidebarPageLabel
@@ -797,6 +790,7 @@ type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   external?: boolean;
   href?: string;
   onSelectPath: () => void;
+  search?: Record<string, string>;
   url: string;
 };
 
@@ -809,6 +803,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       onClick,
       onSelectPath,
       rel,
+      search,
       target,
       url,
       ...props
@@ -844,7 +839,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
-        search={{}}
+        search={search ?? {}}
         to={url}
       >
         {children}

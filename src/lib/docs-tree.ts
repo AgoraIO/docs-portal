@@ -45,15 +45,9 @@ export type DocsSidebarPageNode = {
   id: string;
   linked?: boolean;
   method?: string;
-  pickerItems?: DocsSidebarPickerItem[];
+  search?: Record<string, string>;
   title: string;
   type: 'page';
-  url: string;
-};
-
-export type DocsSidebarPickerItem = {
-  platformId: string;
-  title: string;
   url: string;
 };
 
