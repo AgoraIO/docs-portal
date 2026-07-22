@@ -165,7 +165,7 @@ describe('ApiReferenceCards', () => {
     expect(
       within(
         screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
-      ).getByText('对话式 AI RESTful API'),
+      ).getByText('RESTful API'),
     ).toBeVisible();
   });
 
@@ -330,9 +330,7 @@ describe('ApiReferenceCards', () => {
     });
 
     expect(screen.getByRole('heading', { name: '云端录制' })).toBeVisible();
-    expect(
-      within(cloudRecordingCard).getByText('云端录制 RESTful API'),
-    ).toBeVisible();
+    expect(within(cloudRecordingCard).getByText('RESTful API')).toBeVisible();
   });
 
   it('renders stacked solution groups inside one product card', () => {

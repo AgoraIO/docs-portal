@@ -459,10 +459,6 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
   const iconSrc = platformIcons[entry.platformId] ?? defaultPlatformIconSrc;
-  const displayName =
-    entry.apiType === 'restful-api' && entry.label === entry.platform
-      ? `${entry.product} RESTful API`
-      : entry.platform;
   const showEntryLabel =
     entry.productId !== 'conversational-ai' && entry.label !== entry.platform;
 
@@ -478,7 +474,7 @@ function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
         />
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-medium">{displayName}</span>
+        <span className="truncate text-sm font-medium">{entry.platform}</span>
         {showEntryLabel ? (
           <span className="truncate text-xs text-muted-foreground">
             {entry.label}
