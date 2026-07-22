@@ -1,0 +1,54 @@
+---
+title: Gradium
+description: >
+ Integrate Gradium TTS with the Conversational AI Engine.
+---
+
+Gradium provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
+
+### Sample configuration
+
+The following example shows how to configure Gradium TTS when starting a conversational AI agent.
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "gradium",
+  "params": {
+    "api_key": "<GRADIUM_API_KEY>",
+    "url": "wss://api.gradium.ai/api/speech/tts",
+    "model_name": "default",
+    "voice_id": "<GRADIUM_VOICE_ID>",
+    "sample_rate": 16000
+  }
+}
+```
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Gradium documentation](https://docs.gradium.ai/guides/text-to-speech).
+:::
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Gradium API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://api.gradium.ai/api/speech/tts`.
+  </Parameter>
+  <Parameter name="model_name" type="string" required={false}>
+    The TTS model to use. For example, `default`.
+  </Parameter>
+  <Parameter name="voice_id" type="string" required={false}>
+    The voice identifier to use.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" required={false}>
+    The audio sample rate in Hz. For example, `16000`.
+  </Parameter>
+</ParameterList>

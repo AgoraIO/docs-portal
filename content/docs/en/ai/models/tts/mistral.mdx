@@ -1,0 +1,46 @@
+---
+title: Mistral
+description: >
+ Integrate Mistral TTS with the Conversational AI Engine.
+---
+
+Mistral provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
+
+### Sample configuration
+
+The following example shows how to configure Mistral TTS when starting a conversational AI agent.
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "mistral",
+  "params": {
+    "api_key": "<MISTRAL_API_KEY>",
+    "model": "voxtral-mini-tts-2603",
+    "voice": "<MISTRAL_TTS_VOICE>"
+  }
+}
+```
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Mistral documentation](https://docs.mistral.ai/api/endpoint/audio/speech).
+:::
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Mistral API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+    The TTS model to use. For example, `voxtral-mini-tts-2603`.
+  </Parameter>
+  <Parameter name="voice" type="string" required={false}>
+    The voice identifier to use.
+  </Parameter>
+</ParameterList>
