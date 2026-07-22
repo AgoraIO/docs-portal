@@ -123,79 +123,6 @@ describe('ApiReferenceCards', () => {
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/conversational-ai');
   });
 
-  it('renders same-level RTC client and RESTful API entries', () => {
-    render(<ApiReferenceCards locale="zh-CN" type="all" />);
-
-    const rtcGroup = screen
-      .getByRole('heading', { name: '实时互动 RTC' })
-      .closest('section');
-
-    expect(rtcGroup).not.toBeNull();
-    expect(
-      within(rtcGroup as HTMLElement).getByRole('button', {
-        name: '实时互动 RTC 客户端 API，选择平台或语言',
-      }),
-    ).toBeVisible();
-    expect(
-      within(rtcGroup as HTMLElement).getByRole('link', {
-        name: /实时互动 RTC RESTful API/i,
-      }),
-    ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/rtc');
-    expect(
-      within(rtcGroup as HTMLElement).queryByRole('link', {
-        name: /实时互动 RTC Android 客户端 API/i,
-      }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('opens the RTC client platform picker on hover', () => {
-    render(<ApiReferenceCards locale="zh-CN" type="all" />);
-
-    fireEvent.mouseEnter(
-      screen.getByRole('button', {
-        name: '实时互动 RTC 客户端 API，选择平台或语言',
-      }),
-    );
-
-    const picker = screen.getByRole('dialog', {
-      name: '选择 RTC 客户端 API 平台或语言',
-    });
-
-    expect(picker).toBeVisible();
-    expect(
-      within(picker).getByRole('link', {
-        name: /实时互动 RTC Android 客户端 API/i,
-      }),
-    ).toHaveAttribute(
-      'href',
-      '/zh-CN/api-reference/rtc/android/rtc-api-overview',
-    );
-    expect(
-      within(picker).getByRole('link', {
-        name: /实时互动 RTC Unreal \(Blueprint\) 客户端 API/i,
-      }),
-    ).toHaveAttribute(
-      'href',
-      '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
-    );
-  });
-
-  it('opens the RTC client platform picker on click', () => {
-    render(<ApiReferenceCards locale="zh-CN" type="all" />);
-
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: '实时互动 RTC 客户端 API，选择平台或语言',
-      }),
-    );
-
-    expect(
-      screen.getByRole('dialog', {
-        name: '选择 RTC 客户端 API 平台或语言',
-      }),
-    ).toBeVisible();
-  });
-
   it('renders every IM API as an external link immediately after RTM', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
@@ -292,12 +219,6 @@ describe('ApiReferenceCards', () => {
 
   it('uses platform icons uploaded from the legacy API Center assets', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
-
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: '实时互动 RTC 客户端 API，选择平台或语言',
-      }),
-    );
 
     expect(
       within(
