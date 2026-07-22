@@ -688,14 +688,36 @@ function addApiReferenceSupplementMetaPlans(metaByPath, manifest) {
         targetLeaf,
       ],
     };
+    const applyPagePlacements = (pages) => {
+      for (const placement of supplement.navigationPagePlacements ?? []) {
+        const page = placement.page;
+        const existingIndex = pages.indexOf(page);
+        if (existingIndex >= 0) pages.splice(existingIndex, 1);
+        const beforeIndex = placement.before
+          ? pages.indexOf(placement.before)
+          : -1;
+        const afterIndex = placement.after
+          ? pages.indexOf(placement.after)
+          : -1;
+        if (beforeIndex >= 0) {
+          pages.splice(beforeIndex, 0, page);
+        } else if (afterIndex >= 0) {
+          pages.splice(afterIndex + 1, 0, page);
+        } else {
+          pages.push(page);
+        }
+      }
+      return pages;
+    };
     const current = metaByPath.get(metaPath);
     if (!current) {
       createMetaAccumulator(metaByPath, {
         metaPath,
         rootRoute: supplement.parentRoute,
         title: 'RESTful API',
-        pages: [group],
+        pages: [...applyPagePlacements([]), group],
         metaPatch: {
+          openApiSidebarFromMeta: true,
           sidebarLabels: {
             [resolution.targetRoute]: supplement.label,
           },
@@ -709,9 +731,11 @@ function addApiReferenceSupplementMetaPlans(metaByPath, manifest) {
       const parsed = parseMetaLink(candidate);
       return !relatedRoutes.has(parsed?.route);
     });
+    applyPagePlacements(current.pages);
     mergeMetaPages(current.pages, [group]);
     current.metaPatch = {
       ...current.metaPatch,
+      openApiSidebarFromMeta: true,
       sidebarLabels: {
         ...(current.metaPatch.sidebarLabels ?? {}),
         [resolution.targetRoute]: supplement.label,

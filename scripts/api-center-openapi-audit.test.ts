@@ -8,9 +8,9 @@ const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
   await Promise.all(
-    temporaryDirectories.splice(0).map((directory) =>
-      fs.rm(directory, { recursive: true, force: true }),
-    ),
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => fs.rm(directory, { recursive: true, force: true })),
   );
 });
 
@@ -24,6 +24,12 @@ describe('API Center OpenAPI audit', () => {
     const yamlSource = `openapi: 3.0.0
 info: {title: Example, version: 1}
 paths:
+  /v1/items:
+    get:
+      operationId: list-items
+      summary: List items
+      description: List items.
+      responses: {'200': {description: OK}}
   /v1/items/{id}:
     get:
       operationId: get-item
@@ -51,7 +57,10 @@ paths:
       'content/docs/zh-CN/api-reference/api-ref/example',
     );
     await fs.mkdir(docsRoot, { recursive: true });
-    await fs.writeFile(path.join(docsRoot, 'index.mdx'), '---\ntitle: Example\n---\n');
+    await fs.writeFile(
+      path.join(docsRoot, 'index.mdx'),
+      '---\ntitle: Example\n---\n',
+    );
     await fs.writeFile(
       path.join(docsRoot, 'meta.json'),
       JSON.stringify({
@@ -60,7 +69,7 @@ paths:
           {
             type: 'group',
             title: 'Items',
-            pages: ['[Get item](./get-item)'],
+            pages: ['[Get item](./get-item)', 'list-items'],
           },
         ],
       }),
@@ -80,13 +89,16 @@ paths:
           requestedUrl: legacyUrl,
           sourceResolution: {
             type: 'openapi',
+            apiReferenceSupplement: {
+              parentRoute: '/zh-CN/api-reference/api-ref/example',
+              navigationPagePlacements: [{ page: 'list-items' }],
+            },
             laneId: 'example-rest',
             legacyOperationId: 'get-item',
             targetOperationId: 'get-item',
             sourcePath: legacySourcePath,
             targetPath,
-            targetRoute:
-              '/zh-CN/api-reference/api-ref/example/get-item',
+            targetRoute: '/zh-CN/api-reference/api-ref/example/get-item',
             route: { scopeKey: 'doc/example/restful' },
           },
         },
@@ -102,6 +114,7 @@ paths:
         sourcePath: { en: targetPath, 'zh-CN': targetPath },
         operations: {
           'get-item': { routeLeaf: 'get-item' },
+          'list-items': { routeLeaf: 'list-items' },
         },
       },
     ];

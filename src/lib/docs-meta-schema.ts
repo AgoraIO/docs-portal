@@ -75,6 +75,7 @@ export const docsNavScopeSchema = z.object({
 
 export const docsMetaSchema = metaSchema.extend({
   navScope: docsNavScopeSchema.optional(),
+  openApiSidebarFromMeta: z.boolean().optional(),
   pages: z
     .array(docsMetaPageEntrySchema)
     .transform((entries) => entries.flat())

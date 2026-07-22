@@ -212,13 +212,19 @@ export async function auditApiCenterOpenApi({
     let targetOperations = new Map();
     let legacyOperations = new Map();
     if (!lane) {
-      issues.push(issue('missing-lane', 'error', `Lane ${laneId} is not registered.`));
+      issues.push(
+        issue('missing-lane', 'error', `Lane ${laneId} is not registered.`),
+      );
     }
     if (!sourcePath || !(await exists(path.resolve(repoRoot, sourcePath)))) {
-      issues.push(issue('missing-target-yaml', 'error', `Missing ${sourcePath}.`));
+      issues.push(
+        issue('missing-target-yaml', 'error', `Missing ${sourcePath}.`),
+      );
     } else {
       const parsed = operations(
-        yaml.load(await fs.readFile(path.resolve(repoRoot, sourcePath), 'utf8')),
+        yaml.load(
+          await fs.readFile(path.resolve(repoRoot, sourcePath), 'utf8'),
+        ),
       );
       targetOperations = parsed.operations;
       for (const duplicate of parsed.duplicates) {
@@ -233,7 +239,7 @@ export async function auditApiCenterOpenApi({
       for (const operation of targetOperations.values()) {
         if (
           operation.description.includes('\n') ||
-          /[`>\[]/.test(operation.description)
+          /[`>[]/.test(operation.description)
         ) {
           issues.push(
             issue(
@@ -277,12 +283,20 @@ export async function auditApiCenterOpenApi({
       const laneOperation = lane?.operations?.[targetId];
       if (!targetOperation) {
         issues.push(
-          issue('missing-target-operation', 'error', `Missing target operation ${targetId}.`),
+          issue(
+            'missing-target-operation',
+            'error',
+            `Missing target operation ${targetId}.`,
+          ),
         );
       }
       if (!legacyOperation) {
         issues.push(
-          issue('missing-legacy-operation', 'error', `Missing legacy operation ${legacyId}.`),
+          issue(
+            'missing-legacy-operation',
+            'error',
+            `Missing legacy operation ${legacyId}.`,
+          ),
         );
       }
       if (!laneOperation) {
@@ -305,7 +319,10 @@ export async function auditApiCenterOpenApi({
           ),
         );
       }
-      const expectedRouteLeaf = resolution.targetRoute?.split('/').filter(Boolean).at(-1);
+      const expectedRouteLeaf = resolution.targetRoute
+        ?.split('/')
+        .filter(Boolean)
+        .at(-1);
       if (laneOperation && laneOperation.routeLeaf !== expectedRouteLeaf) {
         issues.push(
           issue(
@@ -340,12 +357,20 @@ export async function auditApiCenterOpenApi({
         (await exists(path.resolve(repoRoot, `${docsRoot}/index.mdx`))) ||
         (await exists(path.resolve(repoRoot, `${docsRoot}/index.md`)));
       if (!hasIndex) {
-        issues.push(issue('missing-entry-page', 'error', `Missing ${docsRoot}/index.mdx.`));
+        issues.push(
+          issue(
+            'missing-entry-page',
+            'error',
+            `Missing ${docsRoot}/index.mdx.`,
+          ),
+        );
       }
       if (!(await exists(path.resolve(repoRoot, metaPath)))) {
         issues.push(issue('missing-meta', 'error', `Missing ${metaPath}.`));
       } else {
-        const meta = JSON.parse(await fs.readFile(path.resolve(repoRoot, metaPath), 'utf8'));
+        const meta = JSON.parse(
+          await fs.readFile(path.resolve(repoRoot, metaPath), 'utf8'),
+        );
         metaPages = metaRouteLeaves(meta.pages);
         for (const operationId of liveSidebarOperationIds) {
           const routeLeaf = lane.operations[operationId]?.routeLeaf;
@@ -364,11 +389,23 @@ export async function auditApiCenterOpenApi({
             (operationId) => lane.operations[operationId]?.routeLeaf,
           ),
         );
+        const supplementalMetaLeaves = new Set(
+          (manifest.pageEvidence ?? []).flatMap((page) => {
+            const supplement = page.sourceResolution?.apiReferenceSupplement;
+            if (supplement?.parentRoute !== lane.parentUrl['zh-CN']) return [];
+            return (supplement.navigationPagePlacements ?? []).map(
+              (placement) => placement.page,
+            );
+          }),
+        );
         const extraMeta = metaPages.filter(
           (routeLeaf) =>
             laneOperationIds.some(
-              (operationId) => lane.operations[operationId].routeLeaf === routeLeaf,
-            ) && !visibleLeaves.has(routeLeaf),
+              (operationId) =>
+                lane.operations[operationId].routeLeaf === routeLeaf,
+            ) &&
+            !visibleLeaves.has(routeLeaf) &&
+            !supplementalMetaLeaves.has(routeLeaf),
         );
         if (extraMeta.length > 0) {
           issues.push(
@@ -406,7 +443,8 @@ export async function auditApiCenterOpenApi({
         0,
       ),
       errors: allIssues.filter((entry) => entry.severity === 'error').length,
-      warnings: allIssues.filter((entry) => entry.severity === 'warning').length,
+      warnings: allIssues.filter((entry) => entry.severity === 'warning')
+        .length,
     },
     lanes: results,
   });
@@ -427,7 +465,8 @@ export async function writeOpenApiAudit({
     const absolute = path.resolve(repoRoot, relative);
     if (mode === 'check') {
       const actual = await fs.readFile(absolute, 'utf8');
-      if (actual !== contents) throw new Error(`Generated file is stale: ${relative}`);
+      if (actual !== contents)
+        throw new Error(`Generated file is stale: ${relative}`);
     } else if (mode === 'write') {
       await fs.mkdir(path.dirname(absolute), { recursive: true });
       await fs.writeFile(absolute, contents, 'utf8');

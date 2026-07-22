@@ -81,6 +81,16 @@ function cloudTranscodingSupplement(pathname) {
             '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
         },
       ],
+      navigationPagePlacements: [
+        {
+          page: 'authentication',
+          before: '---服务端 API---',
+        },
+        {
+          page: 'template-query',
+          after: 'template-create',
+        },
+      ],
     },
   };
 }

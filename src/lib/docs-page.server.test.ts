@@ -2142,6 +2142,128 @@ Web body
     });
   });
 
+  it('uses generated meta groups only for opted-in focused OpenAPI sidebars', async () => {
+    const parentUrl = '/zh-CN/api-reference/api-ref/cloud-transcoding';
+    const eventUrl = `${parentUrl}/ncs-events`;
+    const guideUrl =
+      '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification';
+    const makePage = (url: string, title: string) => ({
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath: `/virtual/content/docs${url}.mdx`,
+          path: `${url.slice(1)}.mdx`,
+        },
+        title,
+      },
+      path: `${url.slice(1)}.mdx`,
+      slugs: url.split('/').filter(Boolean),
+      url,
+    });
+    const parentPage = makePage(parentUrl, '概览');
+    const eventPage = makePage(eventUrl, '事件类型');
+    const guidePage = makePage(guideUrl, '接收 Webhook 事件');
+    const laneFolder = {
+      $id: 'cloud-transcoding-folder',
+      children: [
+        {
+          $id: 'cloud-transcoding-index',
+          name: '概览',
+          type: 'page' as const,
+          url: parentUrl,
+        },
+        {
+          $id: 'webhook-group',
+          name: 'Webhook 回调事件',
+          type: 'separator' as const,
+        },
+        {
+          $id: 'webhook-guide',
+          name: '接入指南',
+          type: 'page' as const,
+          url: guideUrl,
+        },
+        {
+          $id: 'cloud-transcoding-events',
+          name: '事件类型',
+          type: 'page' as const,
+          url: eventUrl,
+        },
+        {
+          $id: 'webhook-group-end',
+          name: '{flat}',
+          type: 'separator' as const,
+        },
+      ],
+      name: '云端转码',
+      type: 'folder' as const,
+    };
+    const focusedTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [laneFolder],
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(eventPage);
+    mockedGetPages.mockReturnValue([parentPage, eventPage, guidePage]);
+    mockedGetPageTree.mockReturnValue(focusedTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === laneFolder.$id
+        ? ({
+            data: {
+              openApiSidebarFromMeta: true,
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'cloud-transcoding',
+        'ncs-events',
+      ]),
+    );
+    const webhookGroup = flattenSidebarSections(payload.sidebar).find(
+      (node) => node.title === 'Webhook 回调事件',
+    );
+
+    expect(webhookGroup?.children).toMatchObject([
+      { title: '接入指南', type: 'page', url: guideUrl },
+      { title: '事件类型', type: 'page', url: eventUrl },
+    ]);
+
+    mockedGetNodeMeta.mockReturnValue(undefined);
+    const unchangedPayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'cloud-transcoding',
+        'ncs-events',
+      ]),
+    );
+
+    expect(
+      flattenSidebarSections(unchangedPayload.sidebar).some(
+        (node) => node.title === 'Webhook 回调事件',
+      ),
+    ).toBe(false);
+  });
+
   it('redirects legacy Conversational AI REST endpoint URLs to the OpenAPI lane', async () => {
     await expect(
       loadDocsPagePayload('en', 'api-reference', [

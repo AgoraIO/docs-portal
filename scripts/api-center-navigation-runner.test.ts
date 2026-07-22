@@ -132,6 +132,13 @@ describe('API Center navigation runner', () => {
         'ncs-events',
       ],
     });
+    expect(apiMeta.openApiSidebarFromMeta).toBe(true);
+    expect(apiMeta.pages.indexOf('authentication')).toBeLessThan(
+      apiMeta.pages.indexOf('---服务端 API---'),
+    );
+    expect(apiMeta.pages.indexOf('template-query')).toBe(
+      apiMeta.pages.indexOf('template-create') + 1,
+    );
     expect(apiMeta.pages).not.toContain(
       '[Webhook 回调事件](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
     );

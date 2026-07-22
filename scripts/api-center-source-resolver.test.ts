@@ -157,6 +157,16 @@ describe('API Center source resolver', () => {
         parentRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding',
         groupTitle: 'Webhook 回调事件',
         label: '事件类型',
+        navigationPagePlacements: [
+          {
+            page: 'authentication',
+            before: '---服务端 API---',
+          },
+          {
+            page: 'template-query',
+            after: 'template-create',
+          },
+        ],
         relatedPages: [
           {
             label: '接入指南',

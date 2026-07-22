@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
@@ -24,6 +25,7 @@ import {
   getPrevNextLinksFromNode,
   getProductScopes,
   getSidebarBreadcrumb,
+  getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
@@ -1817,6 +1819,7 @@ async function getDocsSidebarNodes({
       ? await getFocusedOpenApiLaneSidebarNodes({
           activePath,
           locale,
+          pageTree,
           source,
           tab,
         })
@@ -3233,11 +3236,13 @@ function getFocusedZhCnRtmRestSidebarNodes({
 async function getFocusedOpenApiLaneSidebarNodes({
   activePath,
   locale,
+  pageTree,
   source,
   tab,
 }: {
   activePath: string;
   locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
   source: typeof docsSource;
   tab: string;
 }): Promise<DocsSidebarNode[] | null> {
@@ -3293,7 +3298,72 @@ async function getFocusedOpenApiLaneSidebarNodes({
     })),
   );
 
-  return [parentNode, ...manualNodes, ...operationNodes];
+  const fallbackNodes = [parentNode, ...manualNodes, ...operationNodes];
+  const laneFolder = findFolderByIndexUrl(pageTree, parentUrl);
+  const laneMeta = laneFolder
+    ? getDocsMetaData(source.getNodeMeta(laneFolder, locale))
+    : undefined;
+
+  if (
+    !laneFolder ||
+    !laneMeta ||
+    !('openApiSidebarFromMeta' in laneMeta) ||
+    !laneMeta.openApiSidebarFromMeta
+  ) {
+    return fallbackNodes;
+  }
+
+  const metaNodes = getSidebarNodes(
+    {
+      children: [{ ...laneFolder, root: true }],
+      name: 'Focused OpenAPI lane',
+    } as Root,
+    tab,
+  );
+  const metaNodeUrls = collectSidebarPageUrls(metaNodes);
+
+  return [
+    ...metaNodes,
+    ...fallbackNodes.filter((node) => !metaNodeUrls.has(node.url)),
+  ];
+}
+
+function findFolderByIndexUrl(node: Folder | Root, url: string): Folder | null {
+  for (const child of node.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+    if (
+      child.index?.url === url ||
+      child.children.some((item) => item.type === 'page' && item.url === url)
+    ) {
+      return child;
+    }
+
+    const match = findFolderByIndexUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function collectSidebarPageUrls(nodes: DocsSidebarNode[]) {
+  const urls = new Set<string>();
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      urls.add(node.url);
+      continue;
+    }
+
+    for (const url of collectSidebarPageUrls(node.children)) {
+      urls.add(url);
+    }
+  }
+
+  return urls;
 }
 
 async function appendEndpointPagesToOpenApiParent(
