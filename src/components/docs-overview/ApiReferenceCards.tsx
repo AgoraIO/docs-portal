@@ -1,5 +1,6 @@
-import { ChevronDownIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { ChevronDownIcon, ChevronRightIcon, Code2Icon } from 'lucide-react';
+import { Popover as PopoverPrimitive } from 'radix-ui';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   type ApiReferenceCardEntry,
   type ApiReferenceCardType,
@@ -79,7 +80,11 @@ export function ApiReferenceCards({
       {visibleEntries.length > 0 ? (
         <div className="flex flex-col gap-6">
           {visibleGroups.map((group) => (
-            <ApiReferenceGroup group={group} key={group.productId} />
+            <ApiReferenceGroup
+              collapseRtcClientEntries={type === 'all'}
+              group={group}
+              key={group.productId}
+            />
           ))}
         </div>
       ) : (
@@ -177,7 +182,13 @@ function FilterSelect({
   );
 }
 
-function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
+function ApiReferenceGroup({
+  collapseRtcClientEntries,
+  group,
+}: {
+  collapseRtcClientEntries: boolean;
+  group: ApiReferenceProductGroup;
+}) {
   if (group.solutionGroups.some((solutionGroup) => solutionGroup.isExplicit)) {
     return <ApiReferenceSolutionGroup group={group} />;
   }
@@ -203,20 +214,126 @@ function ApiReferenceGroup({ group }: { group: ApiReferenceProductGroup }) {
       </div>
 
       <div className="space-y-6">
-        {clientEntries.length > 0 ? (
-          <ApiReferenceEntrySection
-            entries={clientEntries}
-            title="客户端 API"
+        {group.productId === 'rtc' && collapseRtcClientEntries ? (
+          <RtcApiReferenceEntries
+            clientEntries={clientEntries}
+            serverEntries={serverEntries}
           />
-        ) : null}
-        {serverEntries.length > 0 ? (
-          <ApiReferenceEntrySection
-            entries={serverEntries}
-            title="服务端 API"
-          />
-        ) : null}
+        ) : (
+          <>
+            {clientEntries.length > 0 ? (
+              <ApiReferenceEntrySection
+                entries={clientEntries}
+                title="客户端 API"
+              />
+            ) : null}
+            {serverEntries.length > 0 ? (
+              <ApiReferenceEntrySection
+                entries={serverEntries}
+                title="服务端 API"
+              />
+            ) : null}
+          </>
+        )}
       </div>
     </section>
+  );
+}
+
+function RtcApiReferenceEntries({
+  clientEntries,
+  serverEntries,
+}: {
+  clientEntries: ApiReferenceCardEntry[];
+  serverEntries: ApiReferenceCardEntry[];
+}) {
+  return (
+    <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+      {clientEntries.length > 0 ? (
+        <RtcClientApiPicker entries={clientEntries} />
+      ) : null}
+      {serverEntries.map((entry) => (
+        <ApiReferenceChip entry={entry} key={entryKey(entry)} />
+      ))}
+    </div>
+  );
+}
+
+function RtcClientApiPicker({ entries }: { entries: ApiReferenceCardEntry[] }) {
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (closeTimer.current) {
+        clearTimeout(closeTimer.current);
+      }
+    },
+    [],
+  );
+
+  function openPicker() {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setOpen(true);
+  }
+
+  function scheduleClose() {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+    }
+    closeTimer.current = setTimeout(() => setOpen(false), 120);
+  }
+
+  return (
+    <PopoverPrimitive.Root onOpenChange={setOpen} open={open}>
+      <PopoverPrimitive.Trigger asChild>
+        <button
+          aria-label="实时互动 RTC 客户端 API，选择平台或语言"
+          className={`${apiReferenceChipClassName} w-full justify-between text-left`}
+          onMouseEnter={openPicker}
+          onMouseLeave={scheduleClose}
+          type="button"
+        >
+          <span className="flex min-w-0 items-center gap-2 text-sm text-foreground">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
+              <Code2Icon aria-hidden className="size-5" />
+            </span>
+            <span className="truncate text-sm font-medium">客户端 API</span>
+          </span>
+          <ChevronRightIcon
+            aria-hidden
+            className="size-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-90"
+          />
+        </button>
+      </PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          align="start"
+          aria-label="选择 RTC 客户端 API 平台或语言"
+          className="z-50 max-h-[min(32rem,var(--radix-popover-content-available-height))] w-[min(42rem,calc(100vw-2rem))] overflow-y-auto rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-lg outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+          collisionPadding={16}
+          onCloseAutoFocus={(event) => event.preventDefault()}
+          onMouseEnter={openPicker}
+          onMouseLeave={scheduleClose}
+          onOpenAutoFocus={(event) => event.preventDefault()}
+          sideOffset={8}
+        >
+          <div className="mb-3 px-1">
+            <p className="m-0 text-sm font-semibold text-foreground">
+              选择平台或语言
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {entries.map((entry) => (
+              <ApiReferenceChip entry={entry} key={entryKey(entry)} />
+            ))}
+          </div>
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    </PopoverPrimitive.Root>
   );
 }
 
@@ -341,13 +458,16 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
   return (
     <a
       aria-label={`${entry.product} ${solutionLabel}${entry.platform}${entryLabel}${typeLabel}`}
-      className="group inline-flex min-h-14 max-w-full items-center gap-3 rounded-md border border-border bg-background px-3.5 py-2.5 text-sm transition-colors hover:border-foreground/20 hover:bg-background/80"
+      className={apiReferenceChipClassName}
       href={entry.href}
     >
       <PlatformLabel entry={entry} />
     </a>
   );
 }
+
+const apiReferenceChipClassName =
+  'group inline-flex min-h-14 max-w-full items-center gap-3 rounded-md border border-border bg-background px-3.5 py-2.5 text-sm transition-colors hover:border-foreground/20 hover:bg-background/80 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40';
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
   const iconSrc = platformIcons[entry.platformId] ?? defaultPlatformIconSrc;
