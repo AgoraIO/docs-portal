@@ -54,7 +54,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 - 调用声网实时互动 SDK 中的 [`startAudioMixing`](/api-ref/rtc/android/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
 
-- 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)来播放文件。
+- 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)来播放文件。
 
 ### 声网版权音乐
 
@@ -64,7 +64,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/doc/online-ktv/android/implementation/music-content-center)。
 
-3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/android/API/toc_drm) 预加载歌曲，再通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)播放歌曲。详见[点歌](/doc/online-ktv/android/ktv-scenario/implementation/get-music)。
+3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/android/API/toc_drm) 预加载歌曲，再通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/doc/online-ktv/android/ktv-scenario/implementation/get-music)。
 
 4. 如果需要展示歌词，你可以通过版权音乐 API 和 `SongCode` 来获取歌词文件地址，获取后你就可以展示歌词。详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 
@@ -145,7 +145,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 - 调用声网实时互动 SDK 中的 [`startAudioMixing`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
 
-- 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)播放文件。
+- 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放文件。
 
 ### 声网版权音乐
 
@@ -155,7 +155,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/doc/online-ktv/ios/implementation/music-content-center)。
 
-3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/ios/API/toc_drm) 预加载歌曲，通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)播放歌曲。详见[点歌](/doc/online-ktv/ios/ktv-scenario/implementation/get-music)。
+3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/ios/API/toc_drm) 预加载歌曲，通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/doc/online-ktv/ios/ktv-scenario/implementation/get-music)。
 
 4. 如果需要展示歌词，你可以通过版权音乐 API 和 `SongCode` 来获取歌词文件地址，获取后你就可以展示歌词。详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 

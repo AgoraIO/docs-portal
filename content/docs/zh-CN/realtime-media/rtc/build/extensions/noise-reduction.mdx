@@ -59,12 +59,12 @@ AI 降噪插件目前有以下限制：
 
 - [噪声类型](#type)符合你的业务场景。 例如：当前版本会将麦克风采集的背景音乐当作噪声，因此不适用于使用麦克风同时采集人声和背景音乐的场景。
 - 使用最新版本的桌面端 Chrome（推荐）、Edge、Firefox 浏览器。
-- 已集成 v4.15.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../../get-started/quick-start)文档。
+- 已集成 v4.15.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../../get-started/quick-start?platform=web)文档。
 
 ## 实现步骤
 
 :::warning[注意]
-本节介绍如何使用**最新版本**的 AI 降噪插件。历史版本的实现步骤可能会有所不同，具体差异详见[插件发版说明](/zh-CN/realtime-media/rtc/reference/release)。
+本节介绍如何使用**最新版本**的 AI 降噪插件。历史版本的实现步骤可能会有所不同，具体差异详见[插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release)。
 :::
 
 按照以下步骤集成 AI 降噪插件并实现 AI 降噪功能。
@@ -351,7 +351,7 @@ setLatency(latency: AIDenoiserProcessorLatency): Promise<void>;
 
 **自从 v2.0.0**。
 
-设置降噪时延等级，详见 [AIDenoiserProcessorLatency](#aidenoiserprocessorlatenct)。
+设置降噪时延等级，详见 [AIDenoiserProcessorLatency](#aidenoiserprocessorlatency)。
 
 该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
 
