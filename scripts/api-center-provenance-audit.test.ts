@@ -106,6 +106,33 @@ _migration:
             targetDecision: 'api-reference-over-section-path-map',
           },
         },
+        {
+          requestedUrl: 'https://doc.shengwang.cn/api-ref/example/supplement',
+          sourceResolution: {
+            status: 'resolved',
+            type: 'generated-html',
+            generator: 'typedoc',
+            sourcePath,
+            targetPath,
+            targetRoute: '/zh-CN/api-reference/example/page',
+            targetDecision: 'api-reference-supplement',
+            supersededTargetPath:
+              'content/docs/zh-CN/realtime-media/example/reference/page.mdx',
+            supersededTargetRoute:
+              '/zh-CN/realtime-media/example/reference/page',
+            apiReferenceSupplement: {
+              parentRoute: '/zh-CN/api-reference/example',
+              groupTitle: 'Webhook',
+              label: '事件类型',
+              relatedPages: [
+                {
+                  label: '接入指南',
+                  route: '/zh-CN/realtime-media/example/build/webhook',
+                },
+              ],
+            },
+          },
+        },
       ],
     };
     await fs.writeFile(
@@ -212,6 +239,28 @@ _migration:
     );
     expect(markdown).toContain(
       'Technical decisions (not recorded as user requirements)',
+    );
+
+    manifest.pageEvidence[1].sourceResolution.apiReferenceSupplement.parentRoute =
+      '/zh-CN/solutions/example';
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
+      JSON.stringify(manifest),
+    );
+    const { report: invalidSupplementReport } = await auditApiCenterProvenance({
+      repoRoot,
+      oldRoot,
+      liveBundleUrl: 'https://doc.shengwang.cn/assets/js/main.fixture.js',
+      liveBundleText: 'const link = "/api-ref/example/page";',
+    });
+    expect(invalidSupplementReport.errors).toContainEqual(
+      expect.objectContaining({ code: 'invalid-api-reference-supplement' }),
+    );
+    manifest.pageEvidence[1].sourceResolution.apiReferenceSupplement.parentRoute =
+      '/zh-CN/api-reference/example';
+    await fs.writeFile(
+      path.join(repoRoot, 'docs/migration/api-center-html-manifest.json'),
+      JSON.stringify(manifest),
     );
 
     const fabricated = page.replace(

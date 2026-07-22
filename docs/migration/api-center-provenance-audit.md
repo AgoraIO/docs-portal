@@ -6,21 +6,21 @@
 - Source-provenance errors: 0
 - Placement errors: 0
 - Unapproved requirement assumptions: 0
-- Source-text requests: 70
+- Source-text requests: 49
 - Live entries verified: 91/91
 - Internal entries found in deployed bundle: 81/81
 - External entries verified by rendered snapshot plus source data: 10
 
 ## Source provenance
 
-- Owned MDX pages checked: 4988
-- Ownership source paths checked: 5185
+- Owned MDX pages checked: 4923
+- Ownership source paths checked: 5097
 - Generator fallback violations: 0
 - Generated-text violations: 0
 - Generated HTML descriptions checked: 4757
 - Generated HTML descriptions present: 3177
 - Generated HTML description provenance violations: 0
-- Runtime label substitutions checked: 7
+- Runtime label substitutions checked: 3
 - Provenance-matched OpenAPI normalizations: 5
   - Legacy-source descriptions: 5
   - Preserved base descriptions: 0
@@ -30,24 +30,25 @@
 - Logical legacy pages: 5600
 - Classified legacy pages: 5573
 - Existing local targets: 5573
-- Direct target routes: 5074
+- Direct target routes: 5009
 - Explicit existing-route projections: 54
 - OpenAPI-routed targets: 130
-- Preserved pre-existing targets outside API Reference: 315
-- Local links checked: 71357
+- Preserved pre-existing targets outside API Reference: 380
+- Local links checked: 70808
 - Reachable OpenAPI operations checked: 130
 
 ### Target decisions
 
 - `api-reference-over-section-path-map`: 50
+- `api-reference-supplement`: 1
 - `appledoc`: 50
 - `doxygen`: 297
-- `existing-target-layout-over-stale-path-map`: 162
+- `existing-target-layout-over-stale-path-map`: 96
 - `inferred-from-docs-api-reference/rtm2/enumv.android.ios.cpp.flutter.swift.harmonyos.mdx`: 5
-- `legacy-mdx`: 69
+- `legacy-mdx`: 135
 - `openapi-lane`: 130
 - `oxygen`: 3451
-- `path-map`: 376
+- `path-map`: 375
 - `path-map-alternate-extension`: 23
 - `typedoc`: 960
 
@@ -56,6 +57,7 @@
 - `live-api-center-authority`: The deployed API Center product/platform/language entry set is authoritative.
 - `local-mdx-output`: Migrated HTML documentation must be substantive local MDX under zh-CN/api-reference.
 - `api-reference-canonical-ownership`: 50 legacy API source pages override stale section path-map targets so API documentation remains canonical under zh-CN/api-reference; superseded section routes are retained only as navigation and link-rewrite evidence.
+- `api-reference-supplement-ownership`: 1 supplemental API contract pages prove their Reference Center parent, superseded section target, and navigation label metadata.
 - `legacy-information-architecture`: Product order, platform order, page structure, and sidebar structure must match the legacy site.
 - `no-placeholder-or-old-site-redirect`: Placeholders, redirects, and old-site body-link substitutes are not accepted.
 - `script-owned-generation`: Migration output and audit reports must be generated and maintained by scripts.
@@ -63,11 +65,11 @@
 
 ### Technical decisions (not recorded as user requirements)
 
-- `target-path-map`: 399 pages use repository path-map decisions.
-- `preserve-existing-layout`: 162 pages preserve an existing API Reference layout over a stale mapped path; 315 already-migrated pages outside API Reference remain unowned and unchanged.
+- `target-path-map`: 398 pages use repository path-map decisions.
+- `preserve-existing-layout`: 96 pages preserve an existing API Reference layout over a stale mapped path; 380 already-migrated pages outside API Reference remain unowned and unchanged.
 - `explicit-route-projection`: 54 platform routes project to shared local MDX through explicit existing-target mappings.
 - `openapi-lanes`: 130 pages remain generated from maintained local OpenAPI sources; 5 changed short descriptions derive from legacy text and 0 preserve pre-existing target copy with formatting-only changes.
-- `runtime-source-labels`: 7 runtime product/platform labels are injected from the API Center source inventory instead of inferred from directory slugs.
+- `runtime-source-labels`: 3 runtime product/platform labels are injected from the API Center source inventory instead of inferred from directory slugs.
 - `preserved-root-navigation`: 5 non-product root navigation items keep their exact base-branch labels and routes.
 - `api-group-action-labels`: 客户端 and 服务端 action qualifiers are shortened from the live source group headings 客户端 API and 服务端 API.
 - `current-directory-elision`: (current) remains a filesystem grouping and is omitted from public routes.
@@ -126,27 +128,6 @@
 | `content/docs/zh-CN/api-reference/cloud-recording/restful/user-guides/mix-mode/set-composite-layout.mdx` | https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite-layout | image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395221824-6-7r.svg:used-context:6-7 人布局示意 |
 | `content/docs/zh-CN/api-reference/cloud-recording/restful/user-guides/mix-mode/set-composite-layout.mdx` | https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite-layout | image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395385699-8-9r.svg:used-context:8-9 人布局示意 |
 | `content/docs/zh-CN/api-reference/cloud-recording/restful/user-guides/mix-mode/set-composite-layout.mdx` | https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/mix-mode/set-composite-layout | image-alt:docs/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx:https://web-cdn.agora.io/doc-cms/uploads/1715395437866-10-17r.svg:used-context:10-17 人布局示意 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/enable-service.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/enable-service | image-alt:docs/online-ktv/auikaraoke/get-started/enable-service.mdx:/img/rtm2/enable-service.png:used-context:开通服务 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/enable-service.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/enable-service | image-alt:docs/online-ktv/auikaraoke/get-started/enable-service.mdx:/img/online-ktv/auikaraoke-rtm.png:used-context:开通服务 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.android.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.android.mdx:https://web-cdn.agora.io/docs-files/1687670569781:used-context:开始编译按钮 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/kit-demo.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/kit-demo | image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:跑通示例项目 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/auikaraoke/get-started/kit-demo.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/auikaraoke/get-started/kit-demo | image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.android.mdx:https://web-cdn.agora.io/docs-files/1687670569781:used-context:开始编译按钮 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/overview/introduction.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction | image-alt:docs/online-ktv/ktv-scenario/overview/introduction.mdx:https://web-cdn.agora.io/docs-files/1677210514106:used-context:在线 K 歌房场景介绍 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/overview/introduction.mdx` | https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction | image-alt:docs/online-ktv/ktv-scenario/overview/introduction.mdx:https://web-cdn.agora.io/docs-files/1680256324257:used-context:在线 K 歌房场景介绍 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/enable-service | image-alt:docs/online-ktv/auikaraoke/get-started/enable-service.mdx:/img/rtm2/enable-service.png:used-context:开通服务 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/enable-service.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/enable-service | image-alt:docs/online-ktv/auikaraoke/get-started/enable-service.mdx:/img/online-ktv/auikaraoke-rtm.png:used-context:开通服务 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx:https://web-cdn.agora.io/docs-files/1697770935216:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx:https://web-cdn.agora.io/docs-files/1697794691823:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx:/img/online-ktv/add-kit1-ios.png:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx:/img/online-ktv/add-kit-ios.png:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/integrate.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/integrate | image-alt:docs/online-ktv/auikaraoke/get-started/integrate.ios.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/kit-demo.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/kit-demo | image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.ios.mdx:https://web-cdn.agora.io/docs-files/1696931617035:used-context:跑通示例项目 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/kit-demo.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/kit-demo | image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.ios.mdx:https://web-cdn.agora.io/docs-files/1697796325100:used-context:跑通示例项目 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/auikaraoke/get-started/kit-demo.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/kit-demo | image-alt:docs/online-ktv/auikaraoke/get-started/kit-demo.ios.mdx:https://web-cdn.agora.io/docs-files/1696931506007:used-context:跑通示例项目 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/get-started/integrate-ktvapi.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/ktv-scenario/get-started/integrate-ktvapi | image-alt:docs/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios.mdx:https://web-cdn.agora.io/docs-files/1704340396791:used-context:快速实现 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/overview/introduction.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/ktv-scenario/overview/introduction | image-alt:docs/online-ktv/ktv-scenario/overview/introduction.mdx:https://web-cdn.agora.io/docs-files/1677210514106:used-context:在线 K 歌房场景介绍 图示 |
-| `content/docs/zh-CN/api-reference/online-ktv/ios/ktv-scenario/overview/introduction.mdx` | https://doc.shengwang.cn/doc/online-ktv/ios/ktv-scenario/overview/introduction | image-alt:docs/online-ktv/ktv-scenario/overview/introduction.mdx:https://web-cdn.agora.io/docs-files/1680256324257:used-context:在线 K 歌房场景介绍 图示 |
 
 ## Errors
 

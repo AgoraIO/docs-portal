@@ -10,7 +10,7 @@
 - URL families: api-ref 43, doc 38, external 10
 - Live structure hash: `3aa794e69e2558713c133688bba7eb3ab4d7939332ad1ec238a8f3e62f0161d5`
 - Navigation pages: 910
-- Reachable logical pages: 4802
+- Reachable logical pages: 5600
 - Broken live body links: 27
 - Missing live fragments: 277
 - Source-classified pages: 5573/5600

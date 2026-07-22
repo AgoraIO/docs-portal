@@ -59,6 +59,7 @@ const ALLOWED_TARGET_DECISIONS = new Set([
   'path-map-alternate-extension',
   'existing-target-layout-over-stale-path-map',
   'api-reference-over-section-path-map',
+  'api-reference-supplement',
   'inferred-from-docs-api-reference/rtm2/enumv.android.ios.cpp.flutter.swift.harmonyos.mdx',
 ]);
 const execFileAsync = promisify(execFile);
@@ -821,6 +822,41 @@ export async function auditApiCenterProvenance({
           axis: 'assumption-boundary',
         });
       }
+      if (resolution.targetDecision === 'api-reference-supplement') {
+        const supplement = resolution.apiReferenceSupplement;
+        const hasValidPlacement =
+          supplement?.parentRoute?.startsWith('/zh-CN/api-reference/') &&
+          resolution.targetRoute?.startsWith(`${supplement.parentRoute}/`) &&
+          resolution.targetPath?.startsWith(
+            `content/docs${supplement.parentRoute}/`,
+          ) &&
+          resolution.supersededTargetPath?.startsWith('content/docs/zh-CN/') &&
+          !resolution.supersededTargetPath.startsWith(API_REFERENCE_ROOT) &&
+          resolution.supersededTargetRoute?.startsWith('/zh-CN/') &&
+          !resolution.supersededTargetRoute.startsWith('/zh-CN/api-reference/');
+        const hasValidNavigation =
+          typeof supplement?.groupTitle === 'string' &&
+          supplement.groupTitle.length > 0 &&
+          typeof supplement?.label === 'string' &&
+          supplement.label.length > 0 &&
+          Array.isArray(supplement.relatedPages) &&
+          supplement.relatedPages.every(
+            (related) =>
+              typeof related.label === 'string' &&
+              related.label.length > 0 &&
+              related.route?.startsWith('/zh-CN/'),
+          );
+        if (!hasValidPlacement || !hasValidNavigation) {
+          errors.push({
+            ...issue(
+              'invalid-api-reference-supplement',
+              'An API reference supplement does not prove its target, superseded section page, and parent navigation.',
+              { sourcePath: page.requestedUrl },
+            ),
+            axis: 'assumption-boundary',
+          });
+        }
+      }
     } else {
       decisions.push(
         resolution.type === 'openapi'
@@ -1071,6 +1107,10 @@ export async function auditApiCenterProvenance({
       {
         id: 'api-reference-canonical-ownership',
         evidence: `${decisions.filter((value) => value === 'api-reference-over-section-path-map').length} legacy API source pages override stale section path-map targets so API documentation remains canonical under zh-CN/api-reference; superseded section routes are retained only as navigation and link-rewrite evidence.`,
+      },
+      {
+        id: 'api-reference-supplement-ownership',
+        evidence: `${decisions.filter((value) => value === 'api-reference-supplement').length} supplemental API contract pages prove their Reference Center parent, superseded section target, and navigation label metadata.`,
       },
       {
         id: 'legacy-information-architecture',
