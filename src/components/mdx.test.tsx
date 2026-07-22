@@ -115,9 +115,10 @@ type ParameterListComponent = ComponentType<{
   optional?: boolean;
   required?: boolean;
   title?: ReactNode;
+  variant?: 'cards' | 'table';
 }>;
 type ParameterComponent = ComponentType<{
-  children: ReactNode;
+  children?: ReactNode;
   defaultValue?: ReactNode;
   direction?: ReactNode;
   name?: ReactNode;
@@ -1997,6 +1998,51 @@ describe('common MDX registry', () => {
     expect(description).not.toHaveTextContent('content');
     expect(nestedParameters).toHaveTextContent('role');
     expect(nestedParameters).toHaveTextContent('content');
+  });
+
+  it('renders table parameter lists with nested fields inside the description cell', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+    const Returns = components.ApiReturns as ApiReturnsComponent;
+    const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
+
+    render(
+      <ParameterList title="参数" variant="table">
+        <Parameter name="callback" optional type="function">
+          <p>具体的事件详情。</p>
+          <Returns title="返回值">
+            <ReturnType>nested callback void</ReturnType>
+          </Returns>
+          <ParameterList title="参数" variant="table">
+            <Parameter name="evt" required type="object">
+              <Parameter name="code" required type="number" />
+            </Parameter>
+          </ParameterList>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    expect(screen.getAllByText('参数名')).toHaveLength(1);
+    expect(screen.getAllByText('描述')).toHaveLength(1);
+
+    const callback = screen
+      .getByText('具体的事件详情。')
+      .closest('[data-parameter-item]');
+    const description = callback?.querySelector('[data-parameter-description]');
+    const nestedParameters = callback?.querySelector(
+      '[data-parameter-children]',
+    );
+
+    expect(callback).toHaveAttribute('data-parameter-variant', 'table');
+    expect(description).toContainElement(nestedParameters as HTMLElement);
+    expect(
+      nestedParameters?.querySelector('[data-parameter-nested="true"]'),
+    ).toBeInTheDocument();
+    expect(description).toHaveTextContent('evt');
+    expect(description).toHaveTextContent('code');
+    expect(description).not.toHaveTextContent('返回值');
+    expect(description).not.toHaveTextContent('nested callback void');
   });
 
   it('renders nested ParameterList blocks in the same dedicated child region', () => {
