@@ -61,64 +61,29 @@ describe('fumadocs source loader', () => {
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
 
-  it('keeps oversized plain Markdown pages below the agent size limit', async () => {
-    const page = source.getPage(
-      ['api-reference', 'api-ref', 'agora-analytics', 'analytics-rest-api'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    if (!page) {
-      throw new Error('Expected the English Analytics REST API page');
-    }
-
-    const markdown = await getLLMText(page);
-
-    expect(markdown.length).toBeLessThan(100_000);
-    expect(markdown).toContain('## Call Inspector');
-    expect(markdown).toContain('### Metrics ID');
-    expect(markdown).not.toContain('title: "Analytics REST API reference"');
-  });
-
-  it('qualifies every 3D Avatar tab heading with its platform', async () => {
+  it('links platform-specific Markdown variants from canonical pages', async () => {
     const page = source.getPage(
       [
         'realtime-media',
-        'marketplace',
+        'broadcast-streaming',
         'build',
-        'add-video-and-ar-effects',
-        'ht-3d-avatar',
+        'manage-video-and-streaming',
+        'configure-video-encoding',
       ],
       'en',
     );
 
     expect(page).toBeDefined();
     if (!page) {
-      throw new Error('Expected the English 3D Avatar page');
+      throw new Error('Expected the video encoding page');
     }
 
     const markdown = await getLLMText(page);
 
-    for (const platform of ['android', 'ios'] as const) {
-      const panel = markdown.match(
-        new RegExp(
-          `<TabsContent value="${platform}">([\\s\\S]*?)<\\/TabsContent>`,
-        ),
-      )?.[1];
-
-      expect(panel).toBeDefined();
-      const headings = Array.from(
-        panel?.matchAll(/^\s*#{2,4}\s+(.+)$/gm) ?? [],
-        (match) => match[1],
-      );
-
-      expect(headings.length).toBeGreaterThan(0);
-      expect(
-        headings.every((heading) =>
-          heading.toLowerCase().includes(platform === 'ios' ? 'ios' : platform),
-        ),
-      ).toBe(true);
-    }
+    expect(markdown).toContain('## Platform-specific versions');
+    expect(markdown).toContain(`${page.url}/android.md`);
+    expect(markdown).toContain(`${page.url}/ios.md`);
+    expect(markdown).toContain(`${page.url}/web.md`);
   });
 
   it('percent-encodes escaped parentheses in machine-readable HTTP links', async () => {

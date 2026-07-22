@@ -24,11 +24,6 @@ import { expandSdkCatalogMarkdown } from './sdk-catalog-markdown.server';
 import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
-const MAX_AGENT_MARKDOWN_CHARACTERS = 100_000;
-const ANALYTICS_REST_API_URL =
-  '/en/api-reference/api-ref/agora-analytics/analytics-rest-api';
-const HT_3D_AVATAR_URL =
-  '/en/realtime-media/marketplace/build/add-video-and-ar-effects/ht-3d-avatar';
 
 export const source = loader({
   source: multiple({
@@ -119,7 +114,10 @@ export async function getLLMText(page: InferPageType<typeof source>) {
     return normalizeAgentMarkdownLinks(platformGroupText);
   }
 
-  const processed = await getAgentSourceText(page);
+  const processed =
+    'getText' in page.data && typeof page.data.getText === 'function'
+      ? await page.data.getText('processed')
+      : '';
 
   return normalizeAgentMarkdownLinks(
     buildCanonicalPlatformLLMText({
@@ -127,55 +125,6 @@ export async function getLLMText(page: InferPageType<typeof source>) {
       pageUrl: page.url,
       processedText: expandSdkCatalogMarkdown(processed),
     }),
-  );
-}
-
-async function getAgentSourceText(page: InferPageType<typeof source>) {
-  if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
-    return '';
-  }
-
-  let processed = await page.data.getText('processed');
-
-  if (page.url === HT_3D_AVATAR_URL) {
-    processed = qualifyTabPanelHeadings(processed);
-  }
-
-  if (
-    processed.length < MAX_AGENT_MARKDOWN_CHARACTERS ||
-    page.url !== ANALYTICS_REST_API_URL
-  ) {
-    return processed;
-  }
-
-  const rawBody = stripFrontmatter(await page.data.getText('raw'));
-
-  return rawBody.length < processed.length ? rawBody : processed;
-}
-
-function stripFrontmatter(markdown: string) {
-  return markdown.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
-}
-
-function qualifyTabPanelHeadings(markdown: string) {
-  return markdown.replace(
-    /(<TabsContent value="(android|ios)">)([\s\S]*?)(<\/TabsContent>)/g,
-    (
-      _match,
-      openingTag: string,
-      platform: string,
-      body: string,
-      closingTag: string,
-    ) => {
-      const platformLabel = platform === 'ios' ? 'iOS' : 'Android';
-      const qualifiedBody = body.replace(
-        /^(\s*#{2,4}\s+)(.+)$/gm,
-        (_heading, prefix: string, title: string) =>
-          `${prefix}${title} (${platformLabel})`,
-      );
-
-      return `${openingTag}${qualifiedBody}${closingTag}`;
-    },
   );
 }
 

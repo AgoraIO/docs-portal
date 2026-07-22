@@ -166,13 +166,19 @@ iOS body`);
   it('builds canonical markdown from the page default structured platform', () => {
     const processedText = `Shared intro
 
+<_PlatformTabsGroup groupMode="structured" canonicalPlatform="web" platforms="[&#x22;android&#x22;,&#x22;web&#x22;]" showTabs="true">
+<_PlatformPanel platform="android">
 <_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
 Android body
 <_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
 
+<_PlatformPanel platform="web">
 <_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
 Web body
-<_PlatformProcessedMarker close="true" />`;
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+</_PlatformTabsGroup>`;
 
     const markdown = buildCanonicalPlatformLLMText({
       pageTitle: 'Quickstart',
@@ -185,6 +191,39 @@ Web body
     expect(markdown).toContain('Android body');
     expect(markdown).not.toContain('Web body');
     expect(markdown).not.toContain('_PlatformProcessedMarker');
+    expect(markdown).toContain('## Platform-specific versions');
+    expect(markdown).toContain('- [Android](/en/rtc/quickstart/android.md)');
+    expect(markdown).toContain('- [Web](/en/rtc/quickstart/web.md)');
+  });
+
+  it('keeps each unwrapped platform group canonical fallback', () => {
+    const processedText = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+Android setup
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web setup
+<_PlatformProcessedMarker close="true" />
+
+Shared content
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="ios" />
+iOS follow-up
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web follow-up
+<_PlatformProcessedMarker close="true" />`;
+
+    const markdown = buildCanonicalPlatformLLMText({
+      pageTitle: 'Unwrapped groups',
+      pageUrl: '/en/unwrapped-groups',
+      processedText,
+    });
+
+    expect(markdown).not.toContain('Android setup');
+    expect(markdown).toContain('Web setup');
+    expect(markdown).not.toContain('iOS follow-up');
+    expect(markdown).toContain('Web follow-up');
+    expect(markdown).toContain('Shared content');
   });
 
   it('falls back to each group canonical platform when the page default is absent', () => {

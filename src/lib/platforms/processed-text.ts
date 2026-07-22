@@ -1,4 +1,8 @@
-import { isKnownPlatform, type PlatformKey } from './registry';
+import {
+  getPlatformLabel,
+  isKnownPlatform,
+  type PlatformKey,
+} from './registry';
 
 const PLATFORM_BLOCK_PATTERN =
   /<_PlatformProcessedMarker groupMode="(?<mode>inline|structured)" canonicalPlatform="(?<canonical>[a-z-]+)" platform="(?<platform>[a-z-]+)" ?\/>\n?(?<body>[\s\S]*?)\n?<_PlatformProcessedMarker close="true" ?\/>/g;
@@ -68,10 +72,15 @@ export function buildCanonicalPlatformLLMText({
     processedText,
     platformTabs?.defaultPlatform,
   );
+  const platformVariants = platformTabs
+    ? buildPlatformVariantsMarkdown(pageUrl, platformTabs.platforms)
+    : '';
 
   return `# ${pageTitle ?? pageUrl} (${pageUrl})
 
-${stripGeneratedHeadingAnchors(markdown)}`;
+${[stripGeneratedHeadingAnchors(markdown), platformVariants]
+  .filter(Boolean)
+  .join('\n\n')}`;
 }
 
 function buildCanonicalPlatformMarkdownText(
@@ -113,15 +122,23 @@ function buildCanonicalPlatformMarkdownText(
     },
   );
 
-  const remainingHasDefault =
-    defaultPlatform !== undefined &&
-    Array.from(groupsResolved.matchAll(PLATFORM_MARKER_PATTERN)).some(
-      (marker) => marker.groups?.platform === defaultPlatform,
-    );
-
-  return filterPlatformBlocks(groupsResolved, (_mode, canonical, platform) =>
-    remainingHasDefault ? platform === defaultPlatform : canonical === platform,
+  return filterPlatformBlocks(
+    groupsResolved,
+    (_mode, canonical, platform) => canonical === platform,
   );
+}
+
+function buildPlatformVariantsMarkdown(
+  pageUrl: string,
+  platforms: PlatformKey[],
+) {
+  return [
+    '## Platform-specific versions',
+    ...platforms.map(
+      (platform) =>
+        `- [${getPlatformLabel(platform, 'en')}](${pageUrl}/${platform}.md)`,
+    ),
+  ].join('\n');
 }
 
 function filterPlatformBlocks(

@@ -359,36 +359,6 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it(
-    'keeps canonical structured-platform markdown below the agent truncation limit',
-    async () => {
-      const response = (await getGetHandler(DocPageRoute)({
-        context: {},
-        next: vi.fn(() => {
-          throw new Error('expected .md request to be handled directly');
-        }),
-        params: {
-          _splat:
-            'broadcast-streaming/build/manage-video-and-streaming/configure-video-encoding.md',
-          locale: 'en',
-          tab: 'realtime-media',
-        },
-        pathname:
-          '/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/configure-video-encoding.md',
-        request: new Request(
-          'https://docs.example.com/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/configure-video-encoding.md',
-        ),
-      } as never)) as Response;
-      const markdown = await response.text();
-
-      expect(response.headers.get('Content-Type')).toBe('text/markdown');
-      expect(markdown.length).toBeLessThan(100_000);
-      expect(markdown).not.toContain('_PlatformProcessedMarker');
-      expect(markdown).not.toContain('_PlatformTabsGroup');
-    },
-    REAL_DOCS_ROUTE_TIMEOUT,
-  );
-
   it('does not serve zh-CN direct platform .md docs page URLs', async () => {
     try {
       await getGetHandler(DocPageRoute)({

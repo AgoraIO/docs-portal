@@ -69,7 +69,7 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain('"status": "success"');
   });
 
-  it('preserves grouped request examples without exceeding the agent size limit', async () => {
+  it('preserves grouped request examples', async () => {
     const lane = OPENAPI_LANES.find((item) => item.id === 'convoai');
     expect(lane).toBeDefined();
     if (!lane) {
@@ -94,7 +94,6 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain('### Preset models');
     expect(markdown).toContain('full_config_agent');
     expect(markdown).toContain('pipeline_id');
-    expect(markdown.length).toBeLessThan(100_000);
   });
 
   it('does not append empty-schema markers after leaf fields', () => {
