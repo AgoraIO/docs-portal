@@ -25,45 +25,6 @@ _migration:
         as local text.
 ---
 
-### Hierarchy
-
-- Client
-
-## Index
-
-### Constructors
-
-- [constructor](/zh-CN/api-reference/rtc/mini-program/classes/client#constructor)
-
-### Methods
-
-- [destroy](/zh-CN/api-reference/rtc/mini-program/classes/client#destroy)
-- [init](/zh-CN/api-reference/rtc/mini-program/classes/client#init)
-- [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join)
-- [leave](/zh-CN/api-reference/rtc/mini-program/classes/client#leave)
-- [mute](/zh-CN/api-reference/rtc/mini-program/classes/client#mute)
-- [muteLocal](/zh-CN/api-reference/rtc/mini-program/classes/client#mutelocal)
-- [off](/zh-CN/api-reference/rtc/mini-program/classes/client#off)
-- [on](/zh-CN/api-reference/rtc/mini-program/classes/client#on)
-- [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish)
-- [rejoin](/zh-CN/api-reference/rtc/mini-program/classes/client#rejoin)
-- [renewToken](/zh-CN/api-reference/rtc/mini-program/classes/client#renewtoken)
-- [setAudioCodec](/zh-CN/api-reference/rtc/mini-program/classes/client#setaudiocodec)
-- [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/mini-program/classes/client#setremotevideostreamtype)
-- [setRole](/zh-CN/api-reference/rtc/mini-program/classes/client#setrole)
-- [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay)
-- [stopChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#stopchannelmediarelay)
-- [subscribe](/zh-CN/api-reference/rtc/mini-program/classes/client#subscribe)
-- [unmute](/zh-CN/api-reference/rtc/mini-program/classes/client#unmute)
-- [unmuteLocal](/zh-CN/api-reference/rtc/mini-program/classes/client#unmutelocal)
-- [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish)
-- [unsubscribe](/zh-CN/api-reference/rtc/mini-program/classes/client#unsubscribe)
-- [updateChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#updatechannelmediarelay)
-- [updatePlayerNetStatus](/zh-CN/api-reference/rtc/mini-program/classes/client#updateplayernetstatus)
-- [updatePlayerStateChange](/zh-CN/api-reference/rtc/mini-program/classes/client#updateplayerstatechange)
-- [updatePusherNetStatus](/zh-CN/api-reference/rtc/mini-program/classes/client#updatepushernetstatus)
-- [updatePusherStateChange](/zh-CN/api-reference/rtc/mini-program/classes/client#updatepusherstatechange)
-
 ## Constructors
 
 <a id="constructor"></a>
@@ -78,10 +39,10 @@ new Client(options: object): [Client](/zh-CN/api-reference/rtc/mini-program/clas
 
 **NOTE**：加解密功能仅在 IoT 场景适用。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="options" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="encryptionKey" type="string" optional>
 
 加密密钥。
@@ -108,7 +69,7 @@ new Client(options: object): [Client](/zh-CN/api-reference/rtc/mini-program/clas
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -132,7 +93,7 @@ destroy(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 销毁客户端对象。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="onSuccess" type="function" optional>
 
 方法调用成功时执行的回调函数。
@@ -143,7 +104,7 @@ destroy(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -164,10 +125,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -175,7 +136,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -188,7 +149,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -210,7 +171,7 @@ init(appId: string, onSuccess?: function, onFailure?: function): Promise&lt;void
 
 初始化客户端对象。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="appId" type="string" required>
 
 你的小程序项目的 App ID。
@@ -226,7 +187,7 @@ init(appId: string, onSuccess?: function, onFailure?: function): Promise&lt;void
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -247,10 +208,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -258,7 +219,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -271,7 +232,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -293,7 +254,7 @@ join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boo
 
 加入频道。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="channelKey" type="string" required>
 
 在 app 服务器端生成的用于鉴权的 Token：
@@ -344,11 +305,11 @@ join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boo
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -369,10 +330,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -380,7 +341,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -393,7 +354,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -415,7 +376,7 @@ leave(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 退出频道。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="onSuccess" type="function" optional>
 
 方法调用成功时执行的回调函数。无返回值。
@@ -426,7 +387,7 @@ leave(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -447,10 +408,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -458,7 +419,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -471,7 +432,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -493,7 +454,7 @@ mute(uid: number, target: string, onSuccess?: function, onFailure?: function): P
 
 停止接收远端用户的音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 远端用户的 ID。
@@ -518,7 +479,7 @@ mute(uid: number, target: string, onSuccess?: function, onFailure?: function): P
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -539,10 +500,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -550,7 +511,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -563,7 +524,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -585,7 +546,7 @@ muteLocal(target: string, onSuccess?: function, onFailure?: function): Promise&l
 
 停止发送本地用户的音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="target" type="string" required>
 
 选择停止发送哪一种流，有三种选择：
@@ -605,7 +566,7 @@ muteLocal(target: string, onSuccess?: function, onFailure?: function): Promise&l
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -626,10 +587,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -637,7 +598,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -650,7 +611,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -672,7 +633,7 @@ off(event: string): void
 
 取消监听流事件。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="string" required>
 
 想要取消监听的流事件。
@@ -680,7 +641,7 @@ off(event: string): void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -694,87 +655,12 @@ void
 
 ### on
 
+<Accordions defaultValue="on-client-banned">
+<Accordion title="on(event: &quot;client-banned&quot;): void" value="on-client-banned">
+
 <ApiSignature>
 
 on(event: "client-banned"): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "error", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-added", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-removed", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "update-url", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "video-rotation", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-did-expire"): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-will-expire"): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "mute-audio", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "mute-video", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "unmute-audio", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "unmute-video", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-event", callback: function): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-state", callback: function): void
 
 </ApiSignature>
 
@@ -786,7 +672,7 @@ v2.5.4
 当你在服务端踢除频道内的用户后，被踢出频道的用户会收到该回调。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;client-banned&quot;" required>
 
 当前触发的事件。`"client-banned"` 表示用户被服务器禁止。
@@ -794,7 +680,7 @@ v2.5.4
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -804,10 +690,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;error&quot;, callback: function): void" value="on-error">
+
+<ApiSignature>
+
+on(event: "error", callback: function): void
+
+</ApiSignature>
+
 通知应用程序发生错误。
  该回调中会包含详细的错误码和错误信息。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;error&quot;" required>
 
 当前触发的事件。`"error"` 表示发生错误。
@@ -823,10 +718,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -834,7 +729,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -847,7 +742,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -857,10 +752,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;stream-added&quot;, callback: function): void" value="on-stream-added">
+
+<ApiSignature>
+
+on(event: "stream-added", callback: function): void
+
+</ApiSignature>
+
 通知应用程序已添加远端音视频流。
  该回调中会包含已添加的远端用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;stream-added&quot;" required>
 
 当前触发的事件。`"stream-added"` 表示已添加远端音视频流。
@@ -876,17 +780,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -899,7 +803,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -909,10 +813,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;stream-removed&quot;, callback: function): void" value="on-stream-removed">
+
+<ApiSignature>
+
+on(event: "stream-removed", callback: function): void
+
+</ApiSignature>
+
 通知应用程序已删除远端音视频流。
  该回调中会包含已删除的远端用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;stream-removed&quot;" required>
 
 当前触发的事件。`"stream-removed"` 表示已删除远端音视频流。
@@ -928,17 +841,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -951,7 +864,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -961,10 +874,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;update-url&quot;, callback: function): void" value="on-update-url">
+
+<ApiSignature>
+
+on(event: "update-url", callback: function): void
+
+</ApiSignature>
+
 通知应用程序已更新 URL 地址。
  该回调中会包含远端用户的 ID 和更新后的拉流地址。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;update-url&quot;" required>
 
 当前触发的事件。`"update-url"` 表示已更新 URL 地址。
@@ -980,10 +902,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 <Parameter name="url" type="string" required />
 </ParameterList>
@@ -991,7 +913,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1004,7 +926,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1014,10 +936,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;video-rotation&quot;, callback: function): void" value="on-video-rotation">
+
+<ApiSignature>
+
+on(event: "video-rotation", callback: function): void
+
+</ApiSignature>
+
 通知应用程序远端视频已旋转。
  该回调中会包含视频的旋转信息以及远端用户的 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;video-rotation&quot;" required>
 
 当前触发的事件。`"video-rotation"` 表示远端视频已旋转。
@@ -1033,10 +964,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="rotation" type="number" required />
 <Parameter name="uid" type="number" required />
 </ParameterList>
@@ -1044,7 +975,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1057,7 +988,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1066,6 +997,15 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+</Accordion>
+<Accordion title="on(event: &quot;token-privilege-did-expire&quot;): void" value="on-token-privilege-did-expire">
+
+<ApiSignature>
+
+on(event: "token-privilege-did-expire"): void
+
+</ApiSignature>
 
 Token 已过期回调。
 
@@ -1077,7 +1017,7 @@ v2.5.3
 一般情况下，在收到该消息之后，应向服务端重新申请 Token，并调用 [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 方法传入新的 Token 重新加入频道。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;token-privilege-did-expire&quot;" required>
 
 当前触发的事件。`"token-privilege-did-expire"` 表示 Token 已过期。
@@ -1085,7 +1025,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1094,6 +1034,15 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+</Accordion>
+<Accordion title="on(event: &quot;token-privilege-will-expire&quot;): void" value="on-token-privilege-will-expire">
+
+<ApiSignature>
+
+on(event: "token-privilege-will-expire"): void
+
+</ApiSignature>
 
 Token 服务即将过期回调。
 
@@ -1104,7 +1053,7 @@ v2.5.3
  然后调用 [renewToken](/zh-CN/api-reference/rtc/mini-program/classes/client#renewtoken) 将新生成的 Token 传给 SDK。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;token-privilege-will-expire&quot;" required>
 
 当前触发的事件。`"token-privilege-will-expire"` 表示 Token 即将过期。
@@ -1112,7 +1061,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1122,10 +1071,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;mute-audio&quot;, callback: function): void" value="on-mute-audio">
+
+<ApiSignature>
+
+on(event: "mute-audio", callback: function): void
+
+</ApiSignature>
+
 通知应用程序远端用户已停止发送音频流。
  该回调中会包含停止发送音频流的用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;mute-audio&quot;" required>
 
 当前触发的事件。`"mute-audio"` 表示远端用户已停止发送音频流。
@@ -1141,17 +1099,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1164,7 +1122,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1174,10 +1132,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;mute-video&quot;, callback: function): void" value="on-mute-video">
+
+<ApiSignature>
+
+on(event: "mute-video", callback: function): void
+
+</ApiSignature>
+
 通知应用程序远端用户已停止发送视频流。
  该回调中会包含停止发送视频流的用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;mute-video&quot;" required>
 
 当前触发的事件。`"mute-video"` 表示远端用户已停止发送视频流。
@@ -1193,17 +1160,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1216,7 +1183,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1226,10 +1193,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;unmute-audio&quot;, callback: function): void" value="on-unmute-audio">
+
+<ApiSignature>
+
+on(event: "unmute-audio", callback: function): void
+
+</ApiSignature>
+
 通知应用程序远端用户已恢复发送音频流。
  该回调中会包含恢复发送音频流的用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;unmute-audio&quot;" required>
 
 当前触发的事件。`"unmute-audio"` 表示远端用户已恢复发送音频流。
@@ -1245,17 +1221,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1268,7 +1244,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1278,10 +1254,19 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;unmute-video&quot;, callback: function): void" value="on-unmute-video">
+
+<ApiSignature>
+
+on(event: "unmute-video", callback: function): void
+
+</ApiSignature>
+
 通知应用程序远端用户已恢复发送视频流。
  该回调中会包含恢复发送视频流的用户 ID。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;unmute-video&quot;" required>
 
 当前触发的事件。`"unmute-video"` 表示远端用户已恢复发送视频流。
@@ -1297,17 +1282,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1320,7 +1305,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1330,11 +1315,20 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;channel-media-relay-event&quot;, callback: function): void" value="on-channel-media-relay-event">
+
+<ApiSignature>
+
+on(event: "channel-media-relay-event", callback: function): void
+
+</ApiSignature>
+
 跨频道媒体流转发事件回调。
 
 该回调报告跨频道媒体流转发过程中发生的事件。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;channel-media-relay-event&quot;" required>
 
 当前触发的事件。`"channel-media-relay-event"` 表示报告媒体流转发事件。
@@ -1350,17 +1344,17 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 </ParameterList>
 
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1373,7 +1367,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1383,11 +1377,20 @@ void
 
 </ApiReturns>
 
+</Accordion>
+<Accordion title="on(event: &quot;channel-media-relay-state&quot;, callback: function): void" value="on-channel-media-relay-state">
+
+<ApiSignature>
+
+on(event: "channel-media-relay-state", callback: function): void
+
+</ApiSignature>
+
 跨频道媒体流转发状态回调。
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="event" type="&quot;channel-media-relay-state&quot;" required>
 
 当前触发的事件。`"channel-media-relay-state"` 表示媒体流转发状态。
@@ -1403,10 +1406,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="evt" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="state" type="number" required />
 </ParameterList>
@@ -1414,7 +1417,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1427,7 +1430,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1436,6 +1439,9 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+</Accordion>
+</Accordions>
 
 <a id="publish"></a>
 
@@ -1451,7 +1457,7 @@ publish(onSuccess?: function, onFailure?: function): Promise&lt;string&gt;
 
 该方法将本地音视频流发布到 SD-RTN。互动直播中，调用该 API 的用户即默认为主播。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="onSuccess" type="function" optional>
 
 方法调用成功时执行的回调函数。返回值为音视频流的推流地址。
@@ -1462,11 +1468,11 @@ publish(onSuccess?: function, onFailure?: function): Promise&lt;string&gt;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="url" type="string" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1487,10 +1493,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -1498,7 +1504,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1511,7 +1517,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1537,7 +1543,7 @@ rejoin(channelKey: string, channel: string, uid: number | string, uids: number, 
 
 该方法让用户重新加入声网 RTC 频道。如果你的小程序中有切后台的场景需求，请确保使用该方法做好重连机制。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="channelKey" type="string" required>
 
 在 app 服务器端生成的用于鉴权的 Token：
@@ -1593,11 +1599,11 @@ rejoin(channelKey: string, channel: string, uid: number | string, uids: number, 
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1618,10 +1624,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -1629,7 +1635,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1642,7 +1648,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1671,7 +1677,7 @@ v2.5.3
  当收到 `client.on("token-privilege-will-expire")` 消息时，调用该 API 以更新 Token，否则 SDK 会无法和服务器建立连接。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="token" type="string" required>
 
 新的 Token。
@@ -1687,7 +1693,7 @@ v2.5.3
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1708,10 +1714,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -1719,7 +1725,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1732,7 +1738,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1758,7 +1764,7 @@ setAudioCodec(audioCodec: [AudioCodec](/zh-CN/api-reference/rtc/mini-program/enu
 v2.5.6
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="audioCodec" required>
 
 <ParameterType>
@@ -1776,7 +1782,7 @@ IoT 设备使用的音频编码格式，详见[AudioCodec](/zh-CN/api-reference/
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1804,7 +1810,7 @@ v2.5.3
 如果发送端选择发送视频双流 (大流和小流)，该方法可以在订阅端选择接收大流还是小流。如果不设置，订阅端默认接收大流。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 用户 ID。
@@ -1821,11 +1827,11 @@ v2.5.3
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="url" type="string" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1846,11 +1852,11 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="any" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1863,7 +1869,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1887,7 +1893,7 @@ setRole(role: string, onSuccess?: function, onFailure?: function): Promise&lt;vo
 
 注：如果在主播已 `publish` 的状态下调用该方法将用户角色设置为 `audience`，会导致之前的推流地址无效。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="role" type="string" required>
 
 用户角色。选择如下一种角色：
@@ -1906,7 +1912,7 @@ setRole(role: string, onSuccess?: function, onFailure?: function): Promise&lt;vo
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1927,10 +1933,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -1938,7 +1944,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -1951,7 +1957,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2007,7 +2013,7 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="config" required>
 
 <ParameterType>
@@ -2032,7 +2038,7 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" required>
 
 <ParameterType>
@@ -2044,7 +2050,7 @@ null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2057,7 +2063,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2102,7 +2108,7 @@ stopChannelMediaRelay: function() {
 }
 ```
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="callback" type="function" required>
 
 停止跨频道媒体流转发是否成功的回调。
@@ -2116,7 +2122,7 @@ stopChannelMediaRelay: function() {
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" required>
 
 <ParameterType>
@@ -2128,7 +2134,7 @@ null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2141,7 +2147,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2165,7 +2171,7 @@ subscribe(uid: number, options?: object, onSuccess?: function, onFailure?: funct
 
 该方法从 SD-RTN 订阅并接收远端音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 要订阅的远端用户 ID。
@@ -2175,7 +2181,7 @@ subscribe(uid: number, options?: object, onSuccess?: function, onFailure?: funct
 
 设置是否订阅视频或音频。
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="audio" type="boolean" optional />
 <Parameter name="video" type="boolean" optional />
 </ParameterList>
@@ -2191,12 +2197,12 @@ subscribe(uid: number, options?: object, onSuccess?: function, onFailure?: funct
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="url" type="string" required />
 <Parameter name="rotation" type="number" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2217,11 +2223,11 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="any" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2234,7 +2240,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2261,7 +2267,7 @@ unmute(uid: number, target: string, onSuccess?: function, onFailure?: function):
 
 恢复接收远端用户的音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 远端用户的 ID。
@@ -2286,7 +2292,7 @@ unmute(uid: number, target: string, onSuccess?: function, onFailure?: function):
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2307,10 +2313,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -2318,7 +2324,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2331,7 +2337,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2353,7 +2359,7 @@ unmuteLocal(target: string, onSuccess?: function, onFailure?: function): Promise
 
 恢复发送本地用户的音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="target" type="string" required>
 
 选择恢复发送哪一种流，有三种选择：
@@ -2373,7 +2379,7 @@ unmuteLocal(target: string, onSuccess?: function, onFailure?: function): Promise
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2394,10 +2400,10 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="object" required>
 
-<ParameterList>
+<ParameterList variant="table">
 <Parameter name="code" type="number" required />
 <Parameter name="reason" type="string" required />
 </ParameterList>
@@ -2405,7 +2411,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2418,7 +2424,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2440,7 +2446,7 @@ unpublish(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 停止发布本地音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="onSuccess" type="function" optional>
 
 方法调用成功时执行的回调函数。无返回值。
@@ -2451,7 +2457,7 @@ unpublish(onSuccess?: function, onFailure?: function): Promise&lt;void&gt;
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2472,11 +2478,11 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="any" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2489,7 +2495,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2513,7 +2519,7 @@ unsubscribe(uid: number, onSuccess?: function, onFailure?: function): Promise&lt
 
 该方法停止从 SD-RTN 订阅并接收远端音视频流。
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 要停止订阅的远端用户 ID。
@@ -2529,7 +2535,7 @@ unsubscribe(uid: number, onSuccess?: function, onFailure?: function): Promise&lt
 
 </ApiSignature>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2550,11 +2556,11 @@ void
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" type="any" required />
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2567,7 +2573,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2615,7 +2621,7 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="config" required>
 
 <ParameterType>
@@ -2640,7 +2646,7 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="err" required>
 
 <ParameterType>
@@ -2652,7 +2658,7 @@ null | [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2665,7 +2671,7 @@ void
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2693,7 +2699,7 @@ v2.5.3
 当收到 live-player 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 远端用户的用户 ID。
@@ -2707,7 +2713,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2735,7 +2741,7 @@ v2.5.3
 当收到 live-player 组件报告的拉流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="uid" type="number" required>
 
 远端用户的用户 ID。
@@ -2749,7 +2755,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2777,7 +2783,7 @@ v2.5.3
 当收到 live-pusher 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="detail" type="any" required>
 
 微信事件回调的 `e.detail` 对象。
@@ -2786,7 +2792,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 
@@ -2814,7 +2820,7 @@ v2.5.3
 当收到 live-pusher 组件报告的推流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 :::
 
-<ParameterList title="Parameters">
+<ParameterList title="参数" variant="table">
 <Parameter name="detail" type="any" required>
 
 微信事件回调的 `e.detail` 对象。
@@ -2823,7 +2829,7 @@ v2.5.3
 </Parameter>
 </ParameterList>
 
-<ApiReturns>
+<ApiReturns title="返回值">
 
 <ApiReturnType>
 

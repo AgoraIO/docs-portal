@@ -111,16 +111,49 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toContain('参考概览');
   });
 
-  it('keeps a single-page Agent SDK entry out of the Reference root sidebar', async () => {
-    const sidebar = await loadApiReferenceSidebar([
-      'conversational-ai',
-      'agent-go',
-    ]);
-    const titles = collectTitles(sidebar);
+  it.each([
+    [['conversational-ai', 'agent-go'], 'Go'],
+    [['conversational-ai', 'agent-python'], 'Python'],
+    [['conversational-ai', 'agent-typescript'], 'TypeScript'],
+    [['whiteboard', 'fastboard', 'android'], 'Android'],
+    [['whiteboard', 'fastboard', 'ios'], 'iOS'],
+    [['whiteboard', 'fastboard', 'web'], 'Web'],
+    [['meeting', 'android'], 'Android'],
+    [['meeting', 'ios'], 'iOS'],
+    [['meeting', 'electron'], 'Electron'],
+    [['private-room', 'android', 'rtm', 'api', 'call-api'], 'Android'],
+    [['private-room', 'ios', 'rtm', 'api', 'call-api'], 'iOS'],
+    [
+      ['private-room', 'android', 'custom-signaling', 'api', 'call-api'],
+      'Android',
+    ],
+    [['private-room', 'ios', 'custom-signaling', 'api', 'call-api'], 'iOS'],
+    [['online-art-teaching', 'android', 'api', 'correction'], 'Android'],
+    [['online-art-teaching', 'ios', 'api', 'correction'], 'iOS'],
+    [['online-art-teaching', 'macos', 'api', 'correction'], 'macOS'],
+    [
+      ['online-art-teaching', 'cpp-all-platforms', 'api', 'correction'],
+      'Windows',
+    ],
+    [['online-music-teaching', 'android', 'api', 'fish-eye'], 'Android'],
+    [['online-music-teaching', 'ios', 'api', 'fish-eye'], 'iOS'],
+    [['online-music-teaching', 'macos', 'api', 'fish-eye'], 'macOS'],
+    [
+      ['online-music-teaching', 'cpp-all-platforms', 'api', 'fish-eye'],
+      'Windows',
+    ],
+    [['teleoperation', 'iot', 'api', 'device'], '设备端'],
+    [['teleoperation', 'iot', 'api', 'operator'], '操控端'],
+  ])('uses a focused %s sidebar for a single-document card', async (route, label) => {
+    const payload = await loadApiReferencePayload(route);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-    expect(titles).toContain('API 参考');
-    expect(titles).not.toContain('实时互动 RTC');
-    expect(titles).not.toContain('创建对话式智能体');
+    expect(titles).toEqual([label]);
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: '参考中心',
+      title: label,
+    });
   });
 
   it('uses the Conversational AI Android SDK sidebar, not RESTful navigation', async () => {
@@ -186,24 +219,6 @@ describe('API Center scoped sidebars', () => {
       backLabel: '参考中心',
       title: 'RESTful API',
     });
-  });
-
-  it.each([
-    'android',
-    'ios',
-    'web',
-  ])('keeps the single-page Fastboard %s API out of the Reference root sidebar', async (platform) => {
-    const payload = await loadApiReferencePayload([
-      'whiteboard',
-      'fastboard',
-      platform,
-    ]);
-    const titles = collectTitles(payload.sidebar as SidebarNode[]);
-
-    expect(titles).toContain('API 参考');
-    expect(titles).not.toContain('实时互动 RTC');
-    expect(titles).not.toContain('Fastboard SDK');
-    expect(payload.sidebarHeader).toBeUndefined();
   });
 
   it('uses the Cloud Recording Go REST Client sidebar, not RESTful navigation', async () => {

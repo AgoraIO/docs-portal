@@ -123,6 +123,69 @@ describe('ApiReferenceCards', () => {
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/conversational-ai');
   });
 
+  it('renders every IM API as an external link immediately after RTM', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const imEntries = zhCNApiReferenceCards.all.filter(
+      (entry) => entry.productId === 'im',
+    );
+    const productHeadings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((heading) => heading.textContent);
+
+    expect(imEntries.map((entry) => [entry.platform, entry.href])).toEqual([
+      [
+        'Android',
+        'https://im.shengwang.cn/docs/sdk/android/api_reference_overview.html',
+      ],
+      [
+        'iOS',
+        'https://im.shengwang.cn/docs/sdk/ios/api_reference_overview.html',
+      ],
+      [
+        'Web',
+        'https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html',
+      ],
+      [
+        'HarmonyOS',
+        'https://im.shengwang.cn/docs/sdk/harmonyos/api_reference_overview.html',
+      ],
+      [
+        'C++ (全平台)',
+        'https://im.shengwang.cn/docs/sdk/windows/api_reference_overview.html',
+      ],
+      [
+        '小程序',
+        'https://im.shengwang.cn/docs/sdk/applet/api_reference_overview.html',
+      ],
+      [
+        'Unity',
+        'https://im.shengwang.cn/docs/sdk/unity/api_reference_overview.html',
+      ],
+      [
+        'Flutter',
+        'https://im.shengwang.cn/docs/sdk/flutter/api_reference_overview.html',
+      ],
+      [
+        'React Native',
+        'https://im.shengwang.cn/docs/sdk/react-native/api_reference_overview.html',
+      ],
+      ['RESTful', 'https://im.shengwang.cn/docs/sdk/server-side/overview.html'],
+    ]);
+    expect(imEntries.every((entry) => entry.href.startsWith('https://'))).toBe(
+      true,
+    );
+    expect(productHeadings.indexOf('即时通讯 IM')).toBe(
+      productHeadings.indexOf('实时消息 RTM') + 1,
+    );
+    expect(screen.getByRole('heading', { name: '即时通讯 IM' })).toBeVisible();
+    expect(
+      screen.getByText(
+        '一整套高可靠、低时延、高并发、安全、全球化的即时聊天云服务。',
+      ),
+    ).toBeVisible();
+  });
+
   it('shows an empty state and can clear filters', () => {
     render(<ApiReferenceCards locale="zh-CN" type="server" />);
 
@@ -147,6 +210,7 @@ describe('ApiReferenceCards', () => {
 
   it('keeps every internal API reference card link pointed at an existing route file', () => {
     const missing = zhCNApiReferenceCards.all
+      .filter((entry) => entry.href.startsWith('/'))
       .filter((entry) => !routeExists(entry.href))
       .map((entry) => `${entry.product} ${entry.platform}: ${entry.href}`);
 
