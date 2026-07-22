@@ -115,7 +115,9 @@ function replaceMetaPages(pages, replacements) {
     const parsed = parseMetaLink(page);
     const replacement = replacements.find(
       (candidate) =>
-        candidate.leaf === page || candidate.oldTargetRoute === parsed?.route,
+        candidate.leaf === page ||
+        candidate.oldTargetRoute === parsed?.route ||
+        candidate.replacementRoute === parsed?.route,
     );
     const next = replacement
       ? metaLink(replacement.label, replacement.replacementRoute)
@@ -162,7 +164,9 @@ export function buildApiReferenceRehomePlan(manifest) {
     });
     const values = byOldTarget.get(resolution.supersededTargetPath) ?? [];
     values.push({
-      details: details.get(normalizeLegacyUrl(page.requestedUrl)) ?? {},
+      details: details.get(normalizeLegacyUrl(page.requestedUrl)) ?? {
+        label: resolution.apiReferenceSupplement?.label,
+      },
       oldTargetRoute: resolution.supersededTargetRoute,
       sourcePath: resolution.sourcePath,
       sourceUrl: page.requestedUrl,

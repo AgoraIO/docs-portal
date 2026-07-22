@@ -106,6 +106,46 @@ describe('API Center navigation runner', () => {
     ]);
   });
 
+  it('nests the cloud transcoding event contract under the RESTful API Webhook group', async () => {
+    const apiMeta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+    const solutionMeta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          'content/docs/zh-CN/realtime-media/transcoding/reference/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+
+    expect(apiMeta.pages).toContainEqual({
+      type: 'group',
+      title: 'Webhook 回调事件',
+      pages: [
+        '[接入指南](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
+        'ncs-events',
+      ],
+    });
+    expect(apiMeta.pages).not.toContain(
+      '[Webhook 回调事件](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
+    );
+    expect(
+      apiMeta.sidebarLabels[
+        '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events'
+      ],
+    ).toBe('事件类型');
+    expect(solutionMeta.pages).toContain(
+      '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)',
+    );
+    expect(solutionMeta.pages).not.toContain('ncs-events');
+  });
+
   it('moves every rehomed private-room API leaf from the root sidebar into the API catalog', () => {
     const rootRoute = '/zh-CN/api-reference/private-room';
     const useCases = [

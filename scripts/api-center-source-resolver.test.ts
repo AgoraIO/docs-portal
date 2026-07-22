@@ -139,6 +139,35 @@ describe('API Center source resolver', () => {
     ).toBeNull();
   });
 
+  it('rehomes the cloud transcoding event contract into its RESTful API reference', () => {
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/cloud-transcoder/restful/webhook/ncs-events',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events.mdx',
+      targetRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+      targetDecision: 'api-reference-supplement',
+      supersededTargetPath:
+        'content/docs/zh-CN/realtime-media/transcoding/reference/ncs-events.mdx',
+      supersededTargetRoute:
+        '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+      apiReferenceSupplement: {
+        parentRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+        groupTitle: 'Webhook 回调事件',
+        label: '事件类型',
+        relatedPages: [
+          {
+            label: '接入指南',
+            route:
+              '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
+          },
+        ],
+      },
+    });
+  });
+
   it('adds the complete Edu Store TypeDoc trees with portable source paths', async () => {
     const root = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-edu-store-source-'),

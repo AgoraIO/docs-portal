@@ -658,6 +658,68 @@ function addOpenApiLaneRootMetaPlans(metaByPath, lanes) {
   }
 }
 
+function addApiReferenceSupplementMetaPlans(metaByPath, manifest) {
+  const handledRoutes = new Set();
+  for (const page of manifest.pageEvidence ?? []) {
+    const resolution = page.sourceResolution;
+    const supplement = resolution?.apiReferenceSupplement;
+    if (
+      !supplement?.parentRoute ||
+      !resolution.targetRoute?.startsWith(`${supplement.parentRoute}/`) ||
+      handledRoutes.has(resolution.targetRoute)
+    ) {
+      continue;
+    }
+    handledRoutes.add(resolution.targetRoute);
+    const metaPath = `content/docs${supplement.parentRoute}/meta.json`;
+    const relatedRoutes = new Set(
+      (supplement.relatedPages ?? []).map((related) => related.route),
+    );
+    const targetLeaf = resolution.targetRoute.slice(
+      supplement.parentRoute.length + 1,
+    );
+    const group = {
+      type: 'group',
+      title: supplement.groupTitle,
+      pages: [
+        ...(supplement.relatedPages ?? []).map((related) =>
+          routeMetaLink(related.label, related.route, supplement.parentRoute),
+        ),
+        targetLeaf,
+      ],
+    };
+    const current = metaByPath.get(metaPath);
+    if (!current) {
+      createMetaAccumulator(metaByPath, {
+        metaPath,
+        rootRoute: supplement.parentRoute,
+        title: 'RESTful API',
+        pages: [group],
+        metaPatch: {
+          sidebarLabels: {
+            [resolution.targetRoute]: supplement.label,
+          },
+        },
+      });
+      continue;
+    }
+    current.preserveExistingPages = false;
+    current.pages = current.pages.filter((candidate) => {
+      if (candidate === targetLeaf) return false;
+      const parsed = parseMetaLink(candidate);
+      return !relatedRoutes.has(parsed?.route);
+    });
+    mergeMetaPages(current.pages, [group]);
+    current.metaPatch = {
+      ...current.metaPatch,
+      sidebarLabels: {
+        ...(current.metaPatch.sidebarLabels ?? {}),
+        [resolution.targetRoute]: supplement.label,
+      },
+    };
+  }
+}
+
 function buildEntryMetaPlans(manifest, routeMap, lanes) {
   const byUrl = evidenceIndex(manifest);
   const laneById = new Map(lanes.map((lane) => [lane.id, lane]));
@@ -732,6 +794,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
   addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addOnlineKtvScopeMetaPlans(metaByPath, manifest);
   addOpenApiLaneRootMetaPlans(metaByPath, lanes);
+  addApiReferenceSupplementMetaPlans(metaByPath, manifest);
 
   return { metaByPath, openApiEntries };
 }

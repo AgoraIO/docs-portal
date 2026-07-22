@@ -22,7 +22,7 @@
 - Catalog Reference Center landing links: 34
 - Promoted platform-internal catalog links: 0
 - Entry meta files: 103
-- Entry meta links: 1305
+- Entry meta links: 1306
 - Visible legacy navigation leaves: 1326
 - Visible supplemental entry pages: 2
 - Visible supplemental child pages: 22
@@ -31,8 +31,8 @@
 - Missing hidden targets: 0
 - Missing visible child targets: 0
 - Invalid supplemental target links: 0
-- Legacy API source pages rehomed from product sections: 50
-- Superseded non-reference API targets: 31
+- Legacy API source pages rehomed from product sections: 51
+- Superseded non-reference API targets: 32
 - Reference Center landing pages: 4
 - Section navigation files converted to links: 18
 - Missing navigation targets: 0

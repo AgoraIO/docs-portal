@@ -53,6 +53,38 @@ function publicPlatform(value) {
   return value === 'javascript' ? 'web' : value;
 }
 
+function cloudTranscodingSupplement(pathname) {
+  if (
+    !/^\/doc\/cloud-transcoder\/(?:restful\/)?webhook\/ncs-events$/i.test(
+      pathname,
+    )
+  ) {
+    return null;
+  }
+  return {
+    ...targetForPath(
+      'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events.mdx',
+    ),
+    targetDecision: 'api-reference-supplement',
+    supersededTargetPath:
+      'content/docs/zh-CN/realtime-media/transcoding/reference/ncs-events.mdx',
+    supersededTargetRoute:
+      '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+    apiReferenceSupplement: {
+      parentRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+      groupTitle: 'Webhook 回调事件',
+      label: '事件类型',
+      relatedPages: [
+        {
+          label: '接入指南',
+          route:
+            '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
+        },
+      ],
+    },
+  };
+}
+
 function onlineKtvTarget(pathname) {
   const match = pathname.match(
     /^\/doc\/online-ktv\/(?:(android|ios)\/)?(auikaraoke|ktv-scenario|online-ktv-sdk)\/(.+)$/i,
@@ -151,6 +183,9 @@ export function resolveExistingApiCenterTarget(value) {
       'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication.mdx',
   };
   if (routeAliases[pathname]) return targetForPath(routeAliases[pathname]);
+
+  const apiReferenceSupplement = cloudTranscodingSupplement(pathname);
+  if (apiReferenceSupplement) return apiReferenceSupplement;
 
   const onlineKtv = onlineKtvTarget(pathname);
   if (onlineKtv) return onlineKtv;

@@ -72,6 +72,38 @@ function fixtureManifest() {
 }
 
 describe('API Center reference ownership', () => {
+  it('uses an API supplement label when the page is outside the entry page graph', () => {
+    const plan = buildApiReferenceRehomePlan({
+      entries: [],
+      pageEvidence: [
+        {
+          requestedUrl:
+            'https://doc.shengwang.cn/doc/cloud-transcoder/restful/webhook/ncs-events',
+          sourceResolution: {
+            sourcePath: 'docs/cloud-transcoder/webhook/ncs-events.mdx',
+            targetPath:
+              'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events.mdx',
+            targetRoute:
+              '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+            supersededTargetPath:
+              'content/docs/zh-CN/realtime-media/transcoding/reference/ncs-events.mdx',
+            supersededTargetRoute:
+              '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+            apiReferenceSupplement: { label: '事件类型' },
+          },
+        },
+      ],
+    });
+
+    expect(plan.records).toEqual([
+      expect.objectContaining({
+        label: '事件类型',
+        replacementRoute:
+          '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+      }),
+    ]);
+  });
+
   it('uses a real Reference Center landing when one solution page splits by platform', () => {
     const plan = buildApiReferenceRehomePlan(fixtureManifest());
 
