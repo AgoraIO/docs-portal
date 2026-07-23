@@ -41,10 +41,10 @@ To create a new campaign:
 3. Configure the campaign details:
 
    - **Campaign Name** (required): Enter a descriptive name to identify this campaign.
-   - **Phone number** (required): Select the imported phone number to use as the outbound caller ID, or select **Add Phone Number** to import one without leaving this screen.
    - **AI Agent** (required): Select the deployed agent that will handle the calls, or select **Create Agent** to create one without leaving this screen.
+   - **Phone number** (required): Select the imported phone number to use as the outbound caller ID, or select **Add Phone Number** to import one without leaving this screen.
 
-4. Upload your contact list in the **Contacts List** panel. Select **Select File**, or drag and drop a CSV file into the upload area. See [Contact list format](#contact-list-format) for requirements.
+4. Upload your contact list in the **Contacts List** panel. **Select File**, or drag and drop a CSV file into the upload area. See [Contact list format](#contact-list-format) for requirements. You can also download a template for the CSV file.
 
     :::info[Info]
     Maximum file size is 25 MB, with a maximum of 50,000 rows.
@@ -52,22 +52,29 @@ To create a new campaign:
 
 5. Configure launch timing:
 
-   - **Launch Campaign Now**: Start calling contacts immediately after creation.
-   - **Schedule for Later**: Set a specific **Campaign Start Time**, **Timezone**, and **Call Window** to control when your agent makes calls.
+   - **Launch immediately**: Start calling contacts immediately after creation.
+   - **Schedule for Later**: Set a specific **Scheduled Start Time** and **Call Window** to control when your agent makes calls.
 
 6. Configure call settings:
 
     ![Call settings](/console-tmp/campaign-call-settings.png)
 
-   - **Hang-up Configuration**
+   - **Max Call seconds** (required): Maximum length for a conversation. 
+   - **Ring seconds** (required): Maximum time to wait for call connection. The call stops ringing if not connected within the specified duration. 
+   - **Silence seconds**: Duration of silence before ending the call. 
 
+   - **Transcripts & Recording**
+
+      - **Store Transcripts**: Automatically saves the conversation text for review.
+      - **Store Call Recording**: Automatically saves the call audio recording for review.
+
+
+   - **Hang-up Configuration**
+     - **Voicemail detection**: Allows the agent to detect voicemail systems and hang up the call.
      - **End of conversation**: Hang up when the conversation naturally ends.
-     - **Voicemail Detection**: Allows the agent to detect voicemail systems and hang up the call.
-     - **Fax Detection**: Allows the agent to detect fax tones and hang up the call.
-     - **Silence hangup**: End the call after a period of silence.
-     - **Silence Timeout** (seconds): Duration of silence before ending the call. Default: 120 seconds.
-     - **Max Call Duration** (seconds) (required): Maximum length for a conversation. Default: 300 seconds.
-     - **Ring Duration** (seconds) (required): Maximum time to wait for call connection. The call stops ringing if not connected within the specified duration. Default: 30 seconds.
+      - **Silence hangup**: End the call after a period of silence.
+     - **Fax detection**: Allows the agent to detect fax tones and hang up the call.
+     
 
    - **Transfer Call to Human**: Transfers the call to a human agent when needed or requested by the caller.
 
@@ -80,16 +87,12 @@ To create a new campaign:
       - **Transfer Criteria**: Describe when the agent should transfer the call to this number. Select **Show Example** for a sample description.
       - **SIP Headers**: When **Transfer Type** is **SIP**, you can add constant or dynamic SIP headers to the transfer request.
 
-   - **Transcripts & Recording**
-
-     ![Transcripts and call analysis](/console-tmp/campaign-transcript-analysis.png)
-
-     - **Store Transcripts**: Automatically saves the conversation text for review.
-     - **Store Call Recording**: Automatically saves the call audio recording for review.
 
    - **Call Analysis**
 
      - **Post Call Data Extraction**: Automatically extracts structured outputs from calls according to your business needs.
+
+      ![Transcripts and call analysis](/console-tmp/campaign-transcript-analysis.png)
 
 7. Select **Schedule Campaign** to launch or schedule your campaign, or select **Save as Draft** to save your progress without launching it.
 

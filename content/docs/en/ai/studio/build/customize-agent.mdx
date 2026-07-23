@@ -8,14 +8,15 @@ If you need assistance exploring or debugging your project through natural langu
 
 ## Prerequisites
 
-Follow the [Quickstart](../quickstart) or use [Concierge](concierge) to create your first agent.
+Follow [Create your first agent](../quickstart) or use [Concierge](concierge) to create your first agent.
 
 ## Open the agent editor
 
+To configure an agent in the editor:
+
 1. In Agora Console, select your project from the project dropdown at the top of the page.
 2. In the navigation sidebar, select **Agents**.
-3. Select an existing agent, or create a new one.
-4. From the **Action** menu, select **Edit Agent**.
+3. Click an existing agent in the list. 
 
 The agent editor provides the following tabs.
 
@@ -33,7 +34,7 @@ See [Template variables](prompt-design#template-variables) to customize the syst
 
 ## Models
 
-Use this tab to select the ASR, LLM, and TTS services your agent uses. The dropdowns list vendor-model combinations that support Agora Managed Key.
+Use this tab to select the ASR, LLM, and TTS models your agent uses. Click the settings icon to open the configuration panel. The **Vendor** dropdown lists vendor-model combinations that support **Agora Managed Key**. To use your own API key, see [Bring your own API key (BYOK)](#bring-your-own-api-key-byok).
 
 ![](/console-tmp/agent-editor-models.png)
 
@@ -41,21 +42,22 @@ Use this tab to select the ASR, LLM, and TTS services your agent uses. The dropd
 
 - **Automatic Speech Recognition (ASR)**: Select a vendor-model from the dropdown.
 - **Language**: Select the primary language for agent interaction using the BCP-47 language tag.
+- **Model**: The speech recognition model to use.
 
-For advanced ASR settings, select the settings icon next to the ASR dropdown. For supported vendors, see [Supported ASR vendors](supported-vendors#asr-vendors).
+For supported vendors, see [Supported ASR vendors](supported-vendors#asr-vendors).
 
 ### LLM
 
 - **Large Language Model (LLM)**: Select a vendor-model from the dropdown.
 
-For advanced LLM settings, select the settings icon next to the LLM dropdown. For supported vendors, see [Supported LLM vendors](supported-vendors#llm-vendors).
+For detailed parameter descriptions, see [`llm`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm) in the API reference or navigate to the selected vendor page from [Supported LLM vendors](supported-vendors#llm-vendors).
 
 ### TTS
 
 - **Text-to-Speech (TTS)**: Select a vendor-model from the dropdown.
 - **Voice**: Select a voice for the selected TTS vendor-model.
 
-For advanced TTS settings, select the settings icon next to the TTS dropdown. For supported vendors, see [Supported TTS vendors](supported-vendors#tts-vendors).
+For detailed parameter descriptions, navigate to the selected vendor page from [Supported TTS vendors](supported-vendors#tts-vendors).
 
 ### MLLM
 
@@ -64,17 +66,15 @@ Select **Realtime Model** at the top of the Models tab to use a single multimoda
 - **MLLM**: Select a vendor-model from the dropdown.
 - **Voice**: Select a voice for the selected MLLM.
 
-For advanced MLLM settings, including adding your own credential, select the settings icon next to the Voice dropdown.
+For supported vendors, see [Supported MLLM vendors](supported-vendors#mllm-vendors).
 
 :::info[Info]
 No MLLM vendor-models are currently available under Agora Managed Key. [Add your own credential](integrations#credentials), then select it from the **Credentials** dropdown.
 :::
 
-For supported vendors, see [Supported MLLM vendors](supported-vendors#mllm-vendors).
-
 ### Bring your own API key (BYOK)
 
-To use your own API key or to select a vendor or model not available under Agora Managed Key, select the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
+To use your own API key or to select a vendor or model not available under Agora Managed Key, select the settings icon next to the relevant model. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
 
 ![](/console-tmp/configure-llm.png)
 
@@ -108,7 +108,7 @@ Controls how the system detects when the user starts speaking.
 
 ![](/console-tmp/start-of-speech.png)
 
-- **Detection Mode**: Select one of the following:
+- **Start Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects speech based on silence duration.
   - **Keyword Triggered**: Triggers detection on configured keywords.
   - **Disabled**: No active detection.
@@ -123,7 +123,7 @@ Controls how the system decides the user has finished their thought.
 
 ![](/console-tmp/end-of-speech.png)
 
-- **Detection Mode**: Select one of the following:
+- **End Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects end of speech based on silence duration.
   - **Semantic**: Analyzes the semantic meaning of speech to identify natural pause points. Recommended for more natural conversations.
 
@@ -138,7 +138,6 @@ Helps the agent focus on the right voice while filtering out background conversa
 - **SAL Mode**: Select one of the following:
   - **Speaker Lock**: Blocks all other background noise and adapts to the detected speaker.
   - **Voiceprint Recognition**: Identifies known speakers using voiceprint. When enabled, configure the following:
-    - **Name**: A label for the speaker.
     - **Voiceprint URL**: URL to a voiceprint audio file. Supported format: 16kHz, 16-bit, mono PCM. Maximum size: 2 MB.
 
 ### Filler words
@@ -147,13 +146,7 @@ When enabled, the agent uses natural filler phrases while processing a response,
 
 ![](/console-tmp/filler-words.png)
 
-- **Filler words / phrases**: Enter up to 100 filler phrases, one per line. For example:
-
-    ```
-    Sure, let me look that up for you
-    uh huh
-    Please wait
-    ```
+- **Filler Words**: Enter up to 100 filler words or phrases. 
 
 - **Response Wait Threshold (ms)**: How long the agent waits before it starts using filler words. Lower values trigger fillers sooner; higher values give the LLM more time to respond before fillers are used.
 - **Selection Rule**: Controls how filler phrases are selected:
@@ -188,13 +181,13 @@ A knowledge base provides your agent with additional context from reference docu
 
 MCP servers enable your agent to call tools provided by external services. Select **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations#mcp-servers).
 
-### Custom Tools
+### Custom tools
 
-Custom Tools let your agent call reusable HTTP endpoints that you defined in **Integration**. Select **+ Add Custom Tools** to attach one or more tools to this agent. See [Custom Tools](custom-tools).
+Custom Tools let your agent call reusable HTTP endpoints that you defined in **Integrations**. Select **+ Add Custom Tools** to attach one or more tools to this agent. See [Custom Tools](custom-tools).
 
 ### Connectors
 
-Connectors let your agent use built-in integrations managed in **Integration**. Attach HubSpot when your agent needs CRM contact or ticket workflows. See [HubSpot Connector](hubspot-connector).
+Connectors let your agent use built-in integrations managed in **Integrations**. Attach HubSpot when your agent needs CRM contact or ticket workflows. See [HubSpot Connector](hubspot-connector).
 
 
 ## Next steps
@@ -202,6 +195,5 @@ Connectors let your agent use built-in integrations managed in **Integration**. 
 - [Manage integrations](integrations): Manage credentials, MCP servers, and knowledge bases for reuse across agents
 - [Custom Tools](custom-tools): Create reusable HTTP tools and attach them to agents
 - [HubSpot Connector](hubspot-connector): Connect HubSpot for contacts and tickets workflows
-- [Concierge](concierge): Work with your project through natural language
 - [Test your agent](test-agent): Learn more about testing features and troubleshooting agent behavior
 - [Publish your agent](../deploy/deploy-agent): Publish your agent to production

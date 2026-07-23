@@ -24,19 +24,19 @@ Follow these steps to associate the number with an agent and configure call hand
 4. In the **Inbound Settings** panel, use **Assign to Agent** to select the agent you want to associate with the number.
     ![Inbound Call Settings](/console-tmp/inbound-settings.png)
 5. Configure the following options:
-    - **Call Recording**: Enable automatic call recording.
-    - **Call Transcript**: Enable automatic call transcription.
-    - **Transfer to Number**: Configure a phone number destination for call transfers. When enabled, configure the following:
-        - **Phone Number**: The number to transfer the call to. Select **Enforce E.164 format** to require the number to be entered in E.164 format.
-        - **Description**: A descriptive label to identify the transfer destination. Select **Show Example** for a sample description.
+    - **Enable transcript**: Enable automatic call transcription.
+    - **Enable recording**: Enable automatic call recording.
     - **Hang-up Configuration**
-        - **End of Conversation**: Hang up when the conversation concludes naturally.
         - **Max Call Duration (seconds)** (required): Maximum length for a conversation. 
-        - **Silence Hangup**: The call hangs up automatically if the user is silent for too long.
         - **Silence Timeout (seconds)** (required): Call ends after this duration with no response. 
+        - **End call on conversation end**: Hang up when the conversation concludes naturally.
+        - **End call on silence**: The call hangs up automatically if the user is silent for too long.
+    - **Transfer to human**: Configure a phone number destination for call transfers. When enabled, configure the following:
+        - **Transfer destination**: The phone number to transfer the call to. Select **Enforce E.164 format** to require the number to be entered in E.164 format.
+        - **Transfer criteria**: Describe when calls should be transferred to a human. Select **Show Example** for a sample.        
     - **Post Call Analysis**
-        - **Post Call Data Extraction**: Automatically extract structured outputs from calls according to business needs.
-6. Select **Save**.
+        - **Enable post-call analysis**: Automatically extract structured outputs from calls according to business needs.
+6. Select **Save changes**.
 
 ## Next steps
 

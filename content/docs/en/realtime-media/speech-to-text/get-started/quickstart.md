@@ -40,7 +40,7 @@ server. For details, see [Agora account management](/en/introduction/account).
 
 ## Project setup
 
-Enable Real-Time STT before using it for the first time. In [Agora Console](https://console.agora.io) go to **Realtime Services**, select **Real-Time STT** under **Media Services**, and turn on the **Active** toggle. Read the prompt and click **Confirm**.
+To enable Real-Time STT, in [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar, switch to the **Services** tab and find **Real-Time Speech-to-Text**. Turn on the **Active** toggle. Read the prompt and click **Confirm** to enable.
 
 Now you can use Agora Real-Time STT and see the usage statistics on the **Usage** page.
 
