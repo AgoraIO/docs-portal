@@ -18,6 +18,37 @@ See [Supported platforms](/en/realtime-media/interactive-live-streaming/referenc
 ### Known issues
 
 
+### v4.24.6
+
+Released on July 13, 2026.
+
+This release adds automatic receiving and playback of remote audio and improves audio playback and connection stability in Safari and iOS environments.
+
+#### New features
+
+- **Automatically receive and play remote audio after joining a channel**
+
+  This release adds the `autoReceiveAndPlayAudio` join option. When enabled, the SDK automatically receives and attempts to play remote audio after a user joins a channel, reducing the time users wait to hear remote audio.
+
+  This feature is useful for voice chat rooms and online meetings where users need to hear audio as soon as possible after joining, live streaming audience clients that receive channel audio by default, and scenarios where remote audio first-frame latency is critical.
+
+  This option is disabled by default and does not change existing subscription or playback behavior.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- On Safari and iOS 26 or later, audio and video connections could fail in some scenarios due to compatibility issues.
+- When using Web Audio to play remote audio, some browsers could fail to resume audio after autoplay was blocked, even after the user interacted with the page.
+
+#### Upgrade considerations
+
+Upgrade to v4.24.6 if your app uses Safari or iOS browsers for real-time audio or video, uses Web Audio and cannot resume audio after autoplay is blocked, or needs users to hear remote audio sooner after joining a channel.
+
+:::info
+Due to browser autoplay policies, users may still need to click or touch the page before audio can play for the first time.
+:::
+
 ### v4.24.5
 
 Released on June 24, 2026.
