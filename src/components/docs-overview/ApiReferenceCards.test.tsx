@@ -127,6 +127,20 @@ describe('ApiReferenceCards', () => {
     });
   });
 
+  it('keeps product and platform selects as mobile fallbacks on the merged catalog', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    expect(screen.getByLabelText('产品').closest('label')).toHaveClass(
+      'lg:hidden',
+    );
+    expect(screen.getByLabelText('平台/语言').closest('label')).toHaveClass(
+      'lg:hidden',
+    );
+    expect(screen.getByRole('group', { name: 'API 类型' })).not.toHaveClass(
+      'lg:hidden',
+    );
+  });
+
   it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 

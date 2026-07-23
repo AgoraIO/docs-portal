@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -36,16 +36,18 @@ const useTransientScrollbarMock = vi.mocked(useTransientScrollbar);
 
 function renderDocsSidebar({
   activePath = '/en/introduction',
+  locale = 'en',
   resetKey = 'introduction',
 }: {
   activePath?: string;
+  locale?: 'en' | 'zh-CN';
   resetKey?: string;
 } = {}) {
   const view = render(
     <SidebarProvider>
       <DocsSidebar
         activePath={activePath}
-        locale="en"
+        locale={locale}
         nodes={nodes}
         onSelectPath={() => {}}
         resetKey={resetKey}
@@ -60,7 +62,7 @@ function renderDocsSidebar({
         <SidebarProvider>
           <DocsSidebar
             activePath={nextProps.activePath ?? activePath}
-            locale="en"
+            locale={locale}
             nodes={nodes}
             onSelectPath={() => {}}
             resetKey={nextProps.resetKey ?? resetKey}
@@ -98,6 +100,35 @@ describe('DocsSidebar', () => {
     });
 
     expect(scrollToTop).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the root links fixed above a product scroller on the Chinese API catalog', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    const { rerenderSidebar } = renderDocsSidebar({
+      activePath: '/zh-CN/api-reference/api',
+      locale: 'zh-CN',
+      resetKey: 'api-reference',
+    });
+
+    expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'overflow-y-hidden',
+    );
+    expect(screen.getByTestId('docs-sidebar-tree')).toBeVisible();
+    expect(screen.getByTestId('api-reference-product-nav')).toBeVisible();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/api-reference/sdks',
+      resetKey: 'api-reference',
+    });
+
+    expect(
+      screen.queryByTestId('api-reference-product-nav'),
+    ).not.toBeInTheDocument();
   });
 });
 

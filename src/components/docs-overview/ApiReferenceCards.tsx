@@ -5,6 +5,11 @@ import {
   type ApiReferenceCardType,
   zhCNApiReferenceCards,
 } from '@/lib/api-reference-cards-data.zh-cn';
+import {
+  replaceApiReferenceFilters,
+  subscribeToApiReferenceFilters,
+} from '@/lib/api-reference-filters.client';
+import { cn } from '@/lib/cn';
 
 type ApiReferenceCardsLocale = 'zh-CN';
 type ApiReferenceTypeFilter = 'all' | 'client' | 'restful' | 'server';
@@ -47,16 +52,21 @@ export function ApiReferenceCards({
     productId !== 'all' || platformId !== 'all' || apiType !== 'all';
 
   useEffect(() => {
-    const filters = readApiReferenceFilters(
-      window.location.search,
-      entries,
-      type === 'all',
-    );
+    const syncFilters = () => {
+      const filters = readApiReferenceFilters(
+        window.location.search,
+        entries,
+        type === 'all',
+      );
 
-    setProductId(filters.productId);
-    setPlatformId(filters.platformId);
-    setApiType(filters.apiType);
-    setFiltersReady(true);
+      setProductId(filters.productId);
+      setPlatformId(filters.platformId);
+      setApiType(filters.apiType);
+      setFiltersReady(true);
+    };
+
+    syncFilters();
+    return subscribeToApiReferenceFilters(syncFilters);
   }, [entries, type]);
 
   useEffect(() => {
@@ -81,12 +91,14 @@ export function ApiReferenceCards({
       <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
           <FilterSelect
+            className={type === 'all' ? 'lg:hidden' : undefined}
             label="产品"
             onChange={setProductId}
             options={productOptions}
             value={productId}
           />
           <FilterSelect
+            className={type === 'all' ? 'lg:hidden' : undefined}
             label="平台/语言"
             onChange={setPlatformId}
             options={platformOptions}
@@ -164,11 +176,13 @@ function ApiTypeSegmentedControl({
 }
 
 function FilterSelect({
+  className,
   label,
   onChange,
   options,
   value,
 }: {
+  className?: string;
   label: string;
   onChange: (value: string) => void;
   options: FilterOption[];
@@ -177,7 +191,12 @@ function FilterSelect({
   const id = `api-reference-${label}`;
 
   return (
-    <label className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
+    <label
+      className={cn(
+        'flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground',
+        className,
+      )}
+    >
       <span>{label}</span>
       <span className="relative">
         <select
@@ -652,32 +671,11 @@ function writeApiReferenceFilters(
   filters: ApiReferenceFilters,
   supportsApiType: boolean,
 ) {
-  const params = new URLSearchParams(window.location.search);
-
-  setOptionalSearchParam(params, 'product', filters.productId);
-  setOptionalSearchParam(params, 'platform', filters.platformId);
-  setOptionalSearchParam(
-    params,
-    'apiType',
-    supportsApiType ? filters.apiType : 'all',
-  );
-
-  const search = params.toString();
-  const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
-  window.history.replaceState(window.history.state, '', nextUrl);
-}
-
-function setOptionalSearchParam(
-  params: URLSearchParams,
-  name: string,
-  value: string,
-) {
-  if (value === 'all') {
-    params.delete(name);
-    return;
-  }
-
-  params.set(name, value);
+  replaceApiReferenceFilters({
+    apiType: supportsApiType ? filters.apiType : 'all',
+    platform: filters.platformId,
+    product: filters.productId,
+  });
 }
 
 function groupEntriesByProduct(
