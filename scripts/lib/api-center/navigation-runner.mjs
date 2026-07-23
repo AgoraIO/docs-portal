@@ -39,9 +39,10 @@ const API_CENTER_SIDEBAR_LABELS = new Map([
 ]);
 // These generated RTM API pages remain directly reachable, but they are not
 // platform entries in the API Center.
-const LEGACY_HIDDEN_ROOT_ACTION_ROUTES = new Set([
+const API_REFERENCE_CATALOG_HIDDEN_ROUTES = new Set([
   '/zh-CN/api-reference/rtm/react-native/configuration',
   '/zh-CN/api-reference/rtm/swift/configuration',
+  '/zh-CN/api-reference/api-ref/danmaku',
 ]);
 
 const PRODUCT_ICONS = new Map([
@@ -1394,6 +1395,7 @@ export function buildApiReferenceCatalogData(
     for (const page of group.pages ?? []) {
       const action = parseRootMetaLink(page);
       if (!action) continue;
+      if (API_REFERENCE_CATALOG_HIDDEN_ROUTES.has(action.route)) continue;
       const projection = catalogEntryLabelParts(product, action);
       if (!projection.platform) continue;
       const apiType = catalogApiType(
@@ -1483,7 +1485,7 @@ function sourceEntryRootPages(existingPages, entries, promotedLinks = []) {
   const consumed = new Set();
   const generated = [];
   for (const entry of entries) {
-    if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(entry.targetRoute)) continue;
+    if (API_REFERENCE_CATALOG_HIDDEN_ROUTES.has(entry.targetRoute)) continue;
     const label = rootActionLabel(entry, entries);
     const existing = preferredExistingRootLink(
       entryScopedPages,
@@ -1503,7 +1505,7 @@ function sourceEntryRootPages(existingPages, entries, promotedLinks = []) {
   );
   for (const [index, page] of entryScopedPages.entries()) {
     const parsed = parseMetaLink(page);
-    if (LEGACY_HIDDEN_ROOT_ACTION_ROUTES.has(parsed?.route)) continue;
+    if (API_REFERENCE_CATALOG_HIDDEN_ROUTES.has(parsed?.route)) continue;
     const existingLabel = parsed?.label;
     if (
       !consumed.has(index) &&

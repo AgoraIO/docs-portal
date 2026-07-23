@@ -341,6 +341,17 @@ describe('ApiReferenceCards', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('does not expose Danmaku in the API reference catalog', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    expect(
+      screen.queryByRole('heading', { name: '弹幕玩法' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('option', { name: '弹幕玩法' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('keeps product groups and API chips scan-friendly', () => {
     render(<ApiReferenceCards locale="zh-CN" type="server" />);
 

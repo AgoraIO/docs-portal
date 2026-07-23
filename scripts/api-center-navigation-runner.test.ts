@@ -46,6 +46,17 @@ describe('API Center navigation runner', () => {
     ).toEqual(['platform-landing', 'document']);
   });
 
+  it('omits routes hidden from the API reference catalog', () => {
+    const catalog = buildApiReferenceCatalogData([
+      {
+        pages: ['[RESTful API](/zh-CN/api-reference/api-ref/danmaku)'],
+        title: '弹幕玩法',
+      },
+    ]);
+
+    expect(catalog.all).toEqual([]);
+  });
+
   it.each([
     [
       'android',
