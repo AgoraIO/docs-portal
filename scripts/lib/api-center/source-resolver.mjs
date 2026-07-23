@@ -974,33 +974,71 @@ async function selectManualTarget(route, sourcePath, pathMap, newRoot) {
   const mappedOutsideReferenceCenter =
     mapped?.targetPath?.startsWith('content/docs/zh-CN/') &&
     !mapped.targetPath.startsWith('content/docs/zh-CN/api-reference/');
-  const existingTarget = async (target) => {
+  const existingTarget = async (
+    target,
+    { preferDirectoryIndex = false } = {},
+  ) => {
     if (!target?.targetPath) return null;
-    if (await fileExists(path.resolve(newRoot, target.targetPath)))
-      return target;
-    const alternatePath = target.targetPath.endsWith('.md')
-      ? `${target.targetPath}x`
-      : target.targetPath.endsWith('.mdx')
-        ? target.targetPath.slice(0, -1)
+    const extension = path.posix.extname(target.targetPath);
+    if (!['.md', '.mdx'].includes(extension)) {
+      return (await fileExists(path.resolve(newRoot, target.targetPath)))
+        ? target
         : null;
-    if (
-      !alternatePath ||
-      !(await fileExists(path.resolve(newRoot, alternatePath)))
-    ) {
-      return null;
     }
-    return {
-      ...target,
-      targetPath: alternatePath,
-      targetDecision: `${target.targetDecision}-alternate-extension`,
-    };
+    const stem = target.targetPath.slice(0, -extension.length);
+    const alternateExtension = extension === '.md' ? '.mdx' : '.md';
+    const directoryCandidates =
+      preferDirectoryIndex && path.posix.basename(stem) !== 'index'
+        ? [
+            {
+              targetPath: `${stem}/index${extension}`,
+              decisionSuffix: 'directory-index',
+            },
+            {
+              targetPath: `${stem}/index${alternateExtension}`,
+              decisionSuffix: 'directory-index-alternate-extension',
+            },
+          ]
+        : [];
+    const candidates = [
+      ...directoryCandidates,
+      { targetPath: target.targetPath, decisionSuffix: null },
+      {
+        targetPath: `${stem}${alternateExtension}`,
+        decisionSuffix: 'alternate-extension',
+      },
+    ];
+    for (const candidate of candidates) {
+      if (!(await fileExists(path.resolve(newRoot, candidate.targetPath)))) {
+        continue;
+      }
+      return {
+        ...target,
+        targetPath: candidate.targetPath,
+        targetDecision: candidate.decisionSuffix
+          ? `${target.targetDecision}-${candidate.decisionSuffix}`
+          : target.targetDecision,
+      };
+    }
+    return null;
   };
   if (isApiSource && mappedOutsideReferenceCenter) {
     const superseded =
       resolveSupersededApiCenterTarget(route.pathname) ?? mapped;
+    const referenceTarget =
+      (await existingTarget(
+        {
+          ...inferred,
+          targetDecision: 'api-reference-over-section-path-map',
+        },
+        { preferDirectoryIndex: true },
+      )) ?? inferred;
     return {
-      ...inferred,
-      targetDecision: 'api-reference-over-section-path-map',
+      ...referenceTarget,
+      targetDecision:
+        referenceTarget.targetDecision === inferred.targetDecision
+          ? 'api-reference-over-section-path-map'
+          : referenceTarget.targetDecision,
       supersededTargetPath: superseded.targetPath,
       supersededTargetRoute: superseded.targetRoute,
     };

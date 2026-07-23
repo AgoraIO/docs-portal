@@ -28,6 +28,108 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it.each([
+    ['java', ['agoraservice.java', 'agoramediartcrecorder.java']],
+    [
+      'cpp',
+      [
+        'iagoraservice.cpp',
+        'iagoramediartcrecorder.cpp',
+        'iagoramediacomponentfactory.cpp',
+      ],
+    ],
+  ])('keeps local recording %s API pages inside the platform sidebar scope', async (platform, expectedPages) => {
+    const meta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
+        ),
+        'utf8',
+      ),
+    );
+
+    expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
+    for (const leaf of expectedPages) {
+      expect(meta.pages).not.toContainEqual(
+        expect.stringContaining(
+          `/zh-CN/api-reference/local-server-recording/${leaf}`,
+        ),
+      );
+    }
+  });
+
+  it('keeps external IM entries under the stable catalog product id', () => {
+    const catalog = buildApiReferenceCatalogData([
+      {
+        pages: [
+          '[Web](https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html)',
+        ],
+        title: '即时通讯 IM',
+      },
+    ]);
+
+    expect(catalog.all).toEqual([
+      expect.objectContaining({
+        href: 'https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html',
+        product: '即时通讯 IM',
+        productId: 'im',
+      }),
+    ]);
+  });
+
+  it('keeps external catalog products in manifest product order', () => {
+    const entries = [
+      {
+        product: '实时互动 RTC',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/rtc/android/overview',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '实时消息 RTM',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/rtm/android/configuration',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '即时通讯 IM',
+        label: 'Web',
+        legacyUrl:
+          'https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html',
+        urlFamily: 'external',
+      },
+      {
+        product: '媒体流加速 RTSA',
+        label: 'C',
+        targetRoute: '/zh-CN/api-reference/rtsa/c/overview',
+        urlFamily: 'api-ref',
+      },
+    ];
+    const existingCatalogGroups = [
+      {
+        type: 'group',
+        title: '即时通讯 IM',
+        pages: [
+          '[Web](https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html)',
+        ],
+      },
+    ];
+
+    expect(
+      buildApiReferenceCatalogGroups(
+        [],
+        existingCatalogGroups,
+        entries,
+        null,
+      ).map((group) => group.title),
+    ).toEqual([
+      '实时互动 RTC',
+      '实时消息 RTM',
+      '即时通讯 IM',
+      '媒体流加速 RTSA',
+    ]);
+  });
+
   it('records whether a catalog action is a platform landing or a document', () => {
     const catalog = buildApiReferenceCatalogData([
       {
@@ -46,11 +148,15 @@ describe('API Center navigation runner', () => {
     ).toEqual(['platform-landing', 'document']);
   });
 
-  it('omits routes hidden from the API reference catalog', () => {
+  it.each([
+    '/zh-CN/api-reference/api-ref/danmaku',
+    '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  ])('omits the hidden %s route from the API reference catalog', (route) => {
     const catalog = buildApiReferenceCatalogData([
       {
-        pages: ['[RESTful API](/zh-CN/api-reference/api-ref/danmaku)'],
-        title: '弹幕玩法',
+        pages: [`[Hidden entry](${route})`],
+        title: '对话式 AI',
       },
     ]);
 
@@ -135,7 +241,7 @@ describe('API Center navigation runner', () => {
     ]);
   });
 
-  it('nests the cloud transcoding event contract under the RESTful API Webhook group', async () => {
+  it('keeps the PR 847 cloud transcoding REST navigation unchanged', async () => {
     const apiMeta = JSON.parse(
       await fs.readFile(
         path.resolve(
@@ -153,23 +259,16 @@ describe('API Center navigation runner', () => {
       ),
     );
 
-    expect(apiMeta.pages).toContainEqual({
-      type: 'group',
-      title: 'Webhook 回调事件',
-      pages: [
-        '[接入指南](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
-        'ncs-events',
-      ],
-    });
+    expect(apiMeta.pages).toContain('ncs-events');
+    expect(apiMeta.pages).not.toContainEqual(
+      expect.objectContaining({ title: 'Webhook 回调事件' }),
+    );
     expect(apiMeta.openApiSidebarFromMeta).toBe(true);
     expect(apiMeta.pages.indexOf('authentication')).toBeLessThan(
       apiMeta.pages.indexOf('---服务端 API---'),
     );
     expect(apiMeta.pages.indexOf('template-query')).toBe(
       apiMeta.pages.indexOf('template-create') + 1,
-    );
-    expect(apiMeta.pages).not.toContain(
-      '[Webhook 回调事件](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
     );
     expect(
       apiMeta.sidebarLabels[
@@ -446,6 +545,7 @@ describe('API Center navigation runner', () => {
       'https://doc.shengwang.cn/doc/speech-to-text/restful/v7/operations/join';
     const whiteboardUrl =
       'https://doc.shengwang.cn/api-ref/whiteboard/android/overview';
+    const rtsaUrl = 'https://doc.shengwang.cn/api-ref/rtsa/c/overview';
     const manifest = {
       source: { commit: 'fixture' },
       live: {
@@ -611,6 +711,42 @@ describe('API Center navigation runner', () => {
             ],
           },
         },
+        {
+          category: '扩展能力',
+          subcategories: [],
+          product: '对话式 AI',
+          productDescription: '对话式 AI 能力。',
+          apiGroup: 'server',
+          label: 'Go',
+          legacyUrl:
+            'https://doc.shengwang.cn/api-ref/conversational-ai/restclient-go/overview',
+          urlFamily: 'api-ref',
+          targetRoute:
+            '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+          pageGraph: { pages: [], navigation: [] },
+        },
+        {
+          category: '基础能力',
+          subcategories: [],
+          product: '媒体流加速 RTSA',
+          productDescription: '为智能硬件提供实时互动连接。',
+          apiGroup: 'client',
+          label: 'C',
+          legacyUrl: rtsaUrl,
+          urlFamily: 'api-ref',
+          targetRoute: '/zh-CN/api-reference/rtsa/c/overview',
+          pageGraph: {
+            closure: { scopeRoot: '/api-ref/rtsa/c/' },
+            pages: [{ url: rtsaUrl, label: 'API 参考', trail: [] }],
+            navigation: [
+              {
+                kind: 'link',
+                label: 'API 参考',
+                link: { url: rtsaUrl },
+              },
+            ],
+          },
+        },
       ],
       pageEvidence: [
         {
@@ -662,6 +798,27 @@ describe('API Center navigation runner', () => {
             route: { scopeKey: 'api-ref/whiteboard/android' },
           },
         },
+        {
+          requestedUrl: rtsaUrl,
+          sourceResolution: {
+            type: 'generated-html',
+            targetPath:
+              'content/docs/zh-CN/api-reference/rtsa/c/(current)/overview.mdx',
+            targetRoute: '/zh-CN/api-reference/rtsa/c/overview',
+            route: { scopeKey: 'api-ref/rtsa/c' },
+          },
+        },
+        {
+          requestedUrl:
+            'https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h',
+          sourceResolution: {
+            type: 'generated-html',
+            targetPath:
+              'content/docs/zh-CN/api-reference/rtsa/c/(current)/agora-rtc-api-8h.mdx',
+            targetRoute: '/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h',
+            route: { scopeKey: 'api-ref/rtsa/c' },
+          },
+        },
       ],
     };
     await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
@@ -673,6 +830,9 @@ describe('API Center navigation runner', () => {
       'content/docs/zh-CN/api-reference/rtc/android/(current)/overview.mdx',
       'content/docs/zh-CN/api-reference/rtc/android/(current)/client.mdx',
       'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/overview.mdx',
+      'content/docs/zh-CN/api-reference/conversational-ai/restclient-go/overview.mdx',
+      'content/docs/zh-CN/api-reference/rtsa/c/(current)/overview.mdx',
+      'content/docs/zh-CN/api-reference/rtsa/c/(current)/agora-rtc-api-8h.mdx',
     ]) {
       await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
         recursive: true,
@@ -714,16 +874,32 @@ describe('API Center navigation runner', () => {
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/api-ref/signaling'),
       { recursive: true },
     );
+    const signalingMetaSource = JSON.stringify({
+      title: '实时消息 RTM',
+      navScope: {},
+      pages: ['publish', 'receive'],
+    });
     await fs.writeFile(
       path.join(
         repoRoot,
         'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
       ),
-      JSON.stringify({
-        title: '实时消息 RTM',
-        navScope: {},
-        pages: ['publish', 'receive'],
-      }),
+      signalingMetaSource,
+    );
+    const signalingOwnershipRecord = {
+      contentHash: sha256(signalingMetaSource),
+      sourcePath: 'legacy/rest-navigation.json',
+      sourceUrl: 'https://example.com/rest-navigation',
+      targetPath:
+        'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
+      type: 'navigation-meta',
+    };
+    await fs.writeFile(
+      path.join(
+        repoRoot,
+        'docs/migration/api-center-navigation-generated-files.json',
+      ),
+      JSON.stringify({ schemaVersion: 1, files: [signalingOwnershipRecord] }),
     );
     await fs.mkdir(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/whiteboard'),
@@ -735,6 +911,14 @@ describe('API Center navigation runner', () => {
         'content/docs/zh-CN/api-reference/whiteboard/meta.json',
       ),
       JSON.stringify({ title: '互动白板', pages: ['fastboard'] }),
+    );
+    await fs.mkdir(
+      path.join(repoRoot, 'content/docs/zh-CN/api-reference/rtsa'),
+      { recursive: true },
+    );
+    await fs.writeFile(
+      path.join(repoRoot, 'content/docs/zh-CN/api-reference/rtsa/meta.json'),
+      JSON.stringify({ title: '媒体流加速 RTSA', pages: ['!test'] }),
     );
     const lanes = [
       {
@@ -823,27 +1007,79 @@ describe('API Center navigation runner', () => {
         'utf8',
       ),
     );
+    const rtsaCMeta = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/rtsa/c/meta.json',
+        ),
+        'utf8',
+      ),
+    );
+    const rtsaMeta = JSON.parse(
+      await fs.readFile(
+        path.join(repoRoot, 'content/docs/zh-CN/api-reference/rtsa/meta.json'),
+        'utf8',
+      ),
+    );
+    const rtsaCurrentMeta = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/rtsa/c/(current)/meta.json',
+        ),
+        'utf8',
+      ),
+    );
     const catalog = JSON.parse(
       await fs.readFile(
         path.join(repoRoot, 'src/lib/api-reference-cards-data.zh-cn.json'),
         'utf8',
       ),
     );
+    const navigationOwnership = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'docs/migration/api-center-navigation-generated-files.json',
+        ),
+        'utf8',
+      ),
+    );
 
     expect(result.report.counts).toMatchObject({ errors: 0, warnings: 0 });
     expect(result.parity.counts).toMatchObject({
-      entries: 5,
-      overviewActions: 5,
+      entries: 7,
+      overviewActions: 7,
       rootActions: 0,
       visibleRootProductGroups: 0,
-      catalogActions: 4,
-      expectedCatalogActions: 4,
+      catalogActions: 5,
+      expectedCatalogActions: 5,
       missingCatalogActions: 0,
+      expectedManifestCatalogActions: 5,
       missingManifestCatalogActions: 0,
-      visibleNavigationLeaves: 4,
+      visibleNavigationLeaves: 5,
       missingNavigationTargets: 0,
       errors: 0,
     });
+    expect(rtsaCMeta).toMatchObject({
+      navScope: {
+        defaultVersion: 'current',
+        versions: [{ id: 'current', label: 'Current', path: '(current)' }],
+      },
+      pages: ['(current)'],
+      sidebarIndexTitle: 'C',
+    });
+    expect(rtsaMeta.pages).toEqual(['!test', 'c']);
+    expect(rtsaCurrentMeta.pages).toEqual([
+      'overview',
+      {
+        type: 'group',
+        title: 'API 详情',
+        sidebarHidden: true,
+        pages: ['agora-rtc-api-8h'],
+      },
+    ]);
     expect(overview.indexOf('实时互动 RTC')).toBeLessThan(
       overview.indexOf('即时通讯 IM'),
     );
@@ -891,10 +1127,16 @@ describe('API Center navigation runner', () => {
           page.sidebarHidden !== true,
       ),
     ).toEqual([]);
-    expect(catalog.all).toHaveLength(4);
+    expect(catalog.all).toHaveLength(5);
     expect(
       catalog.all.map((entry: { product: string }) => entry.product),
-    ).toEqual(['实时互动 RTC', '实时互动 RTC', '实时转录翻译', '互动白板']);
+    ).toEqual([
+      '实时互动 RTC',
+      '实时互动 RTC',
+      '实时转录翻译',
+      '互动白板',
+      '媒体流加速 RTSA',
+    ]);
     expect(rtcMeta.pages).toEqual([
       'overview',
       { type: 'group', title: '核心接口', pages: ['client'] },
@@ -905,13 +1147,27 @@ describe('API Center navigation runner', () => {
       '/zh-CN/api-reference/rtc/android/overview': '概览',
       '/zh-CN/api-reference/rtc/android/client': '客户端',
     });
-    expect(speechMeta.pages[0]).toBe('index');
-    expect(speechMeta.pages).toContain('---服务端 API---');
-    expect(speechMeta.pages).toContain('join');
+    expect(speechMeta.pages).toEqual(['index', '---服务端 API---', 'join']);
     expect(signalingMeta).toEqual({
       title: '实时消息 RTM',
+      navScope: {},
       pages: ['publish', 'receive'],
     });
+    await expect(
+      fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
+        ),
+        'utf8',
+      ),
+    ).resolves.toBe(signalingMetaSource);
+    expect(
+      navigationOwnership.files.find(
+        (record: { targetPath: string }) =>
+          record.targetPath === signalingOwnershipRecord.targetPath,
+      ),
+    ).toEqual(signalingOwnershipRecord);
     const speechLanding = await fs.readFile(
       path.join(
         repoRoot,
@@ -949,7 +1205,7 @@ describe('API Center navigation runner', () => {
       ownershipPath:
         'docs/migration/api-center-navigation-generated-files.json',
     });
-    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
+    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 11 });
   });
 
   it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {

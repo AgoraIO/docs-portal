@@ -102,6 +102,23 @@ async function resolve(
 }
 
 describe('API Center source resolver', () => {
+  it.each([
+    ['java', 'agoraservice', 'agoraservice.java'],
+    ['java', 'agoramediartcrecorder', 'agoramediartcrecorder.java'],
+    ['cpp', 'iagoraservice', 'iagoraservice.cpp'],
+    ['cpp', 'iagoramediartcrecorder', 'iagoramediartcrecorder.cpp'],
+    ['cpp', 'iagoramediacomponentfactory', 'iagoramediacomponentfactory.cpp'],
+  ])('keeps local recording %s/%s in its platform navigation scope', (platform, legacyLeaf, targetLeaf) => {
+    expect(
+      resolveExistingApiCenterTarget(
+        `https://doc.shengwang.cn/api-ref/recording/${platform}/${legacyLeaf}`,
+      ),
+    ).toEqual({
+      targetPath: `content/docs/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}.mdx`,
+      targetRoute: `/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}`,
+    });
+  });
+
   it('reuses existing Online KTV solution pages instead of duplicating them under API Reference', () => {
     expect(
       resolveExistingApiCenterTarget(
@@ -637,6 +654,66 @@ describe('API Center source resolver', () => {
         'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
       targetExists: true,
       targetDecision: 'existing-target-layout-over-stale-path-map',
+    });
+  });
+
+  it('reuses an existing directory index as the canonical manual target', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-directory-index-'),
+    );
+    temporaryDirectories.push(root);
+    const canonicalTarget = path.join(
+      root,
+      'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction/index.mdx',
+    );
+    await fs.mkdir(path.dirname(canonicalTarget), { recursive: true });
+    await fs.writeFile(canonicalTarget, '---\ntitle: Setup\n---\n');
+    await fs.writeFile(
+      path.join(
+        root,
+        'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction.mdx',
+      ),
+      '---\ntitle: Duplicate setup\n---\n',
+    );
+    const sourceIndex = baseIndex();
+    sourceIndex.platforms.set('doc/art-class/android', {
+      platformMeta: { docType: 'manual' },
+    });
+    sourceIndex.manualSpecific.set('doc/art-class/android/api/correction', [
+      {
+        sourcePath: 'docs/art-class/api/correction.android.mdx',
+        sourceAbsolutePath: '/legacy/docs/art-class/api/correction.android.mdx',
+        override: 'platform-specific',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs/art-class/api/correction.android.mdx',
+        target_path:
+          'content/docs/zh-CN/solutions/art-class/reference/correction.mdx',
+        new_url: '/zh-CN/solutions/art-class/reference/correction',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/art-class/android/api/correction',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction/index.mdx',
+      targetRoute:
+        '/zh-CN/api-reference/online-art-teaching/android/api/correction',
+      targetExists: true,
+      migrationAction: 'audit-existing-target',
     });
   });
 

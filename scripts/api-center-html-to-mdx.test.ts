@@ -174,6 +174,21 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('# 音频基础功能');
   });
 
+  it('excludes Doxygen member labels from the page title', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<div class="headertitle"><div class="title">agora::rtc::IRtcConnection类 参考<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+        <div class="contents"><p>Connection details.</p></div>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection',
+      sourcePath:
+        'html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection.html',
+      rootSelector: '.contents',
+      titleSelector: '.headertitle .title',
+    });
+
+    expect(result.title).toBe('agora::rtc::IRtcConnection类 参考');
+  });
+
   it('restores Oxygen detail headings unless the source explicitly suppresses the title', async () => {
     const result = await convertHtmlToMdx({
       html: `<main><article role="article">
@@ -584,6 +599,25 @@ describe('API Center shared HTML to MDX converter', () => {
       returns: 0,
       signatures: 1,
     });
+    await expect(compileGeneratedMdx(result.body)).resolves.toContain(
+      'ApiSignature',
+    );
+  });
+
+  it('renders Doxygen empty parameter lists without emphasis markers', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>AgoraRtcConn</h1><div class="memitem"><div class="memproto"><table class="memname"><tr>
+        <td class="memname">void io.agora.rtc.AgoraRtcConn.destroy </td>
+        <td>(</td><td class="paramname"><span class="paramname"><em></em></span></td><td>)</td><td></td>
+      </tr></table></div></div></article>`,
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn',
+      sourcePath:
+        'html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn.html',
+    });
+
+    expect(result.body).toContain('void io.agora.rtc.AgoraRtcConn.destroy()');
+    expect(result.body).not.toContain('(**)');
     await expect(compileGeneratedMdx(result.body)).resolves.toContain(
       'ApiSignature',
     );

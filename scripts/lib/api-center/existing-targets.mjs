@@ -22,6 +22,18 @@ const REST_CLIENT_FILES = {
   },
 };
 
+const LOCAL_SERVER_RECORDING_FILES = {
+  cpp: {
+    iagoramediacomponentfactory: 'iagoramediacomponentfactory.cpp',
+    iagoramediartcrecorder: 'iagoramediartcrecorder.cpp',
+    iagoraservice: 'iagoraservice.cpp',
+  },
+  java: {
+    agoramediartcrecorder: 'agoramediartcrecorder.java',
+    agoraservice: 'agoraservice.java',
+  },
+};
+
 function normalizeLegacyPath(value) {
   let pathname;
   try {
@@ -93,6 +105,18 @@ function cloudTranscodingSupplement(pathname) {
       ],
     },
   };
+}
+
+function localServerRecordingTarget(pathname) {
+  const match = pathname.match(/^\/api-ref\/recording\/(cpp|java)\/([^/]+)$/i);
+  if (!match) return null;
+  const platform = match[1].toLowerCase();
+  const leaf = match[2].toLowerCase();
+  const targetFile = LOCAL_SERVER_RECORDING_FILES[platform]?.[leaf];
+  if (!targetFile) return null;
+  return targetForPath(
+    `content/docs/zh-CN/api-reference/local-server-recording/${platform}/${targetFile}.mdx`,
+  );
 }
 
 function onlineKtvTarget(pathname) {
@@ -193,6 +217,9 @@ export function resolveExistingApiCenterTarget(value) {
       'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication.mdx',
   };
   if (routeAliases[pathname]) return targetForPath(routeAliases[pathname]);
+
+  const localRecording = localServerRecordingTarget(pathname);
+  if (localRecording) return localRecording;
 
   const apiReferenceSupplement = cloudTranscodingSupplement(pathname);
   if (apiReferenceSupplement) return apiReferenceSupplement;
