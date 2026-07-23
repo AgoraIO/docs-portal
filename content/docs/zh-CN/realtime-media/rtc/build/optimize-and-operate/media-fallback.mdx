@@ -14,7 +14,7 @@ description: "了解如何在实时互动 RTC 中媒体流回退，包括适用�
 
 参考如下步骤，在你的项目中实现媒体流回退功能：
 
-1. 在发布之前，发送端调用 `AgoraRTCClient.enableDualStream` 方法开启[双流模式](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#dual-stream)。
+1. 在发布之前，发送端调用 `AgoraRTCClient.enableDualStream` 方法开启[双流模式](/zh-CN/introduction/glossary#双流模式)。
 2. 接收端调用 `AgoraRTCClient.setStreamFallbackOption` 方法设置弱网环境下接收媒体流的回退选项。
    - `fallbackType` 设为 `1`，则下行网络较弱时，只接收主播的视频小流。
    - `fallbackType` 设为 `2`，则下行网络较弱时，先尝试只接收主播的视频小流。如果网络环境无法显示视频，则只接收主播的音频流。

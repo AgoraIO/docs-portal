@@ -36,7 +36,7 @@ description: "了解实时互动 RTC 中管理频道和用户相关内容的适�
 
 ## 实现方法
 
-所有频道管理 RESTful API 都通过 `http://api.sd-rtn.com` 访问。以[查询项目的频道列表](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-appid)为例，在实现 HTTP 基本认证后，添加以下高亮区域的代码即可发送一个简单的请求，获取频道总数和每个频道内的用户人数：
+所有频道管理 RESTful API 都通过 `http://api.sd-rtn.com` 访问。以[查询项目的频道列表](/zh-CN/api-reference/api-ref/rtc/query-channel-list)为例，在实现 HTTP 基本认证后，添加以下高亮区域的代码即可发送一个简单的请求，获取频道总数和每个频道内的用户人数：
 
 ```java
 public class Base64Encoding {
@@ -83,8 +83,8 @@ public class Base64Encoding {
 
 你可以参考 API 文档查看每个频道管理 RESTful API 的详情，其中包含了多种语言的示例代码：
 
-- [封禁用户权限](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)
-- [查询在线频道消息](/doc/rtc/restful/channel-management/operations/get-user-property)
+- [封禁用户权限](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)
+- [查询在线频道消息](/zh-CN/api-reference/api-ref/rtc/query-user-status)
 
 ## 更多功能
 
