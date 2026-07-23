@@ -4,7 +4,11 @@ To configure webhooks:
 
 1. Select **New Webhook** to open the webhook configuration panel.
 
-    ![Webhook configuration in Agora Console](/console-tmp/notifications-config.png)
+    ![Webhook configuration in Agora Console](/console-tmp/webhook-rtc.png)
+
+1. From the **Product** dropdown, select the product for which you want to set up Webhook notifications.
+
+1. Copy the **Signing secret**. Use this secret to add signature verification.
 
 1. Fill in the following:
 
@@ -18,16 +22,12 @@ To configure webhooks:
 
    * **IP whitelist**: If your server is behind a firewall, enable this option, then call the [IP address query API](/en/api-reference/api-ref/rtc/query-ip-address) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
 
-   ![Create notification panel](/console-tmp/create-notification.png)
-
    :::note
    To reduce the delay in notification delivery, best practice is to activate `HTTP` persistent connection (also called `HTTP` keep-alive) on your server with the following settings:
 
    * `MaxKeepAliveRequests`: 100 or more
    * `KeepAliveTimeout`: 10 seconds or more
    :::
-
-1. Copy the **Signing secret**. Use this secret to add signature verification.
 
 1. Select **Run health check**. Agora performs a health test for your configuration as follows:
 
