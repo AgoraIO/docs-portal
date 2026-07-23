@@ -1,10 +1,18 @@
 ---
-title: "FUABT_RtcConnection"
-description: "包含连接信息的类。"
+title: FUABT_RtcConnection
+description: 包含连接信息的类。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_rtcconnection
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_rtcconnection.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcconnection__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FRtcConnection
 {
@@ -28,7 +36,7 @@ public:
 	void FreeAgoraData(agora::rtc::RtcConnection & AgoraData) const {
 		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.channelId)
 	}
-	
+
 };
 ```
 
@@ -36,10 +44,17 @@ public:
 
 ## 属性
 
-### `channelId`
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-### `localUid`
+</Parameter>
+<a id="localuid"></a>
+<Parameter name="localUid">
 
 本地用户 ID。
+
+</Parameter>
+</ParameterList>

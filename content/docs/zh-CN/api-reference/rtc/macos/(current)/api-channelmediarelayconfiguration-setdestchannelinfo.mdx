@@ -1,38 +1,55 @@
 ---
 title: "setDestinationInfo:forChannelName:"
-description: "设置目标频道的信息。"
+description: 设置目标频道的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc/macos/API/api_channelmediarelayconfiguration_setdestchannelinfo
+  sourcePath: html-docs/rtc/macOS/API/api_channelmediarelayconfiguration_setdestchannelinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_channelmediarelayconfiguration_setdestchannelinfo__prototype"></a>
 
-```objectivec
+```text
 - (BOOL)setDestinationInfo:(AgoraChannelMediaRelayInfo *_Nonnull)destinationInfo forChannelName:(NSString *_Nonnull)channelName NS_SWIFT_NAME(setDestinationInfo(_:forChannelName:));
 ```
 
 <a id="api_channelmediarelayconfiguration_setdestchannelinfo__detailed_desc"></a>
 
-:::info[注]
-如果任一目标频道的 Token 过期，整个跨频道媒体流转发将停止。因此，声网建议你为所有目标频道指定相同的 Token 过期时间。
+:::note
+注： 如果任一目标频道的 Token 过期，整个跨频道媒体流转发将停止。因此，声网建议你为所有目标频道指定相同的 Token 过期时间。
 :::
 
 <a id="api_channelmediarelayconfiguration_setdestchannelinfo__parameters"></a>
 
 ## 参数
 
-### `destinationInfo`
+<ParameterList>
+<a id="destinationinfo"></a>
+<Parameter name="destinationInfo">
 
 目标频道的信息。包含以下成员：
 
-- channelName：目标频道的名称。
-- uid：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32-1)。为避免用户 ID 冲突，该用户 ID 必须不同于目标频道中的其他用户 ID。默认值为 0，表示 SDK 会随机生成一个用户 ID。
-- token：加入目标频道所需的 Token，由你在 destinationInfo 中设置的 channelName 和 uid 生成。
+- `channelName`：目标频道的名称。
+- `uid`：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32-1)。为避免用户 ID 冲突，该用户 ID 必须不同于目标频道中的其他用户 ID。默认值为 0，表示 SDK 会随机生成一个用户 ID。
+- `token`：加入目标频道所需的 Token，由你在 `destinationInfo` 中设置的 `channelName` 和 `uid` 生成。
+
   - 如果你未启用 App 证书，请将该参数设置为默认值 nil，表示 SDK 使用 App ID。
-  - 如果你已启用 App 证书，则必须使用根据 channelName 和 uid 生成的 Token。
+  - 如果你已启用 App 证书，则必须使用根据 `channelName` 和 `uid` 生成的 Token。
 
 详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/macos/class-channelmediainfo)。
 
-### `channelName`
+</Parameter>
+<a id="channelname"></a>
+<Parameter name="channelName">
 
 目标频道的频道名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_channelmediarelayconfiguration_setdestchannelinfo__return_values"></a>
 
@@ -40,3 +57,7 @@ description: "设置目标频道的信息。"
 
 - YES：设置成功。
 - NO：设置失败。
+
+### 所属接口类
+
+- [AgoraChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/macos/class-channelmediarelayconfiguration)

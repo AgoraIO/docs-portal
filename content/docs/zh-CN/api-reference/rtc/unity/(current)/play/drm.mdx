@@ -1,10 +1,19 @@
 ---
-title: "版权音乐"
-description: "版权音乐 API reference."
+title: 版权音乐
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_drm
+  sourcePath: html-docs/rtc/Unity/API/toc_drm.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_drm"></a>
 
 <a id="api_imusiccontentcenter_createmusicplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateMusicPlayer
 
@@ -12,7 +21,7 @@ description: "版权音乐 API reference."
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```csharp
+```text
 public abstract IMusicPlayer CreateMusicPlayer();
 ```
 
@@ -24,13 +33,16 @@ public abstract IMusicPlayer CreateMusicPlayer();
 
 ### 返回值
 
-- 方法调用成功：返回 IMusicPlayer 对象。
+- 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## DestroyMusicPlayer
 
@@ -38,7 +50,7 @@ public abstract IMusicPlayer CreateMusicPlayer();
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```csharp
+```text
 public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 ```
 
@@ -56,21 +68,29 @@ public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 
 ### 参数
 
-#### `music_player`
+<ParameterList>
+<a id="music_player"></a>
+<Parameter name="music_player">
 
 [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
+
+<a id="ariaid-title4"></a>
 
 ## GetCaches
 
@@ -78,40 +98,51 @@ public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```csharp
+```text
 public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInfoSize);
 ```
 
 <a id="api_imusiccontentcenter_getcaches__detailed_desc"></a>
 
-调用该方法前，你需要预先分配一定大小的内存空间用来存储缓存音乐资源的信息。如果你需要设置可缓存的音乐资源数量，可通过 [Initialize](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 的 `configuration` 来设置。 当你不再需要使用已缓存的音乐资源时，你需要及时释放内存以防止内存泄漏。
+调用该方法前，你需要预先分配一定大小的内存空间用来存储缓存音乐资源的信息。如果你需要设置可缓存的音乐资源数量，可通过 [Initialize](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 的 `configuration` 来设置。
+当你不再需要使用已缓存的音乐资源时，你需要及时释放内存以防止内存泄漏。
 
 <a id="api_imusiccontentcenter_getcaches__parameters"></a>
 
 ### 参数
 
-#### `cacheInfo`
+<ParameterList>
+<a id="cacheinfo"></a>
+<Parameter name="cacheInfo">
 
 输出参数，指向用于存储已缓存音乐资源的内存缓冲区的指针。
 
-#### `cacheInfoSize`
+</Parameter>
+<a id="cacheinfosize"></a>
+<Parameter name="cacheInfoSize">
 
 输入和输出参数。
 
-- 输入值： cacheInfo 数组的长度，即你所分配的 MusicCacheInfo 结构体的数量。
-- 输出值：方法执行完毕后输出的 MusicCacheInfo 结构体的数量。
+- 输入值：`cacheInfo` 数组的长度，即你所分配的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unity/class-musiccacheinfo) 结构体的数量。
+- 输出值：方法执行完毕后输出的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unity/class-musiccacheinfo) 结构体的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
+
+<a id="ariaid-title5"></a>
 
 ## GetInternalSongCode
 
@@ -119,7 +150,7 @@ public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInf
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```csharp
+```text
 public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref Int64 internalSongCode);
 ```
 
@@ -135,36 +166,48 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
 
-音乐资源编号，用于标识音乐资源。你可以通过调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
+音乐资源编号，用于标识音乐资源。你可以通过调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode`）。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption"></a>
+<Parameter name="jsonOption">
 
-:::info[注]
-声网会根据你在 `sceneType` 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 `sceneType` 的值。
+:::note
+注： 声网会根据你在 `sceneType` 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/billing) 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 `sceneType` 的值。
 :::
 
 扩展 JSON 字段，默认为 `null`。目前支持传入下列值：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例：`{"sceneType":1}`。
+- highPart：副歌片段的索引，从 `onMusicCollectionResult` 回调中获取，索引从 0 开始。示例：`{"format": {"highpart": 0}}`。
 
-#### `internalSongCode`
+</Parameter>
+<a id="internalsongcode"></a>
+<Parameter name="internalSongCode">
 
 输出参数，音乐资源的内部歌曲编号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
+
+<a id="ariaid-title6"></a>
 
 ## GetLyric
 
@@ -172,7 +215,7 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```csharp
+```text
 public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType = 0);
 ```
 
@@ -184,32 +227,44 @@ public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-1"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `lyricType`
+</Parameter>
+<a id="lyrictype"></a>
+<Parameter name="lyricType">
 
 歌词类型：
 
 - 0：xml 格式。
 - 1：lrc 格式。
 
-#### `requestId`
+</Parameter>
+<a id="requestid"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getlyric__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
+
+<a id="ariaid-title7"></a>
 
 ## GetMusicCharts
 
@@ -217,7 +272,7 @@ public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```csharp
+```text
 public abstract int GetMusicCharts(ref string requestId);
 ```
 
@@ -229,21 +284,29 @@ public abstract int GetMusicCharts(ref string requestId);
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-1"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
+
+<a id="ariaid-title8"></a>
 
 ## GetMusicCollectionByMusicChartId
 
@@ -251,7 +314,7 @@ public abstract int GetMusicCharts(ref string requestId);
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```csharp
+```text
 public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int musicChartType, int page, int pageSize, string jsonOption = "");
 ```
 
@@ -263,53 +326,71 @@ public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int m
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-2"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `musicChartType`
+</Parameter>
+<a id="musiccharttype"></a>
+<Parameter name="musicChartType">
 
-音乐榜单的 ID，可以通过 [OnMusicChartsResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)或[获取增量歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)。
+音乐榜单的 ID，可以通过 [OnMusicChartsResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[获取增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 
-#### `page`
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
 
 当前页面编号，默认从 1 开始。
 
-#### `pageSize`
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
 
 当前音乐资源列表的总页面数量，最大值为 50。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption-1"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_irtcengine_getmusiccontentcenter"></a>
 
+<a id="ariaid-title9"></a>
+
 ## GetMusicContentCenter
 
-获取 IMusicContentCenter。
+获取 [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)。
 
 <a id="api_irtcengine_getmusiccontentcenter__prototype"></a>
 
-```csharp
+```text
 public abstract IMusicContentCenter GetMusicContentCenter();
 ```
 
@@ -322,9 +403,12 @@ public abstract IMusicContentCenter GetMusicContentCenter();
 一个 [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter) 对象。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
+
+<a id="ariaid-title10"></a>
 
 ## GetSongSimpleInfo
 
@@ -332,45 +416,56 @@ public abstract IMusicContentCenter GetMusicContentCenter();
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```csharp
+```text
 public abstract int GetSongSimpleInfo(ref string requestId, Int64 songCode);
 ```
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
 
-在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。 当你调用该方法后，SDK 会触发 [OnSongSimpleInfoResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调报告音乐资源的详细信息。
+在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode`）。
+当你调用该方法后，SDK 会触发 [OnSongSimpleInfoResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调报告音乐资源的详细信息。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-2"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `requestId`
+</Parameter>
+<a id="requestid-3"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
 
+<a id="ariaid-title11"></a>
+
 ## Initialize
 
-初始化 IMusicContentCenter。
+初始化 [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)。
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```csharp
+```text
 public abstract int Initialize(MusicContentCenterConfiguration configuration);
 ```
 
@@ -382,21 +477,29 @@ public abstract int Initialize(MusicContentCenterConfiguration configuration);
 
 ### 参数
 
-#### `configuration`
+<ParameterList>
+<a id="configuration"></a>
+<Parameter name="configuration">
 
 [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter) 的设置，详见 [MusicContentCenterConfiguration](/zh-CN/api-reference/rtc/unity/class-musiccontentcenterconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
+
+<a id="ariaid-title12"></a>
 
 ## IsPreloaded
 
@@ -404,7 +507,7 @@ public abstract int Initialize(MusicContentCenterConfiguration configuration);
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```csharp
+```text
 public abstract int IsPreloaded(Int64 songCode);
 ```
 
@@ -416,21 +519,29 @@ public abstract int IsPreloaded(Int64 songCode);
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-3"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功，该音乐资源已被预加载。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
+
+<a id="ariaid-title13"></a>
 
 ## Open
 
@@ -438,41 +549,52 @@ public abstract int IsPreloaded(Int64 songCode);
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```csharp
+```text
 public abstract int Open(Int64 songCode, Int64 startPos);
 ```
 
 <a id="api_imusicplayer_open_imusicplayer__detailed_desc"></a>
 
-在调用此方法之前，请确保需要播放的音乐资源已加载完成。你可以调用 [IsPreloaded](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_ispreloaded) 方法来检测音乐资源是否已被预加载，或通过 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调得知。 调用该方法后会触发 [OnPlayerSourceStateChanged](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 `PLAYER_STATE_OPEN_COMPLETED` 后，你可以调用 [Play](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+在调用此方法之前，请确保需要播放的音乐资源已加载完成。你可以调用 [IsPreloaded](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_ispreloaded) 方法来检测音乐资源是否已被预加载，或通过 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调得知。
+调用该方法后会触发 [OnPlayerSourceStateChanged](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 `PLAYER_STATE_OPEN_COMPLETED` 后，你可以调用 [Play](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
-:::info[注]
-如果你想要打开的音乐资源受数字版权保护，则需要调用此方法打开。对于不受数字版权保护的音乐资源，你可以选择通过调用此方法或 [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer) 类下的 [Open](/zh-CN/api-reference/rtc/unity/play/drm#api_imusicplayer_open_imusicplayer) 方法来打开。
+:::note
+注： 如果你想要打开的音乐资源受数字版权保护，则需要调用此方法打开。对于不受数字版权保护的音乐资源，你可以选择通过调用此方法或 [IMediaPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaplayer) 类下的 [Open](/zh-CN/api-reference/rtc/unity/play/drm#api_imusicplayer_open_imusicplayer) 方法来打开。
 :::
 
 <a id="api_imusicplayer_open_imusicplayer__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-4"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 设置起始播放位置（毫秒），默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_open_imusicplayer__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_preload"></a>
+
+<a id="ariaid-title14"></a>
 
 ## Preload [1/2]
 
@@ -480,33 +602,41 @@ public abstract int Open(Int64 songCode, Int64 startPos);
 
 <a id="api_imusiccontentcenter_preload__prototype"></a>
 
-```csharp
+```text
 public abstract int Preload(Int64 songCode, string jsonOption = "");
 ```
 
 <a id="api_imusiccontentcenter_preload__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 该方法已废弃，请改用 [Preload [2/2]](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_preload2)。
+:::
 
-你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。 在调用该方法来预加载音乐资源之前，你需要调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
+你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
+在调用该方法来预加载音乐资源之前，你需要调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode`）。
 
-:::info[注]
-如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象，请在收到 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法。
+:::note
+注： 如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象，请在收到 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-5"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption-2"></a>
+<Parameter name="jsonOption">
 
-扩展 JSON 字段。 声网会根据你在场景字段（`sceneType` ）传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) 查看详细的计费。
+扩展 JSON 字段。
+声网会根据你在场景字段（`sceneType`）传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/billing) 查看详细的计费。
 
 - 1：直播场景：K 歌及背景音乐播放。
 - 2：直播场景：背景音乐播放。
@@ -514,19 +644,25 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 - 4：语聊场景：背景音乐播放。
 - 5：VR 场景：K 歌及背景音乐播放。
 
-如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 `sceneType` 的值。 示例： `{"sceneType":1}`
+如果需要切换到不同场景，需要重新调用此方法并在该字段中传入 `sceneType` 的值。示例：`{"sceneType":1}`
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_preload2"></a>
+
+<a id="ariaid-title15"></a>
 
 ## Preload [2/2]
 
@@ -534,41 +670,52 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```csharp
+```text
 public abstract int Preload(ref string requestId, Int64 songCode);
 ```
 
 <a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
 
-你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。 在调用该方法来预加载音乐资源之前，你需要调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
+你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
+在调用该方法来预加载音乐资源之前，你需要调用 [GetMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [SearchMusic](/zh-CN/api-reference/rtc/unity/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode`）。
 
-:::info[注]
-如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象，请在收到 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法。
+:::note
+注： 如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象，请在收到 [OnPreLoadEvent](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload2__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-6"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `requestId`
+</Parameter>
+<a id="requestid-4"></a>
+<Parameter name="requestId">
 
 输出参数，请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_preload2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
+
+<a id="ariaid-title16"></a>
 
 ## RegisterEventHandler
 
@@ -576,7 +723,7 @@ public abstract int Preload(ref string requestId, Int64 songCode);
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```csharp
+```text
 public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHandler);
 ```
 
@@ -586,21 +733,29 @@ public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHa
 
 ### 参数
 
-#### `eventHandler`
+<ParameterList>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 待注册的回调事件，详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
+
+<a id="ariaid-title17"></a>
 
 ## RemoveCache
 
@@ -608,7 +763,7 @@ public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHa
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```csharp
+```text
 public abstract int RemoveCache(Int64 songCode);
 ```
 
@@ -620,21 +775,29 @@ public abstract int RemoveCache(Int64 songCode);
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-7"></a>
+<Parameter name="songCode">
 
 待删除的音乐资源的编号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_removecache__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功，音乐资源已删除。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
+
+<a id="ariaid-title18"></a>
 
 ## RenewToken
 
@@ -642,7 +805,7 @@ public abstract int RemoveCache(Int64 songCode);
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```csharp
+```text
 public override int RenewToken(string token)
  	 	        {
  	 	            if (_rtcEngineInstance == null || _musicContentCenterImpl == null)
@@ -661,21 +824,29 @@ public override int RenewToken(string token)
 
 ### 参数
 
-#### `token`
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
+
+<a id="ariaid-title19"></a>
 
 ## SearchMusic
 
@@ -683,7 +854,7 @@ public override int RenewToken(string token)
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```csharp
+```text
 public abstract int SearchMusic(ref string requestId, string keyWord, int page, int pageSize, string jsonOption = "");
 ```
 
@@ -695,45 +866,63 @@ public abstract int SearchMusic(ref string requestId, string keyWord, int page, 
 
 ### 参数
 
-#### `keyword`
+<ParameterList>
+<a id="keyword"></a>
+<Parameter name="keyword">
 
 搜索关键词，支持歌曲名、歌手搜索。
 
-#### `page`
+</Parameter>
+<a id="page-1"></a>
+<Parameter name="page">
 
 想要获取的音乐资源列表的目标页编号。
 
-#### `pageSize`
+</Parameter>
+<a id="pagesize-1"></a>
+<Parameter name="pageSize">
 
 每页所展示的音乐资源的最大数量，最大值为 50。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption-3"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
 
-#### `requestId`
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
+
+</Parameter>
+<a id="requestid-5"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
+
+<a id="ariaid-title20"></a>
 
 ## SetPlayMode
 
@@ -741,7 +930,7 @@ public abstract int SearchMusic(ref string requestId, string keyWord, int page, 
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetPlayMode(MusicPlayMode mode);
 ```
 
@@ -749,8 +938,8 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
 你可以调用该方法来设置启用原唱、伴奏或导唱。如不调用该方法进行设置，则默认播放伴奏；如果音乐资源没有伴奏，则播放原唱。
 
-:::info[注]
-你可以通过 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 `result` 参数得知需播放的版权音乐所支持的播放类型。
+:::note
+注： 你可以通过 [OnMusicCollectionResult](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 `result` 参数得知需播放的版权音乐所支持的播放类型。
 :::
 
 <a id="api_imusicplayer_setplaymode__scenario"></a>
@@ -769,22 +958,31 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放模式，详见 [MusicPlayMode](/zh-CN/api-reference/rtc/unity/enum-musicplaymode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_setplaymode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类
+
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
+
+<a id="ariaid-title21"></a>
 
 ## UnregisterEventHandler
 
@@ -792,7 +990,7 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```csharp
+```text
 public abstract int UnregisterEventHandler();
 ```
 
@@ -803,12 +1001,15 @@ public abstract int UnregisterEventHandler();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
+
+<a id="ariaid-title22"></a>
 
 ## OnLyricResult
 
@@ -816,7 +1017,7 @@ public abstract int UnregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```csharp
+```text
 public abstract void OnLyricResult(string requestId, long songCode, string lyricUrl, MusicContentCenterStateReason reason);
 ```
 
@@ -828,26 +1029,40 @@ public abstract void OnLyricResult(string requestId, long songCode, string lyric
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-6"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `songCode`
+</Parameter>
+<a id="songcode-8"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `lyricUrl`
+</Parameter>
+<a id="lyricurl"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载地址。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
+
+<a id="ariaid-title23"></a>
 
 ## OnMusicChartsResult
 
@@ -855,7 +1070,7 @@ public abstract void OnLyricResult(string requestId, long songCode, string lyric
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```csharp
+```text
 public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] result, MusicContentCenterStateReason reason);
 ```
 
@@ -867,22 +1082,34 @@ public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] resu
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-7"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `reason`
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
-#### `result`
+</Parameter>
+<a id="result"></a>
+<Parameter name="result">
 
 当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/unity/class-musicchartinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
+
+<a id="ariaid-title24"></a>
 
 ## OnMusicCollectionResult
 
@@ -890,7 +1117,7 @@ public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] resu
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```csharp
+```text
 public abstract void OnMusicCollectionResult(string requestId, MusicCollection result, MusicContentCenterStateReason reason);
 ```
 
@@ -902,22 +1129,34 @@ public abstract void OnMusicCollectionResult(string requestId, MusicCollection r
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-8"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `reason`
+</Parameter>
+<a id="reason-2"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
-#### `result`
+</Parameter>
+<a id="result-1"></a>
+<Parameter name="result">
 
 音乐资源列表的详细信息。详见 [MusicCollection](/zh-CN/api-reference/rtc/unity/class-musiccollection)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
+
+<a id="ariaid-title25"></a>
 
 ## OnPreLoadEvent
 
@@ -925,7 +1164,7 @@ public abstract void OnMusicCollectionResult(string requestId, MusicCollection r
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```csharp
+```text
 public abstract void OnPreLoadEvent(string requestId, long songCode, int percent, string lyricUrl, PreloadState state, MusicContentCenterStateReason reason);
 ```
 
@@ -937,34 +1176,52 @@ public abstract void OnPreLoadEvent(string requestId, long songCode, int percent
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-9"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `songCode`
+</Parameter>
+<a id="songcode-9"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
 
-#### `percent`
+</Parameter>
+<a id="percent"></a>
+<Parameter name="percent">
 
 音乐资源当前的加载进度，取值范围为 [0,100]。
 
-#### `lyricUrl`
+</Parameter>
+<a id="lyricurl-1"></a>
+<Parameter name="lyricUrl">
 
 歌词下载地址。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前音乐资源的加载状态。详见 [PreloadState](/zh-CN/api-reference/rtc/unity/enum-preloadstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason-3"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
+
+<a id="ariaid-title26"></a>
 
 ## OnSongSimpleInfoResult
 
@@ -972,7 +1229,7 @@ public abstract void OnPreLoadEvent(string requestId, long songCode, int percent
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```csharp
+```text
 public abstract void OnSongSimpleInfoResult(string requestId, long songCode, string simpleInfo, MusicContentCenterStateReason reason);
 ```
 
@@ -984,15 +1241,21 @@ public abstract void OnSongSimpleInfoResult(string requestId, long songCode, str
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-10"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `songCode`
+</Parameter>
+<a id="songcode-10"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `simpleInfo`
+</Parameter>
+<a id="simpleinfo"></a>
+<Parameter name="simpleInfo">
 
 音乐资源的相关信息，包含下列内容：
 
@@ -1002,9 +1265,15 @@ public abstract void OnSongSimpleInfoResult(string requestId, long songCode, str
 - 歌曲名称
 - 歌手名
 
-#### `reason`
+</Parameter>
+<a id="reason-4"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)

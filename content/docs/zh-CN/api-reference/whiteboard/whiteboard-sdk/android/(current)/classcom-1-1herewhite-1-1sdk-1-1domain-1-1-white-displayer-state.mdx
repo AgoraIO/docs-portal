@@ -1,0 +1,134 @@
+---
+title: com.herewhite.sdk.domain.WhiteDisplayerState类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_white_displayer_state
+  sourcePath: >-
+    html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_white_displayer_state.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_white_displayer_state.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.domain.WhiteDisplayerState类 参考 图示".
+---
+
+类 com.herewhite.sdk.domain.WhiteDisplayerState 继承关系图:
+
+![com.herewhite.sdk.domain.WhiteDisplayerState类 参考 图示](/img/api-center-generated/a09266a26a70-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_white_displayer_state.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`WhiteDisplayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-displayer-state) 类，为互动白板实时房间和回放房间共有的状态类。
+
+:::info[自从]
+2.4.8
+:::
+
+## 成员函数说明
+
+<a id="aaa54cefb8939135f2e47985dca839d85"></a>
+
+### setCustomGlobalStateClass()
+
+<ApiSignature labels="static">
+
+static&lt; T extends [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) &gt; void com.herewhite.sdk.domain.WhiteDisplayerState.setCustomGlobalStateClass(Class&lt; T &gt; *classOfT*)
+
+</ApiSignature>
+
+设置自定义 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)类。
+
+:::info[自从]
+2.4.8
+:::
+
+设置后，所有 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) 都会转换为该类的实例。
+
+<ParameterList title="参数">
+<Parameter name="&lt;T&gt;">
+
+类型约束，自定义的 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) 类必须继承 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) 类。
+
+</Parameter>
+<Parameter name="classOfT">
+
+自定义的 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) 类。
+
+</Parameter>
+</ParameterList>
+
+<a id="aefd2ee071864d04fc4d0409a144a03e5"></a>
+
+### getGlobalState()
+
+<ApiSignature>
+
+[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) com.herewhite.sdk.domain.WhiteDisplayerState.getGlobalState()
+
+</ApiSignature>
+
+获取房间的全局状态。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+房间的全局状态。
+
+<a id="a13126dbfb0259fab1b1bde9b998528f7"></a>
+
+### getRoomMembers()
+
+<ApiSignature>
+
+[RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)[] com.herewhite.sdk.domain.WhiteDisplayerState.getRoomMembers()
+
+</ApiSignature>
+
+获取房间的用户列表。
+
+:::info[注解]
+房间的用户列表仅包含互动模式（具有读写权限）的用户，不包含订阅模式（只读权限）的用户。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+用户列表，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。
+
+<a id="a35ef6f3c1faf8935eab1af9215cbb317"></a>
+
+### getSceneState()
+
+<ApiSignature>
+
+[SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state) com.herewhite.sdk.domain.WhiteDisplayerState.getSceneState()
+
+</ApiSignature>
+
+获取当前场景目录下的场景状态。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+当前场景目录下的场景状态，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。
+
+<a id="ad5ba0eaf21bb41fc21d582b7eacd59e7"></a>
+
+### getCameraState()
+
+<ApiSignature>
+
+[CameraState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-state) com.herewhite.sdk.domain.WhiteDisplayerState.getCameraState()
+
+</ApiSignature>
+
+获取视角状态。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+视角状态，详见 [`CameraState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-state)。

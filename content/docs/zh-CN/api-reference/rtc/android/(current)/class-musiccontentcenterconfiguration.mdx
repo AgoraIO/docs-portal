@@ -1,10 +1,18 @@
 ---
-title: "MusicContentCenterConfiguration"
-description: "配置音乐内容中心。"
+title: MusicContentCenterConfiguration
+description: 配置音乐内容中心。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_musiccontentcenterconfiguration
+  sourcePath: html-docs/rtc/Android/API/class_musiccontentcenterconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_musiccontentcenterconfiguration__prototype"></a>
 
-```java
+```text
 public class MusicContentCenterConfiguration {
   public String appId;
   public String token;
@@ -19,26 +27,39 @@ public class MusicContentCenterConfiguration {
 
 ## 属性
 
-### `appId`
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 启用音乐内容中心的项目的 App ID。
 
-### `token`
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
 使用音乐内容中心时用于鉴权的 Token。
 
-:::info[注]
-声网建议使用 AccessToken2 作为鉴权方式。详见 `Deploying the Token Server`。生成 Token 时，将 `String` 类型的 `mccUid` 作为 `uid` 参数传入。当 Token 即将过期时，可以调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 提供新的 Token。
+:::note
+注： 声网建议使用 AccessToken2 作为鉴权方式。详见 `Deploying the Token Server`。生成 Token 时，将 `String` 类型的 `mccUid` 作为 `uid` 参数传入。当 Token 即将过期时，可以调用 [renewToken](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 提供新的 Token。
 :::
 
-### `mccUid`
+</Parameter>
+<a id="mccuid"></a>
+<Parameter name="mccUid">
 
 使用音乐内容中心的用户 ID。可以与加入 RTC 频道时使用的 `uid` 相同，但不能为 0。
 
-### `maxCacheSize`
+</Parameter>
+<a id="maxcachesize"></a>
+<Parameter name="maxCacheSize">
 
 可缓存的音乐资源数量不得超过 50 个。
 
-### `eventHandler`
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
 
 事件回调接口，详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+</Parameter>
+</ParameterList>

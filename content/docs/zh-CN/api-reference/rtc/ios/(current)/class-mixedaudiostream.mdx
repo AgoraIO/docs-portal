@@ -1,10 +1,18 @@
 ---
-title: "AgoraMixedAudioStream"
-description: "表示本地混音的音频流来源。"
+title: AgoraMixedAudioStream
+description: 表示本地混音的音频流来源。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_mixedaudiostream
+  sourcePath: html-docs/rtc/iOS/API/class_mixedaudiostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mixedaudiostream__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraMixedAudioStream: NSObject
 @property (assign, nonatomic) AgoraAudioSourceType sourceType;
 @property (assign, nonatomic) NSUInteger remoteUserUid;
@@ -17,22 +25,28 @@ __attribute__((visibility("default"))) @interface AgoraMixedAudioStream: NSObjec
 
 ## 属性
 
-### `sourceType`
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 音频源的类型，详见 [AgoraAudioSourceType](/zh-CN/api-reference/rtc/ios/enum-audiosourcetype)。
 
-### `remoteUserUid`
+</Parameter>
+<a id="remoteuseruid"></a>
+<Parameter name="remoteUserUid">
 
 远端用户 ID。
 
-:::info[注]
-当本地混音的音频源类型为 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
+:::note
+注： 当本地混音的音频源类型为 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
 :::
 
-### `channelId`
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
-:::info[注]
-当本地混音的音频源类型为 `AgoraAudioSourceRemoteChannel` 或 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
+:::note
+注： 当本地混音的音频源类型为 `AgoraAudioSourceRemoteChannel` 或 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
 :::
 
 频道名。字符串长度不得超过 64 字节。支持的字符（共 89 个）：
@@ -42,10 +56,15 @@ __attribute__((visibility("default"))) @interface AgoraMixedAudioStream: NSObjec
 - 所有数字字符：0 到 9。
 - 特殊字符："!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
 
-### `trackId`
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。
 
-:::info[注]
-当本地混音的音频源类型为 `AgoraAudioSourceCustom` 时，需设置该参数。
+:::note
+注： 当本地混音的音频源类型为 `AgoraAudioSourceCustom` 时，需设置该参数。
 :::
+
+</Parameter>
+</ParameterList>

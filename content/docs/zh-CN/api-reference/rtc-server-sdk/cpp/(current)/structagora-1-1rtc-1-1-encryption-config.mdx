@@ -1,0 +1,69 @@
+---
+title: agora::rtc::EncryptionConfig结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_encryption_config
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_encryption_config.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+内置加密方案。
+
+## 构造及析构函数说明
+
+<a id="a5a7c5219d09945bc0fae78a870b3fa19"></a>
+
+### EncryptionConfig()
+
+<ApiSignature labels="inline">
+
+agora::rtc::EncryptionConfig::EncryptionConfig()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="ad52b2cf9c771a97da7bdfa6537ac8a2a"></a>
+
+### encryptionMode
+
+<ApiSignature>
+
+[ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0) agora::rtc::EncryptionConfig::encryptionMode
+
+</ApiSignature>
+
+内置加密模式，默认为 AES_128_GCM2 加密模式。详见 [agora::rtc::ENCRYPTION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a906cebebbabf534c86ca71de0d1a4cf0)。
+
+<a id="a51409473d2893735e9cc21557e2fa395"></a>
+
+### encryptionKey
+
+<ApiSignature>
+
+const char* agora::rtc::EncryptionConfig::encryptionKey
+
+</ApiSignature>
+
+内置加密密钥，字符串类型，长度无限制。声网推荐使用 32 字节的密钥。
+
+:::info[注解]
+如果未指定该参数或将该参数设置为空，则无法启用内置加密，且 SDK 会返回错误码 ERR_INVALID_ARGUMENT (-2) 。
+:::
+
+<a id="a84798c8311b7a8740fa16c284259aef2"></a>
+
+### encryptionKdfSalt
+
+<ApiSignature>
+
+uint8_t agora::rtc::EncryptionConfig::encryptionKdfSalt[32]
+
+</ApiSignature>

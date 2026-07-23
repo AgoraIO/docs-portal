@@ -15,7 +15,7 @@ description: "了解 1v1 私密房 RTM 方案的计费方式、计费项、免�
 满足如下**全部**条件时，开始计费：
 
 - 使用服务端消息通知服务的事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel)，判断主叫方和被叫方均加入了频道。
-- 主叫用户端收到 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#oncallstatechanged) 回调，并且 `state` 为 `connected`，表示收到了被叫方接受呼叫邀请的回执消息，且收到了对方视频首帧。
+- 主叫用户端收到 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调，并且 `state` 为 `connected`，表示收到了被叫方接受呼叫邀请的回执消息，且收到了对方视频首帧。
 - 被叫用户端收到 `onCallStateChanged` 回调，并且 `state` 为 `connected`，表示被叫方主动调用了 `accept` 接受呼叫邀请，且收到了主叫方视频首帧。
 
 为确保 `connected` 事件准确到达，我们推荐你实现如下逻辑：
@@ -28,7 +28,7 @@ description: "了解 1v1 私密房 RTM 方案的计费方式、计费项、免�
 如果你使用自己的业务信令 + RTC API 实现的场景，当信令通道通了，但是 RTC 通道因为网络、设备占用等客观原因没有出图，则理论上不推荐开始计费，否则会影响用户体验。推荐的开始计费时机为如下条件**全部**满足时：
 
 - 使用服务端事件回调 `103`，判断主叫方和被叫方均加入了频道。
-- 主叫和被叫用户端均收到对方首帧回调（即 RTC 的 [`onFirstRemoteVideoFrame`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调）。
+- 主叫和被叫用户端均收到对方首帧回调（即 RTC 的 [`onFirstRemoteVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调）。
 :::
 
 ## 结束计费
@@ -41,6 +41,6 @@ description: "了解 1v1 私密房 RTM 方案的计费方式、计费项、免�
   如果服务端事件回调 `104` 的 `reason` 为其他值，可能是由 App 被关闭、手机卡顿或重启、网络中断等原因导致的，不能作为结束计费的依据。你可以设置一个超时时间，例如 10 秒。如果在 10 秒内声网服务器没有接收到客户端的数据包，可以判断为结束计费的依据。
   :::
 
-- 为避免回调事件到达延迟，你也可以使用[查询用户列表 RESTful API](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询指定用户是否还在频道内，来决定是否结束计费。
+- 为避免回调事件到达延迟，你也可以使用查询用户列表 RESTful API 查询指定用户是否还在频道内，来决定是否结束计费。
 
 如果你部署了信令、IM 或其它长连接监测服务，也可以通过自建心跳逻辑，来判断指定用户是否还在频道内。

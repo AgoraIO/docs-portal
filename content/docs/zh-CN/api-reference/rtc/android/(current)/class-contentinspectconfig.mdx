@@ -1,10 +1,18 @@
 ---
-title: "ContentInspectConfig"
-description: "用于配置截图和上传功能。"
+title: ContentInspectConfig
+description: 用于配置截图和上传功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_contentinspectconfig
+  sourcePath: html-docs/rtc/Android/API/class_contentinspectconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_contentinspectconfig__prototype"></a>
 
-```java
+```text
 public class ContentInspectConfig {
   public final static int CONTENT_INSPECT_TYPE_INVALID = 0;
   @Deprecated public final static int CONTENT_INSPECT_TYPE_MODERATION = 1;
@@ -20,9 +28,9 @@ public class ContentInspectConfig {
 
 <a id="class_contentinspectconfig__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v3.4.2 版本新增。
+:::
 
 用于设置截图和上传的相关参数。
 
@@ -30,42 +38,63 @@ public class ContentInspectConfig {
 
 ## 属性
 
-### `CONTENT_INSPECT_TYPE_INVALID`
+<ParameterList>
+<a id="content_inspect_type_invalid"></a>
+<Parameter name="CONTENT_INSPECT_TYPE_INVALID">
 
 0：（默认）无实际功能。不要将 `type` 设置为该值。
 
-### `CONTENT_INSPECT_TYPE_MODERATION`
+</Parameter>
+<a id="content_inspect_type_moderation"></a>
+<Parameter name="CONTENT_INSPECT_TYPE_MODERATION">
 
 已废弃的视频内容审核类型。
 
-### `CONTENT_INSPECT_TYPE_SUPERVISE`
+</Parameter>
+<a id="content_inspect_type_supervise"></a>
+<Parameter name="CONTENT_INSPECT_TYPE_SUPERVISE">
 
 2：通过声网自研扩展进行视频截图并上传。SDK 会对本地用户发送的视频进行截图并上传。
 
-### `CONTENT_INSPECT_TYPE_IMAGE_MODERATION`
+</Parameter>
+<a id="content_inspect_type_image_moderation"></a>
+<Parameter name="CONTENT_INSPECT_TYPE_IMAGE_MODERATION">
 
 3：通过声网扩展市场中的扩展插件进行视频截图并上传。SDK 使用扩展插件对频道中的视频流进行截图并上传。
 
-### `MAX_CONTENT_INSPECT_MODULE_COUNT`
+</Parameter>
+<a id="max_content_inspect_module_count"></a>
+<Parameter name="MAX_CONTENT_INSPECT_MODULE_COUNT">
 
 功能模块的最大配置数量为 32。
 
-### `extraInfo`
+</Parameter>
+<a id="extrainfo"></a>
+<Parameter name="extraInfo">
 
 视频内容的附加信息（最大长度为 1024 字节）。SDK 会将截图和附加信息一并发送到声网服务器。完成上传后，声网服务器会将附加信息和回调通知发送到你的服务器。
 
-### `serverConfig`
+</Parameter>
+<a id="serverconfig"></a>
+<Parameter name="serverConfig">
 
 （可选）通过声网扩展市场中的扩展上传视频截图时的服务器配置。仅当 [ContentInspectModule](/zh-CN/api-reference/rtc/android/class-contentinspectmodule) 中 `type` 设置为 `CONTENT_INSPECT_TYPE_IMAGE_MODERATION` 时该参数才生效。如需使用该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 
-### `modules`
+</Parameter>
+<a id="modules"></a>
+<Parameter name="modules">
 
 功能模块。最多支持配置 32 个实例，取值范围为 [1, 32]。详见 [ContentInspectModule](/zh-CN/api-reference/rtc/android/class-contentinspectmodule)。
 
-:::info[注]
-每个功能模块最多只能配置一个实例。目前仅支持本地截图上传功能。
+:::note
+注： 每个功能模块最多只能配置一个实例。目前仅支持本地截图上传功能。
 :::
 
-### `moduleCount`
+</Parameter>
+<a id="modulecount"></a>
+<Parameter name="moduleCount">
 
 功能模块的数量，即配置的 [ContentInspectModule](/zh-CN/api-reference/rtc/android/class-contentinspectmodule) 实例数量。必须与 `modules` 中配置的实例数量一致，最大值为 32。
+
+</Parameter>
+</ParameterList>

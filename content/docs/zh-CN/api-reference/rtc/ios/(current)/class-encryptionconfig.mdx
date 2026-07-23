@@ -1,10 +1,18 @@
 ---
-title: "AgoraEncryptionConfig"
-description: "内置加密配置。"
+title: AgoraEncryptionConfig
+description: 内置加密配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_encryptionconfig
+  sourcePath: html-docs/rtc/iOS/API/class_encryptionconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_encryptionconfig__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraEncryptionConfig: NSObject
 @property (assign, nonatomic) AgoraEncryptionMode encryptionMode;
 @property (copy, nonatomic) NSString * _Nullable encryptionKey;
@@ -21,29 +29,40 @@ __attribute__((visibility("default"))) @interface AgoraEncryptionConfig: NSObjec
 
 ## 属性
 
-### `encryptionMode`
+<ParameterList>
+<a id="encryptionmode"></a>
+<Parameter name="encryptionMode">
 
 内置加密模式，详见 [AgoraEncryptionMode](/zh-CN/api-reference/rtc/ios/enum-encryptionmode)。声网推荐使用 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式。
 
-### `encryptionKey`
+</Parameter>
+<a id="encryptionkey"></a>
+<Parameter name="encryptionKey">
 
 字符串类型的加密密钥，长度不受限制。声网推荐使用 32 字节的密钥。
 
-:::info[注]
-如果未设置加密密钥或将其设置为 nil，则无法使用内置加密，SDK 会返回 `-2`。
+:::note
+注： 如果未设置加密密钥或将其设置为 nil，则无法使用内置加密，SDK 会返回 `-2`。
 :::
 
-### `encryptionKdfSalt`
+</Parameter>
+<a id="encryptionkdfsalt"></a>
+<Parameter name="encryptionKdfSalt">
 
 用于加密的盐值，长度为 32 字节。声网推荐在服务器端使用 OpenSSL 生成该盐值。
 
-:::info[注]
-该参数仅在 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式下生效。在此情况下，请确保该参数不为 `0`。
+:::note
+注： 该参数仅在 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式下生效。在此情况下，请确保该参数不为 `0`。
 :::
 
-### `datastreamEncryptionEnabled`
+</Parameter>
+<a id="datastreamencryptionenabled"></a>
+<Parameter name="datastreamEncryptionEnabled">
 
 是否启用数据流加密：
 
 - YES：启用数据流加密。
 - NO：（默认）不启用数据流加密。
+
+</Parameter>
+</ParameterList>

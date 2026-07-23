@@ -1,27 +1,48 @@
 ---
-title: "BACKGROUND_SOURCE_TYPE"
-description: "自定义背景类型。"
+title: BACKGROUND_SOURCE_TYPE
+description: 自定义背景类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_backgroundsourcetype
+  sourcePath: html-docs/rtc/Cpp/API/enum_backgroundsourcetype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_backgroundsourcetype__parameters"></a>
 
 ## 枚举值
 
-### `BACKGROUND_NONE`
+<ParameterList>
+<a id="background_none"></a>
+<Parameter name="BACKGROUND_NONE">
 
 （0）：将背景作为 alpha 数据处理，不进行替换，仅分离人像与背景。设置该值后，可调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 实现画中画效果。
 
-### `BACKGROUND_COLOR`
+</Parameter>
+<a id="background_color"></a>
+<Parameter name="BACKGROUND_COLOR">
 
 （1）：（默认）背景为纯色图像。
 
-### `BACKGROUND_IMG`
+</Parameter>
+<a id="background_img"></a>
+<Parameter name="BACKGROUND_IMG">
 
 （2）：背景为 PNG 或 JPG 格式的图像。
 
-### `BACKGROUND_BLUR`
+</Parameter>
+<a id="background_blur"></a>
+<Parameter name="BACKGROUND_BLUR">
 
 （3）：背景为原始背景的模糊版本。
 
-### `BACKGROUND_VIDEO`
+</Parameter>
+<a id="background_video"></a>
+<Parameter name="BACKGROUND_VIDEO">
 
 （4）：背景为本地视频，支持 MP4、AVI、MKV、FLV 等格式。
+
+</Parameter>
+</ParameterList>

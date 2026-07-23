@@ -2,9 +2,11 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
+type DocsPage = string | { pages?: DocsPage[] };
+
 type DocsMeta = {
   navScope?: unknown;
-  pages?: string[];
+  pages?: DocsPage[];
   title?: string;
 };
 
@@ -15,6 +17,27 @@ const sharedConceptPageEntries = new Set([
   '!mcp-integrate',
   '!skills-integrate',
 ]);
+const sharedConceptRoutes = new Set([
+  '/zh-CN/introduction/mcp-integrate',
+  '/zh-CN/introduction/skills-integrate',
+]);
+
+function navigationTarget(entry: string) {
+  const match = entry.match(/^\[[^\]]+\]\(([^)]+)\)$/);
+  return match?.[1] ?? entry.replace(/^!/, '');
+}
+
+function hasSharedConceptEntry(pages: DocsPage[] = []): boolean {
+  return pages.some((entry) => {
+    if (typeof entry !== 'string') {
+      return hasSharedConceptEntry(entry.pages);
+    }
+    const target = navigationTarget(entry);
+    return (
+      sharedConceptPageEntries.has(entry) || sharedConceptRoutes.has(target)
+    );
+  });
+}
 
 function readMeta(path: string): DocsMeta {
   return JSON.parse(readFileSync(path, 'utf8')) as DocsMeta;
@@ -103,11 +126,11 @@ describe('zh-CN product nav scope content', () => {
     const metaWithSharedConceptEntries = productMetaFiles.flatMap(
       (metaPath) => {
         const meta = readMeta(metaPath);
-        const hasSharedConceptEntry = meta.pages?.some((entry) =>
-          sharedConceptPageEntries.has(entry),
+        const hasSharedConceptNavigationEntry = hasSharedConceptEntry(
+          meta.pages,
         );
 
-        return hasSharedConceptEntry
+        return hasSharedConceptNavigationEntry
           ? [relative(zhDocsRoot, metaPath).replace(/\\/g, '/')]
           : [];
       },

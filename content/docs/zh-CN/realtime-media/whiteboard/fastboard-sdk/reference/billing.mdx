@@ -176,7 +176,7 @@ description: "了解 Fastboard SDK 的计费方式、计费项、免费额度和
 会计费，因为白板底层只根据是否有活跃长连接来计算用量。因此，为避免产生额外费用，声网建议：
 
 - 在用户离开房间时，调用 `disconnect()` 断开与当前房间的连接，并确保收到 `onPhaseChanged(disconnected)` 回调。
-- 直播结束时在 App 服务端调用[封禁房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/patch-v5-rooms-uuid)强制所有人退出房间。
+- 直播结束时在 App 服务端调用[封禁房间](/zh-CN/api-reference/api-ref/whiteboard/restful/ban-room)强制所有人退出房间。
 
 </Accordion>
 

@@ -1,10 +1,18 @@
 ---
-title: "AgoraChannelStats"
-description: "通话会话的统计信息。"
+title: AgoraChannelStats
+description: 通话会话的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_rtcstats
+  sourcePath: html-docs/rtc/iOS/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcstats__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraChannelStats : NSObject
 @property(assign, nonatomic) NSUInteger duration;
 @property(assign, nonatomic) NSUInteger txBytes;
@@ -42,138 +50,197 @@ __attribute__((visibility("default"))) @interface AgoraChannelStats : NSObject
 
 ## 属性
 
-### `duration`
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
 
 本地用户通话时长，单位为秒，表示为累计值。
 
-### `txBytes`
+</Parameter>
+<a id="txbytes"></a>
+<Parameter name="txBytes">
 
 发送的字节数。
 
-### `rxBytes`
+</Parameter>
+<a id="rxbytes"></a>
+<Parameter name="rxBytes">
 
 接收的字节数。
 
-### `txAudioKBitrate`
+</Parameter>
+<a id="txaudiokbitrate"></a>
+<Parameter name="txAudioKBitrate">
 
 音频发送码率，单位为 Kbps。
 
-### `rxAudioKBitrate`
+</Parameter>
+<a id="rxaudiokbitrate"></a>
+<Parameter name="rxAudioKBitrate">
 
 音频接收码率，单位为 Kbps。
 
-### `txVideoKBitrate`
+</Parameter>
+<a id="txvideokbitrate"></a>
+<Parameter name="txVideoKBitrate">
 
 视频发送码率，单位为 Kbps。
 
-### `rxVideoKBitrate`
+</Parameter>
+<a id="rxvideokbitrate"></a>
+<Parameter name="rxVideoKBitrate">
 
 视频接收码率，单位为 Kbps。
 
-### `txAudioBytes`
+</Parameter>
+<a id="txaudiobytes"></a>
+<Parameter name="txAudioBytes">
 
 发送的音频字节总数，表示为累计值。
 
-### `txVideoBytes`
+</Parameter>
+<a id="txvideobytes"></a>
+<Parameter name="txVideoBytes">
 
 发送的视频字节总数，表示为累计值。
 
-### `rxAudioBytes`
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
 
 接收的音频字节总数，表示为累计值。
 
-### `rxVideoBytes`
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
 
 接收的视频字节总数，表示为累计值。
 
-### `lastmileDelay`
+</Parameter>
+<a id="lastmiledelay"></a>
+<Parameter name="lastmileDelay">
 
 客户端到服务器的延迟，单位为毫秒。
 
-### `userCount`
+</Parameter>
+<a id="usercount"></a>
+<Parameter name="userCount">
 
 频道中的用户数。
 
-### `cpuAppUsage`
+</Parameter>
+<a id="cpuappusage"></a>
+<Parameter name="cpuAppUsage">
 
 应用程序的 CPU 使用率（%）。
 
-:::info[注]
-在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::note
+注： 在 [rtcEngine\:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 :::
 
-### `cpuTotalUsage`
+</Parameter>
+<a id="cputotalusage"></a>
+<Parameter name="cpuTotalUsage">
 
 系统的 CPU 使用率（%）。
 
-:::info[注]
-在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::note
+注： 在 [rtcEngine\:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
 :::
 
-### `gatewayRtt`
+</Parameter>
+<a id="gatewayrtt"></a>
+<Parameter name="gatewayRtt">
 
 客户端到本地路由器的往返时延，单位为毫秒。
 
-:::info[注]
-该属性在运行 iOS 14 或更高版本的设备上默认禁用，在运行早期版本的设备上默认启用。要在 iOS 14 或更高版本的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::note
+注： 该属性在运行 iOS 14 或更高版本的设备上默认禁用，在运行早期版本的设备上默认启用。要在 iOS 14 或更高版本的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
 
-### `memoryAppUsageRatio`
+</Parameter>
+<a id="memoryappusageratio"></a>
+<Parameter name="memoryAppUsageRatio">
 
 应用程序占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `memoryTotalUsageRatio`
+</Parameter>
+<a id="memorytotalusageratio"></a>
+<Parameter name="memoryTotalUsageRatio">
 
 系统占用的内存比例（%）。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `memoryAppUsageInKbytes`
+</Parameter>
+<a id="memoryappusageinkbytes"></a>
+<Parameter name="memoryAppUsageInKbytes">
 
 应用程序占用的内存大小，单位为 KB。
 
-:::info[注]
-该值仅供参考。由于系统限制，可能无法获取该值。
+:::note
+注： 该值仅供参考。由于系统限制，可能无法获取该值。
 :::
 
-### `connectTimeMs`
+</Parameter>
+<a id="connecttimems"></a>
+<Parameter name="connectTimeMs">
 
 从 SDK 开始连接到连接建立之间的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `txKBitrate`
+</Parameter>
+<a id="txkbitrate"></a>
+<Parameter name="txKBitrate">
 
 本地视频流发送时的实际码率，单位为 Kbps。
 
-### `rxKBitrate`
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitrate">
 
 接收码率，单位为 Kbps。
 
-### `firstAudioPacketDuration`
+</Parameter>
+<a id="firstaudiopacketduration"></a>
+<Parameter name="firstAudioPacketDuration">
 
 从连接开始到接收到首个音频包的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `firstVideoPacketDuration`
+</Parameter>
+<a id="firstvideopacketduration"></a>
+<Parameter name="firstVideoPacketDuration">
 
 从连接开始到接收到首个视频包的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `firstVideoKeyFramePacketDuration`
+</Parameter>
+<a id="firstvideokeyframepacketduration"></a>
+<Parameter name="firstVideoKeyFramePacketDuration">
 
 从连接开始到接收到首个视频关键帧的耗时，单位为毫秒。若值为 0，表示无效。
 
-### `packetsBeforeFirstKeyFramePacket`
+</Parameter>
+<a id="packetsbeforefirstkeyframepacket"></a>
+<Parameter name="packetsBeforeFirstKeyFramePacket">
 
 在接收到首个视频关键帧前接收到的视频包数量。若值为 0，表示无效。
 
-### `txPacketLossRate`
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 应用抗丢包算法前，客户端到声网服务器的丢包率（%）。
 
-### `rxPacketLossRate`
+</Parameter>
+<a id="rxpacketlossrate"></a>
+<Parameter name="rxPacketLossRate">
 
 使用抗丢包方法前，声网服务器到客户端的丢包率（%）。
+
+</Parameter>
+</ParameterList>

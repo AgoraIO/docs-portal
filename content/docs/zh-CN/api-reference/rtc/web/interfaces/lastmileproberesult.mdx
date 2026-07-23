@@ -1,0 +1,79 @@
+---
+title: Interface LastmileProbeResult
+description: 通话前网络质量探测结果。该探测结果反应的是上、下行网络的综合质量。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/lastmileproberesult
+  sourcePath: html-docs/rtc/Web/interfaces/lastmileproberesult.html
+  generator: typedoc
+  warnings: []
+---
+
+:::info[自从]
+*4.24.1*
+:::
+
+### Hierarchy
+
+- LastmileProbeResult
+
+## Index
+
+### Properties
+
+- [jitter](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult#jitter)
+- [networkQuality](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult#networkquality)
+- [packetLossRate](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult#packetlossrate)
+- [rtt](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult#rtt)
+- [state](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult#state)
+
+## Properties
+
+<a id="jitter"></a>
+
+### Optional jitter
+
+jitter: number
+
+网络抖动 (ms)。
+
+<a id="networkquality"></a>
+
+### Optional networkQuality
+
+networkQuality: number
+
+网络质量：
+
+- 1: 很好。
+- 2: 一般。
+- 3: 较差。
+- 4: 很差。
+
+<a id="packetlossrate"></a>
+
+### Optional packetLossRate
+
+packetLossRate: number
+
+丢包率。
+
+<a id="rtt"></a>
+
+### Optional rtt
+
+rtt: number
+
+往返时延 (ms)。
+
+<a id="state"></a>
+
+### state
+
+state: "complete"|"unavailable"
+
+网络质量探测状态：
+
+- `complete`：表示本次网络质量探测是完整的。
+- `unavailable`：表示未进行网络质量探测。一个可能的原因是网络连接中断。

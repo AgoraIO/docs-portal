@@ -1,12 +1,20 @@
 ---
-title: "API 列表"
-description: "本页列出 HarmonyOS 所有的接口类以及其中包含的 API。"
+title: API 列表
+description: 本页列出 HarmonyOS 所有的接口类以及其中包含的 API。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/rtc_interface_class
+  sourcePath: html-docs/rtc/HarmonyOS/API/rtc_interface_class.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="rtc_interface_class"></a>
 
-本页列出 HarmonyOS 所有的接口类以及其中包含的 API。
-
 <a id="class_irtcengine"></a>
+
+<a id="ariaid-title2"></a>
 
 ## RtcEngine
 
@@ -14,9 +22,12 @@ RTC SDK 的基础接口类，实现实时音视频的主要功能。
 
 <a id="class_irtcengine__detailed_desc"></a>
 
+### 详情
+
 RtcEngine 提供了 App 调用的主要方法。
 
 ### 相关参考
+
 - [adjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
 - [adjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume)
 - [adjustAudioMixingVolume](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume)
@@ -120,15 +131,20 @@ RtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineex"></a>
 
+<a id="ariaid-title3"></a>
+
 ## RtcEngineEx
 
 提供多频道方法的接口类。
 
 <a id="class_irtcengineex__detailed_desc"></a>
 
+### 详情
+
 继承自 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)。
 
 ### 相关参考
+
 - [createDataStreamEx](/zh-CN/api-reference/rtc/harmonyos/metadata/datastream#api_irtcengineex_createdatastreamex2)
 - [enableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex)
 - [getCallIdEx](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengineex_getcallidex)
@@ -151,20 +167,27 @@ RtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineeventhandler"></a>
 
+<a id="ariaid-title4"></a>
+
 ## IRtcEngineEventHandler
 
 接口类 IRtcEngineEventHandler 用于 SDK 向 App 发送事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
 
 <a id="class_irtcengineeventhandler__detailed_desc"></a>
 
+### 详情
+
 该接口类的所有方法都有缺省（空）实现， App 可以根据需要只继承关心的事件。
 
-:::warning[注意]
-- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 sendMessage ），否则可能影响 SDK 的运行。
+:::caution
+注意：
+
+- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 `sendMessage`），否则可能影响 SDK 的运行。
 - SDK 不再捕获开发者在 IRtcEngineEventHandler 类回调中自行实现的代码逻辑中的异常。你需要自行处理该异常，否则异常出现时可能引起 App 崩溃。
 :::
 
 ### 相关参考
+
 - [onAudioEffectFinished](/zh-CN/api-reference/rtc/harmonyos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished)
 - [onAudioMixingPositionChanged](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged)
 - [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)
@@ -218,9 +241,14 @@ RtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediaplayer"></a>
 
+<a id="ariaid-title5"></a>
+
 ## IMediaPlayer
 
+提供媒体播放器功能的类，支持多实例。
+
 ### 相关参考
+
 - [adjustPlayoutVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [adjustPublishSignalVolume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [getDuration](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
@@ -258,9 +286,14 @@ RtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediaplayersourceobserver"></a>
 
+<a id="ariaid-title6"></a>
+
 ## IMediaPlayerObserver
 
+提供媒体播放器的回调。
+
 ### 相关参考
+
 - [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication)
 - [onMetaData](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
 - [onPlayBufferUpdated](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
@@ -275,37 +308,61 @@ RtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediarecorder"></a>
 
+<a id="ariaid-title7"></a>
+
 ## AgoraMediaRecorder
 
+提供本地及远端音视频录制功能的类。
+
 ### 相关参考
+
 - [setMediaRecorderObserver](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_setmediarecorderobserver)
 - [startRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_startrecording)
 - [stopRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_stoprecording)
 
 <a id="class_imediarecorderobserver"></a>
 
+<a id="ariaid-title8"></a>
+
 ## IMediaRecorderCallback
 
+包含音视频录制的事件。
+
 ### 相关参考
+
 - [onRecorderStateChanged](/zh-CN/api-reference/rtc/harmonyos/recording#callback_imediarecorderobserver_onrecorderstatechanged)
 - [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/recording#callback_imediarecorderobserver_onrecorderinfoupdated)
 
 <a id="class_imusiccontentcentereventhandler"></a>
 
+<a id="ariaid-title9"></a>
+
 ## IMusicContentCenterEventHandler
+
+[IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcentereventhandler) 接口类，用于 SDK 向客户端发送音乐内容中心事件通知。
 
 <a id="class_imusicplayer"></a>
 
+<a id="ariaid-title10"></a>
+
 ## IAgoraMusicPlayer
 
+继承自 [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer) 类，提供音乐播放器的相关方法。
+
 ### 相关参考
+
 - [setPlayMode](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicplayer_setplaymode)
 
 <a id="class_imusiccontentcenter"></a>
 
+<a id="ariaid-title11"></a>
+
 ## IAgoraMusicContentCenter
 
+[IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter) 接口类提供音乐内容中心的相关方法。
+
 ### 相关参考
+
 - [initialize](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_initialize)
 - [renewToken](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_renewtoken)
 - [release](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_release)

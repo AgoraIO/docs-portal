@@ -1,0 +1,74 @@
+---
+title: 服务概述
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/media-pull/restful/overview/product-overview
+  sourcePath: docs/media-pull/overview/product-overview.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 1 legacy MDX syntax signal(s).
+---
+
+输入在线媒体流功能可以将一路在线媒体流输入到正在进行直播的房间，主播和观众可以一起收听或观看该媒体流并进行实时互动。
+
+![输入在线媒体流技术架构](https://web-cdn.agora.io/doc-cms/uploads/1728382554456-输入在线媒体流技术架构.png)
+
+声网提供用于输入在线媒体流功能的服务端 API，包括：
+
+- **输入在线媒体流 RESTful API**：通过你的业务服务器向声网服务器发送 HTTPS 请求。输入一路在线媒体流至声网频道内播放，相当于创建了一个云端播放器（cloud player）。你可以通过 RESTful API 控制云端播放器，实现对该媒体流的控制。
+- **输入在线媒体流事件回调**：开通声网消息通知服务后，当订阅的事件发生时，声网服务器会以 HTTPS 请求的形式向你的服务器发送通知。
+
+:::info[信息]
+请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
+:::
+
+## 功能描述
+
+声网输入在线媒体流支持以下功能：
+
+| 功能 | 描述 |
+| --- | --- |
+| 输入在线媒体流 | 用户可以通过 RESTful API 创建云端播放器，将一路在线媒体流作为直播视频源输入到声网频道内。输入成功后，该媒体流会在声网频道内自动播放，供频道内的远端用户欣赏。 |
+| 多种媒体流格式/协议 | <Slot name="product-overview-markdown-0-2-1" /> |
+| 定时播放 | 用户可以设置播放在线媒体流的起始时间，实现在线媒体流的定时播放。 |
+| 限定访问区域 | 用户可以在请求中指定播放在线媒体流的区域，保障媒体流的传输质量。 |
+
+<Slot for="product-overview-markdown-0-2-1">
+
+- 视频 Codec：H.264、H.265、VP8
+- 音频 Codec：AAC、OPUS
+- 协议：HTTP、HTTPS、RTMP、HLS
+- 格式：FLV、MP4、MP3、MPEG-TS、Matroska (MKV)
+
+</Slot>
+
+## 适用场景
+
+声网输入在线媒体流适用于以下场景：
+
+| 场景         | 描述                                                         |
+| :----------- | :----------------------------------------------------------- |
+| 赛事直播     | 主播在直播间分享赛事直播的媒体流，实现主播和观众边看比赛边点评的功能。 |
+| 一起看视频   | 同一直播间内，主播与观众一同欣赏电影、音乐、演出，并实时交流讨论。 |
+| 伪直播       | 同一个课堂内，所有学生观看预置的老师授课直播内容，学生之间、学生与助教之间实时交流互动。 |
+| 24 小时语聊房 | 在语聊房内 24 小时不间断地播放背景音乐，切换主播时背景音乐也不中断。 |
+
+## 产品特性
+
+声网输入在线媒体流具有以下优势特性：
+
+| 特性 | 描述 |
+| --- | --- |
+| 高可靠性 | <Slot name="product-overview-markdown-2-1-1" /> |
+| 安全合规 | 音视频数据实时传输过程安全有保障，不缓存，不收集用户个人信息，详情可参考[信息安全说明](/zh-CN/introduction/security/information)。 |
+| 稳定易用 | API 简单易用，能帮助开发者快速集成上手。 |
+
+<Slot for="product-overview-markdown-2-1-1">
+
+- 全球分布式集群部署，提供高可靠性服务。
+- 提供分区接入功能，保证每个区域的服务质量和体验。
+
+</Slot>

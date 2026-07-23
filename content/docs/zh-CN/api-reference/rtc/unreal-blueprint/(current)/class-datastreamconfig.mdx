@@ -1,10 +1,18 @@
 ---
-title: "FDataStreamConfig"
-description: "数据流设置。"
+title: FDataStreamConfig
+description: 数据流设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_datastreamconfig
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_datastreamconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_datastreamconfig__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FDataStreamConfig
 {
@@ -32,7 +40,11 @@ public:
 
 <a id="class_datastreamconfig__detailed_desc"></a>
 
+### 详情
+
 下表展示不同的参数设置下，SDK 的行为：
+
+<a id="class_datastreamconfig__table_uxz_bjk_t4b"></a>
 
 | `syncWithAudio` | `ordered` | SDK 行为 |
 | --- | --- | --- |
@@ -45,20 +57,27 @@ public:
 
 ## 属性
 
-### `syncWithAudio`
+<ParameterList>
+<a id="syncwithaudio"></a>
+<Parameter name="syncWithAudio">
 
 是否与本地发送的音频流同步。
 
-- true: 数据流与音频流同步。该设置适用于歌词同步等特殊场景。
-- false: 数据流与音频流不同步。该设置适用于需要数据包立刻到达接收端的场景。
+- `true`: 数据流与音频流同步。该设置适用于歌词同步等特殊场景。
+- `false`: 数据流与音频流不同步。该设置适用于需要数据包立刻到达接收端的场景。
 
 设置数据流与音频流同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。
 
-### `ordered`
+</Parameter>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 是否保证接收到的数据按发送的顺序排列。
 
-- true: 保证 SDK 按照发送方发送的顺序输出数据包。
-- false: 不保证 SDK 按照发送方发送的顺序输出数据包。
+- `true`: 保证 SDK 按照发送方发送的顺序输出数据包。
+- `false`: 不保证 SDK 按照发送方发送的顺序输出数据包。
 
 当需要数据包立刻到达接收端时，不能将该参数设置为 `true`。
+
+</Parameter>
+</ParameterList>

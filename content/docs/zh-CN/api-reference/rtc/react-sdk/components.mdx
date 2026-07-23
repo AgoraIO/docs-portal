@@ -11,7 +11,7 @@ title: "组件"
 
 | 属性名     | 类型              | 默认值 | 描述                                                                                                                                          |
 | ---------- | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `client`   | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | 无     | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client`   | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | 无     | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 | `children` | `ReactNode`       | 无     | 需要展示的 React 节点。                                                                                                                       |
 
 #### 使用示例
@@ -34,7 +34,7 @@ function App({ children }) {
 
 | 属性名     | 类型              | 默认值 | 描述                                                                                                                                          |
 | ---------- | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `client`   | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | 无      | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client`   | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | 无      | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 | `children` | `ReactNode`       | 无      | 需要展示的 React 节点。                                                                                                                       |
 
 #### 注意事项
@@ -57,7 +57,7 @@ function App({ children }) {
 
 该组件用于播放本地音频轨道，播放设备为用户在浏览器中选择的设备。
 
-如果你需要自行设置麦克风设备，可使用 Web SDK 的 [`IMicrophoneAudioTrack.setDevice`](/api-ref/rtc/react/interfaces/imicrophoneaudiotrack.html#setdevice) 方法。
+如果你需要自行设置麦克风设备，可使用 Web SDK 的 [`IMicrophoneAudioTrack.setDevice`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack#setdevice) 方法。
 #### Props
 
 | 属性名     | 类型               | 默认值  | 描述                                                                                                                                                                                                     |
@@ -92,7 +92,7 @@ function App({ children }) {
 
 #### 注意事项
 
-设置 `disabled` 和 `muted` 属性时其实是调用了 Web SDK 的 [`setEnabled`](/api-ref/rtc/react/interfaces/ilocaltrack.html#setenabled) 方法和 [`setMuted`](/api-ref/rtc/react/interfaces/ilocaltrack.html#setmuted) 方法，因此：
+设置 `disabled` 和 `muted` 属性时其实是调用了 Web SDK 的 [`setEnabled`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setenabled) 方法和 [`setMuted`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setmuted) 方法，因此：
 
 - 与设置 `disabled` 属性相比，设置 `muted` 属性的响应速度更快且不影响音频采集状态。
 - 不能同时设置 `muted` 属性和 `disabled` 属性。
@@ -113,17 +113,17 @@ function App() {
 
 该组件用于播放本地视频轨道，播放设备为用户在浏览器中选择的设备。
 
-如果你需要自行设置摄像头设备，可使用 Web SDK 的 [`ICameraVideoTrack.setDevice`](/api-ref/rtc/react/interfaces/icameravideotrack.html#setdevice) 方法。
+如果你需要自行设置摄像头设备，可使用 Web SDK 的 [`ICameraVideoTrack.setDevice`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setdevice) 方法。
 
 #### Props
 
 | 属性名     | 类型               | 默认值 | 描述                                                                                                |
 | ---------- | ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `track`    | `ILocalVideoTrack` |  无    | 要播放的本地视频轨道。通过 [`useLocalCameraTrack`](/zh-CN/api-reference/rtc/react-sdk/hooks#uselocalcameratrack) 或 Web SDK 的 [`IAgoraRTC.createScreenVideoTrack`](/api-ref/rtc/react/interfaces/iagorartc.html#createscreenvideotrack) 创建。 |
+| `track`    | `ILocalVideoTrack` |  无    | 要播放的本地视频轨道。通过 [`useLocalCameraTrack`](/zh-CN/api-reference/rtc/react-sdk/hooks#uselocalcameratrack) 或 Web SDK 的 [`IAgoraRTC.createScreenVideoTrack`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack) 创建。 |
 | `play` | `boolean` | `false` | <Slot name="components-slot-3-3-3" /> |
 | `disabled` | `boolean` | `false` | <Slot name="components-slot-3-4-3" /> |
 | `muted` | `boolean` | `false` | <Slot name="components-slot-3-5-3" /> |
-| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/api-ref/rtc/react/interfaces/videoplayerconfig.html)。对于本地视频轨道，镜像模式默认开启。|
+| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。|
 
 <Slot for="components-slot-3-3-3">
 
@@ -148,7 +148,7 @@ function App() {
 
 #### 注意事项
 
-设置 `disabled` 和 `muted` 属性时其实是调用了 Web SDK 的 [`setEnabled`](/api-ref/rtc/react/interfaces/ilocaltrack.html#setenabled) 方法和 [`setMuted`](/api-ref/rtc/react/interfaces/ilocaltrack.html#setmuted) 方法，因此：
+设置 `disabled` 和 `muted` 属性时其实是调用了 Web SDK 的 [`setEnabled`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setenabled) 方法和 [`setMuted`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setmuted) 方法，因此：
 
 - 与设置 `disabled` 属性相比，设置 `muted` 属性的响应速度更快且不影响视频采集状态。
 - 不能同时设置 `muted` 属性和 `disabled` 属性。
@@ -171,7 +171,7 @@ function App() {
 
 当视频轨道停止播放时，该组件会展示封面图片。
 
-如果你需要自行设置麦克风或摄像头设备，可使用 Web SDK 的 [`IMicrophoneAudioTrack.setDevice`](/api-ref/rtc/react/interfaces/imicrophoneaudiotrack.html#setdevice) 或 [`ICameraVideoTrack.setDevice`](/api-ref/rtc/react/interfaces/icameravideotrack.html#setdevice) 方法。
+如果你需要自行设置麦克风或摄像头设备，可使用 Web SDK 的 [`IMicrophoneAudioTrack.setDevice`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack#setdevice) 或 [`ICameraVideoTrack.setDevice`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setdevice) 方法。
 
 #### Props
 
@@ -247,9 +247,9 @@ function App() {
 
 | 属性名             | 类型                | 默认值 | 描述                                        |
 | ------------------ | ------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `track`            | [`IRemoteAudioTrack`](/api-ref/rtc/react/interfaces/iremoteaudiotrack.html) | 无      | 要播放的远端音频轨道。                                                                                                                                   |
+| `track`            | [`IRemoteAudioTrack`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack) | 无      | 要播放的远端音频轨道。                                                                                                                                   |
 | `play` | `boolean` | 无 | <Slot name="components-slot-5-3-3" /> |
-| `playbackDeviceId` | `string`            | 无      | 要使用的播放设备 ID，例如扬声器。设备 ID 通过 [`IAgoraRTC.getPlaybackDevices`](/api-ref/rtc/react/interfaces/iagorartc.html#getplaybackdevices) 获取。该属性仅支持桌面端的 Chrome 浏览器，在其它浏览器上修改该属性的值将会抛出 `NOT_SUPPORTED` 错误。 |
+| `playbackDeviceId` | `string`            | 无      | 要使用的播放设备 ID，例如扬声器。设备 ID 通过 [`IAgoraRTC.getPlaybackDevices`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getplaybackdevices) 获取。该属性仅支持桌面端的 Chrome 浏览器，在其它浏览器上修改该属性的值将会抛出 `NOT_SUPPORTED` 错误。 |
 | `volume`           | `number`            | 无      | 音量大小。取值范围 [0, 100]，0 代表静音，100 代表原始音量。         |
 | `children`         | `ReactNode`         | 无      | 需要展示的 React 节点。                     |
 
@@ -288,9 +288,9 @@ function App() {
 
 | 属性名  | 类型                | 默认值 | 描述                                                                                                                                                                |
 | ------- | ------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `track` | [`IRemoteVideoTrack`](/api-ref/rtc/react/interfaces/iremotevideotrack.html) | 无      | 远端视频轨道对象。 |
+| `track` | [`IRemoteVideoTrack`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack) | 无      | 远端视频轨道对象。 |
 | `play` | `boolean` | 无 | <Slot name="components-slot-6-3-3" /> |
-| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/api-ref/rtc/react/interfaces/videoplayerconfig.html)。|
+| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。|
 
 <Slot for="components-slot-6-3-3">
 
@@ -327,14 +327,14 @@ function App() {
 
 | 属性名             | 类型                          | 默认值                                                                                                                                                     | 描述                                        |
 | ------------------ | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `user`             | [`IAgoraRTCRemoteUser`](/api-ref/rtc/react/interfaces/iagorartcremoteuser.html)         | 无                                                                                                                                                          | 远端用户对象。                          |
-| `playVideo` | `boolean` | [user.hasVideo](/api-ref/rtc/react/interfaces/iagorartcremoteuser.html#hasvideo) 属性的值 | <Slot name="components-slot-7-3-3" /> |
-| `playAudio` | `boolean` | [user.hasAudio](/api-ref/rtc/react/interfaces/iagorartcremoteuser.html#hasaudio) 属性的值 | <Slot name="components-slot-7-4-3" /> |
-| `playbackDeviceId` | `string`                      | 无                                                                                                                                                          | 要使用的播放设备 ID，例如扬声器。设备 ID 通过 [`IAgoraRTC.getPlaybackDevices`](/api-ref/rtc/react/interfaces/iagorartc.html#getplaybackdevices) 获取。该属性仅支持桌面端的 Chrome 浏览器，在其它浏览器上修改该属性的值将会抛出 `NOT_SUPPORTED` 错误。 |
+| `user`             | [`IAgoraRTCRemoteUser`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)         | 无                                                                                                                                                          | 远端用户对象。                          |
+| `playVideo` | `boolean` | [user.hasVideo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#hasvideo) 属性的值 | <Slot name="components-slot-7-3-3" /> |
+| `playAudio` | `boolean` | [user.hasAudio](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#hasaudio) 属性的值 | <Slot name="components-slot-7-4-3" /> |
+| `playbackDeviceId` | `string`                      | 无                                                                                                                                                          | 要使用的播放设备 ID，例如扬声器。设备 ID 通过 [`IAgoraRTC.getPlaybackDevices`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getplaybackdevices) 获取。该属性仅支持桌面端的 Chrome 浏览器，在其它浏览器上修改该属性的值将会抛出 `NOT_SUPPORTED` 错误。 |
 | `volume`           | `number`                      | 无                                                                                                                                                          | 音量大小。取值范围 [0, 100]，0 代表静音，100 代表原始音量。                                                           |
 | `cover`            | `string` &VerticalLine; `() => ReactNode` | 无                                                                                                                                                          | 当 `playVideo` 为 `false`时要渲染的封面图片或自定义组件，用于替代视频画面显示。支持传入在线图片的 URL 或本地图片的相对路径。                                                                                                                                                                                                                            |
 | `children`         | `ReactNode`                   | 无                                                                                                                                                          | 需要展示的 React 节点。                     |
-| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/api-ref/rtc/react/interfaces/videoplayerconfig.html)。 |
+| `videoPlayerConfig`  |`VideoPlayerConfig` | 无 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。 |
 
 <Slot for="components-slot-7-3-3">
 

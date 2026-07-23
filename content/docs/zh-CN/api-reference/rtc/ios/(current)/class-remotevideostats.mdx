@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtcRemoteVideoStats"
-description: "远端视频流的统计信息。"
+title: AgoraRtcRemoteVideoStats
+description: 远端视频流的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_remotevideostats
+  sourcePath: html-docs/rtc/iOS/API/class_remotevideostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_remotevideostats__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraRtcRemoteVideoStats : NSObject
 @property(assign, nonatomic) NSUInteger uid;
 @property(assign, nonatomic) NSUInteger delay __deprecated;
@@ -31,86 +39,125 @@ __attribute__((visibility("default"))) @interface AgoraRtcRemoteVideoStats : NSO
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送该视频流的远端用户 ID。
 
-### `delay`
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 视频延迟（毫秒）。
 
-:::info[注]
-在音视频同步的场景中，你可以从 `networkTransportDelay` 和 `jitterBufferDelay` 获取视频延迟数据。
+:::note
+注： 在音视频同步的场景中，你可以从 `networkTransportDelay` 和 `jitterBufferDelay` 获取视频延迟数据。
 :::
 
-### `e2eDelay`
+</Parameter>
+<a id="e2edelay"></a>
+<Parameter name="e2eDelay">
 
 端到端的视频延迟（毫秒）。即从远端用户采集视频到本地用户接收并渲染视频的时间。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频的宽度（像素）。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频的高度（像素）。
 
-### `receivedBitrate`
+</Parameter>
+<a id="receivedbitrate"></a>
+<Parameter name="receivedBitrate">
 
 自上次统计以来接收到的远端视频码率（Kbps）。
 
-### `rxStreamType`
+</Parameter>
+<a id="rxstreamtype"></a>
+<Parameter name="rxStreamType">
 
 视频流的类型。详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/ios/enum-videostreamtype)。
 
-### `decoderOutputFrameRate`
+</Parameter>
+<a id="decoderoutputframerate"></a>
+<Parameter name="decoderOutputFrameRate">
 
 远端视频解码的帧率（fps）。
 
-### `rendererOutputFrameRate`
+</Parameter>
+<a id="rendereroutputframerate"></a>
+<Parameter name="rendererOutputFrameRate">
 
 远端视频渲染的帧率（fps）。
 
-### `frameLossRate`
+</Parameter>
+<a id="framelossrate"></a>
+<Parameter name="frameLossRate">
 
 远端视频的丢帧率（%）。
 
-### `packetLossRate`
+</Parameter>
+<a id="packetlossrate"></a>
+<Parameter name="packetLossRate">
 
 使用抗丢包技术后远端视频的丢包率（%）。
 
-### `totalFrozenTime`
+</Parameter>
+<a id="totalfrozentime"></a>
+<Parameter name="totalFrozenTime">
 
 远端用户加入频道后远端视频流的总卡顿时长（毫秒）。在帧率不低于 5 fps 的视频通话中，若相邻两帧可渲染视频帧的时间间隔超过 500 毫秒，则视为视频卡顿。
 
-### `totalActiveTime`
+</Parameter>
+<a id="totalactivetime"></a>
+<Parameter name="totalActiveTime">
 
 视频的总可用时长（毫秒）。只要远端用户在加入频道后未停止发送视频流或未关闭视频模块，视频即为可用状态。
 
-### `publishDuration`
+</Parameter>
+<a id="publishduration"></a>
+<Parameter name="publishDuration">
 
 远端视频流的总时长（毫秒）。
 
-### `frozenRate`
+</Parameter>
+<a id="frozenrate"></a>
+<Parameter name="frozenRate">
 
 视频卡顿时长占视频总可用时长的百分比（%）。只要远端用户在加入频道后未停止发送视频流或未关闭视频模块，视频即为可用状态。
 
-### `avSyncTimeMs`
+</Parameter>
+<a id="avsynctimems"></a>
+<Parameter name="avSyncTimeMs">
 
 音频领先视频的时间（毫秒）。
 
-:::info[注]
-如果该值为负数，表示音频落后于视频。
+:::note
+注： 如果该值为负数，表示音频落后于视频。
 :::
 
-### `mosValue`
+</Parameter>
+<a id="mosvalue"></a>
+<Parameter name="mosValue">
 
 在统计周期内远端视频流的质量。该值由声网实时视频 MOS（Mean Opinion Score）算法评估，取值范围为 [0, 500]。将该值除以 100 可得 MOS 评分，范围为 0 到 5，分数越高表示视频质量越好。
 
-:::info[注]
-对于纹理视频数据，该参数始终返回 0。
+:::note
+注： 对于纹理视频数据，该参数始终返回 0。
 :::
 
-### `rxVideoBytes`
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
 
 接收到的视频字节总数（字节），为累计值。
+
+</Parameter>
+</ParameterList>

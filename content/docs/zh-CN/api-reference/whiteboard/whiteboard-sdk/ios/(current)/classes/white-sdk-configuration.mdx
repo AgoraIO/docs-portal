@@ -1,0 +1,441 @@
+---
+title: WhiteSdkConfiguration Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteSdkConfiguration
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteSdkConfiguration.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteSdkConfiguration.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用于配置 [`WhiteSDK`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk) 对象。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithApp:"></a>
+
+### `– initWithApp:`
+
+初始化 `WhiteSdkConfiguration` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithApp:(NSString *)*appIdentifier*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="appIdentifier">
+
+白板项目的唯一标识。详见[获取白板项目的 App Identifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteSdkConfiguration` 对象。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/appIdentifier"></a>
+
+### `appIdentifier`
+
+白板项目的唯一标识。
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *appIdentifier
+
+</ApiSignature>
+
+#### Availability
+
+2.8.0
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/enableImgErrorCallback"></a>
+
+### `enableImgErrorCallback`
+
+是否监听图片加载失败事件。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableImgErrorCallback
+
+</ApiSignature>
+
+#### Availability
+
+2.12.0
+
+#### Discussion
+
+- `YES`：开启监听。
+- `NO`：（默认）关闭。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/enableIFramePlugin"></a>
+
+### `enableIFramePlugin`
+
+是否启用 iframe 插件。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableIFramePlugin
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：未启用。
+
+2.10.0 默认打开，后续版本默认关闭。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/region"></a>
+
+### `region`
+
+互动白板房间所在的数据中心。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+
+</ApiSignature>
+
+#### Availability
+
+2.11.0
+
+#### Discussion
+
+数据中心包括：
+
+- `WhiteRegionCN`：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
+- `WhiteRegionUS`：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
+- `WhiteRegionIN`：印度孟买。该数据中心为印度地区提供服务。
+- `WhiteRegionSG`：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
+- `WhiteRegionEU`：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
+
+**Note:**
+
+SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时指定的 `region` 一致；否则，SDK 无法连接到房间。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/renderEngine"></a>
+
+### `renderEngine`
+
+画笔教具的渲染引擎模式。可选择以下两种模式：
+- `WhiteSdkRenderEngineSvg`：SVG 渲染模式。2.8.0 及之前版本默认使用渲染模式，该模式兼容性较好，但性能较差。
+- `WhiteSdkRenderEngineCanvas`：Canvas 渲染模式。2.8.0 版本起新增 `canvas` 渲染模式，该模式性能较好，但兼容性较差。2.9.0 及之后版本的 `WhiteSdk` 默认使用 `canvas` 渲染模式。
+
+<ApiSignature>
+
+@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine
+
+</ApiSignature>
+
+#### Availability
+
+2.8.0
+
+2.8.0 版本新增 `canvas` 渲染引擎。从 2.9.0 版本开始，默认值为 `WhiteSdkRenderEngineCanvas`。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/userCursor"></a>
+
+### `userCursor`
+
+是否显示用户头像。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL userCursor
+
+</ApiSignature>
+
+#### Discussion
+
+要显示用户头像，请确保你在 [initWithUuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/initWithUUID:roomToken:uid:userPayload:) 时，在`userPayload` 对象中传入了头像的键值对。
+
+- `YES`：显示。
+- `NO`：（默认）不显示。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/fonts"></a>
+
+### `fonts`
+
+自定义字体名称和地址。
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSDictionary *fonts
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/preloadDynamicPPT"></a>
+
+### `preloadDynamicPPT`
+
+是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL preloadDynamicPPT
+
+</ApiSignature>
+
+#### Discussion
+
+**Note：**
+
+声网不推荐设置 setPreloadDynamicPPT(true)，这样会使 PPT 显示缓慢。
+
+- `YES`：开启。
+- `NO`: （默认）未开启。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/enableInterrupterAPI"></a>
+
+### `enableInterrupterAPI`
+
+是否开启图片拦截和替换功能。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableInterrupterAPI
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：关闭。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/log"></a>
+
+### `log`
+
+是否开启调试日志回调。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL log
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：（默认）关闭。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/loggerOptions"></a>
+
+### `loggerOptions`
+
+日志等级。
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSDictionary *loggerOptions
+
+</ApiSignature>
+
+#### Discussion
+
+日志级别顺序依次为 `error`、`warn`、`info`、和 `debug`。选择一个级别，你就可以看到在该级别之前所有级别的日志信息。
+
+例如，你选择 `info` 级别，就可以看到在 `error`、`warn`、`info` 级别上的所有日志信息。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/)"></a>
+
+### `)`
+
+该属性已废弃。请使用 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params) (**Deprecated:**该属性已废弃。请使用 WhiteSlideAppParams)
+
+<ApiSignature>
+
+@property (nonatomic, strong) WhitePptParams *__deprecated_msg ("use WhiteSlideAppParams instead")
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/whiteSlideAppParams"></a>
+
+### `whiteSlideAppParams`
+
+PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params)。
+
+<ApiSignature>
+
+@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/enableSlideInterrupterAPI"></a>
+
+### `enableSlideInterrupterAPI`
+
+是否开启 PPT 资源 URL 拦截替换功能。
+开启之后，你需要通过 `WhiteSDK.setSlideDelegate` 设置多窗口 PPT 回调事件，并在 `slideUrlInterrupter` 回调中添加 URL 的替换处理逻辑。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableSlideInterrupterAPI
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：（默认）关闭。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/disableNewPencilStroke"></a>
+
+### `disableNewPencilStroke`
+
+是否关闭新铅笔工具（`AppliancePencil`）的笔锋效果。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableNewPencilStroke
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：关闭笔锋效果。
+- `NO`：（默认）开启笔锋效果。
+
+该属性仅在 `disableNewPencil` 设为 `NO` 时生效。
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/enableAppliancePlugin"></a>
+
+### `enableAppliancePlugin`
+
+启用。
+启用后，原基础教具将被替换。请确保同一房间的所有终端使用相同配置。
+默认为 NO。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableAppliancePlugin
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/apiHosts"></a>
+
+### `apiHosts`
+
+配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 SDK 自带配置。
+@example
+[api.example.com]
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSArray&lt;NSString*&gt; *apiHosts
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`
+
+<a id="//api/name/useWebKeyboardInjection"></a>
+
+### `useWebKeyboardInjection`
+
+是否允许 WKWebview 自动获得输入焦点：
+- `YES`：（默认）允许。
+- `NO`：不允许。
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL useWebKeyboardInjection
+
+</ApiSignature>
+
+#### Discussion
+
+:::note
+**Note:** 由于在一个 App 中，同一时间只能有一个控件获得焦点，该属性可能会影响 App 中其他 WKWebView 实例，如果不需要自动聚焦功能可以选择关闭。
+:::
+
+#### Declared In
+
+`WhiteSdkConfiguration.h`

@@ -43,7 +43,7 @@ description: "查看声网解决方案的非场景化 API 方案，了解关键�
    加入歌房前，调用 `create [2/2]` 方法创建并初始化 `RtcEngine` 实例，并将实例的音频场景设置为合唱（`CHORUS`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `BROADCASTER`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/api-reference/online-ktv)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `IMediaPlayer` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelEx` 方法，实现合唱。
 6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
@@ -90,7 +90,7 @@ description: "查看声网解决方案的非场景化 API 方案，了解关键�
 - [Python](https://www.python.org/) 3.X。
 - 第三方云服务[命令行工具](https://leancloud.cn/docs/leanengine_faq.html#hash-864044521)。
 - 有效的声网[开发者账号](https://sso2.agora.io/cn/v4/signup/with-sms)。
-- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考[使用 RTM Token 鉴权](https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考)。
+- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考使用 RTM Token 鉴权。
 
 :::info[信息]
 在线 K 歌房仅使用 RTM Token 进行鉴权，不会产生云信令服务费用。
@@ -100,7 +100,7 @@ description: "查看声网解决方案的非场景化 API 方案，了解关键�
 
 ## 项目配置
 
-根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
+根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/api-reference/online-ktv)。
 
 | 产品 | SDK 下载 | 集成文档 |
 | --- | --- | --- |
@@ -266,7 +266,7 @@ int ret = engine.joinChannelEx(null, rtcConnection, mediaOptions, iRtcEngineEven
     mcc.searchMusic("hello",0,10);
     ```
 
-   你还可以通过 [searchMusic[2/2]](/api-ref/rtc/android/API/toc_drm#searchMusic%20[2/2]) 和 [getMusicCollectionByMusicChartId[2/2]](/api-ref/rtc/android/API/toc_drm#getMusicCollectionByMusicChartId%20[2/2]) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
+   你还可以通过 [searchMusic[2/2]](/zh-CN/api-reference/rtc/android/play/drm#searchmusic-22) 和 [getMusicCollectionByMusicChartId[2/2]](/zh-CN/api-reference/rtc/android/play/drm#getmusiccollectionbymusicchartid-22) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
 
    筛选支持打分的音乐资源：
 
@@ -295,7 +295,7 @@ int ret = engine.joinChannelEx(null, rtcConnection, mediaOptions, iRtcEngineEven
    mcc.isPreload(songCode);
    ```
 
-   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/api-ref/rtc/android/API/toc_drm#getInternalSongCode) 来获取该片段的资源编号（`internalSongCode`）。
+   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/zh-CN/api-reference/rtc/android/play/drm#getinternalsongcode) 来获取该片段的资源编号（`internalSongCode`）。
 
    ```java
    // 传入音乐资源的编号和 jsonOption 的值来获取副歌片段的资源编号，详细参数解释请参考该方法的 API 文档。
@@ -346,7 +346,7 @@ int ret = engine.joinChannelEx(null, rtcConnection, mediaOptions, iRtcEngineEven
       }
       ```
 
-你可以参考[版权音乐 API 文档](/api-ref/rtc/android/API/toc_drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[媒体播放器 API 文档](/api-ref/rtc/android/API/toc_mediaplayer_initialize)。
+你可以参考[版权音乐 API 文档](/zh-CN/api-reference/rtc/android/play/drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[媒体播放器 API 文档](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-initialize)。
 
 ### 歌曲/歌词同步
 
@@ -440,9 +440,9 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 
 ### 相关文档
 
-- [声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [声网内容中心](/zh-CN/api-reference/online-ktv)
 - [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
-- [实时互动 API 参考](/api-ref/rtc/android/API/rtc_api_overview)
+- [实时互动 API 参考](/zh-CN/api-reference/rtc/android/rtc-api-overview)
 
 </PlatformStructured>
 
@@ -487,7 +487,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
    加入歌房前，调用 `sharedEngineWithConfig` 方法创建并初始化 `AgoraRtcEngineKit` 实例，并将实例的音频场景设置为合唱（`AgoraAudioScenarioChorus`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `AgoraClientRoleBroadcaster`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/api-reference/online-ktv)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `AgoraRtcMediaPlayerProtocol` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelExByToken` 方法，实现合唱。
 6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
@@ -533,7 +533,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 - [Python](https://www.python.org/) 3.X。
 - 第三方云服务[命令行工具](https://leancloud.cn/docs/leanengine_cli.html)。
 - 有效的声网[开发者账号](https://sso2.agora.io/cn/v4/signup/with-sms)。
-- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考[使用 RTM Token 鉴权](https://docs.agora.io/cn/Real-time-Messaging/token_upgrade_rtm#参考)。
+- 有效的声网项目，获取项目的 App ID 以及一个 RTM Token。详情请参考使用 RTM Token 鉴权。
 
 :::info[信息]
 在线 K 歌房仅使用 RTM Token 进行鉴权，不会产生云信令服务费用。
@@ -543,7 +543,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 
 ## 项目配置
 
-根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
+根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/api-reference/online-ktv)。
 | 产品 | SDK 下载 | 集成文档 |
 | --- | --- | --- |
 | 声网实时互动 SDK v4.x | [声网实时互动 SDK v4.x](/zh-CN/realtime-media/rtc/reference/downloads) | [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start) |
@@ -745,7 +745,7 @@ amcc.getMusicCollection(musicChartId: musicChartId, page: page, pageSize: pageSi
 amcc.searchMusic(with:keyword, page:page, pageSize:pageSize, jsonOption:jsonOption)
 ```
 
-   你还可以通过 [searchMusicWithKeyWord](/api-ref/rtc/ios/API/toc_drm#searchMusicWithKeyWord) 和 [getMusicCollectionWithMusicChartId](/api-ref/rtc/ios/API/toc_drm#getMusicCollectionWithMusicChartId) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
+   你还可以通过 [searchMusicWithKeyWord](/zh-CN/api-reference/rtc/ios/play/drm) 和 [getMusicCollectionWithMusicChartId](/zh-CN/api-reference/rtc/ios/play/drm) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
 
    筛选支持打分的音乐资源：
 
@@ -791,7 +791,7 @@ amcc.preload(songCode: songCode, jsonOption: nil)
 amcc.isPreloaded(songCode: songCode)
 ```
 
-   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/api-ref/rtc/ios/API/toc_drm#getInternalSongCode) 来获取该片段的资源编号（`internalSongCode`）。
+   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getinternalsongcode) 来获取该片段的资源编号（`internalSongCode`）。
 
 ```objc tab="Objective-C" tabGroup="internal"
 NSInteger newSongCode = [self.mcc getInternalSongCode:songCode jsonOption:@"{\"format\":{\"highpart\":0}}"];
@@ -847,7 +847,7 @@ mPlayer.openMedia(withSongCode: songCode, startPos: startPos)
    }
    ```
 
-你可以参考[版权音乐 API 文档](/api-ref/rtc/ios/API/toc_drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[内置媒体播放器 API 文档](/api-ref/rtc/ios/API/toc_mediaplayer_initialize)。
+你可以参考[版权音乐 API 文档](/zh-CN/api-reference/rtc/ios/play/drm)了解更多详细信息，音乐播放器的参数调节、推流设置、事件回调等请参考[内置媒体播放器 API 文档](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize)。
 
 ### 歌曲/歌词同步
 
@@ -936,8 +936,8 @@ func rtcEngine(_: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, stre
 
 ### 相关文档
 
-- [声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [声网内容中心](/zh-CN/api-reference/online-ktv)
 - [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
-- [实时互动 API 参考](/api-ref/rtc/ios/API/rtc_api_overview)
+- [实时互动 API 参考](/zh-CN/api-reference/rtc/ios/rtc-api-overview)
 
 </PlatformStructured>

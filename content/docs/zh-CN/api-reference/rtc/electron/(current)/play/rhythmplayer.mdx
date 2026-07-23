@@ -1,10 +1,19 @@
 ---
-title: "虚拟节拍器"
-description: "虚拟节拍器 API reference."
+title: 虚拟节拍器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_rhythmplayer
+  sourcePath: html-docs/rtc/Electron/API/toc_rhythmplayer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_rhythmplayer"></a>
 
 <a id="api_irtcengine_configrhythmplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## configRhythmPlayer
 
@@ -12,19 +21,21 @@ description: "虚拟节拍器 API reference."
 
 <a id="api_irtcengine_configrhythmplayer__prototype"></a>
 
-```typescript
+```text
 abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 ```
 
 <a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
-- 调用 startRhythmPlayer 后，你可以调用该方法重新配置虚拟节拍器。
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+- 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
 
 <a id="api_irtcengine_configrhythmplayer__timing"></a>
 
@@ -42,14 +53,22 @@ abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startrhythmplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## startRhythmPlayer
 
@@ -57,7 +76,7 @@ abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 
 <a id="api_irtcengine_startrhythmplayer__prototype"></a>
 
-```typescript
+```text
 abstract startRhythmPlayer(
     sound1: string,
     sound2: string,
@@ -67,12 +86,14 @@ abstract startRhythmPlayer(
 
 <a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-1"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
 
 <a id="api_irtcengine_startrhythmplayer__scenario"></a>
 
@@ -96,22 +117,34 @@ abstract startRhythmPlayer(
 
 ### 参数
 
-#### `sound1`
+<ParameterList>
+<a id="sound1"></a>
+<Parameter name="sound1">
 
 强拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `sound2`
+</Parameter>
+<a id="sound2"></a>
+<Parameter name="sound2">
 
 弱拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
 
-#### `config`
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoprhythmplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## stopRhythmPlayer
 
@@ -119,22 +152,27 @@ abstract startRhythmPlayer(
 
 <a id="api_irtcengine_stoprhythmplayer__prototype"></a>
 
-```typescript
+```text
 abstract stopRhythmPlayer(): number;
 ```
 
 <a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-2"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onRhythmPlayerStateChanged
 
@@ -142,7 +180,7 @@ abstract stopRhythmPlayer(): number;
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
 
-```typescript
+```text
 onRhythmPlayerStateChanged?(
     state: RhythmPlayerStateType,
     reason: RhythmPlayerReason
@@ -151,9 +189,11 @@ onRhythmPlayerStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-3"></a>
 
+:::error[废弃]
 自 v4.6.2 版本废弃。
+:::
 
 虚拟节拍器状态发生改变时，SDK 会触发该回调报告当前的虚拟节拍器状态。在虚拟节拍器出现故障时，该回调可以帮助你了解当前虚拟节拍的状态以及出现故障的原因，方便你排查问题。
 
@@ -161,13 +201,21 @@ onRhythmPlayerStateChanged?(
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的虚拟节拍器状态，详见 [RhythmPlayerStateType](/zh-CN/api-reference/rtc/electron/enum-rhythmplayerstatetype)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 虚拟节拍器发生错误的错误码和错误信息，详见 [RhythmPlayerReason](/zh-CN/api-reference/rtc/electron/enum-rhythmplayerreason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_irtcengine_getmediaplayersourceobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## GetMediaPlayerSourceObserver
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_irtcengine_getmediaplayersourceobserver__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintPure, Category = "Agora|IRtcEngine")
 UAgoraBPuIMediaPlayerSourceObserver* GetMediaPlayerSourceObserver();
 ```
@@ -41,13 +50,15 @@ UAgoraBPuIMediaPlayerSourceObserver* GetMediaPlayerSourceObserver();
 
 <a id="api_imediaplayer_addblueprintcallbackexecutor"></a>
 
+<a id="ariaid-title3"></a>
+
 ## AddBlueprintCallbackExecutor
 
 添加一个蓝图回调执行器。
 
 <a id="api_imediaplayer_addblueprintcallbackexecutor__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|Event")
 void AddBlueprintCallbackExecutor(UAgoraBPuIMediaPlayerSourceObserverCBExecutor* Executor);
 ```
@@ -72,11 +83,18 @@ void AddBlueprintCallbackExecutor(UAgoraBPuIMediaPlayerSourceObserverCBExecutor*
 
 ### 参数
 
-#### `Executor`
+<ParameterList>
+<a id="executor"></a>
+<Parameter name="Executor">
 
 指向 `UAgoraBPuIMediaPlayerSourceObserverCBExecutor` 类型的指针，用于执行 IMediaPlayerSourceObserver 接口类下的回调逻辑。
 
+</Parameter>
+</ParameterList>
+
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication"></a>
+
+<a id="ariaid-title4"></a>
 
 ## OnAudioVolumeIndication
 
@@ -84,12 +102,14 @@ void AddBlueprintCallbackExecutor(UAgoraBPuIMediaPlayerSourceObserverCBExecutor*
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 void OnAudioVolumeIndication(int volume);
 ```
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__detailed_desc"></a>
+
+### 详情
 
 SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
 
@@ -97,14 +117,22 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的当前音量，取值范围为 [0,255]。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title5"></a>
 
 ## OnMetaData
 
@@ -112,12 +140,14 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnMetaData(const FString& Data);
 ```
 
 <a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+### 详情
 
 解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
 
@@ -125,18 +155,28 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `data`
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 具体数据，用户自定义格式的数据。
 
-#### `length`
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度，单位为 byte。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnPlayBufferUpdated
 
@@ -144,12 +184,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayBufferUpdated(int64 playCachedBuffer);
 ```
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
+
+### 详情
 
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
@@ -160,14 +202,22 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `playCachedBuffer`
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title7"></a>
 
 ## OnPlayerEvent
 
@@ -175,12 +225,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerEvent(EMEDIA_PLAYER_EVENT eventCode, int64 elapsedTime, const FString& message);
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+### 详情
 
 - 调用 [Seek](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
@@ -188,22 +240,34 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `eventCode`
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [EMEDIA_PLAYER_EVENT](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 发生事件的时间 (毫秒)。
 
-#### `message`
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的信息。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title8"></a>
 
 ## OnPlayerInfoUpdated
 
@@ -211,12 +275,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerInfoUpdated(const FPlayerUpdatedInfo& info);
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
+
+### 详情
 
 当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
 
@@ -224,14 +290,22 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [FPlayerUpdatedInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-playerupdatedinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title9"></a>
 
 ## OnPlayerSourceStateChanged
 
@@ -239,12 +313,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerSourceStateChanged(EMEDIA_PLAYER_STATE state, FENUMWRAP_MEDIA_PLAYER_REASON ec);
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+### 详情
 
 当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
 
@@ -252,18 +328,28 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的播放状态，详见 [EMEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放器状态改变的原因，详见 [FENUMWRAP_MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerreason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title10"></a>
 
 ## OnPlayerSrcInfoChanged
 
@@ -271,7 +357,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerSrcInfoChanged(const FSrcInfo& from, const FSrcInfo& to);
 ```
@@ -280,18 +366,28 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `from`
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [FSrcInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-srcinfo)。
 
-#### `to`
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [FSrcInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-srcinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## OnPositionChanged
 
@@ -299,12 +395,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPositionChanged(int64 position_ms, int64 timestampMs);
 ```
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+### 详情
 
 播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
 
@@ -312,18 +410,28 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `positionMs`
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 当前播放进度，单位为 ms。
 
-#### `timestampMs`
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title12"></a>
 
 ## OnPreloadEvent
 
@@ -331,7 +439,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPreloadEvent(const FString& src, EPLAYER_PRELOAD_EVENT event);
 ```
@@ -340,13 +448,21 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的路径。
 
-#### `event`
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [EPLAYER_PRELOAD_EVENT](/zh-CN/api-reference/rtc/unreal-blueprint/enum-playerpreloadevent)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)

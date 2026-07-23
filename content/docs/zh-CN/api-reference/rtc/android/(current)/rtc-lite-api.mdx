@@ -1,9 +1,17 @@
 ---
-title: "Lite SDK API 列表"
-description: "本页列出 Lite SDK 支持的 API 列表。"
+title: Lite SDK API 列表
+description: 本页列出 Lite SDK 支持的 API 列表。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/rtc_lite_api
+  sourcePath: html-docs/rtc/Android/API/rtc_lite_api.html
+  generator: oxygen
+  warnings: []
 ---
-:::warning[注意]
-如果在本页中无法查询到你要使用的 API，则代表 Lite SDK 不支持该 API，调用该 API 时会返回错误码 -2。
+
+:::caution
+注意： 如果在本页中无法查询到你要使用的 API，则代表 Lite SDK 不支持该 API，调用该 API 时会返回错误码 -2。
 :::
 
 ## RtcEngine
@@ -87,11 +95,17 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/android/device-management/audio-route#api_irtcengine_isspeakerphoneenabled)
 - [isTextureEncodeSupported](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_istextureencodesupported)
 - [joinChannel [1/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel1)
-- 在 [joinChannel [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+  [joinChannel [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [joinChannelWithUserAccount [1/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannelwithuseraccount1)
-- 在 [joinChannelWithUserAccount [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannelwithuseraccount2) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+  [joinChannelWithUserAccount [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannelwithuseraccount2) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [leaveChannel [1/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_leavechannel)
@@ -124,7 +138,13 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [queryCodecCapability](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycodeccapability)
 - [queryDeviceScore](/zh-CN/api-reference/rtc/android/network#api_irtcengine_querydevicescore)
 - [rate](/zh-CN/api-reference/rtc/android/network#api_irtcengine_rate)
-- 在 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 中， config 中的 encodingType 仅支持 OPUS 编码格式。
+- 在
+
+  [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 中，
+
+  config 中的
+
+  encodingType 仅支持 OPUS 编码格式。
 - [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver)
 - [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver)
 - [registerExtension](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_registerextension)
@@ -252,7 +272,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [unloadEffect](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_unloadeffect)
 - [unRegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver)
 - [unregisterMediaMetadataObserver](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_irtcengine_unregistermediametadataobserver)
-- 在 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+  [updateChannelMediaOptions](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration)
@@ -298,7 +321,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [startMediaRenderingTracingEx](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengineex_startmediarenderingtracingex)
 - [startOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex)
 - [stopChannelMediaRelayEx](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex)
-- 在 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_updatechannelmediaoptionsex) 中，以下跟屏幕采集相关的参数设置无效：
+- 在
+
+  [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_updatechannelmediaoptionsex) 中，以下跟屏幕采集相关的参数设置无效：
+
   - publishScreenCaptureVideo
   - publishScreenCaptureAudio
 - [setRemoteVideoSubscriptionOptionsEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex)
@@ -389,6 +415,10 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 
 ## IMediaPlayer
 
+:::caution
+注意： 媒体播放器中的 API 仅支持处理音频媒体文件、不支持处理视频媒体文件。
+:::
+
 - [adjustPlayoutVolume](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [adjustPublishSignalVolume](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [getDuration](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
@@ -434,6 +464,14 @@ description: "本页列出 Lite SDK 支持的 API 列表。"
 - [onEncodedVideoFrameReceived](/zh-CN/api-reference/rtc/android/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
 
 ## IVideoFrameObserver
+
+:::caution
+注意： 通过
+
+                [onCaptureVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)、[onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 和 [onRenderVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调返回的视频数据中，
+
+                alphabuffer 为 `NULL`。
+:::
 
 - [getMirrorApplied](/zh-CN/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getmirrorapplied)
 - [getObservedFramePosition](/zh-CN/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getobservedframeposition)

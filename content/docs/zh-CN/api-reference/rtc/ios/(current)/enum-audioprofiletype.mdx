@@ -1,38 +1,63 @@
 ---
-title: "AgoraAudioProfile"
-description: "音频配置文件。"
+title: AgoraAudioProfile
+description: 音频配置文件。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_audioprofiletype
+  sourcePath: html-docs/rtc/iOS/API/enum_audioprofiletype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audioprofiletype__parameters"></a>
 
 ## 枚举值
 
-### `AgoraAudioProfileDefault`
+<ParameterList>
+<a id="agoraaudioprofiledefault"></a>
+<Parameter name="AgoraAudioProfileDefault">
 
 （0）：默认音频配置文件。
 
 - 互动直播场景：采样率为 48 kHz，音乐编码，单声道，码率最高为 64 Kbps。
 - 通信场景：采样率为 32 kHz，音频编码，单声道，码率最高为 18 Kbps。
 
-### `AgoraAudioProfileSpeechStandard`
+</Parameter>
+<a id="agoraaudioprofilespeechstandard"></a>
+<Parameter name="AgoraAudioProfileSpeechStandard">
 
 （1）：采样率为 32 kHz，音频编码，单声道，码率最高为 18 Kbps。
 
-### `AgoraAudioProfileMusicStandard`
+</Parameter>
+<a id="agoraaudioprofilemusicstandard"></a>
+<Parameter name="AgoraAudioProfileMusicStandard">
 
 （2）：采样率为 48 kHz，音乐编码，单声道，码率最高为 64 Kbps。
 
-### `AgoraAudioProfileMusicStandardStereo`
+</Parameter>
+<a id="agoraaudioprofilemusicstandardstereo"></a>
+<Parameter name="AgoraAudioProfileMusicStandardStereo">
 
 （3）：采样率为 48 kHz，音乐编码，立体声，码率最高为 80 Kbps。在 iOS 上，如需启用立体声音频，还需调用 [setAdvancedAudioOptions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions)，并在 [AgoraAdvancedAudioOptions](/zh-CN/api-reference/rtc/ios/class-advancedaudiooptions) 中将 `audioProcessingChannels` 设置为 `AgoraAudioProcessChannelstereo`。
 
-### `AgoraAudioProfileMusicHighQuality`
+</Parameter>
+<a id="agoraaudioprofilemusichighquality"></a>
+<Parameter name="AgoraAudioProfileMusicHighQuality">
 
 （4）：采样率为 48 kHz，音乐编码，单声道，码率最高为 96 Kbps。
 
-### `AgoraAudioProfileMusicHighQualityStereo`
+</Parameter>
+<a id="agoraaudioprofilemusichighqualitystereo"></a>
+<Parameter name="AgoraAudioProfileMusicHighQualityStereo">
 
 （5）：采样率为 48 kHz，音乐编码，立体声，码率最高为 128 Kbps。在 iOS 上，如需启用立体声音频，还需调用 [setAdvancedAudioOptions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions)，并在 [AgoraAdvancedAudioOptions](/zh-CN/api-reference/rtc/ios/class-advancedaudiooptions) 中将 `audioProcessingChannels` 设置为 `AgoraAudioProcessChannelstereo`。
 
-### `AgoraAudioProfileIot`
+</Parameter>
+<a id="agoraaudioprofileiot"></a>
+<Parameter name="AgoraAudioProfileIot">
 
 （6）：采样率为 16 kHz，音频编码，单声道，并启用回声消除（AEC）。
+
+</Parameter>
+</ParameterList>

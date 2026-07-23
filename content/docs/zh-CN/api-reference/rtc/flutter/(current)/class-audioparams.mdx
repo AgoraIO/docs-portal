@@ -1,10 +1,18 @@
 ---
-title: "AudioParams"
-description: "音频数据格式。"
+title: AudioParams
+description: 音频数据格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_audioparams
+  sourcePath: html-docs/rtc/Flutter/API/class_audioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audioparams__prototype"></a>
 
-```dart
+```text
 class AudioParams {
   const AudioParams(
       {this.sampleRate, this.channels, this.mode, this.samplesPerCall});
@@ -30,9 +38,11 @@ class AudioParams {
 
 <a id="class_audioparams__detailed_desc"></a>
 
-:::info[注]
-- SDK 会通过 AudioParams 中的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame、 onPlaybackAudioFrame、 onMixedAudioFrame 和 onEarMonitoringAudioFrame 回调。
-- 采样间隔 = samplesPerCall /(sampleRate × channel)。
+:::note
+注：
+
+- SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/flutter/class-audioparams) 中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔，并根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、[onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、[onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+- 采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。
 - 请确保采样间隔不得小于 0.01 (s)。
 :::
 
@@ -40,7 +50,9 @@ class AudioParams {
 
 ## 属性
 
-### `sampleRate`
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 数据的采样率，单位为 Hz，取值如下：
 
@@ -50,17 +62,26 @@ class AudioParams {
 - 44100
 - 48000
 
-### `channels`
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 数据的声道数，取值如下：
 
 - 1：单声道（默认值）
 - 2：双声道
 
-### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 数据的使用模式。详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
 
-### `samplesPerCall`
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>

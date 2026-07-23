@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtcVideoCanvas"
-description: "用于设置视频画布的各项属性。"
+title: AgoraRtcVideoCanvas
+description: 用于设置视频画布的各项属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_videocanvas
+  sourcePath: html-docs/rtc/macOS/API/class_videocanvas.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videocanvas__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraRtcVideoCanvas : NSObject
 @property(assign, nonatomic) NSUInteger uid;
 @property(assign, nonatomic) NSUInteger subviewUid;
@@ -25,62 +33,88 @@ __attribute__((visibility("default"))) @interface AgoraRtcVideoCanvas : NSObject
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发布视频源的用户 ID。
 
-### `subviewUid`
+</Parameter>
+<a id="subviewuid"></a>
+<Parameter name="subviewUid">
 
 视频显示窗口的用户 ID。
 
-:::info[注]
-在一个 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/macos/class-videocanvas) 中，只能设置 `view` 或 `surfaceTexture` 其中之一。如果两者都设置，仅 `view` 的设置生效。
+:::note
+注： 在一个 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/macos/class-videocanvas) 中，只能设置 `view` 或 `surfaceTexture` 其中之一。如果两者都设置，仅 `view` 的设置生效。
 :::
 
-### `view`
+</Parameter>
+<a id="view"></a>
+<Parameter name="view">
 
 视频显示窗口。
 
-:::info[注]
-在一个 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/macos/class-videocanvas) 中，只能设置 `view` 或 `surfaceTexture` 其中之一。如果两者都设置，仅 `view` 的设置生效。
+:::note
+注： 在一个 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/macos/class-videocanvas) 中，只能设置 `view` 或 `surfaceTexture` 其中之一。如果两者都设置，仅 `view` 的设置生效。
 :::
 
-### `renderMode`
+</Parameter>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 视频的渲染模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/macos/enum-rendermodetype)。
 
-### `mirrorMode`
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/macos/enum-videomirrormodetype)。
 
-:::info[注]
+:::note
+注：
+
 - 本地视频视图的镜像模式：使用前置摄像头时，SDK 默认开启镜像模式；使用后置摄像头时，SDK 默认关闭镜像模式。
 - 远端用户默认关闭镜像模式。
 :::
 
-### `setupMode`
+</Parameter>
+<a id="setupmode"></a>
+<Parameter name="setupMode">
 
 视图的设置模式，详见 [AgoraVideoViewSetupMode](/zh-CN/api-reference/rtc/macos/enum-videoviewsetupmode)。
 
-### `sourceType`
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
 
-### `mediaPlayerId`
+</Parameter>
+<a id="mediaplayerid"></a>
+<Parameter name="mediaPlayerId">
 
 媒体播放器的 ID。可通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取设备 ID。
 
-### `cropArea`
+</Parameter>
+<a id="croparea"></a>
+<Parameter name="cropArea">
 
-（可选）视频帧的显示区域。 `width` 和 `height` 表示该区域的视频像素宽度和高度。默认值为 nil （即宽或高为 0），表示显示视频帧的实际分辨率。
+（可选）视频帧的显示区域。`width` 和 `height` 表示该区域的视频像素宽度和高度。默认值为 nil（即宽或高为 0），表示显示视频帧的实际分辨率。
 
-### `backgroundColor`
+</Parameter>
+<a id="backgroundcolor"></a>
+<Parameter name="backgroundColor">
 
 视频画布的背景颜色，使用 RGBA 格式。默认值为 0x00000000，表示黑色。
 
-### `enableAlphaMask`
+</Parameter>
+<a id="enablealphamask"></a>
+<Parameter name="enableAlphaMask">
 
-:::info[注]
+:::note
+注：
+
 - 接收端仅在发送端启用 Alpha 通道传输时才能渲染 Alpha 通道信息。
 - 启用 Alpha 通道传输，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::
@@ -92,6 +126,11 @@ __attribute__((visibility("default"))) @interface AgoraRtcVideoCanvas : NSObject
 
 Alpha 蒙版渲染可创建具有透明效果的图像，并从视频中提取人像。结合其他方法使用时，可实现画中画、人像水印等效果。
 
-### `position`
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 视频帧在视频链路中的观测位置，详见 [AgoraVideoModulePosition](/zh-CN/api-reference/rtc/macos/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

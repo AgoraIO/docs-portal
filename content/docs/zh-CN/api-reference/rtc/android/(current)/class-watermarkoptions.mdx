@@ -1,10 +1,18 @@
 ---
-title: "WatermarkOptions"
-description: "配置水印图像的相关参数。"
+title: WatermarkOptions
+description: 配置水印图像的相关参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_watermarkoptions
+  sourcePath: html-docs/rtc/Android/API/class_watermarkoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_watermarkoptions__prototype"></a>
 
-```java
+```text
 public class WatermarkOptions {
   public boolean visibleInPreview = true;
   public Rectangle positionInLandscapeMode = new Rectangle();
@@ -15,9 +23,9 @@ public class WatermarkOptions {
 
 <a id="class_watermarkoptions__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v4.6.0 版本新增。
+:::
 
 用于配置添加的水印图像。
 
@@ -25,21 +33,39 @@ public class WatermarkOptions {
 
 ## 属性
 
-### `visibleInPreview`
+<ParameterList>
+<a id="visibleinpreview"></a>
+<Parameter name="visibleInPreview">
 
 水印是否在本地预览视图中可见：
 
 - true：（默认）水印在本地预览视图中可见。
 - false：水印在本地预览视图中不可见。
 
-### `positionInLandscapeMode`
+</Parameter>
+<a id="positioninlandscapemode"></a>
+<Parameter name="positionInLandscapeMode">
 
 横屏模式下显示水印图像的区域，详见 [Rectangle](/zh-CN/api-reference/rtc/android/class-rectangle)。
 
-### `positionInPortraitMode`
+</Parameter>
+<a id="positioninportraitmode"></a>
+<Parameter name="positionInPortraitMode">
 
 竖屏模式下显示水印图像的区域，详见 [Rectangle](/zh-CN/api-reference/rtc/android/class-rectangle)。
 
-### `zOrder`
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
 
 水印图像的图层顺序，默认值为 0。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [getPositionInLandscapeMode](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkoptions_getpositioninlandscapemode)
+- [getPositionInPortraitMode](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkoptions_getpositioninportraitmode)
+- [getzOrder](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkoptions_getzorder)
+- [isVisibleInPreview](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkoptions_isvisibleinpreview)

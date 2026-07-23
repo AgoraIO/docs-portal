@@ -1,0 +1,554 @@
+---
+title: Class GroupStore
+description: GroupStore 类提供分组讨论功能相关的能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_group_index_roupStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_edu_core_src_stores_domain_common_group_index_roupStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Properties
+
+<a id="groupDetails"></a>
+
+### groupDetails
+
+groupDetails: Map&lt;string,[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)&gt;
+
+分组详情
+
+<a id="state"></a>
+
+### state
+
+state: [GroupState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+
+分组状态
+
+## Accessors
+
+<a id="currentSubRoom"></a>
+
+### currentSubRoom
+
+<ApiSignature>
+
+get currentSubRoom(): undefined | string
+
+</ApiSignature>
+
+当前所在小组
+
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="groupUuidByUserUuid"></a>
+
+### groupUuidByUserUuid
+
+<ApiSignature>
+
+get groupUuidByUserUuid(): Map&lt;string, string&gt;
+
+</ApiSignature>
+
+用户所在组 ID 映射关系
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="userByUuid"></a>
+
+### userByUuid
+
+<ApiSignature>
+
+get userByUuid(): Map&lt;string, [GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
+
+</ApiSignature>
+
+返回 userUuid 组成的 map 数据
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-roup-user)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="acceptGroupInvite"></a>
+
+### acceptGroupInvite
+
+<ApiSignature>
+
+acceptGroupInvite(groupUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+接受加入小组的邀请
+
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
+
+组 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addGroups"></a>
+
+### addGroups
+
+<ApiSignature>
+
+addGroups(groupDetails: ([GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail) & \{ groupUuid?: string \})[], inProgress?: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
+
+新建小组
+
+<ParameterList title="Parameters">
+<Parameter name="groupDetails" required>
+
+<ParameterType>
+
+([GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail) & \{ groupUuid?: string \})[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="broadcastMessage"></a>
+
+### broadcastMessage
+
+<ApiSignature>
+
+broadcastMessage(messageText: string): void
+
+</ApiSignature>
+
+发送全体消息
+
+<ParameterList title="Parameters">
+<Parameter name="messageText" type="string" required>
+
+消息
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="joinSubRoom"></a>
+
+### joinSubRoom
+
+<ApiSignature>
+
+joinSubRoom(groupUuid: string): void
+
+</ApiSignature>
+
+进入子房间
+
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
+
+组 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="leaveSubRoom"></a>
+
+### leaveSubRoom
+
+<ApiSignature>
+
+leaveSubRoom(): void
+
+</ApiSignature>
+
+离开小组
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="moveIntoSubRoom"></a>
+
+### moveIntoSubRoom
+
+<ApiSignature>
+
+moveIntoSubRoom(fromGroupUuid: string, toGroupUuid: string): void
+
+</ApiSignature>
+
+用户主动从某房间移动至另一房间
+
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
+
+原组 ID
+
+</Parameter>
+<Parameter name="toGroupUuid" type="string" required>
+
+目标组 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="moveUsersToGroup"></a>
+
+### moveUsersToGroup
+
+<ApiSignature>
+
+moveUsersToGroup(fromGroupUuid: string, toGroupUuid: string, users: string[]): Promise&lt;void&gt;
+
+</ApiSignature>
+
+将用户从某小组移入另一小组
+
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
+
+原组 ID
+
+</Parameter>
+<Parameter name="toGroupUuid" type="string" required>
+
+目标组 ID
+
+</Parameter>
+<Parameter name="users" type="string[]" required>
+
+用户 ID 列表
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="rejectGroupInvite"></a>
+
+### rejectGroupInvite
+
+<ApiSignature>
+
+rejectGroupInvite(groupUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+拒绝加入小组的邀请
+
+<ParameterList title="Parameters">
+<Parameter name="groupUuid" type="string" required>
+
+组 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeGroupUsers"></a>
+
+### removeGroupUsers
+
+<ApiSignature>
+
+removeGroupUsers(fromGroupUuid: string, users: string[]): Promise&lt;void&gt;
+
+</ApiSignature>
+
+将用户从小组中移除
+
+<ParameterList title="Parameters">
+<Parameter name="fromGroupUuid" type="string" required>
+
+组 ID
+
+</Parameter>
+<Parameter name="users" type="string[]" required>
+
+用户 ID 列表
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeGroups"></a>
+
+### removeGroups
+
+<ApiSignature>
+
+removeGroups(groups: string[]): Promise&lt;void&gt;
+
+</ApiSignature>
+
+移除小组
+
+<ParameterList title="Parameters">
+<Parameter name="groups" type="string[]" required>
+
+小组 ID 列表
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startGroup"></a>
+
+### startGroup
+
+<ApiSignature>
+
+startGroup(groupDetails: [GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[], syncBoardScenes?: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
+
+开启分组讨论
+
+<ParameterList title="Parameters">
+<Parameter name="groupDetails" required>
+
+<ParameterType>
+
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+</ParameterType>
+
+分组配置数组
+
+</Parameter>
+<Parameter name="syncBoardScenes" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopGroup"></a>
+
+### stopGroup
+
+<ApiSignature>
+
+stopGroup(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+结束分组讨论
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateGroupInfo"></a>
+
+### updateGroupInfo
+
+<ApiSignature>
+
+updateGroupInfo(groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]): Promise&lt;void&gt;
+
+</ApiSignature>
+
+更新分组配置
+
+<ParameterList title="Parameters">
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+分组配置数组
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateGroupUsers"></a>
+
+### updateGroupUsers
+
+<ApiSignature>
+
+updateGroupUsers(patches: [PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[], sendInvitation?: boolean): Promise&lt;void&gt;
+
+</ApiSignature>
+
+更新小组成员列表
+
+<ParameterList title="Parameters">
+<Parameter name="patches" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+更新配置
+
+</Parameter>
+<Parameter name="sendInvitation" type="boolean" optional>
+
+是否发送邀请
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

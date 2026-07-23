@@ -21,7 +21,7 @@ type AgoraServiceConfig struct {
 }
 ```
 
-<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`Initialize`](#initialize) 方法时设置。</span>
+<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`Initialize`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go) 方法时设置。</span>
 
 | 参数 | 描述 |
 | --- | --- |
@@ -29,9 +29,9 @@ type AgoraServiceConfig struct {
 | `EnableAudioDevice` | <Slot name="apidatatype-go-html-0-2-1" /> |
 | `EnableVideo` | <Slot name="apidatatype-go-html-0-3-1" /> |
 | `AppId` | 你的声网项目的 App ID。如果你的声网项目开启了 Token 鉴权，你也可以将此参数赋值为 RTC Token。详见[获取 App ID](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service#get-app-id)。 |
-| `AreaCode` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](#areacode)。 |
-| `ChannelProfile` | 频道使用场景。详见 [`ChannelProfile`](#channelprofile)。 |
-| `AudioScenario` | 音频编码属性。详见 [`AudioScenario`](#audioscenario)。 |
+| `AreaCode` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#areacode)。 |
+| `ChannelProfile` | 频道使用场景。详见 [`ChannelProfile`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#channelprofile)。 |
+| `AudioScenario` | 音频编码属性。详见 [`AudioScenario`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audioscenario)。 |
 | `UseStringUid` | <Slot name="apidatatype-go-html-0-8-1" /> |
 | `LogPath` | 日志文件路径。 |
 | `LogSize` | 日志文件大小（字节）。 |
@@ -135,7 +135,7 @@ type AudioFrame struct {
 
 | 参数 | 描述 |
 |------|------|
-| `Type` | 音频帧类型。详见 [`AudioFrameType`](#audioframetype)。 |
+| `Type` | 音频帧类型。详见 [`AudioFrameType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audioframetype)。 |
 | `SamplesPerChannel` | 对于每个声道，10 毫秒内采集的音频样本数。 |
 | `BytesPerSample` | 每个样本的字节数。 |
 | `Channels` | 每个样本的声道数。 |
@@ -163,7 +163,7 @@ type EncodedAudioFrameInfo struct {
 | 参数 | 描述 |
 | --- | --- |
 | `Speech` | <Slot name="apidatatype-go-html-2-1-1" /> |
-| `Codec` | 音频编码类型。详见 [`AudioCodecType`](#audiocodectype)。 |
+| `Codec` | 音频编码类型。详见 [`AudioCodecType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audiocodectype)。 |
 | `SampleRateHz` | 音频帧采样率（Hz）。 |
 | `SamplesPerChannel` | 每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。 |
 | `SendEvenIfEmpty` | <Slot name="apidatatype-go-html-2-5-1" /> |
@@ -210,12 +210,12 @@ type EncodedVideoFrameInfo struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videocodectype)。 |
 | `Width` | 视频帧宽度（像素）。 |
 | `Height` | 视频帧高度（像素）。 |
 | `FramesPerSecond` | 每秒的视频帧数量。用于计算编码视频帧的时间戳。如果设为 0，SDK 会使用真实的时间戳。 |
-| `FrameType` | 已编码视频帧类型。详见 [`VideoFrameType`](#videoframetype)。 |
-| `Rotation` | 已编码视频帧旋转信息。详见 [`VideoOrientation`](#videoorientation)。 |
+| `FrameType` | 已编码视频帧类型。详见 [`VideoFrameType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoframetype)。 |
+| `Rotation` | 已编码视频帧旋转信息。详见 [`VideoOrientation`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoorientation)。 |
 | `TrackID` | 视频帧的轨道 ID。 |
 | `CaptureTimeMs` | 采集外部编码视频帧的 Unix 时间戳（毫秒）。 |
 | `DecodeTimeMs` | 将外部编码视频帧进行解码的时间戳（毫秒）。 |
@@ -297,8 +297,8 @@ type ExternalVideoFrame struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `Type` | 视频数据类型。详见 [`VideoBufferType`](#videobuffertype)。 |
-| `Format` | 像素格式。详见 [`VideoPixelFormat`](#videopixelformat)。 |
+| `Type` | 视频数据类型。详见 [`VideoBufferType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videobuffertype)。 |
+| `Format` | 像素格式。详见 [`VideoPixelFormat`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videopixelformat)。 |
 | `Buffer` | 视频缓冲区。 |
 | `Stride` | 传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。 |
 | `Height` | 传入视频帧的高度。 |
@@ -306,7 +306,7 @@ type ExternalVideoFrame struct {
 | `CropTop` | 原始数据相关字段。指定顶边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
 | `CropRight` | 原始数据相关字段。指定右边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
 | `CropBottom` | 原始数据相关字段。指定底边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
-| `Rotation` | 原始数据相关字段。指定是否对传入的视频做顺时针旋转操作，默认为 0。详见 [`VideoOrientation`](#videoorientation) |
+| `Rotation` | 原始数据相关字段。指定是否对传入的视频做顺时针旋转操作，默认为 0。详见 [`VideoOrientation`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoorientation) |
 | `Timestamp` | 传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。 |
 | `EGLContext` | <Slot name="apidatatype-go-html-5-12-1" /> |
 | `EGLType` | 该参数仅适用于 Texture 格式的视频数据。指该视频帧的 EGL 类型。 |
@@ -399,8 +399,8 @@ type RtcConnectionConfig struct {
 | `MaxSendBitrate` | 最大发送码率。 |
 | `MinPort` | 最小端口。 |
 | `MaxPort` | 最大端口。 |
-| `ClientRole` | 用户角色。详见 [`ClientRole`](#clientrole)。 |
-| `ChannelProfile` | 频道场景。详见 [`ChannelProfile`](#channelprofile)。 |
+| `ClientRole` | 用户角色。详见 [`ClientRole`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#clientrole)。 |
+| `ChannelProfile` | 频道场景。详见 [`ChannelProfile`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#channelprofile)。 |
 | `AudioRecvMediaPacket` | <Slot name="apidatatype-go-html-6-9-1" /> |
 | `VideoRecvMediaPacket` | <Slot name="apidatatype-go-html-6-10-1" /> |
 
@@ -466,7 +466,7 @@ type RtcConnectionInfo struct {
 | 参数 | 描述 |
 | --- | --- |
 | `ConnectionId` | RTC 连接的 ID。 |
-| `ChannelId` | RTC 频道 ID。 如果你没有调用 [`Connect`](#connect) 方法，该参数返回 `nil`。 |
+| `ChannelId` | RTC 频道 ID。 如果你没有调用 [`Connect`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go) 方法，该参数返回 `nil`。 |
 | `State` | <Slot name="apidatatype-go-html-7-3-1" /> |
 | `LocalUserId` | 本地用户 ID。 |
 
@@ -497,8 +497,8 @@ type VideoEncodedImageSenderOptions struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `CcMode` | 拥塞控制模式。详见 [`VideoSendCcState`](#videosendccstate)。 |
-| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `CcMode` | 拥塞控制模式。详见 [`VideoSendCcState`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videosendccstate)。 |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videocodectype)。 |
 | `TargetBitrate` | 当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。 |
 
 <a id="videoencoderconfiguration"></a>
@@ -521,13 +521,13 @@ type VideoEncoderConfiguration struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videocodectype)。 |
 | `Width` | 视频编码的宽度（px）。 |
 | `Height` | 视频编码的高度（px）。 |
 | `Framerate` | 视频编码的帧率 (fps)，默认值为 15。 |
 | `Bitrate` | 视频编码码率，单位为 Kbps。 |
 | `MinBitrate` | 最低编码码率，单位为 Kbps。SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。 注意: 该参数仅适用于直播场景。 |
-| `OrientationMode` | 视频编码的方向模式。详见 [`VideoOrientation`](#videoorientation)。 |
+| `OrientationMode` | 视频编码的方向模式。详见 [`VideoOrientation`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoorientation)。 |
 | `DegradePreference` | <Slot name="apidatatype-go-html-9-8-1" /> |
 
 <Slot for="apidatatype-go-html-9-8-1">
@@ -565,7 +565,7 @@ type VideoFrame struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `Type` | 视频数据类型。详见 [`VideoBufferType`](#videobuffertype)。 |
+| `Type` | 视频数据类型。详见 [`VideoBufferType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videobuffertype)。 |
 | `Width` | 视频帧宽度（像素）。 |
 | `Height` | 视频帧高度（像素）。 |
 | `YStride` | YUV 数据中的 Y 缓冲区的行跨度。 |
@@ -574,7 +574,7 @@ type VideoFrame struct {
 | `YBuffer` | 指向 YUV 数据中的 Y 缓冲区指针的指针。 |
 | `UBuffer` | 指向 YUV 数据中的 U 缓冲区指针的指针。 |
 | `VBuffer` | 指向 YUV 数据中的 V 缓冲区指针的指针。 |
-| `Rotation` | 在渲染视频前设置该帧的顺时针旋转角度。详见 [`VideoOrientation`](#videoorientation)。 |
+| `Rotation` | 在渲染视频前设置该帧的顺时针旋转角度。详见 [`VideoOrientation`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoorientation)。 |
 | `RenderTimeMs` | 外部音频帧的时间戳。该参数为必填。你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以帮助实现音视频同步。 |
 | `AVSyncType` | 预留参数。 |
 
@@ -592,7 +592,7 @@ type VideoSubscriptionOptions struct {
 
 | 参数 | 描述 |
 | --- | --- |
-| `StreamType` | 订阅的视频类型。详见 [`VideoStreamType`](#videostreamtype)。 |
+| `StreamType` | 订阅的视频类型。详见 [`VideoStreamType`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videostreamtype)。 |
 | `EncodedFrameOnly` | <Slot name="apidatatype-go-html-11-2-1" /> |
 
 <Slot for="apidatatype-go-html-11-2-1">

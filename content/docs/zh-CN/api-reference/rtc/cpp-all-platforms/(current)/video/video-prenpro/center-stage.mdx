@@ -1,10 +1,19 @@
 ---
-title: "人像锁定"
-description: "人像锁定 API reference."
+title: 人像锁定
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_center_stage
+  sourcePath: html-docs/rtc/Cpp/API/toc_center_stage.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_center_stage"></a>
 
 <a id="api_irtcengine_enablecameracenterstage"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableCameraCenterStage
 
@@ -12,7 +21,7 @@ description: "人像锁定 API reference."
 
 <a id="api_irtcengine_enablecameracenterstage__prototype"></a>
 
-```cpp
+```text
 virtual int enableCameraCenterStage(bool enabled) = 0;
 ```
 
@@ -20,10 +29,12 @@ virtual int enableCameraCenterStage(bool enabled) = 0;
 
 默认情况下，人像锁定功能处于关闭状态。你需要调用此方法来开启该功能。如需关闭该功能，请再次调用该方法并将 `enabled` 设置为 false。
 
-:::info[注]
-该方法仅适用于 iOS 和 macOS 平台。 由于该功能对设备性能要求较高，建议在以下设备或性能更高的设备上使用：
+:::note
+注： 该方法仅适用于 iOS 和 macOS 平台。
+由于该功能对设备性能要求较高，建议在以下设备或性能更高的设备上使用：
 
 - iPad：
+
   - 12.9 英寸 iPad Pro（第 5 代）
   - 11 英寸 iPad Pro（第 3 代）
   - iPad（第 9 代）
@@ -44,30 +55,38 @@ virtual int enableCameraCenterStage(bool enabled) = 0;
 
 ### 调用时机
 
-必须在成功启用摄像头之后调用此方法，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
+必须在成功启用摄像头之后调用此方法，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）之后。
 
 <a id="api_irtcengine_enablecameracenterstage__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用人像锁定功能：
 
 - true：启用人像锁定功能。
 - false：关闭人像锁定功能。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_enablecameracenterstage__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_iscameracenterstagesupported"></a>
+
+<a id="ariaid-title3"></a>
 
 ## isCameraCenterStageSupported
 
@@ -75,23 +94,23 @@ virtual int enableCameraCenterStage(bool enabled) = 0;
 
 <a id="api_irtcengine_iscameracenterstagesupported__prototype"></a>
 
-```cpp
+```text
 virtual bool isCameraCenterStageSupported() = 0;
 ```
 
 <a id="api_irtcengine_iscameracenterstagesupported__detailed_desc"></a>
 
-建议在调用 [enableCameraCenterStage](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) 启用人像锁定功能前，先调用该方法确认当前设备是否支持此功能。你必须在摄像头成功启用后调用该方法，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
+建议在调用 [enableCameraCenterStage](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) 启用人像锁定功能前，先调用该方法确认当前设备是否支持此功能。你必须在摄像头成功启用后调用该方法，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）之后。
 
-:::info[注]
-该方法仅适用于 iOS 和 macOS 平台。
+:::note
+注： 该方法仅适用于 iOS 和 macOS 平台。
 :::
 
 <a id="api_irtcengine_iscameracenterstagesupported__timing"></a>
 
 ### 调用时机
 
-必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
+必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`（1）之后。
 
 <a id="api_irtcengine_iscameracenterstagesupported__return_values"></a>
 
@@ -101,4 +120,5 @@ virtual bool isCameraCenterStageSupported() = 0;
 - false：当前摄像头不支持人像锁定功能。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

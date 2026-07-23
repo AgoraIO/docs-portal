@@ -1,10 +1,18 @@
 ---
-title: "ExtensionContext"
-description: "扩展的上下文信息。"
+title: ExtensionContext
+description: 扩展的上下文信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_extensioncontext
+  sourcePath: html-docs/rtc/Cpp/API/class_extensioncontext.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_extensioncontext__prototype"></a>
 
-```cpp
+```text
 struct ExtensionContext {
     bool isValid;
     uid_t uid;
@@ -17,21 +25,32 @@ struct ExtensionContext {
 
 ## 属性
 
-### `isValid`
+<ParameterList>
+<a id="isvalid"></a>
+<Parameter name="isValid">
 
 `uid` 是否有效：
 
-- true： uid 有效。
-- false： uid 无效。
+- true：`uid` 有效。
+- false：`uid` 无效。
 
-### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。0 表示本地用户，大于 0 表示远端用户。
 
-### `providerName`
+</Parameter>
+<a id="providername"></a>
+<Parameter name="providerName">
 
 扩展提供方名称。
 
-### `extensionName`
+</Parameter>
+<a id="extensionname"></a>
+<Parameter name="extensionName">
 
 扩展名称。
+
+</Parameter>
+</ParameterList>

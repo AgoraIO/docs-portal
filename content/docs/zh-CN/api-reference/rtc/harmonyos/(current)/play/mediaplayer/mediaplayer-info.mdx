@@ -1,10 +1,19 @@
 ---
-title: "播放信息获取"
-description: "播放信息获取 API reference."
+title: 播放信息获取
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_mediaplayer_info
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_mediaplayer_info.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 <a id="api_imediaplayer_getduration"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getDuration
 
@@ -12,7 +21,7 @@ description: "播放信息获取 API reference."
 
 <a id="api_imediaplayer_getduration__prototype"></a>
 
-```arkts
+```text
 public abstract getDuration():number;
 ```
 
@@ -21,12 +30,15 @@ public abstract getDuration():number;
 ### 返回值
 
 - 方法调用成功时，返回媒体资源的总时长，单位毫秒。
-- ≤ 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- ≤ 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getMediaPlayerId
 
@@ -34,7 +46,7 @@ public abstract getDuration():number;
 
 <a id="api_imediaplayer_getmediaplayerid__prototype"></a>
 
-```arkts
+```text
 public abstract getMediaPlayerId():number;
 ```
 
@@ -42,13 +54,18 @@ public abstract getMediaPlayerId():number;
 
 ### 返回值
 
+<a id="api_imediaplayer_getmediaplayerid__ul_uns_l2y_hqb"></a>
+
 - 方法调用成功，返回播放器 ID。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmute"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getMute
 
@@ -56,7 +73,7 @@ public abstract getMediaPlayerId():number;
 
 <a id="api_imediaplayer_getmute__prototype"></a>
 
-```arkts
+```text
 public abstract getMute(): boolean;
 ```
 
@@ -64,13 +81,16 @@ public abstract getMute(): boolean;
 
 ### 返回值
 
-- true：当前播放的媒体文件为静音。
-- false：当前播放的媒体文件没有静音。
+- `true`：当前播放的媒体文件为静音。
+- `false`：当前播放的媒体文件没有静音。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getPlayoutVolume
 
@@ -78,7 +98,7 @@ public abstract getMute(): boolean;
 
 <a id="api_imediaplayer_getplayoutvolume__prototype"></a>
 
-```arkts
+```text
 public abstract getPlayoutVolume():number
 ```
 
@@ -92,9 +112,12 @@ public abstract getPlayoutVolume():number
 - 100: （默认）媒体文件的原始播放音量。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayposition"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getPlayPosition
 
@@ -102,7 +125,7 @@ public abstract getPlayoutVolume():number
 
 <a id="api_imediaplayer_getplayposition__prototype"></a>
 
-```arkts
+```text
 public abstract getPlayPosition():number;
 ```
 
@@ -110,13 +133,18 @@ public abstract getPlayPosition():number;
 
 ### 返回值
 
+<a id="api_imediaplayer_getplayposition__ul_uns_l2y_hqb"></a>
+
 - 方法调用成功，返回当前播放进度（毫秒）。
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplaysrc"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getPlaySrc
 
@@ -124,7 +152,7 @@ public abstract getPlayPosition():number;
 
 <a id="api_imediaplayer_getplaysrc__prototype"></a>
 
-```arkts
+```text
 public abstract getPlaySrc():string;
 ```
 
@@ -135,9 +163,12 @@ public abstract getPlaySrc():string;
 播放的媒体资源的路径。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getPublishSignalVolume
 
@@ -145,7 +176,7 @@ public abstract getPlaySrc():string;
 
 <a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
 
-```arkts
+```text
 public abstract getPublishSignalVolume():number;
 ```
 
@@ -154,12 +185,15 @@ public abstract getPublishSignalVolume():number;
 ### 返回值
 
 - ≥ 0: 播放文件的远端播放音量。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstate"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getState
 
@@ -167,7 +201,7 @@ public abstract getPublishSignalVolume():number;
 
 <a id="api_imediaplayer_getstate__prototype"></a>
 
-```arkts
+```text
 public abstract getState():Constants.MediaPlayerState;
 ```
 
@@ -178,9 +212,12 @@ public abstract getState():Constants.MediaPlayerState;
 播放器当前状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerstate)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getStreamCount
 
@@ -188,7 +225,7 @@ public abstract getState():Constants.MediaPlayerState;
 
 <a id="api_imediaplayer_getstreamcount__prototype"></a>
 
-```arkts
+```text
 public abstract getStreamCount():number;
 ```
 
@@ -196,8 +233,10 @@ public abstract getStreamCount():number;
 
 ### 详情
 
-:::warning[注意]
-请在 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后并收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 OPEN_COMPLETED 后再调用该方法。
+<a id="api_imediaplayer_getstreamcount__note"></a>
+
+:::caution
+注意： 请在 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后并收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 OPEN_COMPLETED 后再调用该方法。
 :::
 
 <a id="api_imediaplayer_getstreamcount__return_values"></a>
@@ -207,9 +246,12 @@ public abstract getStreamCount():number;
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
+
+<a id="ariaid-title11"></a>
 
 ## getStreamInfo
 
@@ -217,7 +259,7 @@ public abstract getStreamCount():number;
 
 <a id="api_imediaplayer_getstreaminfo__prototype"></a>
 
-```arkts
+```text
 public abstract getStreamInfo(index:number):MediaStreamInfo|undefined;
 ```
 
@@ -239,18 +281,26 @@ public abstract getStreamInfo(index:number):MediaStreamInfo|undefined;
 
 ### 参数
 
-#### `index`
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 媒体流索引值。该参数的值需小于 [getStreamCount](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的返回值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreaminfo__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onPlayerPlaybackStats
 
@@ -258,7 +308,7 @@ public abstract getStreamInfo(index:number):MediaStreamInfo|undefined;
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
 
-```arkts
+```text
 onPlayerPlaybackStats?:(stats:PlayerPlaybackStats) => void
 ```
 
@@ -272,9 +322,15 @@ onPlayerPlaybackStats?:(stats:PlayerPlaybackStats) => void
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/harmonyos/class-playerplaybackstats)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)

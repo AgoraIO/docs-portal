@@ -1,10 +1,19 @@
 ---
-title: "音频设备管理"
-description: "音频设备管理 API reference."
+title: 音频设备管理
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_audio_device
+  sourcePath: html-docs/rtc/iOS/API/toc_audio_device.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_device"></a>
 
 <a id="api_irtcengine_startplaybackdevicetest"></a>
+
+<a id="ariaid-title2"></a>
 
 ## startPlaybackDeviceTest:
 
@@ -12,7 +21,7 @@ description: "音频设备管理 API reference."
 
 <a id="api_irtcengine_startplaybackdevicetest__prototype"></a>
 
-```objectivec
+```text
 - (int)startPlaybackDeviceTest:(NSString * _Nonnull)audioFileName NS_SWIFT_NAME(startPlaybackDeviceTest(_:));
 ```
 
@@ -20,38 +29,46 @@ description: "音频设备管理 API reference."
 
 该方法用于测试本地音频播放设备是否正常工作。调用该方法后，SDK 会播放你指定的音频文件。如果你能听到声音，说明播放设备工作正常。
 
-:::info[注]
-请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) 停止测试。
+:::note
+注： 请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) 停止测试。
 :::
 
 <a id="api_irtcengine_startplaybackdevicetest__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会每 100 毫秒触发一次 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 1 的播放设备音量信息。
+成功调用该方法后，SDK 会每 100 毫秒触发一次 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 1 的播放设备音量信息。
 
 <a id="api_irtcengine_startplaybackdevicetest__parameters"></a>
 
 ### 参数
 
-#### `audioFileName`
+<ParameterList>
+<a id="audiofilename"></a>
+<Parameter name="audioFileName">
 
 音频文件的路径。数据格式为 UTF-8 编码的字符串。
 
 - 支持的文件格式：wav、mp3、m4a 和 aac。
 - 支持的采样率：8000、16000、32000、44100 和 48000 Hz。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_startplaybackdevicetest__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startrecordingdevicetest"></a>
+
+<a id="ariaid-title3"></a>
 
 ## startRecordingDeviceTest:
 
@@ -59,38 +76,47 @@ description: "音频设备管理 API reference."
 
 <a id="api_irtcengine_startrecordingdevicetest__prototype"></a>
 
-```objectivec
+```text
 - (int)startRecordingDeviceTest:(int)indicationInterval NS_SWIFT_NAME(startRecordingDeviceTest(_:));
 ```
 
 <a id="api_irtcengine_startrecordingdevicetest__detailed_desc"></a>
 
-该方法用于测试音频采集设备是否正常工作。调用该方法后，SDK 会按照设置的时间间隔触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 0 的本地采集设备的音量信息。该方法与 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) 方法的区别在于， [startRecordingDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startrecordingdevicetest) 仅检测本地音频采集设备是否正常工作，而 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) 可以检测音视频设备和网络状况。
+该方法用于测试音频采集设备是否正常工作。调用该方法后，SDK 会按照设置的时间间隔触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 0 的本地采集设备的音量信息。该方法与 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) 方法的区别在于，[startRecordingDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startrecordingdevicetest) 仅检测本地音频采集设备是否正常工作，而 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) 可以检测音视频设备和网络状况。
 
-:::info[注]
-请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) 停止测试。
+:::note
+注： 请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) 停止测试。
 :::
 
 <a id="api_irtcengine_startrecordingdevicetest__parameters"></a>
 
 ### 参数
 
-#### `indicationInterval`
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
-触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。声网建议设置为 100。
+触发 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则你将无法收到 [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。声网建议设置为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startrecordingdevicetest__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效。请检查参数设置。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopplaybackdevicetest"></a>
+
+<a id="ariaid-title4"></a>
 
 ## stopPlaybackDeviceTest
 
@@ -98,7 +124,7 @@ description: "音频设备管理 API reference."
 
 <a id="api_irtcengine_stopplaybackdevicetest__prototype"></a>
 
-```objectivec
+```text
 - (int)stopPlaybackDeviceTest NS_SWIFT_NAME(stopPlaybackDeviceTest());
 ```
 
@@ -106,8 +132,8 @@ description: "音频设备管理 API reference."
 
 调用 [startPlaybackDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startplaybackdevicetest) 方法开始测试后，必须调用此方法停止测试。
 
-:::info[注]
-请在加入频道前调用此方法。
+:::note
+注： 请在加入频道前调用此方法。
 :::
 
 <a id="api_irtcengine_stopplaybackdevicetest__return_values"></a>
@@ -115,12 +141,15 @@ description: "音频设备管理 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoprecordingdevicetest"></a>
+
+<a id="ariaid-title5"></a>
 
 ## stopRecordingDeviceTest
 
@@ -128,7 +157,7 @@ description: "音频设备管理 API reference."
 
 <a id="api_irtcengine_stoprecordingdevicetest__prototype"></a>
 
-```objectivec
+```text
 - (int)stopRecordingDeviceTest NS_SWIFT_NAME(stopRecordingDeviceTest());
 ```
 
@@ -136,8 +165,8 @@ description: "音频设备管理 API reference."
 
 该方法用于停止音频采集设备测试。你必须在调用 `startRecordingDeviceTest` 方法后调用此方法以停止测试。
 
-:::info[注]
-请在加入频道前调用此方法。
+:::note
+注： 请在加入频道前调用此方法。
 :::
 
 <a id="api_irtcengine_stoprecordingdevicetest__return_values"></a>
@@ -145,7 +174,8 @@ description: "音频设备管理 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

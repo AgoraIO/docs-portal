@@ -1,0 +1,135 @@
+---
+title: WhiteEvent Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteEvent
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteEvent.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteEvent.h |
+
+<a id="overview"></a>
+
+## Overview
+
+SDK 可以触发的自定义事件回调。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithName:payload:"></a>
+
+### `– initWithName:payload:`
+
+指定回调事件名称和内容并初始化一个 `WhiteEvent` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithName:(NSString *)*eventName* payload:(id)*payload*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="eventName">
+
+回调事件名称。
+
+</Parameter>
+<Parameter name="payload">
+
+回调事件内容。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteEvent` 对象。
+
+#### Declared In
+
+`WhiteEvent.h`
+
+<a id="//api/name/eventName"></a>
+
+### `eventName`
+
+回调事件名称。
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSString *eventName
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteEvent.h`
+
+<a id="//api/name/payload"></a>
+
+### `payload`
+
+回调事件内容。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) id payload
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteEvent.h`
+
+<a id="//api/name/uuid"></a>
+
+### `uuid`
+
+白板房间号。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readonly) NSString *uuid
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteEvent.h`
+
+<a id="//api/name/scope"></a>
+
+### `scope`
+
+发送事件的用户角色。包括 `system`，`app`，`custom`，`magix`，自定义事件为 `custom`。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readonly) NSString *scope
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteEvent.h`
+
+<a id="//api/name/authorId"></a>
+
+### `authorId`
+
+发送事件的用户。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readonly) NSString *authorId
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteEvent.h`

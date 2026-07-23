@@ -11,6 +11,7 @@ import {
   inferContextFromSourcePath,
   loadComponentMap,
   migrateLegacyBatch,
+  migrateLegacyPage,
   stripImportExport,
   transformAdmonitions,
   transformLegacyMdx,
@@ -147,6 +148,37 @@ describe('migrate-legacy-docs helpers', () => {
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('rewrites nested Docusaurus tabs without crossing parent boundaries', () => {
+    const state = createState('docs/convoai/user-guides/realtime-sub.mdx');
+    const migrated = transformLegacyMdx(
+      `
+<Tabs groupId="language">
+  <TabItem value="android" label="Android">
+  Android intro.
+  <Tabs groupId="install-method">
+    <TabItem value="maven" label="Maven">Maven body.</TabItem>
+    <TabItem value="source" label="Source">Source body.</TabItem>
+  </Tabs>
+  </TabItem>
+  <TabItem value="ios" label="iOS">iOS body.</TabItem>
+</Tabs>
+`,
+      state,
+    );
+
+    expect(migrated).toContain(
+      '<Tabs defaultValue="android" groupId="language" persist>',
+    );
+    expect(migrated).toContain(
+      '<Tabs defaultValue="maven" groupId="install-method" persist>',
+    );
+    expect(migrated).toContain('<TabsContent value="source">');
+    expect(migrated).toContain('<TabsContent value="ios">');
+    expect(migrated.match(/<Tabs\b/g)).toHaveLength(2);
+    expect(migrated.match(/<\/Tabs>/g)).toHaveLength(2);
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
   it('rewrites adjacent platform headings to approved MDX tabs', () => {
     const state = createState('docs/convoai/user-guides/realtime-sub.mdx');
     const migrated = transformLegacyMdx(
@@ -174,9 +206,7 @@ describe('migrate-legacy-docs helpers', () => {
     expect(migrated).toContain(
       '<Tabs defaultValue="android" groupId="language" persist>',
     );
-    expect(migrated).toContain(
-      '<TabsTrigger value="ios">iOS</TabsTrigger>',
-    );
+    expect(migrated).toContain('<TabsTrigger value="ios">iOS</TabsTrigger>');
     expect(migrated).toContain('<TabsContent value="web">');
     expect(migrated).toContain('- 已启用 RTM 服务。');
     expect(migrated).not.toContain('#### Android');
@@ -255,7 +285,9 @@ Web 集成说明。
     expect(migrated).toContain(
       '<Tabs defaultValue="all" groupId="platform" persist>',
     );
-    expect(migrated).toContain('<TabsTrigger value="macos">macOS</TabsTrigger>');
+    expect(migrated).toContain(
+      '<TabsTrigger value="macos">macOS</TabsTrigger>',
+    );
   });
 
   it('outdents legacy Tabs that were nested under list items', () => {
@@ -382,7 +414,9 @@ engine.joinChannel(token)
   });
 
   it('keeps same-line heading suffixes without swallowing following sections', () => {
-    const state = createState('docs-api-reference/iot-apaas/client-api/call.android.mdx');
+    const state = createState(
+      'docs-api-reference/iot-apaas/client-api/call.android.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '<H3 className="anchor" id="initparam">InitParam</H3> 类',
@@ -472,7 +506,8 @@ engine.joinChannel(token)
       state,
     );
 
-    expect(migrated).toContain('![guide](/img/watch.png)');
+    expect(migrated).toContain('![watch 图示](/img/watch.png)');
+    expect(migrated).not.toContain('![guide]');
     expect(migrated).toContain('- [场景介绍](');
     expect(migrated).toContain('### 首次集成 RTM');
     expect(migrated).toContain('- [开通服务](');
@@ -480,6 +515,9 @@ engine.joinChannel(token)
     expect(migrated).not.toContain('QuickGuide');
     expect(migrated).not.toContain('LinkList');
     expect(migrated).not.toContain('ImageGallery');
+    expect(state.issues).toContain(
+      'missing-source-text:image-alt:docs/rtm2/landing-page.mdx:/img/watch.png',
+    );
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -664,6 +702,25 @@ public class MyScoringView extends ScoringView {
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('outdents a converted Detail that follows a legacy list item', () => {
+    const state = createState(
+      'docs/cloud-recording/get-started/quick-start-go.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      `- 开通云存储服务。
+
+    <Detail title="开通方式">
+    参考云存储官网。
+    </Detail>
+`,
+      state,
+    );
+
+    expect(migrated).toContain('\n<Accordions>\n');
+    expect(migrated).not.toContain('\n    <Accordions>');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
   it('keeps indented ordered lists inside TabItem as sibling list items', () => {
     const state = createState();
     const migrated = transformLegacyMdx(
@@ -761,7 +818,7 @@ public class MyScoringView extends ScoringView {
     );
   });
 
-  it('keeps inline legacy Image components inside prose on one line', () => {
+  it('moves inline legacy Image components to an aligned list block', () => {
     const state = createState('docs/rtc/get-started/run-demo.android.mdx');
     const migrated = transformLegacyMdx(
       '3. 在 Android Studio 中，点击 <Image src="https://web-cdn.agora.io/docs-files/1689672727614" width="25" inline/> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
@@ -769,11 +826,14 @@ public class MyScoringView extends ScoringView {
     );
 
     expect(migrated).toContain(
-      '3. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+      '3. 在 Android Studio 中，点击\n\n   ![Sync Project with Gradle Files 图示](https://web-cdn.agora.io/docs-files/1689672727614)\n\n   (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
     );
-    expect(migrated).not.toContain('点击\n![]');
+    expect(migrated).not.toMatch(/^!\[/m);
     expect(state.issues).toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1689672727614:25',
+    );
+    expect(state.issues).toContain(
+      'normalized-inline-image-block:https://web-cdn.agora.io/docs-files/1689672727614',
     );
   });
 
@@ -788,6 +848,54 @@ import Cocoa
 \`\`\`
 `),
     ).toContain('import AgoraRtcKit');
+  });
+
+  it('does not resolve import examples inside code fences as dependencies', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-code-import-'),
+    );
+    const sourcePath = 'docs/convoai/user-guides/realtime-sub.mdx';
+    await mkdir(path.join(tempRoot, 'docs/convoai/user-guides'), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(tempRoot, sourcePath),
+      `---\ntitle: 示例\n---\n\n\`\`\`tsx\nimport React from 'react';\n\nexport const Demo = () => <div />;\n\`\`\`\n`,
+      'utf8',
+    );
+
+    const migrated = await migrateLegacyPage({
+      componentMap: await loadComponentMap(
+        path.join(tempRoot, 'missing-component-map.yaml'),
+      ),
+      pathMap: new Map(),
+      sourcePath,
+      sourceRoot: tempRoot,
+    });
+
+    expect(migrated.content).toContain("import React from 'react';");
+    expect(migrated.content).toContain('export const Demo');
+    expect(migrated.issues).not.toContain('unresolved-import:react');
+    expect(migrated.issues).not.toContain('legacy-residue:legacy-import');
+    expect(migrated.issues).not.toContain('legacy-residue:legacy-export');
+  });
+
+  it('ignores commented code fences while stripping following exported data', () => {
+    const migrated = stripImportExport(`
+{/* \`\`\`json
+{"example": true}
+\`\`\` */}
+
+export const TableHeaders = [
+  { label: '字段' }
+];
+
+正文
+`);
+
+    expect(migrated).toContain('正文');
+    expect(migrated).not.toContain('TableHeaders');
+    expect(migrated).not.toContain('example');
   });
 
   it('strips CRLF shared imports before migration', () => {
@@ -930,8 +1038,38 @@ import Cocoa
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('rewrites standalone HTML list items inside table cells to table slots', () => {
+    const state = createState('docs/shared/online-ktv/restful.mdx');
+    const migrated = transformLegacyMdx(
+      '| Field | Description |\n| --- | --- |\n| `vendorId` | 歌曲版权使用区域：<li>`5`：中国大陆</li> |',
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| `vendorId` | <Slot name="restful-markdown-0-1-1" /> |',
+    );
+    expect(migrated).toContain('歌曲版权使用区域：\n\n- `5`：中国大陆');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites unwrapped nested HTML list items without orphan tags', () => {
+    const state = createState('docs/whiteboard/conversion-webhook.restful.mdx');
+    const migrated = transformLegacyMdx(
+      '| Field | Description |\n| --- | --- |\n| data | 字段：<li>`taskId`：ID。</li><li>`images`：图片。<ul><li>`width`：宽度。</li><li>`height`：高度。</li></ul></li> |',
+      state,
+    );
+
+    expect(migrated).toContain('- `taskId`：ID。');
+    expect(migrated).toContain('- `images`：图片。');
+    expect(migrated).toContain('  - `width`：宽度。');
+    expect(migrated).not.toMatch(/<\/?(?:ul|li)\b/i);
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
   it('rewrites legacy Image components inside markdown table cells to table slots', () => {
-    const state = createState('docs/multi-usecase/non-scenario-based/resources.mdx');
+    const state = createState(
+      'docs/multi-usecase/non-scenario-based/resources.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '| Demo 名称 | Demo 下载二维码 |',
@@ -957,7 +1095,9 @@ import Cocoa
   });
 
   it('rewrites multiline table cells expanded from shared snippets to table slots', () => {
-    const state = createState('docs-api-reference/flexible-classroom/classroom-sdk.android.mdx');
+    const state = createState(
+      'docs-api-reference/flexible-classroom/classroom-sdk.android.mdx',
+    );
     const migrated = transformLegacyMdx(
       [
         '| 属性 | 描述 |',
@@ -1249,9 +1389,7 @@ export const FaceCapture = [
     expect(migrated).toContain(
       '| `RtmLost` | `16` | <Slot name="call-api-android-html-0-1-2" /> |',
     );
-    expect(migrated).toContain(
-      '<Slot for="call-api-android-html-0-1-2">',
-    );
+    expect(migrated).toContain('<Slot for="call-api-android-html-0-1-2">');
     expect(migrated).toContain(':::error[已删除]');
     expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
     expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
@@ -1276,9 +1414,7 @@ export const FaceCapture = [
     expect(migrated).toContain(
       '| `RtmLost` | `16` | <Slot name="call-api-android-markdown-0-1-2" /> |',
     );
-    expect(migrated).toContain(
-      '<Slot for="call-api-android-markdown-0-1-2">',
-    );
+    expect(migrated).toContain('<Slot for="call-api-android-markdown-0-1-2">');
     expect(migrated).toContain(':::error[已删除]');
     expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
     expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
@@ -1333,9 +1469,11 @@ export const FaceCapture = [
   });
 
   it('rewrites inline legacy admonitions and bare generic type literals', () => {
-    const state = createState('docs-api-reference/one-to-one-live/call-api.android.mdx');
+    const state = createState(
+      'docs-api-reference/one-to-one-live/call-api.android.mdx',
+    );
     const migrated = transformLegacyMdx(
-      "变成呼叫中。 <Admonition type=\"danger\" title=\"已删除\">对应事件变更为：`LocalVideoCall`</Admonition>\n\n- `appOptions`：Map<String, Object>。初始化参数。\n| `files` | {'Array<Object>'} | 文件列表 |",
+      '变成呼叫中。 <Admonition type="danger" title="已删除">对应事件变更为：`LocalVideoCall`</Admonition>\n\n- `appOptions`：Map<String, Object>。初始化参数。\n| `files` | {\'Array<Object>\'} | 文件列表 |',
       state,
     );
 
@@ -1416,6 +1554,44 @@ export const FaceCapture = [
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('preserves blank exported TableHeader column spans without synthetic labels', () => {
+    const state = createState();
+    state.tableHeaders.set('TableHeaderabc', [
+      '',
+      '',
+      'Fastboard SDK',
+      'Whiteboard SDK',
+    ]);
+    const migrated = transformLegacyMdx(
+      `<Table header={TableHeaderabc}>
+  <Tr>
+    <Td col={2}>产品定位</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+  <Tr>
+    <Td row={2}>产品边界</Td>
+    <Td>UI</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+  <Tr>
+    <Td>插件</Td>
+    <Td>支持</Td>
+    <Td>不支持</Td>
+  </Tr>
+</Table>`,
+      state,
+    );
+
+    expect(migrated).toContain('|  |  | Fastboard SDK | Whiteboard SDK |');
+    expect(migrated).toContain('| 产品定位 |  | 支持 | 不支持 |');
+    expect(migrated).toContain('| 产品边界 | UI | 支持 | 不支持 |');
+    expect(migrated).toContain('|  | 插件 | 支持 | 不支持 |');
+    expect(migrated).not.toContain('Column');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
   it('rewrites legacy LinkCard grids to Cards syntax', () => {
     const state = createState();
     const migrated = transformLegacyMdx(
@@ -1481,6 +1657,68 @@ export const FaceCapture = [
       '详见[查看用量](/doc/console/general/user-guides/usage)。',
     );
     expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites static template hrefs in legacy anchors', () => {
+    const state = createState('docs/rtc/overview/product-overview.mdx');
+    const migrated = transformLegacyMdx(
+      '详见<a href={`/faq/general-product-inquiry/streaming-difference`}>直播场景区别</a>。',
+      state,
+    );
+
+    expect(migrated).toBe(
+      '详见[直播场景区别](/faq/general-product-inquiry/streaming-difference)。',
+    );
+    expect(migrated).not.toContain('{`');
+  });
+
+  it('does not let an earlier self-closing anchor swallow a later link', () => {
+    const state = createState('docs/rtc/overview/product-overview.mdx');
+    const migrated = transformLegacyMdx(
+      '<a name="benefits"/>\n\n详见<a href={`/faq/streaming`}>直播场景区别</a>。',
+      state,
+    );
+
+    expect(migrated).toContain('<a id="benefits"></a>');
+    expect(migrated).toContain('[直播场景区别](/faq/streaming)');
+    expect(migrated).not.toContain('href={`');
+  });
+
+  it('keeps escaped comparisons and escapes literal brace pairs in prose', () => {
+    const state = createState();
+    const migrated = transformLegacyMdx(
+      '请确保 `width` &lt;= 1，并跳过大括号 { }。',
+      state,
+    );
+
+    expect(migrated).toBe(
+      '请确保 `width` &lt;= 1，并跳过大括号 &#123; &#125;。',
+    );
+  });
+
+  it('quotes raw inline HTML attributes for valid MDX JSX', () => {
+    const state = createState(
+      'docs-api-reference/rtm/cpp-api/configuration.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      '<code class="index-api" id=onMessageEvent>onMessageEvent</code>',
+      state,
+    );
+
+    expect(migrated).toBe(
+      '<code className="index-api" id="onMessageEvent">onMessageEvent</code>',
+    );
+    expect(state.issues).toContain('normalized-inline-html-attributes');
+  });
+
+  it('normalizes mixed indentation across one Markdown table', () => {
+    const state = createState();
+    const migrated = transformLegacyMdx(
+      ' | A | B |\n| --- | --- |\n  | X | Y |',
+      state,
+    );
+
+    expect(migrated).toBe('| A | B |\n| --- | --- |\n| X | Y |');
   });
 
   it('classifies mapped legacy component residue separately from unknown JSX', async () => {
@@ -2274,9 +2512,12 @@ syntaxPatterns:
     const sourceRoot = path.join(tempRoot, 'source');
     const sourcePath = 'docs/marketplace/integrate-extensions/moderation.mdx';
 
-    await mkdir(path.join(sourceRoot, 'docs/marketplace/integrate-extensions'), {
-      recursive: true,
-    });
+    await mkdir(
+      path.join(sourceRoot, 'docs/marketplace/integrate-extensions'),
+      {
+        recursive: true,
+      },
+    );
     await mkdir(path.join(sourceRoot, 'docs/shared/marketplace'), {
       recursive: true,
     });
@@ -2585,7 +2826,11 @@ title: 普通指南
       '',
       'utf8',
     );
-    await writeFile(path.join(repoRoot, 'pages.txt'), `${sourcePath}\n`, 'utf8');
+    await writeFile(
+      path.join(repoRoot, 'pages.txt'),
+      `${sourcePath}\n`,
+      'utf8',
+    );
 
     const report = await migrateLegacyBatch({
       outDir: 'out',

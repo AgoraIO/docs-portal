@@ -1,10 +1,19 @@
 ---
-title: "桌面端视频设备管理"
-description: "桌面端视频设备管理 API reference."
+title: 桌面端视频设备管理
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_pc_video_device_management
+  sourcePath: html-docs/rtc/Csharp/API/toc_pc_video_device_management.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_pc_video_device_management"></a>
 
 <a id="api_ivideodevicemanager_enumeratevideodevices"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnumerateVideoDevices
 
@@ -12,7 +21,7 @@ description: "桌面端视频设备管理 API reference."
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
 
-```csharp
+```text
 public abstract DeviceInfo[] EnumerateVideoDevices();
 ```
 
@@ -29,13 +38,15 @@ public abstract DeviceInfo[] EnumerateVideoDevices();
 
 <a id="api_ivideodevicemanager_getcapability"></a>
 
+<a id="ariaid-title3"></a>
+
 ## GetCapability
 
 获取视频采集设备在指定的视频格式下的详细视频帧信息。
 
 <a id="api_ivideodevicemanager_getcapability__prototype"></a>
 
-```csharp
+```text
 public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumber, out VideoFormat capability);
 ```
 
@@ -49,34 +60,45 @@ public abstract int GetCapability(string deviceIdUTF8, uint deviceCapabilityNumb
 
 ### 参数
 
-#### `deviceIdUTF8`
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
 
-#### `deviceCapabilityNumber`
+</Parameter>
+<a id="devicecapabilitynumber"></a>
+<Parameter name="deviceCapabilityNumber">
 
 视频格式的索引号。如果 NumberOfCapabilities 的返回值为 i，则该参数取值范围为[0,i)。
 
-#### `capability`
+</Parameter>
+<a id="capability"></a>
+<Parameter name="capability">
 
 输出参数。表示指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/csharp-windows/class-videoformat)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getcapability__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getvideodevicemanager"></a>
 
+<a id="ariaid-title4"></a>
+
 ## GetVideoDeviceManager
 
-获取 IVideoDeviceManager 对象，以管理视频设备。
+获取 [IVideoDeviceManager](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideodevicemanager) 对象，以管理视频设备。
 
 <a id="api_irtcengine_getvideodevicemanager__prototype"></a>
 
-```csharp
+```text
 public abstract IVideoDeviceManager GetVideoDeviceManager();
 ```
 
@@ -88,13 +110,15 @@ public abstract IVideoDeviceManager GetVideoDeviceManager();
 
 <a id="api_ivideodevicemanager_getdevice"></a>
 
+<a id="ariaid-title5"></a>
+
 ## GetDevice
 
 获取当前使用的视频采集设备。
 
 <a id="api_ivideodevicemanager_getdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetDevice(ref string deviceIdUTF8);
 ```
 
@@ -106,18 +130,25 @@ public abstract int GetDevice(ref string deviceIdUTF8);
 
 ### 参数
 
-#### `deviceIdUTF8`
+<ParameterList>
+<a id="deviceidutf8-1"></a>
+<Parameter name="deviceIdUTF8">
 
 输出参数。设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_getdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnVideoDeviceStateChanged
 
@@ -125,11 +156,15 @@ public abstract int GetDevice(ref string deviceIdUTF8);
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, int deviceState)
 ```
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onvideodevicestatechanged__desc"></a>
 
 该回调提示系统视频设备状态发生改变，比如被拔出或移除。如果设备已使用外接摄像头采集，外接摄像头被拔开后，视频会中断。
 
@@ -137,19 +172,30 @@ public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, i
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-#### `deviceType`
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicetype)。
 
-#### `deviceState`
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
-设备状态。详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicestatetype)。
+设备状态。详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicestatetype) 。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities"></a>
+
+<a id="ariaid-title7"></a>
 
 ## NumberOfCapabilities
 
@@ -157,7 +203,7 @@ public virtual void OnVideoDeviceStateChanged(string deviceId, int deviceType, i
 
 <a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
 
-```csharp
+```text
 public abstract int NumberOfCapabilities(string deviceIdUTF8);
 ```
 
@@ -173,18 +219,25 @@ public abstract int NumberOfCapabilities(string deviceIdUTF8);
 
 ### 参数
 
-#### `deviceIdUTF8`
+<ParameterList>
+<a id="deviceidutf8-2"></a>
+<Parameter name="deviceIdUTF8">
 
 视频采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
 
 ### 返回值
 
 - &gt; 0: 方法调用成功。返回该设备支持的视频格式数量。例如：如果指定的摄像头支持 10 种不同的视频格式，则返回值为 10。
-- ≤ 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- ≤ 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_querycodeccapability"></a>
+
+<a id="ariaid-title8"></a>
 
 ## QueryCodecCapability
 
@@ -192,7 +245,7 @@ public abstract int NumberOfCapabilities(string deviceIdUTF8);
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```csharp
+```text
 public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int size);
 ```
 
@@ -204,26 +257,34 @@ public abstract int QueryCodecCapability(ref CodecCapInfo[] codecInfo, ref int s
 
 ### 参数
 
-#### `codecInfo`
+<ParameterList>
+<a id="codecinfo"></a>
+<Parameter name="codecInfo">
 
 输入和输出参数，表示 SDK 的视频编码能力数组。详见 [CodecCapInfo](/zh-CN/api-reference/rtc/csharp-windows/class-codeccapinfo)。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo，表示待查询的视频编解码能力。
 - 输出值：方法执行完毕后输出的 CodecCapInfo，表示 SDK 实际支持的视频编解码能力。
 
-#### `size`
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 输入和输出参数，表示 CodecCapInfo 数组的大小。
 
 - 输入值：用户执行该方法时定义的 CodecCapInfo 的大小。
 - 输出值：方法执行完毕后输出的 CodecCapInfo 的大小。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_querycodeccapability__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)

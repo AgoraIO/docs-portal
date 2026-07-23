@@ -1,0 +1,60 @@
+---
+title: Interface BufferSourceAudioTrackInitConfig
+description: 通过本地音频文件/在线音频文件/AudioBuffer方式创建音频流时的配置参数，用于 AgoraRTC.createBufferSourceAudioTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/buffersourceaudiotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/buffersourceaudiotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- BufferSourceAudioTrackInitConfig
+
+## Index
+
+### Properties
+
+- [cacheOnlineFile](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig#cacheonlinefile)
+- [encoderConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig#encoderconfig)
+- [source](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig#source)
+
+## Properties
+
+<a id="cacheonlinefile"></a>
+
+### Optional cacheOnlineFile
+
+cacheOnlineFile: boolean
+
+是否缓存线上文件:
+
+- `true`: 缓存线上文件。
+- `false`: （默认）不缓存线上文件。
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+encoderConfig: [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)|[AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset)
+
+控制音频的编码配置。
+
+你可以通过 [AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset) 传入 SDK 内置的编码配置；也可以通过传入一个 [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration) 来自定义音频编码配置。
+
+> Firefox 不支持设置音频编码码率。
+
+<a id="source"></a>
+
+### source
+
+source: File|string|AudioBuffer
+
+音频数据源，支持 3 种类型：
+
+- `File`: 浏览器标准的 [File](https://developer.mozilla.org/en-US/docs/Web/API/File) 对象，表示一个本地文件。
+- `string`: 表示从线上 HTTPS 地址获取在线音频文件(请确保音频在线地址支持 HTTPS 和 CORS)。
+- `AudioBuffer`: 浏览器标准的 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 对象表示 PCM 原始数据。

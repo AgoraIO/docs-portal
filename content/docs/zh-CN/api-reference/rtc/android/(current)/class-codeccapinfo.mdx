@@ -1,10 +1,18 @@
 ---
-title: "CodecCapInfo"
-description: "表示 SDK 的编解码能力。"
+title: CodecCapInfo
+description: 表示 SDK 的编解码能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_codeccapinfo
+  sourcePath: html-docs/rtc/Android/API/class_codeccapinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_codeccapinfo__prototype"></a>
 
-```java
+```text
 public class CodecCapInfo {
   public int codecType;
   public int codecCapMask;
@@ -16,7 +24,9 @@ public class CodecCapInfo {
 
 ## 属性
 
-### `codecType`
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 视频编解码类型：
 
@@ -24,7 +34,9 @@ public class CodecCapInfo {
 - 2：H.264。
 - 3：（默认）H.265。
 
-### `codecCapMask`
+</Parameter>
+<a id="codeccapmask"></a>
+<Parameter name="codecCapMask">
 
 编解码类型的位掩码：
 
@@ -34,6 +46,11 @@ public class CodecCapInfo {
 - (1 &lt;&lt; 2)：设备支持软件解码。
 - (1 &lt;&lt; 3)：设备支持软件编码。
 
-### `codecLevels`
+</Parameter>
+<a id="codeclevels"></a>
+<Parameter name="codecLevels">
 
 编解码能力。详见 [CodecCapLevels](/zh-CN/api-reference/rtc/android/class-codeccaplevels)。
+
+</Parameter>
+</ParameterList>

@@ -1,10 +1,19 @@
 ---
-title: "音频频谱"
-description: "音频频谱 API reference."
+title: 音频频谱
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_audio_spectrum
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_audio_spectrum.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_spectrum"></a>
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerAudioSpectrumObserver
 
@@ -12,7 +21,7 @@ description: "音频频谱 API reference."
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```cpp
+```text
 virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver * observer) = 0;
 ```
 
@@ -22,29 +31,41 @@ virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver *
 
 成功注册音频频谱观测器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔报告你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver) 类中实现的回调。
 
-:::warning[注意]
-该方法在加入频道前后均可调用。
+<a id="api_irtcengine_registeraudiospectrumobserver__note_qwk_mjf_3qb"></a>
+
+:::caution
+注意： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_registeraudiospectrumobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
+<a id="api_irtcengine_registeraudiospectrumobserver__ul_jzc_zjf_3qb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## unregisterAudioSpectrumObserver
 
@@ -52,7 +73,7 @@ virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver *
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```cpp
+```text
 virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver * observer) = 0;
 ```
 
@@ -62,29 +83,39 @@ virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver
 
 调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 后，如果你想取消注册音频频谱观测器，请调用该方法。
 
-:::warning[注意]
-该方法在加入频道前后均可调用。
+<a id="api_irtcengine_unregisteraudiospectrumobserver__note_ymh_dhn_3qb"></a>
+
+:::caution
+注意： 该方法在加入频道前后均可调用。
 :::
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_disableaudiospectrummonitor"></a>
+
+<a id="ariaid-title4"></a>
 
 ## disableAudioSpectrumMonitor
 
@@ -92,7 +123,7 @@ virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```cpp
+```text
 virtual int disableAudioSpectrumMonitor() = 0;
 ```
 
@@ -102,7 +133,11 @@ virtual int disableAudioSpectrumMonitor() = 0;
 
 调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 后，如果你想关闭音频频谱监测，请调用该方法。
 
-:::warning[注意]
+<a id="api_irtcengine_disableaudiospectrummonitor__note_url_s5y_hqb"></a>
+
+:::caution
+注意：
+
 该方法在加入频道前后均可调用。
 :::
 
@@ -111,12 +146,15 @@ virtual int disableAudioSpectrumMonitor() = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
+
+<a id="ariaid-title5"></a>
 
 ## enableAudioSpectrumMonitor
 
@@ -124,7 +162,7 @@ virtual int disableAudioSpectrumMonitor() = 0;
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```cpp
+```text
 virtual int enableAudioSpectrumMonitor(int intervalInMS = 100) = 0;
 ```
 
@@ -134,7 +172,11 @@ virtual int enableAudioSpectrumMonitor(int intervalInMS = 100) = 0;
 
 如果你想获取本地或远端用户的音频频谱数据，请注册音频频谱观测器并开启音频频谱监测。
 
-:::warning[注意]
+<a id="api_irtcengine_enableaudiospectrummonitor__note_xlb_3yd_3qb"></a>
+
+:::caution
+注意：
+
 该方法在加入频道前后均可调用。
 :::
 
@@ -142,22 +184,31 @@ virtual int enableAudioSpectrumMonitor(int intervalInMS = 100) = 0;
 
 ### 参数
 
-#### `intervalInMS`
+<ParameterList>
+<a id="intervalinms"></a>
+<Parameter name="intervalInMS">
 
 SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（毫秒）。 默认值为 100 毫秒。取值不得少于 10 毫秒，否则该方法会调用失败。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onLocalAudioSpectrum
 
@@ -165,11 +216,13 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audi
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```cpp
+```text
 virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 ```
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__detailed_desc"></a>
+
+### 详情
 
 成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver) 中的 onLocalAudioSpectrum 回调并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告编码前的本地音频数据的频谱。
 
@@ -177,9 +230,14 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 
 ### 参数
 
-#### `data`
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 本地用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/unreal-cpp/class-audiospectrumdata)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -187,13 +245,16 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 
 是否接收频谱数据：
 
-- true: 接收。
-- false: 不接收。
+- `true`: 接收。
+- `false`: 不接收。
 
 ### 所属接口类
+
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onRemoteAudioSpectrum
 
@@ -201,11 +262,13 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```cpp
+```text
 virtual bool onRemoteAudioSpectrum(const UserAudioSpectrumInfo * spectrums, unsigned int spectrumNumber) = 0;
 ```
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__detailed_desc"></a>
+
+### 详情
 
 成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver) 中的 onRemoteAudioSpectrum 回调并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告接收到的远端音频数据的频谱。
 
@@ -213,13 +276,20 @@ virtual bool onRemoteAudioSpectrum(const UserAudioSpectrumInfo * spectrums, unsi
 
 ### 参数
 
-#### `spectrums`
+<ParameterList>
+<a id="spectrums"></a>
+<Parameter name="spectrums">
 
 远端用户的音频频谱信息，详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-useraudiospectruminfo)。 数组数量等于 SDK 监测到的远端用户数量，数组为空表示没有监测到远端用户的音频频谱。
 
-#### `spectrumNumber`
+</Parameter>
+<a id="spectrumnumber"></a>
+<Parameter name="spectrumNumber">
 
 远端用户的数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
 
@@ -227,8 +297,9 @@ virtual bool onRemoteAudioSpectrum(const UserAudioSpectrumInfo * spectrums, unsi
 
 是否接收频谱数据：
 
-- true: 接收。
-- false: 不接收。
+- `true`: 接收。
+- `false`: 不接收。
 
 ### 所属接口类
+
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiospectrumobserver)

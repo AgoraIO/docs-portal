@@ -1,0 +1,179 @@
+---
+title: agora::rtc::VideoEncoderConfiguration结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_video_encoder_configuration
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_video_encoder_configuration.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+视频编码器的配置。
+
+## 构造及析构函数说明
+
+<a id="ac6014469c3224d61584b816ff55a796c"></a>
+
+### VideoEncoderConfiguration() [1/4]
+
+<ApiSignature labels="inline">
+
+agora::rtc::VideoEncoderConfiguration::VideoEncoderConfiguration(const [VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-dimensions) & *d*, int *f*, int *b*, [ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) *m*, [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13) *mirror* = [`VIDEO_MIRROR_MODE_DISABLED`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13ae30d613a911b110e8628e9b0d28e9ac9))
+
+</ApiSignature>
+
+<a id="ab5ef38e3c50320d0829351ffc0289d41"></a>
+
+### VideoEncoderConfiguration() [2/4]
+
+<ApiSignature labels="inline">
+
+agora::rtc::VideoEncoderConfiguration::VideoEncoderConfiguration(int *width*, int *height*, int *f*, int *b*, [ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) *m*, [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13) *mirror* = [`VIDEO_MIRROR_MODE_DISABLED`](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13ae30d613a911b110e8628e9b0d28e9ac9))
+
+</ApiSignature>
+
+<a id="af0da8ba4875febcedb24021cc71a696d"></a>
+
+### VideoEncoderConfiguration() [3/4]
+
+<ApiSignature labels="inline">
+
+agora::rtc::VideoEncoderConfiguration::VideoEncoderConfiguration(const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) & *config*)
+
+</ApiSignature>
+
+<a id="aa1b767184938acffef52acae4ff092e9"></a>
+
+### VideoEncoderConfiguration() [4/4]
+
+<ApiSignature labels="inline">
+
+agora::rtc::VideoEncoderConfiguration::VideoEncoderConfiguration()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a69124681e1bee0952b2ca30ccebc889f"></a>
+
+### operator=()
+
+<ApiSignature labels="inline">
+
+[VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration)& agora::rtc::VideoEncoderConfiguration::operator=(const [VideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-encoder-configuration) & *rhs*)
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a7af2f2459b1d279fed2f43814662a789"></a>
+
+### codecType
+
+<ApiSignature>
+
+[VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215) agora::rtc::VideoEncoderConfiguration::codecType
+
+</ApiSignature>
+
+视频编码器类型。
+
+<a id="af31036bc7b00a4497716b1eb367d868d"></a>
+
+### dimensions
+
+<ApiSignature>
+
+[VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-dimensions) agora::rtc::VideoEncoderConfiguration::dimensions
+
+</ApiSignature>
+
+视频编码的分辨率（px）。该参数用于衡量编码质量，以长 × 宽表示，默认值为 640 × 360。用户可以自行设置分辨率。
+
+<a id="ae0fb4d92e1ed877758bf05f4e0b8a9da"></a>
+
+### frameRate
+
+<ApiSignature>
+
+int agora::rtc::VideoEncoderConfiguration::frameRate
+
+</ApiSignature>
+
+视频编码的帧率(fps)，默认值为 15。
+
+<a id="af10ca07d888e2f33b34feb431300da69"></a>
+
+### bitrate
+
+<ApiSignature>
+
+int agora::rtc::VideoEncoderConfiguration::bitrate
+
+</ApiSignature>
+
+视频编码码率，单位为 bps。
+
+- `STANDARD_BITRATE`: (推荐) 标准码率模式。该模式下，视频的码率是基准码率的两倍。
+- `COMPATIBLE_BITRATE`: 适配码率模式。该模式下，视频码率与基准码率一致。直播时如果选择该模式，视频帧率可能会低于设置的值。
+
+<a id="ab3249ca88227aaf36f21681b9de7ced2"></a>
+
+### minBitrate
+
+<ApiSignature>
+
+int agora::rtc::VideoEncoderConfiguration::minBitrate
+
+</ApiSignature>
+
+最低编码码率，单位为 bps。
+
+SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。 因此如非对画质有特殊需求，声网建议不要修改该参数的值。
+
+:::info[注解]
+该参数仅适用于直播场景。
+:::
+
+<a id="acdd8e209a4e4dafceef5879988f39fb6"></a>
+
+### orientationMode
+
+<ApiSignature>
+
+[ORIENTATION_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#af3d825e24a1e5dcfb74279c69b81d0c7) agora::rtc::VideoEncoderConfiguration::orientationMode
+
+</ApiSignature>
+
+视频编码的方向模式。
+
+<a id="a491316b0de64bf930938404b113f062f"></a>
+
+### degradationPreference
+
+<ApiSignature>
+
+[DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae02c6d4b2848c21a502e4c1643d85ef6) agora::rtc::VideoEncoderConfiguration::degradationPreference
+
+</ApiSignature>
+
+带宽受限时，视频编码降级偏好。
+
+<a id="a1ca537cb6966901330bce3681194ceb5"></a>
+
+### mirrorMode
+
+<ApiSignature>
+
+[VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8f684b7ea22afd313ea9fbff6d6aea13) agora::rtc::VideoEncoderConfiguration::mirrorMode
+
+</ApiSignature>
+
+发送编码视频时是否开启镜像模式，只影响远端用户看到的视频画面。

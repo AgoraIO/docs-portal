@@ -1,0 +1,444 @@
+---
+title: 打断智能体
+_migration:
+  type: manual-mdx
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/doc/convoai/restful/user-guides/interrupt-agent
+  sourcePath: docs/convoai/user-guides/interrupt-agent.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 1 legacy MDX syntax signal(s).
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtc/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtc/homepage as local text.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtm2/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtm2/homepage as local text.
+---
+
+与智能体互动期间，你可能需要打断智能体发言来开启新一轮对话。声网对话式 AI 引擎支持通过以下两种方式打断智能体：
+
+- **语音打断**：系统根据用户的语音输入自动判断并打断智能体说话。
+- **手动打断**：通过调用 RESTful API 或客户端组件 API 主动发起打断请求，实现点击按钮或发送特定命令来打断智能体。
+
+本文介绍打断智能体的实现方式。
+
+## 语音打断
+
+声网对话式 AI 引擎支持开启优雅打断功能，开启后，用户与智能体互动时，支持基于语义判定用户当前是否结束发言，实现更自然的对话交互体验。
+
+:::info[信息]
+- 优雅打断为增值服务，开启后会收取费用，详见[计费说明](/zh-CN/api-reference/conversational-ai/rest-api/overview/billing)。
+- 当语义判定用户未结束发言时，会等待一段时间才最终判定对话结束，此时响应延时会有所增加。
+:::
+
+优雅打断功能默认关闭，你需要在调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 开启优雅打断。以 curl 为例：
+
+#### 请求示例
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
+  --header 'Authorization: agora token="007abcxxxxxxx123"' \
+  --data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "channel_name",
+    "token": "token",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": [
+      "123"
+    ],
+    "enable_string_uid": false,
+    "idle_timeout": 120,
+    // highlight-start
+    "turn_detection": {
+      "mode": "default",
+      "config": {
+        "end_of_speech": {
+          "mode": "semantic"
+          "semantic_config": {
+            "silence_duration_ms": 240,
+            "max_wait_ms": 3000
+          }
+        }
+      }
+    },
+    // highlight-end
+    "llm": {
+      "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+      "api_key": "xxx",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "您好，有什么可以帮您？",
+      "failure_message": "抱歉，我无法回答这个问题。",
+      "max_history": 32,
+      "params": {
+        "model": "abab6.5s-chat",
+        "max_token": 1024,
+        "userName": "Tomas"
+      }
+    },
+    "asr": {
+      "language": "zh-CN"
+    },
+    "tts": {
+      "vendor": "minimax",
+      "params": {
+        "group_id": "xxxx",
+        "key": "xxxx",
+        "model": "speech-01-turbo",
+        "voice_setting": {
+          "voice_id": "female-shaonv",
+          "speed": 1,
+          "vol": 1,
+          "pitch": 0,
+          "emotion": "happy"
+        },
+        "audio_setting": {
+          "sample_rate": 16000
+        }
+      },
+      "skip_patterns": [
+        1
+      ]
+    }
+  }
+}
+'
+```
+
+#### 响应示例
+
+请求成功时返回 200 状态码，响应体如下：
+
+```json
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "create_ts": 1737111452,
+  "status": "RUNNING"
+}
+```
+
+## 手动打断
+
+声网对话式 AI 引擎支持通过调用 RESTful API 或客户端组件 API 主动发起打断请求，从而实现点击按钮或发送特定命令来打断智能体。
+
+### 方案一：调用 RESTful API
+
+你可以调用 [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口主动发起打断请求。
+
+#### 请求示例
+
+以 curl 为例：
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
+  --header 'Authorization: agora token="007abcxxxxxxx123"' \
+  --data '{}'
+```
+
+#### 响应示例
+
+请求成功时返回 200 状态码，响应体如下：
+
+```json
+{
+  "agent_id": "1NT29XxxxxxxxxELWEHC8OS",
+  "channel": "test_channel",
+  "start_ts": 1744877089
+}
+```
+
+### 方案二：调用客户端组件 API
+
+声网提供一套灵活可扩展、标准化的对话式 AI 引擎客户端组件（以下简称组件）。该组件支持 iOS、Android、Web 平台，封装了多个场景化 API，你只需要调用这些 API 即可结合声网实时互动 (RTC) SDK 和实时消息 (RTM) SDK 的能力实现以下功能：
+
+- [打断智能体](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/interrupt-agent)
+- [实时字幕](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/realtime-sub)
+- [监听智能体相关事件](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/listen-agent-events)
+- [设置最佳音频参数](/zh-CN/api-reference/conversational-ai/rest-api/best-practice/audio-settings) （仅支持 Android 和 iOS）
+- [发送图片消息](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/send-multimodal-message)
+
+#### 前提条件
+
+开始前，请确保完成以下准备工作：
+
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+- 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
+- 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
+
+#### 集成组件
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+<Tabs defaultValue="maven" groupId="android-install-method" persist>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+在 `Podfile` 中添加如下依赖：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.9.0`：
+
+```text
+https://github.com/AgoraIO/agent-client-toolkit-swift.git
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="web-install-method" persist>
+<TabsList>
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
+
+根据你的项目类型安装组件依赖。
+
+- Vanilla JS / TypeScript：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0
+  ```
+
+- React：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  ```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
+
+#### 初始化组件
+
+为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
+
+```java tab="Android" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+val config = ConversationalAIAPIConfig(
+    rtcEngine = rtcEngineInstance,
+    rtmClient = rtmClientInstance,
+    enableLog = true
+)
+// 创建组件实例
+val api = ConversationalAIAPIImpl(config)
+```
+
+```swift tab="iOS" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+let config = ConversationalAIAPIConfig(
+    rtcEngine: rtcEngine,
+    rtmEngine: rtmEngine,
+    enableLog: true
+)
+/// 创建组件实例
+convoAIAPI = ConversationalAIAPIImpl(config: config)
+```
+
+```typescript tab="Web" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+ConversationalAIAPI.init({
+    rtcEngine,
+    rtmEngine,
+    })
+
+// 获取 API 实例（单例）
+const conversationalAIAPI = ConversationalAIAPI.getInstance()
+```
+
+#### 智能体加入频道
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+
+- `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
+- `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
+- `parameters.enable_metrics: true` —— （按需开启）接收智能体性能数据
+- `parameters.enable_error_message: true` —— （按需开启）接收智能体错误事件
+
+调用成功后，智能体会加入指定 RTC 频道，用户可以开始与智能体互动。
+
+#### 打断智能体
+
+调用 `interrupt` 方法，打断智能体。
+
+```kotlin tab="Android" tabGroup="language"
+api.interrupt("agentId") { error -> /* ... */ }
+```
+
+```swift tab="iOS" tabGroup="language"
+convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
+    if let error = error {
+        print("打断失败: \(error.message)")
+    } else {
+        print("打断成功")
+    }
+}
+```
+
+```typescript tab="Web" tabGroup="language"
+await conversationalAIAPI.interrupt(`${agent_rtc_uid}`)
+```
+
+#### 销毁组件实例
+
+结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
+
+```kotlin tab="Android" tabGroup="language"
+api.destroy()
+```
+
+```swift tab="iOS" tabGroup="language"
+convoAIAPI.destroy()
+```
+
+```typescript tab="Web" tabGroup="language"
+conversationalAIAPI.destroy()
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Conversational-AI-Demo" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/" />
+</Cards>
+
+### API 参考
+
+#### RESTful API
+
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
+- [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)
+
+#### 客户端组件 API
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`interrupt`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#interrupt)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#destroy)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`interrupt`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#interrupt)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#destroy)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`interrupt`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#interrupt)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#destroy)
+
+</TabsContent>
+</Tabs>

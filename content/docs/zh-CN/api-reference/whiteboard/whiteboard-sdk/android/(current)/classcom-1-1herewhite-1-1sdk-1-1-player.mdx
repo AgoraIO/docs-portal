@@ -1,0 +1,399 @@
+---
+title: com.herewhite.sdk.Player类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_player.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1_player.png has no meaningful alt or title
+        text; the converter used contextual alt text "com.herewhite.sdk.Player类 参考 图示".
+---
+
+类 com.herewhite.sdk.Player 继承关系图:
+
+![com.herewhite.sdk.Player类 参考 图示](/img/api-center-generated/4013dfa5e043-classcom_1_1herewhite_1_1sdk_1_1_player.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类，用于操作白板的回放。
+
+## 成员函数说明
+
+<a id="ac4d5da09b9af9aba4fa3b31dc26980f6"></a>
+
+### getPlaybackSpeed() [1/2]
+
+<ApiSignature>
+
+double com.herewhite.sdk.Player.getPlaybackSpeed()
+
+</ApiSignature>
+
+获取白板回放的倍速。
+
+:::info[自从]
+2.5.2
+:::
+
+:::info[注解]
+- 该方法为同步调用。
+- 该方法获取的是播放倍速。例如，当返回值为 `2.0` 时，表示当前得播放速度是原速的 2 倍。
+- 回放暂停时，返回值也不会为 0。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+白板回放的播放倍速。
+
+<a id="af654c75ee033ccb5d3636c83553b09a6"></a>
+
+### setPlaybackSpeed()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.setPlaybackSpeed(double *playbackSpeed*)
+
+</ApiSignature>
+
+设置白板回放的倍速。
+
+:::info[自从]
+2.5.2
+:::
+
+<ParameterList title="参数">
+<Parameter name="playbackSpeed">
+
+白板回放的倍速。取值必须大于 0，设为 1 表示按原速播放。
+
+</Parameter>
+</ParameterList>
+
+<a id="ad466294818d8245c43d32666c01848a1"></a>
+
+### getPlaybackSpeed() [2/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.getPlaybackSpeed(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Double &gt; *promise*)
+
+</ApiSignature>
+
+获取白板回放的倍速。
+
+:::info[自从]
+2.5.2
+:::
+
+:::info[注解]
+- 该方位为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ac4d5da09b9af9aba4fa3b31dc26980f6)[1/2] 获取播放速度。
+- 该方法获取的是播放倍速。例如，当返回值为 `2.0` 时，表示当前得播放速度是原速的 2 倍。
+- 回放暂停时，返回值也不会为 0。
+:::
+
+<ParameterList title="参数">
+<Parameter name="promise">
+
+Promise&lt;Double&gt; 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlaybackSpeed` 的调用结果：
+
+- 如果获取成功，将返回白板回放的倍速。
+- 如果获取失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a694d6ad377bc1572de892f0139b45e76"></a>
+
+### play()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.play()
+
+</ApiSignature>
+
+开始白板回放。
+
+暂停回放后，也可以调用该方法继续白板回放。
+
+<a id="a0dd55afd7520e8698da247b52d3c2127"></a>
+
+### pause()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.pause()
+
+</ApiSignature>
+
+暂停白板回放。
+
+<a id="a97a63621cc47b043e577e6c472280ed3"></a>
+
+### stop()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.stop()
+
+</ApiSignature>
+
+停止白板回放。
+
+白板回放停止后，[`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 资源会被释放。如果想要重新播放，需要重新初始化 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例。
+
+<a id="a2cdff830a4a940a377ddffb97fbc54de"></a>
+
+### seekToScheduleTime()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.seekToScheduleTime(long *seekTime*)
+
+</ApiSignature>
+
+设置白板回放的播放位置。
+
+白板回放的起始时间点为 0，成功调用该方法后，白板回放会在指定位置开始播放。
+
+<ParameterList title="参数">
+<Parameter name="seekTime">
+
+播放进度，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="a4b611db510d583279ad3aabd6a58bfc5"></a>
+
+### setObserverMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.setObserverMode([PlayerObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-observer-mode) *mode*)
+
+</ApiSignature>
+
+设置白板回放的查看模式。
+
+<ParameterList title="参数">
+<Parameter name="mode">
+
+白板回放的查看模式，详见 [`PlayerObserverMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-observer-mode)。
+
+</Parameter>
+</ParameterList>
+
+<a id="aedec2772fc9d3ab9300da2c207e96b1e"></a>
+
+### getPlayerPhase()
+
+<ApiSignature>
+
+[PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) com.herewhite.sdk.Player.getPlayerPhase()
+
+</ApiSignature>
+
+获取白板回放的阶段。
+
+:::info[自从]
+2.4.0
+:::
+
+在 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 生命周期内，你可以调用该方法获取白板回放当前所处的阶段。
+
+:::info[注解]
+- 该方法为同步调用。
+- 成功调用 [`stop`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3)、[`play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) 或 [`pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) 等方法均会影响白板回放的阶段，但是通过该方法无法立即获取最新的白板回放阶段。 此时，你可以调用 [`getPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79) 获取最新的回放阶段。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+白板回放的阶段，详见 [`PlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase)。
+
+<a id="a70282d3b516dafb6852755e7c7c9aa79"></a>
+
+### getPhase()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.getPhase(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) &gt; *promise*)
+
+</ApiSignature>
+
+获取白板回放的阶段。
+
+在 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 生命周期内，你可以调用该方法获取白板回放当前所处的阶段。
+
+:::info[注解]
+- 该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) 获取回放阶段。
+- 成功调用 [`stop`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3)、[`play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) 或 [`pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) 等方法后，你无法通过 [`getPlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) 立即获取最新的白板回放阶段。 此时，你可以调用 [`getPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79)。
+:::
+
+<ParameterList title="参数">
+<Parameter name="promise">
+
+`Promise<PlayerPhase>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPhase` 方法的调用结果：
+
+- 如果方法调用成功，将返回白板回放的阶段。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="ad18a956ac130dc58b2b3220e25864efd"></a>
+
+### getPlayerState() [1/2]
+
+<ApiSignature>
+
+[PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) com.herewhite.sdk.Player.getPlayerState()
+
+</ApiSignature>
+
+获取白板回放的状态。
+
+:::info[自从]
+2.4.0
+:::
+
+:::info[注解]
+- 该方法为同步调用。
+- 如果白板回放处于 `waitingFirstFrame` 阶段，则该方法返回 `null`。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+白板回放的状态，详见 [`PlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state)。
+
+<a id="afb3235211d0f04c675a4670e8415abaa"></a>
+
+### getPlayerState() [2/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.getPlayerState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) &gt; *promise*)
+
+</ApiSignature>
+
+获取白板回放的状态。
+
+:::info[注解]
+- 该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad18a956ac130dc58b2b3220e25864efd)[1/2] 获取。
+- 如果白板回放处于 `waitingFirstFrame` 阶段，则该方法返回 `null`。
+:::
+
+<ParameterList title="参数">
+<Parameter name="promise">
+
+`Promise<PlayerState>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlayerState` 方法调用的结果：
+
+- 如果方法调用成功，将返回白板回放状态，详见 [`PlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state)。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a180372d211ae3760cbc0c3f9c74e0b6b"></a>
+
+### getPlayerTimeInfo() [1/2]
+
+<ApiSignature>
+
+[PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) com.herewhite.sdk.Player.getPlayerTimeInfo()
+
+</ApiSignature>
+
+获取白板回放的时间信息。
+
+:::info[自从]
+2.4.0
+:::
+
+该方法获取的时间信息，包含当前的播放进度，回放的总时长，以及回放的起始时间，单位为毫秒。
+
+:::info[注解]
+- 该方法为同步调用。
+- 该方法获取的当前播放进度可能不准确。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+白板回放的时间信息，详见 [`PlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info)。
+
+<a id="ad3aa2fc1c1f96fb580d2c8010e178c19"></a>
+
+### getPlayerTimeInfo() [2/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.getPlayerTimeInfo(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [PlayerTimeInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) &gt; *promise*)
+
+</ApiSignature>
+
+获取白板回放的时间信息，该方法为异步调用。
+
+该方法获取的时间信息，包含当前的播放进度，回放的总时长，以及回放的起始时间，单位为毫秒。
+
+:::info[注解]
+该方法为异步调用。我们推荐你仅在调试或问题排查时使用。一般情况下可以使用同步方法 [`getPlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a180372d211ae3760cbc0c3f9c74e0b6b) 进行获取。
+:::
+
+<ParameterList title="参数">
+<Parameter name="promise">
+
+`Promise<PlayerTimeInfo>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getPlayerTimeInfo` 方法的调用结果：
+
+- 如果方法调用成功，将返回白板回放的时间信息，详见 [`PlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info)。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a8ad1cf8a6b7eb05f1c07058a2590bf5f"></a>
+
+### addPlayerListener()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.addPlayerListener(@NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) *playerListener*)
+
+</ApiSignature>
+
+添加白板回放的回调。
+
+<ParameterList title="参数">
+<Parameter name="playerListener">
+
+白板回放的回调。详见 [`PlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a3086a2d58fb3b24ad47a6d29e4e3d05d"></a>
+
+### removePlayerListener()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Player.removePlayerListener(@NonNull [PlayerListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener) *playerListener*)
+
+</ApiSignature>
+
+删除白板回放的回调。
+
+<ParameterList title="参数">
+<Parameter name="playerListener">
+
+白板回放的回调。详见 [`PlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-player-listener)。
+
+</Parameter>
+</ParameterList>

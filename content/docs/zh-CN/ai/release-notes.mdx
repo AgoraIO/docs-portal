@@ -105,7 +105,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 #### 响应状态码优化
 
-该版本调整了 RESTful API 的响应状态码和错误原因（`reason`）定义，新增了 `401`、`429` 和 `500` 等状态码，并新增 `ServiceNotEnabled`、`AccountSuspended` 和 `ResourceAllocationFailed` 等 `reason`，同时将原 `InvalidRequest` 细分为 `InvalidRequestBody`、`MissingRequiredField` 和 `InvalidFieldValue`。详见[响应状态码](/zh-CN/ai/api/response-code)。
+该版本调整了 RESTful API 的响应状态码和错误原因（`reason`）定义，新增了 `401`、`429` 和 `500` 等状态码，并新增 `ServiceNotEnabled`、`AccountSuspended` 和 `ResourceAllocationFailed` 等 `reason`，同时将原 `InvalidRequest` 细分为 `InvalidRequestBody`、`MissingRequiredField` 和 `InvalidFieldValue`。详见[响应状态码](/zh-CN/api-reference/conversational-ai/rest-api/api/response-code)。
 
 这项变更会影响依赖 `reason` 做错误处理的集成逻辑。若你的业务中存在基于原 `InvalidRequest` 的分支判断、重试策略或告警规则，需要按新返回值更新兼容逻辑。
 
@@ -219,23 +219,23 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 <TabsContent value="android">
 
-- [`onAgentListeningChanged`](/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentspeakingchanged)
+- [`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentspeakingchanged)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`onAgentListeningChanged`](/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentspeakingchanged)
+- [`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentspeakingchanged)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-[`EConversationalAIAPIEvents`](/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents) 新增
+[`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents) 新增
 
 - `AGENT_LISTENING_CHANGED`
 - `AGENT_THINKING_CHANGED`
@@ -559,41 +559,41 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 <TabsContent value="android">
 
-- [`chat`](/api-ref/convoai/android/android-component/iconversationalaiapi#chat)
-- [`onMessageReceiptUpdated`](/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessagereceiptupdated)
-- [`onMessageError`](/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessageerror)
-- [`ChatMessage`](/api-ref/convoai/android/android-component/struct#chatmessage)
-- [`ChatMessageType`](/api-ref/convoai/android/android-component/struct#chatmessagetype)
-- [`ImageMessage`](/api-ref/convoai/android/android-component/struct#imagemessage)
-- [`MessageReceipt`](/api-ref/convoai/android/android-component/struct#messagereceipt)
-- [`MessageError`](/api-ref/convoai/android/android-component/struct#messageerror)
+- [`chat`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#chat)
+- [`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onmessagereceiptupdated)
+- [`onMessageError`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onmessageerror)
+- [`ChatMessage`](/zh-CN/api-reference/conversational-ai/android/struct#chatmessage)
+- [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/android/struct#chatmessagetype)
+- [`ImageMessage`](/zh-CN/api-reference/conversational-ai/android/struct#imagemessage)
+- [`MessageReceipt`](/zh-CN/api-reference/conversational-ai/android/struct#messagereceipt)
+- [`MessageError`](/zh-CN/api-reference/conversational-ai/android/struct#messageerror)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`chat`](/api-ref/convoai/ios/ios-component/conversationalaiapi#chat)
-- [`onMessageReceiptUpdated`](/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessagereceiptupdated)
-- [`onMessageError`](/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessageerror)
-- [`ChatMessage`](/api-ref/convoai/ios/ios-component/struct#chatmessage)
-- [`ChatMessageType`](/api-ref/convoai/ios/ios-component/enum#chatmessagetype)
-- [`ImageMessage`](/api-ref/convoai/ios/ios-component/struct#imagemessage)
-- [`MessageReceipt`](/api-ref/convoai/ios/ios-component/struct#messagereceipt)
-- [`MessageError`](/api-ref/convoai/ios/ios-component/struct#messageerror)
+- [`chat`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#chat)
+- [`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onmessagereceiptupdated)
+- [`onMessageError`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onmessageerror)
+- [`ChatMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#chatmessage)
+- [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)
+- [`ImageMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#imagemessage)
+- [`MessageReceipt`](/zh-CN/api-reference/conversational-ai/ios/struct#messagereceipt)
+- [`MessageError`](/zh-CN/api-reference/conversational-ai/ios/struct#messageerror)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`chat`](/api-ref/convoai/typescript/web-component/conversationalaiapi#chat)
-- [`TMessageReceipt`](/api-ref/convoai/typescript/web-component/struct#tmessagereceipt)
-- [`EChatMessagePriority`](/api-ref/convoai/typescript/web-component/enum#echatmessagepriority)
-- [`EChatMessageType`](/api-ref/convoai/typescript/web-component/enum#echatmessagetype)
-- [`IChatMessageBase`](/api-ref/convoai/typescript/web-component/struct#ichatmessagebase)
-- [`IChatMessageImage`](/api-ref/convoai/typescript/web-component/struct#ichatmessageimage)
-- [`EConversationalAIAPIEvents`](/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents) 新增 `MESSAGE_RECEIPT_UPDATED` 和 `MESSAGE_ERROR` 事件
-- [`EModuleType`](/api-ref/convoai/typescript/web-component/enum#emoduletype) 新增 `CONTEXT` 枚举值
-- [`EAgentState`](/api-ref/convoai/typescript/web-component/enum#eagentstate) 新增 `SILENT` 枚举值
+- [`chat`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#chat)
+- [`TMessageReceipt`](/zh-CN/api-reference/conversational-ai/web/struct#tmessagereceipt)
+- [`EChatMessagePriority`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagepriority)
+- [`EChatMessageType`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagetype)
+- [`IChatMessageBase`](/zh-CN/api-reference/conversational-ai/web/struct#ichatmessagebase)
+- [`IChatMessageImage`](/zh-CN/api-reference/conversational-ai/web/struct#ichatmessageimage)
+- [`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents) 新增 `MESSAGE_RECEIPT_UPDATED` 和 `MESSAGE_ERROR` 事件
+- [`EModuleType`](/zh-CN/api-reference/conversational-ai/web/enum#emoduletype) 新增 `CONTEXT` 枚举值
+- [`EAgentState`](/zh-CN/api-reference/conversational-ai/web/enum#eagentstate) 新增 `SILENT` 枚举值
 
 </TabsContent>
 </Tabs>
@@ -636,9 +636,9 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
     - `parameters.data_channel`
     - `parameters.enable_error_message`
 - 客户端组件 API：
-    - [Android](/api-ref/convoai/android/android-component/overview)
-    - [iOS](/api-ref/convoai/ios/ios-component/overview)
-    - [Web](/api-ref/convoai/typescript/web-component/overview)
+    - [Android](/zh-CN/api-reference/conversational-ai/android/overview)
+    - [iOS](/zh-CN/api-reference/conversational-ai/ios/overview)
+    - [Web](/zh-CN/api-reference/conversational-ai/web/overview)
 
 ## v1.5
 

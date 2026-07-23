@@ -1628,6 +1628,38 @@ export function getOpenApiPrerenderPaths() {
   );
 }
 
+export function getOpenApiReferenceBackLink(locale: AppLocale) {
+  return locale === 'zh-CN'
+    ? {
+        href: '/zh-CN/api-reference/api',
+        label: '参考文档',
+      }
+    : {
+        href: '/en/api-reference',
+        label: 'API Reference',
+      };
+}
+
+export function findOpenApiLaneByUrl(
+  locale: AppLocale,
+  tab: string,
+  activePath: string,
+) {
+  return getOpenApiLanes()
+    .filter(
+      (lane) =>
+        lane.tab === tab &&
+        getOpenApiLaneLocales(lane).includes(locale) &&
+        (activePath === lane.parentUrl[locale] ||
+          activePath.startsWith(`${lane.parentUrl[locale]}/`)),
+    )
+    .sort(
+      (left, right) =>
+        right.parentUrl[locale].length - left.parentUrl[locale].length,
+    )
+    .at(0);
+}
+
 export function resolveOpenApiEndpointRoute(
   locale: AppLocale,
   tab: string,

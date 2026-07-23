@@ -1,10 +1,19 @@
 ---
-title: "音频采集"
-description: "音频采集 API reference."
+title: 音频采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_audio_capture
+  sourcePath: html-docs/rtc/macOS/API/toc_audio_capture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustLoopbackSignalVolume:
 
@@ -12,33 +21,41 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustLoopbackSignalVolume:(NSInteger)volume NS_SWIFT_NAME(adjustLoopbackSignalVolume(_:));
 ```
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__detailed_desc"></a>
 
-调用 [enableLoopbackRecording:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 后，可以调用该方法调节声卡采集信号的音量。
+调用 [enableLoopbackRecording\:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 后，可以调用该方法调节声卡采集信号的音量。
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 混音音量。取值范围为 0 到 100。（默认值为 100，表示原始音量。）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustRecordingSignalVolume:
 
@@ -46,7 +63,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)adjustRecordingSignalVolume:(NSInteger)volume NS_SWIFT_NAME(adjustRecordingSignalVolume(_:));
 ```
 
@@ -64,7 +81,9 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用户的音量。取值范围为 [0,400]。
 
@@ -72,17 +91,23 @@ description: "音频采集 API reference."
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableInEarMonitoring:
 
@@ -90,7 +115,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_enableinearmonitoring__prototype"></a>
 
-```objectivec
+```text
 - (int)enableInEarMonitoring:(BOOL)enabled NS_SWIFT_NAME(enable(inEarMonitoring:));
 ```
 
@@ -98,8 +123,8 @@ description: "音频采集 API reference."
 
 你可以调用该方法启用或关闭耳返监听功能。
 
-:::info[注]
-[enableInEarMonitoring:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableinearmonitoring) 仅在使用有线或蓝牙耳机时有效。
+:::note
+注： [enableInEarMonitoring:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableinearmonitoring) 仅在使用有线或蓝牙耳机时有效。
 :::
 
 <a id="api_irtcengine_enableinearmonitoring__timing"></a>
@@ -112,40 +137,49 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用耳返监听功能：
 
 - YES：启用耳返监听功能。
 - NO：（默认）关闭耳返监听功能。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_enableinearmonitoring__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -8：请确保当前音频路由为蓝牙或耳机。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
 
-## enableInEarMonitoring:includeAudioFilters:
+<a id="ariaid-title5"></a>
+
+## enableInEarMonitoring\:includeAudioFilters:
 
 启用或关闭耳返监听功能。
 
 <a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
 
-```objectivec
+```text
 - (int)enableInEarMonitoring:(BOOL)enabled includeAudioFilters:(AgoraEarMonitoringFilterType)includeAudioFilters NS_SWIFT_NAME(enable(inEarMonitoring:includeAudioFilters:));
 ```
 
 <a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
 
-:::info[注]
-你必须使用有线或蓝牙耳机才能听到耳返监听效果。
+:::note
+注： 你必须使用有线或蓝牙耳机才能听到耳返监听效果。
 :::
 
 <a id="api_irtcengine_enableinearmonitoring2__timing"></a>
@@ -158,29 +192,40 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否启用耳返监听功能。
 
 - YES：启用耳返监听。
 - NO：（默认）关闭耳返监听。
 
-#### `includeAudioFilters`
+</Parameter>
+<a id="includeaudiofilters"></a>
+<Parameter name="includeAudioFilters">
 
 耳返监听的音频滤波器类型，详见 [AgoraEarMonitoringFilterType](/zh-CN/api-reference/rtc/macos/enum-earmonitoringfiltertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -8：请确保当前音频路由为蓝牙或有线耳机。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
+
+<a id="ariaid-title6"></a>
 
 ## enableLocalAudio:
 
@@ -188,18 +233,19 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_enablelocalaudio__prototype"></a>
 
-```objectivec
+```text
 - (int)enableLocalAudio:(BOOL)enabled NS_SWIFT_NAME(enableLocalAudio(_:));
 ```
 
 <a id="api_irtcengine_enablelocalaudio__detailed_desc"></a>
 
-[enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio) 方法用于启用或关闭本地音频采集功能。默认情况下，加入频道时会启用音频功能。调用该方法可以停止或重新启动本地音频采集。 该方法与 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
+[enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio) 方法用于启用或关闭本地音频采集功能。默认情况下，加入频道时会启用音频功能。调用该方法可以停止或重新启动本地音频采集。
+该方法与 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
 
-- enableLocalAudio:：关闭或重新启用本地音频采集和处理。如果使用该方法关闭或重新启用本地音频采集，可能会导致远端音频播放出现短暂中断。
-- muteLocalAudioStream:：仅停止或恢复发送本地音频流，不影响音频采集状态。
+- [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio)：关闭或重新启用本地音频采集和处理。如果使用该方法关闭或重新启用本地音频采集，可能会导致远端音频播放出现短暂中断。
+- [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：仅停止或恢复发送本地音频流，不影响音频采集状态。
 
-该方法不会影响接收远端音频流。将 `enabled` 设为 NO 适用于只接收远端音频而不发送本地音频的场景。 你可以在加入频道前或加入频道后调用该方法。在加入频道前调用时，仅设置设备状态，加入频道后立即生效。
+该方法不会影响接收远端音频流。将 `enabled` 设为 NO 适用于只接收远端音频而不发送本地音频的场景。你可以在加入频道前或加入频道后调用该方法。在加入频道前调用时，仅设置设备状态，加入频道后立即生效。
 
 <a id="api_irtcengine_enablelocalaudio__scenario"></a>
 
@@ -217,36 +263,44 @@ description: "音频采集 API reference."
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:localAudioStateChanged:reason:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped` （0）或 `AgoraAudioLocalStateRecording` （1）。
+成功调用该方法后，SDK 会触发 [rtcEngine\:localAudioStateChanged\:reason:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `AgoraAudioLocalStateStopped`（0）或 `AgoraAudioLocalStateRecording`（1）。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 - YES：（默认）重新启用本地音频功能，即启动本地音频采集设备（例如麦克风）。
 - NO：关闭本地音频功能，即停止本地音频采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableloopbackrecording"></a>
 
-## enableLoopbackRecording:deviceName:
+<a id="ariaid-title7"></a>
+
+## enableLoopbackRecording\:deviceName:
 
 启用声卡回采功能。
 
 <a id="api_irtcengine_enableloopbackrecording__prototype"></a>
 
-```objectivec
+```text
 - (int)enableLoopbackRecording:(BOOL)enabled deviceName:(NSString* _Nullable)deviceName NS_SWIFT_NAME(enableLoopbackRecording(_:deviceName:));
 ```
 
@@ -254,46 +308,58 @@ description: "音频采集 API reference."
 
 如果你启用了声卡回采功能，声卡的输出会被混入发送到远端的音频流中。
 
-:::info[注]
-- macOS 系统的默认声卡不支持录音功能。从 v4.5.0 起，当你首次调用该方法时，SDK 会自动安装由声网开发的内置虚拟声卡 AgoraALD。安装成功后，音频路由会自动切换到虚拟声卡，并使用其进行音频采集。
+:::note
+注：
+
+- macOS 系统的默认声卡不支持录音功能。从 v4.5.0 起，当你首次调用该方法时，SDK 会自动安装由声网开发的内置虚拟声卡 `AgoraALD`。安装成功后，音频路由会自动切换到虚拟声卡，并使用其进行音频采集。
 - 你可以在加入频道前或加入频道后调用该方法。
-- 如果你调用 disableAudio 方法禁用了音频模块，音频采集也会被禁用。如果你需要启用音频采集，请先调用 enableAudio 方法启用音频模块，然后再调用 enableLoopbackRecording:deviceName: 方法。
+- 如果你调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用了音频模块，音频采集也会被禁用。如果你需要启用音频采集，请先调用 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio) 方法启用音频模块，然后再调用 [enableLoopbackRecording\:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording) 方法。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否启用声卡回采功能。
 
 - YES：启用声卡采集。你可以在系统的 **Audio Devices &gt; Output** 中找到虚拟声卡的名称。
 - NO：禁用声卡采集。虚拟声卡的名称不会显示在系统的 **Audio Devices &gt; Output** 中。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 虚拟声卡的设备名称。默认值为 nil，表示使用 `AgoraALD` 进行声卡回采。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableloopbackrecording__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableloopbackrecordingex"></a>
 
-## enableLoopbackRecordingEx:deviceName:connection:
+<a id="ariaid-title8"></a>
+
+## enableLoopbackRecordingEx\:deviceName\:connection:
 
 启用回环音频采集。
 
 <a id="api_irtcengineex_enableloopbackrecordingex__prototype"></a>
 
-```objectivec
+```text
 - (int)enableLoopbackRecordingEx:(BOOL)enabled
                       deviceName:(NSString* _Nullable)deviceName
                       connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(enableLoopbackRecordingEx(_:deviceName:connection:));
@@ -303,8 +369,8 @@ description: "音频采集 API reference."
 
 启用该方法后，声卡的输出会被混入发送到远端的音频流中。
 
-:::info[注]
-该方法仅支持使用一个声卡进行音频采集。
+:::note
+注： 该方法仅支持使用一个声卡进行音频采集。
 :::
 
 <a id="api_irtcengineex_enableloopbackrecordingex__scenario"></a>
@@ -317,32 +383,44 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-4"></a>
+<Parameter name="enabled">
 
 是否启用回环音频采集：
 
 - YES：启用回环音频采集。
 - NO：（默认）关闭回环音频采集。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 虚拟声卡的设备名称。默认值为 nil，表示使用 `AgoraALD` 进行回环音频采集。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息，详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableloopbackrecordingex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
+
+<a id="ariaid-title9"></a>
 
 ## muteRecordingSignal:
 
@@ -350,7 +428,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_muterecordingsignal__prototype"></a>
 
-```objectivec
+```text
 - (int)muteRecordingSignal:(BOOL)muted NS_SWIFT_NAME(muteRecordingSignal(_:));
 ```
 
@@ -373,22 +451,30 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `muted`
+<ParameterList>
+<a id="muted"></a>
+<Parameter name="muted">
 
 - YES：静音录制信号。
 - NO：（默认）不静音录制信号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setInEarMonitoringVolume:
 
@@ -396,7 +482,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
 
-```objectivec
+```text
 - (int)setInEarMonitoringVolume:(NSInteger)volume NS_SWIFT_NAME(setInEarMonitoringVolume(_:));
 ```
 
@@ -412,7 +498,9 @@ description: "音频采集 API reference."
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 用户的音量。取值范围为 [0,400]。
 
@@ -420,13 +508,18 @@ description: "音频采集 API reference."
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数设置不合法，例如耳返音量超出有效范围（小于 0 或大于 400）。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

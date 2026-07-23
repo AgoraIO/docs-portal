@@ -8,7 +8,7 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 
 ### 课堂管理
 
-通过[声网频道管理服务](/doc/rtc/restful/channel-management/operations/get-user-property)查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
+通过[声网频道管理服务](/zh-CN/api-reference/api-ref/rtc/query-user-status)查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
 
 ### 课前设备和网络检测
 
@@ -23,7 +23,7 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 声网 RTC 4.0.0 教育特殊版 SDK 作为一个分支版本，与[声网 RTC SDK](/zh-CN/realtime-media/rtc) 功能大体相似，主要新增了一些为教育场景定制的功能。你可以[联系技术支持](https://ticket.shengwang.cn)获取声网 RTC 4.0.0 教育特殊版 SDK。对于绝大部分功能，你可以直接参考声网 RTC SDK 的官网文档：
 
 - [快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)
-- [API 参考](/api-ref/rtc//API/rtc_api_overview)
+- [API 参考](/zh-CN/api-reference/rtc/android/rtc-api-overview)
 - [RTC GitHub 示例项目](https://github.com/AgoraIO/API-Examples/)
 
 ### 实时消息互动
@@ -33,34 +33,34 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 - [云信令 SDK 下载地址](/zh-CN/api-reference/sdks?product=signaling)
 - [云信令 GitHub 示例项目](https://github.com/AgoraIO/RTM)
 
-- [云信令 SDK 集成指引](https://docs.agora.io/cn/Real-time-Messaging/messaging_android?platform=Android)
-- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+- 云信令 SDK 集成指引
+- 云信令 API 参考
 
-- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_ios?platform=iOS)
-- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=iOS)
+- 云信令 SDK 集成指引
+- 云信令 API 参考
 
-- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_mac?platform=macOS)
-- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=macOS)
+- 云信令 SDK 集成指引
+- 云信令 API 参考
 
-- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_cpp_windows?platform=Windows)
-- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=Windows)
+- 云信令 SDK 集成指引
+- 云信令 API 参考
 
 ### 互动白板
 
 教师在白板上涂鸦、上传文件（PPT、Word 和 PDF）或播放视频，有助于提炼教学重点，帮助学生理解或记忆。学生也可使用白板与老师进行实时互动。详见：
 
 - [下载互动白板 SDK](/zh-CN/api-reference/sdks?product=whiteboard)
-- [开启和配置互动白板服务](/doc/whiteboard//whiteboard-sdk/get-started/enable-service)
+- [开启和配置互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)
 
 ## 音频优化
 
 ### 多人实时合唱
 
-结合[声网互动白板 SDK](/zh-CN/api-reference/sdks?product=whiteboard)、[实现歌词组件](/doc/online-ktv//implementation/lyrics-scoring#实现歌词组件) 实现多人实时合唱。延时低至 64 ms，最多 6 人参与实时合唱（旁听无限）。
+结合[声网互动白板 SDK](/zh-CN/api-reference/sdks?product=whiteboard)、实现歌词组件 实现多人实时合唱。延时低至 64 ms，最多 6 人参与实时合唱（旁听无限）。
 
 ### 高音质
 
-声网支持 48 kHz 采样率、192 Kbps 码率高度还原音质效果，提供音乐教学场景专属音频属性，详见[设置音频编码属性](/doc/rtc//basic-features/audio-profile)。
+声网支持 48 kHz 采样率、192 Kbps 码率高度还原音质效果，提供音乐教学场景专属音频属性，详见[设置音频编码属性](/zh-CN/realtime-media/rtc/build/audio/audio-profile)。
 
 ### 降噪模式
 
@@ -72,31 +72,31 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 
 ### 播放音乐文件或氛围音
 
-在教学时播放本地 MP3、AAC、WAV 等格式的音乐文件作为人声的背景音乐，或者添加效果音，例如鼓掌、欢呼、口哨、嘘声、尖叫等，详见[音效文件播放](/api-ref/rtc//API/toc_audio_effect_file#api_irtcengine_geteffectsvolume)。
+在教学时播放本地 MP3、AAC、WAV 等格式的音乐文件作为人声的背景音乐，或者添加效果音，例如鼓掌、欢呼、口哨、嘘声、尖叫等，详见[音效文件播放](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_geteffectsvolume)。
 
 ### 空间塑造
 
-通过空间混响效果营造一定的空间氛围，让人声仿佛从特定的场地中传出，例如 KTV、演唱会、录音棚等，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+通过空间混响效果营造一定的空间氛围，让人声仿佛从特定的场地中传出，例如 KTV、演唱会、录音棚等，详见[人声音效](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#setaudioeffectpreset)。
 
 ### 歌唱美声
 
-设置本地语音的歌唱美声效果，在保留歌声原有特点的前提下，根据男女声各自的特点美化歌声并添加混响效果，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+设置本地语音的歌唱美声效果，在保留歌声原有特点的前提下，根据男女声各自的特点美化歌声并添加混响效果，详见[人声音效](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#setaudioeffectpreset)。
 
 ### 虚拟立体声
 
-虚拟立体声音效是将单声道的音轨渲染出立体声的效果，使远端用户可以听到有空间感的声音，适合音乐教学场景下的效果提升，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+虚拟立体声音效是将单声道的音轨渲染出立体声的效果，使远端用户可以听到有空间感的声音，适合音乐教学场景下的效果提升，详见[人声音效](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#setaudioeffectpreset)。
 
 ### 设备音输入
 
-将麦克风或 MIDI 输入的乐器声音在课堂中播放，可在课堂听到添加美声、美音、音效、混响后的声音效果，详见[音频采集](/api-ref/rtc//API/toc_audio_capture)。
+将麦克风或 MIDI 输入的乐器声音在课堂中播放，可在课堂听到添加美声、美音、音效、混响后的声音效果，详见[音频采集](/zh-CN/api-reference/rtc/android/audio/audio-capture)。
 
 ### 频谱输出
 
-可分别将播放端接收到的多路音量的大小以及数字音频信号在各频点的能量强度值进行采样，并进行图形化呈现，从而增加互动的趣味性，同时可根据输出的具体参数进行歌唱打分。详见[音频频谱](/api-ref/rtc//API/toc_audio_spectrum)。
+可分别将播放端接收到的多路音量的大小以及数字音频信号在各频点的能量强度值进行采样，并进行图形化呈现，从而增加互动的趣味性，同时可根据输出的具体参数进行歌唱打分。详见[音频频谱](/zh-CN/api-reference/rtc/android/audio/audio-spectrum)。
 
 ### 自定义音频采集和渲染
 
-声网 SDK 通常会启动默认的音频模块进行音频采集和渲染。当默认的音频模块无法满足开发需求，声网支持自定义音频采集，开发者可以对原始音频数据进行处理，进行自定义操作，例如外接非标设备和音频文件。详见[自定义音频采集和渲染](/api-ref/rtc//API/toc_audio_custom_capturenrendering)。
+声网 SDK 通常会启动默认的音频模块进行音频采集和渲染。当默认的音频模块无法满足开发需求，声网支持自定义音频采集，开发者可以对原始音频数据进行处理，进行自定义操作，例如外接非标设备和音频文件。详见[自定义音频采集和渲染](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering)。
 
 ## 视频优化
 
@@ -147,11 +147,11 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 
 ### 双摄像头支持
 
-支持同时开启移动端设备前后摄像头和桌面设备外接摄像头，实现多视角演示，便于辅导操作细节。详见 [`VideoSourceType`](/api-ref/rtc//API/enum_videosourcetype)。
+支持同时开启移动端设备前后摄像头和桌面设备外接摄像头，实现多视角演示，便于辅导操作细节。详见 [`VideoSourceType`](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
 ### 客户端播放媒体文件
 
-教师可通过[媒体播放器 API](/api-ref/rtc//API/toc_mediaplayer_initialize) 在客户端播放本地或在线的媒体资源，将媒体资源同步分享给声网频道内的远端学生观看和收听。
+教师可通过[媒体播放器 API](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-initialize) 在客户端播放本地或在线的媒体资源，将媒体资源同步分享给声网频道内的远端学生观看和收听。
 
 ### 服务端播放在线媒体流
 
@@ -170,7 +170,7 @@ description: "了解如何快速接入在线音乐课堂，完成环境准备、
 
 ### 实时美颜
 
-通过声网 RTC SDK 提供的 API 实现基础美颜功能，调整美白、磨皮、祛痘、红润效果等美颜参数，实现自然的美颜效果。详见[美颜 API](/api-ref/rtc//API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions)。
+通过声网 RTC SDK 提供的 API 实现基础美颜功能，调整美白、磨皮、祛痘、红润效果等美颜参数，实现自然的美颜效果。详见[美颜 API](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions)。
 
 ### 实时审核（鉴黄）
 

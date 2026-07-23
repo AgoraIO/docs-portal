@@ -1,10 +1,18 @@
 ---
-title: "AgoraVirtualBackgroundSource"
-description: "设置自定义背景。"
+title: AgoraVirtualBackgroundSource
+description: 设置自定义背景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_virtualbackgroundsource
+  sourcePath: html-docs/rtc/macOS/API/class_virtualbackgroundsource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_virtualbackgroundsource__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraVirtualBackgroundSource : NSObject
 @property(nonatomic, assign) AgoraVirtualBackgroundSourceType backgroundSourceType NS_SWIFT_NAME(backgroundSourceType);
 @property(nonatomic, assign) NSUInteger color NS_SWIFT_NAME(color);
@@ -17,33 +25,44 @@ __attribute__((visibility("default"))) @interface AgoraVirtualBackgroundSource :
 
 ## 属性
 
-### `backgroundSourceType`
+<ParameterList>
+<a id="backgroundsourcetype"></a>
+<Parameter name="backgroundSourceType">
 
 自定义背景的类型。详见 [AgoraVirtualBackgroundSourceType](/zh-CN/api-reference/rtc/macos/enum-backgroundsourcetype)。
 
-### `color`
+</Parameter>
+<a id="color"></a>
+<Parameter name="color">
 
 自定义背景图像的颜色。颜色格式为 RGB 十六进制整数，不带 # 符号，例如浅粉色为 0xFFB6C1。默认值为 0xFFFFFF（白色）。取值范围为 [0x000000, 0xFFFFFF]。如果取值无效，SDK 会将原始背景图替换为白色背景图。
 
-:::info[注]
-该参数仅适用于以下类型的自定义背景：
+:::note
+注： 该参数仅适用于以下类型的自定义背景：
 
-- AgoraVirtualBackgroundColor：背景图为传入颜色的纯色图像。
-- AgoraVirtualBackgroundImg：如果 source 中的图像具有透明背景，则透明部分将使用该参数传入的颜色填充。
+- `AgoraVirtualBackgroundColor`：背景图为传入颜色的纯色图像。
+- `AgoraVirtualBackgroundImg`：如果 `source` 中的图像具有透明背景，则透明部分将使用该参数传入的颜色填充。
 :::
 
-### `source`
+</Parameter>
+<a id="source"></a>
+<Parameter name="source">
 
 自定义背景图像的本地绝对路径。支持 PNG、JPG、MP4、AVI、MKV 和 FLV 格式。如果路径无效，SDK 将使用原始背景图或由 `color` 指定的纯色图像。
 
-:::info[注]
-该参数仅在自定义背景类型为 `AgoraVirtualBackgroundImg` 或 `AgoraVirtualBackgroundVideo` 时生效。
+:::note
+注： 该参数仅在自定义背景类型为 `AgoraVirtualBackgroundImg` 或 `AgoraVirtualBackgroundVideo` 时生效。
 :::
 
-### `blurDegree`
+</Parameter>
+<a id="blurdegree"></a>
+<Parameter name="blurDegree">
 
 自定义背景图像的模糊程度。详见 [AgoraBlurDegree](/zh-CN/api-reference/rtc/macos/enum-backgroundblurdegree)。
 
-:::info[注]
-该参数仅在自定义背景类型为 `AgoraVirtualBackgroundBlur` 时生效。
+:::note
+注： 该参数仅在自定义背景类型为 `AgoraVirtualBackgroundBlur` 时生效。
 :::
+
+</Parameter>
+</ParameterList>

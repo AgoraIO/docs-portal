@@ -1,0 +1,107 @@
+---
+title: com.herewhite.sdk.domain.PlayerTimeInfo类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_player_time_info
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_player_time_info.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+白板回放的播放时间信息。
+
+## 构造及析构函数说明
+
+<a id="a56467b4c8de22407fab0d27b8dea9520"></a>
+
+### PlayerTimeInfo()
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.PlayerTimeInfo.PlayerTimeInfo(long *scheduleTime*, long *timeDuration*, int *framesCount*, long *beginTimestamp*)
+
+</ApiSignature>
+
+[`PlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-time-info) 构造方法。
+
+<ParameterList title="参数">
+<Parameter name="scheduleTime">
+
+当前的回放进度，单位为毫秒。
+
+</Parameter>
+<Parameter name="timeDuration">
+
+回放的总时长，单位为毫秒。
+
+</Parameter>
+<Parameter name="framesCount">
+
+预留参数。
+
+</Parameter>
+<Parameter name="beginTimestamp">
+
+白板回放的起始时间，Unix 时间戳，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+## 成员函数说明
+
+<a id="a7f036804273deda51f2d60e3e6bf2837"></a>
+
+### getScheduleTime()
+
+<ApiSignature>
+
+long com.herewhite.sdk.domain.PlayerTimeInfo.getScheduleTime()
+
+</ApiSignature>
+
+获取当前的回放进度。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+当前的回放进度，单位为毫秒。
+
+<a id="a26e1f76acd7897417e6c44e81b05b62e"></a>
+
+### getTimeDuration()
+
+<ApiSignature>
+
+long com.herewhite.sdk.domain.PlayerTimeInfo.getTimeDuration()
+
+</ApiSignature>
+
+获取回放的总时长。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+回放的总时长，单位为毫秒。
+
+<a id="a35a8d37f048ce17b862cafac720c8c16"></a>
+
+### getBeginTimestamp()
+
+<ApiSignature>
+
+long com.herewhite.sdk.domain.PlayerTimeInfo.getBeginTimestamp()
+
+</ApiSignature>
+
+获取白板回放的起始时间。
+
+该方法会返回单位为毫秒的 Unix 时间戳，你需要自行转换为 UTC 时间。例如，如果返回 `1615370614269`，表示的 UTC 时间为 2021-03-10 18\:03\:34 GMT+0800。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+Unix 时间戳，单位为毫秒。

@@ -1,0 +1,79 @@
+---
+title: com.herewhite.sdk.domain.LoggerOptions.Level 枚举类型参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/enumcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options_1_1_level
+  sourcePath: >-
+    html-docs/whiteboard/Android/enumcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options_1_1_level.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+日志等级。
+
+:::info[自从]
+2.11.10
+:::
+
+日志级别顺序依次为 `error`，`warn`，`info`，和 `debug`。选择一个级别，你就可以看到在该级别之前所有级别的日志信息。 例如，你选择 `info` 级别，就可以看到在 `error`，`warn`，`info` 级别上的所有日志信息。
+
+## 类成员变量说明
+
+<a id="aa78a9e911768938770bb08f0d6c1d37d"></a>
+
+### debug
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.LoggerOptions.Level.debug
+
+</ApiSignature>
+
+调试日志：最详细的日志，目前内容与 `info` 一致。
+
+<a id="aadd244b15fd0499fa398913cf171c1a1"></a>
+
+### info
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.LoggerOptions.Level.info
+
+</ApiSignature>
+
+信息日志：主要为连接状态。
+
+<a id="a491ae9e3718a87c79d5c813f958a52d1"></a>
+
+### warn
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.LoggerOptions.Level.warn
+
+</ApiSignature>
+
+警告日志：当传入的参数不符合 SDK 要求时，SDK 会自动调整并发出警告。
+
+:::info[注解]
+如果调用废弃 API，SDK 不会发出警告信息。
+:::
+
+<a id="a7d38fe0d36bda3ed478247efb8cb1109"></a>
+
+### error
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.LoggerOptions.Level.error
+
+</ApiSignature>
+
+报错日志：直接导致 SDK 无法正常运行的错误。

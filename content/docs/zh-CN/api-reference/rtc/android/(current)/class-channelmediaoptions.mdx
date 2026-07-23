@@ -1,10 +1,18 @@
 ---
-title: "ChannelMediaOptions"
-description: "配置频道中的媒体发布和订阅选项。"
+title: ChannelMediaOptions
+description: 配置频道中的媒体发布和订阅选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_channelmediaoptions
+  sourcePath: html-docs/rtc/Android/API/class_channelmediaoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_channelmediaoptions__prototype"></a>
 
-```java
+```text
 public class ChannelMediaOptions {
   public Boolean publishCameraTrack;
   public Boolean publishSecondaryCameraTrack;
@@ -49,55 +57,67 @@ public class ChannelMediaOptions {
 
 <a id="class_channelmediaoptions__detailed_desc"></a>
 
-支持在同一个 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，可以同时启用 `publishMicrophoneTrack`、 `publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack`，但 `publishCameraTrack`、 `publishScreenCaptureVideo`、 `publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 true。
+支持在同一个 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，可以同时启用 `publishMicrophoneTrack`、`publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack`，但 `publishCameraTrack`、`publishScreenCaptureVideo`、`publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 true。
 
-:::info[注]
-建议你根据业务场景自行设置各成员参数值，否则 SDK 会自动分配默认值。
+:::note
+注： 建议你根据业务场景自行设置各成员参数值，否则 SDK 会自动分配默认值。
 :::
 
 <a id="class_channelmediaoptions__parameters"></a>
 
 ## 属性
 
-### `publishCameraTrack`
+<ParameterList>
+<a id="publishcameratrack"></a>
+<Parameter name="publishCameraTrack">
 
 是否发布摄像头采集的视频：
 
 - true：发布摄像头采集的视频。
 - false：不发布摄像头采集的视频。
 
-### `publishSecondaryCameraTrack`
+</Parameter>
+<a id="publishsecondarycameratrack"></a>
+<Parameter name="publishSecondaryCameraTrack">
 
 是否发布第二路摄像头采集的视频轨道：
 
 - true：发布第二路摄像头采集的视频轨道。
 - false：（默认）不发布第二路摄像头采集的视频轨道。
 
-### `publishThirdCameraTrack`
+</Parameter>
+<a id="publishthirdcameratrack"></a>
+<Parameter name="publishThirdCameraTrack">
 
 是否发布第三路摄像头采集的视频：
 
 - true：发布第三路摄像头采集的视频。
 - false：不发布第三路摄像头采集的视频。
 
-### `publishFourthCameraTrack`
+</Parameter>
+<a id="publishfourthcameratrack"></a>
+<Parameter name="publishFourthCameraTrack">
 
 是否发布第四路摄像头采集的视频：
 
 - true：发布第四路摄像头采集的视频。
 - false：不发布第四路摄像头采集的视频。
 
-### `publishMicrophoneTrack`
+</Parameter>
+<a id="publishmicrophonetrack"></a>
+<Parameter name="publishMicrophoneTrack">
 
 是否发布麦克风采集的音频：
 
 - true：发布麦克风采集的音频。
 - false：不发布麦克风采集的音频。
 
-### `publishScreenCaptureVideo`
+</Parameter>
+<a id="publishscreencapturevideo"></a>
+<Parameter name="publishScreenCaptureVideo">
 
-:::info[注]
-从 v4.0.0 起，参数由 `publishScreenTrack` 重命名为 `publishScreenCaptureVideo`。
+:::note
+注： 从 v4.0.0 起，参数由 `publishScreenTrack` 重命名为 `publishScreenCaptureVideo`。
 :::
 
 是否发布屏幕采集的视频：
@@ -105,106 +125,136 @@ public class ChannelMediaOptions {
 - true：发布屏幕采集的视频。
 - false：不发布屏幕采集的视频。
 
-### `publishScreenCaptureAudio`
+</Parameter>
+<a id="publishscreencaptureaudio"></a>
+<Parameter name="publishScreenCaptureAudio">
 
 是否发布屏幕采集的音频：
 
 - true：发布屏幕采集的音频。
 - false：不发布屏幕采集的音频。
 
-### `publishCustomAudioTrack`
+</Parameter>
+<a id="publishcustomaudiotrack"></a>
+<Parameter name="publishCustomAudioTrack">
 
 是否发布自定义音频源采集的音频：
 
 - true：发布自定义音频源采集的音频。
 - false：不发布自定义音频源采集的音频。
 
-### `publishCustomAudioTrackId`
+</Parameter>
+<a id="publishcustomaudiotrackid"></a>
+<Parameter name="publishCustomAudioTrackId">
 
 要发布的自定义音频轨道的 ID。可通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法获取该 ID。
 
-### `publishCustomVideoTrack`
+</Parameter>
+<a id="publishcustomvideotrack"></a>
+<Parameter name="publishCustomVideoTrack">
 
 是否发布自定义视频源采集的视频：
 
 - true：发布自定义视频源采集的视频。
 - false：不发布自定义视频源采集的视频。
 
-### `publishEncodedVideoTrack`
+</Parameter>
+<a id="publishencodedvideotrack"></a>
+<Parameter name="publishEncodedVideoTrack">
 
 是否发布编码后的视频：
 
 - true：发布编码后的视频。
 - false：不发布编码后的视频。
 
-### `publishMediaPlayerAudioTrack`
+</Parameter>
+<a id="publishmediaplayeraudiotrack"></a>
+<Parameter name="publishMediaPlayerAudioTrack">
 
 是否发布媒体播放器的音频：
 
 - true：发布媒体播放器的音频。
 - false：不发布媒体播放器的音频。
 
-### `publishMediaPlayerVideoTrack`
+</Parameter>
+<a id="publishmediaplayervideotrack"></a>
+<Parameter name="publishMediaPlayerVideoTrack">
 
 是否发布媒体播放器的视频：
 
 - true：发布媒体播放器的视频。
 - false：不发布媒体播放器的视频。
 
-### `publishTranscodedVideoTrack`
+</Parameter>
+<a id="publishtranscodedvideotrack"></a>
+<Parameter name="publishTranscodedVideoTrack">
 
 是否发布本地转码后的视频轨道：
 
 - true：发布本地转码后的视频轨道。
 - false：（默认）不发布本地转码后的视频轨道。
 
-### `publishMixedAudioTrack`
+</Parameter>
+<a id="publishmixedaudiotrack"></a>
+<Parameter name="publishMixedAudioTrack">
 
 是否发布音频合流轨道：
 
-- true：发布音频合流轨道。
-- false：不发布音频合流轨道。
+- `true`：发布音频合流轨道。
+- `false`：不发布音频合流轨道。
 
-### `publishLipSyncTrack`
+</Parameter>
+<a id="publishlipsynctrack"></a>
+<Parameter name="publishLipSyncTrack">
 
 是否发布由语音驱动扩展处理后的视频轨道：
 
-- true：发布由语音驱动扩展处理后的视频轨道。
-- false：（默认）不发布由语音驱动扩展处理后的视频轨道。
+- `true`：发布由语音驱动扩展处理后的视频轨道。
+- `false`：（默认）不发布由语音驱动扩展处理后的视频轨道。
 
-### `autoSubscribeAudio`
+</Parameter>
+<a id="autosubscribeaudio"></a>
+<Parameter name="autoSubscribeAudio">
 
 用户加入频道时是否自动订阅所有远端音频流：
 
-- true：订阅所有远端音频流。
-- false：不自动订阅任何远端音频流。
+- `true`：订阅所有远端音频流。
+- `false`：不自动订阅任何远端音频流。
 
-### `autoSubscribeVideo`
+</Parameter>
+<a id="autosubscribevideo"></a>
+<Parameter name="autoSubscribeVideo">
 
 用户加入频道时是否自动订阅所有远端视频流：
 
-- true：订阅所有远端视频流。
-- false：不自动订阅任何远端视频流。
+- `true`：订阅所有远端视频流。
+- `false`：不自动订阅任何远端视频流。
 
-### `enableAudioRecordingOrPlayout`
+</Parameter>
+<a id="enableaudiorecordingorplayout"></a>
+<Parameter name="enableAudioRecordingOrPlayout">
 
-:::info[注]
-如果需要发布麦克风采集的音频流，请确保该参数设置为 `true`。
+:::note
+注： 如果需要发布麦克风采集的音频流，请确保该参数设置为 `true`。
 :::
 
 是否开启音频采集或播放功能：
 
-- true：开启音频采集或播放功能。
-- false：不开启音频采集或播放功能。
+- `true`：开启音频采集或播放功能。
+- `false`：不开启音频采集或播放功能。
 
-### `publishMediaPlayerId`
+</Parameter>
+<a id="publishmediaplayerid"></a>
+<Parameter name="publishMediaPlayerId">
 
 要发布的媒体播放器的 ID。默认值为 0。
 
-### `clientRoleType`
+</Parameter>
+<a id="clientroletype"></a>
+<Parameter name="clientRoleType">
 
-:::info[注]
-如果将用户角色设置为观众，则无法在频道中发布音视频流。若你希望在直播过程中发布媒体流，请确保将用户角色设置为主播。
+:::note
+注： 如果将用户角色设置为观众，则无法在频道中发布音视频流。若你希望在直播过程中发布媒体流，请确保将用户角色设置为主播。
 :::
 
 用户角色类型：
@@ -212,21 +262,27 @@ public class ChannelMediaOptions {
 - CLIENT_ROLE_BROADCASTER (1)：主播。
 - CLIENT_ROLE_AUDIENCE (2)：观众。
 
-### `audienceLatencyLevel`
+</Parameter>
+<a id="audiencelatencylevel"></a>
+<Parameter name="audienceLatencyLevel">
 
 互动直播场景下观众的延迟等级：
 
 - AUDIENCE_LATENCY_LEVEL_LOW_LATENCY (1)：低延迟。
 - AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY (2)：超低延迟（默认）。
 
-### `defaultVideoStreamType`
+</Parameter>
+<a id="defaultvideostreamtype"></a>
+<Parameter name="defaultVideoStreamType">
 
 默认的视频流类型：
 
 - VIDEO_STREAM_HIGH (0)：视频大流，即高分辨率高码率的视频流。
 - VIDEO_STREAM_LOW (1)：视频小流，即低分辨率低码率的视频流。
 
-### `channelProfile`
+</Parameter>
+<a id="channelprofile"></a>
+<Parameter name="channelProfile">
 
 频道场景：
 
@@ -235,77 +291,98 @@ public class ChannelMediaOptions {
 - CHANNEL_PROFILE_GAME (2)：游戏场景。
 - CHANNEL_PROFILE_CLOUD_GAMING (3)：互动场景。该场景对延迟进行了优化，适用于用户之间需要频繁互动的场景。
 
-### `audioDelayMs`
+</Parameter>
+<a id="audiodelayms"></a>
+<Parameter name="audioDelayMs">
 
 发送音频帧的延迟（单位：毫秒）。你可以使用该参数设置发送音频帧的延迟，以实现音视频同步。如需关闭延迟，设置该值为 0。
 
-### `mediaPlayerAudioDelayMs`
+</Parameter>
+<a id="mediaplayeraudiodelayms"></a>
+<Parameter name="mediaPlayerAudioDelayMs">
 
 发送媒体播放器音频帧的延迟（单位：毫秒），用于显式控制音视频同步。如需关闭延迟，设置该值为 0。
 
-### `token`
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
 （可选）由你的服务器生成的用于鉴权的 Token。
 
-:::info[注]
-该参数仅在调用 updateChannelMediaOptions 或 updateChannelMediaOptionsEx 时生效。请确保用于生成 token 的 App ID、频道名和用户名称与调用 create 初始化 RTC 引擎，以及调用 joinChannel 和 joinChannelEx 加入频道时使用的值一致。
+:::note
+注： 该参数仅在调用 updateChannelMediaOptions 或 updateChannelMediaOptionsEx 时生效。请确保用于生成 token 的 App ID、频道名和用户名称与调用 create 初始化 RTC 引擎，以及调用 joinChannel 和 joinChannelEx 加入频道时使用的值一致。
 :::
 
-### `enableBuiltInMediaEncryption`
+</Parameter>
+<a id="enablebuiltinmediaencryption"></a>
+<Parameter name="enableBuiltInMediaEncryption">
 
-:::info[注]
-调用 updateChannelMediaOptions 方法时将忽略此设置。
+:::note
+注： 调用 updateChannelMediaOptions 方法时将忽略此设置。
 :::
 
 是否启用媒体包加密：
 
-- true：启用媒体包加密。
-- false：（默认）不启用媒体包加密。
+- `true`：启用媒体包加密。
+- `false`：（默认）不启用媒体包加密。
 
-### `publishRhythmPlayerTrack`
+</Parameter>
+<a id="publishrhythmplayertrack"></a>
+<Parameter name="publishRhythmPlayerTrack">
 
 是否向远端用户发布节拍器的声音：
 
-- true：发布处理后的音频帧，本地用户和远端用户都能听到节拍器。
-- false：不发布节拍器的声音，只有本地用户能听到节拍器。
+- `true`：发布处理后的音频帧，本地用户和远端用户都能听到节拍器。
+- `false`：不发布节拍器的声音，只有本地用户能听到节拍器。
 
-### `isInteractiveAudience`
+</Parameter>
+<a id="isinteractiveaudience"></a>
+<Parameter name="isInteractiveAudience">
 
-:::info[注]
-该参数仅适用于主播互通场景。联播主播需调用 joinChannelEx 方法以观众身份加入其他主播频道，并将 isInteractiveAudience 设置为 `true`。 该参数仅在用户角色为 CLIENT_ROLE_AUDIENCE 时生效。
+:::note
+注： 该参数仅适用于主播互通场景。联播主播需调用 joinChannelEx 方法以观众身份加入其他主播频道，并将 isInteractiveAudience 设置为 `true`。
+该参数仅在用户角色为 CLIENT_ROLE_AUDIENCE 时生效。
 :::
 
 是否开启互动模式：
 
-- true：开启互动模式。
-- false：不开启互动模式。
+- `true`：开启互动模式。
+- `false`：不开启互动模式。
 
-### `customVideoTrackId`
+</Parameter>
+<a id="customvideotrackid"></a>
+<Parameter name="customVideoTrackId">
 
 通过调用 createCustomVideoTrack 方法返回的视频轨道 ID。默认值为 0。
 
-### `isAudioFilterable`
+</Parameter>
+<a id="isaudiofilterable"></a>
+<Parameter name="isAudioFilterable">
 
-:::info[注]
-如需启用该功能，请[联系技术支持](https://ticket.shengwang.cn/)
+:::note
+注： 如需启用该功能，请[联系技术支持](https://ticket.shengwang.cn/)
 :::
 
 发布的音频流是否根据音量算法进行过滤：
 
-- true：音频流会被过滤。
-- false：音频流不会被过滤。
+- `true`：音频流会被过滤。
+- `false`：音频流不会被过滤。
 
-### `startPreview`
+</Parameter>
+<a id="startpreview"></a>
+<Parameter name="startPreview">
 
 在已设置画布时，加入频道时是否启动预览：
 
-- true：（默认）加入频道时启动预览。
-- false：不启动预览。
+- `true`：（默认）加入频道时启动预览。
+- `false`：不启动预览。
 
-### `enableMultipath`
+</Parameter>
+<a id="enablemultipath"></a>
+<Parameter name="enableMultipath">
 
-:::info[注]
-权限与系统要求：Android 7.0 或更高版本（API 等级 24 或更高），需要 `ACCESS_NETWORK_STATE` 和 `CHANGE_NETWORK_STATE` 权限。
+:::note
+注： 权限与系统要求：Android 7.0 或更高版本（API 等级 24 或更高），需要 `ACCESS_NETWORK_STATE` 和 `CHANGE_NETWORK_STATE` 权限。
 :::
 
 是否启用多传输路径：
@@ -313,10 +390,15 @@ public class ChannelMediaOptions {
 - true：启用多传输路径。
 - false：禁用多传输路径。
 
-### `preferMultipathType`
+</Parameter>
+<a id="prefermultipathtype"></a>
+<Parameter name="preferMultipathType">
 
 首选的传输路径类型。详见 [MultipathType](/zh-CN/api-reference/rtc/android/enum-multipathtype)。
 
-:::info[注]
-使用该参数时，需确保 `enableMultipath` 设置为 true。
+:::note
+注： 使用该参数时，需确保 `enableMultipath` 设置为 true。
 :::
+
+</Parameter>
+</ParameterList>

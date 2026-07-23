@@ -1,0 +1,142 @@
+---
+title: com.herewhite.sdk.PlayerListener接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/interfacecom_1_1herewhite_1_1sdk_1_1_player_listener
+  sourcePath: html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1_player_listener.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image interfacecom_1_1herewhite_1_1sdk_1_1_player_listener.png has no meaningful
+        alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.PlayerListener接口 参考 图示".
+---
+
+类 com.herewhite.sdk.PlayerListener 继承关系图:
+
+![com.herewhite.sdk.PlayerListener接口 参考 图示](/img/api-center-generated/ebfff0fa08de-interfacecom_1_1herewhite_1_1sdk_1_1_player_listener.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+白板回放的事件回调接口。
+
+## 成员函数说明
+
+<a id="a091eb8094c7edc5d417650e9b641f531"></a>
+
+### onPhaseChanged()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onPhaseChanged([PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-phase) *phase*)
+
+</ApiSignature>
+
+播放状态切换回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#a2730b6cff6489c2a2e2f5ce72ee605f3) 内被实现.
+
+<a id="a2d20675a3a358e54be4b98c63ba32962"></a>
+
+### onLoadFirstFrame()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onLoadFirstFrame()
+
+</ApiSignature>
+
+首帧加载回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#ad06d08efcc822c8eac3e1fb7b4d22d99) 内被实现.
+
+<a id="a5fc4c0131a9ece8296a2b3b44e0cfc2f"></a>
+
+### onSliceChanged()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onSliceChanged(String *slice*)
+
+</ApiSignature>
+
+分片切换回调，需要了解分片机制。目前无实际用途。 文档中隐藏
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#a194dfc4fa98f98ddf24ad319f2b8a7be) 内被实现.
+
+<a id="a1998ad4e3d985c4b9d8d52ec4d3d5b1d"></a>
+
+### onPlayerStateChanged()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onPlayerStateChanged([PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-player-state) *modifyState*)
+
+</ApiSignature>
+
+回放状态发生变化的回调，只会包含实际发生改变的属性。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#ae169384d1bffa678458c05cfe572b77f) 内被实现.
+
+<a id="ace77e88f6ee64691c49d1fe2d96ec1af"></a>
+
+### onStoppedWithError()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onStoppedWithError(SDKError *error*)
+
+</ApiSignature>
+
+出错导致回放暂停的回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#a7889c6bf4740ec2b57e009d2a5041beb) 内被实现.
+
+<a id="a36f5868a6056dbd1e41507eca4c5cff8"></a>
+
+### onScheduleTimeChanged()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onScheduleTimeChanged(long *time*)
+
+</ApiSignature>
+
+回放进度发生变化回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#acc1281c01f50954c157d828aeeaa6d2f) 内被实现.
+
+<a id="a48d1f52de8e6215d38ace358abb7e2d3"></a>
+
+### onCatchErrorWhenAppendFrame()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onCatchErrorWhenAppendFrame(SDKError *error*)
+
+</ApiSignature>
+
+添加帧出错的回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#af2ffbefa198ae9021e961b8ebf68e882) 内被实现.
+
+<a id="a02f896953393f46876e3734eae55f8bc"></a>
+
+### onCatchErrorWhenRender()
+
+<ApiSignature>
+
+void com.herewhite.sdk.PlayerListener.onCatchErrorWhenRender(SDKError *error*)
+
+</ApiSignature>
+
+渲染时出错的回调。
+
+在 [com.herewhite.sdk.AbstractPlayerEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-player-event-listener#a41aeb55bab2237293f4bc46963374874) 内被实现.

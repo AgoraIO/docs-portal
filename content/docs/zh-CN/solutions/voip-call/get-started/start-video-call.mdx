@@ -55,7 +55,7 @@ description: "了解如何快速接入微呼叫，完成环境准备、参数配
 
 ### 1. 获取并激活许可证
 
-联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/setup-and-access/license#1-申请-license)。然后调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活申请到的 License：
+联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)。然后调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 接口激活申请到的 License：
 
 :::warning[注意]
 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
@@ -115,7 +115,7 @@ License 激活成功的响应示例如下：
 
 #### 2.3 业务后台呼叫小程序
 
-使用你的业务服务器调用 [`/call/miniapp`](/doc/voip-callkit/restful/call/operations/callMiniApp) 接口，对指定的小程序发起呼叫。SD-RTN™ 会拉取设备端通过 RTSA SDK 发布的流，同时推送给微信小程序实现通话。
+使用你的业务服务器调用 [`/call/miniapp`](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app) 接口，对指定的小程序发起呼叫。SD-RTN™ 会拉取设备端通过 RTSA SDK 发布的流，同时推送给微信小程序实现通话。
 
 `/call/miniapp` 接口调用的代码示例如下：
 
@@ -252,8 +252,8 @@ wmpfVoip.callDevice({
 
 包含如下字段：
 
-    - `agora`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/doc/voip-callkit/restful/call/operations/callMiniApp)中 `agora` 下的字段一致。
-    - `wechat`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/doc/voip-callkit/restful/call/operations/callMiniApp)中 `wechat` 下的字段一致。其中，如下参数的配置不生效，仅用于统一，便于问题调查：
+    - `agora`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)中 `agora` 下的字段一致。
+    - `wechat`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)中 `wechat` 下的字段一致。其中，如下参数的配置不生效，仅用于统一，便于问题调查：
       - `encodeVideoRotation`
       - `landscape`
       - `subscribeVideoLength`
@@ -272,7 +272,7 @@ wmpfVoip.callDevice({
 
 ### 4. 挂断小程序
 
-从你的业务服务器调用 [`/call/{modelId}/{deviceId}`](/doc/voip-callkit/restful/call/operations/hangupMiniApp) 接口，挂断小程序。
+从你的业务服务器调用 [`/call/{modelId}/{deviceId}`](/zh-CN/api-reference/api-ref/voip-callkit/hangup-mini-app) 接口，挂断小程序。
 
 ```shell
 curl --location --request DELETE 'https://api.sd-rtn.com/v1/miniapp/aabxxxxxxxxxxxx63/voip/call/axxxxxxxxw/txxxxx1' \
@@ -303,6 +303,6 @@ curl --location --request DELETE 'https://api.sd-rtn.com/v1/miniapp/aabxxxxxxxxx
 
 ### API 参考
 
-- [呼叫小程序 RESTful API](/doc/voip-callkit/restful/call/operations/callMiniApp)
-- [License 管理 RESTful API](/doc/voip-callkit/restful/call/operations/activateLicense)
+- [呼叫小程序 RESTful API](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)
+- [License 管理 RESTful API](/zh-CN/api-reference/api-ref/voip-callkit/activate-license)
 - [NCS 事件类型](/zh-CN/solutions/voip-call/voip-events)

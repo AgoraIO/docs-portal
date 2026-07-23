@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
@@ -8,8 +8,9 @@ type SolutionCardGridComponent = ComponentType<{
   size?: 'large' | 'small';
 }>;
 type SolutionCardComponent = ComponentType<{
+  actions?: Array<{ href: string; label: string }>;
   description: string;
-  href: string;
+  href?: string;
   icon?: 'ai' | 'classroom' | 'device' | 'meeting' | 'messaging' | 'rtc';
   size?: 'large' | 'small';
   tags?: string[];
@@ -165,6 +166,36 @@ describe('overview MDX components', () => {
     ).toHaveAttribute('href', '/en/realtime-media/voice');
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
+  });
+
+  it('supports multiple labeled actions that share one target', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    render(
+      <SolutionCard
+        actions={[
+          { href: '/reference/configuration', label: 'Android' },
+          { href: '/reference/configuration', label: 'iOS' },
+        ]}
+        description="One reference with platform variants."
+        title="Configuration"
+      />,
+    );
+
+    expect(screen.getByRole('link', { name: /Android/i })).toHaveAttribute(
+      'href',
+      '/reference/configuration',
+    );
+    expect(screen.getByRole('link', { name: /iOS/i })).toHaveAttribute(
+      'href',
+      '/reference/configuration',
+    );
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 
   it('renders toolkit groups for the docs home overview', () => {

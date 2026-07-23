@@ -1,0 +1,77 @@
+---
+title: Interface IAgoraRTCRemoteUser
+description: 频道内的远端用户信息，可以通过 AgoraRTCClient.remoteUsers 或者 AgoraRTCClient.on("user-joined") 等事件获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/iagorartcremoteuser
+  sourcePath: html-docs/rtc/Web/interfaces/iagorartcremoteuser.html
+  generator: typedoc
+  warnings: []
+---
+
+该对象描述了频道内远端用户的当前状态，包括远端用户 ID、远端是否发布了音频或视频等。
+
+如果检测到远端用户已经发布，可以将这个对象传入 [AgoraRTCClient.subscribe](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#subscribe) 中发起订阅，订阅成功后可以通过本对象的 [audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#audiotrack) 或者 [videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#videotrack) 字段获取远端音视频轨道对象用于播放。
+
+### Hierarchy
+
+- IAgoraRTCRemoteUser
+
+## Index
+
+### Properties
+
+- [audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#audiotrack)
+- [hasAudio](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#hasaudio)
+- [hasVideo](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#hasvideo)
+- [uid](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#uid)
+- [videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#videotrack)
+
+## Properties
+
+<a id="audiotrack"></a>
+
+### Optional audioTrack
+
+audioTrack: [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)
+
+如果成功订阅了远端用户的音频，这里会保存远端的音频轨道对象。
+
+<a id="hasaudio"></a>
+
+### hasAudio
+
+hasAudio: boolean
+
+远端当前是否在发送音频。
+
+- `true`: 远端用户在发送音频。
+- `false`: 远端用户没有在发送音频。
+
+<a id="hasvideo"></a>
+
+### hasVideo
+
+hasVideo: boolean
+
+远端当前是否在发送视频。
+
+- `true`: 远端用户在发送视频。
+- `false`: 远端用户没有在发送视频。
+
+<a id="uid"></a>
+
+### uid
+
+uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)
+
+远端用户的用户 ID。
+
+<a id="videotrack"></a>
+
+### Optional videoTrack
+
+videoTrack: [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)
+
+如果成功订阅了远端用户的视频，这里会保存远端的视频轨道对象。

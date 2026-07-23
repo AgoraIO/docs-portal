@@ -1,10 +1,19 @@
 ---
-title: "空间音频"
-description: "空间音频 API reference."
+title: 空间音频
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_spatial_audio
+  sourcePath: html-docs/rtc/Android/API/toc_spatial_audio.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_spatial_audio"></a>
 
 <a id="api_ibasespatialaudioengine_clearremotepositions"></a>
+
+<a id="ariaid-title2"></a>
 
 ## clearRemotePositions
 
@@ -12,7 +21,7 @@ description: "空间音频 API reference."
 
 <a id="api_ibasespatialaudioengine_clearremotepositions__prototype"></a>
 
-```java
+```text
 public abstract int clearRemotePositions();
 ```
 
@@ -25,20 +34,23 @@ public abstract int clearRemotePositions();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_create_ilocalspatialaudioengine"></a>
 
+<a id="ariaid-title3"></a>
+
 ## create
 
-创建一个 ILocalSpatialAudioEngine 实例。
+创建一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 
 <a id="api_ilocalspatialaudioengine_create_ilocalspatialaudioengine__prototype"></a>
 
-```java
+```text
 public static synchronized ILocalSpatialAudioEngine create()
 ```
 
@@ -53,9 +65,12 @@ public static synchronized ILocalSpatialAudioEngine create()
 方法调用成功，返回 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_enablespatialaudio"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableSpatialAudio
 
@@ -63,7 +78,7 @@ public static synchronized ILocalSpatialAudioEngine create()
 
 <a id="api_irtcengine_enablespatialaudio__prototype"></a>
 
-```java
+```text
 public abstract int enableSpatialAudio(boolean enabled);
 ```
 
@@ -71,7 +86,9 @@ public abstract int enableSpatialAudio(boolean enabled);
 
 你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
 
-:::info[注]
+:::note
+注：
+
 - 你可以在加入频道前或加入频道后调用此方法。
 - 此方法依赖空间音效动态库 libagora_spatial_audio_extension.so。如果该动态库被删除，则无法正常启用该功能。
 :::
@@ -80,62 +97,80 @@ public abstract int enableSpatialAudio(boolean enabled);
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用空间音效：
 
 - true：启用空间音效。
 - false：关闭空间音效。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_enablespatialaudio__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
 
+<a id="ariaid-title5"></a>
+
 ## initialize
 
-初始化 ILocalSpatialAudioEngine。
+初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)。
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__prototype"></a>
 
-```java
+```text
 public abstract int initialize(LocalSpatialAudioConfig config);
 ```
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__detailed_desc"></a>
 
-:::info[注]
-- 请在调用 create 方法后调用此方法。
-- 在调用 ILocalSpatialAudioEngine 的其他方法前，必须先调用 initialize 初始化 ILocalSpatialAudioEngine。
-- 每个 App 仅支持创建一个 ILocalSpatialAudioEngine 实例。
+:::note
+注：
+
+- 请在调用 [create](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 方法后调用此方法。
+- 在调用 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 的其他方法前，必须先调用 [initialize](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)。
+- 每个 App 仅支持创建一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 :::
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters"></a>
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 的配置。详见 [LocalSpatialAudioConfig](/zh-CN/api-reference/rtc/android/class-localspatialaudioconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title6"></a>
 
 ## muteAllRemoteAudioStreams
 
@@ -143,7 +178,7 @@ public abstract int initialize(LocalSpatialAudioConfig config);
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__prototype"></a>
 
-```java
+```text
 public abstract int muteAllRemoteAudioStreams(boolean mute);
 ```
 
@@ -151,34 +186,44 @@ public abstract int muteAllRemoteAudioStreams(boolean mute);
 
 调用该方法后，本地用户将停止或恢复订阅所有远端用户的音频流，包括后续加入频道的用户。
 
-:::info[注]
-- 请在调用 joinChannel 方法后调用本方法。
-- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 RtcEngine 下的同名方法。
-- 调用本方法后，需要调用 updateSelfPosition 和 updateRemotePosition 方法更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
+:::note
+注：
+
+- 请在调用 `joinChannel` 方法后调用本方法。
+- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 下的同名方法。
+- 调用本方法后，需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否停止订阅所有远端用户的音频流：
 
 - true：停止订阅所有远端用户的音频流。
 - false：订阅所有远端用户的音频流。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title7"></a>
 
 ## muteLocalAudioStream
 
@@ -186,14 +231,17 @@ public abstract int muteAllRemoteAudioStreams(boolean mute);
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__prototype"></a>
 
-```java
+```text
 public abstract int muteLocalAudioStream(boolean mute);
 ```
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__detailed_desc"></a>
 
-:::info[注]
-[muteLocalAudioStream](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。 请在调用 `joinChannel` 方法之后调用该方法。 使用空间音效时，如果需要设置是否停止发布本地音频流，声网推荐调用该方法，而不是 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 下的同名方法。 该方法成功调用后会在远端客户端触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+:::note
+注： [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
+请在调用 `joinChannel` 方法之后调用该方法。
+使用空间音效时，如果需要设置是否停止发布本地音频流，声网推荐调用该方法，而不是 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 下的同名方法。
+该方法成功调用后会在远端客户端触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 :::
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__related"></a>
@@ -206,24 +254,32 @@ public abstract int muteLocalAudioStream(boolean mute);
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否停止发布本地音频流：
 
 - true：停止发布本地音频流。
 - false：发布本地音频流。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title8"></a>
 
 ## muteRemoteAudioStream
 
@@ -231,51 +287,63 @@ public abstract int muteLocalAudioStream(boolean mute);
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__prototype"></a>
 
-```java
+```text
 public abstract int muteRemoteAudioStream(int uid, boolean mute);
 ```
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__detailed_desc"></a>
 
-:::info[注]
-- 请在调用 joinChannel 方法后调用此方法。
-- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网推荐调用此方法，而非 muteRemoteAudioStream 方法。
+:::note
+注：
+
+- 请在调用 `joinChannel` 方法后调用此方法。
+- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网推荐调用此方法，而非 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
 :::
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。该参数必须与用户加入频道时传入的用户 ID 相同。
 
-#### `mute`
+</Parameter>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 是否订阅指定远端用户的音频流：
 
 - true：停止订阅指定用户的音频流。
 - false：（默认）订阅指定用户的音频流。SDK 会根据本地用户与远端用户之间的距离决定是否订阅。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine"></a>
 
+<a id="ariaid-title9"></a>
+
 ## destroy
 
-销毁 ILocalSpatialAudioEngine 实例。
+销毁 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 
 <a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine__prototype"></a>
 
-```java
+```text
 public static synchronized void destroy()
 ```
 
@@ -283,14 +351,17 @@ public static synchronized void destroy()
 
 调用该方法后，将无法再使用 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 下的任何 API。如需再次使用空间音效功能，需等待 [destroy](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法执行完成后，再调用 [initialize](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 创建新的 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 
-:::info[注]
-请在调用 [destroy](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用此方法。
+:::note
+注： 请在调用 [destroy](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用此方法。
 :::
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
+
+<a id="ariaid-title10"></a>
 
 ## removeRemotePosition
 
@@ -298,7 +369,7 @@ public static synchronized void destroy()
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
 
-```java
+```text
 public abstract int removeRemotePosition(int uid);
 ```
 
@@ -310,21 +381,29 @@ public abstract int removeRemotePosition(int uid);
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 `uid`。该参数必须与用户加入频道时传入的用户 ID 相同。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setAudioRecvRange
 
@@ -332,7 +411,7 @@ public abstract int removeRemotePosition(int uid);
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
 
-```java
+```text
 public abstract int setAudioRecvRange(float range);
 ```
 
@@ -344,21 +423,29 @@ public abstract int setAudioRecvRange(float range);
 
 ### 参数
 
-#### `range`
+<ParameterList>
+<a id="range"></a>
+<Parameter name="range">
 
 最大音频接收范围，单位为米。该参数必须大于 0。（默认值为 20）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setDistanceUnit
 
@@ -366,7 +453,7 @@ public abstract int setAudioRecvRange(float range);
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
 
-```java
+```text
 public abstract int setDistanceUnit(float unit);
 ```
 
@@ -378,21 +465,29 @@ public abstract int setDistanceUnit(float unit);
 
 ### 参数
 
-#### `unit`
+<ParameterList>
+<a id="unit"></a>
+<Parameter name="unit">
 
 游戏引擎中每个单位距离对应的米数。该参数必须大于 0.00，默认值为 1.00。例如，将该参数设置为 2.00 表示游戏引擎中每个单位距离等于 2 米。该值越大，当远端用户远离本地用户时，本地用户听到的声音衰减得越快。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
+
+<a id="ariaid-title13"></a>
 
 ## setHeadphoneEQParameters
 
@@ -400,7 +495,7 @@ public abstract int setDistanceUnit(float unit);
 
 <a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
 
-```java
+```text
 public abstract int setHeadphoneEQParameters(int lowGain, int highGain);
 ```
 
@@ -412,26 +507,37 @@ public abstract int setHeadphoneEQParameters(int lowGain, int highGain);
 
 ### 参数
 
-#### `lowGain`
+<ParameterList>
+<a id="lowgain"></a>
+<Parameter name="lowGain">
 
 耳机均衡器的低频参数，取值范围为 [-10, 10]。值越大，声音越深沉。
 
-#### `highGain`
+</Parameter>
+<a id="highgain"></a>
+<Parameter name="highGain">
 
 耳机均衡器的高频参数，取值范围为 [-10, 10]。值越大，声音越清晰。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setheadphoneeqparameters__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
+
+<a id="ariaid-title14"></a>
 
 ## setHeadphoneEQPreset
 
@@ -439,7 +545,7 @@ public abstract int setHeadphoneEQParameters(int lowGain, int highGain);
 
 <a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
 
-```java
+```text
 public abstract int setHeadphoneEQPreset(int preset);
 ```
 
@@ -447,34 +553,43 @@ public abstract int setHeadphoneEQPreset(int preset);
 
 该方法主要用于空间音效场景中。你可以选择预设的耳机均衡器来聆听音频，以实现预期的音频体验。
 
-:::info[注]
-如果你使用的耳机本身已经具有良好的均衡效果，调用该方法可能不会带来显著提升，甚至可能降低体验。
+:::note
+注： 如果你使用的耳机本身已经具有良好的均衡效果，调用该方法可能不会带来显著提升，甚至可能降低体验。
 :::
 
 <a id="api_irtcengine_setheadphoneeqpreset__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 预设的耳机均衡器效果：
 
-- HEADPHONE_EQUALIZER_OFF：关闭耳机均衡器，听到原始音频。
-- HEADPHONE_EQUALIZER_OVEREAR：为头戴式耳机使用均衡器。
-- HEADPHONE_EQUALIZER_INEAR：为入耳式耳机使用均衡器。
+- `HEADPHONE_EQUALIZER_OFF`：关闭耳机均衡器，听到原始音频。
+- `HEADPHONE_EQUALIZER_OVEREAR`：为头戴式耳机使用均衡器。
+- `HEADPHONE_EQUALIZER_INEAR`：为入耳式耳机使用均衡器。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
+
+<a id="ariaid-title15"></a>
 
 ## setMaxAudioRecvCount
 
@@ -482,7 +597,7 @@ public abstract int setHeadphoneEQPreset(int preset);
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
 
-```java
+```text
 public abstract int setMaxAudioRecvCount(int maxCount);
 ```
 
@@ -494,21 +609,29 @@ public abstract int setMaxAudioRecvCount(int maxCount);
 
 ### 参数
 
-#### `maxCount`
+<ParameterList>
+<a id="maxcount"></a>
+<Parameter name="maxCount">
 
 你在指定音频接收范围内可接收的最大音频流数量。该参数的取值应小于或等于 16。（默认值为 10）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
+
+<a id="ariaid-title16"></a>
 
 ## setPlayerAttenuation
 
@@ -516,7 +639,7 @@ public abstract int setMaxAudioRecvCount(int maxCount);
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
 
-```java
+```text
 public abstract int setPlayerAttenuation(int playerId, double attenuation, boolean forceSet);
 ```
 
@@ -526,39 +649,52 @@ public abstract int setPlayerAttenuation(int playerId, double attenuation, boole
 
 ### 参数
 
-#### `playerId`
+<ParameterList>
+<a id="playerid"></a>
+<Parameter name="playerId">
 
 媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取该 ID。
 
-#### `attenuation`
+</Parameter>
+<a id="attenuation"></a>
+<Parameter name="attenuation">
 
 远端用户或媒体播放器的声音衰减系数，取值范围为 [0,1]。具体说明如下：
 
 - 0：广播模式，音量和音色不随距离衰减，本地用户听到的音量和音色不会因距离变化而变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中迅速衰减。
 
-#### `forceSet`
+</Parameter>
+<a id="forceset"></a>
+<Parameter name="forceSet">
 
 是否强制设置媒体播放器的声音衰减效果：
 
-- true：强制使用 attenuation 设置媒体播放器的衰减效果，此时 SpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对媒体播放器无效。
-- false：不强制使用 attenuation 设置媒体播放器的声音衰减效果，具体如下：
-  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
-  - 如果声源和听众位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 attenuation 参数决定。
+- true：强制使用 `attenuation` 设置媒体播放器的衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对媒体播放器无效。
+- false：不强制使用 `attenuation` 设置媒体播放器的声音衰减效果，具体如下：
+
+  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
+  - 如果声源和听众位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 `attenuation` 参数决定。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
+
+<a id="ariaid-title17"></a>
 
 ## setRemoteAudioAttenuation
 
@@ -566,7 +702,7 @@ public abstract int setPlayerAttenuation(int playerId, double attenuation, boole
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
 
-```java
+```text
 public abstract int setRemoteAudioAttenuation(int uid, double attenuation, boolean forceSet);
 ```
 
@@ -576,39 +712,52 @@ public abstract int setRemoteAudioAttenuation(int uid, double attenuation, boole
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 用户 ID。该参数必须与用户加入频道时传入的用户 ID 相同。
 
-#### `attenuation`
+</Parameter>
+<a id="attenuation-1"></a>
+<Parameter name="attenuation">
 
 用户的声音衰减系数，取值范围为 [0, 1]。具体取值说明如下：
 
 - 0：广播模式，音量和音色不会随距离衰减，本地用户听到的音量和音色不会因距离变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离大于真实环境。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
-#### `forceSet`
+</Parameter>
+<a id="forceset-1"></a>
+<Parameter name="forceSet">
 
 是否强制设置用户的声音衰减效果：
 
-- true：强制使用 attenuation 设置用户的声音衰减效果，此时 SpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对该用户无效。
-- false：不强制使用 attenuation 设置用户的声音衰减效果，具体如下：
-  - 若声源和接收者分别位于隔音区内外，衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定；
-  - 若声源和接收者位于同一隔音区或同一隔音区外，衰减效果由本方法中的 attenuation 决定。
+- true：强制使用 `attenuation` 设置用户的声音衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对该用户无效。
+- false：不强制使用 `attenuation` 设置用户的声音衰减效果，具体如下：
+
+  - 若声源和接收者分别位于隔音区内外，衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
+  - 若声源和接收者位于同一隔音区或同一隔音区外，衰减效果由本方法中的 `attenuation` 决定。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
+
+<a id="ariaid-title18"></a>
 
 ## setRemoteUserSpatialAudioParams
 
@@ -616,7 +765,7 @@ public abstract int setRemoteAudioAttenuation(int uid, double attenuation, boole
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
 
-```java
+```text
 public abstract int setRemoteUserSpatialAudioParams(int uid, SpatialAudioParams params);
 ```
 
@@ -628,25 +777,35 @@ public abstract int setRemoteUserSpatialAudioParams(int uid, SpatialAudioParams 
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID，必须与该用户加入频道时使用的 ID 相同。
 
-#### `params`
+</Parameter>
+<a id="params"></a>
+<Parameter name="params">
 
 空间音效参数。详见 [SpatialAudioParams](/zh-CN/api-reference/rtc/android/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setspatialaudioparams"></a>
+
+<a id="ariaid-title19"></a>
 
 ## setSpatialAudioParams
 
@@ -654,7 +813,7 @@ public abstract int setRemoteUserSpatialAudioParams(int uid, SpatialAudioParams 
 
 <a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
 
-```java
+```text
 int setSpatialAudioParams(SpatialAudioParams params);
 ```
 
@@ -666,21 +825,29 @@ int setSpatialAudioParams(SpatialAudioParams params);
 
 ### 参数
 
-#### `params`
+<ParameterList>
+<a id="params-1"></a>
+<Parameter name="params">
 
 媒体播放器的空间音效参数，详见 [SpatialAudioParams](/zh-CN/api-reference/rtc/android/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setspatialaudioparams__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
+
+<a id="ariaid-title20"></a>
 
 ## setZones
 
@@ -688,7 +855,7 @@ int setSpatialAudioParams(SpatialAudioParams params);
 
 <a id="api_ibasespatialaudioengine_setzones__prototype"></a>
 
-```java
+```text
 public abstract int setZones(SpatialAudioZone[] zones);
 ```
 
@@ -696,33 +863,41 @@ public abstract int setZones(SpatialAudioZone[] zones);
 
 在虚拟互动场景中，你可以使用该方法设置隔音区域及声音衰减系数。当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外时，可以体验到类似真实环境中声音遇到建筑隔断时的衰减效果：
 
-- 当声源和接收者分别处于隔音区域的内外时，声音的衰减效果由 SpatialAudioZone 中的声音衰减系数决定。
-- 如果用户或媒体播放器处于同一个隔音区域内，则声音衰减效果由 setPlayerAttenuation 或 setRemoteAudioAttenuation 中的 attenuation 参数决定。如果你未调用 setPlayerAttenuation 或 setRemoteAudioAttenuation，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 当声源和接收者分别处于隔音区域的内外时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的声音衰减系数决定。
+- 如果用户或媒体播放器处于同一个隔音区域内，则声音衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果你未调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
 - 如果声源和接收者分别处于两个不同的隔音区域，接收者将无法听到声源。
 
-:::info[注]
-如果多次调用该方法，以最后一次设置的隔音区域为准。
+:::note
+注： 如果多次调用该方法，以最后一次设置的隔音区域为准。
 :::
 
 <a id="api_ibasespatialaudioengine_setzones__parameters"></a>
 
 ### 参数
 
-#### `zones`
+<ParameterList>
+<a id="zones"></a>
+<Parameter name="zones">
 
 隔音区域设置。当该参数设置为 `null` 时，表示清除所有隔音区域。详见 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_setzones__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
+
+<a id="ariaid-title21"></a>
 
 ## updatePlayerPositionInfo
 
@@ -730,7 +905,7 @@ public abstract int setZones(SpatialAudioZone[] zones);
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
 
-```java
+```text
 public abstract int updatePlayerPositionInfo(int playerId, RemoteVoicePositionInfo positionInfo);
 ```
 
@@ -748,25 +923,35 @@ public abstract int updatePlayerPositionInfo(int playerId, RemoteVoicePositionIn
 
 ### 参数
 
-#### `playerId`
+<ParameterList>
+<a id="playerid-1"></a>
+<Parameter name="playerId">
 
 媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取该 ID。
 
-#### `positionInfo`
+</Parameter>
+<a id="positioninfo"></a>
+<Parameter name="positionInfo">
 
 媒体播放器的空间位置，详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/android/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
+
+<a id="ariaid-title22"></a>
 
 ## updateRemotePosition
 
@@ -774,7 +959,7 @@ public abstract int updatePlayerPositionInfo(int playerId, RemoteVoicePositionIn
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
 
-```java
+```text
 public abstract int updateRemotePosition(int uid, RemoteVoicePositionInfo posInfo);
 ```
 
@@ -782,33 +967,43 @@ public abstract int updateRemotePosition(int uid, RemoteVoicePositionInfo posInf
 
 调用该方法后，SDK 会根据本地用户与远端用户之间的相对位置计算空间音效参数。
 
-:::info[注]
-请在调用 `joinChannel` 方法后再调用此方法。
+:::note
+注： 请在调用 `joinChannel` 方法后再调用此方法。
 :::
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID，必须与该用户加入频道时传入的用户 ID 相同。
 
-#### `posInfo`
+</Parameter>
+<a id="posinfo"></a>
+<Parameter name="posInfo">
 
 远端用户的空间位置。详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/android/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
+
+<a id="ariaid-title23"></a>
 
 ## updateSelfPosition
 
@@ -816,7 +1011,7 @@ public abstract int updateRemotePosition(int uid, RemoteVoicePositionInfo posInf
 
 <a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
 
-```java
+```text
 public abstract int updateSelfPosition(float[] position, float[] axisForward, float[] axisRight, float[] axisUp);
 ```
 
@@ -828,28 +1023,40 @@ public abstract int updateSelfPosition(float[] position, float[] axisForward, fl
 
 ### 参数
 
-#### `position`
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 世界坐标系中的坐标。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-#### `axisForward`
+</Parameter>
+<a id="axisforward"></a>
+<Parameter name="axisForward">
 
 坐标系中 x 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-#### `axisRight`
+</Parameter>
+<a id="axisright"></a>
+<Parameter name="axisRight">
 
 坐标系中 y 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-#### `axisUp`
+</Parameter>
+<a id="axisup"></a>
+<Parameter name="axisUp">
 
 坐标系中 z 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ibasespatialaudioengine_updateselfposition__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ibasespatialaudioengine)

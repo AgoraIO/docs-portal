@@ -1,10 +1,19 @@
 ---
-title: "原始音频数据"
-description: "原始音频数据 API reference."
+title: 原始音频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_audio_raw
+  sourcePath: html-docs/rtc/Flutter/API/toc_audio_raw.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_raw"></a>
 
 <a id="api_imediaengine_registeraudioframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerAudioFrameObserver
 
@@ -12,13 +21,13 @@ description: "原始音频数据 API reference."
 
 <a id="api_imediaengine_registeraudioframeobserver__prototype"></a>
 
-```dart
+```text
 void registerAudioFrameObserver(AudioFrameObserver observer);
 ```
 
 <a id="api_imediaengine_registeraudioframeobserver__detailed_desc"></a>
 
-该方法用于注册音频观测器对象，即注册回调。当需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)、 [onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调时，需要调用该方法注册回调。
+该方法用于注册音频观测器对象，即注册回调。当需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)、[onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、[onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、[onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调时，需要调用该方法注册回调。
 
 <a id="api_imediaengine_registeraudioframeobserver__timing"></a>
 
@@ -30,20 +39,28 @@ void registerAudioFrameObserver(AudioFrameObserver observer);
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 接口对象实例。详见 [AudioFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserver)。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_onleavechannel) 后调用，来释放音频观测器对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registeraudioframeobserver__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setEarMonitoringAudioFrameParameters
 
@@ -51,7 +68,7 @@ void registerAudioFrameObserver(AudioFrameObserver observer);
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```dart
+```text
 Future<void> setEarMonitoringAudioFrameParameters(
       {required int sampleRate,
       required int channel,
@@ -63,46 +80,62 @@ Future<void> setEarMonitoringAudioFrameParameters(
 
 该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
-:::info[注]
-- 调用该方法前，你需要先调用 enableInEarMonitoring，将 includeAudioFilters 设置为 earMonitoringFilterBuiltInAudioFilters 或 earMonitoringFilterNoiseSuppression。
-- SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
+:::note
+注：
+
+- 调用该方法前，你需要先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_enableinearmonitoring2)，将 `includeAudioFilters` 设置为 `earMonitoringFilterBuiltInAudioFilters` 或 `earMonitoringFilterNoiseSuppression`。
+- SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
 
 ### 参数
 
-#### `sampleRate`
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-#### `channel`
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-#### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
 
-#### `samplesPerCall`
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告的音频的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setMixedAudioFrameParameters
 
@@ -110,7 +143,7 @@ Future<void> setEarMonitoringAudioFrameParameters(
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```dart
+```text
 Future<void> setMixedAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -119,7 +152,7 @@ Future<void> setMixedAudioFrameParameters(
 
 <a id="api_irtcengine_setmixedaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
 
 <a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
 
@@ -131,31 +164,43 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 ### 参数
 
-#### `sampleRate`
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-#### `channel`
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-#### `samplesPerCall`
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setPlaybackAudioFrameBeforeMixingParameters
 
@@ -163,7 +208,7 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```dart
+```text
 Future<void> setPlaybackAudioFrameBeforeMixingParameters(
       {required int sampleRate, required int channel
       {required int sampleRate, required int samplesPerCall});
@@ -183,31 +228,43 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 ### 参数
 
-#### `sampleRate`
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-#### `channel`
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-#### `samplesPerCall`
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
 
 设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setPlaybackAudioFrameParameters
 
@@ -215,7 +272,7 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```dart
+```text
 Future<void> setPlaybackAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -225,7 +282,7 @@ Future<void> setPlaybackAudioFrameParameters(
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__timing"></a>
 
@@ -237,37 +294,51 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 ### 参数
 
-#### `sampleRate`
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 24000、 32000、44100 或 48000。
 
-#### `channel`
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-#### `mode`
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
 
-#### `samplesPerCall`
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setRecordingAudioFrameParameters
 
@@ -275,7 +346,7 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```dart
+```text
 Future<void> setRecordingAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -285,7 +356,7 @@ Future<void> setRecordingAudioFrameParameters(
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
 
@@ -297,37 +368,51 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 ### 参数
 
-#### `sampleRate`
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
 
 音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
 
-#### `channel`
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
 
 音频数据的声道数，可设置为 1 或 2:
 
 - 1: 单声道。
 - 2: 双声道。
 
-#### `mode`
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
 
-#### `samplesPerCall`
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
 
 音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine"></a>
+
+<a id="ariaid-title8"></a>
 
 ## unregisterAudioFrameObserver
 
@@ -335,7 +420,7 @@ SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参�
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine__prototype"></a>
 
-```dart
+```text
 void unregisterAudioFrameObserver(AudioFrameObserver observer);
 ```
 
@@ -345,20 +430,28 @@ void unregisterAudioFrameObserver(AudioFrameObserver observer);
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频帧观测器，观测每帧音频的接收，详见 [AudioFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine__return_values"></a>
 
 ### 返回值
 
-方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onEarMonitoringAudioFrame
 
@@ -366,7 +459,7 @@ void unregisterAudioFrameObserver(AudioFrameObserver observer);
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__prototype"></a>
 
-```dart
+```text
 final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 ```
 
@@ -374,7 +467,9 @@ final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 
 为保证耳返的音频数据格式符合预期，你可以使用如下方法设置耳返音频数据格式：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
 :::
 
@@ -382,14 +477,22 @@ final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 
 ### 参数
 
-#### `audioFrame`
+<ParameterList>
+<a id="audioframe"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onMixedAudioFrame
 
@@ -397,7 +500,7 @@ final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__prototype"></a>
 
-```dart
+```text
 final void Function(String channelId, AudioFrame audioFrame)?
       onMixedAudioFrame;
 ```
@@ -406,7 +509,9 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下方法设置音频的数据格式：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
 :::
 
@@ -414,18 +519,28 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 ### 参数
 
-#### `audioFrame`
+<ParameterList>
+<a id="audioframe-1"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
-#### `channelId`
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onPlaybackAudioFrame
 
@@ -433,7 +548,7 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__prototype"></a>
 
-```dart
+```text
 final void Function(String channelId, AudioFrame audioFrame)?
       onPlaybackAudioFrame;
 ```
@@ -442,7 +557,9 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 为保证播放的音频数据格式符合预期，你可以在如下方法设置音频的数据格式：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
 :::
 
@@ -450,18 +567,28 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 ### 参数
 
-#### `audioFrame`
+<ParameterList>
+<a id="audioframe-2"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
-#### `channelId`
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onPlaybackAudioFrameBeforeMixing
 
@@ -469,37 +596,49 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```dart
+```text
 final void Function(String channelId, int uid, AudioFrame audioFrame)?
       onPlaybackAudioFrameBeforeMixing;
 ```
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__detailed_desc"></a>
 
-:::info[注]
-由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
+:::note
+注： 由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
 :::
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__parameters"></a>
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 订阅的远端用户的 ID。
 
-#### `audioFrame`
+</Parameter>
+<a id="audioframe-3"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AudioFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onRecordAudioFrame
 
@@ -507,7 +646,7 @@ final void Function(String channelId, int uid, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__prototype"></a>
 
-```dart
+```text
 final void Function(String channelId, AudioFrame audioFrame)?
       onRecordAudioFrame;
 ```
@@ -516,7 +655,9 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 为保证采集的音频数据格式符合预期，你可以在如下方法设置音频的数据格式：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 由于框架的限制，该回调不支持将处理后的音频数据发送回 SDK。
 :::
 
@@ -524,13 +665,21 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 ### 参数
 
-#### `audioFrame`
+<ParameterList>
+<a id="audioframe-4"></a>
+<Parameter name="audioFrame">
 
 音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/flutter/class-audioframe)。
 
-#### `channelId`
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AudioFrameObserverBase](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudioframeobserverbase)

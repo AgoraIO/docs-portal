@@ -1,21 +1,38 @@
 ---
-title: "RTMP_STREAM_LIFE_CYCLE_TYPE"
-description: "服务端转码推流的生命周期。"
+title: RTMP_STREAM_LIFE_CYCLE_TYPE
+description: 服务端转码推流的生命周期。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/enum_rtmpstreamlifecycletype
+  sourcePath: html-docs/rtc/Unity/API/enum_rtmpstreamlifecycletype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rtmpstreamlifecycletype__detailed_desc"></a>
 
-### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用
+:::
 
 <a id="enum_rtmpstreamlifecycletype__parameters"></a>
 
 ## 枚举值
 
-### `RTMP_STREAM_LIFE_CYCLE_BIND2CHANNEL`
+<ParameterList>
+<a id="rtmp_stream_life_cycle_bind2channel"></a>
+<Parameter name="RTMP_STREAM_LIFE_CYCLE_BIND2CHANNEL">
 
 跟频道生命周期绑定，即频道内所有主播离开，服务端转码推流会在 30 秒之后停止。
 
-### `RTMP_STREAM_LIFE_CYCLE_BIND2OWNER`
+</Parameter>
+<a id="rtmp_stream_life_cycle_bind2owner"></a>
+<Parameter name="RTMP_STREAM_LIFE_CYCLE_BIND2OWNER">
 
 跟启动服务端转码推流的主播生命周期绑定，即该主播离开，服务端转码推流会立即停止。
+
+</Parameter>
+</ParameterList>

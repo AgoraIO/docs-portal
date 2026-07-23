@@ -1,10 +1,18 @@
 ---
-title: "SetHeadphoneEQPreset"
-description: "设置预设的耳机均衡效果。"
+title: SetHeadphoneEQPreset
+description: 设置预设的耳机均衡效果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/api_irtcengine_setheadphoneeqpreset
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/api_irtcengine_setheadphoneeqpreset.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetHeadphoneEQPreset(FENUMWRAP_HEADPHONE_EQUALIZER_PRESET preset);
 ```
@@ -15,17 +23,22 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法主要应用于空间音频场景下，你可以选择预设的耳机均衡器收听音频，以达到预期的音频体验。
 
-:::info[注]
-如果你使用的耳机已经具备良好的均衡效果，调用该方法时可能不会获得明显的体验提升效果，甚至可能导致体验下降。
+:::note
+注： 如果你使用的耳机已经具备良好的均衡效果，调用该方法时可能不会获得明显的体验提升效果，甚至可能导致体验下降。
 :::
 
 <a id="api_irtcengine_setheadphoneeqpreset__parameters"></a>
 
 ## 参数
 
-### `preset`
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 预设的耳机均衡效果。详见 [FENUMWRAP_HEADPHONE_EQUALIZER_PRESET](/zh-CN/api-reference/rtc/unreal-blueprint/enum-headphoneequalizerpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
 
@@ -33,4 +46,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -1：一般性的错误（未明确归类）。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

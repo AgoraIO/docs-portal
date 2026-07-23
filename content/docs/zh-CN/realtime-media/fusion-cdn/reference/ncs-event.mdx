@@ -24,9 +24,9 @@ description: "查看融合 CDN 直播的消息通知事件，了解关键概念�
 | :---------- | :---------- | :-------------------------------------------------------------------------------------------- |
 | `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。                                               |
 | `productId` | Integer     | 业务 ID。值为 7 表示融合 CDN 直播业务。                                                       |
-| `eventType` | Integer     | 通知的事件类型。详见[融合 CDN 直播事件类型](#event-type)。                                    |
+| `eventType` | Integer     | 通知的事件类型。详见[融合 CDN 直播事件类型](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)。                                    |
 | `notifyMs`  | Integer     | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。通知**重试**时该值会更新。         |
-| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[融合 CDN 直播事件类型](#event-type)。 |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[融合 CDN 直播事件类型](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)。 |
 
 消息通知回调的请求包体示例：
 
@@ -47,20 +47,20 @@ description: "查看融合 CDN 直播的消息通知事件，了解关键概念�
 
 | eventType   | event_name                         | 事件描述               |
 | :---------- | :--------------------------------- | :--------------------- |
-| [1](#1)     | `publish_start`                    | 推流开始。             |
-| [2](#2)     | `publish_end`                      | 推流结束。             |
-| [11](#11)   | `publish_media_info`               | 报告推流的媒体信息。   |
-| [3](#3)     | `new_custom_record_file`           | 生成自定义录制文件。   |
-| [4](#4)     | `new_custom_snapshot_file`         | 生成自定义截图文件。   |
-| [6](#6)     | `new_record_start`                 | 录制开始。             |
-| [7](#7)     | `new_record_end`                   | 录制结束。             |
-| [8](#8)     | `transfer_result`                  | 收到转推结果。         |
-| [101](#101) | `new_standard_record_file`         | 生成标准录制文件。     |
-| [102](#102) | `new_standard_snapshot_file`       | 生成标准截图文件。     |
-| [104](#104) | `new_standard_record_cutting`      | 完成录制截取。         |
-| [105](#105) | `new_standard_preview_transform`   | 预览文件转换成功。     |
-| [106](#106) | `new_encrypt_record_file`          | 生成 DRM 加密文件。    |
-| [107](#107) | `new_encrypt_original_record_file` | 生成新的源流加密文件。 |
+| [1](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `publish_start`                    | 推流开始。             |
+| [2](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `publish_end`                      | 推流结束。             |
+| [11](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)   | `publish_media_info`               | 报告推流的媒体信息。   |
+| [3](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `new_custom_record_file`           | 生成自定义录制文件。   |
+| [4](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `new_custom_snapshot_file`         | 生成自定义截图文件。   |
+| [6](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `new_record_start`                 | 录制开始。             |
+| [7](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `new_record_end`                   | 录制结束。             |
+| [8](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event)     | `transfer_result`                  | 收到转推结果。         |
+| [101](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_standard_record_file`         | 生成标准录制文件。     |
+| [102](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_standard_snapshot_file`       | 生成标准截图文件。     |
+| [104](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_standard_record_cutting`      | 完成录制截取。         |
+| [105](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_standard_preview_transform`   | 预览文件转换成功。     |
+| [106](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_encrypt_record_file`          | 生成 DRM 加密文件。    |
+| [107](/zh-CN/realtime-media/fusion-cdn/reference/ncs-event) | `new_encrypt_original_record_file` | 生成新的源流加密文件。 |
 
 <a id="1"></a>
 ### 1 publish_start

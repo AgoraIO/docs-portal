@@ -1,0 +1,101 @@
+---
+title: Namespace "agora-rte-sdk/src/core/services/report"
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/agora_rte_sdk_src_core_services_report_.html
+  sourcePath: html-docs/flexible-classroom/Electron/modules/agora_rte_sdk_src_core_services_report_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Type aliases
+
+<a id="ReportParams"></a>
+
+### ReportParams
+
+ReportParams: \{pts:[[ReportPointParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointParams)];sign:string;src:string;ts:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="pts" required>
+
+<ParameterType>
+
+[[ReportPointParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointParams)]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="sign" type="string" required />
+<Parameter name="src" type="string" required />
+<Parameter name="ts" type="number" required />
+</ParameterList>
+
+<a id="ReportPointMetricParams"></a>
+
+### ReportPointMetricParams
+
+ReportPointMetricParams: \{count?:number;elapse?:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="count" type="number" optional />
+<Parameter name="elapse" type="number" optional />
+</ParameterList>
+
+<a id="ReportPointOptionalParams"></a>
+
+### ReportPointOptionalParams
+
+ReportPointOptionalParams: \{api?:string;errCode?:string;httpCode?:number;result?:boolean\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="api" type="string" optional />
+<Parameter name="errCode" type="string" optional />
+<Parameter name="httpCode" type="number" optional />
+<Parameter name="result" type="boolean" optional />
+</ParameterList>
+
+<a id="ReportPointParams"></a>
+
+### ReportPointParams
+
+ReportPointParams: \{ls:\{api?:string;appId:string;category?:string;ctype:string;errCode?:string;event?:string;httpCode?:number;platform:"web"|"electron";result?:string;version:string\};m:string;vs:[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="ls" type="\&#123; api?: string; appId: string; category?: string; ctype: string; errCode?: string; event?: string; httpCode?: number; platform: &quot;web&quot; | &quot;electron&quot;; result?: string; version: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="api" type="string" optional />
+<Parameter name="appId" type="string" required />
+<Parameter name="category" type="string" optional />
+<Parameter name="ctype" type="string" required />
+<Parameter name="errCode" type="string" optional />
+<Parameter name="event" type="string" optional />
+<Parameter name="httpCode" type="number" optional />
+<Parameter name="platform" type="&quot;web&quot; | &quot;electron&quot;" required />
+<Parameter name="result" type="string" optional />
+<Parameter name="version" type="string" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="m" type="string" required />
+<Parameter name="vs" required>
+
+<ParameterType>
+
+[ReportPointMetricParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-services-report#ReportPointMetricParams)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>

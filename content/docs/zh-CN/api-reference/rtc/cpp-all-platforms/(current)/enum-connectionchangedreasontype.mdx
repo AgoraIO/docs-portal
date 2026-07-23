@@ -1,111 +1,172 @@
 ---
-title: "CONNECTION_CHANGED_REASON_TYPE"
-description: "连接状态变化的原因。"
+title: CONNECTION_CHANGED_REASON_TYPE
+description: 连接状态变化的原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_connectionchangedreasontype
+  sourcePath: html-docs/rtc/Cpp/API/enum_connectionchangedreasontype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_connectionchangedreasontype__parameters"></a>
 
 ## 枚举值
 
-### `CONNECTION_CHANGED_CONNECTING`
+<ParameterList>
+<a id="connection_changed_connecting"></a>
+<Parameter name="CONNECTION_CHANGED_CONNECTING">
 
 （0）：SDK 正在连接声网边缘服务器。
 
-### `CONNECTION_CHANGED_JOIN_SUCCESS`
+</Parameter>
+<a id="connection_changed_join_success"></a>
+<Parameter name="CONNECTION_CHANGED_JOIN_SUCCESS">
 
 （1）：SDK 成功加入频道。
 
-### `CONNECTION_CHANGED_INTERRUPTED`
+</Parameter>
+<a id="connection_changed_interrupted"></a>
+<Parameter name="CONNECTION_CHANGED_INTERRUPTED">
 
 （2）：SDK 与声网边缘服务器的连接中断。
 
-### `CONNECTION_CHANGED_BANNED_BY_SERVER`
+</Parameter>
+<a id="connection_changed_banned_by_server"></a>
+<Parameter name="CONNECTION_CHANGED_BANNED_BY_SERVER">
 
 （3）：SDK 与声网边缘服务器的连接被服务器禁止。例如，用户被踢出频道时会返回该状态。
 
-### `CONNECTION_CHANGED_JOIN_FAILED`
+</Parameter>
+<a id="connection_changed_join_failed"></a>
+<Parameter name="CONNECTION_CHANGED_JOIN_FAILED">
 
 （4）：SDK 加入频道失败。若超过 20 分钟仍未成功加入，将返回该状态码并停止重连。你需要提示用户尝试切换网络并重新加入频道。
 
-### `CONNECTION_CHANGED_LEAVE_CHANNEL`
+</Parameter>
+<a id="connection_changed_leave_channel"></a>
+<Parameter name="CONNECTION_CHANGED_LEAVE_CHANNEL">
 
 （5）：SDK 已离开频道。
 
-### `CONNECTION_CHANGED_INVALID_APP_ID`
+</Parameter>
+<a id="connection_changed_invalid_app_id"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_APP_ID">
 
 （6）：无效的 App ID。请使用有效的 App ID 重新加入频道，并确保该 ID 与声网控制台中生成的一致。
 
-### `CONNECTION_CHANGED_INVALID_CHANNEL_NAME`
+</Parameter>
+<a id="connection_changed_invalid_channel_name"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_CHANNEL_NAME">
 
-（7）：无效的频道名。请使用有效的频道名重新加入频道。频道名为最多 64 字节的字符串，支持的字符共 89 个，包括：小写字母 a-z、大写字母 A-Z、数字 0-9，以及以下符号：! # $ % & () + -:; &lt; =. &gt;? @ [] ^ _ \{\} | ~,
+（7）：无效的频道名。请使用有效的频道名重新加入频道。频道名为最多 64 字节的字符串，支持的字符共 89 个，包括：小写字母 a-z、大写字母 A-Z、数字 0-9，以及以下符号：! # $ % & ( ) + - : ; &lt; = . &gt; ? @ [ ] ^ _ \{ \} | ~ ,
 
-### `CONNECTION_CHANGED_INVALID_TOKEN`
+</Parameter>
+<a id="connection_changed_invalid_token"></a>
+<Parameter name="CONNECTION_CHANGED_INVALID_TOKEN">
 
 （8）：无效的 Token。可能原因包括：项目在声网控制台启用了 App Certificate，但加入频道时未传入 Token；调用 `joinChannel` 加入频道时指定的 uid 与生成 Token 时使用的 uid 不一致；生成的 Token 与用于加入频道的 Token 不一致。请确保：启用 App Certificate 的项目加入频道时必须传入 Token；生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致；生成的 Token 与传入的 Token 一致。
 
-### `CONNECTION_CHANGED_TOKEN_EXPIRED`
+</Parameter>
+<a id="connection_changed_token_expired"></a>
+<Parameter name="CONNECTION_CHANGED_TOKEN_EXPIRED">
 
 （9）：当前使用的 Token 已过期。你需要在服务器上生成新的 Token，并使用新 Token 重新加入频道。
 
-### `CONNECTION_CHANGED_REJECTED_BY_SERVER`
+</Parameter>
+<a id="connection_changed_rejected_by_server"></a>
+<Parameter name="CONNECTION_CHANGED_REJECTED_BY_SERVER">
 
 （10）：连接被服务器拒绝。可能原因包括：用户已在频道中仍调用 `joinChannel` 方法加入频道，请停止调用该方法以清除错误；用户在进行通话测试时尝试加入频道，需在测试结束后再加入频道。
 
-### `CONNECTION_CHANGED_SETTING_PROXY_SERVER`
+</Parameter>
+<a id="connection_changed_setting_proxy_server"></a>
+<Parameter name="CONNECTION_CHANGED_SETTING_PROXY_SERVER">
 
 （11）：由于 SDK 设置了代理服务器，连接状态变为重连中。
 
-### `CONNECTION_CHANGED_RENEW_TOKEN`
+</Parameter>
+<a id="connection_changed_renew_token"></a>
+<Parameter name="CONNECTION_CHANGED_RENEW_TOKEN">
 
 （12）：由于更新 Token，连接状态发生变化。
 
-### `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED`
+</Parameter>
+<a id="connection_changed_client_ip_address_changed"></a>
+<Parameter name="CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED">
 
 （13）：客户端 IP 地址发生变化。若多次收到该状态码，请提示用户切换网络并重新加入频道。
 
-### `CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT`
+</Parameter>
+<a id="connection_changed_keep_alive_timeout"></a>
+<Parameter name="CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT">
 
 （14）：SDK 与声网边缘服务器之间的连接保活超时，SDK 会自动尝试重连。
 
-### `CONNECTION_CHANGED_REJOIN_SUCCESS`
+</Parameter>
+<a id="connection_changed_rejoin_success"></a>
+<Parameter name="CONNECTION_CHANGED_REJOIN_SUCCESS">
 
 （15）：用户已成功重新加入频道。
 
-### `CONNECTION_CHANGED_LOST`
+</Parameter>
+<a id="connection_changed_lost"></a>
+<Parameter name="CONNECTION_CHANGED_LOST">
 
 （16）：SDK 与服务器之间的连接已丢失。
 
-### `CONNECTION_CHANGED_ECHO_TEST`
+</Parameter>
+<a id="connection_changed_echo_test"></a>
+<Parameter name="CONNECTION_CHANGED_ECHO_TEST">
 
 （17）：由于回声测试，连接状态发生变化。
 
-### `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER`
+</Parameter>
+<a id="connection_changed_client_ip_address_changed_by_user"></a>
+<Parameter name="CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER">
 
 （18）：本地 IP 地址被用户更改。
 
-### `CONNECTION_CHANGED_SAME_UID_LOGIN`
+</Parameter>
+<a id="connection_changed_same_uid_login"></a>
+<Parameter name="CONNECTION_CHANGED_SAME_UID_LOGIN">
 
 （19）：用户在不同设备上以相同 UID 加入同一频道。
 
-:::info[注]
-使用相同 UID 加入同一频道为未定义行为，声网不保证所有类似情况都会收到 `reason` 19。
+:::note
+注： 使用相同 UID 加入同一频道为未定义行为，声网不保证所有类似情况都会收到 `reason` 19。
 :::
 
-### `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS`
+</Parameter>
+<a id="connection_changed_too_many_broadcasters"></a>
+<Parameter name="CONNECTION_CHANGED_TOO_MANY_BROADCASTERS">
 
 （20）：频道中的主播数量已达上限。
 
-### `CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE`
+</Parameter>
+<a id="connection_changed_license_validation_failure"></a>
+<Parameter name="CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE">
 
 （21）：由于许可证验证失败，连接失败。
 
-### `CONNECTION_CHANGED_CERTIFICATION_VERYFY_FAILURE`
+</Parameter>
+<a id="connection_changed_certification_veryfy_failure"></a>
+<Parameter name="CONNECTION_CHANGED_CERTIFICATION_VERYFY_FAILURE">
 
 （22）：由于证书验证失败，连接失败。
 
-### `CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE`
+</Parameter>
+<a id="connection_changed_stream_channel_not_available"></a>
+<Parameter name="CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE">
 
 （23）：由于未授予流通道权限，连接失败。
 
-### `CONNECTION_CHANGED_INCONSISTENT_APPID`
+</Parameter>
+<a id="connection_changed_inconsistent_appid"></a>
+<Parameter name="CONNECTION_CHANGED_INCONSISTENT_APPID">
 
 （24）：由于加入频道时使用了不一致的 App ID，连接失败。
+
+</Parameter>
+</ParameterList>

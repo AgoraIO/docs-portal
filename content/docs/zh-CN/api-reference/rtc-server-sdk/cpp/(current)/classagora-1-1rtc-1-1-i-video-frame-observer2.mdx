@@ -1,0 +1,62 @@
+---
+title: agora::rtc::IVideoFrameObserver2类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_frame_observer2
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_frame_observer2.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-observer2) 类。
+
+## 构造及析构函数说明
+
+<a id="a6003f5e6bd07e387a7dd5611201f4eb1"></a>
+
+### ~IVideoFrameObserver2()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IVideoFrameObserver2::~IVideoFrameObserver2()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a8b6fa921185f59ad5d3b5dbbbf180058"></a>
+
+### onFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IVideoFrameObserver2::onFrame(const char * *channelId*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *remoteUid*, const media::base::VideoFrame * *frame*)
+
+</ApiSignature>
+
+每次收到视频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<Parameter name="remoteUid">
+
+远端用户的用户名。
+
+</Parameter>
+<Parameter name="frame">
+
+视频帧详细信息。
+
+</Parameter>
+</ParameterList>

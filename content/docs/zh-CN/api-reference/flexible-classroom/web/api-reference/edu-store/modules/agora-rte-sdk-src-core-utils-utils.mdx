@@ -1,0 +1,403 @@
+---
+title: Namespace "agora-rte-sdk/src/core/utils/utils"
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/modules/agora_rte_sdk_src_core_utils_utils_.html
+  sourcePath: html-docs/flexible-classroom/Web/modules/agora_rte_sdk_src_core_utils_utils_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Type aliases
+
+<a id="AbortCallback"></a>
+
+### AbortCallback
+
+AbortCallback: (e:Error)=&gt;Promise&lt;void&gt;|void
+
+#### Type declaration
+
+<ApiSignature>
+
+(e: Error): Promise&lt;void&gt; | void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="e" type="Error" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt; | void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="AnyFunction"></a>
+
+### AnyFunction
+
+AnyFunction: (...args:any[])=&gt;unknown
+
+#### Type declaration
+
+<ApiSignature>
+
+(...args: any[]): unknown
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+unknown
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="AttemptFailCallback"></a>
+
+### AttemptFailCallback
+
+AttemptFailCallback: (args:[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs)&\{timeFn:any\})=&gt;Promise&lt;boolean&gt;|boolean
+
+#### Type declaration
+
+<ApiSignature>
+
+(args: [RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{ timeFn: any \}): Promise&lt;boolean&gt; | boolean
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="args" required>
+
+<ParameterType>
+
+[RetryAttemptArgs](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryAttemptArgs) & \{ timeFn: any \}
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt; | boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="RetryAttemptArgs"></a>
+
+### RetryAttemptArgs
+
+RetryAttemptArgs: \{currentRetry:number;error:Error;exponential:number;factor:number;interval:number;jitter:number;maxBackoff:number;retriesMax:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="currentRetry" type="number" required />
+<Parameter name="error" type="Error" required />
+<Parameter name="exponential" type="number" required />
+<Parameter name="factor" type="number" required />
+<Parameter name="interval" type="number" required />
+<Parameter name="jitter" type="number" required />
+<Parameter name="maxBackoff" type="number" required />
+<Parameter name="retriesMax" type="number" required />
+</ParameterList>
+
+<a id="RetryOptions"></a>
+
+### RetryOptions
+
+RetryOptions: \{exponential?:boolean;factor?:number;interval?:number;isCb?:boolean;jitter?:number;maxBackoff?:number;retriesMax?:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="exponential" type="boolean" optional />
+<Parameter name="factor" type="number" optional />
+<Parameter name="interval" type="number" optional />
+<Parameter name="isCb" type="boolean" optional />
+<Parameter name="jitter" type="number" optional />
+<Parameter name="maxBackoff" type="number" optional />
+<Parameter name="retriesMax" type="number" optional />
+</ParameterList>
+
+## Functions
+
+<a id="arr2Map"></a>
+
+### Const arr2Map
+
+<ApiSignature>
+
+arr2Map&lt;T&gt;(arr: T[], fnKey: (ele: T) =&gt; string): Map&lt;string, T&gt;
+
+</ApiSignature>
+
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="arr" type="T[]" required />
+<Parameter name="fnKey" type="(ele: T)= &amp; gt; string" required>
+
+<ApiSignature>
+
+(ele: T): string
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ele" type="T" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, T&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="arr2map"></a>
+
+### Const arr2map
+
+<ApiSignature>
+
+arr2map&lt;T&gt;(arr: T[], fnKey: (ele: T) =&gt; string): Record&lt;string, T&gt;
+
+</ApiSignature>
+
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="arr" type="T[]" required />
+<Parameter name="fnKey" type="(ele: T)= &amp; gt; string" required>
+
+<ApiSignature>
+
+(ele: T): string
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ele" type="T" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Record&lt;string, T&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="isElectron"></a>
+
+### Const isElectron
+
+<ApiSignature>
+
+isElectron(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="jsonstring"></a>
+
+### Const jsonstring
+
+<ApiSignature>
+
+jsonstring(json: unknown): string
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="json" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="printarr"></a>
+
+### Const printarr
+
+<ApiSignature>
+
+printarr(arr: unknown[], keyFn?: (i: unknown) =&gt; string): string
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="arr" type="unknown[]" required />
+<Parameter name="keyFn" type="(i: unknown)= &amp; gt; string" optional>
+
+<ApiSignature>
+
+(i: unknown): string
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="i" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="retryAttempt"></a>
+
+### Const retryAttempt
+
+<ApiSignature>
+
+retryAttempt(fn: ["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction), args: unknown[], opts?: [RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)): [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="fn" required>
+
+<ParameterType>
+
+["agora-rte-sdk/src/core/utils/utils"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils).[AnyFunction](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#AnyFunction)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="args" type="unknown[]" required />
+<Parameter name="opts" optional>
+
+<ParameterType>
+
+[RetryOptions](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-utils-utils#RetryOptions)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-utils-etry)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sleep"></a>
+
+### Const sleep
+
+<ApiSignature>
+
+sleep(ms: number): Promise&lt;unknown&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ms" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;unknown&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

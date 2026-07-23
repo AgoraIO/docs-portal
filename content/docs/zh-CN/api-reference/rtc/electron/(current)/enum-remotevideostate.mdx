@@ -1,27 +1,48 @@
 ---
-title: "RemoteVideoState"
-description: "远端视频流状态。"
+title: RemoteVideoState
+description: 远端视频流状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_remotevideostate
+  sourcePath: html-docs/rtc/Electron/API/enum_remotevideostate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_remotevideostate__parameters"></a>
 
 ## 枚举值
 
-### `RemoteVideoStateStopped`
+<ParameterList>
+<a id="remotevideostatestopped"></a>
+<Parameter name="RemoteVideoStateStopped">
 
-0: 远端视频默认初始状态。在 `RemoteVideoStateReasonLocalMuted`、 `RemoteVideoStateReasonRemoteMuted` 或 `RemoteVideoStateReasonRemoteOffline` 的情况下，会报告该状态。
+0: 远端视频默认初始状态。在 `RemoteVideoStateReasonLocalMuted`、`RemoteVideoStateReasonRemoteMuted` 或 `RemoteVideoStateReasonRemoteOffline` 的情况下，会报告该状态。
 
-### `RemoteVideoStateStarting`
+</Parameter>
+<a id="remotevideostatestarting"></a>
+<Parameter name="RemoteVideoStateStarting">
 
 1: 本地用户已接收远端视频首包。
 
-### `RemoteVideoStateDecoding`
+</Parameter>
+<a id="remotevideostatedecoding"></a>
+<Parameter name="RemoteVideoStateDecoding">
 
-2: 远端视频流正在解码，正常播放。在 `RemoteVideoStateReasonNetworkRecovery`、 `RemoteVideoStateReasonLocalUnmuted`、 `RemoteVideoStateReasonRemoteUnmuted` 的情况下，会报告该状态。
+2: 远端视频流正在解码，正常播放。在 `RemoteVideoStateReasonNetworkRecovery`、`RemoteVideoStateReasonLocalUnmuted`、`RemoteVideoStateReasonRemoteUnmuted` 的情况下，会报告该状态。
 
-### `RemoteVideoStateFrozen`
+</Parameter>
+<a id="remotevideostatefrozen"></a>
+<Parameter name="RemoteVideoStateFrozen">
 
 3: 远端视频流卡顿。在 `RemoteVideoStateReasonNetworkCongestion` 的情况下，会报告该状态。
 
-### `RemoteVideoStateFailed`
+</Parameter>
+<a id="remotevideostatefailed"></a>
+<Parameter name="RemoteVideoStateFailed">
 
 4: 远端视频流播放失败。在 `RemoteVideoStateReasonInternal` 的情况下，会报告该状态。
+
+</Parameter>
+</ParameterList>

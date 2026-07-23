@@ -1,12 +1,21 @@
 ---
-title: "setRemoteVoicePositionEx"
-description: "设置远端用户声音的 2D 位置，即水平面位置。"
+title: setRemoteVoicePositionEx
+description: 设置远端用户声音的 2D 位置，即水平面位置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/api_irtcengineex_setremotevoicepositionex
+  sourcePath: html-docs/rtc/HarmonyOS/API/api_irtcengineex_setremotevoicepositionex.html
+  generator: oxygen
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
+
 <a id="api_irtcengineex_setremotevoicepositionex__prototype"></a>
-
-```arkts
-
-```
 
 <a id="api_irtcengineex_setremotevoicepositionex__detailed_desc"></a>
 
@@ -16,7 +25,9 @@ description: "设置远端用户声音的 2D 位置，即水平面位置。"
 
 通过调用该接口设置远端用户声音出现的位置，左右声道的声音差异会产生声音的方位感，从而判断出远端用户的实时位置。在多人在线游戏场景，如吃鸡游戏中，该方法能有效增加游戏角色的方位感，模拟真实场景。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 为获得最佳听觉体验，建议用户佩戴有线耳机。
 - 该方法需要在加入频道后调用。
 :::
@@ -25,11 +36,15 @@ description: "设置远端用户声音的 2D 位置，即水平面位置。"
 
 ## 参数
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-### `pan`
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
 
 设置远端用户声音的空间位置，取值范围为 [-1.0,1.0]:
 
@@ -37,17 +52,28 @@ description: "设置远端用户声音的 2D 位置，即水平面位置。"
 - （默认）0.0: 声音出现在正前方。
 - 1.0: 声音出现在右边。
 
-### `gain`
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 设置远端用户声音的音量，取值范围为 [0.0,100.0]，默认值为 100.0，表示该用户的原始音量。取值越小，则音量越低。
 
-### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
 
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)

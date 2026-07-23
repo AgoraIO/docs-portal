@@ -1,0 +1,104 @@
+---
+title: io.agora.recording.common.Common.CONNECTION_STATE_TYPE 枚举类型参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_c_o_n_n_e_c_t_i_o_n___s_t_a_t_e___t_y_p_e
+  sourcePath: >-
+    html-docs/recording/Java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_c_o_n_n_e_c_t_i_o_n___s_t_a_t_e___t_y_p_e.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+网络连接状态。
+
+## 类成员变量说明
+
+<a id="aea90ce5a6f79b9ff967f1aeab06ff4da"></a>
+
+### CONNECTION_STATE_DISCONNECTED
+
+<ApiSignature>
+
+io.agora.recording.common.Common.CONNECTION_STATE_TYPE.CONNECTION_STATE_DISCONNECTED =(1)
+
+</ApiSignature>
+
+1: 网络连接断开。 该状态表示 SDK 处于：
+
+- 调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) 加入频道前的初始化阶段
+- 或调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1) 后的离开频道阶段
+
+<a id="a1d662f9500a77b9e985a2442a9937fe4"></a>
+
+### CONNECTION_STATE_CONNECTING
+
+<ApiSignature>
+
+io.agora.recording.common.Common.CONNECTION_STATE_TYPE.CONNECTION_STATE_CONNECTING =(2)
+
+</ApiSignature>
+
+2: 建立网络连接中。
+
+该状态表示 SDK 在调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) 后正在与指定的频道建立连接。
+
+- 如果成功加入频道，App 会收到 [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) 回调，通知当前网络状态变成 [CONNECTION_STATE_CONNECTED](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e#a07b4bd2d3aa4dc3bbc69cdbd5ba2445e)。
+- 建立连接后，SDK 还会处理媒体初始化，一切就绪后会回调 [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a493b31ae39de3060a852f5e93b260eb4)。
+
+<a id="a07b4bd2d3aa4dc3bbc69cdbd5ba2445e"></a>
+
+### CONNECTION_STATE_CONNECTED
+
+<ApiSignature>
+
+io.agora.recording.common.Common.CONNECTION_STATE_TYPE.CONNECTION_STATE_CONNECTED =(3)
+
+</ApiSignature>
+
+3: 网络已连接。
+
+该状态表示用户已经加入频道。
+
+如果因网络断开或切换而导致 SDK 与频道的连接中断，SDK 会自动重连，此时 App 会收到：
+
+- [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) 回调，通知的网络状态变成 [CONNECTION_STATE_RECONNECTING](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e#acd032705d1ca90bd4e1c4aed3c56bc6d)。
+- 同时会收到 [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) 回调。
+
+<a id="acd032705d1ca90bd4e1c4aed3c56bc6d"></a>
+
+### CONNECTION_STATE_RECONNECTING
+
+<ApiSignature>
+
+io.agora.recording.common.Common.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING =(4)
+
+</ApiSignature>
+
+4: 重新建立网络连接中。
+
+该状态表示 SDK 之前曾加入过频道，但因网络等原因连接中断了，此时 SDK 会自动尝试重新接入频道。
+
+- 如果 SDK 无法在 10 秒内重新加入频道，则 [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) 会被触发，SDK 会一直保持在 [CONNECTION_STATE_RECONNECTING](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e#acd032705d1ca90bd4e1c4aed3c56bc6d) 的状态，并不断尝试重新加入频道。
+- 如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，App 会收到 [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) 回调，通知的网络状态进入 [CONNECTION_STATE_FAILED](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e#aa72b56cd913384ad9c314c6d362bf6e3)，SDK 停止尝试重连。
+
+<a id="aa72b56cd913384ad9c314c6d362bf6e3"></a>
+
+### CONNECTION_STATE_FAILED
+
+<ApiSignature>
+
+io.agora.recording.common.Common.CONNECTION_STATE_TYPE.CONNECTION_STATE_FAILED =(5)
+
+</ApiSignature>
+
+5: 网络连接失败。 该状态表示 SDK 已不再尝试重新加入频道，用户必须要调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1) 离开频道。
+
+- 如果用户还想重新加入频道，则需要再次调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b)
+- 如果 SDK 因服务器端使用 RESTful API 禁止加入频道，则 App 会收到 [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) 回调，网络状态变为 [CONNECTION_STATE_FAILED](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-c-o-n-n-e-c-t-i-o-n-s-t-a-t-e-t-y-p-e#aa72b56cd913384ad9c314c6d362bf6e3)。

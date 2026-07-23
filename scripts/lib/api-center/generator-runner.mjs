@@ -1,0 +1,565 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {
+  API_CENTER_GENERATOR_CONVERSION_OPTIONS,
+  apiCenterHtmlConversionProfile,
+  convertHtmlToMdx,
+} from './html-to-mdx.mjs';
+import {
+  buildLocalFragmentIndex,
+  insertFragmentAliases,
+  rewriteLocalFragmentLinks,
+  targetPathToRoute,
+} from './local-fragment-index.mjs';
+import {
+  ApiCenterMigrationRun,
+  assetTargetPath,
+  buildLegacyRouteMap,
+  createWarning,
+  loadFaqMappingRows,
+  rewriteLegacyHref,
+} from './migration-framework.mjs';
+import { parseCsv } from './source-resolver.mjs';
+
+const SUPPORTED_GENERATORS = new Set([
+  'appledoc',
+  'doxygen',
+  'oxygen',
+  'typedoc',
+]);
+
+const ZH_CN_API_REFERENCE_ROOT = 'content/docs/zh-CN/api-reference/';
+
+function pageMatches(page, { generators, scope, urls }) {
+  const resolution = page.sourceResolution;
+  return (
+    resolution.type === 'generated-html' &&
+    resolution.targetPath.startsWith(ZH_CN_API_REFERENCE_ROOT) &&
+    generators.has(resolution.generator) &&
+    (!scope || resolution.route.scopeKey === scope) &&
+    (urls.size === 0 || urls.has(page.requestedUrl))
+  );
+}
+
+function canonicalPageScore(page) {
+  const url = new URL(page.requestedUrl);
+  return [
+    url.search ? 1 : 0,
+    url.pathname.endsWith('.html') ? 1 : 0,
+    url.href.length,
+  ];
+}
+
+function compareCanonicalPages(left, right) {
+  const leftScore = canonicalPageScore(left);
+  const rightScore = canonicalPageScore(right);
+  for (let index = 0; index < leftScore.length; index++) {
+    if (leftScore[index] !== rightScore[index]) {
+      return leftScore[index] - rightScore[index];
+    }
+  }
+  return left.requestedUrl.localeCompare(right.requestedUrl);
+}
+
+function selectCanonicalPages(pages) {
+  const byTarget = new Map();
+  for (const page of pages) {
+    const targetPath = page.sourceResolution.targetPath;
+    const candidates = byTarget.get(targetPath) ?? [];
+    candidates.push(page);
+    byTarget.set(targetPath, candidates);
+  }
+  const selected = new Set();
+  const aliases = new Map();
+  for (const [targetPath, candidates] of byTarget) {
+    const sourceKeys = new Set(
+      candidates.map(
+        (page) =>
+          `${page.sourceResolution.generator}\u001f${page.sourceResolution.sourcePath}`,
+      ),
+    );
+    if (sourceKeys.size > 1) {
+      throw new Error(
+        `generated-target-collision: ${targetPath} has multiple distinct legacy sources.`,
+      );
+    }
+    const [canonical, ...duplicates] = [...candidates].sort(
+      compareCanonicalPages,
+    );
+    selected.add(canonical.requestedUrl);
+    for (const duplicate of duplicates) {
+      aliases.set(duplicate.requestedUrl, canonical.requestedUrl);
+    }
+  }
+  return { selected, aliases };
+}
+
+const HTML_HREF_WITH_FRAGMENT_PATTERN =
+  /\bhref\s*=\s*(?:"([^"]*#[^"]+)"|'([^']*#[^']+)')/gi;
+const MARKDOWN_HREF_WITH_FRAGMENT_PATTERN =
+  /(?<!!)\[(?:[^[\]\n]|\[[^\]\n]*])*]\(([^)\s]*#[^)\s]+)(?:\s+"[^"]*")?\s*\)/g;
+
+async function collectGeneratedFragmentRequests({
+  manifest,
+  oldRoot,
+  routeMap,
+}) {
+  const candidates = manifest.pageEvidence.filter(
+    (page) =>
+      !page.aliasOf &&
+      page.sourceResolution.status === 'resolved' &&
+      page.sourceResolution.type === 'generated-html' &&
+      page.sourceResolution.targetPath.startsWith(ZH_CN_API_REFERENCE_ROOT),
+  );
+  const canonical = selectCanonicalPages(candidates);
+  const pagesByUrl = new Map(
+    candidates.map((page) => [page.requestedUrl, page]),
+  );
+  const generatedRoutes = new Set(
+    candidates.map((page) =>
+      targetPathToRoute(page.sourceResolution.targetPath),
+    ),
+  );
+  const requestedByRoute = new Map();
+  for (const requestedUrl of canonical.selected) {
+    const page = pagesByUrl.get(requestedUrl);
+    const html = await fs.readFile(
+      path.resolve(oldRoot, page.sourceResolution.sourcePath),
+      'utf8',
+    );
+    const hrefs = [
+      ...[...html.matchAll(HTML_HREF_WITH_FRAGMENT_PATTERN)].map(
+        (match) => match[1] ?? match[2],
+      ),
+      ...[...html.matchAll(MARKDOWN_HREF_WITH_FRAGMENT_PATTERN)].map(
+        (match) => match[1],
+      ),
+    ];
+    for (const href of hrefs) {
+      const rewritten = rewriteLegacyHref(href, {
+        routeMap,
+        sourceUrl: page.requestedUrl,
+      }).href;
+      if (
+        !rewritten?.startsWith('/zh-CN/api-reference/') ||
+        !rewritten.includes('#')
+      ) {
+        continue;
+      }
+      const hashIndex = rewritten.indexOf('#');
+      const route = rewritten.slice(0, hashIndex).replace(/\/$/, '');
+      if (!generatedRoutes.has(route)) continue;
+      const fragments = requestedByRoute.get(route) ?? new Set();
+      fragments.add(decodeURIComponent(rewritten.slice(hashIndex + 1)));
+      requestedByRoute.set(route, fragments);
+    }
+  }
+  return requestedByRoute;
+}
+
+async function exists(filePath) {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function usablePathMapRows(repoRoot, pathMapPath) {
+  try {
+    const rows = parseCsv(
+      await fs.readFile(path.resolve(repoRoot, pathMapPath), 'utf8'),
+    );
+    const usable = [];
+    for (const row of rows) {
+      if (!row.old_url || !row.new_url) continue;
+      if (
+        row.target_path &&
+        !(await exists(path.resolve(repoRoot, row.target_path)))
+      ) {
+        continue;
+      }
+      usable.push(row);
+    }
+    return usable;
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+function stripUrlSuffix(value) {
+  return decodeURIComponent(String(value).split(/[?#]/, 1)[0]);
+}
+
+function isDoxygenSourceOrHelperHref(href, requestedUrl) {
+  let target;
+  let source;
+  try {
+    source = new URL(requestedUrl);
+    target = new URL(href, source);
+  } catch {
+    return false;
+  }
+  const sourcePath = decodeURIComponent(source.pathname);
+  const targetPath = decodeURIComponent(target.pathname);
+  if (
+    source.origin !== target.origin ||
+    !sourcePath.startsWith('/api-ref/') ||
+    !targetPath.startsWith('/api-ref/') ||
+    path.posix.dirname(sourcePath) !== path.posix.dirname(targetPath)
+  ) {
+    return false;
+  }
+  const basename = path.posix.basename(targetPath);
+  const normalized = basename.toLowerCase();
+  return (
+    normalized.endsWith('_source.html') ||
+    normalized === 'deprecated.html' ||
+    normalized.endsWith('-members.html') ||
+    /^(?:functions|namespacemembers)(?:_[^.]+)?\.html$/.test(normalized) ||
+    /^(?:annotated|classes|files|hierarchy)\.html$/.test(normalized) ||
+    /_8[a-z0-9_]+\.html$/.test(normalized)
+  );
+}
+
+function assetHandler({ run, sourceAbsolutePath, oldRoot }) {
+  return async ({ source, sourceUrl }) => {
+    if (/^data:/i.test(source)) return source;
+    if (/^https?:\/\//i.test(source)) {
+      const url = new URL(source, sourceUrl);
+      if (url.origin !== 'https://doc.shengwang.cn') return url.href;
+    }
+    const cleanSource = stripUrlSuffix(source);
+    const local = cleanSource.startsWith('/img/')
+      ? path.resolve(oldRoot, 'static', cleanSource.slice(1))
+      : path.resolve(path.dirname(sourceAbsolutePath), cleanSource);
+    if (!(await exists(local)))
+      throw new Error(`Local asset not found: ${local}`);
+    const contents = await fs.readFile(local);
+    const targetPath = assetTargetPath(local, contents);
+    run.planFile({
+      targetPath,
+      contents,
+      sourcePath: path.relative(oldRoot, local).split(path.sep).join('/'),
+      sourceUrl,
+      type: 'asset',
+    });
+    return `/${targetPath.replace(/^public\//, '')}`;
+  };
+}
+
+export async function runHtmlGenerators({
+  repoRoot = process.cwd(),
+  manifestPath = 'docs/migration/api-center-html-manifest.json',
+  pathMapPath = 'docs/migration/path-map.csv',
+  oldRoot = process.env.API_CENTER_OLD_ROOT,
+  generators,
+  scope = null,
+  urls = [],
+  limit = 0,
+  mode = 'write',
+  reconcile = false,
+}) {
+  if (!oldRoot) {
+    throw new Error(
+      'Pass --old-root or set API_CENTER_OLD_ROOT to the durable shengwang-doc-source checkout.',
+    );
+  }
+  const requestedGenerators = new Set(generators);
+  for (const generator of requestedGenerators) {
+    if (!SUPPORTED_GENERATORS.has(generator)) {
+      throw new Error(`Unsupported HTML generator: ${generator}`);
+    }
+  }
+  const manifest = JSON.parse(
+    await fs.readFile(path.resolve(repoRoot, manifestPath), 'utf8'),
+  );
+  const routeMap = buildLegacyRouteMap(
+    manifest,
+    await usablePathMapRows(repoRoot, pathMapPath),
+    await loadFaqMappingRows(repoRoot),
+  );
+  const run = await ApiCenterMigrationRun.create({
+    repoRoot,
+    manifest,
+    mode,
+    reconcile,
+  });
+  const urlSet = new Set(urls);
+  const matched = manifest.pageEvidence.filter(
+    (page) =>
+      !page.aliasOf &&
+      pageMatches(page, {
+        generators: requestedGenerators,
+        scope,
+        urls: urlSet,
+      }),
+  );
+  const canonicalSelection = selectCanonicalPages(
+    limit > 0 ? matched.slice(0, limit) : matched,
+  );
+  const selected = canonicalSelection.selected;
+  const drafts = [];
+  const structuredParameterCounts = Object.fromEntries(
+    [...requestedGenerators]
+      .sort()
+      .map((generator) => [generator, { fields: 0, lists: 0 }]),
+  );
+  const structuredApiMemberCounts = Object.fromEntries(
+    [...requestedGenerators]
+      .sort()
+      .map((generator) => [generator, { returns: 0, signatures: 0 }]),
+  );
+
+  for (const page of manifest.pageEvidence.filter((page) => !page.aliasOf)) {
+    const resolution = page.sourceResolution;
+    if (resolution.status === 'excluded') {
+      run.recordPageResult({
+        page,
+        status: 'excluded',
+        warnings: [
+          createWarning(
+            'broken-live-body-link',
+            page.warnings?.[0]?.message ?? resolution.reason,
+          ),
+        ],
+      });
+      continue;
+    }
+    if (canonicalSelection.aliases.has(page.requestedUrl)) {
+      run.recordPageResult({ page, status: 'alias' });
+      continue;
+    }
+    if (!selected.has(page.requestedUrl)) {
+      if (resolution.targetExists) run.preserveExisting({ page });
+      else run.recordPageResult({ page, status: 'pending' });
+      continue;
+    }
+    const sourceAbsolutePath = path.resolve(oldRoot, resolution.sourcePath);
+    const html = await fs.readFile(sourceAbsolutePath, 'utf8');
+    const converted = await convertHtmlToMdx({
+      html,
+      sourceUrl: page.requestedUrl,
+      sourcePath: resolution.sourcePath,
+      routeMap,
+      onAsset: assetHandler({ run, sourceAbsolutePath, oldRoot }),
+      conversionProfile: apiCenterHtmlConversionProfile({
+        sourcePath: resolution.sourcePath,
+        supplementalGeneratedSource: page.supplementalGeneratedSource,
+      }),
+      ...API_CENTER_GENERATOR_CONVERSION_OPTIONS[resolution.generator],
+    });
+    for (const [generator, counts] of Object.entries(
+      converted.structuredParameters,
+    )) {
+      const aggregate = structuredParameterCounts[generator];
+      if (!aggregate) continue;
+      aggregate.fields += counts.fields;
+      aggregate.lists += counts.lists;
+    }
+    for (const [generator, counts] of Object.entries(
+      converted.structuredApiMembers,
+    )) {
+      const aggregate = structuredApiMemberCounts[generator];
+      if (!aggregate) continue;
+      aggregate.returns += counts.returns;
+      aggregate.signatures += counts.signatures;
+    }
+    const warnings = converted.warnings.map((warning) =>
+      resolution.generator === 'doxygen' &&
+      warning.code === 'unresolved-link' &&
+      isDoxygenSourceOrHelperHref(warning.href, page.requestedUrl)
+        ? createWarning(
+            'source-only-link-removed',
+            `Rendered unresolved generated-source link ${warning.href ?? ''} as local text.`,
+            { href: warning.href },
+          )
+        : warning,
+    );
+    if (!converted.body && converted.sourceTextLength < 20) {
+      warnings.push(
+        createWarning(
+          'empty-source-body',
+          `The legacy source ${resolution.sourcePath} exposes an intentionally empty named page.`,
+        ),
+      );
+    }
+    if (
+      !converted.title ||
+      (converted.sourceTextLength >= 20 && converted.body.length < 20)
+    ) {
+      warnings.push(
+        createWarning(
+          'unsupported-html-structure',
+          `No substantive converted body was produced from ${resolution.sourcePath}.`,
+        ),
+      );
+    }
+    const title = converted.title || page.title;
+    if (!title) {
+      throw new Error(
+        `Missing source-derived title for ${page.requestedUrl}; request source copy instead of synthesizing a filename title.`,
+      );
+    }
+    drafts.push({
+      page,
+      title,
+      description: converted.description || undefined,
+      body: converted.body,
+      warnings,
+    });
+  }
+
+  const draftsByRoute = new Map(
+    drafts.map((draft) => [
+      targetPathToRoute(draft.page.sourceResolution.targetPath),
+      draft,
+    ]),
+  );
+  const requestedByRoute = await collectGeneratedFragmentRequests({
+    manifest,
+    oldRoot,
+    routeMap,
+  });
+  for (const [route, fragments] of requestedByRoute) {
+    const draft = draftsByRoute.get(route);
+    if (!draft) continue;
+    const aliases = insertFragmentAliases(draft.body, fragments);
+    draft.body = aliases.body;
+    if (aliases.inserted.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'generated-fragment-alias',
+          `Added ${aliases.inserted.length} stable legacy fragment alias(es).`,
+          { aliases: aliases.inserted },
+        ),
+      );
+    }
+  }
+
+  const fragmentIndex = await buildLocalFragmentIndex({
+    repoRoot,
+    virtualPages: drafts.map((draft) => ({
+      body: draft.body,
+      targetPath: draft.page.sourceResolution.targetPath,
+    })),
+  });
+  for (const draft of drafts) {
+    const normalized = await rewriteLocalFragmentLinks(draft.body, {
+      fragmentIndex,
+      sourceRoute: targetPathToRoute(draft.page.sourceResolution.targetPath),
+    });
+    draft.body = normalized.body;
+    const resolved = normalized.warnings.filter(
+      (warning) => !warning.unresolved,
+    );
+    const unresolved = normalized.warnings.filter(
+      (warning) => warning.unresolved,
+    );
+    if (resolved.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'generated-fragment-normalized',
+          `Normalized ${resolved.length} legacy fragment link(s) to stable local anchors.`,
+          { mappings: resolved },
+        ),
+      );
+    }
+    if (unresolved.length > 0) {
+      draft.warnings.push(
+        createWarning(
+          'unresolved-fragment',
+          `Removed ${unresolved.length} fragment(s) that could not be mapped uniquely while preserving their local page links.`,
+          { mappings: unresolved },
+        ),
+      );
+    }
+    run.planMdx({
+      ...draft,
+      adoptExisting: true,
+    });
+  }
+  run.setReportDetail('structuredParameters', structuredParameterCounts);
+  run.setReportDetail('structuredApiMembers', structuredApiMemberCounts);
+  const report = await run.finish();
+  return {
+    report,
+    structuredApiMemberCounts,
+    structuredParameterCounts,
+    selectedCount: selected.size,
+    matchedCount: matched.length,
+  };
+}
+
+export async function runGeneratorCli(generator, argv = process.argv.slice(2)) {
+  const options = {
+    manifestPath: 'docs/migration/api-center-html-manifest.json',
+    oldRoot: process.env.API_CENTER_OLD_ROOT ?? null,
+    mode: 'write',
+    scope: null,
+    urls: [],
+    limit: 0,
+  };
+  for (let index = 0; index < argv.length; index++) {
+    switch (argv[index]) {
+      case '--manifest':
+        options.manifestPath = argv[++index];
+        break;
+      case '--old-root':
+        options.oldRoot = argv[++index];
+        break;
+      case '--scope':
+        options.scope = argv[++index];
+        break;
+      case '--url':
+        options.urls.push(argv[++index]);
+        break;
+      case '--limit':
+        options.limit = Number(argv[++index]);
+        break;
+      case '--dry-run':
+        options.mode = 'dry-run';
+        break;
+      case '--check':
+        options.mode = 'check';
+        break;
+      case '--reconcile':
+        options.reconcile = true;
+        break;
+      case '--help':
+      case '-h':
+        console.log(`
+API Center ${generator} HTML migration
+
+Usage:
+  bun scripts/migrate-api-html-${generator}.mjs [options]
+
+Options:
+  --manifest <file>  API Center manifest
+  --old-root <dir>   Durable legacy checkout (or API_CENTER_OLD_ROOT)
+  --scope <key>      Limit to family/product/platform, for example api-ref/rtc/android
+  --url <url>        Limit to one legacy page; repeatable
+  --limit <count>    Limit matched pages for a pilot
+  --dry-run          Convert and report without writing
+  --check            Verify owned outputs and reports are current
+  --reconcile        Remove unchanged stale files owned by this generator run
+`);
+        return null;
+      default:
+        throw new Error(`Unknown argument: ${argv[index]}`);
+    }
+  }
+  if (!Number.isInteger(options.limit) || options.limit < 0) {
+    throw new Error('--limit must be a non-negative integer.');
+  }
+  const result = await runHtmlGenerators({
+    ...options,
+    generators: [generator],
+  });
+  console.log(
+    `${generator}: selected ${result.selectedCount}/${result.matchedCount}; generated ${result.report.counts.generatedFiles}, signatures ${result.structuredApiMemberCounts[generator]?.signatures ?? 0}, returns ${result.structuredApiMemberCounts[generator]?.returns ?? 0}, parameter lists ${result.structuredParameterCounts[generator]?.lists ?? 0}, parameter fields ${result.structuredParameterCounts[generator]?.fields ?? 0}, pending ${result.report.counts.pendingPages}, warnings ${result.report.counts.warnings}, errors ${result.report.counts.errors}.`,
+  );
+  return result;
+}

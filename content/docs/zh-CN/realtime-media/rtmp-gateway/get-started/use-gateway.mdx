@@ -37,7 +37,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 ### 调用 API 生成推流码
 
-你可以通过调用[创建推流码 API](../rtmp-gateway/operations/post-region-v1-projects-appId-rtls-ingress-streamkeys) 创建并获取推流码。
+你可以通过调用[创建推流码 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key) 创建并获取推流码。
 
 ### 本地生成推流码
 
@@ -54,7 +54,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 - 声网频道名称 `channelName`。
 - 声网频道内主播的 `uid`。
 - 推流码的有效时长 `expiresAfter`（秒）。
-- （可选）关联的流配置模板 `template`，详见[流配置模板 API](../rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId)。
+- （可选）关联的流配置模板 `template`，详见[流配置模板 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template)。
 
 以下的 Node.js 示例代码，演示了如何本地生成推流码：
 
@@ -131,4 +131,4 @@ console.log(`streamkey is ${streamkey}`);
 
 完成配置后，你就可以将 RTMP 或 SRT 协议的流推到声网频道中，这些流会以主播的身份被发布到对应的频道内。
 
-默认情况下，RTMP 网关收到推送过来的流后，不会对其中的视频流做转码处理，而是直接发布到声网频道内。如果你希望网关对流做转码处理，可以使用[流配置模板 API](../rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId) 来实现相关功能。
+默认情况下，RTMP 网关收到推送过来的流后，不会对其中的视频流做转码处理，而是直接发布到声网频道内。如果你希望网关对流做转码处理，可以使用[流配置模板 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template) 来实现相关功能。

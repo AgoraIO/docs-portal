@@ -1,10 +1,19 @@
 ---
-title: "播放信息获取"
-description: "播放信息获取 API reference."
+title: 播放信息获取
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_mediaplayer_info
+  sourcePath: html-docs/rtc/Android/API/toc_mediaplayer_info.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 <a id="api_imediaplayer_getaudiobufferdelay"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getAudioBufferDelay
 
@@ -12,7 +21,7 @@ description: "播放信息获取 API reference."
 
 <a id="api_imediaplayer_getaudiobufferdelay__prototype"></a>
 
-```java
+```text
 int getAudioBufferDelay();
 ```
 
@@ -23,12 +32,15 @@ int getAudioBufferDelay();
 ### 返回值
 
 - 方法调用成功，返回音频缓冲延迟（单位：毫秒）。
-- 方法调用失败，返回小于 0 的错误码。你可以使用 MediaPlayerReason 检查错误原因。
+- 方法调用失败，返回小于 0 的错误码。你可以使用 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason) 检查错误原因。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getduration"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getDuration
 
@@ -36,7 +48,7 @@ int getAudioBufferDelay();
 
 <a id="api_imediaplayer_getduration__prototype"></a>
 
-```java
+```text
 long getDuration();
 ```
 
@@ -50,9 +62,12 @@ long getDuration();
 - 方法调用失败时，返回小于 0 的值。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getMediaPlayerId
 
@@ -60,7 +75,7 @@ long getDuration();
 
 <a id="api_imediaplayer_getmediaplayerid__prototype"></a>
 
-```java
+```text
 int getMediaPlayerId();
 ```
 
@@ -71,12 +86,15 @@ int getMediaPlayerId();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmute"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMute
 
@@ -84,7 +102,7 @@ int getMediaPlayerId();
 
 <a id="api_imediaplayer_getmute__prototype"></a>
 
-```java
+```text
 boolean getMute();
 ```
 
@@ -94,12 +112,16 @@ boolean getMute();
 
 ### 返回值
 
-true：媒体资源已被静音。 false：媒体资源未被静音。
+true：媒体资源已被静音。
+false：媒体资源未被静音。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getPlayoutVolume
 
@@ -107,7 +129,7 @@ true：媒体资源已被静音。 false：媒体资源未被静音。
 
 <a id="api_imediaplayer_getplayoutvolume__prototype"></a>
 
-```java
+```text
 int getPlayoutVolume();
 ```
 
@@ -117,12 +139,16 @@ int getPlayoutVolume();
 
 ### 返回值
 
-方法调用成功，返回本地播放音量，取值范围为 0 到 100。 0 表示静音，100（默认）表示原始音量。
+方法调用成功，返回本地播放音量，取值范围为 0 到 100。
+0 表示静音，100（默认）表示原始音量。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayposition"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getPlayPosition
 
@@ -130,7 +156,7 @@ int getPlayoutVolume();
 
 <a id="api_imediaplayer_getplayposition__prototype"></a>
 
-```java
+```text
 long getPlayPosition();
 ```
 
@@ -141,12 +167,15 @@ long getPlayPosition();
 ### 返回值
 
 - 方法调用成功时，返回当前播放进度（单位为毫秒）。
-- 方法调用失败时，返回小于 0 的值，详见 MediaPlayerReason。
+- 方法调用失败时，返回小于 0 的值，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getPlaySrc [1/2]
 
@@ -154,7 +183,7 @@ long getPlayPosition();
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer__prototype"></a>
 
-```java
+```text
 String getPlaySrc();
 ```
 
@@ -164,12 +193,16 @@ String getPlaySrc();
 
 ### 返回值
 
-方法调用成功时，返回当前正在播放的媒体资源路径。 方法调用失败，返回空字符串。
+方法调用成功时，返回当前正在播放的媒体资源路径。
+方法调用失败，返回空字符串。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getPublishSignalVolume
 
@@ -177,7 +210,7 @@ String getPlaySrc();
 
 <a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
 
-```java
+```text
 int getPublishSignalVolume();
 ```
 
@@ -188,12 +221,15 @@ int getPublishSignalVolume();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstate"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getState
 
@@ -201,7 +237,7 @@ int getPublishSignalVolume();
 
 <a id="api_imediaplayer_getstate__prototype"></a>
 
-```java
+```text
 Constants.MediaPlayerState getState();
 ```
 
@@ -214,9 +250,12 @@ Constants.MediaPlayerState getState();
 方法调用成功，返回当前播放状态。详见 [MediaPlayerState](/zh-CN/api-reference/rtc/android/enum-mediaplayerstate)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## getStreamCount
 
@@ -224,14 +263,14 @@ Constants.MediaPlayerState getState();
 
 <a id="api_imediaplayer_getstreamcount__prototype"></a>
 
-```java
+```text
 int getStreamCount();
 ```
 
 <a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
 
-:::info[注]
-调用该方法前，请先调用 `open` 方法，并等待 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `OPEN_COMPLETED`。
+:::note
+注： 调用该方法前，请先调用 `open` 方法，并等待 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `OPEN_COMPLETED`。
 :::
 
 <a id="api_imediaplayer_getstreamcount__return_values"></a>
@@ -239,12 +278,15 @@ int getStreamCount();
 ### 返回值
 
 - 方法调用成功，返回媒体资源中的媒体流数量。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
+
+<a id="ariaid-title12"></a>
 
 ## getStreamInfo
 
@@ -252,7 +294,7 @@ int getStreamCount();
 
 <a id="api_imediaplayer_getstreaminfo__prototype"></a>
 
-```java
+```text
 MediaStreamInfo getStreamInfo(int index);
 ```
 
@@ -270,21 +312,29 @@ MediaStreamInfo getStreamInfo(int index);
 
 ### 参数
 
-#### `index`
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 媒体流的索引。该参数必须小于 [getStreamCount](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的返回值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_getstreaminfo__return_values"></a>
 
 ### 返回值
 
-- 方法调用成功，返回 MediaStreamInfo 对象。
-- 方法调用失败，返回 null。
+- 方法调用成功，返回 [MediaStreamInfo](/zh-CN/api-reference/rtc/android/class-playerstreaminfo) 对象。
+- 方法调用失败，返回 `null`。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerPlaybackStats
 
@@ -292,7 +342,7 @@ MediaStreamInfo getStreamInfo(int index);
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
 
-```java
+```text
 void onPlayerPlaybackStats(PlayerPlaybackStats stats)
 ```
 
@@ -310,9 +360,15 @@ void onPlayerPlaybackStats(PlayerPlaybackStats stats)
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 媒体文件的统计信息。详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/android/class-playerplaybackstats)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)

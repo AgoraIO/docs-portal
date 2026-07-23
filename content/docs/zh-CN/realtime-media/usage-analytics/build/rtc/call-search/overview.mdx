@@ -14,10 +14,10 @@ description: "了解水晶球的核心能力、适用场景、接入路径和相
 
 新版通话调查服务提供以下功能：
 
-- 定位具体通话，详见[使用通话检索](#使用通话检索)。
-- 了解频道整体质量情况，详见[查看通话全景](#查看通话全景)。
-- 查询用户级别的指标和事件详情，详见[查看通话详情](#查看通话详情)。
-- 查询用户级别的诊断信息，详见[查看通话诊断（Beta）](#查看通话诊断beta)。
+- 定位具体通话，详见[使用通话检索](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
+- 了解频道整体质量情况，详见[查看通话全景](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
+- 查询用户级别的指标和事件详情，详见[查看通话详情](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
+- 查询用户级别的诊断信息，详见[查看通话诊断（Beta）](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
 
 参考以下流程使用通话调查服务的各项功能：
 
@@ -56,7 +56,7 @@ description: "了解水晶球的核心能力、适用场景、接入路径和相
 参考如下步骤进入通话全景页面：
 
 1. 订阅专业版或旗舰版的水晶球套餐包，详见[订阅套餐包](/zh-CN/realtime-media/usage-analytics/reference/billing#订阅套餐包)。其余套餐包暂不支持查看通话全景。
-2. [使用通话检索](#使用通话检索)找到要查看的通话，点击**操作**下面的**查看通话详情**。
+2. [使用通话检索](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)找到要查看的通话，点击**操作**下面的**查看通话详情**。
    - 如果[累计通话人数（ACU）](/zh-CN/realtime-media/usage-analytics/reference/concept#acu累计通话人数)大于或等于 50 人，会自动进入通话全景页面。
    - 如果累计通话人数小于 50 人，会自动进入通话详情页面。你需要在页面上方点击**通话全景**页签，切换到通话全景页面。
 
@@ -71,15 +71,15 @@ description: "了解水晶球的核心能力、适用场景、接入路径和相
 |  | 描述 | 注意事项 |
 | --- | --- | --- |
 | 诊断洞察 | 与音频卡顿、视频卡顿有关的重要结论。 | 该版块在符合条件时展示，注意事项见下方。 |
-| 通话体验（Beta） | 通话中出现的严重体验问题。详见[诊断项](/zh-CN/realtime-media/usage-analytics/reference/concept#诊断项)。 | 点击某个问题可以跳转到对应的[通话诊断（Beta）](#查看通话诊断beta)页面，同时查看最多 10 个用户的诊断结论。 |
-| 主播诊断（Beta） | 通话中主播用户遇到的问题。详见[诊断项](/zh-CN/realtime-media/usage-analytics/reference/concept#诊断项)。 | 点击某个问题可以跳转到对应的[通话诊断（Beta）](#查看通话诊断beta)页面，同时查看最多 10 个用户的诊断结论。 |
-| 异常主播（Beta） | 通话中发流遇到异常的主播用户，展示用户 ID、上行时长、异常类型的信息。 | 如果主播诊断没有异常结果，该版块不展示。点击某条异常可以跳转到对应的[通话诊断（Beta）](#查看通话诊断beta)页面，查看该主播用户的诊断结论。 |
+| 通话体验（Beta） | 通话中出现的严重体验问题。详见[诊断项](/zh-CN/realtime-media/usage-analytics/reference/concept#诊断项)。 | 点击某个问题可以跳转到对应的[通话诊断（Beta）](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面，同时查看最多 10 个用户的诊断结论。 |
+| 主播诊断（Beta） | 通话中主播用户遇到的问题。详见[诊断项](/zh-CN/realtime-media/usage-analytics/reference/concept#诊断项)。 | 点击某个问题可以跳转到对应的[通话诊断（Beta）](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面，同时查看最多 10 个用户的诊断结论。 |
+| 异常主播（Beta） | 通话中发流遇到异常的主播用户，展示用户 ID、上行时长、异常类型的信息。 | 如果主播诊断没有异常结果，该版块不展示。点击某条异常可以跳转到对应的[通话诊断（Beta）](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面，查看该主播用户的诊断结论。 |
 
 诊断洞察注意事项：
 
 - 如果当前通话的[累计通话人数](/zh-CN/realtime-media/usage-analytics/reference/concept#acu累计通话人数)小于 20 人或者没有卡顿有关的结论，该版块不展示。
 - 该版块的统计粒度为分钟，如果某一分钟内的在线人数不超过 20 人，则不纳入统计。
-- 点击该版块右上角的箭头图标可以滑动至[数据统计](#数据统计)区域。
+- 点击该版块右上角的箭头图标可以滑动至[数据统计](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)区域。
 
 ### 数据统计
 
@@ -130,7 +130,7 @@ description: "了解水晶球的核心能力、适用场景、接入路径和相
 
 参考如下步骤查看通话诊断页面：
 
-1. [使用通话检索](#使用通话检索)找到要查看的通话，点击**操作**下面的**查看通话详情**。
+1. [使用通话检索](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)找到要查看的通话，点击**操作**下面的**查看通话详情**。
 2. 在页面上方点击通话诊断（Beta）页签。
 3. 根据需要添加筛选条件：
    - 诊断对象：输入用户 ID 逐一添加，或者使用高级搜索批量添加。最多可添加 10 个用户作为诊断对象。
@@ -162,4 +162,4 @@ description: "了解水晶球的核心能力、适用场景、接入路径和相
 
 - 通话调查功能相关指标和诊断项的具体含义，详见[名词解释](/zh-CN/realtime-media/usage-analytics/reference/concept)。
 - 使用通话调查功能可以解决的常见问题案例及排查流程，详见[案例：常见问题排查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/troubleshooting)。
-- 你还可以通过 RESTful API 获取通话调查服务提供的数据，详见[水晶球 RESTful API](/doc/analytics/general/restful-aa/operations/get-beta-analytics-call-lists)。
+- 你还可以通过 RESTful API 获取通话调查服务提供的数据，详见[水晶球 RESTful API](/zh-CN/api-reference/api-ref/agora-analytics/call-list)。

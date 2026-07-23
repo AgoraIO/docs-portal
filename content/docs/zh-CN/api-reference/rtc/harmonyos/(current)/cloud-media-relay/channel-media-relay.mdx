@@ -1,10 +1,19 @@
 ---
-title: "跨频道媒体流转发"
-description: "跨频道媒体流转发 API reference."
+title: 跨频道媒体流转发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_channel_media_relay
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_channel_media_relay.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_channel_media_relay"></a>
 
 <a id="api_irtcengine_pauseallchannelmediarelay"></a>
+
+<a id="ariaid-title2"></a>
 
 ## pauseAllChannelMediaRelay
 
@@ -12,7 +21,7 @@ description: "跨频道媒体流转发 API reference."
 
 <a id="api_irtcengine_pauseallchannelmediarelay__prototype"></a>
 
-```arkts
+```text
 public abstract pauseAllChannelMediaRelay():number;
 ```
 
@@ -22,8 +31,8 @@ public abstract pauseAllChannelMediaRelay():number;
 
 开始跨频道转发媒体流后，如果你需要暂停向所有频道转发媒体流，可以调用该方法；暂停后，如果要恢复跨频道媒体流转发，可以调用 [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
 
-:::warning[注意]
-该方法需要在调用 [startOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
+:::caution
+注意： 该方法需要在调用 [startOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发后调用。
 :::
 
 <a id="api_irtcengine_pauseallchannelmediarelay__return_values"></a>
@@ -31,13 +40,17 @@ public abstract pauseAllChannelMediaRelay():number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeallchannelmediarelay"></a>
+
+<a id="ariaid-title3"></a>
 
 ## resumeAllChannelMediaRelay
 
@@ -45,7 +58,7 @@ public abstract pauseAllChannelMediaRelay():number;
 
 <a id="api_irtcengine_resumeallchannelmediarelay__prototype"></a>
 
-```arkts
+```text
 public abstract resumeAllChannelMediaRelay():number;
 ```
 
@@ -55,8 +68,8 @@ public abstract resumeAllChannelMediaRelay():number;
 
 调用 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后，如果你需要恢复向所有目标频道转发媒体流，可以调用该方法。
 
-:::warning[注意]
-该方法需要在 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
+:::caution
+注意： 该方法需要在 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 后调用。
 :::
 
 <a id="api_irtcengine_resumeallchannelmediarelay__return_values"></a>
@@ -64,13 +77,17 @@ public abstract resumeAllChannelMediaRelay():number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startorupdatechannelmediarelay"></a>
+
+<a id="ariaid-title4"></a>
 
 ## startOrUpdateChannelMediaRelay
 
@@ -78,7 +95,7 @@ public abstract resumeAllChannelMediaRelay():number;
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__prototype"></a>
 
-```arkts
+```text
 public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: ChannelMediaRelayConfiguration): number;
 ```
 
@@ -93,10 +110,12 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 - 如果 onChannelMediaRelayStateChanged 回调报告 RUNNING (2) 和 OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 onChannelMediaRelayStateChanged 回调报告 FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要[联系技术支持](https://ticket.shengwang.cn/)开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -104,24 +123,33 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 
 ### 参数
 
-#### `channelMediaRelayConfiguration`
+<ParameterList>
+<a id="channelmediarelayconfiguration"></a>
+<Parameter name="channelMediaRelayConfiguration">
 
 跨频道媒体流转发参数配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-channelmediarelayconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex"></a>
+
+<a id="ariaid-title5"></a>
 
 ## startOrUpdateChannelMediaRelayEx
 
@@ -129,7 +157,7 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__prototype"></a>
 
-```arkts
+```text
 public abstract startOrUpdateChannelMediaRelayEx(channelMediaRelayConfiguration:ChannelMediaRelayConfiguration,connection:RtcConnection):number;
 ```
 
@@ -144,10 +172,12 @@ public abstract startOrUpdateChannelMediaRelayEx(channelMediaRelayConfiguration:
 - 如果 onChannelMediaRelayStateChanged 回调报告 RUNNING (2) 和 OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
 - 如果 onChannelMediaRelayStateChanged 回调报告 FAILURE (3)， 则表示跨频道媒体流转发出现异常。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要[联系技术支持](https://ticket.shengwang.cn/)开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -155,28 +185,39 @@ public abstract startOrUpdateChannelMediaRelayEx(channelMediaRelayConfiguration:
 
 ### 参数
 
-#### `channelMediaRelayConfiguration`
+<ParameterList>
+<a id="channelmediarelayconfiguration-1"></a>
+<Parameter name="channelMediaRelayConfiguration">
 
 跨频道媒体流转发参数配置。详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-channelmediarelayconfiguration)。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
 
 ### 所属接口类
+
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_stopchannelmediarelay"></a>
+
+<a id="ariaid-title6"></a>
 
 ## stopChannelMediaRelay
 
@@ -184,7 +225,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_stopchannelmediarelay__prototype"></a>
 
-```arkts
+```text
 public abstract stopChannelMediaRelay(): number;
 ```
 
@@ -194,8 +235,9 @@ public abstract stopChannelMediaRelay(): number;
 
 成功调用该方法后，SDK 会触发 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果报告 IDLE (0) 和 OK (0)，则表示已停止转发媒体流。
 
-:::warning[注意]
-如果该方法调用不成功，SDK 会触发 onChannelMediaRelayStateChanged 回调，并报告状态码 SERVER_NO_RESPONSE (2) 或 SERVER_CONNECTION_LOST (8)。你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
+:::caution
+注意：
+       如果该方法调用不成功，SDK 会触发 onChannelMediaRelayStateChanged 回调，并报告状态码 SERVER_NO_RESPONSE (2) 或 SERVER_CONNECTION_LOST (8)。你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 方法离开频道，跨频道媒体流转发会自动停止。
 :::
 
 <a id="api_irtcengine_stopchannelmediarelay__return_values"></a>
@@ -203,13 +245,17 @@ public abstract stopChannelMediaRelay(): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onChannelMediaRelayStateChanged
 
@@ -217,11 +263,13 @@ public abstract stopChannelMediaRelay(): number;
 
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__prototype"></a>
 
-```arkts
+```text
 onChannelMediaRelayStateChanged?:(state:Constants.ChannelMediaRelayState,code:Constants.ChannelMediaRelayError) =>void;
 ```
 
 <a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__detailed_desc"></a>
+
+### 详情
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
@@ -229,13 +277,21 @@ onChannelMediaRelayStateChanged?:(state:Constants.ChannelMediaRelayState,code:Co
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 跨频道媒体流转发状态。详见 [ChannelMediaRelayState](/zh-CN/api-reference/rtc/harmonyos/enum-channelmediarelaystate)。
 
-#### `code`
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
 跨频道媒体流转发出错的错误码。详见 [ChannelMediaRelayError](/zh-CN/api-reference/rtc/harmonyos/enum-channelmediarelayerror)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

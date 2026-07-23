@@ -1,10 +1,18 @@
 ---
-title: "RtcEngineContext"
-description: "RtcEngineContext 定义。"
+title: RtcEngineContext
+description: RtcEngineContext 定义。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_rtcengineconfig
+  sourcePath: html-docs/rtc/Flutter/API/class_rtcengineconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcengineconfig__prototype"></a>
 
-```dart
+```text
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RtcEngineContext {
   const RtcEngineContext(
@@ -52,36 +60,55 @@ class RtcEngineContext {
 
 ## 属性
 
-### `appId`
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
 
 声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)。如需更换 App ID，必须先调用 [release](/zh-CN/api-reference/rtc/flutter/initialize#api_irtcengine_release) 销毁当前 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 再重新创建。
 
-### `channelProfile`
+</Parameter>
+<a id="channelprofile"></a>
+<Parameter name="channelProfile">
 
 频道使用场景。详见 [ChannelProfileType](/zh-CN/api-reference/rtc/flutter/enum-channelprofiletype)。
 
-### `audioScenario`
+</Parameter>
+<a id="audioscenario"></a>
+<Parameter name="audioScenario">
 
-音频场景。不同的音频场景下，设备的音量类型是不同的。 详见 [AudioScenarioType](/zh-CN/api-reference/rtc/flutter/enum-audioscenariotype)。
+音频场景。不同的音频场景下，设备的音量类型是不同的。
+详见 [AudioScenarioType](/zh-CN/api-reference/rtc/flutter/enum-audioscenariotype) 。
 
-### `areaCode`
+</Parameter>
+<a id="areacode"></a>
+<Parameter name="areaCode">
 
 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。支持的区域详见 [AreaCode](/zh-CN/api-reference/rtc/flutter/enum-areacode)。区域码支持位操作。
 
-### `logConfig`
+</Parameter>
+<a id="logconfig"></a>
+<Parameter name="logConfig">
 
-设置 SDK 输出的日志文件。详见 [LogConfig](/zh-CN/api-reference/rtc/flutter/class-logconfig)。 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+设置 SDK 输出的日志文件。详见 [LogConfig](/zh-CN/api-reference/rtc/flutter/class-logconfig)。
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
 
-### `domainLimit`
+</Parameter>
+<a id="domainlimit"></a>
+<Parameter name="domainLimit">
 
 是否开启域名限制：
 
 - true：开启域名限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 - false：（默认）关闭域名限制。该设置适用于大部分普通场景。
 
-### `autoRegisterAgoraExtensions`
+</Parameter>
+<a id="autoregisteragoraextensions"></a>
+<Parameter name="autoRegisterAgoraExtensions">
 
 是否在初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
 
-- true：（默认）初始化 RtcEngine 时自动注册声网插件。
-- false：初始化 RtcEngine 时不注册声网插件。你需要调用 enableExtension 来注册声网插件。
+- true：（默认）初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 时自动注册声网插件。
+- false：初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 时不注册声网插件。你需要调用 [enableExtension](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_enableextension) 来注册声网插件。
+
+</Parameter>
+</ParameterList>

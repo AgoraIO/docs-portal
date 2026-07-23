@@ -1,10 +1,18 @@
 ---
-title: "AgoraVideoFrame"
-description: "外部视频帧。"
+title: AgoraVideoFrame
+description: 外部视频帧。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_externalvideoframe
+  sourcePath: html-docs/rtc/iOS/API/class_externalvideoframe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_externalvideoframe__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraVideoFrame : NSObject
 @property(assign, nonatomic) NSInteger format;
 @property(assign, nonatomic) CMTime time;
@@ -27,102 +35,141 @@ __attribute__((visibility("default"))) @interface AgoraVideoFrame : NSObject
 
 <a id="class_externalvideoframe__detailed_desc"></a>
 
-:::info[注]
-1. strideInPixels：步幅单位为像素，而非字节。
-2. 关于帧的宽度和高度：未定义 width 字段，但可以通过以下方式推导：
+:::note
+注：
 
-`croppedWidth = (strideInPixels - cropLeft - cropRight)` `croppedHeight = (height - cropTop - cropBottom)`
+1. `strideInPixels`：步幅单位为像素，而非字节。
+2. 关于帧的宽度和高度：未定义 `width` 字段，但可以通过以下方式推导：
+
+`croppedWidth = (strideInPixels - cropLeft - cropRight)``croppedHeight = (height - cropTop - cropBottom)`
 
 1. 关于裁剪：如果缓冲区包含无效数据，可以通过裁剪去除。例如，帧大小为 360 x 640，缓冲区步幅为 368，即右侧多出 8 像素用于填充，此时可以设置：
 
-`strideInPixels = 368;` `height = 640;` `cropRight = 8;` `// cropLeft、cropTop、cropBottom 默认为 0。`
+`strideInPixels = 368;``height = 640;``cropRight = 8;``// cropLeft、cropTop、cropBottom 默认为 0。`
 :::
 
 <a id="class_externalvideoframe__parameters"></a>
 
 ## 属性
 
-### `format`
+<ParameterList>
+<a id="format"></a>
+<Parameter name="format">
 
-输入视频帧的格式。该参数必须指定为以下值之一：1：I420；2：BGRA；3：NV21；4：RGBA；5：IMC2；7：ARGB；8：NV12；12：iOS 纹理（`CVPixelBufferRef` ）；16：I422。
+输入视频帧的格式。该参数必须指定为以下值之一：1：I420；2：BGRA；3：NV21；4：RGBA；5：IMC2；7：ARGB；8：NV12；12：iOS 纹理（`CVPixelBufferRef`）；16：I422。
 
-### `time`
+</Parameter>
+<a id="time"></a>
+<Parameter name="time">
 
 输入视频帧的时间戳（毫秒）。时间戳错误会导致帧丢失或音视频不同步。
 
-### `stride`
+</Parameter>
+<a id="stride"></a>
+<Parameter name="stride">
 
 帧的行跨度，即相邻两行视频帧之间的像素数。单位为像素，而非字节。处理视频数据时，需根据此参数处理每行像素数据之间的偏移，否则可能导致图像失真。
 
-:::info[注]
+:::note
+注：
+
 - 如果视频为纹理格式，请将此参数设置为纹理的宽度。
 - 如果视频帧格式为 12，请勿使用此字段。
 :::
 
-### `strideInPixels`
+</Parameter>
+<a id="strideinpixels"></a>
+<Parameter name="strideInPixels">
 
 输入视频帧的行间距，单位为像素而非字节。对于纹理格式，该值为纹理的宽度。
 
-:::info[注]
-不适用于 iOS 纹理。
+:::note
+注： 不适用于 iOS 纹理。
 :::
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 输入视频帧的高度（像素行数）。
 
-:::info[注]
-不适用于 iOS 纹理。
+:::note
+注： 不适用于 iOS 纹理。
 :::
 
-### `textureBuf`
+</Parameter>
+<a id="texturebuf"></a>
+<Parameter name="textureBuf">
 
 iOS 纹理的缓冲区。
 
-### `image`
+</Parameter>
+<a id="image"></a>
+<Parameter name="image">
 
-静态图像（iPhone 上为 `UIImage`，macOS 上为 `NSImage` ）。
+静态图像（iPhone 上为 `UIImage`，macOS 上为 `NSImage`）。
 
-### `dataBuf`
+</Parameter>
+<a id="databuf"></a>
+<Parameter name="dataBuf">
 
 原始数据缓冲区。
 
-:::info[注]
-不适用于 iOS 纹理。
+:::note
+注： 不适用于 iOS 纹理。
 :::
 
-### `alphaBuf`
+</Parameter>
+<a id="alphabuf"></a>
+<Parameter name="alphaBuf">
 
 当前帧的 Alpha 通道，与视频帧的尺寸一致。每个像素的取值范围为 [0, 255]，其中 0 表示背景，255 表示前景。默认值为 nil。
 
-### `alphaStitchMode`
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
 
 Alpha 通道拼接模式，表示 `alphaBuf` 与视频帧的相对位置。详见 [AgoraAlphaStitchMode](/zh-CN/api-reference/rtc/ios/enum-alphastitchmode)。
 
-### `cropLeft`
+</Parameter>
+<a id="cropleft"></a>
+<Parameter name="cropLeft">
 
 左侧裁剪的像素数。默认值为 0。
 
-### `cropTop`
+</Parameter>
+<a id="croptop"></a>
+<Parameter name="cropTop">
 
 顶部裁剪的像素数。默认值为 0。
 
-### `cropRight`
+</Parameter>
+<a id="cropright"></a>
+<Parameter name="cropRight">
 
 右侧裁剪的像素数。默认值为 0。
 
-### `cropBottom`
+</Parameter>
+<a id="cropbottom"></a>
+<Parameter name="cropBottom">
 
 底部裁剪的像素数。默认值为 0。
 
-### `rotation`
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频帧的顺时针旋转角度。可设置为 0、90、180 或 270。默认值为 0。
 
-:::info[注]
-详见文档中关于旋转的计算方式。
+:::note
+注： 详见文档中关于旋转的计算方式。
 :::
 
-### `colorSpace`
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
 
 视频帧的色彩空间配置。默认采用 Full Range 和 BT.709 标准。详见 [`VideoColorSpace`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Parameter>
+</ParameterList>

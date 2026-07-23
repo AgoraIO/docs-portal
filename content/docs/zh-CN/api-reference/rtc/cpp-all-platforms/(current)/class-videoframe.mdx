@@ -1,10 +1,18 @@
 ---
-title: "VideoFrame"
-description: "用于配置视频帧。"
+title: VideoFrame
+description: 用于配置视频帧。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_videoframe
+  sourcePath: html-docs/rtc/Cpp/API/class_videoframe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videoframe__prototype"></a>
 
-```cpp
+```text
 struct VideoFrame {
   VIDEO_PIXEL_FORMAT type;
   int width;
@@ -40,110 +48,159 @@ struct VideoFrame {
 
 ## 属性
 
-### `type`
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 像素格式。详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videopixelformat)。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频帧的宽度，单位为像素。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频帧的高度，单位为像素。
 
-### `yStride`
+</Parameter>
+<a id="ystride"></a>
+<Parameter name="yStride">
 
 对于 YUV 数据，为 Y 缓冲区的每行跨度；对于 RGBA 数据，为总数据长度。
 
-:::info[注]
-处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
+:::note
+注： 处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
 :::
 
-### `uStride`
+</Parameter>
+<a id="ustride"></a>
+<Parameter name="uStride">
 
 对于 YUV 数据，为 U 缓冲区的每行跨度；对于 RGBA 数据，该值为 0。
 
-:::info[注]
-处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
+:::note
+注： 处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
 :::
 
-### `vStride`
+</Parameter>
+<a id="vstride"></a>
+<Parameter name="vStride">
 
 对于 YUV 数据，为 V 缓冲区的每行跨度；对于 RGBA 数据，该值为 0。
 
-:::info[注]
-处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
+:::note
+注： 处理视频数据时，必须根据该参数处理每行像素数据之间的偏移，否则可能导致图像失真。
 :::
 
-### `yBuffer`
+</Parameter>
+<a id="ybuffer"></a>
+<Parameter name="yBuffer">
 
 输出参数，对于 YUV 数据，为 Y 缓冲区的指针；对于 RGBA 数据，为数据缓冲区。
 
-### `uBuffer`
+</Parameter>
+<a id="ubuffer"></a>
+<Parameter name="uBuffer">
 
 输出参数，对于 YUV 数据，为 U 缓冲区的指针；对于 RGBA 数据，该值为 0。
 
-### `vBuffer`
+</Parameter>
+<a id="vbuffer"></a>
+<Parameter name="vBuffer">
 
 输出参数，对于 YUV 数据，为 V 缓冲区的指针；对于 RGBA 数据，该值为 0。
 
-### `rotation`
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 视频帧在渲染前的顺时针旋转角度。支持的取值包括 0、90、180 和 270 度。
 
-### `renderTimeMs`
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
 
 视频帧渲染时的 Unix 时间戳（毫秒）。该时间戳可用于指导视频帧的渲染。
 
-### `avsync_type`
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
 
 保留参数，供未来使用。
 
-### `metadata_buffer`
+</Parameter>
+<a id="metadata_buffer"></a>
+<Parameter name="metadata_buffer">
 
 输出参数，仅适用于 Texture 格式的视频数据。元数据缓冲区，默认值为 NULL。
 
-### `metadata_size`
+</Parameter>
+<a id="metadata_size"></a>
+<Parameter name="metadata_size">
 
 仅适用于 Texture 格式的视频数据。元数据大小，默认值为 0。
 
-### `sharedContext`
+</Parameter>
+<a id="sharedcontext"></a>
+<Parameter name="sharedContext">
 
 仅适用于 Texture 格式的视频数据。EGL 上下文。
 
-### `textureId`
+</Parameter>
+<a id="textureid"></a>
+<Parameter name="textureId">
 
 仅适用于 Texture 格式的视频数据。纹理 ID。
 
-### `d3d11Texture2d`
+</Parameter>
+<a id="d3d11texture2d"></a>
+<Parameter name="d3d11Texture2d">
 
 仅适用于 Windows Texture 格式的视频数据。指向 `ID3D11Texture2D` 类型对象的指针，该对象由视频帧使用。
 
-### `matrix`
+</Parameter>
+<a id="matrix"></a>
+<Parameter name="matrix">
 
 仅适用于 Texture 格式的视频数据。输入的 4×4 变换矩阵，典型值为单位矩阵。
 
-### `alphaBuffer`
+</Parameter>
+<a id="alphabuffer"></a>
+<Parameter name="alphaBuffer">
 
 输出参数，使用人像分割算法生成的 Alpha 通道数据。该数据与视频帧大小一致，每个像素值范围为 [0, 255]，其中 0 表示背景，255 表示前景（人像）。通过设置该参数，可以将视频背景渲染为透明、纯色、图像、视频等多种效果。
 
-:::info[注]
-请确保 `alphaBuffer` 的大小与视频帧（width × height）完全一致，否则可能导致应用崩溃。
+:::note
+注： 请确保 `alphaBuffer` 的大小与视频帧（width × height）完全一致，否则可能导致应用崩溃。
 :::
 
-### `alphaStitchMode`
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
 
 当视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置。详见 [ALPHA_STITCH_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-alphastitchmode)。
 
-### `pixelBuffer`
+</Parameter>
+<a id="pixelbuffer"></a>
+<Parameter name="pixelBuffer">
 
-仅适用于 iOS 和 macOS。 `CVPixelBufferRef` 类型。
+仅适用于 iOS 和 macOS。`CVPixelBufferRef` 类型。
 
-### `metaInfo`
+</Parameter>
+<a id="metainfo"></a>
+<Parameter name="metaInfo">
 
 输出参数，视频帧中的元信息。
 
-### `colorSpace`
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
 
 视频帧的色彩空间属性，默认采用 Full Range 和 BT.709 标准配置。详见 [`VideoColorSpace`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Parameter>
+</ParameterList>

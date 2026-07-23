@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
+  getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
   getOpenApiPrerenderPaths,
+  getOpenApiReferenceBackLink,
   resolveOpenApiEndpointRoute,
   resolveOpenApiLaneRoute,
 } from './lanes';
@@ -129,6 +132,36 @@ describe('openapi lanes', () => {
     expect(getOpenApiEndpointUrl(lane, 'zh-CN', 'start-agent')).toBe(
       '/zh-CN/api-reference/api-ref/conversational-ai/join',
     );
+  });
+
+  it('returns every OpenAPI locale to its reference center', () => {
+    expect(getOpenApiReferenceBackLink('en')).toEqual({
+      href: '/en/api-reference',
+      label: 'API Reference',
+    });
+    expect(getOpenApiReferenceBackLink('zh-CN')).toEqual({
+      href: '/zh-CN/api-reference/api',
+      label: '参考文档',
+    });
+
+    for (const lane of getOpenApiLanes()) {
+      for (const locale of getOpenApiLaneLocales(lane)) {
+        expect(
+          findOpenApiLaneByUrl(locale, lane.tab, lane.parentUrl[locale])?.id,
+        ).toBe(lane.id);
+        expect(
+          findOpenApiLaneByUrl(
+            locale,
+            lane.tab,
+            getOpenApiEndpointUrl(
+              lane,
+              locale,
+              getOpenApiOperationIds(lane)[0],
+            ),
+          )?.id,
+        ).toBe(lane.id);
+      }
+    }
   });
 
   it('resolves endpoint routes without product-specific loader logic', () => {

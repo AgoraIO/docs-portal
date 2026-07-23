@@ -1,0 +1,990 @@
+---
+title: io.agora.rtc.AgoraLocalUser类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_local_user_8java.html as local text.
+---
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="ab5c6bc7c2c557654d924c046e5d171b5"></a>
+
+### AgoraLocalUser()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraLocalUser.AgoraLocalUser(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a5c0110035e9bfc86148b42c4cae477cf"></a>
+
+### getUserRole()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.getUserRole()
+
+</ApiSignature>
+
+获取用户角色。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+用户角色。
+
+<a id="a30711bbe175b24277d4cd977cb544d4e"></a>
+
+### publishAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.publishAudio([AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) *agora_local_audio_track*)
+
+</ApiSignature>
+
+发布本地音频轨道至频道。
+
+发布音频轨道时，SDK 默认会将所有音频轨道进行混音。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_audio_track">
+
+待发布的本地音频轨道。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa8026a2b75cddf74b45149861b87d053"></a>
+
+### publishVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.publishVideo([AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) *agora_local_video_track*)
+
+</ApiSignature>
+
+发布本地视频轨道至频道。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_video_track">
+
+待发布的本地视频轨道。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aef2cc197030fcd418c10d35a692fd5a6"></a>
+
+### registerAudioEncodedFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerAudioEncodedFrameObserver([IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) *observer*)
+
+</ApiSignature>
+
+注册一个编码后的音频数据观测器。
+
+:::info[自从]
+4.4.32。
+:::
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+编码后的音频数据观测器对象：[IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2a5bbc8ddf23a83d925bed041d63f863"></a>
+
+### registerAudioFrameObserver() [1/2]
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver([IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) *observer*)
+
+</ApiSignature>
+
+注册音频数据观测器。
+
+你需要在该方法中实现一个 IAudioFrameObserver 类，并根据具体场景需求，注册以下回调：
+
+- onRecordAudioFrame: 当 SDK 接收到本地录音设备采集的音频数据时，会触发该回调。
+- onPlaybackAudioFrame: 当 SDK 接收到远端发送过来用于播放的的音频数据时，会触发该回调。
+- onPlaybackAudioFrameBeforeMixing: 当 SDK 接收到远端指定用户发送过来尚未混音的音频数据时，会触发该回调。
+- onMixedAudioFrame: 当 SDK 接收到本地采集的和用于播放的混音后的音频数据时，会触发该回调。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a89d18c5cf1a58866c7d9c85e700b949f"></a>
+
+### registerAudioFrameObserver() [2/2]
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerAudioFrameObserver([IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer) *observer*, boolean *enableVad*, [AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2) *vadConfig*)
+
+</ApiSignature>
+
+注册一个开启了 VAD （语音活动检测）能力的音频数据观测器对象。
+
+一旦你开启了 VAD 功能，就可以在 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中接收 VAD 相关信息。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+待注册的音频数据观测对象：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
+
+</Parameter>
+<Parameter name="enableVad">
+
+是否开启 VAD 功能：
+
+- true：开启。
+- false：不开启。
+
+</Parameter>
+<Parameter name="vadConfig">
+
+VAD 配置信息：[AgoraAudioVadConfigV2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-vad-config-v2)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a838efeb7b169fef9d535e135d1f0891a"></a>
+
+### registerObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.registerObserver([ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer) *observer*)
+
+</ApiSignature>
+
+注册本地用户观测器。
+
+你需要在该方法中实现一个 ILocalUserObserver 类。完成注册后，ILocalUserObserver 会接收 AgoraLocalUser 对象的回调事件。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+ILocalUserObserver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a7142bb9deff1ad53bffa69e55e3a0f82"></a>
+
+### registerVideoEncodedFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerVideoEncodedFrameObserver([AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) *agoraVideoEncodedFrameObserver*)
+
+</ApiSignature>
+
+注册一个编码后的视频数据观测器。
+
+<ParameterList title="参数">
+<Parameter name="agoraVideoEncodedFrameObserver">
+
+编码后的视频数据观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a6eef21da3d76b799df5a744df5eeb203"></a>
+
+### registerVideoFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.registerVideoFrameObserver([AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) *agoraVideoFrameObserver2*)
+
+</ApiSignature>
+
+注册视频数据观测器。
+
+<ParameterList title="参数">
+<Parameter name="agoraVideoFrameObserver2">
+
+视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a10bb7ca5b7d12999f0e3f4bb6b3e9d61"></a>
+
+### sendAudioMetaData()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.sendAudioMetaData(byte[] *metaData*)
+
+</ApiSignature>
+
+发送音频 Metadata 数据。
+
+成功调用该方法后，远端会触发 [onAudioMetaDataReceived](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) 回调，远端用户可以在该回调中获取接收到的音频 Metadata 数据。
+
+<ParameterList title="参数">
+<Parameter name="metaData">
+
+音频 Metadata 数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae277a1a9cb7a8258d66f18d6639f179a"></a>
+
+### sendIntraRequest()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.sendIntraRequest(String *uid*)
+
+</ApiSignature>
+
+向指定主播发送关键帧请求。
+
+你成功发送请求后，主播会收到 onIntraRequestReceived 回调。
+
+<ParameterList title="参数">
+<Parameter name="uid">
+
+主播的用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a67fa8f0240b495372d19c6a90797a771"></a>
+
+### setAudioEncoderConfig()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioEncoderConfig([AudioEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-encoder-config) *config*)
+
+</ApiSignature>
+
+配置音频编码属性。
+
+完成配置后，SDK 会将音频编码属性应用到所有音频轨道。
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+音频编码属性 AudioEncoderConfig。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa629c313c9265612e248a36774abd84a"></a>
+
+### setAudioScenario()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioScenario(int *scenarioType*)
+
+</ApiSignature>
+
+设置音频应用场景。
+
+该方法适用于各种音频场景，你可以按需选择。例如，在音乐教学等高音质需求的场景中，建议将 scenarioType 设置为 AUDIO_SCENARIO_GAME_STREAMING(3)。
+
+<ParameterList title="参数">
+<Parameter name="scenarioType">
+
+音频场景。不同的音频场景下，设备的音量类型是不同的。
+
+- AUDIO_SCENARIO_DEFAULT(0):（默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。
+- AUDIO_SCENARIO_GAME_STREAMING(3): 高音质场景，适用于音乐为主的场景。
+- AUDIO_SCENARIO_CHATROOM(5): 聊天室场景，适用于用户需要频繁上下麦的场景。
+- AUDIO_SCENARIO_CHORUS(7): 合唱场景。适用于网络条件良好，要求极低延时的实时合唱场景。
+- AUDIO_SCENARIO_MEETING(8): 会议场景，适用于人声为主的多人会议。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4fddd93c340686f45a8c71f6caf3f93f"></a>
+
+### setAudioVolumeIndicationParameters()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setAudioVolumeIndicationParameters(int *interval_in_ms*, int *smooth*, boolean *report_vad*)
+
+</ApiSignature>
+
+<a id="a70d505bcb7a5636f91d4156636ec3d3c"></a>
+
+### setMixedAudioFrameParameters()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setMixedAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
+
+设置 onMixedAudioFrame 回调中返回的音频数据的参数。
+
+<ParameterList title="参数">
+<Parameter name="channels">
+
+onMixedAudioFrame 回调中音频数据的声道数。
+
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onMixedAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
+
+onMixedAudioFrame 中音频数据的使用模式：
+
+- 0: 只读模式，即仅读取回调中的 AudioFrame 音频数据，而不进行修改。
+- 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
+- 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
+
+</Parameter>
+<Parameter name="samples_per_call">
+
+onMixedAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a406b17f8d5980b33b1de83b7cba75e07"></a>
+
+### setPlaybackAudioFrameBeforeMixingParameters()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameBeforeMixingParameters(int *channels*, int *sample_rate_hz*)
+
+</ApiSignature>
+
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中返回的音频数据的参数。
+
+<ParameterList title="参数">
+<Parameter name="channels">
+
+onPlaybackAudioFrameBeforeMixing 回调中音频数据的声道数。
+
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onPlaybackAudioFrameBeforeMixing 中音频数据的采样率（Hz）。可设为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a53f5006a0d0f2d3c99d3353034545c96"></a>
+
+### setPlaybackAudioFrameParameters()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setPlaybackAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
+
+设置 onPlaybackAudioFrame 回调中返回的音频数据的参数。
+
+<ParameterList title="参数">
+<Parameter name="channels">
+
+onPlaybackAudioFrame 回调中音频数据的声道数。
+
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onPlaybackAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
+
+onPlaybackAudioFrame 中音频数据的使用模式：
+
+- 0: 只读模式，即仅读取回调中的 AudioFrame 音频数据，而不进行修改。
+- 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
+- 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
+
+</Parameter>
+<Parameter name="samples_per_call">
+
+onPlaybackAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a91bbd61beb6c54158c55ddeefc5bf21f"></a>
+
+### setRecordingAudioFrameParameters()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.setRecordingAudioFrameParameters(int *channels*, int *sample_rate_hz*, int *mode*, int *samples_per_call*)
+
+</ApiSignature>
+
+设置 onRecordAudioFrame 回调中返回的音频数据的参数。
+
+<ParameterList title="参数">
+<Parameter name="channels">
+
+onPlaybackAudioFrame 回调中音频数据的声道数。
+
+- 1: 单声道
+- 2: 双声道
+
+</Parameter>
+<Parameter name="sample_rate_hz">
+
+onRecordAudioFrame 中音频数据的采样率（Hz）。可设为 8000, 16000, 32000, 44100, 或 48000。
+
+</Parameter>
+<Parameter name="mode">
+
+onRecordAudioFrame 中音频数据的使用模式：
+
+- 0: 只读模式，即仅读取回调中的 AudioFrame 音频数据，而不进行修改。
+- 1: 只写模式，即使用自己的数据代替回调中的 AudioFrame 音频数据。例如，如果你希望使用自己采集的音频数据时，可以使用该模式。
+- 2: 读写模式，即读取回调中的 AudioFrame 音频数据，对其进行修改，然后播放。例如，如果你希望应用自己的音频处理模块，进行音频后处理，达到变声的效果，可以设置该模式。
+
+</Parameter>
+<Parameter name="samples_per_call">
+
+onRecordAudioFram 回调中的采样点数。在 RTMP 或 RTMPS 推流场景中，将该值设为 1024。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9823de9ef839d7b0bbb539e6cd2e421d"></a>
+
+### setUserRole()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraLocalUser.setUserRole(int *role*)
+
+</ApiSignature>
+
+设置用户角色。
+
+在加入频道前后，你都可以调用该方法：
+
+- 加入频道前调用，可以设置用户角色为发流者（主播）或收流者（观众）。
+- 加入频道后调用，可以切换用户角色为发流者或收流者。
+
+你可以通过 onChangeRoleSuccess 或 onChangeRoleFailure 获取该方法的调用结果。
+
+:::info[注解]
+调用 connect 加入频道时，如果填入的 token 与你在该方法中设置的 role 不匹配，则加入 频道失败，SDK 触发 onConnectionFailure 回调。
+:::
+
+<ParameterList title="参数">
+<Parameter name="role">
+
+用户角色。
+
+</Parameter>
+</ParameterList>
+
+<a id="a71ea766dd8c040e441966876b697f4ca"></a>
+
+### subscribeAllAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAllAudio()
+
+</ApiSignature>
+
+订阅频道内所有用户的音频。
+
+成功调用该方法后，SDK 自动订阅在调用该方法后加入频道的用户的音频。
+
+<h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab39d52767fe4087f3a4f11671c9f8c2d"></a>
+
+### subscribeAllVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAllVideo([VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) *options*)
+
+</ApiSignature>
+
+订阅频道中所有用户的视频。
+
+成功调用该方法后，SDK 自动订阅在调用该方法后加入频道的用户的视频。
+
+<ParameterList title="参数">
+<Parameter name="options">
+
+视频订阅选项：VideoSubscriptionOptions。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0256f3eee8c98a8f0baee872b02d9ba2"></a>
+
+### subscribeAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeAudio(String *user_id*)
+
+</ApiSignature>
+
+订阅频道内指定用户的音频。
+
+<ParameterList title="参数">
+<Parameter name="user_id">
+
+想要订阅的用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac5ead6debff1931d16d1371411e59b76"></a>
+
+### subscribeVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.subscribeVideo(String *user_id*, [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-subscription-options) *options*)
+
+</ApiSignature>
+
+订阅远端指定用户的视频。
+
+<ParameterList title="参数">
+<Parameter name="user_id">
+
+带订阅视频的远端用户的 ID。
+
+</Parameter>
+<Parameter name="options">
+
+视频订阅选项：VideoSubscriptionOptions，例如，仅订阅编码后的视频数据，或仅订阅视频小流。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-20"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a5b71c32a5c3745fdaeaf0ecff2ae72ce"></a>
+
+### unpublishAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unpublishAudio([AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) *agora_local_audio_track*)
+
+</ApiSignature>
+
+停止向频道内发布本地音频轨道。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_audio_track">
+
+待停止发布的本地音频轨道。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-21"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a47b505af76394396c9147ed39c20705c"></a>
+
+### unpublishVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unpublishVideo([AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) *agora_local_video_track*)
+
+</ApiSignature>
+
+停止发布本地视频轨道至频道。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_video_track">
+
+待停止发布的本地视频轨道。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-22"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aeea5846103bd39335265cb14ed9762a7"></a>
+
+### unregisterAudioEncodedFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterAudioEncodedFrameObserver([IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) *observer*)
+
+</ApiSignature>
+
+取消注册编码后的音频数据观测器。
+
+:::info[自从]
+4.4.32。
+:::
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+取消注册的 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-23"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a7ddd8df414d9c882ad8c4fe0281b2706"></a>
+
+### unregisterAudioFrameObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unregisterAudioFrameObserver()
+
+</ApiSignature>
+
+释放音频数据观测器。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+音频数据观测器：[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-24"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aab98c8feb30627d403bf30ed6da5276c"></a>
+
+### unregisterObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unregisterObserver()
+
+</ApiSignature>
+
+释放本地用户观测器 ILocalUserObserver 对象。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+ILocalUserObserver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-25"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0278904ee137da7b88ad35cd480edcdc"></a>
+
+### unregisterVideoEncodedFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterVideoEncodedFrameObserver([AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer) *agoraVideoEncodedFrameObserver*)
+
+</ApiSignature>
+
+取消注册编码后的视频数据观测器。
+
+<ParameterList title="参数">
+<Parameter name="agoraVideoEncodedFrameObserver">
+
+观测器对象：[AgoraVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-frame-observer)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-26"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a1e179eb9254799a28db26cc7fe0b9afd"></a>
+
+### unregisterVideoFrameObserver()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraLocalUser.unregisterVideoFrameObserver([AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2) *agoraVideoFrameObserver2*)
+
+</ApiSignature>
+
+取消注册视频数据观测器。
+
+<ParameterList title="参数">
+<Parameter name="agoraVideoFrameObserver2">
+
+视频数据观测器：[AgoraVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-observer2)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-27"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4579cfc4ed9ac4dd1364a5507d36efcf"></a>
+
+### unsubscribeAllAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAllAudio()
+
+</ApiSignature>
+
+停止订阅频道内所有远端音频。
+
+成功调用该方法后，如未再调用 subscribeAudio 或 subscribeAllAudio，SDK 自动停止订阅在调用该方法后加入频道的用户的音频。
+
+<h4 data-toc-hidden="true" id={"返回值-28"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a02d76624cc5cbb59d08259a2a954b76e"></a>
+
+### unsubscribeAllVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAllVideo()
+
+</ApiSignature>
+
+停止订阅频道内所有用户的视频。
+
+成功调用该方法后，除非再调用 subscribeVideo 或 subscribeAllVideo，否则 SDK 自动停止订阅在调用该方法后加入频道的用户视频。
+
+<h4 data-toc-hidden="true" id={"返回值-29"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3998f47126bec01158624c5a1fb653c2"></a>
+
+### unsubscribeAudio()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeAudio(String *user_id*)
+
+</ApiSignature>
+
+停止订阅频道内指定用户的音频。
+
+<ParameterList title="参数">
+<Parameter name="user_id">
+
+待停止订阅的用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-30"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac072f965b0fba3eda31ead169dd0d2d1"></a>
+
+### unsubscribeVideo()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraLocalUser.unsubscribeVideo(String *user_id*)
+
+</ApiSignature>
+
+停止订阅频道内指定用户的视频。
+
+<ParameterList title="参数">
+<Parameter name="user_id">
+
+待停止订阅视频的用户的 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-31"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraLocalUser.java

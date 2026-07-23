@@ -1,10 +1,19 @@
 ---
-title: "音频路由"
-description: "音频路由 API reference."
+title: 音频路由
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_audio_route
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_audio_route.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_route"></a>
 
 <a id="api_irtcengine_isspeakerphoneenabled"></a>
+
+<a id="ariaid-title2"></a>
 
 ## isSpeakerphoneEnabled
 
@@ -12,14 +21,14 @@ description: "音频路由 API reference."
 
 <a id="api_irtcengine_isspeakerphoneenabled__prototype"></a>
 
-```cpp
+```text
 virtual bool isSpeakerphoneEnabled() = 0;
 ```
 
 <a id="api_irtcengine_isspeakerphoneenabled__detailed_desc"></a>
 
-:::warning[注意]
-该方法仅适用于 Android 和 iOS。
+:::caution
+注意： 该方法仅适用于 Android 和 iOS。
 :::
 
 <a id="api_irtcengine_isspeakerphoneenabled__timing"></a>
@@ -38,13 +47,16 @@ virtual bool isSpeakerphoneEnabled() = 0;
 
 ### 返回值
 
-- true: 扬声器已开启，语音会输出到扬声器。
-- false: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
+- `true`: 扬声器已开启，语音会输出到扬声器。
+- `false`: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setDefaultAudioRouteToSpeakerphone
 
@@ -52,19 +64,21 @@ virtual bool isSpeakerphoneEnabled() = 0;
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__prototype"></a>
 
-```cpp
+```text
 virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 ```
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__detailed_desc"></a>
 
-:::warning[注意]
-该方法仅适用于 Android 和 iOS 平台。
+:::caution
+注意： 该方法仅适用于 Android 和 iOS 平台。
 :::
 
 手机设备一般有两个音频路由，一个是位于顶部的听筒，播放声音偏小；一个是位于底部的扬声器，播放声音偏大。设置默认的音频路由，就是在没有外接设备的前提下，设置系统使用听筒还是扬声器播放音频。
 
 不同场景下，系统默认的音频路由也不同。具体如下：
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__ul_kq3_tpf_3qb"></a>
 
 - 语音通话：听筒
 - 语音直播：扬声器
@@ -77,7 +91,7 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 
 ### 调用时机
 
-该方法需要在加入频道前调用。 如需在加入频道后切换音频路由，请调用 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setenablespeakerphone)。
+该方法需要在加入频道前调用。如需在加入频道后切换音频路由，请调用 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setenablespeakerphone)。
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__restriction"></a>
 
@@ -95,24 +109,32 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 
 ### 参数
 
-#### `defaultToSpeaker`
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否使用扬声器作为默认的音频路由：
 
-- true: 设置默认音频路由为扬声器。
-- false: 设置默认音频路由为听筒。
+- `true`: 设置默认音频路由为扬声器。
+- `false`: 设置默认音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setEnableSpeakerphone
 
@@ -120,14 +142,14 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 
 <a id="api_irtcengine_setenablespeakerphone__prototype"></a>
 
-```cpp
+```text
 virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 ```
 
 <a id="api_irtcengine_setenablespeakerphone__detailed_desc"></a>
 
-:::warning[注意]
-该方法仅适用于 Android 和 iOS 平台。
+:::caution
+注意： 该方法仅适用于 Android 和 iOS 平台。
 :::
 
 <a id="api_irtcengine_setenablespeakerphone__scenario"></a>
@@ -159,24 +181,32 @@ virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 
 ### 参数
 
-#### `speakerOn`
+<ParameterList>
+<a id="speakeron"></a>
+<Parameter name="speakerOn">
 
 设置是否开启扬声器播放：
 
-- true: 开启。音频路由为扬声器。
-- false: 关闭。音频路由为听筒。
+- `true`: 开启。音频路由为扬声器。
+- `false`: 关闭。音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setRouteInCommunicationMode
 
@@ -184,16 +214,16 @@ virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 
 <a id="api_irtcengine_setrouteincommunicationmode__prototype"></a>
 
-```cpp
+```text
 virtual int setRouteInCommunicationMode(int route) = 0;
 ```
 
 <a id="api_irtcengine_setrouteincommunicationmode__detailed_desc"></a>
 
-该方法用于在通话音量模式（[MODE_IN_COMMUNICATION](https://developer.android.google.cn/reference/kotlin/android/media/AudioManager?hl=en#mode_in_communication) ）下，将音频路由从蓝牙耳机切换为听筒、有线耳机或扬声器。
+该方法用于在通话音量模式（[MODE_IN_COMMUNICATION](https://developer.android.google.cn/reference/kotlin/android/media/AudioManager?hl=en#mode_in_communication)）下，将音频路由从蓝牙耳机切换为听筒、有线耳机或扬声器。
 
-:::warning[注意]
-该方法仅适用于 Android。
+:::caution
+注意： 该方法仅适用于 Android。
 :::
 
 <a id="api_irtcengine_setrouteincommunicationmode__timing"></a>
@@ -218,7 +248,9 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 
 ### 参数
 
-#### `route`
+<ParameterList>
+<a id="route"></a>
+<Parameter name="route">
 
 期望使用的音频路由:
 
@@ -231,6 +263,9 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 - 5：蓝牙耳机。
 - 6：USB 设备。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
 
 ### 返回值
@@ -238,9 +273,12 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 无实际意义。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onAudioRoutingChanged
 
@@ -248,13 +286,18 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioRoutingChanged(int routing) { (void)routing; }
+
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged__detailed_desc"></a>
 
-:::info[注]
+### 详情
+
+:::note
+注：
+
 该回调仅适用于 Android、iOS 和 macOS 平台。
 :::
 
@@ -262,9 +305,15 @@ virtual void onAudioRoutingChanged(int routing) { (void)routing; }
 
 ### 参数
 
-#### `routing`
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
 
 当前的音频路由。详见 [AudioRoute](/zh-CN/api-reference/rtc/unreal-cpp/enum-audioroute)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

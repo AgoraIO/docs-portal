@@ -1,10 +1,18 @@
 ---
-title: "TranscodingVideoStream"
-description: "用于配置本地合图的视频流。"
+title: TranscodingVideoStream
+description: 用于配置本地合图的视频流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_transcodingvideostream
+  sourcePath: html-docs/rtc/Android/API/class_transcodingvideostream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_transcodingvideostream__prototype"></a>
 
-```java
+```text
 public static class TranscodingVideoStream {
     public int remoteUserUid;
     public Constants.VideoSourceType sourceType;
@@ -28,71 +36,96 @@ public static class TranscodingVideoStream {
 
 ## 属性
 
-### `remoteUserUid`
+<ParameterList>
+<a id="remoteuseruid"></a>
+<Parameter name="remoteUserUid">
 
 远端用户 ID。
 
-:::info[注]
-仅当 `sourceType` 设置为 `VIDEO_SOURCE_REMOTE` 进行本地合图时使用该参数。
+:::note
+注： 仅当 `sourceType` 设置为 `VIDEO_SOURCE_REMOTE` 进行本地合图时使用该参数。
 :::
 
-### `sourceType`
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
-### `imageUrl`
+</Parameter>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
 
 本地图片的文件路径，例如：Android: `/storage/emulated/0/Pictures/image.png`。
 
-:::info[注]
-仅当 `sourceType` 设置为图片时使用该参数进行本地合图。
+:::note
+注： 仅当 `sourceType` 设置为图片时使用该参数进行本地合图。
 :::
 
-### `mediaPlayerId`
+</Parameter>
+<a id="mediaplayerid"></a>
+<Parameter name="mediaPlayerId">
 
 媒体播放器 ID。
 
-:::info[注]
-仅当 `sourceType` 设置为 `VIDEO_SOURCE_MEDIA_PLAYER` 时使用该参数。
+:::note
+注： 仅当 `sourceType` 设置为 `VIDEO_SOURCE_MEDIA_PLAYER` 时使用该参数。
 :::
 
-### `x`
+</Parameter>
+<a id="x"></a>
+<Parameter name="x">
 
 视频左上角相对画布原点（左上角）的横向偏移。
 
-### `y`
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 视频左上角相对画布原点（左上角）的纵向偏移。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 视频在画布上的宽度（像素）。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 视频在画布上的高度（像素）。
 
-### `zOrder`
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
 
 视频所属的图层编号，取值范围为 [0, 100]。
 
 - 0：（默认）图层位于底部。
 - 100：图层位于顶部。
 
-### `alpha`
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
 
 视频的透明度，取值范围为 [0.0, 1.0]。
 
 - 0.0：完全透明。
 - 1.0：完全不透明。
 
-### `mirror`
+</Parameter>
+<a id="mirror"></a>
+<Parameter name="mirror">
 
-:::info[注]
-该参数仅对摄像头类型的视频源生效。
+:::note
+注： 该参数仅对摄像头类型的视频源生效。
 :::
 
 是否对视频进行镜像处理。
 
 - true：镜像视频。
 - false：（默认）不镜像。
+
+</Parameter>
+</ParameterList>
