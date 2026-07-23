@@ -46,6 +46,17 @@ describe('API Center navigation runner', () => {
     ).toEqual(['platform-landing', 'document']);
   });
 
+  it('omits routes hidden from the API reference catalog', () => {
+    const catalog = buildApiReferenceCatalogData([
+      {
+        pages: ['[RESTful API](/zh-CN/api-reference/api-ref/danmaku)'],
+        title: '弹幕玩法',
+      },
+    ]);
+
+    expect(catalog.all).toEqual([]);
+  });
+
   it.each([
     [
       'android',
@@ -407,10 +418,7 @@ describe('API Center navigation runner', () => {
       '[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)',
       '[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)',
     ]);
-    expect(catalogGroups[1].pages).toEqual([
-      `[C++](${rtmCppRoute})`,
-      '[Swift](/zh-CN/api-reference/rtm/swift/configuration)',
-    ]);
+    expect(catalogGroups[1].pages).toEqual([`[C++](${rtmCppRoute})`]);
     expect(catalogGroups[2]).toMatchObject({
       title: '媒体流加速 RTSA',
       pages: [`[C](${rtsaRoute})`],

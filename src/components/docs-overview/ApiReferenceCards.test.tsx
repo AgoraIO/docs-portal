@@ -30,9 +30,7 @@ describe('ApiReferenceCards', () => {
       'href',
       '/zh-CN/api-reference/rtc/android/rtc-api-overview',
     );
-    expect(
-      screen.getByText(`${zhCNApiReferenceCards.client.length} 个入口`),
-    ).toBeVisible();
+    expect(screen.queryByText(/个入口$/)).not.toBeInTheDocument();
   });
 
   it('filters client cards by product and platform', () => {
@@ -53,7 +51,6 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.queryByRole('link', { name: /实时互动 RTC Web 客户端 SDK/i }),
     ).not.toBeInTheDocument();
-    expect(screen.getByText('1 个入口')).toBeVisible();
   });
 
   it('renders server API cards for server SDK and RESTful API entries', () => {
@@ -82,9 +79,6 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.getByRole('button', { name: '全部', pressed: true }),
     ).toBeVisible();
-    expect(
-      screen.getByText(`${zhCNApiReferenceCards.all.length} 个入口`),
-    ).toBeVisible();
     expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
       screen.getByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
@@ -103,11 +97,6 @@ describe('ApiReferenceCards', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '服务端 SDK' }));
 
-    const serverSdkCount = zhCNApiReferenceCards.all.filter(
-      (entry) => entry.apiType === 'server-sdk',
-    ).length;
-
-    expect(screen.getByText(`${serverSdkCount} 个入口`)).toBeVisible();
     expect(
       screen.getByRole('button', { name: '服务端 SDK', pressed: true }),
     ).toBeVisible();
@@ -165,7 +154,7 @@ describe('ApiReferenceCards', () => {
     expect(
       within(
         screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
-      ).getByText('对话式 AI RESTful API'),
+      ).getByText('RESTful API'),
     ).toBeVisible();
   });
 
@@ -178,10 +167,6 @@ describe('ApiReferenceCards', () => {
 
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
-    const rtcClientCount = zhCNApiReferenceCards.client.filter(
-      (entry) => entry.productId === 'rtc',
-    ).length;
-
     await waitFor(() => {
       expect(screen.getByLabelText('产品')).toHaveValue('rtc');
       expect(
@@ -189,7 +174,6 @@ describe('ApiReferenceCards', () => {
       ).toBeVisible();
     });
 
-    expect(screen.getByText(`${rtcClientCount} 个入口`)).toBeVisible();
     expect(screen.getByRole('heading', { name: '实时互动 RTC' })).toBeVisible();
     expect(
       screen.queryByRole('heading', { name: '实时消息 RTM' }),
@@ -285,7 +269,7 @@ describe('ApiReferenceCards', () => {
     fireEvent.click(screen.getByRole('button', { name: '清除筛选' }));
 
     expect(
-      screen.getByText(`${zhCNApiReferenceCards.server.length} 个入口`),
+      screen.getByRole('link', { name: /RTC 服务端 SDK Python 服务端 SDK/i }),
     ).toBeVisible();
     expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
   });
@@ -320,6 +304,52 @@ describe('ApiReferenceCards', () => {
       'src',
       'https://assets-docs.agora.io/images/api-reference/platforms/restful.svg',
     );
+    expect(
+      within(
+        screen.getByRole('link', {
+          name: /媒体流加速 RTSA C 客户端 SDK/i,
+        }),
+      ).getByRole('presentation', { hidden: true }),
+    ).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/api-reference/platforms/c.svg',
+    );
+    expect(
+      within(
+        screen.getByRole('link', {
+          name: /在线美术教学 Windows 客户端 SDK/i,
+        }),
+      ).getByRole('presentation', { hidden: true }),
+    ).toHaveAttribute(
+      'src',
+      'https://doc.shengwang.cn/img/platforms/windows.svg',
+    );
+  });
+
+  it('does not expose Swift as an RTM API entry', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtm' },
+    });
+
+    expect(
+      screen.queryByRole('link', { name: /实时消息 RTM Swift/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('option', { name: 'Swift' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not expose Danmaku in the API reference catalog', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    expect(
+      screen.queryByRole('heading', { name: '弹幕玩法' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('option', { name: '弹幕玩法' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps product groups and API chips scan-friendly', () => {
@@ -330,9 +360,7 @@ describe('ApiReferenceCards', () => {
     });
 
     expect(screen.getByRole('heading', { name: '云端录制' })).toBeVisible();
-    expect(
-      within(cloudRecordingCard).getByText('云端录制 RESTful API'),
-    ).toBeVisible();
+    expect(within(cloudRecordingCard).getByText('RESTful API')).toBeVisible();
   });
 
   it('renders stacked solution groups inside one product card', () => {
@@ -342,7 +370,6 @@ describe('ApiReferenceCards', () => {
       target: { value: 'online-ktv' },
     });
 
-    expect(screen.getByText('8 个入口')).toBeVisible();
     expect(screen.getByRole('heading', { name: '在线 K 歌房' })).toBeVisible();
     expect(
       screen.getByRole('heading', { name: '场景化 API 方案' }),

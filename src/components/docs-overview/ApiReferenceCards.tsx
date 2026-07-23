@@ -78,10 +78,7 @@ export function ApiReferenceCards({
 
   return (
     <section className="not-prose my-8 flex flex-col gap-5">
-      <section
-        aria-label="API 筛选"
-        className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:flex-wrap sm:items-end"
-      >
+      <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
           <FilterSelect
             label="产品"
@@ -99,9 +96,6 @@ export function ApiReferenceCards({
             <ApiTypeSegmentedControl onChange={setApiType} value={apiType} />
           ) : null}
         </div>
-        <span className="pb-2 text-xs font-medium text-muted-foreground sm:ml-auto">
-          {visibleEntries.length} 个入口
-        </span>
       </section>
 
       {visibleEntries.length > 0 ? (
@@ -143,7 +137,7 @@ function ApiTypeSegmentedControl({
   return (
     <fieldset className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
       <legend>API 类型</legend>
-      <div className="inline-flex h-8 rounded-md border border-border bg-muted/50 p-0.5">
+      <div className="inline-flex h-8 rounded-lg bg-muted p-[3px] text-muted-foreground">
         {apiTypeOptions.map((option) => {
           const isActive = option.id === value;
 
@@ -151,10 +145,10 @@ function ApiTypeSegmentedControl({
             <button
               aria-pressed={isActive}
               className={[
-                'rounded-[4px] px-2.5 text-xs font-medium transition-colors',
+                'rounded-md border border-transparent px-2.5 text-xs font-medium transition-all hover:text-foreground',
                 isActive
-                  ? 'bg-foreground text-background shadow-sm'
-                  : 'text-muted-foreground hover:bg-background/80 hover:text-foreground',
+                  ? 'bg-background text-foreground shadow-sm dark:border-input dark:bg-input/30'
+                  : 'text-foreground/60',
               ].join(' ')}
               key={option.id}
               onClick={() => onChange(option.id)}
@@ -459,10 +453,6 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
   const iconSrc = platformIcons[entry.platformId] ?? defaultPlatformIconSrc;
-  const displayName =
-    entry.apiType === 'restful-api' && entry.label === entry.platform
-      ? `${entry.product} RESTful API`
-      : entry.platform;
   const showEntryLabel =
     entry.productId !== 'conversational-ai' && entry.label !== entry.platform;
 
@@ -478,7 +468,7 @@ function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
         />
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-medium">{displayName}</span>
+        <span className="truncate text-sm font-medium">{entry.platform}</span>
         {showEntryLabel ? (
           <span className="truncate text-xs text-muted-foreground">
             {entry.label}
@@ -516,6 +506,7 @@ const defaultPlatformIconSrc = `${platformIconBaseUrl}/all.svg`;
 
 const platformIcons: Record<string, string> = {
   android: `${platformIconBaseUrl}/android.svg`,
+  c: `${platformIconBaseUrl}/c.svg`,
   cpp: `${platformIconBaseUrl}/cpp.svg`,
   csharp: `${platformIconBaseUrl}/csharp.svg`,
   electron: `${platformIconBaseUrl}/electron.svg`,
@@ -535,6 +526,7 @@ const platformIcons: Record<string, string> = {
   'unreal-blueprint': `${platformIconBaseUrl}/unreal-engine.svg`,
   'unreal-cpp': `${platformIconBaseUrl}/unreal-engine.svg`,
   web: `${platformIconBaseUrl}/js.svg`,
+  windows: 'https://doc.shengwang.cn/img/platforms/windows.svg',
 };
 
 const apiTypeOptions: Array<{
