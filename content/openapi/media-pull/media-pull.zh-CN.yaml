@@ -32,7 +32,7 @@ info:
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。'
   contact:
     name: 声网技术支持
-    url: https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms
+    url: https://agoraio.zendesk.com/hc/zh-cn
 servers:
 - url: https://api.sd-rtn.com
 paths:
@@ -600,7 +600,7 @@ components:
     account:
       type: string
       title: account
-      description: '云端播放器在声网频道内的用户 Account。使用该字段前请先阅读[如何使用 String 型用户名](https://docs.agora.io/cn/faqs/string)。该字段不能超过 255 字节，也不能为空字符串。支持的字符集范围（共 89 个字符）如下：
+      description: '云端播放器在声网频道内的用户 Account。使用该字段前请先阅读[如何使用 String 型用户名](/zh-CN/api-reference/faq/integration/string_uid)。该字段不能超过 255 字节，也不能为空字符串。支持的字符集范围（共 89 个字符）如下：
 
         - 所有小写英文字母（a-z）
 
@@ -622,9 +622,9 @@ components:
       title: token
       description: '云端播放器在声网频道内使用的动态密钥。如在声网控制台未启用 App 证书，则不需要向 `token` 传值；如在声网控制台已启用 App 证书，则必须传入 `token`：
 
-        - 安全性要求一般时，可使用声网控制台生成的[临时 Token](https://docs.agora.io/cn/Agora%20Platform/get_appid_token?platform=All%20Platforms#获取-rtc-临时-token)。
+        - 安全性要求一般时，可使用声网控制台生成的[临时 Token](/zh-CN/introduction/quickstart#获取开发参数)。
 
-        - 安全性要求高时，使用用户服务器生成的[正式 Token](https://docs.agora.io/cn/Interactive%20Broadcast/token_server?platform=All%20Platforms)。
+        - 安全性要求高时，使用用户服务器生成的[正式 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
         **注意**：生成正式 Token 时，使用的 `uid` 或 `account` 必须和云端播放器的 `uid` 或 `account` 取值一致。'
       x-stoplight:
@@ -732,7 +732,7 @@ components:
     frameRate:
       type: number
       title: frameRate
-      description: 输出视频的编码帧率 (fps)。详见[输出视频参考表](https://docs.agora.io/cn/Interactive%20Broadcast/video_profile_android?platform=Android)。
+      description: 输出视频的编码帧率 (fps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。
       minimum: 5
       maximum: 30
       default: 15
@@ -741,7 +741,7 @@ components:
     bitrate:
       type: number
       title: bitrate
-      description: 输出视频的编码码率 (Kbps)。详见[输出视频参考表](https://docs.agora.io/cn/Interactive%20Broadcast/video_profile_android?platform=Android)。默认值为标准码率，即声网依据当前频道场景、分辨率、帧率为你设置的最合适的码率。
+      description: 输出视频的编码码率 (Kbps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。默认值为标准码率，即声网依据当前频道场景、分辨率、帧率为你设置的最合适的码率。
       minimum: 1
       maximum: 10000
       default: 标准码率

@@ -92,7 +92,7 @@ describe('API Center local fragment index', () => {
     );
     expect(result.inserted).toEqual(['获取歌曲标签']);
     expect(result.body).toContain(
-      '<a id="获取歌曲标签"></a>\n### 获取歌曲标签类别',
+      '<a id="获取歌曲标签"></a>\n\n### 获取歌曲标签类别',
     );
   });
 
@@ -118,7 +118,7 @@ describe('API Center local fragment index', () => {
 
     expect(result.inserted).toEqual(['class_enable_local_audio_method']);
     expect(result.body).toContain(
-      '<a id="class_enable_local_audio_method"></a>\n## enableLocalAudio',
+      '<a id="class_enable_local_audio_method"></a>\n\n## enableLocalAudio',
     );
   });
 
@@ -137,13 +137,13 @@ describe('API Center local fragment index', () => {
     );
 
     expect(result.body).toContain(
-      '<a id="llm-vendors-1"></a>\n### LLM vendors',
+      '<a id="llm-vendors-1"></a>\n\n### LLM vendors',
     );
     expect(result.body).toContain(
-      '<a id="stt-vendors-1"></a>\n### STT vendors',
+      '<a id="stt-vendors-1"></a>\n\n### STT vendors',
     );
     expect(result.body).toContain(
-      '<a id="avatar-vendors-1"></a>\n### Avatar vendors',
+      '<a id="avatar-vendors-1"></a>\n\n### Avatar vendors',
     );
   });
 
@@ -155,7 +155,7 @@ describe('API Center local fragment index', () => {
       new Set(['获取歌曲标签']),
     );
     expect(aliased.body).toContain(
-      '```\n\n<a id="获取歌曲标签"></a>\n## 获取歌曲标签类别',
+      '```\n\n<a id="获取歌曲标签"></a>\n\n## 获取歌曲标签类别',
     );
   });
 

@@ -5,7 +5,7 @@
 - Visible existing MDX targets: 5225
 - Preserved MDX targets normalized by this script: 327
 - Generator-owned targets skipped: 4898
-- Local link rewrites: 1648
+- Local link rewrites: 1652
 - External canonical rewrites: 9
 - Source-only links rendered as text: 41
 - Fragments normalized: 19
@@ -19,7 +19,7 @@
 
 ## Normalization types
 
-- `rewritten-local`: 1648
+- `rewritten-local`: 1652
 - `rewritten-external`: 9
 - `rendered-as-text`: 41
 - `fragment-normalized`: 19

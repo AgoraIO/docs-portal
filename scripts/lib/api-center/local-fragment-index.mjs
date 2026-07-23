@@ -56,10 +56,7 @@ function fragmentComparisonKeys(value) {
   if (withoutGeneratedSuffix !== raw) variants.add(withoutGeneratedSuffix);
 
   for (const variant of [...variants]) {
-    const withoutOwner = variant.replace(
-      /^(?:api|callback)_[^_]+_/i,
-      '',
-    );
+    const withoutOwner = variant.replace(/^(?:api|callback)_[^_]+_/i, '');
     if (withoutOwner !== variant) variants.add(withoutOwner);
   }
   for (const variant of [...variants]) {
@@ -269,7 +266,7 @@ export function insertFragmentAliases(source, requestedFragments) {
     const escaped = insertion.anchor
       .replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;');
-    output = `${output.slice(0, insertion.index)}<a id="${escaped}"></a>\n${output.slice(insertion.index)}`;
+    output = `${output.slice(0, insertion.index)}<a id="${escaped}"></a>\n\n${output.slice(insertion.index)}`;
   }
   return { body: output, inserted, unresolved };
 }
