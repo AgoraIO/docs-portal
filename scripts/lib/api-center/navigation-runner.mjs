@@ -381,18 +381,6 @@ function renderNavigationGroupLeaves(
   return pages;
 }
 
-function isRestReferenceUrl(urlValue, scopeRoot) {
-  if (!urlValue || !scopeRoot || isOutsideLegacyScope(urlValue, scopeRoot)) {
-    return false;
-  }
-  const pathname = new URL(urlValue, API_CENTER_URL).pathname;
-  const relative = pathname.slice(scopeRoot.length);
-  return (
-    /^api(?:\/|$)/.test(relative) ||
-    /(?:^|\/)(?:api-limits|response-code|webhook)(?:\/|$)/.test(relative)
-  );
-}
-
 function focusedOpenApiNavigation(items, options) {
   const focused = [];
   for (const item of items ?? []) {
@@ -408,10 +396,8 @@ function focusedOpenApiNavigation(items, options) {
       item.link?.targetRoute ??
       targetRouteForUrl(item.link?.url, options.routeMap);
     const isReference =
-      href === options.rootRoute ||
-      href?.startsWith(`${options.rootRoute}/`) ||
-      isRestReferenceUrl(item.link?.url, options.scopeRoot);
-    if (isReference) {
+      href === options.rootRoute || href?.startsWith(`${options.rootRoute}/`);
+    if (isReference || (!href && children.length > 0)) {
       focused.push({ ...item, ...(item.items ? { items: children } : {}) });
     } else {
       focused.push(...children);
@@ -757,6 +743,7 @@ function addOpenApiLaneRootMetaPlans(metaByPath, lanes) {
       pages: [],
       metaPatch: { navScope: undefined },
       preserveExistingPages: !metaByPath.has(metaPath),
+      preserveExistingMeta: true,
     });
   }
 }
@@ -880,6 +867,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
         includeIndex: true,
         plainLocalLeaves: true,
         focusedOpenApiSidebar: true,
+        preserveExistingMeta: true,
       });
       const values = openApiEntries.get(laneId) ?? [];
       values.push(entry);
@@ -2319,6 +2307,10 @@ export async function runApiCenterNavigation({
             throw error;
           })
       : null;
+    if (existingMetaSource !== null) {
+      run.retainPreviousOwnershipRecord(plan.metaPath);
+      continue;
+    }
     const meta = await readMeta(repoRoot, plan.metaPath, plan.title);
     const indexPath = `${path.posix.dirname(plan.metaPath)}/index.mdx`;
     const hasIndex = await fs
@@ -2335,9 +2327,7 @@ export async function runApiCenterNavigation({
     if (pages.length === 0) continue;
     run.planFile({
       targetPath: plan.metaPath,
-      contents:
-        existingMetaSource ??
-        serializeJson({ ...meta, ...plan.metaPatch, pages }),
+      contents: serializeJson({ ...meta, ...plan.metaPatch, pages }),
       sourcePath: manifestPath,
       sourceUrl: API_CENTER_URL,
       type: 'navigation-meta',
@@ -2421,7 +2411,7 @@ export async function runApiCenterNavigation({
     rehome,
     parity,
     entries: entries.length,
-    metaFiles: [...run.planned.values()].filter(
+    metaFiles: [...run.planned.values(), ...run.retainedOwned.values()].filter(
       (file) => file.type === 'navigation-meta',
     ).length,
   };

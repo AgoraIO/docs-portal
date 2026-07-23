@@ -999,6 +999,7 @@ export class ApiCenterMigrationRun {
   constructor(options) {
     Object.assign(this, options);
     this.planned = new Map();
+    this.retainedOwned = new Map();
     this.auditResults = [];
     this.reportDetails = {};
     this.inputHash = sha256(JSON.stringify(this.manifest));
@@ -1009,6 +1010,19 @@ export class ApiCenterMigrationRun {
 
   ownsTarget(targetPath) {
     return this.previousOwned.has(targetPath);
+  }
+
+  retainPreviousOwnershipRecord(targetPath) {
+    const safe = assertApiCenterOutputPath(this.repoRoot, targetPath);
+    if (this.planned.has(safe.relative)) {
+      throw new Error(
+        `generated-target-collision: ${safe.relative} is already planned.`,
+      );
+    }
+    const prior = this.previousOwned.get(safe.relative);
+    if (!prior) return false;
+    this.retainedOwned.set(safe.relative, prior);
+    return true;
   }
 
   setReportDetail(key, value) {
@@ -1025,6 +1039,11 @@ export class ApiCenterMigrationRun {
     adoptExisting = false,
   }) {
     const safe = assertApiCenterOutputPath(this.repoRoot, targetPath);
+    if (this.retainedOwned.has(safe.relative)) {
+      throw new Error(
+        `generated-target-collision: ${safe.relative} is retained.`,
+      );
+    }
     const buffer = Buffer.isBuffer(contents) ? contents : Buffer.from(contents);
     const record = {
       targetPath: safe.relative,
@@ -1120,6 +1139,25 @@ export class ApiCenterMigrationRun {
     const results = [...this.auditResults];
     const nextOwned = [];
     const stale = new Map(this.previousOwned);
+
+    for (const [targetPath, prior] of [...this.retainedOwned].sort(
+      ([left], [right]) => left.localeCompare(right),
+    )) {
+      const safe = assertApiCenterOutputPath(this.repoRoot, targetPath);
+      if (!(await exists(safe.absolute))) {
+        throw new Error(`Retained owned file is missing: ${targetPath}`);
+      }
+      stale.delete(targetPath);
+      nextOwned.push(prior);
+      results.push({
+        status: 'generated',
+        type: prior.type,
+        targetPath,
+        sourcePath: prior.sourcePath,
+        sourceUrl: prior.sourceUrl,
+        warnings: [],
+      });
+    }
 
     for (const record of [...this.planned.values()].sort((left, right) =>
       left.targetPath.localeCompare(right.targetPath),

@@ -241,7 +241,7 @@ describe('API Center navigation runner', () => {
     ]);
   });
 
-  it('nests the cloud transcoding event contract under the RESTful API Webhook group', async () => {
+  it('keeps the PR 847 cloud transcoding REST navigation unchanged', async () => {
     const apiMeta = JSON.parse(
       await fs.readFile(
         path.resolve(
@@ -259,23 +259,16 @@ describe('API Center navigation runner', () => {
       ),
     );
 
-    expect(apiMeta.pages).toContainEqual({
-      type: 'group',
-      title: 'Webhook 回调事件',
-      pages: [
-        '[接入指南](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
-        'ncs-events',
-      ],
-    });
+    expect(apiMeta.pages).toContain('ncs-events');
+    expect(apiMeta.pages).not.toContainEqual(
+      expect.objectContaining({ title: 'Webhook 回调事件' }),
+    );
     expect(apiMeta.openApiSidebarFromMeta).toBe(true);
     expect(apiMeta.pages.indexOf('authentication')).toBeLessThan(
       apiMeta.pages.indexOf('---服务端 API---'),
     );
     expect(apiMeta.pages.indexOf('template-query')).toBe(
       apiMeta.pages.indexOf('template-create') + 1,
-    );
-    expect(apiMeta.pages).not.toContain(
-      '[Webhook 回调事件](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)',
     );
     expect(
       apiMeta.sidebarLabels[
@@ -550,12 +543,6 @@ describe('API Center navigation runner', () => {
     const rtcMcpUrl = 'https://doc.shengwang.cn/doc/rtc/android/mcp-integrate';
     const speechUrl =
       'https://doc.shengwang.cn/doc/speech-to-text/restful/v7/operations/join';
-    const speechGuideUrl =
-      'https://doc.shengwang.cn/doc/speech-to-text/restful/get-started/enable-service';
-    const speechResponseUrl =
-      'https://doc.shengwang.cn/doc/speech-to-text/restful/response-code';
-    const speechBestPracticeUrl =
-      'https://doc.shengwang.cn/doc/speech-to-text/restful/best-practices/enable-from-client';
     const whiteboardUrl =
       'https://doc.shengwang.cn/api-ref/whiteboard/android/overview';
     const rtsaUrl = 'https://doc.shengwang.cn/api-ref/rtsa/c/overview';
@@ -681,67 +668,22 @@ describe('API Center navigation runner', () => {
             closure: { scopeRoot: '/doc/speech-to-text/restful/' },
             pages: [
               {
-                url: speechGuideUrl,
-                label: '快速开始',
-                trail: [],
-              },
-              {
                 url: speechUrl,
                 label: '开始转写',
                 trail: ['服务端 API'],
-              },
-              {
-                url: speechResponseUrl,
-                label: '响应状态码',
-                trail: [],
-              },
-              {
-                url: speechBestPracticeUrl,
-                label: '最佳实践',
-                trail: [],
               },
             ],
             navigation: [
               {
                 kind: 'category',
-                label: '产品指南',
-                link: { url: speechGuideUrl },
+                label: '服务端 API',
                 items: [
                   {
                     kind: 'link',
-                    label: '快速开始',
-                    link: { url: speechGuideUrl },
-                  },
-                  {
-                    kind: 'link',
-                    label: '响应状态码',
-                    link: { url: speechResponseUrl },
-                  },
-                  {
-                    kind: 'category',
-                    label: '服务端 API',
+                    label: '开始转写',
                     link: { url: speechUrl },
-                    items: [
-                      {
-                        kind: 'link',
-                        label: '开始转写',
-                        link: { url: speechUrl },
-                      },
-                    ],
-                  },
-                  {
-                    kind: 'link',
-                    label: '最佳实践',
-                    link: { url: speechBestPracticeUrl },
                   },
                 ],
-              },
-              {
-                kind: 'link',
-                label: 'REST Client API',
-                link: {
-                  url: 'https://doc.shengwang.cn/api-ref/speech-to-text/go/overview',
-                },
               },
             ],
           },
@@ -836,45 +778,12 @@ describe('API Center navigation runner', () => {
           },
         },
         {
-          requestedUrl: speechGuideUrl,
-          sourceResolution: {
-            type: 'manual-mdx',
-            targetPath:
-              'content/docs/zh-CN/api-reference/speech-to-text/restful/get-started/enable-service.mdx',
-            targetRoute:
-              '/zh-CN/api-reference/speech-to-text/restful/get-started/enable-service',
-            route: { scopeKey: 'doc/speech-to-text/restful' },
-          },
-        },
-        {
           requestedUrl: speechUrl,
           sourceResolution: {
             type: 'openapi',
             laneId: 'speech-fixture',
             targetPath: 'content/openapi/speech.yaml',
             targetRoute: '/zh-CN/api-reference/api-ref/speech-to-text/join',
-            route: { scopeKey: 'doc/speech-to-text/restful' },
-          },
-        },
-        {
-          requestedUrl: speechResponseUrl,
-          sourceResolution: {
-            type: 'manual-mdx',
-            targetPath:
-              'content/docs/zh-CN/api-reference/speech-to-text/restful/response-code.mdx',
-            targetRoute:
-              '/zh-CN/api-reference/speech-to-text/restful/response-code',
-            route: { scopeKey: 'doc/speech-to-text/restful' },
-          },
-        },
-        {
-          requestedUrl: speechBestPracticeUrl,
-          sourceResolution: {
-            type: 'manual-mdx',
-            targetPath:
-              'content/docs/zh-CN/api-reference/speech-to-text/restful/best-practices/enable-from-client.mdx',
-            targetRoute:
-              '/zh-CN/api-reference/speech-to-text/restful/best-practices/enable-from-client',
             route: { scopeKey: 'doc/speech-to-text/restful' },
           },
         },
@@ -965,25 +874,32 @@ describe('API Center navigation runner', () => {
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/api-ref/signaling'),
       { recursive: true },
     );
+    const signalingMetaSource = JSON.stringify({
+      title: '实时消息 RTM',
+      navScope: {},
+      pages: ['publish', 'receive'],
+    });
     await fs.writeFile(
       path.join(
         repoRoot,
         'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
       ),
-      JSON.stringify({
-        title: '实时消息 RTM',
-        navScope: {},
-        pages: ['publish', 'receive'],
-      }),
+      signalingMetaSource,
     );
-    const speechGuideMetaPath = path.join(
-      repoRoot,
-      'content/docs/zh-CN/api-reference/speech-to-text/restful/meta.json',
-    );
-    await fs.mkdir(path.dirname(speechGuideMetaPath), { recursive: true });
+    const signalingOwnershipRecord = {
+      contentHash: sha256(signalingMetaSource),
+      sourcePath: 'legacy/rest-navigation.json',
+      sourceUrl: 'https://example.com/rest-navigation',
+      targetPath:
+        'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
+      type: 'navigation-meta',
+    };
     await fs.writeFile(
-      speechGuideMetaPath,
-      JSON.stringify({ title: '转写指南', navScope: {}, pages: ['guide'] }),
+      path.join(
+        repoRoot,
+        'docs/migration/api-center-navigation-generated-files.json',
+      ),
+      JSON.stringify({ schemaVersion: 1, files: [signalingOwnershipRecord] }),
     );
     await fs.mkdir(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/whiteboard'),
@@ -1121,6 +1037,15 @@ describe('API Center navigation runner', () => {
         'utf8',
       ),
     );
+    const navigationOwnership = JSON.parse(
+      await fs.readFile(
+        path.join(
+          repoRoot,
+          'docs/migration/api-center-navigation-generated-files.json',
+        ),
+        'utf8',
+      ),
+    );
 
     expect(result.report.counts).toMatchObject({ errors: 0, warnings: 0 });
     expect(result.parity.counts).toMatchObject({
@@ -1133,7 +1058,7 @@ describe('API Center navigation runner', () => {
       missingCatalogActions: 0,
       expectedManifestCatalogActions: 5,
       missingManifestCatalogActions: 0,
-      visibleNavigationLeaves: 8,
+      visibleNavigationLeaves: 5,
       missingNavigationTargets: 0,
       errors: 0,
     });
@@ -1214,23 +1139,27 @@ describe('API Center navigation runner', () => {
       '/zh-CN/api-reference/rtc/android/overview': '概览',
       '/zh-CN/api-reference/rtc/android/client': '客户端',
     });
-    expect(speechMeta.pages[0]).toBe('index');
-    expect(speechMeta.pages).toContain('---服务端 API---');
-    expect(speechMeta.pages).toContain('join');
-    expect(speechMeta.pages).toContain(
-      '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/response-code)',
-    );
-    expect(JSON.stringify(speechMeta.pages)).not.toContain('快速开始');
-    expect(JSON.stringify(speechMeta.pages)).not.toContain('最佳实践');
-    expect(JSON.stringify(speechMeta.pages)).not.toContain('产品指南');
-    expect(JSON.stringify(speechMeta.pages)).not.toContain('REST Client API');
+    expect(speechMeta.pages).toEqual(['index', '---服务端 API---', 'join']);
     expect(signalingMeta).toEqual({
       title: '实时消息 RTM',
+      navScope: {},
       pages: ['publish', 'receive'],
     });
     await expect(
-      fs.readFile(speechGuideMetaPath, 'utf8').then(JSON.parse),
-    ).resolves.toEqual({ title: '转写指南', navScope: {}, pages: ['guide'] });
+      fs.readFile(
+        path.join(
+          repoRoot,
+          'content/docs/zh-CN/api-reference/api-ref/signaling/meta.json',
+        ),
+        'utf8',
+      ),
+    ).resolves.toBe(signalingMetaSource);
+    expect(
+      navigationOwnership.files.find(
+        (record: { targetPath: string }) =>
+          record.targetPath === signalingOwnershipRecord.targetPath,
+      ),
+    ).toEqual(signalingOwnershipRecord);
     const speechLanding = await fs.readFile(
       path.join(
         repoRoot,
@@ -1268,7 +1197,7 @@ describe('API Center navigation runner', () => {
       ownershipPath:
         'docs/migration/api-center-navigation-generated-files.json',
     });
-    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 12 });
+    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 11 });
   });
 
   it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {
