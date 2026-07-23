@@ -552,7 +552,7 @@ const productDescriptions: Record<string, string> = {
   'local-server-recording': '在本地服务端录制实时音视频内容。',
   'media-pull': '将在线媒体流输入到实时互动频道。',
   'media-push': '将实时互动频道内容旁路推送到外部直播平台。',
-  meeting: '接入会议场景下的客户端能力。',
+  meeting: '接入智能云会议引擎的客户端能力和 RESTful API。',
   'online-ktv':
     '声网提供的线上 K 歌场景化解决方案，支持一站式灵活接入到各类娱乐社交场景中。',
   'ppt-conversion-service': '通过服务端 API 管理 PPT 转码任务。',
@@ -562,7 +562,7 @@ const productDescriptions: Record<string, string> = {
   'rtmp-gateway': '通过服务端 API 管理 RTMP 网关能力。',
   rtm: '接入实时消息、信令和在线状态能力。',
   'speech-to-text': '通过服务端 API 管理实时转录和翻译任务。',
-  'voip-callkit': '通过服务端 API 接入 VoIP 呼叫服务。',
+  'voip-callkit': '通过服务端 API 接入微呼叫，管理呼叫和 License。',
   whiteboard: '接入互动白板客户端能力和服务端 RESTful API。',
 };
 
