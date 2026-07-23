@@ -204,9 +204,10 @@ function loadHtmlPage({
   conversionProfile,
 }) {
   const $ = cheerio.load(html);
-  const preferredTitle = titleSelector
-    ? cleanText($(titleSelector).first().text())
-    : '';
+  const preferredTitleNode = titleSelector ? $(titleSelector).first() : null;
+  const preferredTitleClone = preferredTitleNode?.clone();
+  preferredTitleClone?.find('.mlabels').remove();
+  const preferredTitle = cleanText(preferredTitleClone?.text());
   $('script, style, footer, header').remove();
   $('nav').each((_, node) => {
     const element = $(node);
@@ -643,9 +644,16 @@ async function parseDoxygenSignature($, container, state) {
   for (const row of rows.toArray()) {
     const cells = [];
     for (const cell of $(row).children('th, td').toArray()) {
+      const cellElement = $(cell);
+      if (
+        cellElement.hasClass('paramname') &&
+        cleanText(cellElement.text()) === ''
+      ) {
+        continue;
+      }
       const rendered = await renderTypeDocInlineNodes(
         $,
-        $(cell).contents().toArray(),
+        cellElement.contents().toArray(),
         state,
       );
       if (rendered) cells.push(rendered);

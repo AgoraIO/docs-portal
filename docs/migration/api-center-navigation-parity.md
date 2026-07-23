@@ -11,18 +11,18 @@
 - Root navigation actions: 0
 - Visible root product groups: 0
 - API reference catalog product groups: 26
-- API reference catalog actions: 95
-- Expected catalog actions: 95
+- API reference catalog actions: 101
+- Expected catalog actions: 101
 - Missing catalog actions: 0
 - Expected manifest catalog products: 24
-- Expected manifest catalog actions: 81
+- Expected manifest catalog actions: 79
 - Missing manifest catalog actions: 0
 - Catalog product order matches source: yes
 - Catalog Reference Center landing groups: 4
 - Catalog Reference Center landing links: 34
 - Promoted platform-internal catalog links: 0
 - Entry meta files: 103
-- Entry meta links: 1308
+- Entry meta links: 1214
 - Visible legacy navigation leaves: 1326
 - Visible supplemental entry pages: 2
 - Visible supplemental child pages: 22

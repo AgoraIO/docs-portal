@@ -37,9 +37,11 @@ const API_CENTER_SCOPED_LOCAL_ROOT_PREFIXES = [
 const API_CENTER_SIDEBAR_LABELS = new Map([
   ['/zh-CN/api-reference/rtc-server-sdk/error-code', '通用错误码'],
 ]);
-// These generated RTM API pages remain directly reachable, but they are not
-// platform entries in the API Center.
+// These generated API pages remain directly reachable, but they are not
+// catalog entries in the API Center.
 const API_REFERENCE_CATALOG_HIDDEN_ROUTES = new Set([
+  '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+  '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
   '/zh-CN/api-reference/rtm/react-native/configuration',
   '/zh-CN/api-reference/rtm/swift/configuration',
   '/zh-CN/api-reference/api-ref/danmaku',
@@ -108,6 +110,7 @@ const API_REFERENCE_CATALOG_PRODUCT_IDS = new Map([
   ['对话式 AI', 'conversational-ai'],
   ['实时互动 RTC', 'rtc'],
   ['实时消息 RTM', 'rtm'],
+  ['即时通讯 IM', 'im'],
   ['融合 CDN 直播', 'fusion-cdn'],
   ['媒体流加速 RTSA', 'rtsa'],
   ['互动白板', 'whiteboard'],
@@ -378,6 +381,45 @@ function renderNavigationGroupLeaves(
   return pages;
 }
 
+function isRestReferenceUrl(urlValue, scopeRoot) {
+  if (!urlValue || !scopeRoot || isOutsideLegacyScope(urlValue, scopeRoot)) {
+    return false;
+  }
+  const pathname = new URL(urlValue, API_CENTER_URL).pathname;
+  const relative = pathname.slice(scopeRoot.length);
+  return (
+    /^api(?:\/|$)/.test(relative) ||
+    /(?:^|\/)(?:api-limits|response-code|webhook)(?:\/|$)/.test(relative)
+  );
+}
+
+function focusedOpenApiNavigation(items, options) {
+  const focused = [];
+  for (const item of items ?? []) {
+    if (
+      !item ||
+      item.excludedReason ||
+      isOutsideLegacyScope(item.link?.url, options.scopeRoot)
+    ) {
+      continue;
+    }
+    const children = focusedOpenApiNavigation(item.items, options);
+    const href =
+      item.link?.targetRoute ??
+      targetRouteForUrl(item.link?.url, options.routeMap);
+    const isReference =
+      href === options.rootRoute ||
+      href?.startsWith(`${options.rootRoute}/`) ||
+      isRestReferenceUrl(item.link?.url, options.scopeRoot);
+    if (isReference) {
+      focused.push({ ...item, ...(item.items ? { items: children } : {}) });
+    } else {
+      focused.push(...children);
+    }
+  }
+  return focused;
+}
+
 function mergeMetaPages(target, incoming) {
   for (const page of incoming) {
     if (typeof page === 'string') {
@@ -432,7 +474,11 @@ function landingLocalRoot(entry, pageEvidence) {
         normalizeLegacyKey(page.requestedUrl) ===
         normalizeLegacyKey(entry.legacyUrl),
     ) ?? localPages[0];
-  const landingPath = landing.sourceResolution.targetPath;
+  const navigationPath = (targetPath) =>
+    path.posix.basename(targetPath).toLowerCase() === 'index.mdx'
+      ? `${path.posix.dirname(targetPath)}.mdx`
+      : targetPath;
+  const landingPath = navigationPath(landing.sourceResolution.targetPath);
   const currentMarker = '/(current)/';
   if (landingPath.includes(currentMarker)) {
     return landingPath.slice(
@@ -441,7 +487,7 @@ function landingLocalRoot(entry, pageEvidence) {
     );
   }
   const common = commonDirectory(
-    localPages.map((page) => page.sourceResolution.targetPath),
+    localPages.map((page) => navigationPath(page.sourceResolution.targetPath)),
   );
   const relativeSegments = common
     ?.slice(`${API_REFERENCE_ROOT}/`.length)
@@ -470,6 +516,7 @@ function createMetaAccumulator(
     includeIndex = false,
     metaPatch = {},
     preserveExistingPages = false,
+    preserveExistingMeta = false,
   },
 ) {
   const current = metaByPath.get(metaPath) ?? {
@@ -480,9 +527,11 @@ function createMetaAccumulator(
     includeIndex,
     metaPatch,
     preserveExistingPages,
+    preserveExistingMeta,
   };
   current.includeIndex ||= includeIndex;
   current.preserveExistingPages ||= preserveExistingPages;
+  current.preserveExistingMeta ||= preserveExistingMeta;
   const sidebarLabels = { ...current.metaPatch.sidebarLabels };
   for (const [route, label] of Object.entries(metaPatch.sidebarLabels ?? {})) {
     if (!(route in sidebarLabels)) sidebarLabels[route] = label;
@@ -649,13 +698,15 @@ function addOpenApiLaneRootMetaPlans(metaByPath, lanes) {
     const rootRoute = lane.parentUrl?.['zh-CN'];
     if (!rootRoute?.startsWith('/zh-CN/api-reference/api-ref/')) continue;
 
+    const metaPath = `content/docs${rootRoute}/meta.json`;
+
     createMetaAccumulator(metaByPath, {
-      metaPath: `content/docs${rootRoute}/meta.json`,
+      metaPath,
       rootRoute,
       title: 'RESTful API',
       pages: [],
       metaPatch: { navScope: undefined },
-      preserveExistingPages: true,
+      preserveExistingPages: !metaByPath.has(metaPath),
     });
   }
 }
@@ -757,17 +808,19 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
       continue;
     const evidence = entryEvidence(entry, byUrl);
     const roots = [];
+    const laneIds = unique(
+      evidence.map((page) => page.sourceResolution?.laneId),
+    );
     const localRoot = landingLocalRoot(entry, evidence);
     if (localRoot && entry.product !== '在线 K 歌房') {
       roots.push({
         metaPath: `${localRoot}/meta.json`,
         rootRoute: routeForDocsDirectory(localRoot),
         plainLocalLeaves: true,
+        preserveExistingMeta: laneIds.length > 0,
       });
     }
-    for (const laneId of unique(
-      evidence.map((page) => page.sourceResolution?.laneId),
-    )) {
+    for (const laneId of laneIds) {
       const lane = laneById.get(laneId);
       if (!lane) continue;
       const rootRoute = lane.parentUrl['zh-CN'];
@@ -785,8 +838,15 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
     for (const root of roots) {
       const sidebarLabels = {};
       const sourceNavigation = entry.pageGraph.sourceNavigation;
+      const navigation = sourceNavigation ?? entry.pageGraph.navigation;
       const pages = renderNavigationItems(
-        sourceNavigation ?? entry.pageGraph.navigation,
+        root.focusedOpenApiSidebar
+          ? focusedOpenApiNavigation(navigation, {
+              rootRoute: root.rootRoute,
+              routeMap,
+              scopeRoot: entry.pageGraph.closure?.scopeRoot,
+            })
+          : navigation,
         {
           ...root,
           groupedCategories: Boolean(sourceNavigation),
@@ -1558,12 +1618,22 @@ function reconcileRootProductGroups(pages, entries, apiReferenceRehome) {
     });
   }
 
-  return [
+  const reconciled = [
     ...projected,
     ...pages.filter(
       (page) => !visibleRootProductGroup(page) || !consumed.has(page),
     ),
   ];
+  const productOrder = new Map();
+  for (const entry of entries) {
+    const title = rootProductTitle(entry.product);
+    if (!productOrder.has(title)) productOrder.set(title, productOrder.size);
+  }
+  return reconciled.sort(
+    (left, right) =>
+      (productOrder.get(left?.title) ?? Number.POSITIVE_INFINITY) -
+      (productOrder.get(right?.title) ?? Number.POSITIVE_INFINITY),
+  );
 }
 
 /**
@@ -1739,7 +1809,11 @@ function navigationParityReport({
   const expectedManifestCatalogActions = manifestProductGroups.flatMap(
     (group) =>
       group.entries
-        .filter((entry) => entry.targetRoute)
+        .filter(
+          (entry) =>
+            entry.targetRoute &&
+            !API_REFERENCE_CATALOG_HIDDEN_ROUTES.has(entry.targetRoute),
+        )
         .map((entry) => ({
           product: group.product,
           label: rootActionLabel(entry, group.entries),
@@ -2186,6 +2260,14 @@ export async function runApiCenterNavigation({
   for (const plan of [...metaByPath.values()].sort((left, right) =>
     left.metaPath.localeCompare(right.metaPath),
   )) {
+    const existingMetaSource = plan.preserveExistingMeta
+      ? await fs
+          .readFile(path.resolve(repoRoot, plan.metaPath), 'utf8')
+          .catch((error) => {
+            if (error.code === 'ENOENT') return null;
+            throw error;
+          })
+      : null;
     const meta = await readMeta(repoRoot, plan.metaPath, plan.title);
     const indexPath = `${path.posix.dirname(plan.metaPath)}/index.mdx`;
     const hasIndex = await fs
@@ -2202,7 +2284,9 @@ export async function runApiCenterNavigation({
     if (pages.length === 0) continue;
     run.planFile({
       targetPath: plan.metaPath,
-      contents: serializeJson({ ...meta, ...plan.metaPatch, pages }),
+      contents:
+        existingMetaSource ??
+        serializeJson({ ...meta, ...plan.metaPatch, pages }),
       sourcePath: manifestPath,
       sourceUrl: API_CENTER_URL,
       type: 'navigation-meta',

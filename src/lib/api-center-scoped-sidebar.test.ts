@@ -251,6 +251,33 @@ describe('API Center scoped sidebars', () => {
   });
 
   it.each([
+    [
+      ['local-server-recording', 'java', 'agoraservice.java'],
+      ['API 概览', 'AgoraService 类', 'AgoraMediaRtcRecorder 类'],
+    ],
+    [
+      ['local-server-recording', 'cpp', 'iagoraservice.cpp'],
+      [
+        'API 概览',
+        'IAgoraService 类',
+        'IAgoraMediaComponentFactory 类',
+        'IAgoraMediaRtcRecorder 类',
+      ],
+    ],
+  ])('keeps the canonical %s page inside the local recording sidebar scope', async (route, expectedTitles) => {
+    const payload = await loadApiReferencePayload(route);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(expect.arrayContaining(expectedTitles));
+    expect(titles).not.toContain('Recipe');
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: '参考文档',
+      title: '本地服务端录制',
+    });
+  });
+
+  it.each([
     ['cpp', 'overview'],
     ['java', 'overview'],
     ['python-api', 'overview.python'],

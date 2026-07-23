@@ -193,6 +193,37 @@ function stripUrlSuffix(value) {
   return decodeURIComponent(String(value).split(/[?#]/, 1)[0]);
 }
 
+function isDoxygenSourceOrHelperHref(href, requestedUrl) {
+  let target;
+  let source;
+  try {
+    source = new URL(requestedUrl);
+    target = new URL(href, source);
+  } catch {
+    return false;
+  }
+  const sourcePath = decodeURIComponent(source.pathname);
+  const targetPath = decodeURIComponent(target.pathname);
+  if (
+    source.origin !== target.origin ||
+    !sourcePath.startsWith('/api-ref/') ||
+    !targetPath.startsWith('/api-ref/') ||
+    path.posix.dirname(sourcePath) !== path.posix.dirname(targetPath)
+  ) {
+    return false;
+  }
+  const basename = path.posix.basename(targetPath);
+  const normalized = basename.toLowerCase();
+  return (
+    normalized.endsWith('_source.html') ||
+    normalized === 'deprecated.html' ||
+    normalized.endsWith('-members.html') ||
+    /^(?:functions|namespacemembers)(?:_[^.]+)?\.html$/.test(normalized) ||
+    /^(?:annotated|classes|files|hierarchy)\.html$/.test(normalized) ||
+    /_8[a-z0-9_]+\.html$/.test(normalized)
+  );
+}
+
 function assetHandler({ run, sourceAbsolutePath, oldRoot }) {
   return async ({ source, sourceUrl }) => {
     if (/^data:/i.test(source)) return source;
@@ -337,7 +368,9 @@ export async function runHtmlGenerators({
       aggregate.signatures += counts.signatures;
     }
     const warnings = converted.warnings.map((warning) =>
-      warning.code === 'unresolved-link'
+      resolution.generator === 'doxygen' &&
+      warning.code === 'unresolved-link' &&
+      isDoxygenSourceOrHelperHref(warning.href, page.requestedUrl)
         ? createWarning(
             'source-only-link-removed',
             `Rendered unresolved generated-source link ${warning.href ?? ''} as local text.`,

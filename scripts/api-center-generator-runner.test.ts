@@ -345,6 +345,90 @@ describe('API Center generated HTML runner', () => {
     ).toContain(`sourceUrl: ${canonicalUrl}`);
   });
 
+  it('downgrades only Doxygen helper links while retaining unresolved API dependencies', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-generator-doxygen-links-'),
+    );
+    temporaryDirectories.push(repoRoot);
+    const oldRoot = path.join(repoRoot, 'legacy');
+    const sourcePath =
+      'html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection.html';
+    const targetPath =
+      'content/docs/zh-CN/api-reference/rtc-server-sdk/cpp/i-rtc-connection.mdx';
+    await fs.mkdir(path.dirname(path.join(oldRoot, sourcePath)), {
+      recursive: true,
+    });
+    await fs.writeFile(
+      path.join(oldRoot, sourcePath),
+      `<div class="headertitle"><div class="title">IRtcConnection</div></div>
+       <div class="contents"><p>
+         <a href="deprecated.html#_deprecated000001">Deprecated List</a>
+         <a href="/doc/rtc-server-sdk/cpp/deprecated.html">Cross-scope deprecated guide</a>
+         <a href="classagora_1_1_ref_count_interface.html">RefCountInterface</a>
+       </p></div>`,
+    );
+    const manifestPath = path.join(
+      repoRoot,
+      'docs/migration/api-center-html-manifest.json',
+    );
+    await fs.mkdir(path.dirname(manifestPath), { recursive: true });
+    await fs.writeFile(
+      manifestPath,
+      JSON.stringify({
+        pageEvidence: [
+          {
+            requestedUrl:
+              'https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection',
+            sourceResolution: {
+              status: 'resolved',
+              type: 'generated-html',
+              generator: 'doxygen',
+              sourcePath,
+              targetPath,
+              targetRoute:
+                '/zh-CN/api-reference/rtc-server-sdk/cpp/i-rtc-connection',
+              targetExists: false,
+              route: { scopeKey: 'api-ref/rtc-server-sdk/cpp' },
+            },
+          },
+        ],
+      }),
+    );
+
+    const result = await runHtmlGenerators({
+      repoRoot,
+      oldRoot,
+      generators: ['doxygen'],
+      mode: 'write',
+    });
+
+    expect(result.report.results[0].warnings).toEqual([
+      expect.objectContaining({
+        code: 'source-only-link-removed',
+        severity: 'info',
+        href: expect.stringContaining('deprecated.html#_deprecated000001'),
+      }),
+      expect.objectContaining({
+        code: 'unresolved-link',
+        severity: 'warning',
+        href: expect.stringContaining(
+          '/doc/rtc-server-sdk/cpp/deprecated.html',
+        ),
+      }),
+      expect.objectContaining({
+        code: 'unresolved-link',
+        severity: 'warning',
+        href: expect.stringContaining(
+          'classagora_1_1_ref_count_interface.html',
+        ),
+      }),
+    ]);
+    const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
+    expect(output).toContain('status: warning');
+    expect(output).toContain('code: source-only-link-removed');
+    expect(output).toContain('code: unresolved-link');
+  });
+
   it('replaces the Web and Electron Edu Store placeholders from TypeDoc overview sources', async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), 'api-center-generator-edu-store-'),

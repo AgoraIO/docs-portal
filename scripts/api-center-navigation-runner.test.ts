@@ -28,6 +28,108 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it.each([
+    ['java', ['agoraservice.java', 'agoramediartcrecorder.java']],
+    [
+      'cpp',
+      [
+        'iagoraservice.cpp',
+        'iagoramediartcrecorder.cpp',
+        'iagoramediacomponentfactory.cpp',
+      ],
+    ],
+  ])('keeps local recording %s API pages inside the platform sidebar scope', async (platform, expectedPages) => {
+    const meta = JSON.parse(
+      await fs.readFile(
+        path.resolve(
+          `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
+        ),
+        'utf8',
+      ),
+    );
+
+    expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
+    for (const leaf of expectedPages) {
+      expect(meta.pages).not.toContainEqual(
+        expect.stringContaining(
+          `/zh-CN/api-reference/local-server-recording/${leaf}`,
+        ),
+      );
+    }
+  });
+
+  it('keeps external IM entries under the stable catalog product id', () => {
+    const catalog = buildApiReferenceCatalogData([
+      {
+        pages: [
+          '[Web](https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html)',
+        ],
+        title: '即时通讯 IM',
+      },
+    ]);
+
+    expect(catalog.all).toEqual([
+      expect.objectContaining({
+        href: 'https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html',
+        product: '即时通讯 IM',
+        productId: 'im',
+      }),
+    ]);
+  });
+
+  it('keeps external catalog products in manifest product order', () => {
+    const entries = [
+      {
+        product: '实时互动 RTC',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/rtc/android/overview',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '实时消息 RTM',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/rtm/android/configuration',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '即时通讯 IM',
+        label: 'Web',
+        legacyUrl:
+          'https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html',
+        urlFamily: 'external',
+      },
+      {
+        product: '媒体流加速 RTSA',
+        label: 'C',
+        targetRoute: '/zh-CN/api-reference/rtsa/c/overview',
+        urlFamily: 'api-ref',
+      },
+    ];
+    const existingCatalogGroups = [
+      {
+        type: 'group',
+        title: '即时通讯 IM',
+        pages: [
+          '[Web](https://im.shengwang.cn/docs/sdk/web/api_reference_overview.html)',
+        ],
+      },
+    ];
+
+    expect(
+      buildApiReferenceCatalogGroups(
+        [],
+        existingCatalogGroups,
+        entries,
+        null,
+      ).map((group) => group.title),
+    ).toEqual([
+      '实时互动 RTC',
+      '实时消息 RTM',
+      '即时通讯 IM',
+      '媒体流加速 RTSA',
+    ]);
+  });
+
   it('records whether a catalog action is a platform landing or a document', () => {
     const catalog = buildApiReferenceCatalogData([
       {
@@ -46,11 +148,15 @@ describe('API Center navigation runner', () => {
     ).toEqual(['platform-landing', 'document']);
   });
 
-  it('omits routes hidden from the API reference catalog', () => {
+  it.each([
+    '/zh-CN/api-reference/api-ref/danmaku',
+    '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  ])('omits the hidden %s route from the API reference catalog', (route) => {
     const catalog = buildApiReferenceCatalogData([
       {
-        pages: ['[RESTful API](/zh-CN/api-reference/api-ref/danmaku)'],
-        title: '弹幕玩法',
+        pages: [`[Hidden entry](${route})`],
+        title: '对话式 AI',
       },
     ]);
 
@@ -444,6 +550,12 @@ describe('API Center navigation runner', () => {
     const rtcMcpUrl = 'https://doc.shengwang.cn/doc/rtc/android/mcp-integrate';
     const speechUrl =
       'https://doc.shengwang.cn/doc/speech-to-text/restful/v7/operations/join';
+    const speechGuideUrl =
+      'https://doc.shengwang.cn/doc/speech-to-text/restful/get-started/enable-service';
+    const speechResponseUrl =
+      'https://doc.shengwang.cn/doc/speech-to-text/restful/response-code';
+    const speechBestPracticeUrl =
+      'https://doc.shengwang.cn/doc/speech-to-text/restful/best-practices/enable-from-client';
     const whiteboardUrl =
       'https://doc.shengwang.cn/api-ref/whiteboard/android/overview';
     const manifest = {
@@ -568,22 +680,67 @@ describe('API Center navigation runner', () => {
             closure: { scopeRoot: '/doc/speech-to-text/restful/' },
             pages: [
               {
+                url: speechGuideUrl,
+                label: '快速开始',
+                trail: [],
+              },
+              {
                 url: speechUrl,
                 label: '开始转写',
                 trail: ['服务端 API'],
+              },
+              {
+                url: speechResponseUrl,
+                label: '响应状态码',
+                trail: [],
+              },
+              {
+                url: speechBestPracticeUrl,
+                label: '最佳实践',
+                trail: [],
               },
             ],
             navigation: [
               {
                 kind: 'category',
-                label: '服务端 API',
+                label: '产品指南',
+                link: { url: speechGuideUrl },
                 items: [
                   {
                     kind: 'link',
-                    label: '开始转写',
+                    label: '快速开始',
+                    link: { url: speechGuideUrl },
+                  },
+                  {
+                    kind: 'link',
+                    label: '响应状态码',
+                    link: { url: speechResponseUrl },
+                  },
+                  {
+                    kind: 'category',
+                    label: '服务端 API',
                     link: { url: speechUrl },
+                    items: [
+                      {
+                        kind: 'link',
+                        label: '开始转写',
+                        link: { url: speechUrl },
+                      },
+                    ],
+                  },
+                  {
+                    kind: 'link',
+                    label: '最佳实践',
+                    link: { url: speechBestPracticeUrl },
                   },
                 ],
+              },
+              {
+                kind: 'link',
+                label: 'REST Client API',
+                link: {
+                  url: 'https://doc.shengwang.cn/api-ref/speech-to-text/go/overview',
+                },
               },
             ],
           },
@@ -610,6 +767,20 @@ describe('API Center navigation runner', () => {
               },
             ],
           },
+        },
+        {
+          category: '扩展能力',
+          subcategories: [],
+          product: '对话式 AI',
+          productDescription: '对话式 AI 能力。',
+          apiGroup: 'server',
+          label: 'Go',
+          legacyUrl:
+            'https://doc.shengwang.cn/api-ref/conversational-ai/restclient-go/overview',
+          urlFamily: 'api-ref',
+          targetRoute:
+            '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+          pageGraph: { pages: [], navigation: [] },
         },
       ],
       pageEvidence: [
@@ -642,12 +813,45 @@ describe('API Center navigation runner', () => {
           },
         },
         {
+          requestedUrl: speechGuideUrl,
+          sourceResolution: {
+            type: 'manual-mdx',
+            targetPath:
+              'content/docs/zh-CN/api-reference/speech-to-text/restful/get-started/enable-service.mdx',
+            targetRoute:
+              '/zh-CN/api-reference/speech-to-text/restful/get-started/enable-service',
+            route: { scopeKey: 'doc/speech-to-text/restful' },
+          },
+        },
+        {
           requestedUrl: speechUrl,
           sourceResolution: {
             type: 'openapi',
             laneId: 'speech-fixture',
             targetPath: 'content/openapi/speech.yaml',
             targetRoute: '/zh-CN/api-reference/api-ref/speech-to-text/join',
+            route: { scopeKey: 'doc/speech-to-text/restful' },
+          },
+        },
+        {
+          requestedUrl: speechResponseUrl,
+          sourceResolution: {
+            type: 'manual-mdx',
+            targetPath:
+              'content/docs/zh-CN/api-reference/speech-to-text/restful/response-code.mdx',
+            targetRoute:
+              '/zh-CN/api-reference/speech-to-text/restful/response-code',
+            route: { scopeKey: 'doc/speech-to-text/restful' },
+          },
+        },
+        {
+          requestedUrl: speechBestPracticeUrl,
+          sourceResolution: {
+            type: 'manual-mdx',
+            targetPath:
+              'content/docs/zh-CN/api-reference/speech-to-text/restful/best-practices/enable-from-client.mdx',
+            targetRoute:
+              '/zh-CN/api-reference/speech-to-text/restful/best-practices/enable-from-client',
             route: { scopeKey: 'doc/speech-to-text/restful' },
           },
         },
@@ -673,6 +877,7 @@ describe('API Center navigation runner', () => {
       'content/docs/zh-CN/api-reference/rtc/android/(current)/overview.mdx',
       'content/docs/zh-CN/api-reference/rtc/android/(current)/client.mdx',
       'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/overview.mdx',
+      'content/docs/zh-CN/api-reference/conversational-ai/restclient-go/overview.mdx',
     ]) {
       await fs.mkdir(path.dirname(path.join(repoRoot, target)), {
         recursive: true,
@@ -724,6 +929,15 @@ describe('API Center navigation runner', () => {
         navScope: {},
         pages: ['publish', 'receive'],
       }),
+    );
+    const speechGuideMetaPath = path.join(
+      repoRoot,
+      'content/docs/zh-CN/api-reference/speech-to-text/restful/meta.json',
+    );
+    await fs.mkdir(path.dirname(speechGuideMetaPath), { recursive: true });
+    await fs.writeFile(
+      speechGuideMetaPath,
+      JSON.stringify({ title: '转写指南', navScope: {}, pages: ['guide'] }),
     );
     await fs.mkdir(
       path.join(repoRoot, 'content/docs/zh-CN/api-reference/whiteboard'),
@@ -832,15 +1046,16 @@ describe('API Center navigation runner', () => {
 
     expect(result.report.counts).toMatchObject({ errors: 0, warnings: 0 });
     expect(result.parity.counts).toMatchObject({
-      entries: 5,
-      overviewActions: 5,
+      entries: 6,
+      overviewActions: 6,
       rootActions: 0,
       visibleRootProductGroups: 0,
       catalogActions: 4,
       expectedCatalogActions: 4,
       missingCatalogActions: 0,
+      expectedManifestCatalogActions: 4,
       missingManifestCatalogActions: 0,
-      visibleNavigationLeaves: 4,
+      visibleNavigationLeaves: 7,
       missingNavigationTargets: 0,
       errors: 0,
     });
@@ -908,10 +1123,20 @@ describe('API Center navigation runner', () => {
     expect(speechMeta.pages[0]).toBe('index');
     expect(speechMeta.pages).toContain('---服务端 API---');
     expect(speechMeta.pages).toContain('join');
+    expect(speechMeta.pages).toContain(
+      '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/response-code)',
+    );
+    expect(JSON.stringify(speechMeta.pages)).not.toContain('快速开始');
+    expect(JSON.stringify(speechMeta.pages)).not.toContain('最佳实践');
+    expect(JSON.stringify(speechMeta.pages)).not.toContain('产品指南');
+    expect(JSON.stringify(speechMeta.pages)).not.toContain('REST Client API');
     expect(signalingMeta).toEqual({
       title: '实时消息 RTM',
       pages: ['publish', 'receive'],
     });
+    await expect(
+      fs.readFile(speechGuideMetaPath, 'utf8').then(JSON.parse),
+    ).resolves.toEqual({ title: '转写指南', navScope: {}, pages: ['guide'] });
     const speechLanding = await fs.readFile(
       path.join(
         repoRoot,
@@ -949,7 +1174,7 @@ describe('API Center navigation runner', () => {
       ownershipPath:
         'docs/migration/api-center-navigation-generated-files.json',
     });
-    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 8 });
+    expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 9 });
   });
 
   it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {
