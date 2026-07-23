@@ -21,8 +21,8 @@
 - Catalog Reference Center landing groups: 4
 - Catalog Reference Center landing links: 34
 - Promoted platform-internal catalog links: 0
-- Entry meta files: 103
-- Entry meta links: 1214
+- Entry meta files: 105
+- Entry meta links: 1229
 - Visible legacy navigation leaves: 1326
 - Visible supplemental entry pages: 2
 - Visible supplemental child pages: 22
@@ -42,7 +42,7 @@
 ## Migration types
 
 - `overview-entry`: 91
-- `navigation-meta`: 103
+- `navigation-meta`: 105
 
 ## Warning explanations
 

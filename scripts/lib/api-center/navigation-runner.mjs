@@ -626,6 +626,56 @@ function addRtcServerSdkScopeMetaPlans(metaByPath, entries) {
   }
 }
 
+function addRtsaScopeMetaPlans(metaByPath, manifest) {
+  const prefix = '/zh-CN/api-reference/rtsa/c/';
+  const entry = (manifest.entries ?? []).find((candidate) =>
+    candidate.targetRoute?.startsWith(prefix),
+  );
+  if (!entry) return;
+  const currentDirectory = `${API_REFERENCE_ROOT}/rtsa/c/(current)`;
+  const evidencePages = unique(
+    (manifest.pageEvidence ?? [])
+      .map((page) => page.sourceResolution?.targetPath)
+      .filter(
+        (targetPath) =>
+          targetPath?.endsWith('.mdx') &&
+          path.posix.dirname(targetPath) === currentDirectory,
+      )
+      .map((targetPath) => path.posix.basename(targetPath, '.mdx')),
+  );
+  const currentPages = unique([
+    'overview',
+    ...evidencePages.filter((page) => page !== 'overview'),
+  ]);
+
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/rtsa/meta.json`,
+    rootRoute: '/zh-CN/api-reference/rtsa',
+    title: entry.product,
+    pages: ['c'],
+    preserveExistingPages: true,
+  });
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${API_REFERENCE_ROOT}/rtsa/c/meta.json`,
+    rootRoute: '/zh-CN/api-reference/rtsa/c',
+    title: `${entry.product} ${entry.label}`,
+    pages: ['(current)'],
+    metaPatch: {
+      navScope: {
+        defaultVersion: 'current',
+        versions: [{ id: 'current', label: 'Current', path: '(current)' }],
+      },
+      sidebarIndexTitle: entry.label,
+    },
+  });
+  createMetaAccumulator(metaByPath, {
+    metaPath: `${currentDirectory}/meta.json`,
+    rootRoute: '/zh-CN/api-reference/rtsa/c',
+    title: `${entry.product} ${entry.label}`,
+    pages: currentPages,
+  });
+}
+
 function addOnlineKtvScopeMetaPlans(metaByPath, manifest) {
   const prefix = '/zh-CN/api-reference/online-ktv/';
   const platformSolutions = new Map();
@@ -878,6 +928,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
 
   addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
+  addRtsaScopeMetaPlans(metaByPath, manifest);
   addOnlineKtvScopeMetaPlans(metaByPath, manifest);
   addOpenApiLaneRootMetaPlans(metaByPath, lanes);
   addApiReferenceSupplementMetaPlans(metaByPath, manifest);

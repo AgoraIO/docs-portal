@@ -446,12 +446,38 @@ describe('API Center scoped sidebars', () => {
     ]);
   });
 
-  it('matches the live RTSA C Doxygen TOC hierarchy', async () => {
+  it('keeps the live RTSA C Doxygen reference inside its platform scope', async () => {
     const payload = await loadApiReferencePayload([
       'rtsa',
       'c',
       'agora-rtc-api-8h',
     ]);
+
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      title: '媒体流加速 RTSA C',
+      versionSwitcher: {
+        currentId: 'current',
+        versions: [
+          {
+            href: '/zh-CN/api-reference/rtsa/c/overview',
+            id: 'current',
+            label: 'Current',
+          },
+        ],
+      },
+    });
+    const sidebarTitles = collectTitles(payload.sidebar);
+    expect(sidebarTitles).toEqual(
+      expect.arrayContaining([
+        'API 参考',
+        'agora_rtc_api.h 文件参考',
+        'agora_rtc_event_handler_t结构体 参考',
+      ]),
+    );
+    expect(sidebarTitles).not.toEqual(
+      expect.arrayContaining(['SDK 下载', 'Recipe', '常见问题']),
+    );
 
     const toc = payload.toc.map((item) => ({
       depth: item.depth,
