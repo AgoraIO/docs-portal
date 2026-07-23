@@ -52,7 +52,7 @@ describe('API Center scoped sidebars', () => {
         'API 参考',
         'SDK 下载',
         '指南',
-        '示例配方',
+        'Recipe',
         '常见问题',
       ]),
     );
@@ -84,7 +84,7 @@ describe('API Center scoped sidebars', () => {
         'API 参考',
         'SDK 下载',
         '指南',
-        '示例配方',
+        'Recipe',
         '常见问题',
       ]),
     );
@@ -151,7 +151,7 @@ describe('API Center scoped sidebars', () => {
     expect(titles).toEqual([label]);
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: '参考文档',
       title: label,
     });
   });
@@ -195,7 +195,7 @@ describe('API Center scoped sidebars', () => {
     );
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: '参考文档',
       title: 'RESTful API',
     });
   });
@@ -216,7 +216,7 @@ describe('API Center scoped sidebars', () => {
     );
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: '参考文档',
       title: 'RESTful API',
     });
   });
@@ -245,7 +245,7 @@ describe('API Center scoped sidebars', () => {
 
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: '参考文档',
       title,
     });
   });
@@ -475,7 +475,7 @@ describe('API Center scoped sidebars', () => {
     expect(titles.filter((title) => title === '场景化 API')).toHaveLength(1);
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: '参考文档',
       title: platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
     });
   });

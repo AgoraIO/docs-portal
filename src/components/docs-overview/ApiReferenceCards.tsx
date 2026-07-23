@@ -78,10 +78,7 @@ export function ApiReferenceCards({
 
   return (
     <section className="not-prose my-8 flex flex-col gap-5">
-      <section
-        aria-label="API 筛选"
-        className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:flex-wrap sm:items-end"
-      >
+      <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
           <FilterSelect
             label="产品"
@@ -99,9 +96,6 @@ export function ApiReferenceCards({
             <ApiTypeSegmentedControl onChange={setApiType} value={apiType} />
           ) : null}
         </div>
-        <span className="pb-2 text-xs font-medium text-muted-foreground sm:ml-auto">
-          {visibleEntries.length} 个入口
-        </span>
       </section>
 
       {visibleEntries.length > 0 ? (
@@ -143,7 +137,7 @@ function ApiTypeSegmentedControl({
   return (
     <fieldset className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
       <legend>API 类型</legend>
-      <div className="inline-flex h-8 rounded-md border border-border bg-muted/50 p-0.5">
+      <div className="inline-flex h-8 rounded-lg bg-muted p-[3px] text-muted-foreground">
         {apiTypeOptions.map((option) => {
           const isActive = option.id === value;
 
@@ -151,10 +145,10 @@ function ApiTypeSegmentedControl({
             <button
               aria-pressed={isActive}
               className={[
-                'rounded-[4px] px-2.5 text-xs font-medium transition-colors',
+                'rounded-md border border-transparent px-2.5 text-xs font-medium transition-all hover:text-foreground',
                 isActive
-                  ? 'bg-foreground text-background shadow-sm'
-                  : 'text-muted-foreground hover:bg-background/80 hover:text-foreground',
+                  ? 'bg-background text-foreground shadow-sm dark:border-input dark:bg-input/30'
+                  : 'text-foreground/60',
               ].join(' ')}
               key={option.id}
               onClick={() => onChange(option.id)}
