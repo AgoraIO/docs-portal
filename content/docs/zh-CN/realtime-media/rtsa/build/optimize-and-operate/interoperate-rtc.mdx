@@ -1,8 +1,7 @@
 ---
 title: "与 RTC SDK 互通音视频数据"
-description: "了解如何在 RTSA 中与 RTC SDK 互通音视频数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-如果你的业务场景中既需要高质量的音视频传输，又需要易集成、低内存占用以及低功耗的特性，例如智能摄像头、智能门铃场景，声网推荐你同时使用 RTC SDK（v4.x）和 RTSA SDK。
+如果你的业务场景中既需要高质量的音视频传输，又需要易集成、低内存占用以及低功耗的特性，例如智能摄像头、智能门铃场景，声网推荐你同时使用 [RTC SDK](/doc/rtc/homepage)（v4.x）和 RTSA SDK。
 
 下表展示 RTSA SDK 与 RTC SDK（v4.x）互通时支持的数据格式：
 
@@ -51,14 +50,6 @@ RTSA SDK 仅支持单声道音频数据，数据发送间隔为 20 ms。
    1. 调用 `agora_rtc_join_channel` 方法加入 RTC 频道时，设置 `rtc_channel_options_t.audio_codec_opt.audio_codec_type` 为 `AUDIO_CODEC_TYPE_OPUS`、`AUDIO_CODEC_TYPE_G722`、`AUDIO_CODEC_TYPE_G711A` 或 `AUDIO_CODEC_TYPE_G711U` 编码格式，及对应的采样率。
    2. 调用 `agora_rtc_send_audio_data` 方法发送音频数据时，设置 `audio_frame_info_t.data_type` 为 `AUDIO_DATA_TYPE_PCM` 数据类型，及对应的数据大小。
 
-- 如需发送和接收 AAC 音频数据，操作如下：
-  调用 `sendAudioData` 方法发送音频数据时，设置 `AudioFrameInfo.dataType` 为 `AUDIO_DATA_TYPE_AACLC` 或 `AUDIO_DATA_TYPE_HEAAC` 数据类型，及对应的数据大小。AAC 音频数据的大小需用户自行解析。
-
-- 如需发送和接收 Opus、G722、G711 音频数据，操作如下：
-
-   1. 调用 `joinChannel` 方法加入 RTC 频道时，设置 `ChannelOptions.AudioCodecOption.audioCodecType` 为 `AUDIO_CODEC_TYPE_OPUS`、`AUDIO_CODEC_TYPE_G722`、`AUDIO_CODEC_TYPE_G711A` 或 `AUDIO_CODEC_TYPE_G711U` 编码格式，及对应的采样率。
-   2. 调用 `sendAudioData` 方法发送音频数据时，设置 `AudioFrameInfo.dataType` 为 `AUDIO_DATA_TYPE_PCM` 数据类型，及对应的数据大小。
-
 下表展示了 Opus、G722、G711 音频数据推荐的采样率及对应的数据大小。
 
 | 音频格式 | 采样率（Hz） | 音频数据大小（Byte） |
@@ -73,8 +64,6 @@ RTSA SDK 仅支持单声道音频数据，数据发送间隔为 20 ms。
 在 RTSA SDK 中，默认发送和接收 H.264 视频数据。
 
 如需发送和接收 JPEG 视频数据，调用 `agora_rtc_send_video_data` 方法发送视频数据时，设置 `video_frame_info_t.data_type` 为 `VIDEO_DATA_TYPE_GENERIC_JPEG`。
-
-如需发送和接收 JPEG 视频数据，调用 `sendVideoData` 方法发送视频数据时，设置 `VideoFrameInfo.dataType` 为 `VIDEO_DATA_TYPE_GENERIC_JPEG`。
 
 ## 设置 RTC Native/第三方框架 SDK（v4.x）/RTC 服务端 SDK
 
