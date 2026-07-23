@@ -391,6 +391,50 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('uses the current Flutter Signaling package in the English catalog', () => {
+    render(<SdksCatalog platform="flutter" product="signaling" />);
+
+    const signalingCard = screen.getByRole('article', {
+      name: 'Signaling SDK',
+    });
+
+    expect(
+      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+    ).toBeVisible();
+    expect(
+      within(signalingCard).queryByRole('combobox'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses the current Web Voice package in the zh-CN catalog', () => {
+    render(<SdksCatalog locale="zh-CN" platform="web" product="voice" />);
+
+    const voiceCard = screen.getByRole('article', { name: '语音 SDK' });
+
+    expect(
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
+    ).toBeVisible();
+    expect(
+      within(voiceCard).getByRole('link', { name: '直接下载' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
+    );
+    expect(
+      within(voiceCard).getByRole('link', { name: '包管理器 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
+    );
+    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
+    ).not.toBeInTheDocument();
+  });
+
   it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
     render(<SdksCatalog locale="zh-CN" />);
 

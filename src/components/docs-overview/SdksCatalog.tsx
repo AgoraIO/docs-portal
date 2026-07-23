@@ -773,16 +773,16 @@ function getVersionKey(platformId: string, version: SdkDownloadVersion) {
 }
 
 function getLatestVersions(versions: readonly SdkDownloadVersion[]) {
-  const latestVersions: SdkDownloadVersion[] = [];
+  const [latestVersion, ...otherVersions] = versions;
 
-  for (const version of versions) {
-    if (!isLatestVersion(version)) {
-      break;
-    }
-    latestVersions.push(version);
+  if (!latestVersion) {
+    return [];
   }
 
-  return latestVersions.length > 0 ? latestVersions : versions.slice(0, 1);
+  return [
+    latestVersion,
+    ...otherVersions.filter((version) => version.latestVariant),
+  ];
 }
 
 function isLatestVersion(version: SdkDownloadVersion) {

@@ -162,6 +162,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "4.6.3-video-sdk-android-lite",
+            "latestVariant": true,
             "label": "版本 4.6.3 Lite（最新）",
             "downloadLink": "https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_LITE.zip",
             "md5": "00cb209f68c803e1aa17e8498efae94d",
@@ -791,6 +792,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "4.6.2-video-sdk-ios-lite",
+            "latestVariant": true,
             "label": "版本 4.6.2 Lite（最新）",
             "downloadLink": "https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_LITE.zip",
             "md5": "15af353e5290ae883aa4ddde55a771a0",
@@ -1512,8 +1514,14 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)",
         "versions": [
           {
+            "id": "4.24.5-voice-sdk-web",
+            "label": "版本 4.24.5（最新）",
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip",
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5"
+          },
+          {
             "id": "4.24.3-voice-sdk-web",
-            "label": "版本 4.24.3 （最新）",
+            "label": "版本 4.24.3",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_3_FULL.zip",
             "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.3"
           },
@@ -2658,12 +2666,14 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "4.4.32-server-gateway-cpp-linux-x86-64",
+            "latestVariant": true,
             "label": "版本 4.4.32 C++ x86-64（最新）",
             "downloadLink": "https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz",
             "releaseDate": "2025 年 4 月 28 日"
           },
           {
             "id": "4.4.32-server-gateway-cpp-linux-arm64",
+            "latestVariant": true,
             "label": "版本 4.4.32 C++ arm64（最新）",
             "downloadLink": "https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz",
             "releaseDate": "2025 年 4 月 28 日"
@@ -2685,11 +2695,13 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "go-server-gateway-sdk-linux",
+            "latestVariant": true,
             "label": "版本 2.2.8 for Go （最新）",
             "downloadLink": "https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.8"
           },
           {
             "id": "python-server-gateway-sdk-linux",
+            "latestVariant": true,
             "label": "版本 2.2.4 for Python （最新）",
             "downloadLink": "https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK/tree/release/2.2.4",
             "packageManager": "https://pypi.org/project/agora-python-server-sdk/"
@@ -2814,18 +2826,21 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "4.4.151-on-premise-recording-cpp-linux-arm64",
+            "latestVariant": true,
             "label": "版本 4.4.151 C++ arm64（最新）",
             "downloadLink": "https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.151-20250919_102817-891319.tgz",
             "releaseDate": "2025 年 9 月 19 日"
           },
           {
             "id": "4.4.151-on-premise-recording-java-linux-x86-64",
+            "latestVariant": true,
             "label": "版本 4.4.151 Java x86_64（最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151.1-x86_64-891308-28c706d74a-20250919_142050.zip",
             "releaseDate": "2025 年 9 月 19 日"
           },
           {
             "id": "4.4.151-on-premise-recording-java-linux-arm64",
+            "latestVariant": true,
             "label": "版本 4.4.151 Java arm64（最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151-aarch64-891319-952e64402b-20250919_140753.zip",
             "releaseDate": "2025 年 9 月 19 日"
