@@ -11,13 +11,13 @@ title: "钩子"
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null` | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null` | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
 | 类型              | 描述   |
 | ----------------- | ---------------------|
-| `ConnectionState` | SDK 与服务器的连接状态。详见 [`ConnectionState`](/api-ref/rtc/react/globals.html#connectionstate)。 |
+| `ConnectionState` | SDK 与服务器的连接状态。详见 [`ConnectionState`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#connectionstate)。 |
 
 #### 使用示例
 
@@ -40,7 +40,7 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`    | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`    | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -76,7 +76,7 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`    | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`    | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -105,13 +105,13 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null` | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null` | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
 | 类型              | 描述   |
 | ----------------- | ---------------------|
-| `NetworkQuality` | 本地用户的网络质量信息。详见 [`NetworkQuality`](/zh-CN/api-reference/rtc/react-sdk/data-types#networkquality)。 |
+| `NetworkQuality` | 本地用户的网络质量信息。详见 [`NetworkQuality`](/zh-CN/api-reference/rtc/react-sdk/data-types)。 |
 
 #### 使用示例
 
@@ -164,13 +164,13 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`| 可选 | 如果传入该参数，则使用传入的 `IAgoraRTCClient` 对象；如果不传入该参数，则使用从[父组件的 Context](/zh-CN/api-reference/rtc/react-sdk/components#agorartcprovider)中获取的 `IAgoraRTCClient` 对象。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`| 可选 | 如果传入该参数，则使用传入的 `IAgoraRTCClient` 对象；如果不传入该参数，则使用从[父组件的 Context](/zh-CN/api-reference/rtc/react-sdk/components#agorartcprovider)中获取的 `IAgoraRTCClient` 对象。 |
 
 #### 返回值
 
 | 类型              | 描述                     |
 | ----------------- | ------------------------ |
-| [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | `IAgoraRTCClient` 对象。 |
+| [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | `IAgoraRTCClient` 对象。 |
 
 #### 使用示例
 
@@ -197,7 +197,7 @@ function App() {
 | -------- | ---------------- | -------- | ---- |
 | `fetchArgs` | `JoinOptions` &VerticalLine; `(() => Promise<JoinOptions>)` | 必选                                                                                                                                          | 加入频道所需参数或异步函数。详见 [`JoinOptions`](/zh-CN/api-reference/rtc/react-sdk/data-types#joinoptions)。 |
 | `ready`     | `boolean`         | 可选                | 是否准备好加入频道。默认为 `true`。                                                                                                           |
-| `client`    | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | 可选                | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client`    | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | 可选                | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -261,7 +261,7 @@ function App() {
 | -------- | ---------------- | -------- | ---- |
 | `tracks`         | `(ILocalTrack` &VerticalLine; `null)[]` | 必选                                                                                                                                          | 本地轨道列表。 |
 | `readyToPublish` | `boolean`         | 可选     | 是否准备好进行发布。默认为 `true`。                                                                                                           |
-| `client`         | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | 可选     | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client`         | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | 可选     | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -307,7 +307,7 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `ready`            | `boolean`                        | 可选     | 是否准备好创建轨道，默认为 `true`。                                                                                                                                                                                                        |
-| `audioTrackConfig` | `MicrophoneAudioTrackInitConfig` | 可选     | 麦克风音频轨道的初始化配置，默认为 `{ ANS: true, AEC: true }`。详见 [`MicrophoneAudioTrackInitConfig`](/api-ref/rtc/react/interfaces/microphoneaudiotrackinitconfig.html)。 |
+| `audioTrackConfig` | `MicrophoneAudioTrackInitConfig` | 可选     | 麦克风音频轨道的初始化配置，默认为 `{ ANS: true, AEC: true }`。详见 [`MicrophoneAudioTrackInitConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig)。 |
 
 #### 返回值
 
@@ -351,7 +351,7 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `ready`  | `boolean`         | 可选     | 是否准备好创建轨道，默认为 `true`。                                                                                                           |
-| `cameraVideoTrackConfig` | `CameraVideoTrackInitConfig` | 可选     | 摄像头视频轨道的初始化配置。详见 [`CameraVideoTrackInitConfig`](/api-ref/rtc/react/interfaces/cameravideotrackinitconfig.html)。 |
+| `cameraVideoTrackConfig` | `CameraVideoTrackInitConfig` | 可选     | 摄像头视频轨道的初始化配置。详见 [`CameraVideoTrackInitConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/cameravideotrackinitconfig)。 |
 
 #### 返回值
 
@@ -395,8 +395,8 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `ready`  | `boolean`         | 可选     | 是否准备好创建轨道，默认为 `true`。         |
-| `screenVideoTrackInitConfig`  | [`screenVideoTrackInitConfig`](/api-ref/rtc/react/interfaces/screenvideotrackinitconfig.html)         | 必选     | 屏幕共享的视频配置，包括编码配置、采集配置等。         |
-| `withAudio`  | `string`         | 必选     | 屏幕共享时是否同时分享屏幕共享输入源的音频。支持传入 `"enable"`、`"disable"` 或 `"auto"`。详见[`createScreenVideoTrack`](/api-ref/rtc/react/interfaces/iagorartc.html#createscreenvideotrack)的参数解释。       |
+| `screenVideoTrackInitConfig`  | [`screenVideoTrackInitConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig)         | 必选     | 屏幕共享的视频配置，包括编码配置、采集配置等。         |
+| `withAudio`  | `string`         | 必选     | 屏幕共享时是否同时分享屏幕共享输入源的音频。支持传入 `"enable"`、`"disable"` 或 `"auto"`。详见[`createScreenVideoTrack`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack)的参数解释。       |
 
 #### 返回值
 
@@ -404,7 +404,7 @@ function App() {
 
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
-| `screenTrack` | `[ILocalVideoTrack, ILocalAudioTrack]` &VerticalLine; `ILocalVideoTrack` &VerticalLine; `null` | 根据传入的 `withAudio`，返回创建的屏幕共享视频轨道或者屏幕共享视频轨道和音频轨道。详见 [`createScreenVideoTrack`](/api-ref/rtc/react/interfaces/iagorartc.html#createscreenvideotrack)的返回值。  |
+| `screenTrack` | `[ILocalVideoTrack, ILocalAudioTrack]` &VerticalLine; `ILocalVideoTrack` &VerticalLine; `null` | 根据传入的 `withAudio`，返回创建的屏幕共享视频轨道或者屏幕共享视频轨道和音频轨道。详见 [`createScreenVideoTrack`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createscreenvideotrack)的返回值。  |
 | `isLoading` | `boolean` | <Slot name="hooks-slot-21-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 创建轨道成功则返回 `null`，创建轨道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
 
@@ -418,7 +418,7 @@ function App() {
 #### 注意事项
 
 - 推荐把返回值中的视频轨道对象包裹在 [`AgoraRTCScreenShareProvider`](/zh-CN/api-reference/rtc/react-sdk/components#agorartcscreenshareprovider) 中。
-- 如果你从返回值中获取了视频轨道对象和音频轨道对象，但只发布了其中一个轨道，在停止屏幕共享之前还需要调用 Web SDK 的 [`ILocalTrack.close`](/api-ref/rtc/react/interfaces/ilocaltrack.html#close) 方法手动关闭未发布的轨道。已发布的轨道会自动关闭。
+- 如果你从返回值中获取了视频轨道对象和音频轨道对象，但只发布了其中一个轨道，在停止屏幕共享之前还需要调用 Web SDK 的 [`ILocalTrack.close`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#close) 方法手动关闭未发布的轨道。已发布的轨道会自动关闭。
 - 由于订阅本地的屏幕共享轨道会造成重复计费，推荐你在订阅视频轨道时增加是否为本地轨道的判断。
 
 #### 使用示例
@@ -472,7 +472,7 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `users`  | `IAgoraRTCRemoteUser[]` &VerticalLine; `undefined` | 必选 | 远端用户列表。         |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`      | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`      | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -517,7 +517,7 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `users`  | `IAgoraRTCRemoteUser[]` &VerticalLine; `undefined` | 必选 | 远端用户列表。         |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`     | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`     | 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -561,7 +561,7 @@ function App() {
 | -------- | ---------------- | -------- | ---- |
 | `user`      | `IAgoraRTCRemoteUser` &VerticalLine; `undefined` | 必选                             | 远端用户对象。                                                 |
 | `mediaType` | `"video"` &VerticalLine; `"audio"`            | 必选       | 媒体类型，支持传入 `"video"` 或 `"audio"`。 |
-| `client`    | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`      | 可选                             | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client`    | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`      | 可选                             | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -610,7 +610,7 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) &VerticalLine; `null`| 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) &VerticalLine; `null`| 可选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
 
 #### 返回值
 
@@ -644,7 +644,7 @@ function App() {
 | -------- | ---------------- | -------- | ---- |
 | `track` | `IRemoteVideoTrack` &VerticalLine; `ILocalVideoTrack` | 必选     | 远端视频轨道对象或本地视频轨道对象。                                                                   |
 | `play` | `boolean` | 可选 | <Slot name="hooks-slot-30-3-3" /> |
-| `videoPlayerConfig`  |`VideoPlayerConfig` | 可选 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/api-ref/rtc/react/interfaces/videoplayerconfig.html)。对于本地视频轨道，镜像模式默认开启。|
+| `videoPlayerConfig`  |`VideoPlayerConfig` | 可选 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoplayerconfig)。对于本地视频轨道，镜像模式默认开启。|
 | `div`   | `HTMLElement` &VerticalLine; `null`            | 可选      | 用于渲染视频轨道的 HTML 元素。只有在 `play` 为 `true` 并且传入 `div` 参数的情况下，视频才会在该元素中自动播放。其它情况则不会自动播放视频。 |
 
 <Slot for="hooks-slot-30-3-3">
@@ -722,9 +722,9 @@ function App() {
 
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
-| `client` | [`IAgoraRTCClient`](/api-ref/rtc/react/interfaces/iagorartcclient.html) | 必选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 创建。 |
-| `event` | `string` | 必选               | 事件名称。支持的事件详见[`IAgoraRTCClient.on`](/api-ref/rtc/react/interfaces/iagorartcclient.html?platform=All%20Platforms#on)。 |
-| `listener`  | `Function`          | 必选               | 回调函数。当传入的事件触发时，该函数会被调用。支持的回调详见 [`IAgoraRTCClient.on`](/api-ref/rtc/react/interfaces/iagorartcclient.html?platform=All%20Platforms#on)。 |
+| `client` | [`IAgoraRTCClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient) | 必选 | 通过 Web SDK 的 [`IAgoraRTC.createClient`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 创建。 |
+| `event` | `string` | 必选               | 事件名称。支持的事件详见[`IAgoraRTCClient.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#on)。 |
+| `listener`  | `Function`          | 必选               | 回调函数。当传入的事件触发时，该函数会被调用。支持的回调详见 [`IAgoraRTCClient.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#on)。 |
 
 #### 返回值
 
@@ -763,10 +763,10 @@ function App() {
 
 | `track`   | `event` 和 `listener`          |
 | -------- | ---------------- |
-| `ILocalTrack` &VerticalLine; `ILocalVideoTrack` &VerticalLine; `null` | 详见 [`ILocalTrack.on`](/api-ref/rtc/react/interfaces/ilocaltrack.html#on)。 |
-| `IBufferSourceAudioTrack`  &VerticalLine; `null` |详见 [`IBufferSourceAudioTrack.on`](/api-ref/rtc/react/interfaces/ibuffersourceaudiotrack.html#on)。            |
-| `ILocalVideoTrack` &VerticalLine; `null` | 详见 [`ILocalVideoTrack.on`](/api-ref/rtc/react/interfaces/ilocalvideotrack.html#on)。 |
-| `IRemoteTrack` &VerticalLine; `null` | 详见 [`IRemoteTrack.on`](/api-ref/rtc/react/interfaces/iremotetrack.html#event_first_frame_decoded)。 |
+| `ILocalTrack` &VerticalLine; `ILocalVideoTrack` &VerticalLine; `null` | 详见 [`ILocalTrack.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#on)。 |
+| `IBufferSourceAudioTrack`  &VerticalLine; `null` |详见 [`IBufferSourceAudioTrack.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#on)。            |
+| `ILocalVideoTrack` &VerticalLine; `null` | 详见 [`ILocalVideoTrack.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#on)。 |
+| `IRemoteTrack` &VerticalLine; `null` | 详见 [`IRemoteTrack.on`](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。 |
 
 #### 返回值
 

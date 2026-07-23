@@ -1,10 +1,19 @@
 ---
-title: "播放控制"
-description: "播放控制 API reference."
+title: 播放控制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_mediaplayer_control
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_mediaplayer_control.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_control"></a>
 
 <a id="api_imediaplayer_adjustplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustPlayoutVolume
 
@@ -12,7 +21,7 @@ description: "播放控制 API reference."
 
 <a id="api_imediaplayer_adjustplayoutvolume__prototype"></a>
 
-```arkts
+```text
 public abstract adjustPlayoutVolume(vol: number): number;
 ```
 
@@ -34,24 +43,36 @@ public abstract adjustPlayoutVolume(vol: number): number;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 本地播放音量，取值范围从 0 到 100：
 
+<a id="api_imediaplayer_adjustplayoutvolume__ul_lds_32y_hqb"></a>
+
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
 
 ### 返回值
 
+<a id="api_imediaplayer_adjustplayoutvolume__ul_uns_l2y_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_adjustpublishsignalvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustPublishSignalVolume
 
@@ -59,7 +80,7 @@ public abstract adjustPlayoutVolume(vol: number): number;
 
 <a id="api_imediaplayer_adjustpublishsignalvolume__prototype"></a>
 
-```arkts
+```text
 public abstract adjustPublishSignalVolume(volume:number):number;
 ```
 
@@ -83,25 +104,37 @@ public abstract adjustPublishSignalVolume(volume:number):number;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 信号音量，取值范围从 0 到 400：
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__ul_qky_yky_hqb"></a>
 
 - 0: 无声。
 - 100: （默认）媒体文件的原始音量。
 - 400: 原始音量的四倍（自带溢出保护）。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
 
 ### 返回值
 
+<a id="api_imediaplayer_adjustpublishsignalvolume__ul_uns_l2y_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_mute"></a>
+
+<a id="ariaid-title4"></a>
 
 ## mute
 
@@ -109,7 +142,7 @@ public abstract adjustPublishSignalVolume(volume:number):number;
 
 <a id="api_imediaplayer_mute__prototype"></a>
 
-```arkts
+```text
 public abstract mute(muted:boolean) : number;
 ```
 
@@ -133,20 +166,25 @@ public abstract mute(muted:boolean) : number;
 
 静音选项。
 
-- true：静音。
-- false：（默认）不静音。
+<a id="api_imediaplayer_mute__ul_wbk_3y2_kqb"></a>
+
+- `true`：静音。
+- `false`：（默认）不静音。
 
 <a id="api_imediaplayer_mute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_pause"></a>
+
+<a id="ariaid-title5"></a>
 
 ## pause
 
@@ -154,7 +192,7 @@ public abstract mute(muted:boolean) : number;
 
 <a id="api_imediaplayer_pause__prototype"></a>
 
-```arkts
+```text
 public abstract pause(): number;
 ```
 
@@ -177,12 +215,15 @@ public abstract pause(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_play"></a>
+
+<a id="ariaid-title6"></a>
 
 ## play
 
@@ -190,7 +231,7 @@ public abstract pause(): number;
 
 <a id="api_imediaplayer_play__prototype"></a>
 
-```arkts
+```text
 public abstract play(): number;
 ```
 
@@ -214,12 +255,15 @@ public abstract play(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_playpreloadedsrc"></a>
+
+<a id="ariaid-title7"></a>
 
 ## playPreloadedSrc
 
@@ -227,7 +271,7 @@ public abstract play(): number;
 
 <a id="api_imediaplayer_playpreloadedsrc__prototype"></a>
 
-```arkts
+```text
 public abstract playPreloadedSrc(src:string):number;
 ```
 
@@ -239,7 +283,9 @@ public abstract playPreloadedSrc(src:string):number;
 
 如果你想更换播放的预加载媒体资源，你可以再次调用该方法并指定新的媒体资源路径。如果你想重新播放媒体资源，你需要在播放前调用 [preloadSrc](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 重新将该媒体资源预加载到播放列表。如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
 
-:::info[注]
+:::note
+注：
+
 如果你在播放暂停时调用该方法，该方法会在恢复播放后才生效。
 :::
 
@@ -247,21 +293,29 @@ public abstract playPreloadedSrc(src:string):number;
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 播放列表中的媒体资源 URL 地址，必须与 preloadSrc 方法设置的 src 一致，否则无法播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_resume"></a>
+
+<a id="ariaid-title8"></a>
 
 ## resume
 
@@ -269,7 +323,7 @@ public abstract playPreloadedSrc(src:string):number;
 
 <a id="api_imediaplayer_resume__prototype"></a>
 
-```arkts
+```text
 public abstract resume(): number;
 ```
 
@@ -278,12 +332,15 @@ public abstract resume(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_seek"></a>
+
+<a id="ariaid-title9"></a>
 
 ## seek
 
@@ -291,13 +348,13 @@ public abstract resume(): number;
 
 <a id="api_imediaplayer_seek__prototype"></a>
 
-```arkts
+```text
 public abstract seek(newPos: number): number;
 ```
 
 <a id="api_imediaplayer_seek__detailed_desc"></a>
 
-- 如果你在播放已经完成后（收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PLAYBACK_COMPLETED 或 PLAYBACK_ALL_LOOPS_COMPLETED ）再调用 seek，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PLAYING。
+- 如果你在播放已经完成后（收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PLAYBACK_COMPLETED 或 PLAYBACK_ALL_LOOPS_COMPLETED）再调用 seek，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PLAYING。
 - 如果你在播放暂停的情况下调用 seek，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 [resume](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)。
 
 <a id="api_imediaplayer_seek__timing"></a>
@@ -329,12 +386,15 @@ public abstract seek(newPos: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_stop"></a>
+
+<a id="ariaid-title10"></a>
 
 ## stop
 
@@ -342,7 +402,7 @@ public abstract seek(newPos: number): number;
 
 <a id="api_imediaplayer_stop__prototype"></a>
 
-```arkts
+```text
 public abstract stop(): number;
 ```
 
@@ -367,7 +427,8 @@ public abstract stop(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)

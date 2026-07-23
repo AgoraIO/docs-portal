@@ -1,0 +1,44 @@
+---
+title: Interface CustomAudioTrackInitConfig
+description: 创建自定义音频轨道时的配置参数，用于 AgoraRTC.createCustomAudioTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/customaudiotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/customaudiotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- CustomAudioTrackInitConfig
+
+## Index
+
+### Properties
+
+- [encoderConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig#encoderconfig)
+- [mediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/customaudiotrackinitconfig#mediastreamtrack)
+
+## Properties
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+encoderConfig: [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)|[AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset)
+
+控制音频的编码配置。
+
+你可以通过 [AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset) 传入 SDK 内置的编码配置；也可以通过传入一个 [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration) 来自定义音频编码配置。
+
+> Firefox 不支持设置音频编码码率。
+
+<a id="mediastreamtrack"></a>
+
+### mediaStreamTrack
+
+mediaStreamTrack: MediaStreamTrack
+
+你自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。

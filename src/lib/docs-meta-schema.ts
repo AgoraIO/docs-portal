@@ -23,6 +23,7 @@ const docsMetaPageGroupSchema = z.object({
   pages: z
     .array(z.union([z.string().min(1), docsMetaExternalPageLinkSchema]))
     .min(1),
+  sidebarHidden: z.boolean().optional(),
   title: z.string().min(1),
   type: z.literal('group'),
 });
@@ -36,8 +37,9 @@ const docsMetaPageEntrySchema = z.union([
   ),
   docsMetaPageGroupSchema.transform((entry) => {
     const iconPrefix = entry.icon ? `[${entry.icon}]` : '';
-    const flags =
-      entry.collapsible === undefined
+    const flags = entry.sidebarHidden
+      ? '{hidden}'
+      : entry.collapsible === undefined
         ? ''
         : entry.collapsible
           ? '{dropdown}'
@@ -73,12 +75,14 @@ export const docsNavScopeSchema = z.object({
 
 export const docsMetaSchema = metaSchema.extend({
   navScope: docsNavScopeSchema.optional(),
+  openApiSidebarFromMeta: z.boolean().optional(),
   pages: z
     .array(docsMetaPageEntrySchema)
     .transform((entries) => entries.flat())
     .optional(),
   sidebarHidden: z.boolean().optional(),
   sidebarIndexTitle: z.string().min(1).optional(),
+  sidebarLabels: z.record(z.string(), z.string().min(1)).optional(),
 });
 
 export type DocsMeta = z.infer<typeof docsMetaSchema>;

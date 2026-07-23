@@ -1,22 +1,39 @@
 ---
-title: "AgoraVideoFramePosition"
-description: "视频观察器的视频帧位置。"
+title: AgoraVideoFramePosition
+description: 视频观察器的视频帧位置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_videoframeposition
+  sourcePath: html-docs/rtc/macOS/API/enum_videoframeposition.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_videoframeposition__parameters"></a>
 
 ## 枚举值
 
-### `AgoraVideoFramePositionPostCapture`
+<ParameterList>
+<a id="agoravideoframepositionpostcapture"></a>
+<Parameter name="AgoraVideoFramePositionPostCapture">
 
-（1）：本地采集的视频数据在预处理后的位置，对应 [onCaptureVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用视频预处理效果，可通过启用美颜特效、虚拟背景或水印进行验证。
+（1）：本地采集的视频数据在预处理后的位置，对应 [onCaptureVideoFrame\:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用视频预处理效果，可通过启用美颜特效、虚拟背景或水印进行验证。
 
-### `AgoraVideoFramePositionPreRenderer`
+</Parameter>
+<a id="agoravideoframepositionprerenderer"></a>
+<Parameter name="AgoraVideoFramePositionPreRenderer">
 
-（2）：渲染器前的位置，对应 [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调中的视频数据。
+（2）：渲染器前的位置，对应 [onRenderVideoFrame\:uid\:channelId:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调中的视频数据。
 
-### `AgoraVideoFramePositionPreEncoder`
+</Parameter>
+<a id="agoravideoframepositionpreencoder"></a>
+<Parameter name="AgoraVideoFramePositionPreEncoder">
 
-（4）：编码器前的位置，对应 [onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中的视频数据。此位置的视频已应用视频预处理和编码前处理效果。
+（4）：编码器前的位置，对应 [onPreEncodeVideoFrame\:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中的视频数据。此位置的视频已应用视频预处理和编码前处理效果。
 
 - 若要验证视频预处理效果，可启用美颜特效、虚拟背景或水印。
 - 若要验证编码前处理效果，可设置较低帧率（如 5 fps）。
+
+</Parameter>
+</ParameterList>

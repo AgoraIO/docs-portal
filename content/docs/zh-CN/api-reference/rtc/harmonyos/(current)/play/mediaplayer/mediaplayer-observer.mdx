@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_imediaplayer_registerplayersourceobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerPlayerObserver
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```arkts
+```text
 public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 ```
 
@@ -34,18 +43,25 @@ public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 
 ### 参数
 
-#### `playerObserver`
+<ParameterList>
+<a id="playerobserver"></a>
+<Parameter name="playerObserver">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_unregisterplayersourceobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## unRegisterPlayerObserver
 
@@ -53,7 +69,7 @@ public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```arkts
+```text
 public abstract unRegisterPlayerObserver();
 ```
 
@@ -61,18 +77,25 @@ public abstract unRegisterPlayerObserver();
 
 ### 参数
 
-#### `playerObserver`
+<ParameterList>
+<a id="playerobserver-1"></a>
+<Parameter name="playerObserver">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication"></a>
+
+<a id="ariaid-title4"></a>
 
 ## onAudioVolumeIndication
 
@@ -80,11 +103,13 @@ public abstract unRegisterPlayerObserver();
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```arkts
+```text
 onAudioVolumeIndication?:(volume:number) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__detailed_desc"></a>
+
+### 详情
 
 SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
 
@@ -92,14 +117,22 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的当前音量，取值范围为 [0,255]。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onMetaData
 
@@ -107,11 +140,13 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```arkts
+```text
 onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+### 详情
 
 解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
 
@@ -119,18 +154,28 @@ onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 
 ### 参数
 
-#### `type`
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体附属信息数据类型，详见 [MediaPlayerMetadataType](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayermetadatatype)。
 
-#### `data`
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 具体数据，用户自定义格式的数据。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onPlayBufferUpdated
 
@@ -138,11 +183,13 @@ onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```arkts
+```text
 onPlayBufferUpdated?:(playCachedBuffer:number) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
+
+### 详情
 
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
@@ -153,14 +200,22 @@ onPlayBufferUpdated?:(playCachedBuffer:number) => void
 
 ### 参数
 
-#### `playCachedBuffer`
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onPlayerEvent
 
@@ -168,11 +223,13 @@ onPlayBufferUpdated?:(playCachedBuffer:number) => void
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```arkts
+```text
 onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:string) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+### 详情
 
 - 调用 [seek](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
@@ -180,22 +237,34 @@ onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:
 
 ### 参数
 
-#### `eventCode`
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 发生事件的时间 (毫秒)。
 
-#### `message`
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的信息。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title8"></a>
 
 ## onPlayerInfoUpdated
 
@@ -203,11 +272,13 @@ onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```arkts
+```text
 onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
+
+### 详情
 
 当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
 
@@ -215,14 +286,22 @@ onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/harmonyos/class-playerupdatedinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onPlayerStateChanged
 
@@ -230,11 +309,13 @@ onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```arkts
+```text
 onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPlayerReason) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+### 详情
 
 当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
 
@@ -242,18 +323,28 @@ onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPl
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/harmonyos/enum-mediaplayerreason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onPlayerSrcInfoChanged
 
@@ -261,7 +352,7 @@ onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPl
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```arkts
+```text
 onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 ```
 
@@ -269,18 +360,28 @@ onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 
 ### 参数
 
-#### `from`
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/harmonyos/class-srcinfo)。
 
-#### `to`
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/harmonyos/class-srcinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onPositionChanged
 
@@ -288,11 +389,13 @@ onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```arkts
+```text
 onPositionChanged?:(positionMs:number,timestampMs:number) => void
 ```
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+### 详情
 
 播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
 
@@ -300,18 +403,28 @@ onPositionChanged?:(positionMs:number,timestampMs:number) => void
 
 ### 参数
 
-#### `positionMs`
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 当前播放进度，单位为 ms。
 
-#### `timestampMs`
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onPreloadEvent
 
@@ -319,7 +432,7 @@ onPositionChanged?:(positionMs:number,timestampMs:number) => void
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```arkts
+```text
 onPreloadEvent?:(src:string,event:Constants.MediaPlayerPreloadEvent) => void
 ```
 
@@ -327,9 +440,15 @@ onPreloadEvent?:(src:string,event:Constants.MediaPlayerPreloadEvent) => void
 
 ### 参数
 
-#### `event`
+<ParameterList>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [MediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/harmonyos/enum-playerpreloadevent)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,10 +1,18 @@
 ---
-title: "GetFaceShapeBeautyOptions"
-description: "获取美型效果选项。"
+title: GetFaceShapeBeautyOptions
+description: 获取美型效果选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengine_getfaceshapebeautyoptions
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_getfaceshapebeautyoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengine_getfaceshapebeautyoptions__prototype"></a>
 
-```csharp
+```text
 public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
 ```
 
@@ -34,24 +42,31 @@ public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options
 
 ## 参数
 
-### `options`
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/class-faceshapebeautyoptions)。
 
-### `type`
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
 
-:::warning[注意]
-在该方法中，该参数仅支持以下两种设置：
+:::caution
+注意： 在该方法中，该参数仅支持以下两种设置：
 
 - 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
 - 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
 
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

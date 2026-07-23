@@ -1,0 +1,153 @@
+{
+  "counts": {
+    "errors": 0,
+    "fragmentRewrites": 1,
+    "normalizedFiles": 1,
+    "normalizedLinkFiles": 5,
+    "normalizedOperations": 5,
+    "rewrittenLinks": 24,
+    "routeRewrites": 23,
+    "warnings": 0
+  },
+  "links": [
+    {
+      "count": 10,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/ai/api/response-code",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/conversational-ai/rest-api/api/response-code"
+    },
+    {
+      "count": 1,
+      "fragmentRewritten": true,
+      "from": "/zh-CN/ai/build/http-basic-auth#使用-rtc-token-鉴权-推荐",
+      "routeRewritten": false,
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml",
+      "to": "/zh-CN/ai/build/http-basic-auth#使用-rtc-token-鉴权推荐"
+    },
+    {
+      "count": 2,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/fusion-cdn/reference/api-reference",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/fusion-cdn/streaming.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/fusion-cdn/restful/api/reference"
+    },
+    {
+      "count": 1,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/fusion-cdn/reference/api-reference#回源鉴权回调格式",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/fusion-cdn/streaming.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/fusion-cdn/restful/api/reference#回源鉴权回调格式"
+    },
+    {
+      "count": 2,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/fusion-cdn/reference/api-reference#直播转推回调格式",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/fusion-cdn/streaming.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/fusion-cdn/restful/api/reference#直播转推回调格式"
+    },
+    {
+      "count": 1,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/rtmp-gateway/reference/video-profile",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/media-gateway/media-gateway.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile"
+    },
+    {
+      "count": 2,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/media-push/reference/video-profile",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/media-push/media-push.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/media-push/restful/api/video-profile"
+    },
+    {
+      "count": 5,
+      "fragmentRewritten": false,
+      "from": "/zh-CN/realtime-media/speech-to-text/reference/supported-languages",
+      "routeRewritten": true,
+      "targetPath": "content/openapi/speech-to-text/v7.zh-CN.yaml",
+      "to": "/zh-CN/api-reference/speech-to-text/restful/api/supported-languages"
+    }
+  ],
+  "operations": [
+    {
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "让指定智能体播报自定义消息。",
+      "operationId": "agent-speak",
+      "originalDescription": "让指定智能体播报自定义消息。\r\n\r\n与智能体对话期间，调用该接口可以让智能体使用 TTS 模块立刻播报自定义消息。智能体收到请求后，播报行为会打断当前说话和思考流程。",
+      "originalDescriptionHash": "93725bcfa42c26fe3abec867b9fac18d508a91262e5c9a3183ea24b60470ab69",
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
+    },
+    {
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "向指定智能体发送一段自定义文本指令。",
+      "operationId": "agent-think",
+      "originalDescription": "向指定智能体发送一段自定义文本指令。\n\n该接口会将传入文本作为用户输入注入当前对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。你可以使用该接口实现隐式指令注入、客户端事件触发和语音与文本协同等场景。\n",
+      "originalDescriptionHash": "74176af3b3a9f9522e5649423312a4ca9516efe5db9a95078785ffb848d3e6f7",
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
+    },
+    {
+      "docsCallouts": [
+        {
+          "markdown": "该接口仅支持查询最近 7 天内创建的智能体列表。",
+          "position": "after-description"
+        }
+      ],
+      "docsSections": [],
+      "normalizedDescription": "检索符合指定条件的智能体列表。",
+      "operationId": "get-agent-list",
+      "originalDescription": "检索符合指定条件的智能体列表。\n> 该接口仅支持查询最近 7 天内创建的智能体列表。\n",
+      "originalDescriptionHash": "15974d491b761a729418f3a6b461315947bee0f9bcdec0d59aa0e2c197ab22dd",
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
+    },
+    {
+      "docsCallouts": [],
+      "docsSections": [
+        {
+          "markdown": "你可以在智能体运行期间 (`RUNNING`) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括：\n- 智能体创建和停止的时间戳\n- 用户和智能体对话消息",
+          "position": "after-description"
+        }
+      ],
+      "normalizedDescription": "获取用户和智能体对话的短期记忆。",
+      "operationId": "get-history",
+      "originalDescription": "获取用户和智能体对话的短期记忆。\r\n你可以在智能体运行期间 (`RUNNING`) 调用该 API 获取智能体创建到现在储存的短期记忆信息，包括：\r\n- 智能体创建和停止的时间戳\r\n- 用户和智能体对话消息",
+      "originalDescriptionHash": "75a4a7992dbd827388b19282fde2679b586f7c7b0e150d0291832fca7de94013",
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
+    },
+    {
+      "docsCallouts": [
+        {
+          "markdown": "自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。\n仅支持查询 7 天内的会话。",
+          "position": "after-description"
+        }
+      ],
+      "docsSections": [],
+      "normalizedDescription": "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。",
+      "operationId": "get-turns",
+      "originalDescription": "在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。\n\n> 自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。\n> 仅支持查询 7 天内的会话。\n",
+      "originalDescriptionHash": "6bf1f75c45ac8a7b88f997d2289e11f6f86d7571bde1cf15b5437f494e19041b",
+      "targetPath": "content/openapi/conversational-ai/rest-api.zh-CN.yaml"
+    }
+  ],
+  "schemaVersion": 2,
+  "sourceCommit": "697ee0110bb05d4fdc6b3f44dd3979afd7a6c981",
+  "warnings": []
+}

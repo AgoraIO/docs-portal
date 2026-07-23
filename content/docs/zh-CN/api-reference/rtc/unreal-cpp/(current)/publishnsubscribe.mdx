@@ -1,10 +1,19 @@
 ---
-title: "发布和订阅"
-description: "发布和订阅 API reference."
+title: 发布和订阅
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_publishnsubscribe
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_publishnsubscribe.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_publishnsubscribe"></a>
 
 <a id="api_irtcengine_enabledualstreammode"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableDualStreamMode [1/2]
 
@@ -12,7 +21,7 @@ description: "发布和订阅 API reference."
 
 <a id="api_irtcengine_enabledualstreammode__prototype"></a>
 
-```cpp
+```text
 virtual int enableDualStreamMode(bool enabled) = 0;
 ```
 
@@ -20,9 +29,11 @@ virtual int enableDualStreamMode(bool enabled) = 0;
 
 ### 详情
 
-#### `弃用：`
+<a id="弃用"></a>
 
+:::error[弃用：]
 从 v4.2.0 起废弃，请改用 [setDualStreamMode [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode)。
+:::
 
 双流指视频大流和视频小流：
 
@@ -31,9 +42,11 @@ virtual int enableDualStreamMode(bool enabled) = 0;
 
 开启双流模式后，你可以在收流端调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 enableDualStreamModeEx 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -41,24 +54,32 @@ virtual int enableDualStreamMode(bool enabled) = 0;
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启双流模式。
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enabledualstreammode3"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableDualStreamMode [2/2]
 
@@ -66,7 +87,7 @@ virtual int enableDualStreamMode(bool enabled) = 0;
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```cpp
+```text
 virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& streamConfig) = 0;
 ```
 
@@ -74,20 +95,30 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 ### 详情
 
-#### `弃用：`
+<a id="弃用-1"></a>
 
+:::error[弃用：]
 从 v4.2.0 起废弃，请改用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2)。
+:::
+
+<a id="api_irtcengine_enabledualstreammode3__d118e60"></a>
 
 你可以在发流端调用该方法开启或关闭双流模式。双流指视频大流和视频小流：
 
 - 视频大流：高分辨率、高帧率的视频流。
 - 视频小流：低分辨率、低帧率的视频流。
 
+<a id="api_irtcengine_enabledualstreammode3__d118e71"></a>
+
 开启双流模式后，你可以在收流端调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
+<a id="api_irtcengine_enabledualstreammode3__d118e78"></a>
+
+:::note
+注：
+
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 enableDualStreamModeEx 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -95,32 +126,44 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 ### 参数
 
-#### `enabled`
+<a id="api_irtcengine_enabledualstreammode3__parml_mfj_z3z_hqb"></a>
+
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
-#### `streamConfig`
+</Parameter>
+<a id="streamconfig"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enabledualstreammode3__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableDualStreamModeEx
 
@@ -128,7 +171,7 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```cpp
+```text
 virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& streamConfig,
                                        const RtcConnection& connection) = 0;
 ```
@@ -137,9 +180,11 @@ virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& st
 
 ### 详情
 
-#### `弃用：`
+<a id="弃用-2"></a>
 
+:::error[弃用：]
 从 v4.2.0 起废弃，请改用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setdualstreammodeex)。
+:::
 
 你可以在发流端调用该方法开启或关闭双流模式。双流指视频大流和视频小流：
 
@@ -148,44 +193,56 @@ virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& st
 
 开启双流模式后，你可以在收流端调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
-:::info[注]
-该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
+:::note
+注： 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
 :::
 
 <a id="api_irtcengineex_enabledualstreammodeex__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
-#### `streamConfig`
+</Parameter>
+<a id="streamconfig-1"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
+
+<a id="ariaid-title5"></a>
 
 ## muteAllRemoteAudioStreams
 
@@ -193,15 +250,21 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```cpp
+```text
 virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 ```
 
 <a id="api_irtcengine_muteallremoteaudiostreams__detailed_desc"></a>
 
+<a id="api_irtcengine_muteallremoteaudiostreams__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::warning[注意]
+<a id="api_irtcengine_muteallremoteaudiostreams__note"></a>
+
+:::caution
+注意：
+
 SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
 :::
 
@@ -221,24 +284,32 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
+
+<a id="ariaid-title6"></a>
 
 ## muteAllRemoteAudioStreamsEx
 
@@ -246,7 +317,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```cpp
+```text
 virtual int muteAllRemoteAudioStreamsEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -254,39 +325,55 @@ virtual int muteAllRemoteAudioStreamsEx(bool mute, const RtcConnection& connecti
 
 ### 详情
 
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
-:::warning[注意]
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__note"></a>
+
+:::caution
+注意：
+
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 joinChannel [2/2] 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
-#### `connection`
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremotevideostreams"></a>
+
+<a id="ariaid-title7"></a>
 
 ## muteAllRemoteVideoStreams
 
@@ -294,15 +381,21 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```cpp
+```text
 virtual int muteAllRemoteVideoStreams(bool mute) = 0;
 ```
 
 <a id="api_irtcengine_muteallremotevideostreams__detailed_desc"></a>
 
+<a id="api_irtcengine_muteallremotevideostreams__desc"></a>
+
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
 
-:::warning[注意]
+<a id="api_irtcengine_muteallremotevideostreams__note"></a>
+
+:::caution
+注意：
+
 SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
 :::
 
@@ -322,24 +415,32 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-2"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremotevideostreamsex"></a>
+
+<a id="ariaid-title8"></a>
 
 ## muteAllRemoteVideoStreamsEx
 
@@ -347,7 +448,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```cpp
+```text
 virtual int muteAllRemoteVideoStreamsEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -361,28 +462,38 @@ virtual int muteAllRemoteVideoStreamsEx(bool mute, const RtcConnection& connecti
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-3"></a>
+<Parameter name="mute">
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
-#### `connection`
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalaudiostream"></a>
+
+<a id="ariaid-title9"></a>
 
 ## muteLocalAudioStream
 
@@ -390,7 +501,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```cpp
+```text
 virtual int muteLocalAudioStream(bool mute) = 0;
 ```
 
@@ -420,24 +531,32 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-4"></a>
+<Parameter name="mute">
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalaudiostreamex"></a>
+
+<a id="ariaid-title10"></a>
 
 ## muteLocalAudioStreamEx
 
@@ -445,7 +564,7 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```cpp
+```text
 virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -453,8 +572,8 @@ virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 详情
 
-:::warning[注意]
-该方法不影响音频采集状态，因为没有禁用音频采集设备。
+:::caution
+注意： 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
@@ -463,28 +582,38 @@ virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-5"></a>
+<Parameter name="mute">
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
-#### `connection`
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalvideostream"></a>
+
+<a id="ariaid-title11"></a>
 
 ## muteLocalVideoStream
 
@@ -492,7 +621,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```cpp
+```text
 virtual int muteLocalVideoStream(bool mute) = 0;
 ```
 
@@ -500,7 +629,7 @@ virtual int muteLocalVideoStream(bool mute) = 0;
 
 该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
 
-相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo)(`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -524,24 +653,32 @@ virtual int muteLocalVideoStream(bool mute) = 0;
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-6"></a>
+<Parameter name="mute">
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalvideostreamex"></a>
+
+<a id="ariaid-title12"></a>
 
 ## muteLocalVideoStreamEx
 
@@ -549,7 +686,7 @@ virtual int muteLocalVideoStream(bool mute) = 0;
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```cpp
+```text
 virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -559,7 +696,9 @@ virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) =
 
 成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 该方法不影响视频采集状态，没有禁用摄像头。
 :::
 
@@ -567,28 +706,38 @@ virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) =
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-7"></a>
+<Parameter name="mute">
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
-#### `connection`
+</Parameter>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremoteaudiostream"></a>
+
+<a id="ariaid-title13"></a>
 
 ## muteRemoteAudioStream
 
@@ -596,7 +745,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```cpp
+```text
 virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 ```
 
@@ -624,28 +773,38 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 指定用户的用户 ID。
 
-#### `mute`
+</Parameter>
+<a id="mute-8"></a>
+<Parameter name="mute">
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremoteaudiostreamex"></a>
+
+<a id="ariaid-title14"></a>
 
 ## muteRemoteAudioStreamEx
 
@@ -653,7 +812,7 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```cpp
+```text
 virtual int muteRemoteAudioStreamEx(uid_t uid, bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -667,32 +826,46 @@ virtual int muteRemoteAudioStreamEx(uid_t uid, bool mute, const RtcConnection& c
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 指定用户的 ID。
 
-#### `mute`
+</Parameter>
+<a id="mute-9"></a>
+<Parameter name="mute">
 
 是否停止接收指定音频流：
 
-- true: 停止接收指定音频流。
-- false:（默认）继续接收指定音频流。
+<a id="api_irtcengineex_muteremoteaudiostreamex__ul_pv3_2ft_3qb"></a>
 
-#### `connection`
+- `true`: 停止接收指定音频流。
+- `false`:（默认）继续接收指定音频流。
+
+</Parameter>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremotevideostream"></a>
+
+<a id="ariaid-title15"></a>
 
 ## muteRemoteVideoStream
 
@@ -700,7 +873,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```cpp
+```text
 virtual int muteRemoteVideoStream(uid_t userId, bool mute) = 0;
 ```
 
@@ -728,28 +901,38 @@ virtual int muteRemoteVideoStream(uid_t userId, bool mute) = 0;
 
 ### 参数
 
-#### `userId`
+<ParameterList>
+<a id="userid"></a>
+<Parameter name="userId">
 
 指定用户的用户 ID。
 
-#### `mute`
+</Parameter>
+<a id="mute-10"></a>
+<Parameter name="mute">
 
 是否取消订阅指定远端用户的视频流。
 
-- true: 取消订阅指定用户的视频流。
-- false: （默认）订阅指定用户的视频流。
+- `true`: 取消订阅指定用户的视频流。
+- `false`: （默认）订阅指定用户的视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremotevideostreamex"></a>
+
+<a id="ariaid-title16"></a>
 
 ## muteRemoteVideoStreamEx
 
@@ -757,7 +940,7 @@ virtual int muteRemoteVideoStream(uid_t userId, bool mute) = 0;
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```cpp
+```text
 virtual int muteRemoteVideoStreamEx(uid_t uid, bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -771,32 +954,44 @@ virtual int muteRemoteVideoStreamEx(uid_t uid, bool mute, const RtcConnection& c
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-#### `mute`
+</Parameter>
+<a id="mute-11"></a>
+<Parameter name="mute">
 
 是否停止接收某个远端用户的视频：
 
-- true: 停止接收。
-- false: （默认）恢复接收。
+- `true`: 停止接收。
+- `false`: （默认）恢复接收。
 
-#### `connection`
+</Parameter>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setdualstreammode"></a>
+
+<a id="ariaid-title17"></a>
 
 ## setDualStreamMode [1/2]
 
@@ -804,7 +999,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setdualstreammode__prototype"></a>
 
-```cpp
+```text
 virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode) = 0;
 ```
 
@@ -812,16 +1007,20 @@ virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode) = 0;
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+<a id="api_irtcengine_setdualstreammode__desc"></a>
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流，**主播身份**的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+
+- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM（始终不发送小流）或 ENABLE_SIMULCAST_STREAM（始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
-:::info[注]
-该方法和 [enableDualStreamMode [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_enabledualstreammode) 的区别与联系如下：
+<a id="api_irtcengine_setdualstreammode__note"></a>
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 enableDualStreamMode [1/2] (false) 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 enableDualStreamMode [1/2] (true) 的效果相同。
+:::note
+注： 该方法和 [enableDualStreamMode [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_enabledualstreammode) 的区别与联系如下：
+
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 enableDualStreamMode [1/2]`(false)` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 enableDualStreamMode [1/2]`(true)` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -829,21 +1028,29 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-simulcaststreammode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdualstreammode2"></a>
+
+<a id="ariaid-title18"></a>
 
 ## setDualStreamMode [2/2]
 
@@ -851,7 +1058,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```cpp
+```text
 virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode,
                                  const SimulcastStreamConfig& streamConfig) = 0;
 ```
@@ -860,18 +1067,20 @@ virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode,
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流，**主播身份**的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
+- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM（始终不发送小流）或 ENABLE_SIMULCAST_STREAM（始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
 该方法跟 [setDualStreamMode [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode) 的区别在于，该方法还可以进行视频小流的配置，SDK 会根据 streamConfig 中的配置发送小流。
 
-:::info[注]
-该方法和 [enableDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+<a id="api_irtcengine_setdualstreammode2__note"></a>
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 enableDualStreamMode [2/2] 并设置 enabled 为 false 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 enableDualStreamMode [2/2] 并设置 enabled 为 true 的效果相同。
+:::note
+注： 该方法和 [enableDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 enableDualStreamMode [2/2] 并设置 enabled 为 `false` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 enableDualStreamMode [2/2] 并设置 enabled 为 `true` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -879,29 +1088,41 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-simulcaststreammode)。
 
-#### `streamConfig`
+</Parameter>
+<a id="streamconfig-2"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdualstreammode2__return_values"></a>
 
 ### 返回值
 
+<a id="api_irtcengine_setdualstreammode2__ul_bpp_x2z_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
+
+<a id="ariaid-title19"></a>
 
 ## setDualStreamModeEx
 
@@ -909,7 +1130,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```cpp
+```text
 virtual int setDualStreamModeEx(SIMULCAST_STREAM_MODE mode,
                                    const SimulcastStreamConfig& streamConfig,
                                    const RtcConnection& connection) = 0;
@@ -919,16 +1140,20 @@ virtual int setDualStreamModeEx(SIMULCAST_STREAM_MODE mode,
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+<a id="api_irtcengineex_setdualstreammodeex__desc"></a>
 
-- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流，**主播身份**的接收端可以调用 [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+
+- 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM（始终不发送小流）或 ENABLE_SIMULCAST_STREAM（始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
-:::info[注]
-该方法和 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+<a id="api_irtcengineex_setdualstreammodeex__note"></a>
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 enableDualStreamModeEx (false) 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 enableDualStreamModeEx (true) 的效果相同。
+:::note
+注： 该方法和 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 enableDualStreamModeEx`(false)` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 enableDualStreamModeEx`(true)` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -936,33 +1161,45 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode-2"></a>
+<Parameter name="mode">
 
 发送视频流的模式。详见 [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-simulcaststreammode)。
 
-#### `streamConfig`
+</Parameter>
+<a id="streamconfig-3"></a>
+<Parameter name="streamConfig">
 
 视频小流的配置。详见 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig)。
 
-:::info[注]
-当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
+:::note
+注： 当设置 mode 为 DISABLE_SIMULCAST_STREAM 时，再设置 streamConfig 不会生效。
 :::
 
-#### `connection`
+</Parameter>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
+
+<a id="ariaid-title20"></a>
 
 ## setRemoteDefaultVideoStreamType
 
@@ -970,7 +1207,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 ```
 
@@ -978,9 +1215,9 @@ virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 
 取决于发送端的默认行为和调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
@@ -1000,21 +1237,29 @@ virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 
 ### 参数
 
-#### `streamType`
+<ParameterList>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 默认订阅的视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
+
+<a id="ariaid-title21"></a>
 
 ## setRemoteVideoStreamType
 
@@ -1022,7 +1267,7 @@ virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 0;
 ```
 
@@ -1030,42 +1275,60 @@ virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 
 
 ### 详情
 
+<a id="api_irtcengine_setremotevideostreamtype__desc1"></a>
+
 取决于发送端的默认行为和调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+
+<a id="api_irtcengine_setremotevideostreamtype__desc2"></a>
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::warning[注意]
+<a id="api_irtcengine_setremotevideostreamtype__note"></a>
+
+:::caution
+注意：
+
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 setRemoteDefaultVideoStreamType，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `streamType`
+</Parameter>
+<a id="streamtype-1"></a>
+<Parameter name="streamType">
 
 视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
+
+<a id="ariaid-title22"></a>
 
 ## setRemoteVideoStreamTypeEx
 
@@ -1073,7 +1336,7 @@ virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteVideoStreamTypeEx(uid_t uid, VIDEO_STREAM_TYPE streamType, const RtcConnection& connection) = 0;
 ```
 
@@ -1083,44 +1346,60 @@ virtual int setRemoteVideoStreamTypeEx(uid_t uid, VIDEO_STREAM_TYPE streamType, 
 
 取决于发送端的默认行为和调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
-- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅**主播身份**的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效。
+- 当发送端调用 setDualStreamMode [2/2] 并将 mode 设置为 ENABLE_SIMULCAST_STREAM（始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
-:::warning[注意]
-- 如果发送端已调用 setDualStreamModeEx 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 setDualStreamModeEx 修改设置。
-- 观众角色 的接收端调用该方法不生效。
+<a id="api_irtcengineex_setremotevideostreamtypeex__note"></a>
+
+:::caution
+注意：
+
+- 如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM（始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 setDualStreamModeEx 修改设置。
+- **观众角色**的接收端调用该方法不生效。
 :::
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `streamType`
+</Parameter>
+<a id="streamtype-2"></a>
+<Parameter name="streamType">
 
 视频流类型: [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。
 
-#### `connection`
+</Parameter>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
+
+<a id="ariaid-title23"></a>
 
 ## setRemoteVideoSubscriptionOptions
 
@@ -1128,7 +1407,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscriptionOptions &options) = 0;
 ```
 
@@ -1138,8 +1417,8 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 当远端发送双流时，可调用此方法来设置远端视频流的订阅选项。SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
 
-- 如果注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
-- 如果注册的是 IVideoEncodedFrameObserver 观测器，则默认仅订阅编码后的数据。
+- 如果注册的是 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver) 观测器，则默认订阅原始数据和编码后的数据。
+- 如果注册的是 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoencodedframeobserver) 观测器，则默认仅订阅编码后的数据。
 - 如果注册了两种观测器，则默认跟随后注册的视频观测器。举例来说，如果后注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
 
 如果你想修改以上默认行为，或者想针对不同 `uid` 设置不同的订阅选项，可调用该方法设置。
@@ -1148,25 +1427,35 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `options`
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-videosubscriptionoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
+
+<a id="ariaid-title24"></a>
 
 ## setRemoteVideoSubscriptionOptionsEx
 
@@ -1174,7 +1463,7 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__prototype"></a>
 
-```cpp
+```text
 virtual int setRemoteVideoSubscriptionOptionsEx(uid_t uid, const VideoSubscriptionOptions& options, const RtcConnection& connection) = 0;
 ```
 
@@ -1188,29 +1477,41 @@ virtual int setRemoteVideoSubscriptionOptionsEx(uid_t uid, const VideoSubscripti
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `options`
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-videosubscriptionoptions)。
 
-#### `connection`
+</Parameter>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioallowlist"></a>
+
+<a id="ariaid-title25"></a>
 
 ## setSubscribeAudioAllowlist
 
@@ -1218,7 +1519,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1228,9 +1529,11 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1239,27 +1542,37 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist"></a>
+<Parameter name="uidList">
 
 音频订阅白名单的用户 ID 列表。
 
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
+
+<a id="ariaid-title26"></a>
 
 ## setSubscribeAudioAllowlistEx
 
@@ -1267,7 +1580,7 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1277,9 +1590,11 @@ virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 你可以调用该方法指定想要订阅的音频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1288,31 +1603,43 @@ virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-1"></a>
+<Parameter name="uidList">
 
 音频订阅白名单的用户 ID 列表。
 
 如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-1"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+</Parameter>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioblocklist"></a>
+
+<a id="ariaid-title27"></a>
 
 ## setSubscribeAudioBlocklist
 
@@ -1320,7 +1647,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1330,9 +1657,13 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 你可以调用该方法指定不订阅的音频流。
 
-:::warning[注意]
+<a id="api_irtcengine_setsubscribeaudioblocklist__note"></a>
+
+:::caution
+注意：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1341,27 +1672,37 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-2"></a>
+<Parameter name="uidList">
 
 订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-2"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
+
+<a id="ariaid-title28"></a>
 
 ## setSubscribeAudioBlocklistEx
 
@@ -1369,7 +1710,7 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1379,9 +1720,13 @@ virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 你可以调用该方法指定不订阅的音频流。
 
-:::warning[注意]
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__d128e49"></a>
+
+:::caution
+注意：
+
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1390,31 +1735,43 @@ virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-3"></a>
+<Parameter name="uidList">
 
 订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-3"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+</Parameter>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoallowlist"></a>
+
+<a id="ariaid-title29"></a>
 
 ## setSubscribeVideoAllowlist
 
@@ -1422,7 +1779,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1432,9 +1789,11 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1443,27 +1802,37 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-4"></a>
+<Parameter name="uidList">
 
 视频订阅白名单的用户 ID 列表。
 
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-4"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
+
+<a id="ariaid-title30"></a>
 
 ## setSubscribeVideoAllowlistEx
 
@@ -1471,7 +1840,7 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1481,9 +1850,11 @@ virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 你可以调用该方法指定想要订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1492,31 +1863,43 @@ virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-5"></a>
+<Parameter name="uidList">
 
 视频订阅白名单的用户 ID 列表。
 
 如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-5"></a>
+<Parameter name="uidNumber">
 
 白名单用户 ID 列表中的用户数量。
 
-#### `connection`
+</Parameter>
+<a id="connection-12"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoblocklist"></a>
+
+<a id="ariaid-title31"></a>
 
 ## setSubscribeVideoBlocklist
 
@@ -1524,7 +1907,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1534,9 +1917,11 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1545,27 +1930,37 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-6"></a>
+<Parameter name="uidList">
 
 视频订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-6"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
+
+<a id="ariaid-title32"></a>
 
 ## setSubscribeVideoBlocklistEx
 
@@ -1573,7 +1968,7 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```cpp
+```text
 virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1583,9 +1978,11 @@ virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 你可以调用该方法指定不订阅的视频流。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1594,31 +1991,43 @@ virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 ### 参数
 
-#### `uidList`
+<ParameterList>
+<a id="uidlist-7"></a>
+<Parameter name="uidList">
 
 视频订阅黑名单的用户 ID 列表。
 
 如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
 
-#### `uidNumber`
+</Parameter>
+<a id="uidnumber-7"></a>
+<Parameter name="uidNumber">
 
 黑名单用户 ID 列表中的用户数量。
 
-#### `connection`
+</Parameter>
+<a id="connection-13"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
+
+<a id="ariaid-title33"></a>
 
 ## onAudioPublishStateChanged
 
@@ -1626,7 +2035,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioPublishStateChanged(const char* channel,
      STREAM_PUBLISH_STATE oldState,
      STREAM_PUBLISH_STATE newState,
@@ -1642,26 +2051,40 @@ virtual void onAudioPublishStateChanged(const char* channel,
 
 ### 参数
 
-#### `channel`
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-#### `oldState`
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-streampublishstate)。
 
-#### `newState`
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 STREAM_PUBLISH_STATE。
 
-#### `elapseSinceLastState`
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
+
+<a id="ariaid-title34"></a>
 
 ## onAudioSubscribeStateChanged
 
@@ -1669,7 +2092,7 @@ virtual void onAudioPublishStateChanged(const char* channel,
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioSubscribeStateChanged(const char* channel,
      uid_t uid,
      STREAM_SUBSCRIBE_STATE oldState,
@@ -1687,30 +2110,46 @@ virtual void onAudioSubscribeStateChanged(const char* channel,
 
 ### 参数
 
-#### `channel`
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-#### `oldState`
+</Parameter>
+<a id="oldstate-1"></a>
+<Parameter name="oldState">
 
 之前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-streamsubscribestate)。
 
-#### `newState`
+</Parameter>
+<a id="newstate-1"></a>
+<Parameter name="newState">
 
 当前的订阅状态，详见 STREAM_SUBSCRIBE_STATE。
 
-#### `elapseSinceLastState`
+</Parameter>
+<a id="elapsesincelaststate-1"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
+
+<a id="ariaid-title35"></a>
 
 ## onVideoSubscribeStateChanged
 
@@ -1718,7 +2157,7 @@ virtual void onAudioSubscribeStateChanged(const char* channel,
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onVideoSubscribeStateChanged(const char* channel,
      uid_t uid,
      STREAM_SUBSCRIBE_STATE oldState,
@@ -1738,25 +2177,39 @@ virtual void onVideoSubscribeStateChanged(const char* channel,
 
 ### 参数
 
-#### `channel`
+<ParameterList>
+<a id="channel-2"></a>
+<Parameter name="channel">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户的 ID。
 
-#### `oldState`
+</Parameter>
+<a id="oldstate-2"></a>
+<Parameter name="oldState">
 
 之前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-streamsubscribestate)。
 
-#### `newState`
+</Parameter>
+<a id="newstate-2"></a>
+<Parameter name="newState">
 
 当前的订阅状态，详见 STREAM_SUBSCRIBE_STATE。
 
-#### `elapseSinceLastState`
+</Parameter>
+<a id="elapsesincelaststate-2"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

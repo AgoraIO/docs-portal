@@ -16,8 +16,7 @@ paths:
       tags:
         - 实时转录翻译
       summary: 加入频道开始实时转录翻译
-      description: |
-        启动实时转录翻译任务。
+      description: 启动实时转录翻译任务。
       x-docs-sections:
         - position: after-description
           markdown: 你可以通过该方法设置是否需要启用字幕录制、字幕翻译功能。
@@ -324,7 +323,7 @@ components:
           description: >
             必选，实时转录翻译需要识别的语种，最多支持 4 种语言。
 
-            可参考[支持识别的语言](/zh-CN/realtime-media/speech-to-text/reference/supported-languages)进行设置。
+            可参考[支持识别的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)进行设置。
           maxItems: 4
           items:
             type: string
@@ -380,7 +379,7 @@ components:
           description: >
             必选，需要识别的转录语种。每个 uid 最多支持设置 4 种语言。
 
-            可参考[支持的语言](/zh-CN/realtime-media/speech-to-text/reference/supported-languages)进行设置。
+            可参考[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)进行设置。
           maxItems: 4
       x-stoplight:
         id: 0i2gh4n8s058x
@@ -656,7 +655,7 @@ components:
           description: >
             必选，翻译的源语言。
 
-            支持翻译的源语言详见[支持的语言](/zh-CN/realtime-media/speech-to-text/reference/supported-languages)。
+            支持翻译的源语言详见[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)。
         target:
           type: array
           items:
@@ -664,7 +663,7 @@ components:
           description: >
             必选，翻译的目标语言。数组长度不得超过 10。
 
-            支持翻译的目标语言详见[支持的语言](/zh-CN/realtime-media/speech-to-text/reference/supported-languages)。
+            支持翻译的目标语言详见[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)。
 
             > - 源语言为单语言时，翻译的目标语言需要和源语言不同，否则会报错。例如中文输入时，翻译的目标语言不能选择中文。
 
@@ -683,7 +682,7 @@ components:
           description: >
             实时转录翻译需要识别的语种，最多支持 4 种语言。
 
-            可参考[支持识别的语言](/zh-CN/realtime-media/speech-to-text/reference/supported-languages)进行设置。
+            可参考[支持识别的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)进行设置。
           maxItems: 4
         keywords:
           type: array

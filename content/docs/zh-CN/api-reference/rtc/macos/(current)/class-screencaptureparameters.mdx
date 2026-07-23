@@ -1,10 +1,18 @@
 ---
-title: "AgoraScreenCaptureParameters"
-description: "屏幕共享配置。"
+title: AgoraScreenCaptureParameters
+description: 屏幕共享配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_screencaptureparameters
+  sourcePath: html-docs/rtc/macOS/API/class_screencaptureparameters.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screencaptureparameters__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraScreenCaptureParameters: NSObject
 @property (assign, nonatomic) CGSize dimensions;
 @property (assign, nonatomic) NSInteger frameRate;
@@ -26,38 +34,47 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureParameters: 
 
 ## 属性
 
-### `dimensions`
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
-:::info[注]
-在文档共享场景（`AgoraScreenScenarioDocument` ）中设置编码分辨率时，建议：
+:::note
+注： 在文档共享场景（`AgoraScreenScenarioDocument`）中设置编码分辨率时，建议：
 
 - 若需最佳画质，建议编码分辨率与采集分辨率一致。
 - 若需在画质、带宽和系统性能之间取得平衡：
+
   - 当采集分辨率大于 1920 × 1080 时，编码分辨率建议不低于 1920 × 1080。
   - 当采集分辨率小于 1920 × 1080 时，编码分辨率建议不低于 1280 × 720。
 :::
 
 屏幕共享视频流的编码分辨率。若屏幕尺寸与该参数不同，SDK 会采用以下编码策略。例如将 `dimensions` 设置为 1920 × 1080：
 
-- 如果屏幕尺寸小于 dimensions，如 1000 × 1000 像素，SDK 会使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
-- 如果屏幕尺寸大于 dimensions，如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4:3）的前提下，使用不超过 dimensions 的最大值进行编码，即 1440 × 1080。
+- 如果屏幕尺寸小于 `dimensions`，如 1000 × 1000 像素，SDK 会使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
+- 如果屏幕尺寸大于 `dimensions`，如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4\:3）的前提下，使用不超过 `dimensions` 的最大值进行编码，即 1440 × 1080。
 
-### `frameRate`
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 共享区域的帧率（fps）。默认值为 5。
 
-:::info[注]
-不建议设置超过 15 的帧率。
+:::note
+注： 不建议设置超过 15 的帧率。
 :::
 
-### `bitrate`
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 共享区域的码率（Kbps）。默认值为 0，表示 SDK 会根据当前屏幕的分辨率计算码率。
 
-### `captureMouseCursor`
+</Parameter>
+<a id="capturemousecursor"></a>
+<Parameter name="captureMouseCursor">
 
-:::info[注]
-由于 macOS 系统限制，在屏幕共享时设置为 NO 无效（共享窗口时不受影响）。
+:::note
+注： 由于 macOS 系统限制，在屏幕共享时设置为 NO 无效（共享窗口时不受影响）。
 :::
 
 是否在屏幕共享中采集鼠标：
@@ -65,10 +82,12 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureParameters: 
 - YES：（默认）采集鼠标。
 - NO：不采集鼠标。
 
-### `windowFocus`
+</Parameter>
+<a id="windowfocus"></a>
+<Parameter name="windowFocus">
 
-:::info[注]
-由于 macOS 系统限制，设置该参数置顶窗口时，如果当前应用有多个窗口，仅主窗口会被置顶。
+:::note
+注： 由于 macOS 系统限制，设置该参数置顶窗口时，如果当前应用有多个窗口，仅主窗口会被置顶。
 :::
 
 调用 `startScreenCaptureByWindowId` 方法共享窗口时，是否将该窗口置顶：
@@ -76,14 +95,18 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureParameters: 
 - YES：将窗口置顶。
 - NO：（默认）不置顶。
 
-### `excludeWindowList`
+</Parameter>
+<a id="excludewindowlist"></a>
+<Parameter name="excludeWindowList">
 
 要屏蔽的窗口 ID 列表。调用 `startScreenCaptureByDisplayId` 开始屏幕共享时，可使用该参数屏蔽指定窗口。调用 `updateScreenCaptureParameters` 更新屏幕共享配置时，也可动态屏蔽指定窗口。
 
-### `highLighted`
+</Parameter>
+<a id="highlighted"></a>
+<Parameter name="highLighted">
 
-:::info[注]
-当共享的是窗口或屏幕的一部分时，若设置为 YES，SDK 会在整个窗口或屏幕周围添加边框。
+:::note
+注： 当共享的是窗口或屏幕的一部分时，若设置为 YES，SDK 会在整个窗口或屏幕周围添加边框。
 :::
 
 是否在共享的窗口或屏幕周围添加边框：
@@ -91,14 +114,21 @@ __attribute__((visibility("default"))) @interface AgoraScreenCaptureParameters: 
 - YES：添加边框。
 - NO：（默认）不添加边框。
 
-### `highLightColor`
+</Parameter>
+<a id="highlightcolor"></a>
+<Parameter name="highLightColor">
 
-边框颜色。在 macOS 上， `COLOR_CLASS` 表示 `NSColor`。
+边框颜色。在 macOS 上，`COLOR_CLASS` 表示 `NSColor`。
 
-### `highLightWidth`
+</Parameter>
+<a id="highlightwidth"></a>
+<Parameter name="highLightWidth">
 
 边框宽度（像素）。默认值为 5，取值范围为 (0, 50]。
 
-:::info[注]
-仅当 `highLighted` 设置为 YES 时该参数才生效。
+:::note
+注： 仅当 `highLighted` 设置为 YES 时该参数才生效。
 :::
+
+</Parameter>
+</ParameterList>

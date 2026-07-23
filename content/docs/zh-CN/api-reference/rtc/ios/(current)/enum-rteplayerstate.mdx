@@ -1,45 +1,72 @@
 ---
-title: "AgoraRtePlayerState"
-description: "媒体播放器的状态。"
+title: AgoraRtePlayerState
+description: 媒体播放器的状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_rteplayerstate
+  sourcePath: html-docs/rtc/iOS/API/enum_rteplayerstate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerstate__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v4.4.0 版本新增。
+:::
 
 <a id="enum_rteplayerstate__parameters"></a>
 
 ## 枚举值
 
-### `AgoraRtePlayerStateIdle`
+<ParameterList>
+<a id="agorarteplayerstateidle"></a>
+<Parameter name="AgoraRtePlayerStateIdle">
 
 （0）：空闲状态。
 
-### `AgoraRtePlayerStateOpening`
+</Parameter>
+<a id="agorarteplayerstateopening"></a>
+<Parameter name="AgoraRtePlayerStateOpening">
 
-（1）：正在打开 URL 资源。调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 后触发该状态。
+（1）：正在打开 URL 资源。调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 后触发该状态。
 
-### `AgoraRtePlayerStateOpenCompleted`
+</Parameter>
+<a id="agorarteplayerstateopencompleted"></a>
+<Parameter name="AgoraRtePlayerStateOpenCompleted">
 
-（2）：成功打开 URL 资源。调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 成功后触发该状态。
+（2）：成功打开 URL 资源。调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 成功后触发该状态。
 
-### `AgoraRtePlayerStatePlaying`
+</Parameter>
+<a id="agorarteplayerstateplaying"></a>
+<Parameter name="AgoraRtePlayerStatePlaying">
 
 （3）：正在播放状态。
 
-### `AgoraRtePlayerStatePaused`
+</Parameter>
+<a id="agorarteplayerstatepaused"></a>
+<Parameter name="AgoraRtePlayerStatePaused">
 
 （4）：播放已暂停。成功调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player) 后触发该状态。
 
-### `AgoraRtePlayerStatePlaybackCompleted`
+</Parameter>
+<a id="agorarteplayerstateplaybackcompleted"></a>
+<Parameter name="AgoraRtePlayerStatePlaybackCompleted">
 
 （5）：播放已完成。
 
-### `AgoraRtePlayerStateStopped`
+</Parameter>
+<a id="agorarteplayerstatestopped"></a>
+<Parameter name="AgoraRtePlayerStateStopped">
 
 （6）：播放已停止。成功调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player) 后触发该状态。
 
-### `AgoraRtePlayerStateFailed`
+</Parameter>
+<a id="agorarteplayerstatefailed"></a>
+<Parameter name="AgoraRtePlayerStateFailed">
 
-（7）：播放失败。发生内部错误时触发该状态。收到该状态后需先调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)，再调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 重新打开资源。
+（7）：播放失败。发生内部错误时触发该状态。收到该状态后需先调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)，再调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 重新打开资源。
+
+</Parameter>
+</ParameterList>

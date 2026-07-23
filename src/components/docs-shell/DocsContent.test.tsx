@@ -569,6 +569,9 @@ describe('DocsContent', () => {
           <h2 id="overview">Overview</h2>
           <h2 id="guide">Guide</h2>
           <h3 id="late-section">Late section</h3>
+          <h4 data-toc-hidden="true" id="parameter-details">
+            Parameter details
+          </h4>
           <DocsTableOfContents
             toc={[
               { depth: 2, title: 'Overview', url: '#overview' },
@@ -582,6 +585,9 @@ describe('DocsContent', () => {
     expect(
       await screen.findByRole('link', { name: 'Late section' }),
     ).toHaveAttribute('href', '#late-section');
+    expect(
+      screen.queryByRole('link', { name: 'Parameter details' }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
@@ -791,6 +797,91 @@ describe('DocsContent', () => {
     expect(
       await screen.findByRole('link', { name: 'Back to About Agora' }),
     ).toHaveAttribute('href', '/en/introduction/about-agora');
+  });
+
+  it('hides the dynamic return path when an API hierarchy breadcrumb is present', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: '/zh-CN/api-reference/api',
+          title: 'API 参考',
+        },
+        targetPage: '/zh-CN/api-reference/cloud-recording',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API 参考',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            title: '云端录制',
+          },
+          {
+            title: 'RESTful API',
+          },
+        ]}
+        contentPath="zh-CN/api-reference/api-ref/cloud-recording/index.mdx"
+        locale="zh-CN"
+        slug="cloud-recording"
+        title="云端录制概览"
+        toc={[]}
+      />,
+      '/zh-CN/api-reference/cloud-recording',
+    );
+
+    expect(await screen.findByLabelText('Breadcrumb')).toHaveTextContent(
+      'API 参考/云端录制/RESTful API',
+    );
+    expect(
+      screen.queryByRole('link', { name: '返回 API 参考' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps a guide return path when an API hierarchy breadcrumb is present', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: '/zh-CN/realtime-media/cloud-recording/overview',
+          title: '云端录制指南',
+        },
+        targetPage: '/zh-CN/api-reference/cloud-recording',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API 参考',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            title: '云端录制',
+          },
+          {
+            title: 'RESTful API',
+          },
+        ]}
+        contentPath="zh-CN/api-reference/api-ref/cloud-recording/index.mdx"
+        locale="zh-CN"
+        slug="cloud-recording"
+        title="云端录制概览"
+        toc={[]}
+      />,
+      '/zh-CN/api-reference/cloud-recording',
+    );
+
+    expect(
+      await screen.findByRole('link', { name: /返回\s*云端录制指南/ }),
+    ).toHaveAttribute('href', '/zh-CN/realtime-media/cloud-recording/overview');
   });
 
   it('does not render a stored return path when the source href is not an internal docs path', async () => {

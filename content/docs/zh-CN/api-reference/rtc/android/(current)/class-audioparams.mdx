@@ -1,10 +1,18 @@
 ---
-title: "AudioParams"
-description: "用于设置音频数据格式。"
+title: AudioParams
+description: 用于设置音频数据格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_audioparams
+  sourcePath: html-docs/rtc/Android/API/class_audioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audioparams__prototype"></a>
 
-```java
+```text
 public class AudioParams {
   public int sampleRate = 0;
   public int channel = 0;
@@ -17,20 +25,24 @@ public class AudioParams {
 
 你可以在以下接口中传入 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 对象，以设置对应回调的数据格式：
 
-- getRecordAudioParams：设置 onRecordAudioFrame 回调的数据格式。
-- getPlaybackAudioParams：设置 onPlaybackAudioFrame 回调的数据格式。
-- getMixedAudioParams：设置 onMixedAudioFrame 回调的数据格式。
-- getEarMonitoringAudioParams：设置 onEarMonitoringAudioFrame 回调的数据格式。
+- [getRecordAudioParams](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams)：设置 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的数据格式。
+- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)：设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的数据格式。
+- [getMixedAudioParams](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams)：设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的数据格式。
+- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调的数据格式。
 
-:::info[注]
-SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并按该间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。 确保采样间隔 ≥ 0.01 秒。
+:::note
+注： SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样间隔，并按该间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、[onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)、[onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
+采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel`）。
+确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="class_audioparams__parameters"></a>
 
 ## 属性
 
-### `sampleRate`
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 音频采样率（Hz），可设置为以下值：
 
@@ -40,20 +52,29 @@ SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 
 - 44100。
 - 48000。
 
-### `channel`
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
 
 音频声道数，可设置为以下值：
 
 - 1：（默认）单声道。
 - 2：立体声。
 
-### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频数据的使用模式，可设置为以下值：
 
-- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY （0）：只读模式，例如用户通过声网 SDK 获取数据后进行媒体流推送。
-- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE （2）：读写模式，例如用户拥有自定义音频特效处理模块并进行音频预处理，如变声。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`（0）：只读模式，例如用户通过声网 SDK 获取数据后进行媒体流推送。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE`（2）：读写模式，例如用户拥有自定义音频特效处理模块并进行音频预处理，如变声。
 
-### `samplesPerCall`
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
 
 每个回调中包含的采样数，例如用于媒体推送时设置为 1024。
+
+</Parameter>
+</ParameterList>

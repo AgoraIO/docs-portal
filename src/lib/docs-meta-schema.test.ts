@@ -66,6 +66,26 @@ describe('docsMetaSchema', () => {
     ]);
   });
 
+  it('normalizes structural-only sidebar groups to hidden separators', () => {
+    expect(
+      docsMetaSchema.parse({
+        pages: [
+          {
+            pages: ['api-ref', 'rtc'],
+            sidebarHidden: true,
+            title: 'Product reference',
+            type: 'group',
+          },
+        ],
+      }).pages,
+    ).toEqual([
+      '---Product reference{hidden}---',
+      'api-ref',
+      'rtc',
+      '---{flat}---',
+    ]);
+  });
+
   it('treats sidebar page objects as external links by default', () => {
     expect(
       docsMetaSchema.parse({

@@ -1,0 +1,152 @@
+---
+title: Namespace "agora-edu-core/src/services/report-v2"
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/modules/agora_edu_core_src_services_report_v2_.html
+  sourcePath: html-docs/flexible-classroom/Electron/modules/agora_edu_core_src_services_report_v2_.html
+  generator: typedoc
+  warnings: []
+---
+
+## Type aliases
+
+<a id="ReportParams"></a>
+
+### ReportParams
+
+ReportParams: \{cid?:number;id:number;payload:string;qos:number;requestId?:string;sign:string;src:string;ts:number;vid?:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="cid" type="number" optional>
+
+当前通话的cid
+
+</Parameter>
+<Parameter name="id" type="number" required>
+
+协议ID
+
+</Parameter>
+<Parameter name="payload" type="string" required>
+
+上报内容, base64(pb二进制内容)
+
+</Parameter>
+<Parameter name="qos" type="number" required>
+
+消息级别
+1: 默认, 101: 测试
+
+</Parameter>
+<Parameter name="requestId" type="string" optional>
+
+上报唯一id
+
+</Parameter>
+<Parameter name="sign" type="string" required>
+
+签名规则: md5(payload=base64(XX)&src=XX&ts=XX)
+保留字段, XX为字段值 32位小写
+
+</Parameter>
+<Parameter name="src" type="string" required>
+
+来源/请求方
+
+</Parameter>
+<Parameter name="ts" type="number" required>
+
+时间戳, 10位, 秒
+
+</Parameter>
+<Parameter name="vid" type="number" optional>
+
+厂商ID
+
+</Parameter>
+</ParameterList>
+
+<a id="ReportUserParams"></a>
+
+### ReportUserParams
+
+ReportUserParams: \{errorCode?:number;lts?:number;role:string;roomCreateTs:number;roomId:string;rtmSid:string;scenario:string;streamSid:string;streamSuid:string;streamUid:number;uid:string;userName:string;ver:string;vid:number\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="errorCode" type="number" optional>
+
+异常码，若有
+
+</Parameter>
+<Parameter name="lts" type="number" optional>
+
+时间戳，必须存在
+
+</Parameter>
+<Parameter name="role" type="string" required>
+
+apaas角色
+
+</Parameter>
+<Parameter name="roomCreateTs" type="number" required>
+
+房间创建的时间戳
+
+</Parameter>
+<Parameter name="roomId" type="string" required>
+
+apaas房间id，与rtc/rtm channelName相同
+
+</Parameter>
+<Parameter name="rtmSid" type="string" required>
+
+rtm sid
+
+</Parameter>
+<Parameter name="scenario" type="string" required>
+
+apaas场景，如education/meeting/entertainment
+
+</Parameter>
+<Parameter name="streamSid" type="string" required>
+
+rtc sid
+
+</Parameter>
+<Parameter name="streamSuid" type="string" required>
+
+rtc流id
+
+</Parameter>
+<Parameter name="streamUid" type="number" required>
+
+rtc流id
+
+</Parameter>
+<Parameter name="uid" type="string" required>
+
+apaas用户id，同RTM uid
+
+</Parameter>
+<Parameter name="userName" type="string" required>
+
+用户名，用于显示
+
+</Parameter>
+<Parameter name="ver" type="string" required>
+
+apaas版本号
+
+</Parameter>
+<Parameter name="vid" type="number" required>
+
+vid
+
+</Parameter>
+</ParameterList>

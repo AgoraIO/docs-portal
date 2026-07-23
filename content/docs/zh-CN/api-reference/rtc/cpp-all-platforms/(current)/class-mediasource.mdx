@@ -1,10 +1,18 @@
 ---
-title: "MediaSource"
-description: "用于配置要播放的媒体文件及播放场景。"
+title: MediaSource
+description: 用于配置要播放的媒体文件及播放场景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_mediasource
+  sourcePath: html-docs/rtc/Cpp/API/class_mediasource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mediasource__prototype"></a>
 
-```cpp
+```text
 struct MediaSource {
   const char* url;
   const char* uri;
@@ -22,26 +30,34 @@ struct MediaSource {
 
 ## 属性
 
-### `url`
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 要播放的媒体文件的 URL。
 
-:::info[注]
-如果打开的是普通媒体资源，请传入 `url`。如果打开的是自定义媒体资源，请传入 `provider`。声网建议不要在一次调用中同时传入这两个参数，否则调用可能失败。
+:::note
+注： 如果打开的是普通媒体资源，请传入 `url`。如果打开的是自定义媒体资源，请传入 `provider`。声网建议不要在一次调用中同时传入这两个参数，否则调用可能失败。
 :::
 
-### `uri`
+</Parameter>
+<a id="uri"></a>
+<Parameter name="uri">
 
 媒体文件的 URI（统一资源标识符）。
 
-### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 播放的起始位置（单位为毫秒）。默认值为 0。
 
-### `autoPlay`
+</Parameter>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
 
-:::info[注]
-如果禁用了自动播放，需要在打开媒体文件后调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放。
+:::note
+注： 如果禁用了自动播放，需要在打开媒体文件后调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放。
 :::
 
 打开媒体文件后是否自动播放：
@@ -49,10 +65,12 @@ struct MediaSource {
 - true：（默认）自动播放。
 - false：不自动播放。
 
-### `enableCache`
+</Parameter>
+<a id="enablecache"></a>
+<Parameter name="enableCache">
 
-:::info[注]
-声网仅支持缓存非 HLS 协议传输的点播音视频流。若需启用缓存，请传入 `uri`，否则缓存基于媒体文件的 `url`。启用该功能后，媒体播放器会将播放中的部分媒体文件缓存在本地设备上，即使无网络连接也可播放缓存的媒体文件。缓存的媒体文件统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cachestatistics)。
+:::note
+注： 声网仅支持缓存非 HLS 协议传输的点播音视频流。若需启用缓存，请传入 `uri`，否则缓存基于媒体文件的 `url`。启用该功能后，媒体播放器会将播放中的部分媒体文件缓存在本地设备上，即使无网络连接也可播放缓存的媒体文件。缓存的媒体文件统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cachestatistics)。
 :::
 
 播放媒体文件时是否启用缓存：
@@ -60,10 +78,12 @@ struct MediaSource {
 - true：启用缓存。
 - false：（默认）不启用缓存。
 
-### `enableMultiAudioTrack`
+</Parameter>
+<a id="enablemultiaudiotrack"></a>
+<Parameter name="enableMultiAudioTrack">
 
-:::info[注]
-如果需要为本地播放和发布到频道设置不同的音轨，需将该参数设置为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
+:::note
+注： 如果需要为本地播放和发布到频道设置不同的音轨，需将该参数设置为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
 :::
 
 播放该媒体文件时是否允许选择不同的音轨：
@@ -71,10 +91,12 @@ struct MediaSource {
 - true：允许选择不同音轨。
 - false：（默认）不允许选择不同音轨。
 
-### `isAgoraSource`
+</Parameter>
+<a id="isagorasource"></a>
+<Parameter name="isAgoraSource">
 
-:::info[注]
-如果需要打开通过直播服务分发的直播流或点播视频，请将媒体资源的 URL 传入 `url`，并将 `isAgoraSource` 设置为 true；否则无需设置该参数。
+:::note
+注： 如果需要打开通过直播服务分发的直播流或点播视频，请将媒体资源的 URL 传入 `url`，并将 `isAgoraSource` 设置为 true；否则无需设置该参数。
 :::
 
 要打开的媒体资源是否为通过直播服务分发的直播流或点播视频：
@@ -82,10 +104,12 @@ struct MediaSource {
 - true：媒体资源为通过直播服务分发的直播或点播视频。
 - false：（默认）媒体资源不是通过直播服务分发的直播或点播视频。
 
-### `isLiveSource`
+</Parameter>
+<a id="islivesource"></a>
+<Parameter name="isLiveSource">
 
-:::info[注]
-如果要打开的媒体资源是直播流，声网建议将该参数设置为 true，以加快直播流加载速度。若打开的媒体资源不是直播流但设置了 `isLiveSource` 为 true，则不会加快加载速度。
+:::note
+注： 如果要打开的媒体资源是直播流，声网建议将该参数设置为 true，以加快直播流加载速度。若打开的媒体资源不是直播流但设置了 `isLiveSource` 为 true，则不会加快加载速度。
 :::
 
 要打开的媒体资源是否为直播流：
@@ -93,10 +117,15 @@ struct MediaSource {
 - true：媒体资源为直播流。
 - false：（默认）媒体资源不是直播流。
 
-### `provider`
+</Parameter>
+<a id="provider"></a>
+<Parameter name="provider">
 
 自定义媒体资源文件的回调。详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercustomdataprovider)。
 
-:::info[注]
-如果打开的是自定义媒体资源，请传入 `provider`。如果打开的是普通媒体资源，请传入 `url`。声网建议不要在一次调用中同时传入 `url` 和 `provider`，否则调用可能失败。
+:::note
+注： 如果打开的是自定义媒体资源，请传入 `provider`。如果打开的是普通媒体资源，请传入 `url`。声网建议不要在一次调用中同时传入 `url` 和 `provider`，否则调用可能失败。
 :::
+
+</Parameter>
+</ParameterList>

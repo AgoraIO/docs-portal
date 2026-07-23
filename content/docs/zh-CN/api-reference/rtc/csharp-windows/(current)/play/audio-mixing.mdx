@@ -1,10 +1,19 @@
 ---
-title: "音乐文件播放"
-description: "音乐文件播放 API reference."
+title: 音乐文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_audio_mixing
+  sourcePath: html-docs/rtc/Csharp/API/toc_audio_mixing.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AdjustAudioMixingPlayoutVolume
 
@@ -12,7 +21,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustAudioMixingPlayoutVolume(int volume);
 ```
 
@@ -22,7 +31,7 @@ public abstract int AdjustAudioMixingPlayoutVolume(int volume);
 
 ### 调用时机
 
-你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__restriction"></a>
 
@@ -34,21 +43,29 @@ public abstract int AdjustAudioMixingPlayoutVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## AdjustAudioMixingPublishVolume
 
@@ -56,7 +73,7 @@ public abstract int AdjustAudioMixingPlayoutVolume(int volume);
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustAudioMixingPublishVolume(int volume);
 ```
 
@@ -68,7 +85,7 @@ public abstract int AdjustAudioMixingPublishVolume(int volume);
 
 ### 调用时机
 
-你需要在调用 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__restriction"></a>
 
@@ -80,21 +97,29 @@ public abstract int AdjustAudioMixingPublishVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
+
+<a id="ariaid-title4"></a>
 
 ## AdjustAudioMixingVolume
 
@@ -102,7 +127,7 @@ public abstract int AdjustAudioMixingPublishVolume(int volume);
 
 <a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustAudioMixingVolume(int volume);
 ```
 
@@ -110,8 +135,8 @@ public abstract int AdjustAudioMixingVolume(int volume);
 
 该方法调节混音音乐文件在本端和远端的播放音量大小。
 
-:::info[注]
-调用该方法不会影响 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
+:::note
+注： 调用该方法不会影响 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
@@ -130,21 +155,29 @@ public abstract int AdjustAudioMixingVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
+
+<a id="ariaid-title5"></a>
 
 ## AdjustPlaybackSignalVolume
 
@@ -152,7 +185,7 @@ public abstract int AdjustAudioMixingVolume(int volume);
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustPlaybackSignalVolume(int volume);
 ```
 
@@ -176,7 +209,9 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-3"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
@@ -184,17 +219,23 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
+
+<a id="ariaid-title6"></a>
 
 ## GetAudioMixingCurrentPosition
 
@@ -202,7 +243,7 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
 
-```csharp
+```text
 public abstract int GetAudioMixingCurrentPosition();
 ```
 
@@ -212,8 +253,10 @@ public abstract int GetAudioMixingCurrentPosition();
 
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
-:::warning[注意]
-- 你需要在调用 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+:::caution
+注意：
+
+- 你需要在调用 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 - 如需多次调用 GetAudioMixingCurrentPosition，请确保调用间隔大于 500 ms。
 :::
 
@@ -222,12 +265,15 @@ public abstract int GetAudioMixingCurrentPosition();
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回当前音乐文件播放进度（ms）。0 表示当前音乐文件未开始播放。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
+
+<a id="ariaid-title7"></a>
 
 ## GetAudioMixingDuration
 
@@ -235,7 +281,7 @@ public abstract int GetAudioMixingCurrentPosition();
 
 <a id="api_irtcengine_getaudiomixingduration__prototype"></a>
 
-```csharp
+```text
 public abstract int GetAudioMixingDuration();
 ```
 
@@ -247,7 +293,7 @@ public abstract int GetAudioMixingDuration();
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingduration__restriction"></a>
 
@@ -260,12 +306,15 @@ public abstract int GetAudioMixingDuration();
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音乐文件时长。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title8"></a>
 
 ## GetAudioMixingPlayoutVolume
 
@@ -273,7 +322,7 @@ public abstract int GetAudioMixingDuration();
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int GetAudioMixingPlayoutVolume();
 ```
 
@@ -285,7 +334,7 @@ public abstract int GetAudioMixingPlayoutVolume();
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__restriction"></a>
 
@@ -298,12 +347,15 @@ public abstract int GetAudioMixingPlayoutVolume();
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title9"></a>
 
 ## GetAudioMixingPublishVolume
 
@@ -311,7 +363,7 @@ public abstract int GetAudioMixingPlayoutVolume();
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int GetAudioMixingPublishVolume();
 ```
 
@@ -321,8 +373,8 @@ public abstract int GetAudioMixingPublishVolume();
 
 该接口可以方便开发者排查音量相关问题。
 
-:::warning[注意]
-你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+:::caution
+注意： 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
@@ -330,12 +382,15 @@ public abstract int GetAudioMixingPublishVolume();
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
+
+<a id="ariaid-title10"></a>
 
 ## GetAudioTrackCount
 
@@ -343,7 +398,7 @@ public abstract int GetAudioMixingPublishVolume();
 
 <a id="api_irtcengine_getaudiotrackcount__prototype"></a>
 
-```csharp
+```text
 public abstract int GetAudioTrackCount();
 ```
 
@@ -351,8 +406,10 @@ public abstract int GetAudioTrackCount();
 
 ### 详情
 
-:::info[注]
-- 你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged (AUDIO_MIXING_STATE_PLAYING) 回调后调用该方法。
+:::note
+注：
+
+- 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -360,12 +417,15 @@ public abstract int GetAudioTrackCount();
 ### 返回值
 
 - 方法调用成功时，返回当前音乐文件的音轨索引。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
+
+<a id="ariaid-title11"></a>
 
 ## PauseAudioMixing
 
@@ -373,7 +433,7 @@ public abstract int GetAudioTrackCount();
 
 <a id="api_irtcengine_pauseaudiomixing__prototype"></a>
 
-```csharp
+```text
 public abstract int PauseAudioMixing();
 ```
 
@@ -398,12 +458,15 @@ public abstract int PauseAudioMixing();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
+
+<a id="ariaid-title12"></a>
 
 ## ResumeAudioMixing
 
@@ -411,7 +474,7 @@ public abstract int PauseAudioMixing();
 
 <a id="api_irtcengine_resumeaudiomixing__prototype"></a>
 
-```csharp
+```text
 public abstract int ResumeAudioMixing();
 ```
 
@@ -436,12 +499,15 @@ public abstract int ResumeAudioMixing();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_selectaudiotrack"></a>
+
+<a id="ariaid-title13"></a>
 
 ## SelectAudioTrack [1/2]
 
@@ -449,7 +515,7 @@ public abstract int ResumeAudioMixing();
 
 <a id="api_irtcengine_selectaudiotrack__prototype"></a>
 
-```csharp
+```text
 public abstract int SelectAudioTrack(int index);
 ```
 
@@ -459,30 +525,40 @@ public abstract int SelectAudioTrack(int index);
 
 获取音乐文件的音轨数量后，你可以调用该方法指定任一音轨进行播放。例如，如果一个多音轨文件的不同音轨存放了不同语言的歌曲，则你可以调用该方法设置音乐文件的播放语言。
 
-:::info[注]
-- 该方法支持的音频文件格式见 RTC SDK 支持播放哪些格式的音频文件？。
-- 你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged (AUDIO_MIXING_STATE_PLAYING) 回调后调用该方法。
+:::note
+注：
+
+- 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)。
+- 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
 
 ### 参数
 
-#### `index`
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 指定的播放音轨。取值范围应大于等于 0 且小于 [GetAudioTrackCount](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
+
+<a id="ariaid-title14"></a>
 
 ## SetAudioMixingDualMonoMode
 
@@ -490,7 +566,7 @@ public abstract int SelectAudioTrack(int index);
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
 
-```csharp
+```text
 public abstract int SetAudioMixingDualMonoMode(AUDIO_MIXING_DUAL_MONO_MODE mode);
 ```
 
@@ -511,7 +587,7 @@ public abstract int SetAudioMixingDualMonoMode(AUDIO_MIXING_DUAL_MONO_MODE mode)
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__restriction"></a>
 
@@ -523,21 +599,29 @@ public abstract int SetAudioMixingDualMonoMode(AUDIO_MIXING_DUAL_MONO_MODE mode)
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AUDIO_MIXING_DUAL_MONO_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiomixingdualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
+
+<a id="ariaid-title15"></a>
 
 ## SetAudioMixingPitch
 
@@ -545,7 +629,7 @@ public abstract int SetAudioMixingDualMonoMode(AUDIO_MIXING_DUAL_MONO_MODE mode)
 
 <a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
 
-```csharp
+```text
 public abstract int SetAudioMixingPitch(int pitch);
 ```
 
@@ -557,7 +641,7 @@ public abstract int SetAudioMixingPitch(int pitch);
 
 ### 调用时机
 
-你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingpitch__restriction"></a>
 
@@ -569,21 +653,29 @@ public abstract int SetAudioMixingPitch(int pitch);
 
 ### 参数
 
-#### `pitch`
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
+
+<a id="ariaid-title16"></a>
 
 ## SetAudioMixingPosition
 
@@ -591,7 +683,7 @@ public abstract int SetAudioMixingPitch(int pitch);
 
 <a id="api_irtcengine_setaudiomixingposition__prototype"></a>
 
-```csharp
+```text
 public abstract int SetAudioMixingPosition(int pos);
 ```
 
@@ -603,7 +695,7 @@ public abstract int SetAudioMixingPosition(int pos);
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)`(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingposition__restriction"></a>
 
@@ -615,21 +707,29 @@ public abstract int SetAudioMixingPosition(int pos);
 
 ### 参数
 
-#### `pos`
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing"></a>
+
+<a id="ariaid-title17"></a>
 
 ## StartAudioMixing [1/2]
 
@@ -637,7 +737,7 @@ public abstract int SetAudioMixingPosition(int pos);
 
 <a id="api_irtcengine_startaudiomixing__prototype"></a>
 
-```csharp
+```text
  public abstract int StartAudioMixing(string filePath, bool loopback, int cycle);
 ```
 
@@ -662,33 +762,44 @@ public abstract int SetAudioMixingPosition(int pos);
 
 ### 相关回调
 
-调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged (`AUDIO_MIXING_STATE_STOPPED`) 回调。
+<a id="api_irtcengine_startaudiomixing__audiomixing_detailed"></a>
+
+调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)(`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged(`AUDIO_MIXING_STATE_STOPPED`) 回调。
 
 <a id="api_irtcengine_startaudiomixing__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
-:::warning[注意]
-如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 filePath 相同。
+:::caution
+注意： 如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 filePath 相同。
 :::
 
-#### `loopback`
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否只在本地播放音乐文件：
 
-- true：只在本地播放音乐文件，只有本地用户能听到音乐。
-- false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
+- `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
+- `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
-#### `cycle`
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt;0: 播放次数。例如，1 表示播放 1 次。
 - -1: 无限循环播放。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing__return_values"></a>
 
@@ -696,14 +807,18 @@ public abstract int SetAudioMixingPosition(int pos);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 
 <a id="api_irtcengine_startaudiomixing2"></a>
+
+<a id="ariaid-title18"></a>
 
 ## StartAudioMixing [2/2]
 
@@ -711,7 +826,7 @@ public abstract int SetAudioMixingPosition(int pos);
 
 <a id="api_irtcengine_startaudiomixing2__prototype"></a>
 
-```csharp
+```text
 public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, int startPos);
 ```
 
@@ -736,35 +851,48 @@ public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, 
 
 ### 相关回调
 
-调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged (`AUDIO_MIXING_STATE_STOPPED`) 回调。
+<a id="api_irtcengine_startaudiomixing2__audiomixing_detailed"></a>
+
+调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)(`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged(`AUDIO_MIXING_STATE_STOPPED`) 回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
 文件路径：
 
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
 
-#### `loopback`
+</Parameter>
+<a id="loopback-1"></a>
+<Parameter name="loopback">
 
 是否只在本地播放音乐文件：
 
-- true：只在本地播放音乐文件，只有本地用户能听到音乐。
-- false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
+- `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
+- `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
-#### `cycle`
+</Parameter>
+<a id="cycle-1"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt;0: 播放次数。例如，1 表示播放 1 次。
 - -1: 无限循环播放。
 
-#### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -772,17 +900,22 @@ public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, 
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiomixing"></a>
+
+<a id="ariaid-title19"></a>
 
 ## StopAudioMixing
 
@@ -790,7 +923,7 @@ public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, 
 
 <a id="api_irtcengine_stopaudiomixing__prototype"></a>
 
-```csharp
+```text
 public abstract int StopAudioMixing();
 ```
 
@@ -815,12 +948,15 @@ public abstract int StopAudioMixing();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
+
+<a id="ariaid-title20"></a>
 
 ## OnAudioMixingFinished
 
@@ -828,22 +964,31 @@ public abstract int StopAudioMixing();
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioMixingFinished()
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
 
-#### `弃用：`
+### 详情
 
+<a id="弃用"></a>
+
+:::error[弃用：]
 请改用 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+:::
+
+<a id="callback_irtcengineeventhandler_onaudiomixingfinished__desc"></a>
 
 当调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 StartAudioMixing [2/2] 失败，会返回错误码 WARN_AUDIO_MIXING_OPEN_ERROR。
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
+
+<a id="ariaid-title21"></a>
 
 ## OnAudioMixingPositionChanged
 
@@ -851,7 +996,7 @@ public virtual void OnAudioMixingFinished()
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioMixingPositionChanged(long position) { }
 ```
 
@@ -865,21 +1010,29 @@ public virtual void OnAudioMixingPositionChanged(long position) { }
 
 ### 参数
 
-#### `position`
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 音乐文件当前的播放进度，单位为 ms。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
+
+<a id="ariaid-title22"></a>
 
 ## OnAudioMixingStateChanged
 
@@ -887,11 +1040,13 @@ public virtual void OnAudioMixingPositionChanged(long position) { }
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioMixingStateChanged(AUDIO_MIXING_STATE_TYPE state, AUDIO_MIXING_REASON_TYPE reason) {}
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__detailed_desc"></a>
+
+### 详情
 
 该回调在音乐文件播放状态发生改变时触发，并报告当前的播放状态和错误码。
 
@@ -899,13 +1054,21 @@ public virtual void OnAudioMixingStateChanged(AUDIO_MIXING_STATE_TYPE state, AUD
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
-音乐文件播放状态。 详见 [AUDIO_MIXING_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiomixingstatetype)。
+音乐文件播放状态。详见 [AUDIO_MIXING_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiomixingstatetype)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
-错误码。 详见 [AUDIO_MIXING_REASON_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiomixingreasontype)。
+错误码。详见 [AUDIO_MIXING_REASON_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiomixingreasontype)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

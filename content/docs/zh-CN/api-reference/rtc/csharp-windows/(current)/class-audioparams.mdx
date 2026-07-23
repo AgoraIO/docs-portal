@@ -1,10 +1,18 @@
 ---
-title: "AudioParams"
-description: "音频数据格式。"
+title: AudioParams
+description: 音频数据格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_audioparams
+  sourcePath: html-docs/rtc/Csharp/API/class_audioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audioparams__prototype"></a>
 
-```csharp
+```text
 public class AudioParams
     {
         public int sample_rate { set; get; }
@@ -32,16 +40,20 @@ public class AudioParams
 
 <a id="class_audioparams__detailed_desc"></a>
 
+### 详情
+
 你可以在以下 API 中传入 AudioParams 对象，用于设置对应回调报告的音频数据格式：
 
-- ：设置 OnRecordAudioFrame 回调的数据格式。
-- ：设置 OnPlaybackAudioFrame 回调的数据格式。
-- ：设置 OnMixedAudioFrame 回调的数据格式。
-- ：设置 OnEarMonitoringAudioFrame 回调的数据格式。
+- ：设置 [OnRecordAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调的数据格式。
+- ：设置 [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调的数据格式。
+- ：设置 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调的数据格式。
+- ：设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的数据格式。
 
-:::warning[注意]
-- SDK 会通过 AudioParams 中的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame、 OnPlaybackAudioFrame、 OnMixedAudioFrame 和 OnEarMonitoringAudioFrame 回调。
-- 采样间隔 = samplesPerCall /(sampleRate × channel)。
+:::caution
+注意：
+
+- SDK 会通过 AudioParams 中的 samplesPerCall、sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame、OnPlaybackAudioFrame、OnMixedAudioFrame 和 OnEarMonitoringAudioFrame 回调。
+- 采样间隔 = samplesPerCall/(sampleRate × channel)。
 - 请确保采样间隔不得小于 0.01 (s)。
 :::
 
@@ -49,7 +61,9 @@ public class AudioParams
 
 ## 属性
 
-### `sample_rate`
+<ParameterList>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
 
 数据的采样率，单位为 Hz，取值如下：
 
@@ -59,17 +73,26 @@ public class AudioParams
 - 44100
 - 48000
 
-### `channels`
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 数据的声道数，取值如下：
 
 - 1：单声道（默认值）
 - 2：双声道
 
-### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 数据的使用模式。详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-rawaudioframeopmodetype)。
 
-### `samples_per_call`
+</Parameter>
+<a id="samples_per_call"></a>
+<Parameter name="samples_per_call">
 
 数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>

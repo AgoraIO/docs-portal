@@ -448,7 +448,8 @@ function getIndentedBlockComponent(line) {
 }
 
 function hasSuspiciousLiteralBrace(line) {
-  return /(^|[^\\])\{(?:\s|["'])/.test(line);
+  const prose = line.replace(/<[^>]*>/g, '');
+  return /(^|[^\\])\{(?:\s|["'])/.test(prose);
 }
 
 function hasSuspiciousLiteralAngle(line) {

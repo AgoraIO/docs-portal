@@ -1,55 +1,90 @@
 ---
-title: "LOCAL_AUDIO_STREAM_REASON"
-description: "本地音频状态改变原因。"
+title: LOCAL_AUDIO_STREAM_REASON
+description: 本地音频状态改变原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_localaudiostreamreason
+  sourcePath: html-docs/rtc/Csharp/API/enum_localaudiostreamreason.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_localaudiostreamreason__parameters"></a>
 
 ## 枚举值
 
-### `LOCAL_AUDIO_STREAM_REASON_OK`
+<ParameterList>
+<a id="local_audio_stream_reason_ok"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_OK">
 
 0：本地音频状态正常。
 
-### `LOCAL_AUDIO_STREAM_REASON_FAILURE`
+</Parameter>
+<a id="local_audio_stream_reason_failure"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_FAILURE">
 
 1：本地音频出错原因不明确。建议提示用户尝试重新加入频道。
 
-### `LOCAL_AUDIO_STREAM_REASON_DEVICE_NO_PERMISSION`
+</Parameter>
+<a id="local_audio_stream_reason_device_no_permission"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_DEVICE_NO_PERMISSION">
 
 2：没有权限启动本地音频采集设备。请提示用户开启权限。
 
-##### `弃用：`
+<a id="弃用"></a>
 
+:::error[弃用：]
 该枚举已废弃。请改用 [OnPermissionError](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 RECORD_AUDIO。
+:::
 
-### `LOCAL_AUDIO_STREAM_REASON_DEVICE_BUSY`
+</Parameter>
+<a id="local_audio_stream_reason_device_busy"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_DEVICE_BUSY">
 
 3：预留。
 
-### `LOCAL_AUDIO_STREAM_REASON_RECORD_FAILURE`
+</Parameter>
+<a id="local_audio_stream_reason_record_failure"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_RECORD_FAILURE">
 
 4：本地音频采集失败。
 
-### `LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE`
+</Parameter>
+<a id="local_audio_stream_reason_encode_failure"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE">
 
 5：本地音频编码失败。
 
-### `LOCAL_AUDIO_STREAM_REASON_NO_RECORDING_DEVICE`
+</Parameter>
+<a id="local_audio_stream_reason_no_recording_device"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_NO_RECORDING_DEVICE">
 
 6：无本地音频采集设备。请提示用户在设备的控制面板中检查麦克风是否与设备连接正常，检查麦克风是否正常工作。
 
-### `LOCAL_AUDIO_STREAM_REASON_NO_PLAYOUT_DEVICE`
+</Parameter>
+<a id="local_audio_stream_reason_no_playout_device"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_NO_PLAYOUT_DEVICE">
 
 7：无本地音频播放设备。请提示用户在设备的控制面板中检查扬声器是否与设备连接正常，检查扬声器是否正常工作。
 
-### `LOCAL_AUDIO_STREAM_REASON_INTERRUPTED`
+</Parameter>
+<a id="local_audio_stream_reason_interrupted"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_INTERRUPTED">
 
 预留。
 
-### `LOCAL_AUDIO_STREAM_REASON_RECORD_INVALID_ID`
+</Parameter>
+<a id="local_audio_stream_reason_record_invalid_id"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_RECORD_INVALID_ID">
 
 9：（仅适用于 Windows）本地音频采集设备的 ID 无效。请提示用户检查音频采集设备 ID。
 
-### `LOCAL_AUDIO_STREAM_REASON_PLAYOUT_INVALID_ID`
+</Parameter>
+<a id="local_audio_stream_reason_playout_invalid_id"></a>
+<Parameter name="LOCAL_AUDIO_STREAM_REASON_PLAYOUT_INVALID_ID">
 
 10：（仅适用于 Windows）本地音频播放设备的 ID 无效。请提示用户检查音频播放设备 ID。
+
+</Parameter>
+</ParameterList>

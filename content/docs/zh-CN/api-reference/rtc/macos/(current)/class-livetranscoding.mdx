@@ -1,10 +1,18 @@
 ---
-title: "AgoraLiveTranscoding"
-description: "媒体推流的转码配置。"
+title: AgoraLiveTranscoding
+description: 媒体推流的转码配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_livetranscoding
+  sourcePath: html-docs/rtc/macOS/API/class_livetranscoding.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_livetranscoding__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraLiveTranscoding : NSObject
 @property(copy, nonatomic) NSArray<AgoraLiveTranscodingUser*>* _Nullable transcodingUsers;
 @property(assign, nonatomic) CGSize size;
@@ -29,82 +37,113 @@ __attribute__((visibility("default"))) @interface AgoraLiveTranscoding : NSObjec
 
 ## 属性
 
-### `transcodingUsers`
+<ParameterList>
+<a id="transcodingusers"></a>
+<Parameter name="transcodingUsers">
 
 媒体推流中的用户布局配置。最多支持添加 17 个转码用户。详见 [AgoraLiveTranscodingUser](/zh-CN/api-reference/rtc/macos/class-transcodinguser)。
 
-### `size`
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 视频的尺寸（单位为像素）。
 
 - 推送视频流到 CDN 时：
+
   - 宽度范围为 [64,1920]，小于 64 会被自动调整为 64，大于 1920 会被自动调整为 1920。
   - 高度范围为 [64,1080]，小于 64 会被自动调整为 64，大于 1080 会被自动调整为 1080。
 - 推送音频流到 CDN 时，请将宽度和高度设置为 0。
 
-### `videoBitrate`
+</Parameter>
+<a id="videobitrate"></a>
+<Parameter name="videoBitrate">
 
 视频的编码码率（Kbps）。无需设置该参数，保持默认值 AgoraVideoBitrateStandard 即可。SDK 会根据你设置的视频分辨率和帧率自动匹配最合适的码率。分辨率与帧率的对应关系详见 `Video profile`。
 
-### `videoFramerate`
+</Parameter>
+<a id="videoframerate"></a>
+<Parameter name="videoFramerate">
 
 媒体推流的视频输出帧率（fps）。默认值为 15，取值范围为 (0,30]。
 
-:::info[注]
-声网服务器会将超过 30 的值自动调整为 30。
+:::note
+注： 声网服务器会将超过 30 的值自动调整为 30。
 :::
 
-### `lowLatency`
+</Parameter>
+<a id="lowlatency"></a>
+<Parameter name="lowLatency">
 
 延迟模式：
 
 - YES：低延迟但画质无法保证。
 - NO：（默认）高延迟但画质有保障。
 
-### `videoGop`
+</Parameter>
+<a id="videogop"></a>
+<Parameter name="videoGop">
 
 媒体推流的视频帧的 GOP（图像组）帧率，单位为 fps。默认值为 30。
 
-### `videoCodecProfile`
+</Parameter>
+<a id="videocodecprofile"></a>
+<Parameter name="videoCodecProfile">
 
 媒体推流的视频编解码器配置文件类型。可设置为 66、77 或 100（默认）。详见 [AgoraVideoCodecProfileType](/zh-CN/api-reference/rtc/macos/enum-videocodecprofiletype)。
 
-:::info[注]
-如果设置为其他值，声网会自动调整为默认值。
+:::note
+注： 如果设置为其他值，声网会自动调整为默认值。
 :::
 
-### `videoCodecType`
+</Parameter>
+<a id="videocodectype"></a>
+<Parameter name="videoCodecType">
 
 媒体推流的视频编解码器类型。详见 [AgoraVideoCodecTypeForStream](/zh-CN/api-reference/rtc/macos/enum-videocodectypeforstream)。
 
-### `transcodingExtraInfo`
+</Parameter>
+<a id="transcodingextrainfo"></a>
+<Parameter name="transcodingExtraInfo">
 
 保留字段。用于通过 SEI 将用户自定义的额外信息发送到 CDN 直播客户端，适用于 H.264/H.265 视频流。最大长度为 4096 字节。
 
-### `watermarkArray`
+</Parameter>
+<a id="watermarkarray"></a>
+<Parameter name="watermarkArray">
 
 直播视频中的水印数组。你可以使用该属性添加一个或多个 PNG 格式的水印。直播视频中的水印和背景图总数必须在 0 到 10 之间。详见 [AgoraImage](/zh-CN/api-reference/rtc/macos/class-rtcimage)。
 
-### `backgroundImageArray`
+</Parameter>
+<a id="backgroundimagearray"></a>
+<Parameter name="backgroundImageArray">
 
 直播视频中的背景图数组。你可以使用该属性添加一个或多个 PNG 格式的背景图。直播视频中的水印和背景图总数必须在 0 到 10 之间。详见 [AgoraImage](/zh-CN/api-reference/rtc/macos/class-rtcimage)。
 
-### `backgroundColor`
+</Parameter>
+<a id="backgroundcolor"></a>
+<Parameter name="backgroundColor">
 
 媒体推流的背景颜色。颜色格式为 RGB 十六进制整数，不带 # 符号，例如浅粉色为 0xFFB6C1，默认值为 0x000000（黑色）。COLOR_CLASS 是通用类型名：
 
 - iOS：UIColor
 - macOS：NSColor
 
-### `audioSampleRate`
+</Parameter>
+<a id="audiosamplerate"></a>
+<Parameter name="audioSampleRate">
 
 输出媒体流的音频采样率（Hz）。详见 [AgoraAudioSampleRateType](/zh-CN/api-reference/rtc/macos/enum-audiosampleratetype)。
 
-### `audioBitrate`
+</Parameter>
+<a id="audiobitrate"></a>
+<Parameter name="audioBitrate">
 
 媒体推流的音频输出码率（Kbps）。默认值为 48，最大值为 128。
 
-### `audioChannels`
+</Parameter>
+<a id="audiochannels"></a>
+<Parameter name="audioChannels">
 
 媒体推流的音频声道数。推荐设置为 1（单声道）或 2（立体声）。如设置为 3、4 或 5，则需使用支持的播放器。
 
@@ -114,6 +153,19 @@ __attribute__((visibility("default"))) @interface AgoraLiveTranscoding : NSObjec
 - 4：四声道。
 - 5：五声道。
 
-### `audioCodecProfile`
+</Parameter>
+<a id="audiocodecprofile"></a>
+<Parameter name="audioCodecProfile">
 
 媒体推流的音频编解码器配置文件类型。详见 [AgoraAudioCodecProfileType](/zh-CN/api-reference/rtc/macos/enum-audiocodecprofiletype)。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [addUser:](/zh-CN/api-reference/rtc/macos/api-livetranscoding-adduser)
+- [defaultTranscoding](/zh-CN/api-reference/rtc/macos/api-livetranscoding-defaulttranscoding)
+- [getAdvancedFeatures](/zh-CN/api-reference/rtc/macos/api-livetranscoding-getadvancedfeatures)
+- [removeUser:](/zh-CN/api-reference/rtc/macos/api-livetranscoding-removeuser)
+- [setAdvancedFeatures\:opened:](/zh-CN/api-reference/rtc/macos/api-livetranscoding-setadvancedfeatures)

@@ -25,7 +25,7 @@ description: "了解场景化 API 方案在不同平台上的大合唱方式，�
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道。
 
 ```kotlin
 // 加入频道
@@ -88,7 +88,7 @@ ktvApiProtocol.switchSingerRole(KTVSingRole.Audience, null)
 
 ### 4. 开关麦克风
 
-调用 [`muteMic`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#mutemic) 方法在成为领唱角色后开关麦克风。
+调用 [`muteMic`](/zh-CN/api-reference/online-ktv) 方法在成为领唱角色后开关麦克风。
 
 ```kotlin
 // 关闭麦克风
@@ -103,7 +103,7 @@ ktvApiProtocol.muteMic(false)
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道。
 
 ```kotlin
 // 加入频道
@@ -158,7 +158,7 @@ ktvApiProtocol.switchSingerRole(KTVSingRole.Audience, null);
 
 ### 4. 开关麦克风
 
-调用 [`muteMic`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#mutemic) 方法在成为伴唱角色后开关麦克风。
+调用 [`muteMic`](/zh-CN/api-reference/online-ktv) 方法在成为伴唱角色后开关麦克风。
 
 ```kotlin
 // 关闭麦克风。
@@ -173,7 +173,7 @@ ktvApiProtocol.muteMic(false)
 
 ### 1. 加入频道
 
-调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 让听众加入频道，订阅音频流。
+调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 让听众加入频道，订阅音频流。
 
 ```kotlin
 // 加入频道
@@ -219,8 +219,8 @@ ktvApiProtocol.loadMusic(
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
@@ -252,7 +252,7 @@ ktvApiProtocol.loadMusic(
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道。
 
 ```objc
 // 加入频道
@@ -330,7 +330,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 4. 开关麦克风
 
-调用 [`muteMic`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#mutemic) 方法在成为领唱角色后开关麦克风。
+调用 [`muteMic`](/zh-CN/api-reference/online-ktv) 方法在成为领唱角色后开关麦克风。
 
 ```objc
 [self.ktvApi muteMicWithMuteStatus: true/false];
@@ -342,7 +342,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道。
 
 ```objc
 // 加入频道
@@ -414,7 +414,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 4. 开关麦克风
 
-调用 [`muteMic`](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#mutemic) 方法在成为伴唱角色后开关麦克风。
+调用 [`muteMic`](/zh-CN/api-reference/online-ktv) 方法在成为伴唱角色后开关麦克风。
 
 ```objc
 [self.ktvApi muteMicWithMuteStatus: true/false];
@@ -426,7 +426,7 @@ songConfig.mainSingerUid = mainSingerUid;
 
 ### 1. 加入频道
 
-调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `AgoraAudioProfileMusicHighQuality`，将音频场景设为 `AgoraAudioScenarioGameStreaming`。
+调用 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `AgoraAudioProfileMusicHighQuality`，将音频场景设为 `AgoraAudioScenarioGameStreaming`。
 
 ```objc
 // 加入频道
@@ -490,8 +490,8 @@ songConfig.mainSingerUid = mainSingerUid;
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
-- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+- [K 歌房场景化 API](/zh-CN/api-reference/online-ktv)
+- [实时互动 API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 

@@ -58,7 +58,7 @@ def set_max_buffer_audio_frame_number(self, num)
 
 在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀，例如有时每 20 ms 发送 1 帧数据、有时每 20 ms 发送 3 帧数据。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，SDK 设置了音频发送缓冲区，不论发送端实际发送音频帧的频率是多少，SDK 都会将数据存放在音频发送缓冲区。待音频发送缓冲区中的数据达到允许发送的最小时长后，SDK 再开始按照 10 ms 每帧的频率发送数据给接收端。
 
-SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最多 6000 帧数据，即 60 s 的数据。如果你需要更大的缓冲区容量，你可以调用该方法进行调整。如果你还需要设置音频发送缓冲区允许发送的最小数据时长，调用 [`set_send_delay_ms`](#setsenddelayms) 方法。
+SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最多 6000 帧数据，即 60 s 的数据。如果你需要更大的缓冲区容量，你可以调用该方法进行调整。如果你还需要设置音频发送缓冲区允许发送的最小数据时长，调用 [`set_send_delay_ms`](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#setsenddelayms) 方法。
 
 :::warning[注意]
 该方法需要在 [`publish_audio`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#publishaudio) 方法之前调用。
@@ -106,7 +106,7 @@ SDK 默认允许发送的最小数据时长为 160 ms，即 SDK 会等音频发�
 
 | 参数 | 描述 |
 |------|------|
-| `delay_ms` | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [`set_max_buffer_audio_frame_number`](#setmaxbufferaudioframenumber) 方法中 number 参数值的 10 倍。 |
+| `delay_ms` | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [`set_max_buffer_audio_frame_number`](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#setmaxbufferaudioframenumber) 方法中 number 参数值的 10 倍。 |
 
 <a id="release"></a>
 ## release

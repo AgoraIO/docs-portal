@@ -128,7 +128,7 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     expect(urls).not.toContain('/zh-CN/api-reference/overview');
   });
 
-  it('lists the Chinese Speech-to-Text lane in the overview and focused endpoint view', async () => {
+  it('keeps the Chinese Speech-to-Text lane out of root navigation and lists focused endpoints', async () => {
     const overviewPayload = await loadDocsPagePayload(
       'zh-CN',
       'api-reference',
@@ -139,16 +139,13 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
       throw new Error('expected a Chinese api-reference overview payload');
     }
 
-    const speechToText = findSection(
-      overviewPayload.sidebar as SidebarNode[],
-      '实时转录翻译',
-    );
-    expect(speechToText).toBeDefined();
+    const overviewUrls = flattenUrls(overviewPayload.sidebar as SidebarNode[]);
     expect(
-      speechToText?.children?.some(
-        (child) => child.url === '/zh-CN/api-reference/api-ref/speech-to-text',
-      ),
-    ).toBe(true);
+      findSection(overviewPayload.sidebar as SidebarNode[], '实时转录翻译'),
+    ).toBeUndefined();
+    expect(overviewUrls).not.toContain(
+      '/zh-CN/api-reference/api-ref/speech-to-text',
+    );
 
     const focusedPayload = await loadDocsPagePayload('zh-CN', 'api-reference', [
       'api-ref',

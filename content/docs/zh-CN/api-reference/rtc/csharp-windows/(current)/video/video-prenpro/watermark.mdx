@@ -1,10 +1,19 @@
 ---
-title: "直播水印"
-description: "直播水印 API reference."
+title: 直播水印
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_watermark
+  sourcePath: html-docs/rtc/Csharp/API/toc_watermark.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_watermark"></a>
 
 <a id="api_irtcengine_addvideowatermark"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AddVideoWatermark [1/2]
 
@@ -12,7 +21,7 @@ description: "直播水印 API reference."
 
 <a id="api_irtcengine_addvideowatermark__prototype"></a>
 
-```csharp
+```text
 public abstract int AddVideoWatermark(RtcImage watermark);
 ```
 
@@ -20,13 +29,18 @@ public abstract int AddVideoWatermark(RtcImage watermark);
 
 ### 详情
 
-#### `弃用：`
+<a id="弃用"></a>
 
-该方法已废弃，请使用 [AddVideoWatermark [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) 作为替代。
+:::error[弃用：]
+该方法已废弃，请使用
+                        [AddVideoWatermark [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) 作为替代。
+:::
 
 该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户，旁路推流观众，甚至采集设备都能看到或采集到该水印图片。如果你仅仅希望在旁路直播推流中添加水印，请参考 [StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 中描述的用法。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 在本地直播和旁路推流中，URL 的定义不同。本地直播中，URL 指本地直播视频上图片的本地绝对/相对路径；旁路推流中，URL 指旁路推流视频上图片的地址。
 - 待添加图片的源文件格式必须是 PNG。如果待添加的 PNG 图片的尺寸与你该方法中设置的尺寸不一致，SDK 会对 PNG 图片进行裁剪，以与设置相符。
 - 声网当前只支持在直播视频流中添加一个水印，后添加的水印会替换掉之前添加的水印。
@@ -36,18 +50,25 @@ public abstract int AddVideoWatermark(RtcImage watermark);
 
 ### 参数
 
-#### `watermark`
+<ParameterList>
+<a id="watermark"></a>
+<Parameter name="watermark">
 
-待添加在本地直播推流中的水印图片： [RtcImage](/zh-CN/api-reference/rtc/csharp-windows/class-rtcimage)。
+待添加在本地直播推流中的水印图片：[RtcImage](/zh-CN/api-reference/rtc/csharp-windows/class-rtcimage)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_addvideowatermark2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## AddVideoWatermark [2/2]
 
@@ -55,7 +76,7 @@ public abstract int AddVideoWatermark(RtcImage watermark);
 
 <a id="api_irtcengine_addvideowatermark2__prototype"></a>
 
-```csharp
+```text
 public abstract int AddVideoWatermark(string watermarkUrl, WatermarkOptions options);
 ```
 
@@ -63,17 +84,21 @@ public abstract int AddVideoWatermark(string watermarkUrl, WatermarkOptions opti
 
 ### 详情
 
+<a id="api_irtcengine_addvideowatermark2__desc1"></a>
+
 该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户、旁路直播观众和采集设备都能看到或采集到该水印图片。当前只支持在直播视频流中添加一个水印，后添加的水印会替换掉之前添加的水印。
 
 水印坐标和 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法中的设置有依赖关系：
 
-- 如果视频编码方向（ORIENTATION_MODE ）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
-- 如果视频编码方向（ORIENTATION_MODE ）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
+- 如果视频编码方向（[ORIENTATION_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-orientationmode)）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
+- 如果视频编码方向（ORIENTATION_MODE）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
 - 设置水印坐标时，水印的图像区域不能超出 SetVideoEncoderConfiguration 方法中设置的视频尺寸，否则超出部分将被裁剪。
 
-:::warning[注意]
-- 你需要在调用 EnableVideo 方法之后再调用该方法。
-- 如果你只是在旁路推流时添加水印，你可以使用该方法或 StartRtmpStreamWithTranscoding 方法设置水印。
+:::caution
+注意：
+
+- 你需要在调用 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。
+- 如果你只是在旁路推流时添加水印，你可以使用该方法或 [StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置水印。
 - 待添加水印图片必须是 PNG 格式。该方法支持所有像素格式的 PNG 图片：RGBA、RGB、Palette、Gray 和 Alpha_gray。
 - 如果待添加的 PNG 图片的尺寸与你在该方法中设置的尺寸不一致，SDK 会对 PNG 图片进行缩放或裁剪，以与设置相符。
 - 如果你已设置本地视频为镜像模式，那么此处的本地水印也为镜像。为避免本地用户看本地视频时的水印也被镜像，建议你不要对本地视频同时使用镜像和水印功能，请在应用层实现本地水印功能。
@@ -83,25 +108,35 @@ public abstract int AddVideoWatermark(string watermarkUrl, WatermarkOptions opti
 
 ### 参数
 
-#### `watermarkUrl`
+<ParameterList>
+<a id="watermarkurl"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-#### `options`
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/csharp-windows/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_addvideowatermark2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_addvideowatermarkex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## AddVideoWatermarkEx
 
@@ -109,7 +144,7 @@ public abstract int AddVideoWatermark(string watermarkUrl, WatermarkOptions opti
 
 <a id="api_irtcengineex_addvideowatermarkex__prototype"></a>
 
-```csharp
+```text
 public abstract int AddVideoWatermarkEx(string watermarkUrl, WatermarkOptions options, RtcConnection connection);
 ```
 
@@ -121,15 +156,17 @@ public abstract int AddVideoWatermarkEx(string watermarkUrl, WatermarkOptions op
 
 水印坐标和 [SetVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) 方法中的设置有依赖关系：
 
-- 如果视频编码方向（ORIENTATION_MODE ）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
-- 如果视频编码方向（ORIENTATION_MODE ）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
+- 如果视频编码方向（[ORIENTATION_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-orientationmode)）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
+- 如果视频编码方向（ORIENTATION_MODE）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
 - 设置水印坐标时，水印的图像区域不能超出 SetVideoEncoderConfigurationEx 方法中设置的视频尺寸，否则超出部分将被裁剪。
 
-:::warning[注意]
-- 你需要在调用 EnableVideo 方法之后再调用本方法。
+:::caution
+注意：
+
+- 你需要在调用 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用本方法。
 - 待添加水印图片必须是 PNG 格式。本方法支持所有像素格式的 PNG 图片：RGBA、RGB、Palette、Gray 和 Alpha_gray。
 - 如果待添加的 PNG 图片的尺寸与你在本方法中设置的尺寸不一致，SDK 会对 PNG 图片进行缩放或裁剪，以与设置相符。
-- 如果你已经使用 StartPreview [2/2] 方法开启本地视频预览，那么本方法的 visibleInPreview 可设置水印在预览时是否可见。
+- 如果你已经使用 [StartPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_startpreview2) 方法开启本地视频预览，那么本方法的 `visibleInPreview` 可设置水印在预览时是否可见。
 - 如果你已设置本地视频为镜像模式，那么此处的本地水印也为镜像。为避免本地用户看本地视频时的水印也被镜像，建议你不要对本地视频同时使用镜像和水印功能，请在应用层实现本地水印功能。
 :::
 
@@ -137,29 +174,41 @@ public abstract int AddVideoWatermarkEx(string watermarkUrl, WatermarkOptions op
 
 ### 参数
 
-#### `watermarkUrl`
+<ParameterList>
+<a id="watermarkurl-1"></a>
+<Parameter name="watermarkUrl">
 
 待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
 
-#### `options`
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
 
 待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/csharp-windows/class-watermarkoptions)。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_clearvideowatermarks"></a>
+
+<a id="ariaid-title5"></a>
 
 ## ClearVideoWatermarks
 
@@ -167,7 +216,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_clearvideowatermarks__prototype"></a>
 
-```csharp
+```text
 public abstract int ClearVideoWatermarks();
 ```
 
@@ -176,12 +225,15 @@ public abstract int ClearVideoWatermarks();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_clearvideowatermarkex"></a>
+
+<a id="ariaid-title6"></a>
 
 ## ClearVideoWatermarkEx
 
@@ -189,7 +241,7 @@ public abstract int ClearVideoWatermarks();
 
 <a id="api_irtcengineex_clearvideowatermarkex__prototype"></a>
 
-```csharp
+```text
 public abstract int ClearVideoWatermarkEx(RtcConnection connection);
 ```
 
@@ -197,16 +249,22 @@ public abstract int ClearVideoWatermarkEx(RtcConnection connection);
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)

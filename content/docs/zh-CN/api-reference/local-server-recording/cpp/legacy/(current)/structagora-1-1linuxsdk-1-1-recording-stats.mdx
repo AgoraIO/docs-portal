@@ -1,0 +1,142 @@
+---
+title: agora::linuxsdk::RecordingStats结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/structagora_1_1linuxsdk_1_1_recording_stats
+  sourcePath: html-docs/recording/cpp/structagora_1_1linuxsdk_1_1_recording_stats.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+录制统计信息。
+
+## 构造及析构函数说明
+
+<a id="a41664558a099a073342604647acad0a1"></a>
+
+### RecordingStats()
+
+<ApiSignature labels="inline">
+
+agora::linuxsdk::RecordingStats::RecordingStats()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="ac9b30880b2480376a3b819e7d196a9e5"></a>
+
+### duration
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::duration
+
+</ApiSignature>
+
+录制端在频道内的时间（秒）。
+
+<a id="ac55e56417084b4467aad696e1b65e2e5"></a>
+
+### rxBytes
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::rxBytes
+
+</ApiSignature>
+
+从加入频道到触发这个回调时累计接收的字节数（bytes）。
+
+<a id="ad2171997a2001e5715c32bb8c5f6b1e0"></a>
+
+### rxKBitRate
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::rxKBitRate
+
+</ApiSignature>
+
+接收码率（Kbps）。
+
+<a id="a9c0e9cd88a25a83ef3b1fa05aa159b39"></a>
+
+### rxAudioKBitRate
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::rxAudioKBitRate
+
+</ApiSignature>
+
+音频接收码率（Kbps）。
+
+<a id="a6a9e0cc0cfe8d6f3e9140cebd4c6595d"></a>
+
+### rxVideoKBitRate
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::rxVideoKBitRate
+
+</ApiSignature>
+
+视频接收码率（Kbps）。
+
+<a id="a6757e7e179a320631b7e2b6dd671df77"></a>
+
+### lastmileDelay
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::lastmileDelay
+
+</ApiSignature>
+
+录制客户端和 Agora 服务器之间的延时（毫秒）。
+
+<a id="a63747c92866aecd4fd226c1431bcf9bc"></a>
+
+### userCount
+
+<ApiSignature>
+
+uint32_t agora::linuxsdk::RecordingStats::userCount
+
+</ApiSignature>
+
+频道内的人数。
+
+- 通信模式下为包括录制端在内的用户人数。
+- 直播模式下为频道内的主播人数 + 1。
+
+<a id="a13d26b1c5086baf38241be547e7d8b1a"></a>
+
+### cpuAppUsage
+
+<ApiSignature>
+
+double agora::linuxsdk::RecordingStats::cpuAppUsage
+
+</ApiSignature>
+
+录制端的 CPU 使用率 (%)。
+
+<a id="a5360cdae354a898f44fa61cf0ad990fa"></a>
+
+### cpuTotalUsage
+
+<ApiSignature>
+
+double agora::linuxsdk::RecordingStats::cpuTotalUsage
+
+</ApiSignature>
+
+系统的 CPU 使用率 (%)。

@@ -1,0 +1,91 @@
+{
+  "counts": {
+    "errors": 0,
+    "invalidLinks": 0,
+    "legacyOldSiteBodyLinks": 0,
+    "links": 70427,
+    "missingFragments": 0,
+    "missingLocalPaths": 0,
+    "ownedMdxPages": 4904,
+    "preservedMdxPages": 327,
+    "visibleMdxPages": 5231,
+    "warnings": 602
+  },
+  "issues": [],
+  "outputTypes": {
+    "asset": 69,
+    "generated-html": 4757,
+    "manual-mdx": 141,
+    "navigation": 6,
+    "navigation-data": 1,
+    "navigation-meta": 104
+  },
+  "ownershipPaths": [
+    "docs/migration/api-center-generated-files.json",
+    "docs/migration/api-center-manual-generated-files.json",
+    "docs/migration/api-center-navigation-generated-files.json"
+  ],
+  "schemaVersion": 2,
+  "warningSummary": {
+    "empty-source-body": {
+      "count": 149,
+      "explanation": "The legacy generator exposes a named page whose source body is intentionally empty.",
+      "severity": "info"
+    },
+    "empty-source-code": {
+      "count": 9,
+      "explanation": "The legacy source contains an empty code block; the migration preserves its anchor and omits the empty fence without inventing a signature.",
+      "severity": "info"
+    },
+    "generated-fragment-alias": {
+      "count": 1,
+      "explanation": "A stable alias was added so a legacy generated-page fragment remains reachable.",
+      "severity": "info"
+    },
+    "generated-fragment-normalized": {
+      "count": 4,
+      "explanation": "A generated-page fragment was rewritten to the unique stable anchor exposed by its local target.",
+      "severity": "info"
+    },
+    "manual-fragment-alias": {
+      "count": 7,
+      "explanation": "Stable aliases were added for legacy fragments that identify migrated headings.",
+      "severity": "info"
+    },
+    "manual-fragment-normalized": {
+      "count": 57,
+      "explanation": "A legacy fragment was rewritten to the unique stable anchor exposed by its local target.",
+      "severity": "info"
+    },
+    "manual-mdx-normalized": {
+      "count": 91,
+      "explanation": "Legacy MDX syntax was normalized to the repository Markdown/MDX authoring standard.",
+      "severity": "info"
+    },
+    "manual-platform-merge": {
+      "count": 10,
+      "explanation": "Multiple platform-specific legacy MDX sources were merged with PlatformStructured blocks.",
+      "severity": "info"
+    },
+    "missing-source-text": {
+      "count": 49,
+      "explanation": "The authoritative source omits user-visible text needed by the target format; the migration leaves it empty and requires supplied copy instead of synthesizing text.",
+      "severity": "warning"
+    },
+    "source-only-link-removed": {
+      "count": 127,
+      "explanation": "A link present only in generated source had no local visible target and was rendered as text instead of linking back to the old site.",
+      "severity": "info"
+    },
+    "unresolved-fragment": {
+      "count": 21,
+      "explanation": "A legacy fragment could not be mapped to a stable target fragment.",
+      "severity": "warning"
+    },
+    "unresolved-link": {
+      "count": 532,
+      "explanation": "A legacy internal link has no resolved local target route.",
+      "severity": "warning"
+    }
+  }
+}

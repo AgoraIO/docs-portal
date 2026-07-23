@@ -1,10 +1,18 @@
 ---
-title: "ThumbImageBuffer"
-description: "用于设置缩略图或图标的图像内容。"
+title: ThumbImageBuffer
+description: 用于设置缩略图或图标的图像内容。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_thumbimagebuffer
+  sourcePath: html-docs/rtc/Cpp/API/class_thumbimagebuffer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_thumbimagebuffer__prototype"></a>
 
-```cpp
+```text
 struct ThumbImageBuffer {
   const char* buffer;
   unsigned int length;
@@ -17,26 +25,37 @@ struct ThumbImageBuffer {
 
 可在 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo) 中设置。
 
-:::info[注]
-默认图像格式为 ARGB。如果需要使用其他格式，你需要自行转换图像。
+:::note
+注： 默认图像格式为 ARGB。如果需要使用其他格式，你需要自行转换图像。
 :::
 
 <a id="class_thumbimagebuffer__parameters"></a>
 
 ## 属性
 
-### `buffer`
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 缩略图或图标的图像缓冲区。
 
-### `length`
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 图像缓冲区的长度，单位为字节。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 缩略图或图标的实际宽度（单位：像素）。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 缩略图或图标的实际高度（单位：像素）。
+
+</Parameter>
+</ParameterList>

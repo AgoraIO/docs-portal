@@ -1,10 +1,19 @@
 ---
-title: "音频路由"
-description: "音频路由 API reference."
+title: 音频路由
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_route
+  sourcePath: html-docs/rtc/Android/API/toc_audio_route.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_route"></a>
 
 <a id="api_irtcengine_isspeakerphoneenabled"></a>
+
+<a id="ariaid-title2"></a>
 
 ## isSpeakerphoneEnabled
 
@@ -12,7 +21,7 @@ description: "音频路由 API reference."
 
 <a id="api_irtcengine_isspeakerphoneenabled__prototype"></a>
 
-```java
+```text
 public abstract boolean isSpeakerphoneEnabled();
 ```
 
@@ -32,9 +41,12 @@ public abstract boolean isSpeakerphoneEnabled();
 - false：扬声器未启用，音频将从其他设备播放，例如耳机或听筒。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setDefaultAudioRoutetoSpeakerphone
 
@@ -42,21 +54,22 @@ public abstract boolean isSpeakerphoneEnabled();
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__prototype"></a>
 
-```java
+```text
 public abstract int setDefaultAudioRoutetoSpeakerphone(boolean defaultToSpeaker);
 ```
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__detailed_desc"></a>
 
-大多数手机有两个音频路由：顶部的听筒和底部的扬声器。你可以通过调用该方法设置默认音频路由，在未连接外部音频设备时决定音频是通过听筒还是扬声器播放。 在不同场景下，系统的默认音频路由如下：
+大多数手机有两个音频路由：顶部的听筒和底部的扬声器。你可以通过调用该方法设置默认音频路由，在未连接外部音频设备时决定音频是通过听筒还是扬声器播放。
+在不同场景下，系统的默认音频路由如下：
 
 - 语音通话：听筒。
 - 音频直播：扬声器。
 - 视频通话：扬声器。
 - 视频直播：扬声器。
 
-:::info[注]
-调用该方法设置默认音频路由后，系统的实际音频路由会根据外部音频设备（如有线耳机或蓝牙耳机）的连接情况自动切换。
+:::note
+注： 调用该方法设置默认音频路由后，系统的实际音频路由会根据外部音频设备（如有线耳机或蓝牙耳机）的连接情况自动切换。
 :::
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__timing"></a>
@@ -69,24 +82,32 @@ public abstract int setDefaultAudioRoutetoSpeakerphone(boolean defaultToSpeaker)
 
 ### 参数
 
-#### `defaultToSpeaker`
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否将扬声器设置为默认音频路由：
 
 - true：将扬声器设置为默认音频路由。
 - false：将听筒设置为默认音频路由。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setEnableSpeakerphone
 
@@ -94,14 +115,15 @@ public abstract int setDefaultAudioRoutetoSpeakerphone(boolean defaultToSpeaker)
 
 <a id="api_irtcengine_setenablespeakerphone__prototype"></a>
 
-```java
+```text
 public abstract int setEnableSpeakerphone(boolean enabled);
 ```
 
 <a id="api_irtcengine_setenablespeakerphone__detailed_desc"></a>
 
-:::info[注]
-该方法仅设置当前频道中的音频路由，不影响默认音频路由。如果用户离开当前频道并加入另一个频道，将使用默认音频路由。 如果用户使用了蓝牙或有线耳机等外部音频播放设备，该方法不生效，SDK 会通过外部设备播放音频。当用户连接多个外部设备时，SDK 会通过最后连接的设备播放音频。
+:::note
+注： 该方法仅设置当前频道中的音频路由，不影响默认音频路由。如果用户离开当前频道并加入另一个频道，将使用默认音频路由。
+如果用户使用了蓝牙或有线耳机等外部音频播放设备，该方法不生效，SDK 会通过外部设备播放音频。当用户连接多个外部设备时，SDK 会通过最后连接的设备播放音频。
 :::
 
 <a id="api_irtcengine_setenablespeakerphone__scenario"></a>
@@ -126,24 +148,32 @@ public abstract int setEnableSpeakerphone(boolean enabled);
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用扬声器：
 
 - true：启用设备状态监测，音频路由为扬声器。
 - false：关闭设备状态监测，音频路由为听筒。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setRouteInCommunicationMode
 
@@ -151,7 +181,7 @@ public abstract int setEnableSpeakerphone(boolean enabled);
 
 <a id="api_irtcengine_setrouteincommunicationmode__prototype"></a>
 
-```java
+```text
 public abstract int setRouteInCommunicationMode(int route);
 ```
 
@@ -159,8 +189,8 @@ public abstract int setRouteInCommunicationMode(int route);
 
 该方法用于将音频路由从蓝牙耳机切换为听筒、有线耳机或扬声器。
 
-:::info[注]
-同时使用该方法和 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setenablespeakerphone) 方法可能会导致冲突。建议仅使用 [setRouteInCommunicationMode](/zh-CN/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setrouteincommunicationmode) 方法。
+:::note
+注： 同时使用该方法和 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setenablespeakerphone) 方法可能会导致冲突。建议仅使用 [setRouteInCommunicationMode](/zh-CN/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setrouteincommunicationmode) 方法。
 :::
 
 <a id="api_irtcengine_setrouteincommunicationmode__timing"></a>
@@ -179,7 +209,9 @@ public abstract int setRouteInCommunicationMode(int route);
 
 ### 参数
 
-#### `route`
+<ParameterList>
+<a id="route"></a>
+<Parameter name="route">
 
 你希望使用的音频播放路由：
 
@@ -192,17 +224,23 @@ public abstract int setRouteInCommunicationMode(int route);
 - 5：蓝牙耳机。
 - 6：USB 设备。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onAudioRouteChanged
 
@@ -210,7 +248,7 @@ public abstract int setRouteInCommunicationMode(int route);
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged__prototype"></a>
 
-```java
+```text
 public void onAudioRouteChanged(int routing) {}
 ```
 
@@ -226,18 +264,24 @@ public void onAudioRouteChanged(int routing) {}
 
 ### 参数
 
-#### `routing`
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
 
 当前的音频路由。
 
-- AUDIO_ROUTE_DEFAULT （-1）：默认音频路由。
-- AUDIO_ROUTE_HEADSET （0）：音频路由为带麦克风的耳机。
-- AUDIO_ROUTE_EARPIECE （1）：音频路由为听筒。
-- AUDIO_ROUTE_HEADSETNOMIC （2）：音频路由为不带麦克风的耳机。
-- AUDIO_ROUTE_SPEAKERPHONE （3）：音频路由为设备自带扬声器。
-- AUDIO_ROUTE_LOUDSPEAKER （4）：音频路由为外接扬声器（预留）。
-- AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP （5）：音频路由为使用 HFP 协议的蓝牙设备。
-- AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP （10）：音频路由为使用 A2DP 协议的蓝牙设备。
+- `AUDIO_ROUTE_DEFAULT`（-1）：默认音频路由。
+- `AUDIO_ROUTE_HEADSET`（0）：音频路由为带麦克风的耳机。
+- `AUDIO_ROUTE_EARPIECE`（1）：音频路由为听筒。
+- `AUDIO_ROUTE_HEADSETNOMIC`（2）：音频路由为不带麦克风的耳机。
+- `AUDIO_ROUTE_SPEAKERPHONE`（3）：音频路由为设备自带扬声器。
+- `AUDIO_ROUTE_LOUDSPEAKER`（4）：音频路由为外接扬声器（预留）。
+- `AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP`（5）：音频路由为使用 HFP 协议的蓝牙设备。
+- `AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP`（10）：音频路由为使用 A2DP 协议的蓝牙设备。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

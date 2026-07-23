@@ -1,10 +1,18 @@
 ---
-title: "VideoCanvas"
-description: "用于设置视频画布的显示、渲染和布局属性。"
+title: VideoCanvas
+description: 用于设置视频画布的显示、渲染和布局属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_videocanvas
+  sourcePath: html-docs/rtc/Android/API/class_videocanvas.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videocanvas__prototype"></a>
 
-```java
+```text
 public class VideoCanvas {
   public int uid;
   public int subviewUid;
@@ -32,100 +40,136 @@ public class VideoCanvas {
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发布视频源的用户 ID。
 
-### `subviewUid`
+</Parameter>
+<a id="subviewuid"></a>
+<Parameter name="subviewUid">
 
 在合流视频流中，发布特定子视频流的用户 ID。
 
-### `RENDER_MODE_HIDDEN`
+</Parameter>
+<a id="render_mode_hidden"></a>
+<Parameter name="RENDER_MODE_HIDDEN">
 
 隐藏模式：按比例缩放视频，直到视窗被填满（可能会裁剪视频的一部分）。
 
-### `RENDER_MODE_FIT`
+</Parameter>
+<a id="render_mode_fit"></a>
+<Parameter name="RENDER_MODE_FIT">
 
 适应模式：按比例缩放视频，直到某一维度匹配视窗边界，未填满区域用黑色填充。
 
-### `RENDER_MODE_ADAPTIVE`
+</Parameter>
+<a id="render_mode_adaptive"></a>
+<Parameter name="RENDER_MODE_ADAPTIVE">
 
 自适应模式。该模式已废弃，声网不推荐使用。
 
-### `VIEW_SETUP_MODE_REPLACE`
+</Parameter>
+<a id="view_setup_mode_replace"></a>
+<Parameter name="VIEW_SETUP_MODE_REPLACE">
 
 设置视图模式为替换模式，默认值。
 
-### `VIEW_SETUP_MODE_ADD`
+</Parameter>
+<a id="view_setup_mode_add"></a>
+<Parameter name="VIEW_SETUP_MODE_ADD">
 
 设置视图模式为新增视图。
 
-### `VIEW_SETUP_MODE_REMOVE`
+</Parameter>
+<a id="view_setup_mode_remove"></a>
+<Parameter name="VIEW_SETUP_MODE_REMOVE">
 
 设置视图模式为移除视图。
 
-### `view`
+</Parameter>
+<a id="view"></a>
+<Parameter name="view">
 
 用于显示视频的视图窗口，必须为 `SurfaceView` 或 `TextureView` 类型。
 
-:::info[注]
-在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
+:::note
+注： 在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
 :::
 
-### `surfaceTexture`
+</Parameter>
+<a id="surfacetexture"></a>
+<Parameter name="surfaceTexture">
 
 提供视频图像的容器。
 
-:::info[注]
-在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
+:::note
+注： 在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
 :::
 
-### `renderMode`
+</Parameter>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 渲染模式：
 
-- RENDER_MODE_HIDDEN (1)：隐藏模式。
-- RENDER_MODE_FIT (2)：适应模式。
-- RENDER_MODE_ADAPTIVE (3)：自适应模式（已废弃，声网不推荐使用）。
+- `RENDER_MODE_HIDDEN` (1)：隐藏模式。
+- `RENDER_MODE_FIT` (2)：适应模式。
+- `RENDER_MODE_ADAPTIVE` (3)：自适应模式（已废弃，声网不推荐使用）。
 
-### `mirrorMode`
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
-:::info[注]
+:::note
+注：
+
 - 本地视频视图镜像模式：使用前置摄像头时默认开启，后置摄像头时默认关闭。
 - 远端用户默认关闭镜像模式。
 :::
 
 镜像模式：
 
-- VIDEO_MIRROR_MODE_AUTO (0)：SDK 自动判断是否开启镜像模式。
-- VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图镜像模式。
-- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图镜像模式。
+- `VIDEO_MIRROR_MODE_AUTO` (0)：SDK 自动判断是否开启镜像模式。
+- `VIDEO_MIRROR_MODE_ENABLED` (1)：开启本地视图镜像模式。
+- `VIDEO_MIRROR_MODE_DISABLED` (2)：关闭本地视图镜像模式。
 
-### `setupMode`
+</Parameter>
+<a id="setupmode"></a>
+<Parameter name="setupMode">
 
-:::info[注]
-不再使用视图时建议将 `setupMode` 设置为 `VIEW_SETUP_MODE_REMOVE`，以防止渲染资源泄漏。
+:::note
+注： 不再使用视图时建议将 `setupMode` 设置为 `VIEW_SETUP_MODE_REMOVE`，以防止渲染资源泄漏。
 :::
 
 视图设置模式：
 
-- VIEW_SETUP_MODE_REPLACE (0)：替换视图，默认值。
-- VIEW_SETUP_MODE_ADD (1)：新增视图。
-- VIEW_SETUP_MODE_REMOVE (2)：删除视图。
+- `VIEW_SETUP_MODE_REPLACE` (0)：替换视图，默认值。
+- `VIEW_SETUP_MODE_ADD` (1)：新增视图。
+- `VIEW_SETUP_MODE_REMOVE` (2)：删除视图。
 
-### `sourceType`
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
-### `mediaPlayerId`
+</Parameter>
+<a id="mediaplayerid"></a>
+<Parameter name="mediaPlayerId">
 
 媒体播放器的 ID。
 
-### `rect`
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
 
-视频帧的显示区域。 `width` 和 `height` 表示该区域的视频像素宽高。默认值为 `null` （宽或高为 0），表示显示视频帧的实际分辨率。详见 `Rect`。
+视频帧的显示区域。`width` 和 `height` 表示该区域的视频像素宽高。默认值为 `null`（宽或高为 0），表示显示视频帧的实际分辨率。详见 `Rect`。
 
-### `enableAlphaMask`
+</Parameter>
+<a id="enablealphamask"></a>
+<Parameter name="enableAlphaMask">
 
 是否启用 Alpha 遮罩渲染：
 
@@ -134,15 +178,24 @@ public class VideoCanvas {
 
 该功能可实现透明图像效果，从视频中提取人像，结合其他功能可实现画中画、水印等效果。
 
-### `backgroundColor`
+</Parameter>
+<a id="backgroundcolor"></a>
+<Parameter name="backgroundColor">
 
 视频画布的背景颜色，RGBA 格式。默认值为 0x00000000，表示黑色。
 
-:::info[注]
-- 如果使用 Kotlin 开发并设置为 0xFFFFFFFF 时出现编译错误，可使用 (0xFFFFFFFF).toInt() 或 android.graphics.Color.parseColor("#FFFFFFFF")。
+:::note
+注：
+
+- 如果使用 Kotlin 开发并设置为 `0xFFFFFFFF` 时出现编译错误，可使用 `(0xFFFFFFFF).toInt()` 或 `android.graphics.Color.parseColor("#FFFFFFFF")`。
 - 当前使用 RGBA 格式时不支持 Alpha 通道。
 :::
 
-### `position`
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
 
 视频帧在视频链路中的观察位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

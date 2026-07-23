@@ -1,0 +1,291 @@
+---
+title: Interface ScenesCallbacksNode
+description: 场景目录的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/scenescallbacksnode
+  sourcePath: html-docs/whiteboard/Web/interfaces/scenescallbacksnode.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;
+
+  - ScenesCallbacksNode
+
+## Index
+
+### Properties
+
+- [path](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#path)
+- [sceneGroups](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#scenegroups)
+- [sceneGroupsCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#scenegroupscount)
+- [scenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#scenes)
+- [scenesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#scenescount)
+
+### Methods
+
+- [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose)
+- [forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#forwardto)
+- [off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#off)
+- [on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#on)
+- [once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#once)
+
+## Properties
+
+<a id="path"></a>
+
+### path
+
+path: string
+
+- Defined in [index-zh.d.ts\:4661](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4661)
+
+场景目录的路径。
+
+<a id="scenegroups"></a>
+
+### sceneGroups
+
+sceneGroups: ReadonlyArray&lt;string&gt;
+
+- Defined in [index-zh.d.ts\:4673](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4673)
+
+场景目录下所有子场景目录的名称。
+
+<a id="scenegroupscount"></a>
+
+### sceneGroupsCount
+
+sceneGroupsCount: number
+
+- Defined in [index-zh.d.ts\:4677](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4677)
+
+场景目录下子场景目录的数量。
+
+<a id="scenes"></a>
+
+### scenes
+
+scenes: ReadonlyArray&lt;string&gt;
+
+- Defined in [index-zh.d.ts\:4665](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4665)
+
+场景目录下所有场景的名称。
+
+<a id="scenescount"></a>
+
+### scenesCount
+
+scenesCount: number
+
+- Defined in [index-zh.d.ts\:4669](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4669)
+
+场景目录下场景的数量。
+
+## Methods
+
+<a id="dispose"></a>
+
+### dispose
+
+<ApiSignature>
+
+dispose(): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:4681](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4681)
+
+释放监听器对象。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="forwardto"></a>
+
+### forwardTo
+
+<ApiSignature>
+
+forwardTo&lt;NAME&gt;(name: NAME, toCallbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;): any
+
+</ApiSignature>
+
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#forwardto)
+
+- Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L963)
+
+将注册的回调转到另一个 `Callbacks` 对象。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+注册回调的名称。
+
+</Parameter>
+<Parameter name="toCallbacks" required>
+
+<ParameterType>
+
+[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks) & lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) & gt;
+
+</ParameterType>
+
+转到的 `Callbacks` 对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off&lt;NAME&gt;(name?: NAME, listener?: any): void
+
+</ApiSignature>
+
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#off)
+
+- Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L956)
+
+注销回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" optional>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" optional>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="on"></a>
+
+### on
+
+<ApiSignature>
+
+on&lt;NAME&gt;(name: NAME, listener: any): void
+
+</ApiSignature>
+
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#on)
+
+- Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L942)
+
+注册一个回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" required>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="once"></a>
+
+### once
+
+<ApiSignature>
+
+once&lt;NAME&gt;(name: NAME, listener: any): void
+
+</ApiSignature>
+
+Inherited from [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks).[once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#once)
+
+- Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L949)
+
+注册只使用一次的回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" required>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

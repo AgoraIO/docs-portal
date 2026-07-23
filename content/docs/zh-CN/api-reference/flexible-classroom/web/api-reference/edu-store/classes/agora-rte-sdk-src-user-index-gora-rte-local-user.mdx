@@ -1,0 +1,664 @@
+---
+title: Class AgoraRteLocalUser
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_user_index_goraRteLocalUser.html
+  sourcePath: html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_user_index_goraRteLocalUser.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AgoraRteLocalUser(scene: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene), __namedParameters: \{ rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager); rtcToken: string; sceneId: string; streamUuid: string; userName: string; userProperties: any; userRole: string; userUuid: string \}): [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scene" required>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ rtc: [AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager); rtcToken: string; sceneId: string; streamUuid: string; userName: string; userProperties: any; userRole: string; userUuid: string \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="rtc" required>
+
+<ParameterType>
+
+[AGRtcManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-index-grtc-manager)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="rtcToken" type="string" required />
+<Parameter name="sceneId" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="userName" type="string" required />
+<Parameter name="userProperties" type="any" required />
+<Parameter name="userRole" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-user-index-gora-rte-local-user)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+<a id="rtcToken"></a>
+
+### Readonly rtcToken
+
+rtcToken: string
+
+<a id="sceneId"></a>
+
+### Readonly sceneId
+
+sceneId: string
+
+<a id="streamUuid"></a>
+
+### Readonly streamUuid
+
+streamUuid: string
+
+<a id="subStream"></a>
+
+### Optional subStream
+
+subStream?: \{streamUuid:string\}
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
+
+<a id="userName"></a>
+
+### Readonly userName
+
+userName: string
+
+<a id="userProperties"></a>
+
+### Readonly userProperties
+
+userProperties: any
+
+<a id="userRole"></a>
+
+### Readonly userRole
+
+userRole: string
+
+<a id="userUuid"></a>
+
+### Readonly userUuid
+
+userUuid: string
+
+## Methods
+
+<a id="deleteLocalMediaStream"></a>
+
+### deleteLocalMediaStream
+
+<ApiSignature>
+
+deleteLocalMediaStream(): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteLocalScreenStream"></a>
+
+### deleteLocalScreenStream
+
+<ApiSignature>
+
+deleteLocalScreenStream(): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteSceneProperties"></a>
+
+### deleteSceneProperties
+
+<ApiSignature>
+
+deleteSceneProperties(properties: string[], cause: any): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="properties" type="string[]" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteUserProperties"></a>
+
+### deleteUserProperties
+
+<ApiSignature>
+
+deleteUserProperties(properties: string[], cause: any): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="properties" type="string[]" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="destroy"></a>
+
+### destroy
+
+<ApiSignature>
+
+destroy(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="publishStreamToCdn"></a>
+
+### publishStreamToCdn
+
+<ApiSignature>
+
+publishStreamToCdn(videoEncoderConfg?: [AGVideoEncoderConfigurations](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gvideo-encoder-configurations)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="videoEncoderConfg" optional>
+
+<ParameterType>
+
+[AGVideoEncoderConfigurations](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gvideo-encoder-configurations)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendCustomChannelMessage"></a>
+
+### sendCustomChannelMessage
+
+<ApiSignature>
+
+sendCustomChannelMessage(cmd: string, data: Record&lt;string, any&gt;, sync?: boolean): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
+<Parameter name="sync" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendCustomPeerMessage"></a>
+
+### sendCustomPeerMessage
+
+<ApiSignature>
+
+sendCustomPeerMessage(cmd: string, data: Record&lt;string, any&gt;, toUserUuid: string, ack?: boolean): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="Record &amp; lt; string,any &amp; gt;" required />
+<Parameter name="toUserUuid" type="string" required />
+<Parameter name="ack" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendRoomMessage"></a>
+
+### sendRoomMessage
+
+<ApiSignature>
+
+sendRoomMessage(message: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setSceneProperties"></a>
+
+### setSceneProperties
+
+<ApiSignature>
+
+setSceneProperties(properties: any, cause: any): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="properties" type="any" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setUserProperties"></a>
+
+### setUserProperties
+
+<ApiSignature>
+
+setUserProperties(properties: any, cause: any): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="properties" type="any" required />
+<Parameter name="cause" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setupRemoteVideo"></a>
+
+### setupRemoteVideo
+
+<ApiSignature>
+
+setupRemoteVideo(canvas: [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="canvas" required>
+
+<ParameterType>
+
+[AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-canvas-gora-rtc-video-canvas)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="toData"></a>
+
+### toData
+
+<ApiSignature>
+
+toData(): [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateLocalMediaState"></a>
+
+### updateLocalMediaState
+
+<ApiSignature>
+
+updateLocalMediaState(__namedParameters: \{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateLocalMediaStream"></a>
+
+### updateLocalMediaStream
+
+<ApiSignature>
+
+updateLocalMediaStream(__namedParameters: \{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type) \}, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateRemoteMediaStream"></a>
+
+### updateRemoteMediaStream
+
+<ApiSignature>
+
+updateRemoteMediaStream(userUuid: string, streamUuid: string, __namedParameters: \{ publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

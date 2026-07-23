@@ -1,10 +1,18 @@
 ---
-title: "EchoTestConfiguration"
-description: "音视频通话回路测试的配置。"
+title: EchoTestConfiguration
+description: 音视频通话回路测试的配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_echotestconfiguration
+  sourcePath: html-docs/rtc/Csharp/API/class_echotestconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_echotestconfiguration__prototype"></a>
 
-```csharp
+```text
 public class EchoTestConfiguration
     {
         public view_t view;
@@ -20,32 +28,47 @@ public class EchoTestConfiguration
 
 ## 属性
 
-### `view`
+<ParameterList>
+<a id="view"></a>
+<Parameter name="view">
 
 用于渲染本地用户视频的视图。该参数仅适用于测试视频设备的场景，请确保 enableVideo 为 true。
 
-### `enableAudio`
+</Parameter>
+<a id="enableaudio"></a>
+<Parameter name="enableAudio">
 
 是否开启音频设备：
 
-- true: (默认) 开启音频设备。如需测试音频设备，请设为 true。
-- false: 关闭音频设备。
+- `true`: (默认) 开启音频设备。如需测试音频设备，请设为 true。
+- `false`: 关闭音频设备。
 
-### `enableVideo`
+</Parameter>
+<a id="enablevideo"></a>
+<Parameter name="enableVideo">
 
 是否开启视频设备。暂不支持视频设备检测，请将该参数设为 `false`。
 
-### `token`
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
-用于保证音视频通话回路测试安全性的 Token。如果你在控制台未启用 App 证书，则不需要向该参数传值；如果你在控制台已启用 App 证书，则必须向该参数传入 Token，且在你生成 Token 时使用的 `uid` 必须为 0xFFFFFFFF，使用的频道名必须为标识每个音视频通话回路测试的频道名。服务端生成 Token 的方式请参考 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unity/basic-features/token-authentication)。
+用于保证音视频通话回路测试安全性的 Token。如果你在控制台未启用 App 证书，则不需要向该参数传值；如果你在控制台已启用 App 证书，则必须向该参数传入 Token，且在你生成 Token 时使用的 `uid` 必须为 0xFFFFFFFF，使用的频道名必须为标识每个音视频通话回路测试的频道名。服务端生成 Token 的方式请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-### `channelId`
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 标识每个音视频通话回路测试的频道名。为保证回路测试功能正常，同一个项目（App ID） 的各终端用户在不同设备上做音视频通话回路测试时，传入的标识每个回路测试的频道名不能相同。
 
-### `intervalInSeconds`
+</Parameter>
+<a id="intervalinseconds"></a>
+<Parameter name="intervalInSeconds">
 
 设置返回音视频回路测试结果的时间间隔或延迟，取值范围为 [2,10]，单位为秒，默认为 2 秒。
 
 - 对于音频回路测试，测试结果会根据你设置的时间间隔返回。
 - 对于视频回路测试，视频画面会在短时间内显示，之后延迟会逐渐增加，直至达到你设置的延迟。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,173 @@
+---
+title: agora::linuxsdk::VideoYuvFrame类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/classagora_1_1linuxsdk_1_1_video_yuv_frame
+  sourcePath: html-docs/recording/cpp/classagora_1_1linuxsdk_1_1_video_yuv_frame.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+YUV 格式原始视频数据的具体参数。
+
+## 构造及析构函数说明
+
+<a id="a30269bcc21d53d7c2459779fabbba2ea"></a>
+
+### VideoYuvFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::VideoYuvFrame::VideoYuvFrame([u64_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9cc1f6639ee34314ef127d703c7c7b5d) *frame_ms*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *width*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *height*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *ystride*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *ustride*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *vstride*)
+
+</ApiSignature>
+
+<a id="ade79c8f628e8e972a2158a3a81d73f3b"></a>
+
+### ~VideoYuvFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::VideoYuvFrame::~VideoYuvFrame()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="ac1d7c82e87b16e26cd2023b03ce488a8"></a>
+
+### frame_ms_
+
+<ApiSignature>
+
+[u64_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9cc1f6639ee34314ef127d703c7c7b5d) agora::linuxsdk::VideoYuvFrame::frame_ms_
+
+</ApiSignature>
+
+该帧的时间戳。
+
+<a id="a0dbdc11aa1f8bcbdfbde4ffc331bf142"></a>
+
+### ybuf_
+
+<ApiSignature>
+
+const [uchar_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af50c9c155458449dbe080a49543815fa)* agora::linuxsdk::VideoYuvFrame::ybuf_
+
+</ApiSignature>
+
+指向 YUV 数据中的 Y 缓冲区指针。
+
+<a id="af2e11a6370a45f2d80f5b1e6932241ef"></a>
+
+### ubuf_
+
+<ApiSignature>
+
+const [uchar_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af50c9c155458449dbe080a49543815fa)* agora::linuxsdk::VideoYuvFrame::ubuf_
+
+</ApiSignature>
+
+指向 YUV 数据中的 U 缓冲区指针。
+
+<a id="a04e9ab7ce02c54a8e7d533cbd67ca064"></a>
+
+### vbuf_
+
+<ApiSignature>
+
+const [uchar_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af50c9c155458449dbe080a49543815fa)* agora::linuxsdk::VideoYuvFrame::vbuf_
+
+</ApiSignature>
+
+指向 YUV 数据中的 V 缓冲区指针。
+
+<a id="a9120e3f9ffa5233e574816711c6244e1"></a>
+
+### width_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::width_
+
+</ApiSignature>
+
+视频像素宽度。
+
+<a id="a93ccbe2d1f2d83d87ad1fe5ea43bab22"></a>
+
+### height_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::height_
+
+</ApiSignature>
+
+视频像素高度。
+
+<a id="a717d9a67e2054fdac95354969d275cab"></a>
+
+### ystride_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::ystride_
+
+</ApiSignature>
+
+YUV 数据中的 Y 缓冲区的行跨度。
+
+<a id="a5d03da792b2cb5be54102903560008eb"></a>
+
+### ustride_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::ustride_
+
+</ApiSignature>
+
+YUV 数据中的 U 缓冲区的行跨度。
+
+<a id="ad3e2282512094545bbf3bed880d5fba5"></a>
+
+### vstride_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::vstride_
+
+</ApiSignature>
+
+YUV 数据中的 V 缓冲区的行跨度。
+
+<a id="a6aec196a3dd7352f69cf980951aead12"></a>
+
+### buf_
+
+<ApiSignature>
+
+const [uchar_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af50c9c155458449dbe080a49543815fa)* agora::linuxsdk::VideoYuvFrame::buf_
+
+</ApiSignature>
+
+视频帧缓冲区。
+
+<a id="ae47de8866633deec8011f87a67888b57"></a>
+
+### bufSize_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::VideoYuvFrame::bufSize_
+
+</ApiSignature>
+
+视频帧缓冲区的大小。

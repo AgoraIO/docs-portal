@@ -1,10 +1,19 @@
 ---
-title: "音视频录制"
-description: "音视频录制 API reference."
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_recording
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_recording.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_recording"></a>
 
 <a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title2"></a>
 
 ## StartAudioRecording
 
@@ -12,7 +21,7 @@ description: "音视频录制 API reference."
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartAudioRecording(const FAudioRecordingConfiguration& config);
 ```
@@ -42,21 +51,29 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [FAudioRecordingConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title3"></a>
 
 ## StopAudioRecording
 
@@ -64,7 +81,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopAudioRecording();
 ```
@@ -76,7 +93,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

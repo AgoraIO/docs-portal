@@ -1,0 +1,124 @@
+---
+title: agora_rtm_handler_t结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/structagora__rtm__handler__t
+  sourcePath: html-docs/rtsa/c/structagora__rtm__handler__t.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link /api-ref/rtsa/c/agora__rtc__api_8h_source.html as
+        local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+RTM 事件处理回调。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 结构体成员变量说明
+
+<a id="aca9b8bc902639a09bf17d0995f5aa828"></a>
+
+### on_rtm_data
+
+<ApiSignature>
+
+void(* on_rtm_data)(const char *rtm_uid, const void *msg, size_t msg_len)
+
+</ApiSignature>
+
+RTM 消息回调。
+
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
+
+发送消息的 RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+收到的消息内容。
+
+</Parameter>
+<Parameter name="msg_len" direction="[in]">
+
+消息长度。单位为字节。
+
+</Parameter>
+</ParameterList>
+
+<a id="a25c73cac37a00ac748fa41869838f623"></a>
+
+### on_rtm_event
+
+<ApiSignature>
+
+void(* on_rtm_event)(const char *rtm_uid, [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) event_type, [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) err_code)
+
+</ApiSignature>
+
+RTM 事件回调。
+
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
+
+RTM 用户 ID。
+
+</Parameter>
+<Parameter name="event_type" direction="[in]">
+
+事件类型。详见 [rtm_event_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab5b2cce4f434a399c2be533afaa837d7) 。
+
+</Parameter>
+<Parameter name="err_code" direction="[in]">
+
+错误码。详见 [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a15b2dba380611e1974686f74a3ec0ca7"></a>
+
+### on_rtm_send_data_result
+
+<ApiSignature>
+
+void(* on_rtm_send_data_result)(const char *rtm_uid, uint32_t msg_id, [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) state)
+
+</ApiSignature>
+
+[agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) 方法调用结果回调。
+
+<ParameterList title="参数">
+<Parameter name="rtm_uid" direction="[in]">
+
+RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg_id" direction="[in]">
+
+消息 ID。
+
+</Parameter>
+<Parameter name="state" direction="[in]">
+
+RTM 消息的发送状态。详见 [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) 。
+
+</Parameter>
+</ParameterList>
+
+---
+
+该结构体的文档由以下文件生成:
+
+- agora_rtc_api.h

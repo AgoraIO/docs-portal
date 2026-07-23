@@ -738,7 +738,7 @@ function SolutionCard({
             <a
               className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               href={action.href}
-              key={action.href}
+              key={`${action.href}\u001f${action.label}`}
               rel={
                 action.href.startsWith('http')
                   ? 'noreferrer noopener'

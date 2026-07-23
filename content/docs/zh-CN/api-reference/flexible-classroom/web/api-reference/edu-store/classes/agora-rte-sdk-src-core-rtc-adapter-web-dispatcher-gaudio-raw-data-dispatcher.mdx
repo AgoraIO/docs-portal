@@ -1,0 +1,1056 @@
+---
+title: Class AGAudioRawDataDispatcher
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_core_rtc_adapter_web_dispatcher_GAudioRawDataDispatcher.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_core_rtc_adapter_web_dispatcher_GAudioRawDataDispatcher.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AGAudioRawDataDispatcher(): [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher-gaudio-raw-data-dispatcher)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+## Accessors
+
+<a id="audioTrackRawDataConfig"></a>
+
+### audioTrackRawDataConfig
+
+<ApiSignature>
+
+get audioTrackRawDataConfig(): [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="hasAudioTrackRawDataObservers"></a>
+
+### hasAudioTrackRawDataObservers
+
+<ApiSignature>
+
+get hasAudioTrackRawDataObservers(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="hasMicrophoneRawDataObservers"></a>
+
+### hasMicrophoneRawDataObservers
+
+<ApiSignature>
+
+get hasMicrophoneRawDataObservers(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="isStarted"></a>
+
+### isStarted
+
+<ApiSignature>
+
+get isStarted(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="microphoneTrackRawDataConfig"></a>
+
+### microphoneTrackRawDataConfig
+
+<ApiSignature>
+
+get microphoneTrackRawDataConfig(): [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="addAudioRawDataObserver"></a>
+
+### addAudioRawDataObserver
+
+<ApiSignature>
+
+addAudioRawDataObserver(observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="dispatch"></a>
+
+### dispatch
+
+<ApiSignature>
+
+dispatch(event: "AudioRawDataRecored", ...params: [rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "AudioRawDataBeforeMixed", ...params: [rawData: [AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData), streamUuid: string, channelName: string]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "ObserverChanged", ...params: [position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "MicrophoneTrackCreated", ...params: [track: ILocalAudioTrack]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "AudioTrackSubscribed", ...params: [track: IRemoteAudioTrack, streamUuid: string, channelName: string]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "MicrophoneTrackDestroyed", ...params: []): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "AudioTrackUnsubscribed", ...params: [streamUuid: string, channelName: string]): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "Start", ...params: []): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+dispatch(event: "Stop", ...params: []): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="...params" required>
+
+<ParameterType>
+
+[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData)]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="...params" required>
+
+<ParameterType>
+
+[rawData:[AgoraRteAudioRawData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawData),streamUuid: string,channelName: string]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="...params" required>
+
+<ParameterType>
+
+[position:[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="...params" type="[track: ILocalAudioTrack]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="...params" type="[track: IRemoteAudioTrack,streamUuid: string,channelName: string]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="...params" type="[streamUuid: string,channelName: string]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="...params" type="[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="register"></a>
+
+### register
+
+<ApiSignature>
+
+register(event: "AudioRawDataRecored", callback: [CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "AudioRawDataBeforeMixed", callback: [CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "ObserverChanged", callback: [CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "MicrophoneTrackCreated", callback: [CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "AudioTrackSubscribed", callback: [CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "MicrophoneTrackDestroyed", callback: [CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "AudioTrackUnsubscribed", callback: [CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "Start", callback: [CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+register(event: "Stop", callback: [CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeAudioRawDataObserver"></a>
+
+### removeAudioRawDataObserver
+
+<ApiSignature>
+
+removeAudioRawDataObserver(observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setConfig"></a>
+
+### setConfig
+
+<ApiSignature>
+
+setConfig(config: [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="config" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="start"></a>
+
+### start
+
+<ApiSignature>
+
+start(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stop"></a>
+
+### stop
+
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="unregister"></a>
+
+### unregister
+
+<ApiSignature>
+
+unregister(event: "AudioRawDataRecored", callback: [CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "AudioRawDataBeforeMixed", callback: [CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "ObserverChanged", callback: [CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "MicrophoneTrackCreated", callback: [CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "AudioTrackSubscribed", callback: [CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "MicrophoneTrackDestroyed", callback: [CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "AudioTrackUnsubscribed", callback: [CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "Start", callback: [CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+unregister(event: "Stop", callback: [CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataRecored&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackRawDataRecorded](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataRecorded)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioRawDataBeforeMixed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackRawDataBeforeMixed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackRawDataBeforeMixed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;ObserverChanged&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackObserverChanged](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackObserverChanged)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackCreated&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackCreated](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackCreated)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackSubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackSubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackSubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;MicrophoneTrackDestroyed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackMicrophoneTrackDestroyed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackMicrophoneTrackDestroyed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;AudioTrackUnsubscribed&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackAudioTrackUnsubscribed](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackAudioTrackUnsubscribed)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Start&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStart](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStart)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;Stop&quot;" required />
+<Parameter name="callback" required>
+
+<ParameterType>
+
+[CallbackStop](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-adapter-web-dispatcher#CallbackStop)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

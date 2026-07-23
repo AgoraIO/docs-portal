@@ -1,10 +1,19 @@
 ---
-title: "媒体资源打开"
-description: "媒体资源打开 API reference."
+title: 媒体资源打开
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_mediaplayer_open
+  sourcePath: html-docs/rtc/Android/API/toc_mediaplayer_open.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_open"></a>
 
 <a id="api_imediaplayer_open"></a>
+
+<a id="ariaid-title2"></a>
 
 ## open [1/2]
 
@@ -12,7 +21,7 @@ description: "媒体资源打开 API reference."
 
 <a id="api_imediaplayer_open__prototype"></a>
 
-```java
+```text
 int open(String url, long startPos);
 ```
 
@@ -20,8 +29,8 @@ int open(String url, long startPos);
 
 支持播放以 `content://` 开头的 URI 文件。
 
-:::info[注]
-该方法为异步调用。
+:::note
+注： 该方法为异步调用。
 :::
 
 <a id="api_imediaplayer_open__timing"></a>
@@ -40,25 +49,35 @@ int open(String url, long startPos);
 
 ### 参数
 
-#### `url`
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 媒体文件的路径，支持本地路径和在线路径。
 
-#### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 播放的起始位置（毫秒，默认值为 0）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_open__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_open2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## open [2/2]
 
@@ -66,39 +85,49 @@ int open(String url, long startPos);
 
 <a id="api_imediaplayer_open2__prototype"></a>
 
-```java
+```text
 int open(Uri uri, long startPos);
 ```
 
 <a id="api_imediaplayer_open2__detailed_desc"></a>
 
-:::info[注]
-该方法为异步调用。
+:::note
+注： 该方法为异步调用。
 :::
 
 <a id="api_imediaplayer_open2__parameters"></a>
 
 ### 参数
 
-#### `uri`
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 媒体文件的 URI 地址。
 
-#### `startPos`
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
 
 播放的起始位置，单位为毫秒。（默认值为 0）
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_open2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_openwithmediasource"></a>
+
+<a id="ariaid-title4"></a>
 
 ## openWithMediaSource
 
@@ -106,7 +135,7 @@ int open(Uri uri, long startPos);
 
 <a id="api_imediaplayer_openwithmediasource__prototype"></a>
 
-```java
+```text
 int openWithMediaSource(MediaPlayerSource source);
 ```
 
@@ -114,8 +143,8 @@ int openWithMediaSource(MediaPlayerSource source);
 
 该方法支持打开不同类型的媒体文件，包括以 `content://` 开头的 URI 文件和 `assets` 文件夹中的媒体文件，并设置播放选项。
 
-:::info[注]
-该方法为异步调用。如果需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法之前，已收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `OPEN_COMPLETED`。
+:::note
+注： 该方法为异步调用。如果需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法之前，已收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `OPEN_COMPLETED`。
 :::
 
 <a id="api_imediaplayer_openwithmediasource__timing"></a>
@@ -128,21 +157,29 @@ int openWithMediaSource(MediaPlayerSource source);
 
 ### 参数
 
-#### `source`
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 媒体资源，详见 [MediaPlayerSource](/zh-CN/api-reference/rtc/android/class-mediasource)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_openwithmediasource__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_preloadsrc"></a>
+
+<a id="ariaid-title5"></a>
 
 ## preloadSrc
 
@@ -150,7 +187,7 @@ int openWithMediaSource(MediaPlayerSource source);
 
 <a id="api_imediaplayer_preloadsrc__prototype"></a>
 
-```java
+```text
 int preloadSrc(String src, long startPos);
 ```
 
@@ -158,8 +195,10 @@ int preloadSrc(String src, long startPos);
 
 调用该方法后，如果在 [onPreloadEvent](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调中收到 `PLAYER_PRELOAD_EVENT_COMPLETE` 事件，表示预加载成功；如果收到 `PLAYER_PRELOAD_EVENT_ERROR` 事件，表示预加载失败。预加载成功后，如需播放该媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如需清空播放列表，请调用 `stop()`。
 
-:::info[注]
-- 在调用此方法前，请确保已成功调用 open 或 openWithMediaSource 打开媒体资源。
+:::note
+注：
+
+- 在调用此方法前，请确保已成功调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 声网不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -167,25 +206,35 @@ int preloadSrc(String src, long startPos);
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
 
-#### `startPos`
+</Parameter>
+<a id="startpos-2"></a>
+<Parameter name="startPos">
 
 媒体资源预加载到播放列表后开始播放的位置（单位为毫秒）。预加载直播流时，请将该参数设为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_preloadsrc__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_switchsrc"></a>
+
+<a id="ariaid-title6"></a>
 
 ## switchSrc
 
@@ -193,7 +242,7 @@ int preloadSrc(String src, long startPos);
 
 <a id="api_imediaplayer_switchsrc__prototype"></a>
 
-```java
+```text
 int switchSrc(String src, boolean syncPts);
 ```
 
@@ -206,11 +255,14 @@ int switchSrc(String src, boolean syncPts);
 
 调用此方法后，如果收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_COMPLETE` 事件，表示切换成功。如果切换失败，SDK 会自动重试 3 次。如果仍然失败，你将收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_ERROR` 事件，表示切换过程中发生错误。
 
-:::info[注]
-- 请确保在调用 open 之后再调用此方法。
+:::note
+注：
+
+- 请确保在调用 `open` 之后再调用此方法。
 - 为确保正常播放，调用此方法时请注意以下事项：
+
   - 播放暂停时不要调用此方法。
-  - 切换过程中不要调用 seek 方法。
+  - 切换过程中不要调用 [seek](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法。
   - 切换媒体资源前，请确保播放位置未超过待切换媒体资源的总时长。
 :::
 
@@ -218,28 +270,38 @@ int switchSrc(String src, boolean syncPts);
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src-1"></a>
+<Parameter name="src">
 
 媒体资源的 URL 地址。
 
-#### `syncPts`
+</Parameter>
+<a id="syncpts"></a>
+<Parameter name="syncPts">
 
 是否在切换前后同步播放位置（毫秒）：
 
 - true：同步切换前后的播放位置。
 - false：（默认）不同步切换前后的播放位置。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayer_switchsrc__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unloadsrc"></a>
+
+<a id="ariaid-title7"></a>
 
 ## unloadSrc
 
@@ -247,30 +309,36 @@ int switchSrc(String src, boolean syncPts);
 
 <a id="api_imediaplayer_unloadsrc__prototype"></a>
 
-```java
+```text
 int unloadSrc(String src);
 ```
 
 <a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
 
-:::info[注]
-[unloadSrc](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 无法释放正在播放的媒体资源。
+:::note
+注： [unloadSrc](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 无法释放正在播放的媒体资源。
 :::
 
 <a id="api_imediaplayer_unloadsrc__parameters"></a>
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src-2"></a>
+<Parameter name="src">
 
 媒体资源的 URL。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unloadsrc__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)

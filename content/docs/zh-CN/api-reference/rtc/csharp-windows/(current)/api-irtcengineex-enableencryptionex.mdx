@@ -1,10 +1,18 @@
 ---
-title: "EnableEncryptionEx"
-description: "开启或关闭内置加密。"
+title: EnableEncryptionEx
+description: 开启或关闭内置加密。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengineex_enableencryptionex
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengineex_enableencryptionex.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```csharp
+```text
 public abstract int EnableEncryptionEx(RtcConnection connection, bool enabled, EncryptionConfig config);
 ```
 
@@ -35,21 +43,34 @@ public abstract int EnableEncryptionEx(RtcConnection connection, bool enabled, E
 
 ## 参数
 
-### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启内置加密：
 
 - true: 开启内置加密。
 - false:（默认）关闭内置加密。
 
-### `config`
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/csharp-windows/class-encryptionconfig)。
 
-### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableencryptionex__return_values"></a>
 
 ## 返回值
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)

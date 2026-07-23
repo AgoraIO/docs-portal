@@ -1,10 +1,19 @@
 ---
-title: "版权音乐"
-description: "版权音乐 API reference."
+title: 版权音乐
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_drm
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_drm.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_drm"></a>
 
 <a id="api_imusiccontentcenter_createmusicplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMusicPlayer
 
@@ -12,7 +21,7 @@ description: "版权音乐 API reference."
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```arkts
+```text
 public abstract createMusicPlayer():IAgoraMusicPlayer
 ```
 
@@ -30,9 +39,12 @@ public abstract createMusicPlayer():IAgoraMusicPlayer
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMusicPlayer
 
@@ -65,20 +77,23 @@ public abstract createMusicPlayer():IAgoraMusicPlayer
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroy"></a>
 
+<a id="ariaid-title4"></a>
+
 ## destroy
 
-销毁 IAgoraMusicContentCenter 实例。
+销毁 [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter) 实例。
 
 <a id="api_imusiccontentcenter_destroy__prototype"></a>
 
-```arkts
+```text
 public static destroy():void
 {
   RtcNapi.destroyMusicContentCenter()
@@ -92,9 +107,12 @@ public static destroy():void
 该方法需要在 RtcEngine 的 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法前调用。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getCaches
 
@@ -102,7 +120,7 @@ public static destroy():void
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```arkts
+```text
 public abstract getCaches():MusicCacheInfo[]
 ```
 
@@ -122,9 +140,12 @@ public abstract getCaches():MusicCacheInfo[]
 - 方法调用失败时，返回 NULL。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getInternalSongCode
 
@@ -132,15 +153,15 @@ public abstract getCaches():MusicCacheInfo[]
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```arkts
+```text
 public abstract getInternalSongCode(songCode:bigint,jsonOption:string):bigint
 ```
 
 <a id="api_imusiccontentcenter_getinternalsongcode__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 v4.2.2
+:::
 
 <a id="api_imusiccontentcenter_getinternalsongcode__scenario"></a>
 
@@ -152,27 +173,53 @@ v4.2.2
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
 
-音乐资源编号，用于标识音乐资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode ）。
+音乐资源编号，用于标识音乐资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。目前支持传入下列值：
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| sceneType | 场景类型： 1：直播场景：K 歌及背景音乐播放。 2：直播场景：背景音乐播放。 3：（默认）语聊场景：K 歌。 4：语聊场景：背景音乐播放。 5：VR 场景：K 歌及背景音乐播放。 注： 声网会根据你在 sceneType 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](https://doc.shengwang.cn/doc/online-ktv/android/overview/billing) 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 sceneType 的值。 | \{"sceneType":1\} |
-| highPart | 副歌片段的索引。你可以从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取副歌片段的索引然后传值。索引序号从 0 开始。 | \{"format": \{"highpart": 0\}\} |
+| sceneType | <Slot name="api-center-table-0" /> | \\\{"sceneType"\:1\\\} |
+| highPart | 副歌片段的索引。你可以从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取副歌片段的索引然后传值。索引序号从 0 开始。 | \\\{"format": \\\{"highpart": 0\\\}\\\} |
+
+<Slot for="api-center-table-0">
+
+场景类型：
+
+- 1：直播场景：K 歌及背景音乐播放。
+- 2：直播场景：背景音乐播放。
+- 3：（默认）语聊场景：K 歌。
+- 4：语聊场景：背景音乐播放。
+- 5：VR 场景：K 歌及背景音乐播放。
+
+:::note
+注： 声网会根据你在 sceneType 传入的应用场景进行收费。不同的应用场景对应不同的费率，你可以参考 [计费说明](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/billing) 查看详细的计费。如果需要切换到不同场景，需要重新调用此方法并传入 sceneType 的值。
+:::
+
+</Slot>
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getLyric
 
@@ -180,7 +227,7 @@ v4.2.2
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```arkts
+```text
 public abstract getLyric(songCode:bigint,lyricType:number):string
 ```
 
@@ -194,25 +241,35 @@ public abstract getLyric(songCode:bigint,lyricType:number):string
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-1"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `lyricType`
+</Parameter>
+<a id="lyrictype"></a>
+<Parameter name="lyricType">
 
 歌词类型：
 
 - 0：xml 格式。
 - 1：lrc 格式。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imusiccontentcenter_getlyric__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getMusicCharts
 
@@ -220,7 +277,7 @@ public abstract getLyric(songCode:bigint,lyricType:number):string
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```arkts
+```text
 public abstract getMusicCharts():string
 ```
 
@@ -235,9 +292,12 @@ public abstract getMusicCharts():string
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getMusicCollectionByMusicChartId
 
@@ -245,7 +305,7 @@ public abstract getMusicCharts():string
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__prototype"></a>
 
-```arkts
+```text
 public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number,pageSize:number,jsonOption?:string):string
 ```
 
@@ -259,26 +319,55 @@ public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number
 
 ### 参数
 
-#### `musicChartId`
+<ParameterList>
+<a id="musicchartid"></a>
+<Parameter name="musicChartId">
 
-音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来 [获取曲库所有歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8) 或 [获取增量歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)。
+音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[获取增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 
-#### `page`
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
 
 当前页面编号，默认从 1 开始。
 
-#### `pageSize`
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
 
 当前音乐资源列表的总页面数量，最大值为 50。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption-1"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| pitchType | 是否支持打分： 1：支持打分的音乐资源。 2：不支持打分的音乐资源。 | \{"pitchType":1\} |
-| needHighPart | 是否需要副歌片段资源： `true`：需要副歌片段资源。 `false`：不需要副歌片段资源。 | \{"needHighPart":true\} |
+| pitchType | <Slot name="api-center-table-1" /> | \\\{"pitchType"\:1\\\} |
+| needHighPart | <Slot name="api-center-table-2" /> | \\\{"needHighPart"\:true\\\} |
+
+<Slot for="api-center-table-1">
+
+是否支持打分：
+
+- 1：支持打分的音乐资源。
+- 2：不支持打分的音乐资源。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+是否需要副歌片段资源：
+
+- `true`：需要副歌片段资源。
+- `false`：不需要副歌片段资源。
+
+</Slot>
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__return_values"></a>
 
@@ -287,9 +376,12 @@ public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number
 一个 requestId，为本次请求的唯一标识。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
+
+<a id="ariaid-title10"></a>
 
 ## getSongSimpleInfo
 
@@ -297,7 +389,7 @@ public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```arkts
+```text
 public abstract getSongSimpleInfo(songCode:bigint):string
 ```
 
@@ -305,7 +397,7 @@ public abstract getSongSimpleInfo(songCode:bigint):string
 
 ### 详情
 
-在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode ）。
+在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
 当你调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调报告音乐资源的详细信息。
 
@@ -313,26 +405,34 @@ public abstract getSongSimpleInfo(songCode:bigint):string
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-2"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_initialize"></a>
 
+<a id="ariaid-title11"></a>
+
 ## initialize
 
-初始化 IAgoraMusicContentCenter。
+初始化 [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)。
 
 <a id="api_imusiccontentcenter_initialize__prototype"></a>
 
-```arkts
+```text
 public abstract initialize(configuration:MusicContentCenterConfiguration):number
 ```
 
@@ -346,18 +446,26 @@ public abstract initialize(configuration:MusicContentCenterConfiguration):number
 
 ### 参数
 
-#### `configuration`
+<ParameterList>
+<a id="configuration"></a>
+<Parameter name="configuration">
 
 IAgoraMusicContentCenter 的设置，详见 [MusicContentCenterConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-musiccontentcenterconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_initialize__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
+
+<a id="ariaid-title12"></a>
 
 ## isPreloaded
 
@@ -365,7 +473,7 @@ IAgoraMusicContentCenter 的设置，详见 [MusicContentCenterConfiguration](/z
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```arkts
+```text
 public abstract isPreloaded(songCode:bigint):number
 ```
 
@@ -379,21 +487,29 @@ public abstract isPreloaded(songCode:bigint):number
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-3"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功，该音乐资源已被预加载。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicontentcenter_preload2"></a>
+
+<a id="ariaid-title13"></a>
 
 ## preload
 
@@ -401,7 +517,7 @@ public abstract isPreloaded(songCode:bigint):number
 
 <a id="api_imusicontentcenter_preload2__prototype"></a>
 
-```arkts
+```text
 public abstract preload(songCode:bigint):string
 ```
 
@@ -411,28 +527,36 @@ public abstract preload(songCode:bigint):string
 
 你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调报告预加载音乐资源的事件。
 
-在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode ）。
+在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 或 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（songCode）。
 
-:::warning[注意]
-如需销毁 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调后，再调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法。
+:::caution
+注意： 如需销毁 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) 回调后，再调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法。
 :::
 
 <a id="api_imusicontentcenter_preload2__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-4"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicontentcenter_preload2__return_values"></a>
 
 ### 返回值
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler"></a>
+
+<a id="ariaid-title14"></a>
 
 ## registerEventHandler
 
@@ -440,7 +564,7 @@ public abstract preload(songCode:bigint):string
 
 <a id="api_imusiccontentcenter_registereventhandler__prototype"></a>
 
-```arkts
+```text
 public abstract registerEventHandler(eventHandler:IMusicContentCenterEventHandler):number
 ```
 
@@ -459,12 +583,15 @@ public abstract registerEventHandler(eventHandler:IMusicContentCenterEventHandle
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_release"></a>
+
+<a id="ariaid-title15"></a>
 
 ## release
 
@@ -472,7 +599,7 @@ public abstract registerEventHandler(eventHandler:IMusicContentCenterEventHandle
 
 <a id="api_imusiccontentcenter_release__prototype"></a>
 
-```arkts
+```text
 public abstract release(): void;
 ```
 
@@ -483,9 +610,12 @@ public abstract release(): void;
 该方法需要在 RtcEngine 的 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法前调用。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
+
+<a id="ariaid-title16"></a>
 
 ## removeCache
 
@@ -493,7 +623,7 @@ public abstract release(): void;
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```arkts
+```text
 public abstract removeCache(songCode:bigint):number
 ```
 
@@ -503,29 +633,37 @@ public abstract removeCache(songCode:bigint):number
 
 你可以调用该方法删除某一已缓存的音乐资源，如需删除多个音乐资源，你可以多次调用该方法。
 
-:::info[注]
-该方法不会删除正在播放中的已缓存音乐资源。
+:::note
+注： 该方法不会删除正在播放中的已缓存音乐资源。
 :::
 
 <a id="api_imusiccontentcenter_removecache__parameters"></a>
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-5"></a>
+<Parameter name="songCode">
 
 待删除的音乐资源的编号。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_removecache__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功，音乐资源已删除。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken"></a>
+
+<a id="ariaid-title17"></a>
 
 ## renewToken
 
@@ -533,7 +671,7 @@ public abstract removeCache(songCode:bigint):number
 
 <a id="api_imusiccontentcenter_renewtoken__prototype"></a>
 
-```arkts
+```text
 public abstract renewToken(token:string):number
 ```
 
@@ -547,21 +685,29 @@ public abstract renewToken(token:string):number
 
 ### 参数
 
-#### `token`
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
 
 新的 Token。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_renewtoken__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic2"></a>
+
+<a id="ariaid-title18"></a>
 
 ## searchMusic
 
@@ -569,7 +715,7 @@ public abstract renewToken(token:string):number
 
 <a id="api_imusiccontentcenter_searchmusic2__prototype"></a>
 
-```arkts
+```text
 public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOption?:string):string
 ```
 
@@ -583,26 +729,55 @@ public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOptio
 
 ### 参数
 
-#### `keyword`
+<ParameterList>
+<a id="keyword"></a>
+<Parameter name="keyword">
 
 搜索关键词，支持歌曲名、歌手搜索。
 
-#### `page`
+</Parameter>
+<a id="page-1"></a>
+<Parameter name="page">
 
 想要获取的音乐资源列表的目标页编号。
 
-#### `pageSize`
+</Parameter>
+<a id="pagesize-1"></a>
+<Parameter name="pageSize">
 
 每页所展示的音乐资源的最大数量，最大值为 50。
 
-#### `jsonOption`
+</Parameter>
+<a id="jsonoption-2"></a>
+<Parameter name="jsonOption">
 
 扩展 JSON 字段，默认为 NULL。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
 | Key 值 | Value 值 | 示例 |
 | --- | --- | --- |
-| pitchType | 是否支持打分： 1：支持打分的音乐资源。 2：不支持打分的音乐资源。 | \{"pitchType":1\} |
-| needHighPart | 是否需要副歌片段资源： `true`：需要副歌片段资源。 `false`：不需要副歌片段资源。 | \{"needHighPart":true\} |
+| pitchType | <Slot name="api-center-table-3" /> | \\\{"pitchType"\:1\\\} |
+| needHighPart | <Slot name="api-center-table-4" /> | \\\{"needHighPart"\:true\\\} |
+
+<Slot for="api-center-table-3">
+
+是否支持打分：
+
+- 1：支持打分的音乐资源。
+- 2：不支持打分的音乐资源。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+是否需要副歌片段资源：
+
+- `true`：需要副歌片段资源。
+- `false`：不需要副歌片段资源。
+
+</Slot>
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusiccontentcenter_searchmusic2__return_values"></a>
 
@@ -611,9 +786,12 @@ public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOptio
 一个 requestId，为本次请求的唯一标识。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
+
+<a id="ariaid-title19"></a>
 
 ## setPlayMode
 
@@ -621,7 +799,7 @@ public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOptio
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```arkts
+```text
 abstract setPlayMode(mode:Constants.MusicPlayMode):number
 ```
 
@@ -629,8 +807,8 @@ abstract setPlayMode(mode:Constants.MusicPlayMode):number
 
 你可以调用该方法来设置启用原唱、伴奏或导唱。如不调用该方法进行设置，则默认播放伴奏；如果音乐资源没有伴奏，则播放原唱。
 
-:::warning[注意]
-你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 参数得知需播放的版权音乐所支持的播放类型。
+:::caution
+注意： 你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/harmonyos/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的  参数得知需播放的版权音乐所支持的播放类型。
 :::
 
 <a id="api_imusicplayer_setplaymode__scenario"></a>
@@ -655,22 +833,31 @@ abstract setPlayMode(mode:Constants.MusicPlayMode):number
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放模式，详见 [MusicPlayMode](/zh-CN/api-reference/rtc/harmonyos/enum-musicplaymode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imusicplayer_setplaymode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类
+
 - [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler"></a>
+
+<a id="ariaid-title20"></a>
 
 ## unregisterEventHandler
 
@@ -678,7 +865,7 @@ abstract setPlayMode(mode:Constants.MusicPlayMode):number
 
 <a id="api_imusiccontentcenter_unregistereventhandler__prototype"></a>
 
-```arkts
+```text
 public abstract unregisterEventHandler():number
 ```
 
@@ -691,12 +878,15 @@ public abstract unregisterEventHandler():number
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
+
+<a id="ariaid-title21"></a>
 
 ## onLyricResult
 
@@ -704,11 +894,13 @@ public abstract unregisterEventHandler():number
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```arkts
+```text
 onLyricResult?:(requestId:string,songCode:bigint,lyricUrl:string,reason:Constants.MusicContentCenterStateReason) => void
 ```
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
+
+### 详情
 
 当你调用 [getLyric](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载地址后，SDK 会触发该回调。
 
@@ -716,19 +908,30 @@ onLyricResult?:(requestId:string,songCode:bigint,lyricUrl:string,reason:Constant
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `lyricUrl`
+</Parameter>
+<a id="lyricurl"></a>
+<Parameter name="lyricUrl">
 
 歌词的下载地址。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/harmonyos/enum-musiccontentcenterstatereason)。
 
+</Parameter>
+</ParameterList>
+
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
+
+<a id="ariaid-title22"></a>
 
 ## onMusicChartsResult
 
@@ -736,11 +939,13 @@ onLyricResult?:(requestId:string,songCode:bigint,lyricUrl:string,reason:Constant
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```arkts
+```text
 onMusicChartsResult?:(requestId:string,list:MusicChartInfo[],reason:Constants.MusicContentCenterStateReason) => void
 ```
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__detailed_desc"></a>
+
+### 详情
 
 当你调用 [getMusicCharts](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccharts) 方法获取全部音乐榜单之后，SDK 会触发该回调。
 
@@ -748,19 +953,30 @@ onMusicChartsResult?:(requestId:string,list:MusicChartInfo[],reason:Constants.Mu
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-1"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `reason`
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/harmonyos/enum-musiccontentcenterstatereason)。
 
-#### `list`
+</Parameter>
+<a id="list"></a>
+<Parameter name="list">
 
-当前可播放的音乐榜单列表。 详见 [MusicChartInfo](/zh-CN/api-reference/rtc/harmonyos/class-musicchartinfo)。
+当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/harmonyos/class-musicchartinfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
+
+<a id="ariaid-title23"></a>
 
 ## onMusicCollectionResult
 
@@ -768,11 +984,13 @@ onMusicChartsResult?:(requestId:string,list:MusicChartInfo[],reason:Constants.Mu
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```arkts
+```text
 onMusicCollectionResult?:(requestId:string,page:number,pageSize:number,total:number,list:Music[],reason:Constants.MusicContentCenterStateReason) => void
 ```
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
+
+### 详情
 
 当你调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) 方法来获取指定榜单的音乐资源列表或调用 [searchMusic](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_searchmusic2) 来搜索音乐资源时，SDK 会触发此回调报告榜单中音乐资源列表的详细信息。
 
@@ -780,31 +998,48 @@ onMusicCollectionResult?:(requestId:string,page:number,pageSize:number,total:num
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-2"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `reason`
+</Parameter>
+<a id="reason-2"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/harmonyos/enum-musiccontentcenterstatereason)。
 
-#### `page`
+</Parameter>
+<a id="page-2"></a>
+<Parameter name="page">
 
 当前页面编号，默认从 1 开始。
 
-#### `pageSize`
+</Parameter>
+<a id="pagesize-2"></a>
+<Parameter name="pageSize">
 
 每页所展示的音乐资源的最大数量，最大值为 50。
 
-#### `total`
+</Parameter>
+<a id="total"></a>
+<Parameter name="total">
 
 列表内音乐资源的总数量。
 
-#### `list`
+</Parameter>
+<a id="list-1"></a>
+<Parameter name="list">
 
-音乐资源列表的详细信息。 详见 [Music](/zh-CN/api-reference/rtc/harmonyos/class-music)。
+音乐资源列表的详细信息。详见 [Music](/zh-CN/api-reference/rtc/harmonyos/class-music)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent"></a>
+
+<a id="ariaid-title24"></a>
 
 ## onPreLoadEvent
 
@@ -812,11 +1047,13 @@ onMusicCollectionResult?:(requestId:string,page:number,pageSize:number,total:num
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent__prototype"></a>
 
-```arkts
+```text
 onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string,state:number,reason:Constants.MusicContentCenterStateReason) => void
 ```
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent__detailed_desc"></a>
+
+### 详情
 
 当你调用 [preload](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
 
@@ -824,19 +1061,27 @@ onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string
 
 ### 参数
 
-#### `songCode`
+<ParameterList>
+<a id="songcode-6"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识一个音乐资源。
 
-#### `percent`
+</Parameter>
+<a id="percent"></a>
+<Parameter name="percent">
 
 音乐资源当前的加载进度，取值范围为 [0,100]。
 
-#### `lyricUrl`
+</Parameter>
+<a id="lyricurl-1"></a>
+<Parameter name="lyricUrl">
 
 歌词下载地址。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前音乐资源的加载状态：
 
@@ -844,11 +1089,18 @@ onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string
 - 1：音乐资源加载失败。
 - 2：音乐资源正在加载中。
 
-#### `reason`
+</Parameter>
+<a id="reason-3"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/harmonyos/enum-musiccontentcenterstatereason)。
 
+</Parameter>
+</ParameterList>
+
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
+
+<a id="ariaid-title25"></a>
 
 ## onSongSimpleInfoResult
 
@@ -856,7 +1108,7 @@ onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```arkts
+```text
 onSongSimpleInfoResult?:(requestId:string,songCode:bigint,simpleInfo:string,reason:Constants.MusicContentCenterStateReason) => void
 ```
 
@@ -870,15 +1122,21 @@ onSongSimpleInfoResult?:(requestId:string,songCode:bigint,simpleInfo:string,reas
 
 ### 参数
 
-#### `requestId`
+<ParameterList>
+<a id="requestid-3"></a>
+<Parameter name="requestId">
 
 请求 ID。本次请求的唯一标识。
 
-#### `songCode`
+</Parameter>
+<a id="songcode-7"></a>
+<Parameter name="songCode">
 
 音乐资源的编号，用于标识音乐资源。
 
-#### `simpleInfo`
+</Parameter>
+<a id="simpleinfo"></a>
+<Parameter name="simpleInfo">
 
 音乐资源的相关信息，包含下列内容：
 
@@ -888,6 +1146,11 @@ onSongSimpleInfoResult?:(requestId:string,songCode:bigint,simpleInfo:string,reas
 - 歌曲名称
 - 歌手名
 
-#### `reason`
+</Parameter>
+<a id="reason-4"></a>
+<Parameter name="reason">
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/harmonyos/enum-musiccontentcenterstatereason)。
+
+</Parameter>
+</ParameterList>

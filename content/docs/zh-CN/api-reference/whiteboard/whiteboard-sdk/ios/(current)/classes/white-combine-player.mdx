@@ -1,0 +1,308 @@
+---
+title: WhiteCombinePlayer Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteCombinePlayer
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteCombinePlayer.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | NSObject |
+| --- | --- |
+| Declared in | WhiteCombinePlayer.h |
+
+<a id="overview"></a>
+
+## Overview
+
+同步本地视频播放器与白板回放播放器的播放状态。某一个进入缓冲状态，另一个则暂停等待。
+
+<a id="tasks"></a>
+
+<a id="//api/name/whitePlayer"></a>
+
+### `whitePlayer`
+
+白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable, readwrite) WhitePlayer *whitePlayer
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/delegate"></a>
+
+### `delegate`
+
+白板回放回调。详见 [WhiteCombineDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-combine-delegate)。
+
+<ApiSignature>
+
+@property (nonatomic, weak, nullable) id&lt;WhiteCombineDelegate&gt; delegate
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/playbackSpeed"></a>
+
+### `playbackSpeed`
+
+白板回放的播放速率。即使暂停回放，该值也不会变为 0。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+<ApiSignature>
+
+@property (nonatomic, assign) CGFloat playbackSpeed
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/initWithNativePlayer:whitePlayer:"></a>
+
+### `– initWithNativePlayer:whitePlayer:`
+
+初始化一个同时持有本地音视频播放器与白板回放播放器的混合播放器对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer* whitePlayer:(WhitePlayer *)*replayer*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="nativePlayer">
+
+本地视频播放器。
+
+</Parameter>
+<Parameter name="replayer">
+
+白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/initWithMediaUrl:whitePlayer:"></a>
+
+### `– initWithMediaUrl:whitePlayer:`
+
+指定媒体资源地址并初始化混合播放器。
+
+<ApiSignature>
+
+\- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl* whitePlayer:(WhitePlayer *)*replayer*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="mediaUrl">
+
+媒体资源地址。
+
+</Parameter>
+<Parameter name="replayer">
+
+白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/initWithMediaUrl:"></a>
+
+### `– initWithMediaUrl:`
+
+指定媒体资源地址并初始化本地播放器（AV Player），需要在生成后，自行设置白板播放器属性。
+
+<ApiSignature>
+
+\- (instancetype)initWithMediaUrl:(NSURL *)*mediaUrl*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="mediaUrl">
+
+媒体资源地址。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/initWithNativePlayer:"></a>
+
+### `– initWithNativePlayer:`
+
+初始化本地视频播放器（AV Player），需要在生成后，自行设置白板播放器属性。
+
+<ApiSignature>
+
+\- (instancetype)initWithNativePlayer:(AVPlayer *)*nativePlayer*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="nativePlayer">
+
+本地视频播放器。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/videoDuration"></a>
+
+### `– videoDuration`
+
+视频回放的持续时长。
+
+<ApiSignature>
+
+\- (NSTimeInterval)videoDuration
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/play"></a>
+
+### `– play`
+
+播放视频。
+
+<ApiSignature>
+
+\- (void)play
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/pause"></a>
+
+### `– pause`
+
+暂停播放视频。
+
+<ApiSignature>
+
+\- (void)pause
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/seekToTime:completionHandler:"></a>
+
+### `– seekToTime:completionHandler:`
+
+定位到视频指定位置。
+
+<ApiSignature>
+
+\- (void)seekToTime:(CMTime)*time* completionHandler:(void (^) (BOOL finished))*completionHandler*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="time">
+
+时间长度（s)。
+
+</Parameter>
+<Parameter name="completionHandler">
+
+方法调用结果：
+
+- `YES`：调用已经完成。
+- `No`：调用未完成。
+
+</Parameter>
+</ParameterList>
+
+#### Discussion
+
+定位到本地视频播放器的指定位置后，你可以调用该方法，将白板回放播放器调整到对应位置。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`
+
+<a id="//api/name/updateWhitePlayerPhase:"></a>
+
+### `– updateWhitePlayerPhase:`
+
+更新白板回放播放器的播放状态。
+
+<ApiSignature>
+
+\- (void)updateWhitePlayerPhase:(WhitePlayerPhase)*phase*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="phase">
+
+[WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player) 的播放状态。
+
+**Note:**
+
+在该回调中，需要主动调用 [WhitePlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-player-phase) 方法，将状态同步给 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+
+</Parameter>
+</ParameterList>
+
+#### Discussion
+
+当白板回放播放器的播放状态发生变化时，White Player 会触发该回调，向你报告板回放播放器的播放状态。
+
+#### Declared In
+
+`WhiteCombinePlayer.h`

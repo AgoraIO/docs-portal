@@ -1,0 +1,396 @@
+---
+title: Topic
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtm2/cpp/toc-topic/topic
+  sourcePath: docs-api-reference/rtm2/toc-topic/topic.cpp.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 14 legacy MDX syntax signal(s).
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 2 legacy fragment link(s) to stable local anchors.
+---
+
+Topic 是 Stream Channel 中的数据流管理机制。用户可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等。
+
+:::info[信息]
+Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，需要先创建一个 `IStreamChannel` 对象实例。
+:::
+
+想要了解 Topic 的更多特性，可以查看：
+
+- [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)
+
+IStreamChannel
+
+## joinTopic
+
+### 接口描述
+
+加入 Topic 的目的在于注册成为该 Topic 的消息发布者之一，从而让用户具备发送消息的能力。是否执行该操作都不影响该用户是否成为该 Topic 的订阅者。
+
+:::info[信息]
+- 当前 RTM 支持单客户端在同一个 Stream Channel 中同时加入 8 个 Topic。
+- 在执行此操作之前，用户需要首先创建 `IStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic)。
+:::
+
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_JOIN_TOPIC` 类型的 `onTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `joinTopic` 方法：
+
+```cpp
+virtual void joinTopic(const char* topic, const JoinTopicOptions& options, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `topic` | const char* | 必填 | - | Topic 名称。 |
+| `options` | `const JoinTopicOptions&` | 必填 | - | 加入 Topic 选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`JoinTopicOptions` 数据类型包含以下属性：
+
+|      属性       |     类型     | 是否必填 | 默认值               |    描述    |
+| ------------ | -------------- | ----- | ---------------- | ----------- |
+|  `qos`   | `RTM_MESSAGE_QOS` |   选填   | `RTM_MESSAGE_QOS_UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RTM_MESSAGE_QOS`](/zh-CN/api-reference/rtm/ios/enumv.cpp#messageqos)。                  |
+|   `priority`    |  `RTM_MESSAGE_PRIORITY`  |   选填   | `RTM_MESSAGE_PRIORITY_NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RTM_MESSAGE_PRIORITY`](/zh-CN/api-reference/rtm/ios/enumv.cpp#messagepriority)。 |
+|   `meta`   |    const char*    |   选填   | `NULL`                    |         加入 Topic 时携带的其他辅助信息。          |
+| `syncWithMedia` |   bool    |   选填   | `false`              |        此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。        |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onJoinTopicResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `userId` | const char* | 用户 ID。 |
+| `topic` | const char* | Topic 名称。 |
+| `meta` | const char* | 加入 Topic 时携带的其他辅助信息。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+JoinTopicOptions options;
+options.qos = RTM_MESSAGE_QOS_ORDERED;
+
+uint64_t requestId;
+stream_channel->joinTopic("topicName", options, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onJoinTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("JoinTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("JoinTopic success\n");
+        }
+    }
+};
+```
+
+## publishTopicMessage
+
+### 接口描述
+
+`publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
+
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publishTopicMessage` 方法：
+
+```cpp
+virtual void publishTopicMessage(const char* topic, const char* message, size_t length, const TopicMessageOptions& option, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `topic` | const char* | 必填 | - | Topic 名称。 |
+| `message` | const char* | 必填 | - | 消息负载。 |
+| `length` | size_t | 必填 | - | 消息负载的长度。 |
+| `options` | `const TopicMessageOptions&` | 必填 | - | 消息选项。 |
+
+`TopicMessageOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageType`  | `RTM_MESSAGE_TYPE` |   选填   |  `RTM_MESSAGE_TYPE_BINARY`   | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/ios/enumv.cpp#messagetype)。 |
+|   `sendTs`   |  uint64_t  |   选填   |  `0`   | 消息发送时间戳。只有在 `joinTopic` 中设置 `syncWithMedia = true` 时，该参数才有效，SDK 会根据此时间戳与 RTC 音视频数据流进行数据同步。 |
+| `customType` | const char* |   选填   |   `NULL`    | 用户自定义字段。仅支持 String 型。     |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onPublishTopicMessageResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `topic` | const char* | Topic 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.cpp)。 |
+
+### 接口方法
+
+示例 1：向指定频道发送 String 消息
+
+```cpp
+std::string message = "hello world";
+TopicMessageOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "Text";
+
+uint64_t requestId;
+streamChannel->publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+```
+
+示例 2：向指定频道发送 Byte 消息
+
+```cpp
+TopicMessageOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+uint64_t requestId;
+stream_channel->publishTopicMessage("topic_name", message, 5, options, requestId);
+```
+
+## leaveTopic
+
+### 接口描述
+
+当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
+
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_LEAVE_TOPIC` 类型的 `onTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `leaveTopic` 方法：
+
+```cpp
+virtual void leaveTopic(const char* topic, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `topic` | const char* | 必填 | - | Topic 名称。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onLeaveTopicResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `userId` | const char* | 用户 ID。 |
+| `topic` | const char* | Topic 名称。 |
+| `meta` | const char* | 加入 Topic 时携带的其他辅助信息。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+streamChannel->leaveTopic("topicName", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onLeaveTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override
+    {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("LeaveTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("LeaveTopic success\n");
+        }
+    }
+};
+```
+
+## subscribeTopic
+
+### 接口描述
+
+加入频道后，你可以调用 `subscribeTopic` 方法订阅该频道中 Topic 的消息发布者。
+
+`subscribeTopic` 为增量方法。例如，第一次调用该方法时，订阅消息发布者列表为 `[UserA, UserB]`，第二次调用该方法时，订阅消息发布者列表为 `[UserB, UserC]`，则最后成功订阅的结果是 `[UserA, UserB, UserC]`。
+
+同一个用户在同一个频道中最多只能同时订阅 50 个 Topic，且每个 Topic 中最多只能订阅 64 个消息发布者。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeTopic` 方法：
+
+```cpp
+virtual void subscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `topic` | const char* | 必填 | - | Topic 名称。 |
+| `options` | `const TopicOptions&` | 必填 | - | 订阅 Topic 选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`TopicOptions` 数据类型包含以下属性：
+
+|  属性   |        类型         | 是否必填 | 默认值 | 描述            |
+| ---- | ---------------- | ----- | --- | --------- |
+| `users` | const char** |   选填   |   `NULL`    | 需要订阅的消息发布者（Publisher）的 `UserId` 列表，如果不设置，则默认随机订阅不超过 64 个用户。 |
+| `userCount` | size_t |   选填   |   `0`    | 用户数量。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onSubscribeTopicResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `userId` | const char* | 用户 ID。 |
+| `topic` | const char* | Topic 名称。 |
+| `succeedUsers` | `UserList` | 订阅成功的用户列表。 |
+| `failedUsers` | `UserList` | 订阅失败的用户列表。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.cpp)。 |
+
+`UserList` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `users`         |  const char**  |  发布者列表。     |
+| `userCount`         |    size_t      | 发布者数量。        |
+
+### 基本用法
+
+示例 1：订阅 Topic 中指定的消息发布者
+
+```cpp
+std::vector<const char*> users;
+users.push_back("UserA");
+users.push_back("UserB");
+
+TopicOptions options;
+options.users = users.data();
+options.userCount = users.size();
+
+uint64_t requestId;
+streamChannel->subscribeTopic("topicName", options, requestId);
+```
+
+示例 2：随机订阅 Topic 中的 64 个消息发布者
+
+```cpp
+TopicOptions options;
+
+uint64_t requestId;
+streamChannel->subscribeTopic("topicName", options, requestId);
+```
+
+示例 3：异步回调
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, UserList succeedUsers, UserList failedUsers, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SubscribeTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SubscribeTopic success\n");
+        }
+    }
+};
+```
+
+## unsubscribeTopic
+
+### 接口描述
+
+如果你对某个 Topic 不再感兴趣，或者不再需要订阅 Topic 中的一个或多个消息发布者，你可以调用 `unsubscribeTopic` 方法取消订阅该 Topic 或取消订阅该 Topic 中指定的消息发布者。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeTopic` 方法：
+
+```cpp
+virtual void unsubscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `topic` | const char* | 必填 | - | Topic 名称。 |
+| `options` | `const TopicOptions&` | 必填 | - | 取消订阅 Topic 选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`TopicOptions` 数据类型包含以下属性：
+
+|  属性   |        类型         | 是否必填 | 默认值 | 描述            |
+| ---- | ---------------- | ----- | --- | --------- |
+| `users` | const char** |   选填   |   `NULL`    | 需要订阅的消息发布者（Publisher）的 `UserId` 列表，如果不设置，则默认随机订阅不超过 64 个用户。 |
+| `userCount` | size_t |   选填   |   `0`    | 用户数量。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onUnsubscribeTopicResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `topic` | const char* | Topic 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.cpp)。 |
+
+### 基本用法
+
+示例 1：取消订阅 Topic 中指定的消息发布者
+
+```cpp
+std::vector<const char*> users;
+users.push_back("UserA");
+users.push_back("UserB");
+
+TopicOptions options;
+options.users = users.data();
+options.userCount = users.size();
+
+uint64_t requestId;
+streamChannel->unsubscribeTopic("topicName", options, requestId);
+```
+
+示例 2：随机取消订阅 Topic 中的 64 个消息发布者
+
+```cpp
+TopicOptions options;
+
+uint64_t requestId;
+streamChannel->unsubscribeTopic("topicName", options, requestId);
+```
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeTopicResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UnsubscribeTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UnsubscribeTopic success\n");
+        }
+    }
+};
+```

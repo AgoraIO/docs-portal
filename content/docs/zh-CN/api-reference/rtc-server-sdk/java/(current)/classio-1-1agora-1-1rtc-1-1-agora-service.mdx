@@ -1,0 +1,441 @@
+---
+title: io.agora.rtc.AgoraService类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_service
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_service.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_service_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraService 类。
+
+AgoraService 是 SDK 的入口类，你可以通过 AgoraService 类创建媒体轨道和连接。
+
+调用 [AgoraService](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#ae63345707895139d903193cc6cebaa02) 创建 AgoraService 对象。
+
+使用 AgoraServiceConfiguration 配置 AgoraService 对象。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="ae63345707895139d903193cc6cebaa02"></a>
+
+### AgoraService()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraService.AgoraService()
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="aad72c38a7d89447c1fc2353e88878c51"></a>
+
+### agoraRtcConnCreate()
+
+<ApiSignature>
+
+native [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) io.agora.rtc.AgoraService.agoraRtcConnCreate([RtcConnConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-config) *rtc_conn_config*)
+
+</ApiSignature>
+
+创建一个 [AgoraRtcConn](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn) 对象。
+
+<ParameterList title="参数">
+<Parameter name="rtc_conn_config">
+
+连接设置。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+一个 AgoraRtcConn 对象。
+
+<a id="aa21f03e6f0e8d86b3d5c69820fedd2e5"></a>
+
+### createCustomAudioTrackEncoded()
+
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackEncoded([AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender) *agora_audio_encoded_frame_sender*, int *mix_mode*)
+
+</ApiSignature>
+
+创建本地音频轨道对象，包含一个发送已编码音频数据的音频源。
+
+该轨道对象可用于发送来已编码的音频数据，例如 Opus 编码格式的音频数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_audio_encoded_frame_sender">
+
+发送已编码的音频数据的音频源，详见 [AgoraAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender)。
+
+</Parameter>
+<Parameter name="mix_mode">
+
+已编码音频数据的混音模式。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+一个 AgoraLocalAudioTrack 对象。
+
+<a id="a6ca7662a6cb13379706d99ab341edabb"></a>
+
+### createCustomAudioTrackPcm()
+
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createCustomAudioTrackPcm([AgoraAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender) *agora_audio_pcm_data_sender*)
+
+</ApiSignature>
+
+创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
+
+该轨道对象可用于发送来 PCM 格式的音频数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_audio_pcm_data_sender">
+
+发送 PCM 格式音频数据的音频源。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+一个 AgoraLocalAudioTrack 对象。
+
+<a id="a97cff6166962847dd05f3dafcce7c55c"></a>
+
+### createCustomVideoTrackEncoded()
+
+<ApiSignature>
+
+native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackEncoded([AgoraVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender) *agora_video_encoded_image_sender*, [SenderOptions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-sender-options) *options*)
+
+</ApiSignature>
+
+创建本地视频轨道对象，包含一个发送编码视频数据的视频源。
+
+该轨道对象可用于发送编码的视频数据，例如 H.264 或 VP8 格式的视频数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_video_encoded_image_sender">
+
+发送编码视频数据的视频源。
+
+</Parameter>
+<Parameter name="options">
+
+视频轨道设置。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+一个 AgoraVideoEncodedImageSender 对象。
+
+<a id="a89ffc0bf7877f0fdc92b9e6167193019"></a>
+
+### createCustomVideoTrackFrame()
+
+<ApiSignature>
+
+native [AgoraLocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-video-track) io.agora.rtc.AgoraService.createCustomVideoTrackFrame([AgoraVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender) *agora_video_frame_sender*)
+
+</ApiSignature>
+
+创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。
+
+该轨道对象可用于发送 YUV 格式视频数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_video_frame_sender">
+
+发送 YUV 格式视频数据的视频源。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+一个 AgoraLocalVideoTrack 对象。
+
+<a id="af4370cb8e01f6035f508f77ee58324ed"></a>
+
+### createLocalAudioTrack()
+
+<ApiSignature>
+
+native [AgoraLocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track) io.agora.rtc.AgoraService.createLocalAudioTrack()
+
+</ApiSignature>
+
+创建本地音频轨道对象。
+
+默认情况下，SDK 是根据选定的音频输入设备，如移动设备的内置麦克风，来创建音频轨道。
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+一个 AgoraLocalAudioTrack 对象。
+
+<a id="a6e74465cf8cacb54a652e57b560c7fe8"></a>
+
+### createMediaNodeFactory()
+
+<ApiSignature>
+
+native [AgoraMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory) io.agora.rtc.AgoraService.createMediaNodeFactory()
+
+</ApiSignature>
+
+创建一个媒体节点工厂对象。
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+一个 AgoraMediaNodeFactory 对象。
+
+<a id="af446263ecbb2c2271eb9dabbc1cc47db"></a>
+
+### destroy()
+
+<ApiSignature>
+
+void io.agora.rtc.AgoraService.destroy()
+
+</ApiSignature>
+
+析构函数。
+
+:::info[注解]
+该方法需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+<a id="a1a9b1bb2c893b99e7e5a7e6e2e9c90cd"></a>
+
+### destroyAudioSessionConfig()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraService.destroyAudioSessionConfig(AudioSessionConfig *config*)
+
+</ApiSignature>
+
+<a id="af776ee9767ecb895b3e7aec2e38d1c0c"></a>
+
+### getAgoraParameter()
+
+<ApiSignature>
+
+native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraService.getAgoraParameter()
+
+</ApiSignature>
+
+获取 SDK 全局的 [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) 对象。
+
+:::info[自从]
+4.4.30
+:::
+
+通过该方法获取的 AgoraParameter 对象，设置对 SDK 全局有效。如果仅需对某个 Connection 进行设置，改用 [AgoraRtcConn.getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a4887841b3c2232730440ad6ca3d74570) 方法。
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+- AgoraParameter 对象：方法调用成功。
+- null：方法调用失败。
+
+<a id="ad524a9147bf35875541dc3c1238d553d"></a>
+
+### getAudioSessionConfig()
+
+<ApiSignature>
+
+native AudioSessionConfig io.agora.rtc.AgoraService.getAudioSessionConfig()
+
+</ApiSignature>
+
+获取音效设置。
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+音效的设置。
+
+<a id="a822287e735267b7c8f1c9aee77cbb1c9"></a>
+
+### initialize()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.initialize([AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config) *config*)
+
+</ApiSignature>
+
+初始化 AgoraService 对象。
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+初始化配置。详见 [AgoraServiceConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9ce08b92f6b9a1f198bdf7704c7c3ea3"></a>
+
+### setAudioSessionConfig()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setAudioSessionConfig(AudioSessionConfig *config*)
+
+</ApiSignature>
+
+自定义音效设置。
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+音效设置。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a957e270a00f41f947f184d808df15a37"></a>
+
+### setAudioSessionPreset()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setAudioSessionPreset(int *audio_scenario*)
+
+</ApiSignature>
+
+设置预设音效。
+
+<ParameterList title="参数">
+<Parameter name="audio_scenario">
+
+预设音效场景。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa2d207047f36b72ade910f61367fb5e3"></a>
+
+### setLogFile()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setLogFile(String *file_path*, int *file_size*)
+
+</ApiSignature>
+
+设置 SDK 日志文件的路径和大小。
+
+默认情况下，SDK 会生成 2 个 SDK 日志文件，每个 SDK 日志文件的默认大小为 512 KB。如果你将 file_size 设为 1024 KB， SDK 会最多输出总计 2 MB 的日志文件。如果日志文件的总大小超过所设置的值，旧的日志会被新的日志覆盖。
+
+:::info[注解]
+为保证输出日志的完成性，声网建议你在调用 [initialize](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#a822287e735267b7c8f1c9aee77cbb1c9) 方法后立即调用此方法。
+:::
+
+<ParameterList title="参数">
+<Parameter name="file_path">
+
+指向日志文件的指针。请确保指定的目录存在而且可写。
+
+</Parameter>
+<Parameter name="file_size">
+
+SDK 日志文件的大小（KB）。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a144bd197394685b165cad6866be8158e"></a>
+
+### setLogFilter()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraService.setLogFilter(int *filters*)
+
+</ApiSignature>
+
+设置日志输出等级。
+
+日志级别顺序依次为 OFF、CRITICAL、ERROR、WARNING、INFO 和 DEBUG。
+
+选择一个级别，你就可以看到在该级别之前所有级别的日志信息。 例如，你选择 WARNING 级别，就可以看到在 CRITICAL、ERROR 和 WARNING 级别上的所有日志信息。
+
+<ParameterList title="参数">
+<Parameter name="filters">
+
+日志输出等级：
+
+- LOG_LEVEL_NONE (0x0000): 不输出任何日志。
+- LOG_LEVEL_INFO (0x0001): （推荐）输出 INFO 级别的日志信息。
+- LOG_LEVEL_WARN (0x0002): 输出 WARN 级别的日志信息。
+- LOG_LEVEL_ERROR (0x0004): 输出 ERROR 级别的日志信息。
+- LOG_LEVEL_FATAL (0x0008): 输出 FATAL 级别的日志信息。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraService.java

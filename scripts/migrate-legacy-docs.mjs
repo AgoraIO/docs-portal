@@ -260,10 +260,23 @@ export async function migrateLegacyPages({
   return results;
 }
 
+/**
+ * @param {object} options
+ * @param {ComponentMap} [options.componentMap]
+ * @param {Map<string, any>} options.pathMap
+ * @param {string} [options.platform]
+ * @param {string} [options.platformLabel]
+ * @param {string} [options.productLabel]
+ * @param {string} options.sourcePath
+ * @param {string} options.sourceRoot
+ * @param {string} [options.targetPath]
+ */
 export async function migrateLegacyPage({
   componentMap = EMPTY_COMPONENT_MAP,
   pathMap,
   platform,
+  platformLabel,
+  productLabel,
   sourcePath,
   sourceRoot,
   targetPath,
@@ -275,9 +288,11 @@ export async function migrateLegacyPage({
     ? {
         ...inferredContext,
         platform,
+        platformLabel,
         platforms: [platform],
+        productLabel,
       }
-    : inferredContext;
+    : { ...inferredContext, platformLabel, productLabel };
   const state = createMigrationState({
     context,
     pathMap,
@@ -493,24 +508,27 @@ export function transformLegacyMdx(body, state) {
     value = transformRemainingTabItems(value, state);
     value = transformPlatformHeadingTabs(value, state);
     value = transformAdjacentCodeFenceTabs(value, state);
+    value = normalizeMarkdownImageAlt(value, state);
     value = transformHtmlTables(value, state);
     value = transformMarkdownTableSlots(value, state);
     value = transformImages(value, state);
     value = transformRawHtmlImages(value, state);
     value = transformAdmonitions(value);
-    value = transformDetails(value);
+    value = transformDetails(value, state);
     value = transformHtmlLists(value);
     value = transformInlineHtml(value);
+    value = normalizeInlineHtmlAttributes(value, state);
     value = transformHiddenIndexSpans(value, state);
     value = transformAngleBracketLiterals(value, state);
     value = transformGenericTypeLiterals(value, state);
     value = escapeMdxQuotedTextLiterals(value, state);
     value = escapeMdxTextOperators(value, state);
+    value = escapeMdxTextBraces(value, state);
     value = rewriteMarkdownLinks(value, state);
     value = normalizeWhitespace(value);
   }
 
-  return value.trim();
+  return normalizeMarkdownImageBlocks(value).trim();
 }
 
 export function transformAdmonitions(value) {
@@ -698,20 +716,24 @@ async function expandLegacyFile({
 
   visited.add(realPath);
   const parsed = parseFrontmatter(raw);
+  if (!state.pageTitle && parsed.frontmatter.title) {
+    state.pageTitle = stripWrappingQuotes(parsed.frontmatter.title);
+  }
+  const activeBody = stripMdxComments(parsed.body);
   recordMigrationSignals({
-    body: parsed.body,
+    body: activeBody,
     frontmatter: parsed.frontmatter,
     sourcePath: toPosix(path.relative(state.sourceRoot, realPath)),
     state,
   });
-  const imports = parseImports(parsed.body);
-  for (const [name, links] of parseExportedLinkLists(parsed.body)) {
+  const imports = parseImports(activeBody);
+  for (const [name, links] of parseExportedLinkLists(activeBody)) {
     state.linkLists.set(name, links);
   }
-  for (const [name, header] of parseExportedTableHeaders(parsed.body)) {
+  for (const [name, header] of parseExportedTableHeaders(activeBody)) {
     state.tableHeaders.set(name, header);
   }
-  let body = stripImportExport(parsed.body);
+  let body = stripImportExport(activeBody);
 
   for (const imported of imports) {
     if (isRuntimeOnlyImport(imported.specifier)) {
@@ -749,7 +771,12 @@ async function expandLegacyFile({
       state,
       visited,
     });
-    body = replaceComponentUsage(body, imported.alias, replacement.body.trim(), state);
+    body = replaceComponentUsage(
+      body,
+      imported.alias,
+      replacement.body.trim(),
+      state,
+    );
   }
 
   return {
@@ -796,10 +823,10 @@ function serializeFrontmatter(frontmatter) {
 }
 
 function parseImports(content) {
+  const scanValue = stripCodeFences(stripMdxComments(content));
   const imports = [];
-  const importPattern =
-    /^import\s+(.+?)\s+from\s+['"](.+?)['"];?\s*$/gm;
-  let match = importPattern.exec(content);
+  const importPattern = /^import\s+(.+?)\s+from\s+['"](.+?)['"];?\s*$/gm;
+  let match = importPattern.exec(scanValue);
 
   while (match) {
     const importClause = match[1].trim();
@@ -808,7 +835,7 @@ function parseImports(content) {
     const alias = namespaceMatch?.[1] ?? defaultMatch?.[1] ?? null;
 
     if (!alias) {
-      match = importPattern.exec(content);
+      match = importPattern.exec(scanValue);
       continue;
     }
 
@@ -817,7 +844,7 @@ function parseImports(content) {
       namespace: Boolean(namespaceMatch),
       specifier: match[2],
     });
-    match = importPattern.exec(content);
+    match = importPattern.exec(scanValue);
   }
 
   return imports;
@@ -929,12 +956,20 @@ function parseExportedTableHeaders(content) {
 
   while (exportMatch) {
     const labels = [];
-    const labelPattern = /\blabel\s*:\s*['"]([^'"]+)['"]/g;
-    let labelMatch = labelPattern.exec(exportMatch[2]);
-
-    while (labelMatch) {
-      labels.push(labelMatch[1]);
-      labelMatch = labelPattern.exec(exportMatch[2]);
+    const itemPattern = /\{([\s\S]*?)}/g;
+    let itemMatch = itemPattern.exec(exportMatch[2]);
+    while (itemMatch) {
+      const label =
+        itemMatch[1].match(/\blabel\s*:\s*['"]([^'"]*)['"]/)?.[1] ?? '';
+      const span = Math.max(
+        1,
+        Number.parseInt(
+          itemMatch[1].match(/\bcol\s*:\s*(\d+)/)?.[1] ?? '1',
+          10,
+        ),
+      );
+      labels.push(label, ...Array.from({ length: span - 1 }, () => ''));
+      itemMatch = itemPattern.exec(exportMatch[2]);
     }
 
     if (labels.length > 0) {
@@ -948,7 +983,7 @@ function parseExportedTableHeaders(content) {
 }
 
 export function stripImportExport(content) {
-  const lines = content.replace(/\r\n?/g, '\n').split('\n');
+  const lines = stripMdxComments(content).replace(/\r\n?/g, '\n').split('\n');
   let inCodeFence = false;
   let skippingExportBlock = false;
   let exportBlockDepth = 0;
@@ -1109,7 +1144,10 @@ function parseStaticProps(attrs, state) {
   let expressionMatch = expressionPattern.exec(attrs);
 
   while (expressionMatch) {
-    props.set(expressionMatch[1], getRuntimePropValue(expressionMatch[2], state) ?? '');
+    props.set(
+      expressionMatch[1],
+      getRuntimePropValue(expressionMatch[2], state) ?? '',
+    );
     expressionMatch = expressionPattern.exec(attrs);
   }
 
@@ -1215,8 +1253,8 @@ function isWholeLineMatch({ match, offset, source }) {
 
 function transformRuntimeVariables(value, state) {
   const { platform, product } = state.context;
-  const productLabel = getProductLabel(product);
-  const platformLabel = getPlatformLabel(platform);
+  const productLabel = getProductLabel(product, state.context.productLabel);
+  const platformLabel = getPlatformLabel(platform, state.context.platformLabel);
   return value
     .replace(/\$\{props\.ag_platform\}/g, platform)
     .replace(/\$\{props\.ag_product\}/g, product)
@@ -1229,7 +1267,10 @@ function transformRuntimeVariables(value, state) {
     .replace(/\{frontMatter\.ag_product_label\}/g, productLabel)
     .replace(/\{frontMatter\.ag_product\}/g, product)
     .replace(/\bfrontMatter\.ag_platform\b/g, JSON.stringify(platform))
-    .replace(/\bfrontMatter\.ag_platform_label\b/g, JSON.stringify(platformLabel))
+    .replace(
+      /\bfrontMatter\.ag_platform_label\b/g,
+      JSON.stringify(platformLabel),
+    )
     .replace(/\bfrontMatter\.ag_product_label\b/g, JSON.stringify(productLabel))
     .replace(/\bfrontMatter\.ag_product\b/g, JSON.stringify(product))
     .replace(
@@ -1242,16 +1283,16 @@ function transformRuntimeVariables(value, state) {
     );
 }
 
-function getProductLabel(product) {
-  return PRODUCT_LABELS.get(product) ?? product;
+function getProductLabel(product, sourceLabel) {
+  return sourceLabel ?? PRODUCT_LABELS.get(product) ?? product;
 }
 
-function getPlatformLabel(platform) {
+function getPlatformLabel(platform, sourceLabel) {
   if (!platform) {
     return '';
   }
 
-  return PLATFORM_LABELS.get(platform) ?? platform;
+  return sourceLabel ?? PLATFORM_LABELS.get(platform) ?? platform;
 }
 
 function getRuntimePropValue(name, state) {
@@ -1260,7 +1301,10 @@ function getRuntimePropValue(name, state) {
   }
 
   if (name === 'ag_platform_label') {
-    return getPlatformLabel(state.context.platform);
+    return getPlatformLabel(
+      state.context.platform,
+      state.context.platformLabel,
+    );
   }
 
   if (name === 'ag_product') {
@@ -1268,7 +1312,7 @@ function getRuntimePropValue(name, state) {
   }
 
   if (name === 'ag_product_label') {
-    return getProductLabel(state.context.product);
+    return getProductLabel(state.context.product, state.context.productLabel);
   }
 
   if (!state.props) {
@@ -1291,9 +1335,9 @@ function transformLegacyLinks(value, state) {
   );
 
   output = output.replace(
-    /<a\b([^>]*)>([\s\S]*?)<\/a\s*>/g,
+    /<a\b(?![^>]*\/\s*>)([^>]*)>([\s\S]*?)<\/a\s*>/g,
     (match, attrs, label) => {
-      const href = readAttribute(attrs, 'href');
+      const href = readLegacyHrefAttribute(attrs, 'href');
 
       return href
         ? `[${collapseInline(label)}](${normalizeHref(href, state)})`
@@ -1302,6 +1346,16 @@ function transformLegacyLinks(value, state) {
   );
 
   return output;
+}
+
+function readLegacyHrefAttribute(attrs, name) {
+  const quoted = readAttribute(attrs, name);
+  if (quoted) return quoted;
+  const expression = readExpressionAttribute(attrs, name)?.trim();
+  const template = expression?.match(/^`([^`]*)`$/);
+  if (template) return template[1];
+  const stringLiteral = expression?.match(/^(['"])([\s\S]*)\1$/);
+  return stringLiteral?.[2] ?? null;
 }
 
 function normalizeHref(href, state) {
@@ -1344,6 +1398,10 @@ function mapLegacyDocHref(href, state) {
 
 function transformAnchors(value) {
   let output = value.replace(
+    /<a\s+(?:name|id)=['"]([^'"]+)['"]\s*\/?>\s*(?!<\/a>)/g,
+    (_, id) => `<a id="${id}"></a>\n`,
+  );
+  output = output.replace(
     /^(#{1,6})\s*<a\s+(?:name|id)=['"]([^'"]+)['"]\s*\/?><\/a>?\s*(.+)$/gm,
     (_, hashes, id, title) => renderAnchoredHeading(hashes, title, id),
   );
@@ -1369,15 +1427,15 @@ function renderAnchoredHeading(hashes, title, id) {
 function transformHeadingComponents(value) {
   return value
     .replace(
-    /^([ \t]*)<H([1-6])\b([^>]*)>([^\n]*?)<\/H\2>([^\n]*)$/gm,
-    (_, indent, level, attrs, body, suffix) => {
-      const id = readAttribute(attrs, 'id');
-      const title = collapseInline(`${body}${suffix ?? ''}`);
-      const heading = `${'#'.repeat(Number(level))} ${title}`;
-      return id
-        ? `${indent}<a id="${id}"></a>\n${indent}${heading}`
-        : `${indent}${heading}`;
-    },
+      /^([ \t]*)<H([1-6])\b([^>]*)>([^\n]*?)<\/H\2>([^\n]*)$/gm,
+      (_, indent, level, attrs, body, suffix) => {
+        const id = readAttribute(attrs, 'id');
+        const title = collapseInline(`${body}${suffix ?? ''}`);
+        const heading = `${'#'.repeat(Number(level))} ${title}`;
+        return id
+          ? `${indent}<a id="${id}"></a>\n${indent}${heading}`
+          : `${indent}${heading}`;
+      },
     )
     .replace(
       /^([ \t]*)<h([1-6])\b([^>]*)>([^\n]*?)<\/h\2>([^\n]*)$/gm,
@@ -1530,7 +1588,7 @@ function transformLinkCards(value, state) {
 
   output = output.replace(
     /<(?<name>LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard)\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/\k<name>>/g,
-    (match, _name, _attrs, _body, _offset, _source, groups) => {
+    (_match, _name, _attrs, _body, _offset, _source, groups) => {
       const card = legacyLinkCardFromAttrs(groups.attrs, state);
       const bodyTitle = collapseInline(groups.body);
       state.issues.push('normalized-link-cards');
@@ -1543,9 +1601,11 @@ function transformLinkCards(value, state) {
 
   output = output.replace(
     /<(?<name>LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard)\b(?<attrs>[^>]*)\/>/g,
-    (match, _name, _attrs, _offset, _source, groups) => {
+    (_match, _name, _attrs, _offset, _source, groups) => {
       state.issues.push('normalized-link-cards');
-      return renderMarkdownLinkCard(legacyLinkCardFromAttrs(groups.attrs, state));
+      return renderMarkdownLinkCard(
+        legacyLinkCardFromAttrs(groups.attrs, state),
+      );
     },
   );
 
@@ -1600,7 +1660,7 @@ function transformLegacyLandingComponents(value, state) {
       }
 
       state.issues.push('normalized-image-gallery');
-      return renderImageGalleryItems(items);
+      return renderImageGalleryItems(items, state);
     },
   );
 
@@ -1623,7 +1683,12 @@ function renderLegacyPanel(attrs, body, state) {
   const lines = [];
 
   if (image) {
-    lines.push(`![${title || 'image'}](${image})`, '');
+    if (!title) {
+      state.issues.push(
+        `missing-source-text:image-alt:${state.currentSourcePath}:${image}`,
+      );
+    }
+    lines.push(`![${title}](${image})`, '');
   }
 
   if (title || description) {
@@ -1678,7 +1743,12 @@ function renderLegacyQuickGuide(attrs, body, state) {
   const lines = [];
 
   if (image) {
-    lines.push(`![${title || 'guide'}](${image})`);
+    if (!title) {
+      state.issues.push(
+        `missing-source-text:image-alt:${state.currentSourcePath}:${image}`,
+      );
+    }
+    lines.push(`![${title}](${image})`);
   }
 
   if (content) {
@@ -1692,13 +1762,20 @@ function renderLegacyQuickGuide(attrs, body, state) {
   return `\n${lines.join('\n')}\n`;
 }
 
-function renderImageGalleryItems(items) {
+function renderImageGalleryItems(items, state) {
   return items
     .map((item) => {
-      const title = item.text ?? item.title ?? item.alt ?? 'image';
+      const title = item.text ?? item.title ?? item.alt ?? '';
       const image = item.img ?? item.src ?? item.image;
-      return image ? `![${title}](${image})\n\n- ${title}` : `- ${title}`;
+      if (!title) {
+        state.issues.push(
+          `missing-source-text:image-alt:${state.currentSourcePath}:${image ?? 'missing-image'}`,
+        );
+      }
+      if (!image) return title ? `- ${title}` : '';
+      return title ? `![${title}](${image})\n\n- ${title}` : `![](${image})`;
     })
+    .filter(Boolean)
     .join('\n\n');
 }
 
@@ -1783,7 +1860,7 @@ function renderCard(card) {
 function transformImages(value, state) {
   return value.replace(/<Image\b([^>]*?)(?:\/>|>\s*<\/Image>)/g, (_, attrs) => {
     const src = readAttribute(attrs, 'src') ?? '';
-    const alt = readAttribute(attrs, 'alt') ?? '';
+    const sourceAlt = readAttribute(attrs, 'alt') ?? '';
     const width = readAttribute(attrs, 'width');
     const inline = hasBooleanAttribute(attrs, 'inline');
 
@@ -1792,9 +1869,11 @@ function transformImages(value, state) {
     }
 
     if (inline) {
-      return `![${alt}](${src})`;
+      state.issues.push(`normalized-inline-image-block:${src}`);
+      return `![${sourceAlt}](${src})`;
     }
 
+    const alt = imageAltText(sourceAlt, src, state);
     return `\n![${alt}](${src})\n`;
   });
 }
@@ -1802,7 +1881,6 @@ function transformImages(value, state) {
 function transformRawHtmlImages(value, state) {
   return value.replace(/<img\b([^>]*)\/?>/gi, (match, attrs) => {
     const src = readAttribute(attrs, 'src');
-    const alt = readAttribute(attrs, 'alt') ?? '';
 
     if (!src) {
       state.issues.push('needs-raw-img-review');
@@ -1810,12 +1888,169 @@ function transformRawHtmlImages(value, state) {
     }
 
     state.issues.push('normalized-raw-img');
+    const sourceAlt = readAttribute(attrs, 'alt') ?? '';
     if (hasBooleanAttribute(attrs, 'inline')) {
-      return `![${alt}](${src})`;
+      state.issues.push(`normalized-inline-image-block:${src}`);
+      return `![${sourceAlt}](${src})`;
     }
 
+    const alt = imageAltText(sourceAlt, src, state);
     return `\n![${alt}](${src})\n`;
   });
+}
+
+function imageAltContext(value) {
+  return String(value ?? '')
+    .replace(/!\[[^\]\n]*]\([^)\n]+\)/g, '')
+    .replace(/\[([^\]\n]+)]\([^)\n]+\)/g, '$1')
+    .replace(/<[^>\n]+>/g, ' ')
+    .replace(/[`*_#>|]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s:：,，.;；-]+|[\s:：,，.;；-]+$/g, '')
+    .trim();
+}
+
+function imageAltText(sourceAlt, src, state, context = '') {
+  const alt = imageAltContext(sourceAlt);
+  if (alt) return alt;
+
+  const normalizedContext = imageAltContext(context);
+  const pageTitle = imageAltContext(state.pageTitle);
+  let fallback = '';
+  if (/^\d+(?:-\d+)?$/.test(normalizedContext)) {
+    fallback = `${normalizedContext} 人布局示意`;
+  } else if (normalizedContext && normalizedContext.length <= 48) {
+    fallback = /(?:图|图示|界面|按钮|图标|布局|示意)$/.test(normalizedContext)
+      ? normalizedContext
+      : `${normalizedContext} 图示`;
+  } else if (pageTitle) {
+    fallback = `${pageTitle} 图示`;
+  } else {
+    const stem = decodeURIComponent(
+      String(src ?? '')
+        .split(/[?#]/, 1)[0]
+        .split('/')
+        .at(-1) ?? '',
+    )
+      .replace(/\.[a-z0-9]+$/i, '')
+      .replace(/[-_]+/g, ' ')
+      .trim();
+    fallback = stem && !/^\d+$/.test(stem) ? `${stem} 图示` : '源页面图示';
+  }
+  state.issues.push(
+    `missing-source-text:image-alt:${state.currentSourcePath}:${src}:used-context:${fallback}`,
+  );
+  return fallback;
+}
+
+function normalizeMarkdownImageAlt(value, state) {
+  let inFence = false;
+  const lines = String(value).split('\n');
+  return lines
+    .map((line, lineIndex) => {
+      if (/^\s*(`{3,}|~{3,})/.test(line)) {
+        inFence = !inFence;
+        return line;
+      }
+      if (inFence) return line;
+      return line.replace(
+        /!\[([^\]\n]*)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g,
+        (match, sourceAlt, src, offset) => {
+          if (imageAltContext(sourceAlt)) return match;
+          let context = line;
+          if (line.trim().startsWith('|')) {
+            const cells = splitMarkdownTableRow(line);
+            const cellIndex = cells.findIndex((cell) => cell.includes(match));
+            context =
+              cells
+                .slice(0, cellIndex)
+                .reverse()
+                .find((cell) => imageAltContext(cell)) ??
+              cells.find(
+                (cell, index) => index !== cellIndex && imageAltContext(cell),
+              ) ??
+              '';
+          } else if (/<t[hd]\b/i.test(line)) {
+            context = imageAltContext(line);
+            for (
+              let index = lineIndex - 1;
+              !context && index >= 0 && !/<tr\b/i.test(lines[index]);
+              index -= 1
+            ) {
+              context = imageAltContext(lines[index]);
+            }
+          } else {
+            const trailing = imageAltContext(line.slice(offset + match.length));
+            const explicitLabel = line
+              .slice(offset + match.length)
+              .match(/^\s*\(\*\*([^*]+)\*\*\)/)?.[1];
+            if (explicitLabel) context = explicitLabel;
+            else if (/点击\s*$/.test(line.slice(0, offset)) && trailing) {
+              context = `${trailing.replace(/[。.].*$/, '')}按钮`;
+            }
+          }
+          const alt = imageAltText('', src, state, context);
+          return `![${alt}](${src})`;
+        },
+      );
+    })
+    .join('\n');
+}
+
+function normalizeMarkdownImageBlocks(value) {
+  const imagePattern = /!\[[^\]\n]*]\([^)\n]+\)/g;
+  const output = [];
+  let inFence = false;
+  for (const line of String(value).split('\n')) {
+    if (/^\s*(`{3,}|~{3,})/.test(line)) {
+      inFence = !inFence;
+      output.push(line);
+      continue;
+    }
+    if (inFence) {
+      output.push(line);
+      continue;
+    }
+    const images = [...line.matchAll(imagePattern)];
+    if (images.length === 0 || line.trim().startsWith('|')) {
+      output.push(line);
+      continue;
+    }
+    if (images.length === 1 && line.trim() === images[0][0]) {
+      output.push(line);
+      continue;
+    }
+
+    const list = line.match(/^(\s*)((?:[-*+] |\d+\. ))([\s\S]*)$/);
+    const baseIndent = list?.[1] ?? line.match(/^\s*/)?.[0] ?? '';
+    const marker = list?.[2] ?? '';
+    const content = list?.[3] ?? line.slice(baseIndent.length);
+    const continuation = `${baseIndent}${' '.repeat(marker.length)}`;
+    const parts = [];
+    let cursor = 0;
+    for (const image of content.matchAll(imagePattern)) {
+      const prose = content.slice(cursor, image.index).trim();
+      if (prose) parts.push({ type: 'prose', value: prose });
+      parts.push({ type: 'image', value: image[0] });
+      cursor = image.index + image[0].length;
+    }
+    const trailing = content.slice(cursor).trim();
+    if (trailing) parts.push({ type: 'prose', value: trailing });
+
+    const first = parts.shift();
+    if (marker && first?.type === 'prose') {
+      output.push(`${baseIndent}${marker}${first.value}`);
+    } else if (marker) {
+      output.push(`${baseIndent}${marker.trimEnd()}`);
+      if (first) parts.unshift(first);
+    } else if (first) {
+      output.push(`${baseIndent}${first.value}`);
+    }
+    for (const part of parts) {
+      output.push('', `${continuation}${part.value}`);
+    }
+  }
+  return output.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 
 function hasBooleanAttribute(attrs, name) {
@@ -1823,60 +2058,108 @@ function hasBooleanAttribute(attrs, name) {
 }
 
 function transformTabs(value) {
-  return value.replace(
-    /^([ \t]*)<Tabs\b([^>]*)>([\s\S]*?)^[ \t]*<\/Tabs>[ \t]*$/gm,
-    (match, _indent, attrs, body) => {
-      const items = [
-        ...body.matchAll(
-          /<TabItem\s+value=['"]([^'"]+)['"]\s+label=['"]([^'"]+)['"]([^>]*)>([\s\S]*?)<\/TabItem>/g,
-        ),
-      ];
+  let output = value;
+  const restoredTags = [];
 
-      if (items.length === 0) {
-        return match;
+  while (true) {
+    const pair = findInnermostLegacyTabs(output);
+    if (!pair) break;
+    const converted = convertLegacyTabsBlock({
+      attrs: pair.attrs,
+      body: output.slice(pair.openEnd, pair.closeStart),
+      restoredTags,
+    });
+    if (!converted) break;
+    output = `${output.slice(0, pair.openStart)}${converted}${output.slice(pair.closeEnd)}`;
+  }
+
+  for (const [token, tag] of restoredTags) {
+    output = output.replace(token, tag);
+  }
+  return output;
+}
+
+function findInnermostLegacyTabs(value) {
+  const pattern = /<\/?Tabs\b[^>]*>/g;
+  const stack = [];
+  const pairs = [];
+  let match = pattern.exec(value);
+
+  while (match) {
+    if (match[0].startsWith('</')) {
+      const open = stack.pop();
+      if (open) {
+        pairs.push({
+          ...open,
+          closeStart: match.index,
+          closeEnd: pattern.lastIndex,
+        });
       }
+    } else {
+      const lineStart = value.lastIndexOf('\n', match.index - 1) + 1;
+      const openStart = value.slice(lineStart, match.index).trim()
+        ? match.index
+        : lineStart;
+      stack.push({
+        attrs: match[0].slice('<Tabs'.length, -1),
+        openStart,
+        openEnd: pattern.lastIndex,
+      });
+    }
+    match = pattern.exec(value);
+  }
 
-      const groupId = readAttribute(attrs, 'groupId');
-      const codeTabs = renderCodeFenceTabs(items, groupId);
-      if (codeTabs) {
-        return codeTabs;
-      }
+  return pairs.find((pair) => {
+    const body = value.slice(pair.openEnd, pair.closeStart);
+    return !/<Tabs\b/.test(body) && /<TabItem\b/.test(body);
+  });
+}
 
-      const defaultValue =
-        readAttribute(attrs, 'defaultValue') ??
-        items.find((item) => item[3].includes('default'))?.[1] ??
-        items[0][1];
-      const rootAttrs = [
-        `defaultValue="${defaultValue}"`,
-        groupId ? `groupId="${groupId}"` : '',
-        groupId ? 'persist' : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-      const triggers = items
-        .map(
-          (item) =>
-            `  <TabsTrigger value="${item[1]}">${item[2]}</TabsTrigger>`,
-        )
-        .join('\n');
-      const contents = items
-        .map((item) => {
-          const content = trimCommonIndent(item[4]).trim();
-          return `<TabsContent value="${item[1]}">\n\n${content}\n\n</TabsContent>`;
-        })
-        .join('\n\n');
+function convertLegacyTabsBlock({ attrs, body, restoredTags }) {
+  const items = [
+    ...body.matchAll(
+      /<TabItem\s+value=['"]([^'"]+)['"]\s+label=['"]([^'"]+)['"]([^>]*)>([\s\S]*?)<\/TabItem>/g,
+    ),
+  ];
+  if (items.length === 0) return null;
 
-      return [
-        `<Tabs ${rootAttrs}>`,
-        '<TabsList>',
-        triggers,
-        '</TabsList>',
-        '',
-        contents,
-        '</Tabs>',
-      ].join('\n');
-    },
-  );
+  const groupId = readAttribute(attrs, 'groupId');
+  const codeTabs = renderCodeFenceTabs(items, groupId);
+  if (codeTabs) return codeTabs;
+  const defaultValue =
+    readAttribute(attrs, 'defaultValue') ??
+    items.find((item) => item[3].includes('default'))?.[1] ??
+    items[0][1];
+  const rootAttrs = [
+    `defaultValue="${defaultValue}"`,
+    groupId ? `groupId="${groupId}"` : '',
+    groupId ? 'persist' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const openToken = `API_CENTER_MIGRATED_TABS_OPEN_${restoredTags.length}`;
+  restoredTags.push([openToken, `<Tabs ${rootAttrs}>`]);
+  const closeToken = `API_CENTER_MIGRATED_TABS_CLOSE_${restoredTags.length}`;
+  restoredTags.push([closeToken, '</Tabs>']);
+  const triggers = items
+    .map((item) => `  <TabsTrigger value="${item[1]}">${item[2]}</TabsTrigger>`)
+    .join('\n');
+  const contents = items
+    .map((item) => {
+      const content = trimCommonIndent(item[4]).trim();
+      return `<TabsContent value="${item[1]}">\n\n${content}\n\n</TabsContent>`;
+    })
+    .join('\n\n');
+
+  return [
+    openToken,
+    '<TabsList>',
+    triggers,
+    '</TabsList>',
+    '',
+    contents,
+    closeToken,
+  ].join('\n');
 }
 
 function transformRemainingTabItems(value, state) {
@@ -1884,8 +2167,14 @@ function transformRemainingTabItems(value, state) {
     /<TabItem\b([^>]*)>([\s\S]*?)<\/TabItem>/g,
     (_match, attrs, body) => {
       const title =
-        readAttribute(attrs, 'label') ?? readAttribute(attrs, 'value') ?? 'Tab';
+        readAttribute(attrs, 'label') ?? readAttribute(attrs, 'value');
       state.issues.push('normalized-tab-item-fallback');
+      if (!title) {
+        state.issues.push(
+          `missing-source-text:tab-title:${state.currentSourcePath}`,
+        );
+        return `\n${trimCommonIndent(body).trim()}\n`;
+      }
       return `\n#### ${title}\n\n${trimCommonIndent(body).trim()}\n`;
     },
   );
@@ -1929,7 +2218,10 @@ function markCodeFenceLines(lines) {
 }
 
 function collectPlatformHeadingRun(lines, inCodeFence, startIndex) {
-  const first = parsePlatformHeadingLine(lines[startIndex], inCodeFence[startIndex]);
+  const first = parsePlatformHeadingLine(
+    lines[startIndex],
+    inCodeFence[startIndex],
+  );
   if (!first) {
     return null;
   }
@@ -1943,7 +2235,11 @@ function collectPlatformHeadingRun(lines, inCodeFence, startIndex) {
       lines[currentIndex],
       inCodeFence[currentIndex],
     );
-    if (!heading || heading.depth !== first.depth || values.has(heading.value)) {
+    if (
+      !heading ||
+      heading.depth !== first.depth ||
+      values.has(heading.value)
+    ) {
       break;
     }
 
@@ -2038,7 +2334,7 @@ function renderPlatformHeadingTabs(items) {
     })
     .join('\n\n');
 
-  return [
+  return `${[
     `<Tabs defaultValue="${items[0].value}" groupId="${groupId}" persist>`,
     '<TabsList>',
     triggers,
@@ -2046,7 +2342,7 @@ function renderPlatformHeadingTabs(items) {
     '',
     contents,
     '</Tabs>',
-  ].join('\n') + '\n';
+  ].join('\n')}\n`;
 }
 
 function normalizePlatformHeadingTabContent(value) {
@@ -2308,21 +2604,30 @@ function parseSingleCodeTabContent(value) {
   };
 }
 
-function transformDetails(value) {
+function transformDetails(value, state) {
   return value
-    .replace(/<Detail\b([^>]*)>([\s\S]*?)<\/Detail>/g, (_, attrs, body) => {
-      const title = readAttribute(attrs, 'title') ?? 'Details';
-      const content = trimCommonIndent(body).trim();
-      return [
-        '<Accordions>',
-        `<Accordion title=${JSON.stringify(title)}>`,
-        '',
-        content,
-        '',
-        '</Accordion>',
-        '</Accordions>',
-      ].join('\n');
-    })
+    .replace(
+      /^[ \t]*<Detail\b([^>]*)>([\s\S]*?)<\/Detail>/gm,
+      (_, attrs, body) => {
+        const title = readAttribute(attrs, 'title');
+        const content = trimCommonIndent(body).trim();
+        if (!title) {
+          state.issues.push(
+            `missing-source-text:detail-title:${state.currentSourcePath}`,
+          );
+          return content;
+        }
+        return [
+          '<Accordions>',
+          `<Accordion title=${JSON.stringify(title)}>`,
+          '',
+          content,
+          '',
+          '</Accordion>',
+          '</Accordions>',
+        ].join('\n');
+      },
+    )
     .replace(/<\/Accordions>\s*\n\s*<Accordions>/g, '');
 }
 
@@ -2339,10 +2644,10 @@ function transformHtmlTables(value, state) {
           ];
 
           return cells.map((cellMatch) => ({
-            colspan: readNumericAttribute(cellMatch[2], 'colspan'),
+            colspan: readNumericAttribute(cellMatch[2], 'colspan', 'col'),
             kind: cellMatch[1].toLowerCase(),
             raw: cellMatch[3],
-            rowspan: readNumericAttribute(cellMatch[2], 'rowspan'),
+            rowspan: readNumericAttribute(cellMatch[2], 'rowspan', 'row'),
           }));
         },
       );
@@ -2627,13 +2932,9 @@ function renderTableWithSlots({
     header.length,
     ...bodyRows.map((row) => row.length),
   );
-  const normalizedHeader = padTableRow(header, columnCount).map(
-    (cell, index) => ({
-      value:
-        normalizeInlineTableCell(cell.raw) ||
-        (tableKind === 'html' ? `Column ${index + 1}` : ''),
-    }),
-  );
+  const normalizedHeader = padTableRow(header, columnCount).map((cell) => ({
+    value: normalizeInlineTableCell(cell.raw),
+  }));
   const normalizedRows = bodyRows.map((row, rowIndex) =>
     padTableRow(row, columnCount).map((cell, cellIndex) => {
       if (isComplexTableCell(cell.raw)) {
@@ -2813,10 +3114,13 @@ function splitMarkdownTableRow(line) {
 
 function isComplexTableCell(value = '') {
   return (
-    /<\s*(?:ul|ol|p|pre|img|Image|Admonition|Detail|Tabs|Table|table)\b/i.test(value) ||
+    /<\s*(?:ul|ol|li|p|pre|img|Image|Admonition|Detail|Tabs|Table|table)\b/i.test(
+      value,
+    ) ||
     /<br\s*\/?>/i.test(value) ||
     /(^|\n)\s*:::+/.test(value) ||
     /```/.test(value) ||
+    /!\[[^\]\n]*]\([^)\n]+\)/.test(value) ||
     /(^|\n)\s*(?:[-*]|\d+\.)\s+/.test(value.trim())
   );
 }
@@ -2826,7 +3130,9 @@ function normalizeInlineTableCell(value) {
 }
 
 function normalizeSlotDefinitionContent(value) {
-  return ensureBlankLineBeforeList(transformInlineHtml(replaceHtmlLists(value)))
+  return ensureBlankLineBeforeList(
+    transformInlineHtml(transformHtmlLists(value)),
+  )
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
@@ -2884,11 +3190,31 @@ function renderMarkdownTableRow(row, indent = '') {
 }
 
 function transformHtmlLists(value) {
-  return replaceHtmlLists(value)
+  return replaceStandaloneHtmlListItems(replaceHtmlLists(value))
     .replace(/^[ \t]*<li>([\s\S]*?)<\/li>[ \t]*$/gim, (_, item) => {
       return `- ${collapseInline(transformInlineHtml(item))}`;
     })
     .replace(/^[ \t]*<\/?(?:ul|ol)>[ \t]*$/gim, '');
+}
+
+function replaceStandaloneHtmlListItems(value) {
+  let output = value;
+  let previous = null;
+
+  while (previous !== output) {
+    previous = output;
+    output = output.replace(/<li\b[^>]*>([\s\S]*?)<\/li>/gi, (_match, item) => {
+      const normalized = transformInlineHtml(item).trim();
+      if (!normalized) return '';
+      const [first, ...rest] = normalized.split('\n');
+      const continuation = rest
+        .map((line) => (line.trim() ? `  ${line.trimStart()}` : ''))
+        .join('\n');
+      return `\n- ${first.trim()}${continuation ? `\n${continuation}` : ''}\n`;
+    });
+  }
+
+  return output;
 }
 
 function replaceHtmlLists(value, depth = 0) {
@@ -3029,9 +3355,23 @@ function transformInlineHtml(value) {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/&nbsp;/g, ' ')
     .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+    .replace(/&amp;/g, '&');
+}
+
+function normalizeInlineHtmlAttributes(value, state) {
+  return replaceOutsideCode(value, (text) =>
+    text.replace(/<(code|span)\b([^>]*)>/gi, (match, tagName, attrs) => {
+      let normalized = attrs.replace(/\bclass=/g, 'className=');
+      normalized = normalized.replace(
+        /\b([A-Za-z_$][\w:.$-]*)=([A-Za-z_$][\w:.$-]*)(?=\s|$)/g,
+        (_attribute, name, attributeValue) =>
+          `${name}=${JSON.stringify(attributeValue)}`,
+      );
+      if (normalized === attrs) return match;
+      state.issues.push('normalized-inline-html-attributes');
+      return `<${tagName}${normalized}>`;
+    }),
+  );
 }
 
 function transformHtmlComponent(value, state) {
@@ -3124,8 +3464,8 @@ function transformGenericTypeLiterals(value, state) {
       .replace(
         /\b([A-Z][A-Za-z0-9_.$]*(?:\s*<\s*[A-Z][A-Za-z0-9_.$]*(?:\s*,\s*[A-Z][A-Za-z0-9_.$]*)*\s*>)+)(?=[\s,.;:，。；：）)'"}]|$)/g,
         (match) => {
-        state.issues.push(`escaped-generic-type-literal:${match}`);
-        return `\`${match.replace(/\s+/g, ' ')}\``;
+          state.issues.push(`escaped-generic-type-literal:${match}`);
+          return `\`${match.replace(/\s+/g, ' ')}\``;
         },
       ),
   );
@@ -3152,6 +3492,15 @@ function escapeMdxTextOperators(value, state) {
     text.replace(/(?<=\S)(<<|>>)(?=\S)/g, (operator) => {
       state.issues.push(`escaped-mdx-text-operator:${operator}`);
       return operator === '<<' ? '&lt;&lt;' : '&gt;&gt;';
+    }),
+  );
+}
+
+function escapeMdxTextBraces(value, state) {
+  return replaceOutsideCode(value, (text) =>
+    text.replace(/\{(\s*)\}/g, (_match, spacing) => {
+      state.issues.push('escaped-mdx-text-brace-pair');
+      return `&#123;${spacing}&#125;`;
     }),
   );
 }
@@ -3330,9 +3679,15 @@ function readAttribute(attrs, name) {
   );
 }
 
-function readNumericAttribute(attrs, name) {
-  const value = Number(readAttribute(attrs, name) ?? 1);
-  return Number.isFinite(value) && value > 0 ? Math.floor(value) : 1;
+function readNumericAttribute(attrs, name, ...aliases) {
+  for (const candidate of [name, ...aliases]) {
+    const expression = attrs.match(
+      new RegExp(`\\b${escapeRegExp(candidate)}\\s*=\\s*\\{\\s*(\\d+)\\s*\\}`),
+    )?.[1];
+    const value = Number(expression ?? readAttribute(attrs, candidate));
+    if (Number.isFinite(value) && value > 0) return Math.floor(value);
+  }
+  return 1;
 }
 
 function readExpressionAttribute(attrs, name) {
@@ -3424,8 +3779,7 @@ function parseObjectLiteralProperties(raw, state) {
   while (match) {
     const key = match[1];
     const value = match[2] ?? match[3] ?? match[4] ?? match[5] ?? '';
-    props[key] =
-      key === 'href' && value ? normalizeHref(value, state) : value;
+    props[key] = key === 'href' && value ? normalizeHref(value, state) : value;
     match = pattern.exec(raw);
   }
 
@@ -3817,7 +4171,7 @@ function summarizeSignalMap(map) {
   );
 }
 
-async function loadPathMap(pathMapPath) {
+export async function loadPathMap(pathMapPath) {
   const table = await readControlTable(pathMapPath);
   const pathMap = new Map();
 
@@ -3857,7 +4211,8 @@ async function loadPathMap(pathMapPath) {
       status: row.status ?? '',
       isRedirectContent,
       targetPath: isRedirectContent ? (row.target_path ?? '') : '',
-      targetPaths: isRedirectContent && row.target_path ? [row.target_path] : [],
+      targetPaths:
+        isRedirectContent && row.target_path ? [row.target_path] : [],
     });
   }
 
@@ -4123,11 +4478,44 @@ function signalUsageSection(title, usage, headers) {
 function normalizeWhitespace(value) {
   return normalizeListBlockSpacing(
     normalizeCodeFenceSpacing(
-      value.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n'),
+      normalizeMarkdownTableIndentation(
+        value.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n'),
+      ),
     ),
   )
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function normalizeMarkdownTableIndentation(value) {
+  const lines = value.split('\n');
+  let inCodeFence = false;
+  let index = 0;
+
+  while (index < lines.length) {
+    if (/^[ \t]*```/.test(lines[index])) {
+      inCodeFence = !inCodeFence;
+      index += 1;
+      continue;
+    }
+    if (inCodeFence || !isMarkdownTableRow(lines[index])) {
+      index += 1;
+      continue;
+    }
+    const start = index;
+    while (index < lines.length && isMarkdownTableRow(lines[index])) {
+      index += 1;
+    }
+    const indent = Math.min(
+      ...lines
+        .slice(start, index)
+        .map((line) => line.match(/^[ \t]*/)?.[0].length ?? 0),
+    );
+    for (let cursor = start; cursor < index; cursor += 1) {
+      lines[cursor] = `${' '.repeat(indent)}${lines[cursor].trimStart()}`;
+    }
+  }
+  return lines.join('\n');
 }
 
 function normalizeListBlockSpacing(value) {

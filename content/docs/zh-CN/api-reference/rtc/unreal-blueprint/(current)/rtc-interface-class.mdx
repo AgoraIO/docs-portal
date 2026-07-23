@@ -1,16 +1,27 @@
 ---
-title: "API 列表"
-description: "本页列出 Unreal 所有的接口类以及其中包含的 API。"
+title: API 列表
+description: 本页列出 Unreal 所有的接口类以及其中包含的 API。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/rtc_interface_class
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/rtc_interface_class.html
+  generator: oxygen
+  warnings: []
 ---
-<a id="rtc_interface_class"></a>
 
-本页列出 Unreal 所有的接口类以及其中包含的 API。
+<a id="rtc_interface_class"></a>
 
 <a id="class_iaudiodevicecollection"></a>
 
+<a id="ariaid-title2"></a>
+
 ## IAudioDeviceCollection
 
+IAudioDeviceCollection 类。你可以通过该接口类获取音频设备相关的信息。
+
 ### 相关参考
+
 - [GetApplicationVolume](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicecollection_getapplicationvolume)
 - [GetCount](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicecollection_getcount)
 - [GetDefaultDevice](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicecollection_getdefaultdevice)
@@ -23,15 +34,20 @@ description: "本页列出 Unreal 所有的接口类以及其中包含的 API。
 
 <a id="class_iaudiodevicemanager"></a>
 
+<a id="ariaid-title3"></a>
+
 ## IAudioDeviceManager
 
 音频设备管理方法。
 
 <a id="class_iaudiodevicemanager__detailed_desc"></a>
 
+### 详情
+
 IAudioDeviceManager 接口类提供用于测试音频设备的相关接口。你可以通过调用 [GetAgoraAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_irtcengine_getaudiodevicemanager) 方法来获取 IAudioDeviceManager 接口。
 
 ### 相关参考
+
 - [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices)
 - [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices)
 - [FollowSystemPlaybackDevice](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#api_iaudiodevicemanager_followsystemplaybackdevice)
@@ -59,9 +75,14 @@ IAudioDeviceManager 接口类提供用于测试音频设备的相关接口。你
 
 <a id="class_imediaplayer"></a>
 
+<a id="ariaid-title4"></a>
+
 ## IMediaPlayer
 
+提供媒体播放器功能的类，支持多实例。
+
 ### 相关参考
+
 - [AdjustPlayoutVolume](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [AdjustPublishSignalVolume](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [GetDuration](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
@@ -99,9 +120,14 @@ IAudioDeviceManager 接口类提供用于测试音频设备的相关接口。你
 
 <a id="class_imediaplayersourceobserver"></a>
 
+<a id="ariaid-title5"></a>
+
 ## IMediaPlayerSourceObserver
 
+提供媒体播放器的回调。
+
 ### 相关参考
+
 - [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication)
 - [OnMetaData](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
 - [OnPlayBufferUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
@@ -116,17 +142,22 @@ IAudioDeviceManager 接口类提供用于测试音频设备的相关接口。你
 
 <a id="class_irtcengine"></a>
 
+<a id="ariaid-title6"></a>
+
 ## IRtcEngine
 
 RTC SDK 的基础接口类，实现实时音视频的主要功能。
 
 <a id="class_irtcengine__detailed_desc"></a>
 
+### 详情
+
 IRtcEngine 提供了 App 调用的主要方法。
 
 在调用其他 API 之前，必须先调用 [GetAgoraRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_createagorartcengine) 创建 IRtcEngine 对象。
 
 ### 相关参考
+
 - [AddVideoWatermark](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2)
 - [AdjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
 - [AdjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume)
@@ -355,20 +386,27 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineeventhandler"></a>
 
+<a id="ariaid-title7"></a>
+
 ## IRtcEngineEventHandler
 
 接口类 IRtcEngineEventHandler 用于 SDK 向 App 发送事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
 
 <a id="class_irtcengineeventhandler__detailed_desc"></a>
 
+### 详情
+
 该接口类的所有方法都有缺省（空）实现， App 可以根据需要只继承关心的事件。
 
-:::warning[注意]
-- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 sendMessage ），否则可能影响 SDK 的运行。
+:::caution
+注意：
+
+- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 `sendMessage`），否则可能影响 SDK 的运行。
 - SDK 不再捕获开发者在 IRtcEngineEventHandler 类回调中自行实现的代码逻辑中的异常。你需要自行处理该异常，否则异常出现时可能引起 App 崩溃。
 :::
 
 ### 相关参考
+
 - [OnActiveSpeaker](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker)
 - [OnAudioDeviceStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#callback_irtcengineeventhandler_onaudiodevicestatechanged)
 - [OnAudioDeviceVolumeChanged](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-device#callback_irtcengineeventhandler_onaudiodevicevolumechanged)
@@ -455,15 +493,20 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineex"></a>
 
+<a id="ariaid-title8"></a>
+
 ## IRtcEngineEx
 
 提供多频道方法的接口类。
 
 <a id="class_irtcengineex__detailed_desc"></a>
 
+### 详情
+
 继承自 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)。
 
 ### 相关参考
+
 - [AddVideoWatermarkEx](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex)
 - [ClearVideoWatermarkEx](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex)
 - [CreateDataStreamEx](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengineex_createdatastreamex2)
@@ -511,9 +554,14 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_iscreencapturesourcelist"></a>
 
+<a id="ariaid-title9"></a>
+
 ## IScreenCaptureSourceList
 
+IScreenCaptureSourceList 类。该类在 [GetScreenCaptureSources](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_getscreencapturesources) 方法中返回。
+
 ### 相关参考
+
 - [GetCount](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_iscreencapturesourcelist_getcount)
 - [GetSourceInfo](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_iscreencapturesourcelist_getsourceinfo)
 - [Release](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_iscreencapturesourcelist_release)
@@ -521,9 +569,14 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_ivideodevicecollection"></a>
 
+<a id="ariaid-title10"></a>
+
 ## IVideoDeviceCollection
 
+你可以通过该接口类获取视频设备相关的信息。
+
 ### 相关参考
+
 - [GetCount](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicecollection_getcount)
 - [GetDevice](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicecollection_getdevice)
 - [Release](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicecollection_release)
@@ -531,15 +584,20 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_ivideodevicemanager"></a>
 
+<a id="ariaid-title11"></a>
+
 ## IVideoDeviceManager
 
 视频设备管理方法。
 
 <a id="class_ivideodevicemanager__detailed_desc"></a>
 
+### 详情
+
 IVideoDeviceManager 接口类提供用于测试视频设备的相关接口。你可以通过调用 [GetAgoraVideoDeviceManager](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_irtcengine_getvideodevicemanager) 方法来获取 IVideoDeviceManager 接口。
 
 ### 相关参考
+
 - [EnumerateVideoDevices](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices)
 - [GetCapability](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicemanager_getcapability)
 - [NumberOfCapabilities](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/video-device#api_ivideodevicemanager_numberofcapabilities)

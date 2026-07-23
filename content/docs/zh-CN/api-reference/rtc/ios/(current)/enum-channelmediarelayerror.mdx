@@ -1,55 +1,90 @@
 ---
-title: "AgoraChannelMediaRelayError"
-description: "跨频道媒体流转发的错误码。"
+title: AgoraChannelMediaRelayError
+description: 跨频道媒体流转发的错误码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_channelmediarelayerror
+  sourcePath: html-docs/rtc/iOS/API/enum_channelmediarelayerror.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_channelmediarelayerror__parameters"></a>
 
 ## 枚举值
 
-### `AgoraChannelMediaRelayErrorNone`
+<ParameterList>
+<a id="agorachannelmediarelayerrornone"></a>
+<Parameter name="AgoraChannelMediaRelayErrorNone">
 
 （0）：无错误。
 
-### `AgoraChannelMediaRelayErrorServerErrorResponse`
+</Parameter>
+<a id="agorachannelmediarelayerrorservererrorresponse"></a>
+<Parameter name="AgoraChannelMediaRelayErrorServerErrorResponse">
 
 （1）：服务器响应出错。
 
-### `AgoraChannelMediaRelayErrorServerNoResponse`
+</Parameter>
+<a id="agorachannelmediarelayerrorservernoresponse"></a>
+<Parameter name="AgoraChannelMediaRelayErrorServerNoResponse">
 
-（2）：服务器无响应。可能由于网络连接不佳导致。若在发起跨频道媒体流转发时出现该错误，可稍后重试；若在转发过程中出现该错误，可调用 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 离开频道。该错误也可能是项目未启用跨频道媒体流转发服务所致，可[联系技术支持](https://ticket.shengwang.cn/)启用该服务。
+（2）：服务器无响应。可能由于网络连接不佳导致。若在发起跨频道媒体流转发时出现该错误，可稍后重试；若在转发过程中出现该错误，可调用 [leaveChannel\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 离开频道。该错误也可能是项目未启用跨频道媒体流转发服务所致，可[联系技术支持](https://ticket.shengwang.cn/)启用该服务。
 
-### `AgoraChannelMediaRelayErrorNoResourceAvailable`
+</Parameter>
+<a id="agorachannelmediarelayerrornoresourceavailable"></a>
+<Parameter name="AgoraChannelMediaRelayErrorNoResourceAvailable">
 
 （3）：SDK 无法访问服务，可能由于服务器资源不足。
 
-### `AgoraChannelMediaRelayErrorFailedJoinSourceChannel`
+</Parameter>
+<a id="agorachannelmediarelayerrorfailedjoinsourcechannel"></a>
+<Parameter name="AgoraChannelMediaRelayErrorFailedJoinSourceChannel">
 
 （4）：加入源频道失败。
 
-### `AgoraChannelMediaRelayErrorFailedJoinDestinationChannel`
+</Parameter>
+<a id="agorachannelmediarelayerrorfailedjoindestinationchannel"></a>
+<Parameter name="AgoraChannelMediaRelayErrorFailedJoinDestinationChannel">
 
 （5）：加入目标频道失败。
 
-### `AgoraChannelMediaRelayErrorFailedPacketReceivedFromSource`
+</Parameter>
+<a id="agorachannelmediarelayerrorfailedpacketreceivedfromsource"></a>
+<Parameter name="AgoraChannelMediaRelayErrorFailedPacketReceivedFromSource">
 
 （6）：服务器接收媒体流失败。
 
-### `AgoraChannelMediaRelayErrorFailedPacketSentToDestination`
+</Parameter>
+<a id="agorachannelmediarelayerrorfailedpacketsenttodestination"></a>
+<Parameter name="AgoraChannelMediaRelayErrorFailedPacketSentToDestination">
 
 （7）：服务器发送媒体流失败。
 
-### `AgoraChannelMediaRelayErrorServerConnectionLost`
+</Parameter>
+<a id="agorachannelmediarelayerrorserverconnectionlost"></a>
+<Parameter name="AgoraChannelMediaRelayErrorServerConnectionLost">
 
-（8）：由于网络连接不佳，SDK 与服务器断开连接。你可以调用 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 离开频道。
+（8）：由于网络连接不佳，SDK 与服务器断开连接。你可以调用 [leaveChannel\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 离开频道。
 
-### `AgoraChannelMediaRelayErrorInternalError`
+</Parameter>
+<a id="agorachannelmediarelayerrorinternalerror"></a>
+<Parameter name="AgoraChannelMediaRelayErrorInternalError">
 
 （9）：服务器内部错误。
 
-### `AgoraChannelMediaRelayErrorSourceTokenExpired`
+</Parameter>
+<a id="agorachannelmediarelayerrorsourcetokenexpired"></a>
+<Parameter name="AgoraChannelMediaRelayErrorSourceTokenExpired">
 
 （10）：源频道的 Token 已过期。
 
-### `AgoraChannelMediaRelayErrorDestinationTokenExpired`
+</Parameter>
+<a id="agorachannelmediarelayerrordestinationtokenexpired"></a>
+<Parameter name="AgoraChannelMediaRelayErrorDestinationTokenExpired">
 
 （11）：目标频道的 Token 已过期。
+
+</Parameter>
+</ParameterList>

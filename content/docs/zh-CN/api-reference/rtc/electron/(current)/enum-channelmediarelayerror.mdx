@@ -1,55 +1,92 @@
 ---
-title: "ChannelMediaRelayError"
-description: "跨频道媒体流转发出错的错误码。"
+title: ChannelMediaRelayError
+description: 跨频道媒体流转发出错的错误码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_channelmediarelayerror
+  sourcePath: html-docs/rtc/Electron/API/enum_channelmediarelayerror.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_channelmediarelayerror__parameters"></a>
 
 ## 枚举值
 
-### `RelayOk`
+<ParameterList>
+<a id="relayok"></a>
+<Parameter name="RelayOk">
 
 0: 一切正常。
 
-### `RelayErrorServerErrorResponse`
+</Parameter>
+<a id="relayerrorservererrorresponse"></a>
+<Parameter name="RelayErrorServerErrorResponse">
 
 1: 服务器回应出错。
 
-### `RelayErrorServerNoResponse`
+</Parameter>
+<a id="relayerrorservernoresponse"></a>
+<Parameter name="RelayErrorServerNoResponse">
 
-2: 服务器无回应。 该错误可能是网络状况不佳导致的。如果在发起跨频道连麦时报告该错误，你可以稍后重试；如果在跨频道连麦过程中报告该错误，你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_leavechannel2) 方法离开频道。 该错误也可能是由于当前的 App ID 未开启跨频道连麦导致的。你可以[联系技术支持](https://ticket.shengwang.cn/)申请开通跨频道连麦。
+2: 服务器无回应。
+该错误可能是网络状况不佳导致的。如果在发起跨频道连麦时报告该错误，你可以稍后重试；如果在跨频道连麦过程中报告该错误，你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_leavechannel2) 方法离开频道。
+该错误也可能是由于当前的 App ID 未开启跨频道连麦导致的。你可以[联系技术支持](https://ticket.shengwang.cn/)申请开通跨频道连麦。
 
-### `RelayErrorNoResourceAvailable`
+</Parameter>
+<a id="relayerrornoresourceavailable"></a>
+<Parameter name="RelayErrorNoResourceAvailable">
 
 3: SDK 无法获取服务，可能是因为服务器资源有限导致。
 
-### `RelayErrorFailedJoinSrc`
+</Parameter>
+<a id="relayerrorfailedjoinsrc"></a>
+<Parameter name="RelayErrorFailedJoinSrc">
 
 4: 发起跨频道转发媒体流请求失败。
 
-### `RelayErrorFailedJoinDest`
+</Parameter>
+<a id="relayerrorfailedjoindest"></a>
+<Parameter name="RelayErrorFailedJoinDest">
 
 5: 接受跨频道转发媒体流请求失败。
 
-### `RelayErrorFailedPacketReceivedFromSrc`
+</Parameter>
+<a id="relayerrorfailedpacketreceivedfromsrc"></a>
+<Parameter name="RelayErrorFailedPacketReceivedFromSrc">
 
 6: 服务器接收跨频道转发媒体流失败。
 
-### `RelayErrorFailedPacketSentToDest`
+</Parameter>
+<a id="relayerrorfailedpacketsenttodest"></a>
+<Parameter name="RelayErrorFailedPacketSentToDest">
 
 7: 服务器发送跨频道转发媒体流失败。
 
-### `RelayErrorServerConnectionLost`
+</Parameter>
+<a id="relayerrorserverconnectionlost"></a>
+<Parameter name="RelayErrorServerConnectionLost">
 
 8: SDK 因网络质量不佳与服务器断开。你可以调用 [leaveChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_leavechannel2) 方法离开当前频道。
 
-### `RelayErrorInternalError`
+</Parameter>
+<a id="relayerrorinternalerror"></a>
+<Parameter name="RelayErrorInternalError">
 
 9: 服务器内部出错。
 
-### `RelayErrorSrcTokenExpired`
+</Parameter>
+<a id="relayerrorsrctokenexpired"></a>
+<Parameter name="RelayErrorSrcTokenExpired">
 
 10: 源频道的 Token 已过期。
 
-### `RelayErrorDestTokenExpired`
+</Parameter>
+<a id="relayerrordesttokenexpired"></a>
+<Parameter name="RelayErrorDestTokenExpired">
 
 11: 目标频道的 Token 已过期。
+
+</Parameter>
+</ParameterList>

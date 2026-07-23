@@ -1,10 +1,18 @@
 ---
-title: "AgoraRtcAudioVolumeInfo"
-description: "用户音量信息。"
+title: AgoraRtcAudioVolumeInfo
+description: 用户音量信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_audiovolumeinfo
+  sourcePath: html-docs/rtc/iOS/API/class_audiovolumeinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audiovolumeinfo__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraRtcAudioVolumeInfo : NSObject
 @property(assign, nonatomic) NSUInteger uid;
 @property(assign, nonatomic) NSUInteger volume;
@@ -21,22 +29,30 @@ __attribute__((visibility("default"))) @interface AgoraRtcAudioVolumeInfo : NSOb
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-- 在本地用户的回调中， uid 为 0。
-- 在远端用户的回调中， uid 为音量瞬时值最大的远端用户的用户 ID。
+- 在本地用户的回调中，`uid` 为 0。
+- 在远端用户的回调中，`uid` 为音量瞬时值最大的远端用户的用户 ID。
 
-### `volume`
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 0（最低）到 255（最高）。如果本地用户开启了音频采集并调用 `muteLocalAudioStream` 设置为 YES 以静音，则该值表示本地采集的音频信号的音量。如果用户调用了 `startAudioMixing`，则该值表示混音后的音量。
 
-### `vad`
+</Parameter>
+<a id="vad"></a>
+<Parameter name="vad">
 
-:::info[注]
-- vad 参数不会报告远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
-- 若要使用该参数，调用 enableAudioVolumeIndication 时需将 reportVad 设置为 YES。
+:::note
+注：
+
+- `vad` 参数不会报告远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
+- 若要使用该参数，调用 `enableAudioVolumeIndication` 时需将 `reportVad` 设置为 YES。
 :::
 
 本地用户的语音活动状态。
@@ -44,10 +60,15 @@ __attribute__((visibility("default"))) @interface AgoraRtcAudioVolumeInfo : NSOb
 - 0：本地用户未说话。
 - 1：本地用户正在说话。
 
-### `voicePitch`
+</Parameter>
+<a id="voicepitch"></a>
+<Parameter name="voicePitch">
 
 本地用户的音高，取值范围为 0.0 到 4000.0。
 
-:::info[注]
-`voicePitch` 参数不会报告远端用户的音高。在远端用户的回调中，该值始终为 0.0。
+:::note
+注： `voicePitch` 参数不会报告远端用户的音高。在远端用户的回调中，该值始终为 0.0。
 :::
+
+</Parameter>
+</ParameterList>

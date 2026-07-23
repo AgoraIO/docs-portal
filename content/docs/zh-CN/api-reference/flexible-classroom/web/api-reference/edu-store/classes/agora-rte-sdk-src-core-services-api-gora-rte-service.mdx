@@ -1,0 +1,745 @@
+---
+title: Class AgoraRteService
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_core_services_api_goraRteService.html
+  sourcePath: html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_core_services_api_goraRteService.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AgoraRteService(): [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
+
+</ApiSignature>
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-api-gora-rte-service)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="fallbackRequestHandler"></a>
+
+### fallbackRequestHandler
+
+fallbackRequestHandler: FallbackRequestHandler
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fallbackRequestHandler](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fallbackRequestHandler)
+
+<a id="headers"></a>
+
+### Optional headers
+
+headers?: Record&lt;string,unknown&gt;
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[headers](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#headers)
+
+<a id="host"></a>
+
+### Optional host
+
+host?: string
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[host](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#host)
+
+<a id="logger"></a>
+
+### logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#logger)
+
+<a id="pathPrefix"></a>
+
+### Optional pathPrefix
+
+pathPrefix?: string
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[pathPrefix](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#pathPrefix)
+
+<a id="domainHolder"></a>
+
+### Static domainHolder
+
+domainHolder: DomainHolder
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[domainHolder](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#domainHolder)
+
+## Methods
+
+<a id="deleteBatchUserProperties"></a>
+
+### deleteBatchUserProperties
+
+<ApiSignature>
+
+deleteBatchUserProperties(__namedParameters: \{ data: \{ cause?: any; properties: string[]; userUuid: string \}[]; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; data: \&#123; cause?: any; properties: string[]; userUuid: string \&#125;[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; cause?: any; properties: string[]; userUuid: string \&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteRoomProperties"></a>
+
+### deleteRoomProperties
+
+<ApiSignature>
+
+deleteRoomProperties(__namedParameters: \{ cause?: unknown; properties: string[]; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; cause?: unknown; properties: string[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="properties" type="string[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteStream"></a>
+
+### deleteStream
+
+<ApiSignature>
+
+deleteStream(roomUuid: string, userUuid: string, streamUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteUserProperties"></a>
+
+### deleteUserProperties
+
+<ApiSignature>
+
+deleteUserProperties(__namedParameters: \{ cause?: any; properties: string[]; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; cause?: any; properties: string[]; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="cause" type="any" optional />
+<Parameter name="properties" type="string[]" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entryRoom"></a>
+
+### entryRoom
+
+<ApiSignature>
+
+entryRoom(params: [EntryRequestParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ntry-request-params)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[EntryRequestParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ntry-request-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetch"></a>
+
+### fetch
+
+<ApiSignature>
+
+fetch(params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="publishStreamToCdn"></a>
+
+### publishStreamToCdn
+
+<ApiSignature>
+
+publishStreamToCdn(roomUuid: string, userUuid: string, streamUuid: string, params: [PublishCdnParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="params" required>
+
+<ParameterType>
+
+[PublishCdnParams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-api-ublish-cdn-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendCustomChannelMessage"></a>
+
+### sendCustomChannelMessage
+
+<ApiSignature>
+
+sendCustomChannelMessage(roomUuid: string, payload: \{ cmd: string; data: any \}, sync?: boolean): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="payload" type="\&#123; cmd: string; data: any \&#125;" required>
+
+<ParameterList>
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="any" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="sync" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendCustomPeerMessage"></a>
+
+### sendCustomPeerMessage
+
+<ApiSignature>
+
+sendCustomPeerMessage(roomUuid: string, payload: \{ cmd: string; data: any \}, toUserUuid: string, waitForAck?: boolean): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="payload" type="\&#123; cmd: string; data: any \&#125;" required>
+
+<ParameterList>
+<Parameter name="cmd" type="string" required />
+<Parameter name="data" type="any" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="toUserUuid" type="string" required />
+<Parameter name="waitForAck" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendRoomChatMessage"></a>
+
+### sendRoomChatMessage
+
+<ApiSignature>
+
+sendRoomChatMessage(message: string, roomUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="syncPeerSequence"></a>
+
+### syncPeerSequence
+
+<ApiSignature>
+
+syncPeerSequence(roomUuid: string, userUuid: string, seqId: number, count: number): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="seqId" type="number" required />
+<Parameter name="count" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="syncSequence"></a>
+
+### syncSequence
+
+<ApiSignature>
+
+syncSequence(roomUuid: string, seqId: number, count: number): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="seqId" type="number" required />
+<Parameter name="count" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateBatchUserProperties"></a>
+
+### updateBatchUserProperties
+
+<ApiSignature>
+
+updateBatchUserProperties(__namedParameters: \{ data: \{ cause?: any; properties: unknown; userUuid: string \}[]; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; data: \&#123; cause?: any; properties: unknown; userUuid: string \&#125;[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; cause?: any; properties: unknown; userUuid: string \&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateDeviceState"></a>
+
+### updateDeviceState
+
+<ApiSignature>
+
+updateDeviceState(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: \{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateOnlineState"></a>
+
+### updateOnlineState
+
+<ApiSignature>
+
+updateOnlineState(__namedParameters: \{ roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateRoomProperties"></a>
+
+### updateRoomProperties
+
+<ApiSignature>
+
+updateRoomProperties(__namedParameters: \{ cause?: unknown; properties: unknown; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; cause?: unknown; properties: unknown; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="properties" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateUserProperties"></a>
+
+### updateUserProperties
+
+<ApiSignature>
+
+updateUserProperties(__namedParameters: \{ cause?: any; properties: unknown; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="__namedParameters" type="\&#123; cause?: any; properties: unknown; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="cause" type="any" optional />
+<Parameter name="properties" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="upsertStream"></a>
+
+### upsertStream
+
+<ApiSignature>
+
+upsertStream(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: \{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="__namedParameters" required>
+
+<ParameterType>
+
+\{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); publishAudio?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); publishVideo?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishAudio" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="publishVideo" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceType" optional>
+
+<ParameterType>
+
+[AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="upsertStreamBatch"></a>
+
+### upsertStreamBatch
+
+<ApiSignature>
+
+upsertStreamBatch(roomUuid: string, streams: \{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); streamUuid: string; userUuid: string; videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}[]): Promise&lt;any&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="streams" required>
+
+<ParameterType>
+
+\{ audioSourceType?: [AgoraRteAudioSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-audio-source-type); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); streamUuid: string; userUuid: string; videoSourceType?: [AgoraRteVideoSourceType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-video-source-type); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

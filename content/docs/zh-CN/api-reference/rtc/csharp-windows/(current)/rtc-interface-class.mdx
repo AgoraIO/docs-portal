@@ -1,12 +1,20 @@
 ---
-title: "API 列表"
-description: "本页列出 C# 所有的接口类以及其中包含的 API。"
+title: API 列表
+description: 本页列出 C# 所有的接口类以及其中包含的 API。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/rtc_interface_class
+  sourcePath: html-docs/rtc/Csharp/API/rtc_interface_class.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="rtc_interface_class"></a>
 
-本页列出 C# 所有的接口类以及其中包含的 API。
-
 <a id="class_irtcengine"></a>
+
+<a id="ariaid-title2"></a>
 
 ## IRtcEngine
 
@@ -14,11 +22,14 @@ RTC SDK 的基础接口类，实现实时音视频的主要功能。
 
 <a id="class_irtcengine__detailed_desc"></a>
 
+### 详情
+
 IRtcEngine 提供了 App 调用的主要方法。
 
 在调用其他 API 之前，必须先调用 [CreateAgoraRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/initialize#api_createagorartcengine) 创建 IRtcEngine 对象。
 
 ### 相关参考
+
 - [AddVideoWatermark [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2)
 - [AdjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
 - [AdjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume)
@@ -221,15 +232,20 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineex"></a>
 
+<a id="ariaid-title3"></a>
+
 ## IRtcEngineEx
 
 提供多频道方法的接口类。
 
 <a id="class_irtcengineex__detailed_desc"></a>
 
+### 详情
+
 继承自 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)。
 
 ### 相关参考
+
 - [AddVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex)
 - [AdjustUserPlaybackSignalVolumeEx](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex)
 - [ClearVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex)
@@ -273,20 +289,27 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_irtcengineeventhandler"></a>
 
+<a id="ariaid-title4"></a>
+
 ## IRtcEngineEventHandler
 
 接口类 IRtcEngineEventHandler 用于 SDK 向 App 发送事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
 
 <a id="class_irtcengineeventhandler__detailed_desc"></a>
 
+### 详情
+
 该接口类的所有方法都有缺省（空）实现， App 可以根据需要只继承关心的事件。
 
-:::warning[注意]
-- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 sendMessage ），否则可能影响 SDK 的运行。
+:::caution
+注意：
+
+- 在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 `sendMessage`），否则可能影响 SDK 的运行。
 - SDK 不再捕获开发者在 IRtcEngineEventHandler 类回调中自行实现的代码逻辑中的异常。你需要自行处理该异常，否则异常出现时可能引起 App 崩溃。
 :::
 
 ### 相关参考
+
 - [OnActiveSpeaker](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker)
 - [OnAudioEffectFinished](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished)
 - [OnAudioMixingFinished](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingfinished)
@@ -362,9 +385,14 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediaplayer"></a>
 
+<a id="ariaid-title5"></a>
+
 ## IMediaPlayer
 
+提供媒体播放器功能的类，支持多实例。
+
 ### 相关参考
+
 - [AdjustPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [AdjustPublishSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [GetDuration](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
@@ -407,14 +435,21 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_iaudioencodedframeobserver"></a>
 
+<a id="ariaid-title6"></a>
+
 ## IAudioEncodedFrameObserver
 
+编码后音频的观测器。
+
 ### 相关参考
+
 - [OnMixedAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe)
 - [OnPlaybackAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe)
 - [OnRecordAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe)
 
 <a id="class_iaudiodevicemanager"></a>
+
+<a id="ariaid-title7"></a>
 
 ## IAudioDeviceManager
 
@@ -424,6 +459,8 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_ivideodevicemanager"></a>
 
+<a id="ariaid-title8"></a>
+
 ## IVideoDeviceManager
 
 视频设备管理方法。
@@ -432,19 +469,28 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediaplayeraudioframeobserver"></a>
 
+<a id="ariaid-title9"></a>
+
 ## IMediaPlayerAudioFrameObserver
 
 媒体播放器的音频数据观测器。
 
 <a id="class_imediaplayeraudioframeobserver__detailed_desc"></a>
 
+### 详情
+
 你可以调用 [RegisterAudioFrameObserver [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-observer#api_imediaplayer_registeraudioframeobserver2) 注册或取消注册 IMediaPlayerAudioFrameObserver 观测器。
 
 <a id="class_imediaplayercachemanager"></a>
 
+<a id="ariaid-title10"></a>
+
 ## IMediaPlayerCacheManager
 
+该类提供管理媒体播放器中缓存媒体文件的方法。
+
 ### 相关参考
+
 - [EnableAutoRemoveCache](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache)
 - [GetCacheDir](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getcachedir)
 - [GetCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount)
@@ -459,13 +505,22 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_imediaplayercustomdataprovider"></a>
 
+<a id="ariaid-title11"></a>
+
 ## IMediaPlayerCustomDataProvider
+
+提供打开自定义媒体资源文件的回调。
 
 <a id="class_imediaplayersourceobserver"></a>
 
+<a id="ariaid-title12"></a>
+
 ## IMediaPlayerSourceObserver
 
+提供媒体播放器的回调。
+
 ### 相关参考
+
 - [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication)
 - [OnMetaData](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
 - [OnPlayBufferUpdated](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
@@ -480,23 +535,34 @@ IRtcEngine 提供了 App 调用的主要方法。
 
 <a id="class_iaudioframeobserver"></a>
 
+<a id="ariaid-title13"></a>
+
 ## IAudioFrameObserver
 
 音频观测器。
 
 <a id="class_iaudioframeobserver__detailed_desc"></a>
 
+### 详情
+
 你可以调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册或取消注册 IAudioFrameObserver 音频观测器。
 
 <a id="class_iaudiospectrumobserver"></a>
 
+<a id="ariaid-title14"></a>
+
 ## IAudioSpectrumObserver
 
+音频频谱观测器。
+
 ### 相关参考
+
 - [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum)
 - [OnRemoteAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum)
 
 <a id="class_imetadataobserver"></a>
+
+<a id="ariaid-title15"></a>
 
 ## IMetadataObserver
 
@@ -507,16 +573,24 @@ Metadata 观测器。
 你可以调用 [RegisterMediaMetadataObserver](/zh-CN/api-reference/rtc/csharp-windows/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 注册或取消注册 IMetadataObserver 观测器。
 
 ### 相关参考
+
 - [OnMetadataReceived](/zh-CN/api-reference/rtc/csharp-windows/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived)
 
 <a id="class_ivideoencodedframeobserver"></a>
 
+<a id="ariaid-title16"></a>
+
 ## IVideoEncodedFrameObserver
 
+用于接收编码后的视频图像的类。
+
 ### 相关参考
+
 - [OnEncodedVideoFrameReceived](/zh-CN/api-reference/rtc/csharp-windows/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
 
 <a id="class_ivideoframeobserver"></a>
+
+<a id="ariaid-title17"></a>
 
 ## IVideoFrameObserver
 
@@ -524,14 +598,19 @@ Metadata 观测器。
 
 <a id="class_ivideoframeobserver__detailed_desc"></a>
 
+### 详情
+
 你可以调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#api_imediaengine_registervideoframeobserver) 注册或取消注册 IVideoFrameObserver 视频观测器。
 
 ### 相关参考
+
 - [OnCaptureVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
 - [OnPreEncodeVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe)
 - [OnRenderVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
 
 <a id="class_ilocalspatialaudioengine"></a>
+
+<a id="ariaid-title18"></a>
 
 ## ILocalSpatialAudioEngine
 
@@ -539,9 +618,12 @@ Metadata 观测器。
 
 <a id="class_ilocalspatialaudioengine__detailed_desc"></a>
 
+### 详情
+
 调用该类下其他 API 前，你需要调用 [Initialize](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize) 方法初始化该类。
 
 ### 相关参考
+
 - [ClearRemotePositions](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_clearremotepositions)
 - [Initialize](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize)
 - [RemoveRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition)
@@ -549,33 +631,60 @@ Metadata 观测器。
 
 <a id="class_imediarecorder"></a>
 
+<a id="ariaid-title19"></a>
+
 ## IMediaRecorder
 
+提供本地及远端音视频录制功能的类。
+
 ### 相关参考
+
 - [SetMediaRecorderObserver](/zh-CN/api-reference/rtc/csharp-windows/recording#api_imediarecorder_setmediarecorderobserver)
 - [StartRecording](/zh-CN/api-reference/rtc/csharp-windows/recording#api_imediarecorder_startrecording)
 - [StopRecording](/zh-CN/api-reference/rtc/csharp-windows/recording#api_imediarecorder_stoprecording)
 
 <a id="class_imediarecorderobserver"></a>
 
+<a id="ariaid-title20"></a>
+
 ## IMediaRecorderObserver
 
+包含音视频录制的事件。
+
 ### 相关参考
+
 - [OnRecorderStateChanged](/zh-CN/api-reference/rtc/csharp-windows/recording#callback_imediarecorderobserver_onrecorderstatechanged)
 - [OnRecorderInfoUpdated](/zh-CN/api-reference/rtc/csharp-windows/recording#callback_imediarecorderobserver_onrecorderinfoupdated)
 
 <a id="class_imusiccontentcenter"></a>
 
+<a id="ariaid-title21"></a>
+
 ## IMusicContentCenter
+
+[IMusicContentCenter](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imusiccontentcenter) 接口类提供音乐内容中心的相关方法。
+ 该接口类下的方法仅适用于 Android 和 iOS 平台。
 
 <a id="class_imusiccontentcentereventhandler"></a>
 
+<a id="ariaid-title22"></a>
+
 ## IMusicContentCenterEventHandler
+
+[IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imusiccontentcentereventhandler) 接口类，用于 SDK 向客户端发送音乐内容中心事件通知。
 
 <a id="class_imusicplayer"></a>
 
+<a id="ariaid-title23"></a>
+
 ## IMusicPlayer
+
+继承自 [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer) 类，提供音乐播放器的相关方法。
 
 <a id="class_videosurface"></a>
 
+<a id="ariaid-title24"></a>
+
 ## VideoSurface
+
+该类包含视频渲染相关的 Unity 原生方法。

@@ -1,128 +1,181 @@
 ---
-title: "AUDIO_EFFECT_PRESET"
-description: "预设音效效果。"
+title: AUDIO_EFFECT_PRESET
+description: 预设音效效果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_audioeffectpreset
+  sourcePath: html-docs/rtc/Cpp/API/enum_audioeffectpreset.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audioeffectpreset__detailed_desc"></a>
 
 为了获得更好的音效效果，声网建议在使用预设音效效果前调用 `setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scenario)`，并按如下推荐设置 `profile` 参数：
 
 | 预设音效效果 | `profile` |
 | --- | --- |
-| `ROOM_ACOUSTICS_VIRTUAL_STEREO`、 `ROOM_ACOUSTICS_3D_VOICE`、 `ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND` | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` 或 `AUDIO_PROFILE_MUSIC_STANDARD_STEREO` |
-| 其他预设音效效果（不包括 `AUDIO_EFFECT_OFF` ） | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` 或 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` |
+| `ROOM_ACOUSTICS_VIRTUAL_STEREO`、`ROOM_ACOUSTICS_3D_VOICE`、`ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND` | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` 或 `AUDIO_PROFILE_MUSIC_STANDARD_STEREO` |
+| 其他预设音效效果（不包括 `AUDIO_EFFECT_OFF`） | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` 或 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` |
 
 <a id="enum_audioeffectpreset__parameters"></a>
 
 ## 枚举值
 
-### `AUDIO_EFFECT_OFF`
+<ParameterList>
+<a id="audio_effect_off"></a>
+<Parameter name="AUDIO_EFFECT_OFF">
 
 （0x00000000）：关闭音效处理，使用原始声音。
 
-### `ROOM_ACOUSTICS_KTV`
+</Parameter>
+<a id="room_acoustics_ktv"></a>
+<Parameter name="ROOM_ACOUSTICS_KTV">
 
 （0x02010100）：KTV 场景的典型音效。
 
-### `ROOM_ACOUSTICS_VOCAL_CONCERT`
+</Parameter>
+<a id="room_acoustics_vocal_concert"></a>
+<Parameter name="ROOM_ACOUSTICS_VOCAL_CONCERT">
 
 （0x02010200）：音乐厅场景的典型音效。
 
-### `ROOM_ACOUSTICS_STUDIO`
+</Parameter>
+<a id="room_acoustics_studio"></a>
+<Parameter name="ROOM_ACOUSTICS_STUDIO">
 
 （0x02010300）：录音棚场景的典型音效。
 
-### `ROOM_ACOUSTICS_PHONOGRAPH`
+</Parameter>
+<a id="room_acoustics_phonograph"></a>
+<Parameter name="ROOM_ACOUSTICS_PHONOGRAPH">
 
 （0x02010400）：老式留声机风格的典型音效。
 
-### `ROOM_ACOUSTICS_VIRTUAL_STEREO`
+</Parameter>
+<a id="room_acoustics_virtual_stereo"></a>
+<Parameter name="ROOM_ACOUSTICS_VIRTUAL_STEREO">
 
 （0x02010500）：虚拟立体声效果，将单声道音频渲染为立体声。
 
-### `ROOM_ACOUSTICS_SPACIAL`
+</Parameter>
+<a id="room_acoustics_spacial"></a>
+<Parameter name="ROOM_ACOUSTICS_SPACIAL">
 
 （0x02010600）：增强空间感的音效。
 
-### `ROOM_ACOUSTICS_ETHEREAL`
+</Parameter>
+<a id="room_acoustics_ethereal"></a>
+<Parameter name="ROOM_ACOUSTICS_ETHEREAL">
 
 （0x02010700）：空灵风格的音效。
 
-### `ROOM_ACOUSTICS_3D_VOICE`
+</Parameter>
+<a id="room_acoustics_3d_voice"></a>
+<Parameter name="ROOM_ACOUSTICS_3D_VOICE">
 
 （0x02010800）：3D 音效，使声音围绕用户移动，默认循环周期为 10 秒。设置该效果后，可调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改移动周期。
 
-:::info[注]
-启用该效果时，需使用立体声播放设备以获得预期音效。
+:::note
+注： 启用该效果时，需使用立体声播放设备以获得预期音效。
 :::
 
-### `ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND`
+</Parameter>
+<a id="room_acoustics_virtual_surround_sound"></a>
+<Parameter name="ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND">
 
 （0x02010900）：虚拟环绕声，基于立体声通道生成模拟环绕声场，营造环绕音效。
 
-:::info[注]
-启用该效果时，需使用立体声播放设备以获得预期音效。
+:::note
+注： 启用该效果时，需使用立体声播放设备以获得预期音效。
 :::
 
-### `ROOM_ACOUSTICS_CHORUS`
+</Parameter>
+<a id="room_acoustics_chorus"></a>
+<Parameter name="ROOM_ACOUSTICS_CHORUS">
 
 （0x02010D00）：合唱音效，适用于合唱场景，增强人声的层次感和空间感。
 
-### `VOICE_CHANGER_EFFECT_UNCLE`
+</Parameter>
+<a id="voice_changer_effect_uncle"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_UNCLE">
 
 （0x02020100）：中年男性的声音。
 
-:::info[注]
-声网建议用于处理男性音色，否则可能无法获得预期音效。
+:::note
+注： 声网建议用于处理男性音色，否则可能无法获得预期音效。
 :::
 
-### `VOICE_CHANGER_EFFECT_OLDMAN`
+</Parameter>
+<a id="voice_changer_effect_oldman"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_OLDMAN">
 
 （0x02020200）：年长男性的声音。
 
-:::info[注]
-声网建议用于处理男性音色，否则可能无法获得预期音效。
+:::note
+注： 声网建议用于处理男性音色，否则可能无法获得预期音效。
 :::
 
-### `VOICE_CHANGER_EFFECT_BOY`
+</Parameter>
+<a id="voice_changer_effect_boy"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_BOY">
 
 （0x02020300）：男孩的声音。
 
-:::info[注]
-声网建议用于处理男性音色，否则可能无法获得预期音效。
+:::note
+注： 声网建议用于处理男性音色，否则可能无法获得预期音效。
 :::
 
-### `VOICE_CHANGER_EFFECT_SISTER`
+</Parameter>
+<a id="voice_changer_effect_sister"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_SISTER">
 
 （0x02020400）：年轻女性的声音。
 
-:::info[注]
-声网建议用于处理女性音色，否则可能无法获得预期音效。
+:::note
+注： 声网建议用于处理女性音色，否则可能无法获得预期音效。
 :::
 
-### `VOICE_CHANGER_EFFECT_GIRL`
+</Parameter>
+<a id="voice_changer_effect_girl"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_GIRL">
 
 （0x02020500）：女孩的声音。
 
-:::info[注]
-声网建议用于处理女性音色，否则可能无法获得预期音效。
+:::note
+注： 声网建议用于处理女性音色，否则可能无法获得预期音效。
 :::
 
-### `VOICE_CHANGER_EFFECT_PIGKING`
+</Parameter>
+<a id="voice_changer_effect_pigking"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_PIGKING">
 
 （0x02020600）：猪八戒的声音，类似熊吼的效果。
 
-### `VOICE_CHANGER_EFFECT_HULK`
+</Parameter>
+<a id="voice_changer_effect_hulk"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_HULK">
 
 （0x02020700）：绿巨人的声音。
 
-### `STYLE_TRANSFORMATION_RNB`
+</Parameter>
+<a id="style_transformation_rnb"></a>
+<Parameter name="STYLE_TRANSFORMATION_RNB">
 
 （0x02030100）：R&B 音乐风格的典型音效。
 
-### `STYLE_TRANSFORMATION_POPULAR`
+</Parameter>
+<a id="style_transformation_popular"></a>
+<Parameter name="STYLE_TRANSFORMATION_POPULAR">
 
 （0x02030200）：流行音乐风格的典型音效。
 
-### `PITCH_CORRECTION`
+</Parameter>
+<a id="pitch_correction"></a>
+<Parameter name="PITCH_CORRECTION">
 
 （0x02040100）：音高修正效果，基于自然 C 大调音阶修正用户音高。设置该效果后，可调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整调音模式和主音音高。
+
+</Parameter>
+</ParameterList>

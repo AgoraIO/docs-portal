@@ -1,0 +1,322 @@
+---
+title: Class WhiteWebSdk
+description: WhiteWebSdk 类用于初始化 WhiteWebSdk 对象。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/classes/whitewebsdk
+  sourcePath: html-docs/whiteboard/Web/classes/whitewebsdk.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- WhiteWebSdk
+
+## Index
+
+### Constructors
+
+- [constructor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#constructor)
+
+### Properties
+
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#devicetype)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#region)
+- [renderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#renderengine)
+- [screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#screentype)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#version)
+
+### Methods
+
+- [isPlayable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#isplayable)
+- [joinRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#joinroom)
+- [replayRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#replayroom)
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new WhiteWebSdk(params: [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration)): [WhiteWebSdk](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:4294](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4294)
+
+`WhiteWebSdk` 的构造函数。
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration)
+
+</ParameterType>
+
+构造参数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[WhiteWebSdk](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk)
+
+</ApiReturnType>
+
+构造的 `WhiteWebSdk` 对象。
+
+</ApiReturns>
+
+## Properties
+
+<a id="devicetype"></a>
+
+### deviceType
+
+deviceType: [DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype)
+
+- Defined in [index-zh.d.ts\:4278](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4278)
+
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
+
+<a id="region"></a>
+
+### region
+
+region: string
+
+- Defined in [index-zh.d.ts\:4273](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4273)
+
+连接的数据中心。支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+**Note**
+
+该方法设置的数据中心必须与[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时设置的数据中心一致；否则，SDK 将无法连接到房间。
+
+<a id="renderengine"></a>
+
+### renderEngine
+
+renderEngine: [RenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/renderengine)
+
+- Defined in [index-zh.d.ts\:4288](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4288)
+
+渲染模式，详见 [RenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/renderengine)。
+
+<a id="screentype"></a>
+
+### screenType
+
+screenType: [ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype)
+
+- Defined in [index-zh.d.ts\:4283](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4283)
+
+用户的屏幕类型，用于调整手势识别参数。
+
+<a id="version"></a>
+
+### version
+
+version: string
+
+- Defined in [index-zh.d.ts\:4294](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4294)
+
+当前 SDK 的版本。
+
+:::info[since]
+2.13.14
+:::
+
+## Methods
+
+<a id="isplayable"></a>
+
+### isPlayable
+
+<ApiSignature>
+
+isPlayable(params: [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)): Promise&lt;boolean&gt;
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:4336](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4336)
+
+查看房间是否有回放数据。
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)
+
+</ParameterType>
+
+检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt;
+
+</ApiReturnType>
+
+- 如果方法调用成功，则返回 `true`。
+- 如果方法调用失败，则返回 `false`。
+
+</ApiReturns>
+
+<a id="joinroom"></a>
+
+### joinRoom
+
+<ApiSignature>
+
+joinRoom(params: [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams), callbacks?: Partial&lt;[RoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks)&gt;): Promise&lt;[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)&gt;
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:4326](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4326)
+
+加入互动白板实时房间。
+
+### example
+
+```ts
+const joinRoomParams = {...};
+const roomCallbacks = {...};
+
+whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
+           .then(function (room) {
+               // 加入房间成功，拿到 room 对象
+           })
+           .catch(function (error) {
+               // 加入房间失败，拿到 error 对象
+           });
+```
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)
+
+</ParameterType>
+
+互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)。
+
+</Parameter>
+<Parameter name="callbacks" optional>
+
+<ParameterType>
+
+Partial & lt;[RoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks) & gt;
+
+</ParameterType>
+
+实时房间的事件回调。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)&gt;
+
+</ApiReturnType>
+
+- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)。
+- 如果方法调用失败，则返回错误信息。
+
+</ApiReturns>
+
+<a id="replayroom"></a>
+
+### replayRoom
+
+<ApiSignature>
+
+replayRoom(params: [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams), callbacks?: Partial&lt;[PlayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playercallbacks)&gt;): Promise&lt;[Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)&gt;
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:4361](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4361)
+
+创建 `Player` 对象，用于互动白板实时房间的回放。
+
+### example
+
+```ts
+const replayRoomParams = {...};
+const replayCallbacks = {...};
+
+whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
+           .then(function (player) {
+               // 回放成功，拿到 player 对象
+           })
+           .catch(function (error) {
+               // 回放失败，拿到 error 对象
+           });
+```
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)
+
+</ParameterType>
+
+`Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)。
+
+</Parameter>
+<Parameter name="callbacks" optional>
+
+<ParameterType>
+
+Partial & lt;[PlayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playercallbacks) & gt;
+
+</ParameterType>
+
+`Player` 对象的事件回调。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)&gt;
+
+</ApiReturnType>
+
+- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)。
+- 如果方法调用失败，则返回错误信息。
+
+</ApiReturns>

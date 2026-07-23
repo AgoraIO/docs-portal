@@ -1,18 +1,33 @@
 ---
-title: "VIDEO_APPLICATION_SCENARIO_TYPE"
-description: "视频业务场景类型。"
+title: VIDEO_APPLICATION_SCENARIO_TYPE
+description: 视频业务场景类型。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/enum_videoapplicationscenariotype
+  sourcePath: html-docs/rtc/Unreal-cpp/API/enum_videoapplicationscenariotype.html
+  generator: oxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/showroom/android/overview/product-overview.
 ---
+
 <a id="enum_videoapplicationscenariotype__detailed_desc"></a>
 
 <a id="enum_videoapplicationscenariotype__parameters"></a>
 
 ## 枚举值
 
-### `APPLICATION_SCENARIO_GENERAL`
+<ParameterList>
+<a id="application_scenario_general"></a>
+<Parameter name="APPLICATION_SCENARIO_GENERAL">
 
 0: (默认) 通用场景。
 
-### `APPLICATION_SCENARIO_MEETING`
+</Parameter>
+<a id="application_scenario_meeting"></a>
+<Parameter name="APPLICATION_SCENARIO_MEETING">
 
 1: 会议场景。
 
@@ -20,27 +35,41 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 - 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
+
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 setVideoEncoderConfiguration 时的 VideoEncoderConfiguration 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
     - 视频帧率：15 fps
     - 码率：桌面端为 1600 Kbps；移动端为 1000 Kbps
-- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：:::info [注]
-如果用户已调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。:::
+- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
+
+  :::note
+  注： 如果用户已调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
+  :::
+
   - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
-  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode [2/2] 时的 SimulcastStreamConfig 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode [2/2] 时的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：480 × 272
     - 视频帧率：15 fps
     - 码率：500 Kbps
 
-### `APPLICATION_SCENARIO_1V1`
+</Parameter>
+<a id="application_scenario_1v1"></a>
+<Parameter name="APPLICATION_SCENARIO_1V1">
 
 2: 1v1 视频通话
 
-APPLICATION_SCENARIO_1V1 (2) 适用于 [视频 1v1 通话](https://doc.shengwang.cn/doc/one-to-one-live/android/rtm/overview/product-overview) 场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
+APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
 
-### `APPLICATION_SCENARIO_LIVESHOW`
+</Parameter>
+<a id="application_scenario_liveshow"></a>
+<Parameter name="APPLICATION_SCENARIO_LIVESHOW">
 
 3: 秀场直播
 
-APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview) 场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+</Parameter>
+</ParameterList>

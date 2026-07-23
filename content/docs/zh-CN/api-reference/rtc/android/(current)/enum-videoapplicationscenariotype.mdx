@@ -1,39 +1,60 @@
 ---
-title: "VideoScenario"
-description: "视频应用场景类型。"
+title: VideoScenario
+description: 视频应用场景类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_videoapplicationscenariotype
+  sourcePath: html-docs/rtc/Android/API/enum_videoapplicationscenariotype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_videoapplicationscenariotype__parameters"></a>
 
 ## 枚举值
 
-### `APPLICATION_SCENARIO_GENERAL`
+<ParameterList>
+<a id="application_scenario_general"></a>
+<Parameter name="APPLICATION_SCENARIO_GENERAL">
 
 （0）：默认通用场景。
 
-### `APPLICATION_SCENARIO_MEETING`
+</Parameter>
+<a id="application_scenario_meeting"></a>
+<Parameter name="APPLICATION_SCENARIO_MEETING">
 
-:::info[注]
-如果用户调用了 `setDualStreamMode(Constants.SimulcastStreamMode mode, SimulcastStreamConfig streamConfig)` 并设置为永不发送视频小流（`DISABLE_SIMULCAST_STREAM` ），则会议场景下视频小流的动态调整将不生效。
+:::note
+注： 如果用户调用了 `setDualStreamMode(Constants.SimulcastStreamMode mode, SimulcastStreamConfig streamConfig)` 并设置为永不发送视频小流（`DISABLE_SIMULCAST_STREAM`），则会议场景下视频小流的动态调整将不生效。
 :::
 
 （1）：适用于会议场景。SDK 会自动启用以下策略：
 
 - 在需要视频小流具备高码率的会议场景中，SDK 会启用多种网络拥塞应对技术，提升视频小流性能，确保订阅端流畅接收；
 - 实时监控视频大流的订阅人数，并动态调整配置：
-  - 若无人订阅视频大流，SDK 会自动降低其码率和帧率以节省上行带宽；
-  - 若有人订阅视频大流，SDK 会将其重置为最近一次调用 setVideoEncoderConfiguration 设置的 VideoEncoderConfiguration 配置，若未设置，则使用以下默认值：分辨率为 960 × 540，帧率为 15 fps，码率为 1000 Kbps；
-- 实时监控视频小流的订阅人数，并动态启用或禁用该流：
-  - 若无人订阅视频小流，SDK 会自动禁用该流以节省上行带宽；
-  - 若有人订阅视频小流，SDK 会启用该流并重置为最近一次调用 setDualStreamMode(Constants.SimulcastStreamMode mode, SimulcastStreamConfig streamConfig) 设置的 SimulcastStreamConfig 配置，若未设置，则使用以下默认值：分辨率为 480 × 272，帧率为 15 fps，码率为 500 Kbps。
 
-### `APPLICATION_SCENARIO_1V1`
+  - 若无人订阅视频大流，SDK 会自动降低其码率和帧率以节省上行带宽；
+  - 若有人订阅视频大流，SDK 会将其重置为最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/class-videoencoderconfiguration) 配置，若未设置，则使用以下默认值：分辨率为 960 × 540，帧率为 15 fps，码率为 1000 Kbps；
+- 实时监控视频小流的订阅人数，并动态启用或禁用该流：
+
+  - 若无人订阅视频小流，SDK 会自动禁用该流以节省上行带宽；
+  - 若有人订阅视频小流，SDK 会启用该流并重置为最近一次调用 `setDualStreamMode(Constants.SimulcastStreamMode mode, SimulcastStreamConfig streamConfig)` 设置的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/android/class-simulcaststreamconfig) 配置，若未设置，则使用以下默认值：分辨率为 480 × 272，帧率为 15 fps，码率为 500 Kbps。
+
+</Parameter>
+<a id="application_scenario_1v1"></a>
+<Parameter name="APPLICATION_SCENARIO_1V1">
 
 （2）：适用于一对一直播场景。为满足低延迟和高质量视频的需求，SDK 优化了策略，在视频质量、首帧渲染、中低端设备延迟以及弱网环境下的流畅性方面提升了性能。
 
-:::info[注]
-该枚举值仅适用于主播对主播的场景。
+:::note
+注： 该枚举值仅适用于主播对主播的场景。
 :::
 
-### `APPLICATION_SCENARIO_LIVESHOW`
+</Parameter>
+<a id="application_scenario_liveshow"></a>
+<Parameter name="APPLICATION_SCENARIO_LIVESHOW">
 
-（3）：适用于秀场场景。在该场景中，快速渲染和高画质至关重要。SDK 进行了多项优化，包括自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_enableinstantmediarendering) ），并启用 B 帧编码以提升图像质量和带宽效率。即使在网络较差或低端设备上，也能提供更高的视频质量和流畅播放体验。
+（3）：适用于秀场场景。在该场景中，快速渲染和高画质至关重要。SDK 进行了多项优化，包括自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_enableinstantmediarendering)），并启用 B 帧编码以提升图像质量和带宽效率。即使在网络较差或低端设备上，也能提供更高的视频质量和流畅播放体验。
+
+</Parameter>
+</ParameterList>

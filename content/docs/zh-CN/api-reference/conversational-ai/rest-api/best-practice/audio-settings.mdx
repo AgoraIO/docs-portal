@@ -1,0 +1,609 @@
+---
+title: 优化音频设置
+_migration:
+  type: manual-mdx
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/doc/convoai/restful/best-practice/audio-settings
+  sourcePath: docs/convoai/best-practice/audio-settings.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 1 legacy MDX syntax signal(s).
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtc/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtc/homepage as local text.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtm2/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtm2/homepage as local text.
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 4 legacy fragment link(s) to stable local anchors.
+---
+
+在实时互动场景中，人与 AI 的对话在对话节奏、发言连续性和语音语调方面与人与人之间的对话存在显著差异。因此，为获得更好的对话体验，针对 AI 与人对话场景的音频设置显得尤为重要。
+
+使用实时互动 iOS/Android/Web SDK 接入对话式 AI 引擎时，你可以参考本文提供的优化音频设置，提升对话的流畅度和可靠性，确保在复杂网络环境中提供更好的用户体验。
+
+## 服务端设置
+
+调用服务端 API 创建对话式智能体时，音频相关参数采用默认值即可获得最佳音频体验。
+
+## 客户端设置
+
+### 集成必需动态库
+
+对话式 AI 引擎最佳音频体验需要使用到以下插件动态库，请确保在项目中集成并加载这些动态库：
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- AI 降噪插件：`libagora_ai_noise_suppression_extension.so`
+- AI 回声消除插件：`libagora_ai_echo_cancellation_extension.so`
+
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size.android#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E6%8F%92%E4%BB%B6)。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- AI 降噪插件：`AgoraAiNoiseSuppressionExtension.xcframework`
+- AI 回声消除插件：`AgoraAiEchoCancellationExtension.xcframework`
+
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size.ios#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E6%8F%92%E4%BB%B6)。
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
+
+</TabsContent>
+</Tabs>
+
+### 设置最佳音频参数
+
+客户端侧的最佳音频设置可通过以下两种方式实现：
+
+1. （推荐）[调用客户端组件 API](#方案一使用客户端组件-api)：适用于 4.5.1 及以上版本的实时互动 SDK。该方式目前仅支持 Android 和 iOS SDK。
+2. [调用实时互动 SDK API](#方案二调用实时互动-sdk-api)：适用于 4.3.1 及以上版本的实时互动 SDK。
+
+#### 方案一：使用客户端组件 API
+
+声网提供一套灵活可扩展、标准化的对话式 AI 引擎客户端组件（以下简称组件）。该组件支持 iOS、Android、Web 平台，封装了多个场景化 API，你只需要调用这些 API 即可结合声网实时互动 (RTC) SDK 和实时消息 (RTM) SDK 的能力实现以下功能：
+
+- [打断智能体](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/interrupt-agent)
+- [实时字幕](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/realtime-sub)
+- [监听智能体相关事件](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/listen-agent-events)
+- [设置最佳音频参数](/zh-CN/api-reference/conversational-ai/rest-api/best-practice/audio-settings) （仅支持 Android 和 iOS）
+- [发送图片消息](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/send-multimodal-message)
+
+##### 前提条件
+
+开始前，请确保完成以下准备工作：
+
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+- 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
+- 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
+
+##### 集成组件
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+<Tabs defaultValue="maven" groupId="android-install-method" persist>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+在 `Podfile` 中添加如下依赖：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.9.0`：
+
+```text
+https://github.com/AgoraIO/agent-client-toolkit-swift.git
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="web-install-method" persist>
+<TabsList>
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
+
+根据你的项目类型安装组件依赖。
+
+- Vanilla JS / TypeScript：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0
+  ```
+
+- React：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  ```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
+
+##### 初始化组件
+
+为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
+
+```kotlin tab="Android" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+val config = ConversationalAIAPIConfig(
+    rtcEngine = rtcEngineInstance,
+    rtmClient = rtmClientInstance,
+    enableLog = true
+)
+// 创建组件实例
+val api = ConversationalAIAPIImpl(config)
+```
+
+```swift tab="iOS" tabGroup="language"
+/// 为 RTC 和 RTM 实例创建配置对象
+let config = ConversationalAIAPIConfig(
+    rtcEngine: rtcEngine,
+    rtmEngine: rtmEngine,
+    enableLog: true
+)
+/// 创建组件实例
+convoAIAPI = ConversationalAIAPIImpl(config: config)
+```
+
+##### 设置最佳音频参数
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
+
+```kotlin
+api.loadAudioSettings()
+rtcEngine.joinChannel(token, channelName, null, userId)
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
+
+```swift
+convoAIAPI.loadAudioSettings()
+rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isIndependent: independent)
+```
+
+</TabsContent>
+</Tabs>
+
+##### 智能体加入频道
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+
+- `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
+- `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
+- `parameters.enable_metrics: true` —— （按需开启）接收智能体性能数据
+- `parameters.enable_error_message: true` —— （按需开启）接收智能体错误事件
+
+调用成功后，智能体会加入指定 RTC 频道，用户可以开始与智能体互动。
+
+##### 销毁组件实例
+
+结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
+
+```kotlin tab="Android" tabGroup="language"
+api.destroy()
+```
+
+```swift tab="iOS" tabGroup="language"
+convoAIAPI.destroy()
+```
+
+#### 方案二：调用实时互动 SDK API
+
+##### 设置音频相关参数
+
+:::warning[注意]
+本节内容适用于以下版本的实时互动 SDK：
+
+- Android/iOS：适用于 4.3.1 及以上版本的实时互动 SDK。对于 4.3.1 以下版本的 SDK，推荐升级至 4.5.1 及以上版本，或[联系技术支持](https://ticket.shengwang.cn/)了解配置方式。
+- Web：适用于 v4.15.0 或以上版本的 Web SDK。
+:::
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
+
+1. **设置音频场景**：在初始化引擎时将音频场景设置为 AI 对话场景。你也可以在加入频道前调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频场景设置为 AI 对话场景。
+2. **设置音频相关参数**：在加入频道前和音频路由变化（触发 [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#onaudioroutechanged) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
+
+:::warning[注意]
+由于 4.3.1 \~ 4.5.0 版本的 SDK 不支持 AI 对话场景，可修改音频场景为合唱场景 (`AUDIO_SCENARIO_CHORUS`) 以提升音频体验，但无法对齐 4.5.1 及以上版本的音频体验。如需获得最佳音频体验，请升级 SDK 至 4.5.1 及以上版本。
+:::
+
+以下示例代码封装了一个 `setAudioConfigParameters` 函数用于设置音频相关参数，并在加入频道前和音频路由发生变化时调用：
+
+```kotlin
+private var rtcEngine: RtcEngineEx? = null
+private var mAudioRouting = Constants.AUDIO_ROUTE_DEFAULT
+
+// highlight-start
+// 设置音频配置参数
+private fun setAudioConfigParameters(routing: Int) {
+    mAudioRouting = routing
+    rtcEngine?.apply {
+        setParameters("{\"che.audio.aec.split_srate_for_48k\":16000}")
+        setParameters("{\"che.audio.sf.enabled\":true}")
+        setParameters("{\"che.audio.sf.stftType\":6}")
+        setParameters("{\"che.audio.sf.ainlpLowLatencyFlag\":1}")
+        setParameters("{\"che.audio.sf.ainsLowLatencyFlag\":1}")
+        setParameters("{\"che.audio.sf.procChainMode\":1}")
+        setParameters("{\"che.audio.sf.nlpDynamicMode\":1}")
+
+        if (routing == Constants.AUDIO_ROUTE_HEADSET // 0
+            || routing == Constants.AUDIO_ROUTE_EARPIECE // 1
+            || routing == Constants.AUDIO_ROUTE_HEADSETNOMIC // 2
+            || routing == Constants.AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP // 5
+            || routing == Constants.AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP) { // 10
+            setParameters("{\"che.audio.sf.nlpAlgRoute\":0}")
+        } else {
+            setParameters("{\"che.audio.sf.nlpAlgRoute\":1}")
+        }
+
+        setParameters("{\"che.audio.sf.ainlpModelPref\":10}")
+        setParameters("{\"che.audio.sf.nsngAlgRoute\":12}")
+        setParameters("{\"che.audio.sf.ainsModelPref\":10}")
+        setParameters("{\"che.audio.sf.nsngPredefAgg\":11}")
+        setParameters("{\"che.audio.agc.enable\":false}")
+    }
+}
+// highlight-end
+
+// 创建并初始化 RTC 引擎
+fun createRtcEngine(rtcCallback: IRtcEngineEventHandler): RtcEngineEx {
+    val config = RtcEngineConfig()
+    config.mContext = AgentApp.instance()
+    config.mAppId = ServerConfig.rtcAppId
+    config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+    // highlight-start
+    // 设置音频场景为 AI 对话场景(4.5.1 及以上版本支持)
+    // 4.3.1 ~ 4.5.0 版本设为合唱场景 AUDIO_SCENARIO_CHORUS
+    config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
+    // 注册音频路由变化回调
+    config.mEventHandler = object : IRtcEngineEventHandler() {
+        override fun onAudioRouteChanged(routing: Int) {
+            super.onAudioRouteChanged(routing)
+            // 设置音频相关参数
+            setAudioConfigParameters(routing)
+        }
+    }
+    // highlight-end
+    try {
+        rtcEngine = (RtcEngine.create(config) as RtcEngineEx).apply {
+            // highlight-start
+            // 加载音频插件
+            loadExtensionProvider("ai_echo_cancellation_extension")
+            loadExtensionProvider("ai_noise_suppression_extension")
+            // highlight-end
+        }
+    } catch (e: Exception) {
+        Log.e("CovAgoraManager", "createRtcEngine error: $e")
+    }
+    return rtcEngine!!
+}
+
+// 加入频道
+fun joinChannel(rtcToken: String, channelName: String, uid: Int, isIndependent: Boolean = false) {
+
+    // highlight-start
+    // 初始化音频配置参数
+    setAudioConfigParameters(mAudioRouting)
+    // highlight-end
+
+    // 配置频道选项并加入频道
+    val options = ChannelMediaOptions()
+    options.clientRoleType = CLIENT_ROLE_BROADCASTER
+    options.publishMicrophoneTrack = true
+    options.publishCameraTrack = false
+    options.autoSubscribeAudio = true
+    options.autoSubscribeVideo = false
+    val ret = rtcEngine?.joinChannel(rtcToken, channelName, uid, options)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
+
+1. **设置音频场景**：在初始化引擎时将音频场景设置为 AI 对话场景。你也可以在加入频道前调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频场景设置为 AI 对话场景。
+2. **设置音频相关参数**：在加入频道前和音频路由发生变化（触发 [`rtcEngine:didAudioRouteChanged:`](/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcenginedidaudioroutechanged) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
+
+:::warning[注意]
+由于 4.3.1 \~ 4.5.0 版本的 SDK 不支持 AI 对话场景，可修改音频场景为合唱场景 (`AgoraAudioScenarioChorus`) 以提升音频体验，但无法对齐 4.5.1 及以上版本的音频体验。如需获得最佳音频体验，请升级 SDK 至 4.5.1 及以上版本。
+:::
+
+以下示例代码封装了一个 `setAudioConfigParameters` 函数用于设置音频相关参数，并在加入频道前和音频路由发生变化时调用：
+
+```swift
+class RTCManager: NSObject {
+    private var rtcEngine: AgoraRtcEngineKit!
+    private var audioDumpEnabled: Bool = false
+    private var audioRouting = AgoraAudioOutputRouting.default
+
+    // highlight-start
+    // 设置音频相关参数
+    private func setAudioConfigParameters(routing: AgoraAudioOutputRouting) {
+        audioRouting = routing
+        rtcEngine.setParameters("{\"che.audio.aec.split_srate_for_48k\":16000}")
+        rtcEngine.setParameters("{\"che.audio.sf.enabled\":true}")
+        rtcEngine.setParameters("{\"che.audio.sf.stftType\":6}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainlpLowLatencyFlag\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainsLowLatencyFlag\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.procChainMode\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.nlpDynamicMode\":1}")
+        if routing == .headset ||
+            routing == .earpiece ||
+            routing == .headsetNoMic ||
+            routing == .bluetoothDeviceHfp ||
+            routing == .bluetoothDeviceA2dp {
+            rtcEngine.setParameters("{\"che.audio.sf.nlpAlgRoute\":0}")
+        } else {
+            rtcEngine.setParameters("{\"che.audio.sf.nlpAlgRoute\":1}")
+        }
+        rtcEngine.setParameters("{\"che.audio.sf.ainlpModelPref\":10}")
+        rtcEngine.setParameters("{\"che.audio.sf.nsngAlgRoute\":12}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainsModelPref\":10}")
+        rtcEngine.setParameters("{\"che.audio.sf.nsngPredefAgg\":11}")
+        rtcEngine.setParameters("{\"che.audio.agc.enable\":false}")
+    }
+    // highlight-end
+}
+
+extension RTCManager: RTCManagerProtocol {
+
+    func createRtcEngine(delegate: AgoraRtcEngineDelegate) -> AgoraRtcEngineKit {
+        let config = AgoraRtcEngineConfig()
+        config.appId = AppContext.shared.appId
+        config.channelProfile = .liveBroadcasting
+        // highlight-start
+        // 设置音频场景为 AI 对话场景(4.5.1 及以上版本支持)
+        // 4.3.1 ~ 4.5.0 版本支持合唱场景 .chorus
+        config.audioScenario = .aiClient
+        rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
+        // 注册音频路由变化回调
+        rtcEngine.addDelegate(self)
+        // highlight-end
+        return rtcEngine
+    }
+
+    func joinChannel(rtcToken: String, channelName: String, uid: String) {
+
+        // highlight-start
+        // 初始化音频配置参数
+        setAudioConfigParameters(routing: audioRouting)
+        // highlight-end
+
+        // 配置频道选项并加入频道
+        let options = AgoraRtcChannelMediaOptions()
+        options.clientRoleType = .broadcaster
+        options.publishMicrophoneTrack = true
+        options.publishCameraTrack = false
+        options.autoSubscribeAudio = true
+        options.autoSubscribeVideo = false
+        let ret = rtcEngine.joinChannel(byToken: rtcToken, channelId: channelName, uid: UInt(uid) ?? 0, mediaOptions: options)
+    }
+}
+
+// highlight-start
+// 实现 AgoraRtcEngineDelegate 接口，处理音频路由变化回调
+extension RTCManager: AgoraRtcEngineDelegate {
+    public func rtcEngine(_ engine: AgoraRtcEngineKit, didAudioRouteChanged routing: AgoraAudioOutputRouting) {
+        setAudioConfigParameters(routing: routing)
+    }
+}
+// highlight-end
+```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+### 示例项目
+
+声网提供开源的示例代码，你可以参考设置音频相关参数。
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+<Cards>
+  <Card title="CovRtcManager.kt" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/blob/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/rtc/CovRtcManager.kt" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Cards>
+  <Card title="RTCManager.swift" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/blob/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/Manager/RTCManager.swift" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+### API 参考
+
+#### RTC SDK API
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)
+- [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters)
+- [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#onaudioroutechanged)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)
+- [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters)
+- [`rtcEngine:didAudioRouteChanged:`](/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcenginedidaudioroutechanged)
+
+</TabsContent>
+</Tabs>
+
+#### 客户端组件 API
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#loadaudiosettings)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#destroy)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`loadAudioSettings [1/2]`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#loadaudiosettings[1/2])
+- [`loadAudioSettings [2/2]`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#loadaudiosettings[2/2])
+- [`destroy`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#destroy)
+
+</TabsContent>
+</Tabs>

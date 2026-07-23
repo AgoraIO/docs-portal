@@ -1,0 +1,204 @@
+---
+title: Agora Interactive Whiteboard Java API Reference
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/android/overview
+  sourcePath: html-docs/whiteboard/Android/index.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="md_sdk_mainpage"></a> 声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。
+
+- [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 类提供初始化互动白板 SDK、加入互动白板实时房间、创建白板回放的主要方法。
+- [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类提供管理互动白板实时房间的方法。
+- [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类提供控制白板回放的方法。
+- [`Displayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer) 类为 [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类的父类。[`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例都可以调用该类中的方法。
+
+<a id="autotoc_md0"></a>
+
+### SDK 初始化
+
+| 方法 | 描述 |
+| --- | --- |
+| [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a73aa1e911a6a08ff7de4b605f7b0b32c) [1/4] | 初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例 |
+| [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a7694b8a246b356de3d432da2b8eb4c0a) [2/4] | 初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例（设置回调） |
+| [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#ad090a47a1e654bce4e8c4e81ce1ad7e3) [4/4] | 初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例（设置回调和混音） |
+| [`setCommonCallbacks`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a7a6c33cf1d72b129c992e634f3e81a2f) | 设置通用事件回调 |
+| [`joinRoom`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a2f336e8d806643f508cd6c7c1cb0ad3b) [1/2] | 加入互动白板实时房间 |
+| [`joinRoom`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a307c801d0203f3010797c449fd6b7f49) [2/2] | 加入互动白板实时房间并设置房间事件回调 |
+| [`createPlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a685ef819eb970df4ab0ea6e513b4a6d1) [1/2] | 创建互动白板回放房间 |
+| [`createPlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a52f15c160d689ebb1f74801820d05607) [2/2] | 创建互动白板回放房间并设置回放事件回调 |
+| [`isPlayable`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a76a9f524257626f12bc0f6f0ddd4f3a6) | 查看房间是否有回放数据 |
+| [`setupFontFaces`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a52e56f75148bb1527efd370a9ecee1a0) | 声明在本地白板中可用的字体 |
+| [`loadFontFaces`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a27f75d293d58992a1c9f3d6ae25ae9d9) | 声明并预加载在本地白板中可用的字体 |
+| [`updateTextFont`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a0d82c56c6e406fc8b96a6b47ecced374) | 设置在本地白板中输入文字时使用的字体 |
+| [`releaseRoom`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a14df05dcc0e6681aae7983538c66a93b) [2/2] | 释放互动白板实时房间实例并删除 `RoomListener` 回调。 |
+| [`releasePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#aeceb0e6867b96866585cd284d3340ef3) [1/2] | 释放回放房间实例并删除 `PlayerListener` 回调。 |
+| [`Version`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a3e1a37b99f7f9dfc2bf9e191a9142868) | 查询 SDK 版本号 |
+
+<a id="autotoc_md1"></a>
+
+### 通用事件
+
+| 事件 | 描述 |
+| --- | --- |
+| [`throwError`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a721b4489c52b2740f233a1742f555916) | 出现未捕获的全局错误回调 |
+| [`urlInterrupter`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a28839222c6e4b44a001da833300991d4) | 拦截图片 URL 回调 |
+| [`onPPTMediaPlay`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a695dc7abd40851cd0ffe0e573566e8f1) | 动态 PPT 中的音视频开始播放回调 |
+| [`onPPTMediaPause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9967d9cd3eb16c0db3024f7a6a8c7d64) | 动态 PPT 中的音视频暂停播放回调 |
+| [`onMessage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae) | 接收到网页发送的消息回调 |
+| [`sdkSetupFail`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a0a988489c8559923f178eef3ba322704) | SDK 初始化失败回调 |
+
+<a id="autotoc_md2"></a>
+
+### 实时房间管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [`getObserverId`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a43f3b32f18de3cd71c95a449deae6a6c) | 获取用户 ID |
+| [`setWritable`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a1cea527622d0cdf3d6eb0b01835b1370) | 设置用户是否为互动模式 |
+| [`disableOperations`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6b265bdee91f2d961373d172bb969fe0) | 允许/禁止白板响应用户任何操作 |
+| [`disconnect`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac10c063697e5224ef05d341bb3987004) | 断开连接 |
+| [`setGlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a50bf9e950f3cbce8b9ed5b250444ea70) | 修改房间的全局状态 |
+| [`getDisconnectedBySelf`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af0769957f685bc185fcb6d53dec6a5cb) | 获取用户是否主动断开连接 |
+| [`getWritable`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a3d1f57d33e446dd2002f93e1f3840606) | 获取用户是否为互动模式 |
+| [`getGlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac21ea599028066b2c54caece51372b77) [1/2] | 获取房间的全局状态（同步方法） |
+| [`getGlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d92ee9c480ff653ea44fb269740765d) [2/2] | 获取房间的全局状态（异步方法） |
+| [`getRoomMembers`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2388307121c075620ba48f71fa970483) [1/2] | 获取房间的用户列表（同步方法） |
+| [`getRoomMembers`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a48ab27e5a0dbcb3d9cc06ae161cb7b58) [2/2] | 获取房间的用户列表（异步方法） |
+| [`getRoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2c0ef694235dccda2fb92b3ba141880d) [1/2] | 获取房间的连接状态（同步方法） |
+| [`getRoomPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6759ad742065c0e82592e8a0ed8aabee) [2/2] | 获取房间的连接状态（异步方法） |
+| [`getRoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9578a9ae744eb64d8bd939e3af3b68db) [1/2] | 获取房间的所有状态（同步方法） |
+| [`getRoomState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c00f3eb5374d153b594fb772cf7339f) [2/2] | 获取房间的所有状态（异步方法） |
+
+<a id="autotoc_md3"></a>
+
+### 白板工具设置
+
+| 方法 | 描述 |
+| --- | --- |
+| [`setMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab2d72aca8bef76ded5aa3c3ee873902f) | 修改房间的白板工具状态 |
+| [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) [1/2] | 获取白板工具状态（同步方法） |
+| [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae6d6f0c6ae7385a00efa62732cc04543) [2/2] | 获取白板工具状态（异步方法） |
+| [`copy`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad06f67470a69830938a901baa8cab2bd) | 复制选中内容 |
+| [`paste`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8e1c5006771674ae3b468813e29492f4) | 粘贴复制的内容 |
+| [`duplicate`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab5415f550b394c8b19a121f5d4861426) | 复制并粘贴选中的内容 |
+| [`deleteOperation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab3a428118f9e090b0e62880d566af261) | 删除选中的内容 |
+| [`disableSerialization`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c790db1b2fc9404d39094c5592685e6) | 开启/禁止本地序列化 |
+| [`redo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9ad047897d74af1590316cc5d338408c) | 重做 |
+| [`undo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cd3966f1df8de10f2bb5759fa28998b) | 撤销上一步操作 |
+| [`disableEraseImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4f860e53b4cab0f574b22a2e8fdf235d) | 关闭/开启橡皮擦擦除图片功能 |
+| [`disableDeviceInputs`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a468b0fa46f8cea857e6857b9f2945101) | 禁止/允许用户操作白板工具 |
+
+<a id="autotoc_md4"></a>
+
+### 视角操作
+
+| 方法 | 描述 |
+| --- | --- |
+| [`setViewMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a62f41d229dee8d67211b3eeaaa46ef6e) | 切换视角模式 |
+| [`setCameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a7ebc499b1f6ca5457d41fcec9bad214e) | 设置视角边界 |
+| [`disableCameraTransform`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b4ee486693efafc4683e312244d1129) | 禁止/允许用户调整视角 |
+| [`moveCamera`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) | 调整视角 |
+| [`moveCameraToContainer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#af19ee0561ddd8b547b22040e58309549) | 调整视角以完整显示视觉矩形中的内容 |
+| [`scalePptToFit`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b8ecbbc38569db7868c25790f191fbe) | 调整视角以完整显示 PPT 的内容（渐变模式） |
+| [`scalePptToFit`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a29f2d682f7d728e53767ded3889c60ee) | 调整视角以完整显示 PPT 的内容（指定动画模式） |
+| [`scaleIframeToFit`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a65bbfa5b2fd5fa7d0cb1e1cfe03413f7) | 调整视角以完整显示 H5 课件的内容 |
+| [`disableCameraTransform`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cadc59b5eb670a2361f5befedc90f4f) | 禁止/允许用户调整（移动或缩放）视角 |
+| [`getBroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af6f8d5c76a3d331cd1cd9d6f15565976) [1/2] | 获取用户的视角状态（同步方法） |
+| [`getBroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d) [2/2] | 获取用户的视角状态（异步方法） |
+
+<a id="autotoc_md5"></a>
+
+### 场景管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) [1/2] | 插入图片占位符 |
+| [`completeImageUpload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a355bbeefe466ac0c2c5b2cdc420ce5dc) | 展示图片 |
+| [`insertImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6c85af35615b4d4696717b862fb428bc) [2/2] | 插入并展示图片 |
+| [`insertText`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6ed25a156436b44b6405a279aeac6e6d) | 在指定位置插入文字 |
+| [`getScene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac8467c97aecb62aa78d8520dabd108bd) | 获取指定场景的信息 |
+| [`getSceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8a708f07fc9914a6a54a6c18e696ce2d) [1/2] | 获取当前场景目录下的场景状态（同步方法） |
+| [`getSceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a76bd84717f518dddd9396c61f9e2f606) [2/2] | 获取当前场景目录下的场景状态（异步方法） |
+| [`getScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a5a9590e60683101fc8715c606180cd19) [1/2] | 获取当前场景目录下的场景列表（同步方法） |
+| [`getScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d9265ad1fb0e698e0c8b281dfbd66f1) [2/2] | 获取当前场景目录下的场景列表（异步方法） |
+| [`setScenePath`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) [1/2] | 切换至指定的场景（同步方法） |
+| [`setScenePath`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2] | 切换至指定的场景（异步方法） |
+| [`setSceneIndex`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a003fc53c0744799200fbac3ac6128e1a) [1/2] | 切换至当前场景目录下的指定场景 |
+| [`putScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d) | 在指定场景目录下插入多个场景 |
+| [`moveScene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7361194cdc471d597921c14d2096e145) | 移动场景 |
+| [`removeScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#affd9982f863d1e91168428fa2df1053a) | 删除场景或者场景目录 |
+| [`cleanScene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad051bd3599948c161bcb2c983d80ef5a) | 清除当前场景的所有内容 |
+| [`pptNextStep`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2f0b17c6af0f8c2bcaef84ad600e51af) | 播放动态 PPT 下一页 |
+| [`pptPreviousStep`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#aa54cbba71f9d37d3f00809337015fe03) | 返回动态 PPT 上一页 |
+| [`getScenePathType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac47409b4e5ca783e080e11e0c032c145) | 查询场景路径类型 |
+| [`getEntireScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a8fd708269f78c0a4d8fbee3f3ec465f2) | 获取当前房间内所有场景的信息 |
+| [`getScenePreviewImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a01268dd20584fcebfa1aecc5d98e3616) | 获取指定场景的预览图 |
+| [`getSceneSnapshotImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a0995da14d5d9b20d5f98c2639018700e) | 获取指定场景的截图 |
+
+<a id="autotoc_md6"></a>
+
+### 回放管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [`setPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#af654c75ee033ccb5d3636c83553b09a6) | 设置白板回放的倍速 |
+| [`play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a694d6ad377bc1572de892f0139b45e76) | 开始白板回放 |
+| [`pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a0dd55afd7520e8698da247b52d3c2127) | 暂停白板回放 |
+| [`stop`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a97a63621cc47b043e577e6c472280ed3) | 停止白板回放 |
+| [`seekToScheduleTime`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a2cdff830a4a940a377ddffb97fbc54de) | 设置白板回放的播放位置 |
+| [`setObserverMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a4b611db510d583279ad3aabd6a58bfc5) | 设置白板回放的查看模式 |
+| [`getPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ac4d5da09b9af9aba4fa3b31dc26980f6) | 获取白板回放的倍速（同步方法） |
+| [`getPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad466294818d8245c43d32666c01848a1) | 获取白板回放的倍速（异步方法） |
+| [`getPlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#aedec2772fc9d3ab9300da2c207e96b1e) | 获取白板回放的阶段（同步方法） |
+| [`getPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a70282d3b516dafb6852755e7c7c9aa79) | 获取白板回放的阶段（异步方法） |
+| [`getPlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad18a956ac130dc58b2b3220e25864efd) | 获取白板回放的状态（同步方法） |
+| [`getPlayerState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#afb3235211d0f04c675a4670e8415abaa) | 获取白板回放的状态（异步方法） |
+| [`getPlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a180372d211ae3760cbc0c3f9c74e0b6b) | 获取白板回放的时间信息（同步方法） |
+| [`getPlayerTimeInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#ad3aa2fc1c1f96fb580d2c8010e178c19) | 获取白板回放的时间信息（异步方法） |
+| [`addPlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a8ad1cf8a6b7eb05f1c07058a2590bf5f) | 添加白板回放的回调 |
+| [`removePlayerListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#a3086a2d58fb3b24ad47a6d29e4e3d05d) | 删除白板回放的回调 |
+
+<a id="autotoc_md7"></a>
+
+### 自定义事件
+
+| 方法 | 描述 |
+| --- | --- |
+| [`dispatchMagixEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae1518bd8a09077367b2b4d21e32c00d1) | 发送自定义事件 |
+| [`addMagixEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a5789b995344ae4c9bd0872dfb3fd8cae) | 注册自定义事件监听 |
+| [`addHighFrequencyEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a53b433bf7d24a786c4976ba85dee9940) | 注册高频自定义事件监听 |
+| [`removeMagixEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a071edba37f99285bbea69988481eb3ae) | 移除自定义事件监听 |
+| [`dispatchDocsEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4e7b20d12d67517e01a02be0e3e50a4c) | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+发送文档操作事件
+
+</Slot>
+
+<a id="autotoc_md8"></a>
+
+### iframe 插件交互
+
+| 方法 | 描述 |
+| --- | --- |
+| [`postIframeMessage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a218d273792fc859b2f343f9185368407) | 向 iframe 插件发送字符串信息 |
+| [`postIframeMessage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aafcea84ae1fc2539996f6d0e2710a362) | 向 iframe 插件发送 key-value 格式的信息 |
+
+<a id="autotoc_md9"></a>
+
+### 其他方法
+
+| 方法 | 描述 |
+| --- | --- |
+| [`debugInfo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a78cb9ef60e7a4e61696dfc5e8301d064) | 获取调试日志信息 |
+| [`setTimeDelay`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae4fe2b66cc439a1f3822728a1a92ff94) | 设置白板同步延时 |
+| [`getTimeDelay`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac35dafcef0ed29d406a29d7fccf0e7e1) | 获取白板同步延时 |
+| [`convertToPointInWorld`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a1bfd39e7482e2937908a2dea49db1c27) | 转换白板上点的坐标 |
+| [`refreshViewSize`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a20be8e5cc145577cd66706d9012989a6) | 刷新白板的界面 |
+| [`prepareWhiteConnection`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk#a21f1a893a0c7eb75a81e8b4d0a75a046) | 提前选择线路以加快首次加入白板房间时的连接速度。 |

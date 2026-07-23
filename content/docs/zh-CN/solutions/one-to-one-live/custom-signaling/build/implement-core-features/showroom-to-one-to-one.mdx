@@ -58,7 +58,7 @@ description: "了解 1v1 私密房三方信令方案在不同平台上的秀场�
 
 ### 1. 初始化 RTC 引擎
 
-调用 RTC SDK 的 [`sharedEngineWithConfig`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
+调用 RTC SDK 的 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
 
 ```kotlin
 val config = RtcEngineConfig()
@@ -99,7 +99,7 @@ override fun onConnected() {
 
 ### 4. 初始化 CallAPI 并绑定信令
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
 
 ```kotlin
 // 初始化配置
@@ -115,7 +115,7 @@ api.initialize(config)
 
 ### 5. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
 
 ```kotlin
 api.addListener(this)
@@ -145,7 +145,7 @@ signalClient?.login {
 
 ### 7. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将
@@ -153,7 +153,7 @@ signalClient?.login {
   Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 
   - 请确保用于生成 `rtcToken` 的 `uid` 和调用
-  [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化
+  [`initialize`](/zh-CN/api-reference/private-room) 方法初始化
   CallAPI 中传入的 `userId` 一致。
 :::
 
@@ -227,7 +227,7 @@ val ret = rtcEngine.joinChannel(
 通过 `CallAPI` 的 `call` 方法，呼叫主播。
 
 :::warning[注意]
-为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [15. 观众端更新频道号](#15-观众端更新频道号)。
+为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [15. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/showroom-to-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -290,14 +290,14 @@ private fun call(user: Pure1v1UserInfo) {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#cancelcall) 可避免呼叫等待过长。
+呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/api-reference/private-room) 可避免呼叫等待过长。
 :::
 
 ### 11. 监听到呼叫事件并处理
 
 观众发起呼叫，主播和观众都需要监听呼叫状态，并根据当前的状态实现后续逻辑。具体实现步骤如下：
 
-1. 通过 `CallAPI` 的回调 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 能收到呼叫的状态。
+1. 通过 `CallAPI` 的回调 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 能收到呼叫的状态。
 2. 根据发起呼叫的用户 ID，判断当前用户是主叫还是被叫，然后引导主播选择接受、拒绝或取消呼叫操作。
     :::warning[注意]
     在收到 `Calling` 状态时，需要保证校验摄像头和麦克风权限成功才能调用 `accept`/`reject`，否则会出现呼叫异常。
@@ -384,7 +384,7 @@ override fun onCallStateChanged(
 
 ### 13. 观众挂断
 
-观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#hangup) 方法来结束和主播的通话。
+观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和主播的通话。
 
 ```kotlin
 private fun hangupAction() {
@@ -433,14 +433,14 @@ override fun onCallStateChanged(
 1. **客户端**：如果用户 B 收到 `onCallEventChanged` 回调，且 `event` 为 `remoteLeave`，表示用户 A 已离开通话频道。此时你可以调整用户界面，例如使用缺省的图像填充用户 A 的视图，并给出用户 A 暂时离开的提示。
 
 2. **服务端**：通过 RTC 频道事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel) 和 [`104`](/zh-CN/realtime-media/rtc/reference/events#104-broadcaster-leave-channel) 识别待观察用户。
-   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 将用户 A 从频道中踢出。
+   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将用户 A 从频道中踢出。
    - 收到用户 A 加入频道事件 `103` 后，识别事件中的 `channelName` 和 `uid`。如果缓存中该 `uid` 在当前频道中有记录，且未申请下麦，则将该 `uid` 从待观察用户列表中移除。
 
 3. **客户端**：如果用户 B 收到 `onCallError` 回调，且 `errorEvent` 为 `rtcOccurError`，`errorType` 为 `rtc`，`errorCode` 为 `123`，表示用户 A 被踢出 RTC 频道。此时用户 B 可以调用 `CallAPI` 的 `hangup` 方法结束当前通话并离开通话页面。
 
 ### 15. 观众端更新频道号
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新频道号。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 在秀场转 1v1 场景中，观众（即主叫）发起呼叫后，主播（即被叫）会获取到观众在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果观众不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -489,14 +489,14 @@ signalClient.logout()
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [15. 观众端更新频道号](#15-观众端更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [15. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/showroom-to-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [CallAPI 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api)
-- [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
+- [CallAPI 参考](/zh-CN/api-reference/private-room)
+- [RTC API 参考](/zh-CN/api-reference/private-room)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
@@ -560,7 +560,7 @@ signalClient.logout()
 
 ### 1. 初始化 RTC 引擎
 
-调用 RTC SDK 的 [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
+调用 RTC SDK 的 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 方法初始化 `RtcEngine`。
 
 ```swift
 let config = AgoraRtcEngineConfig()
@@ -601,7 +601,7 @@ extension EMPure1v1RoomViewController: ICallEasemobSignalClientListener {
 
 ### 4. 初始化 CallAPI 并绑定信令
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数，其中 `signalClient` 就是在第一步中初始化的 `CallEasemobSignalClient` 对象。
 
 ```swift
 let config = CallConfig()
@@ -616,7 +616,7 @@ api.initialize(config: config)
 
 ### 5. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要跟踪报告的状态实现不同的后续处理逻辑。
 
 ```swift
 callApi.addListener(listener: self)
@@ -648,7 +648,7 @@ signalClient.login() {[weak self] err in
 
 ### 7. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将
@@ -656,7 +656,7 @@ signalClient.login() {[weak self] err in
   Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
 
   - 请确保用于生成 `rtcToken` 的 `uid` 和调用
-  [`initialize`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#initialize) 方法初始化
+  [`initialize`](/zh-CN/api-reference/private-room) 方法初始化
   CallAPI 中传入的 `userId` 一致。
 :::
 
@@ -756,7 +756,7 @@ extension BroadcasterViewController {
 通过 `CallAPI` 的 `call` 方法，呼叫主播。
 
 :::warning[注意]
-为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [15. 观众更新频道号](#15-观众更新频道号)。
+为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [15. 观众更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/showroom-to-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -819,7 +819,7 @@ extension BroadcasterViewController {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#cancelcall) 可避免呼叫等待过长。
+呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/api-reference/private-room) 可避免呼叫等待过长。
 :::
 
 ### 11. 监听到呼叫事件并处理
@@ -907,7 +907,7 @@ func onCallStateChanged(with state: CallStateType,
 
 ### 13. 观众挂断
 
-观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#hangup) 方法来结束和主播的通话。
+观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和主播的通话。
 
 ```swift
 func _hangupAction() {
@@ -956,14 +956,14 @@ extension BroadcasterViewController {
 1. **客户端**：如果用户 B 收到 `onCallEventChanged` 回调，且 `event` 为 `remoteLeave`，表示用户 A 已离开通话频道。此时你可以调整用户界面，例如使用缺省的图像填充用户 A 的视图，并给出用户 A 暂时离开的提示。
 
 2. **服务端**：通过 RTC 频道事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel) 和 [`104`](/zh-CN/realtime-media/rtc/reference/events#104-broadcaster-leave-channel) 识别待观察用户。
-   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 将用户 A 从频道中踢出。
+   - 收到用户 A 离开频道事件 `104` 后，记录事件中的 `uid`、`channelName` 及离开的时间戳 `ts` 到缓存中，并将该用户列为待观察用户。设置用户的超时离开时间，如 30 秒，然后每 5 秒或 10 秒检索待观察用户列表。如果用户 A 离开的时间超过 30 秒，则调用[封禁用户权限 RESTful API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将用户 A 从频道中踢出。
    - 收到用户 A 加入频道事件 `103` 后，识别事件中的 `channelName` 和 `uid`。如果缓存中该 `uid` 在当前频道中有记录，且未申请下麦，则将该 `uid` 从待观察用户列表中移除。
 
 3. **客户端**：如果用户 B 收到 `onCallError` 回调，且 `errorEvent` 为 `rtcOccurError`，`errorType` 为 `rtc`，`errorCode` 为 `123`，表示用户 A 被踢出 RTC 频道。此时用户 B 可以调用 `CallAPI` 的 `hangup` 方法结束当前通话并离开通话页面。
 
 ### 15. 观众更新频道号
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api#prepareforcall) 更新频道号。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 在秀场转 1v1 场景中，观众（即主叫）发起呼叫后，主播（即被叫）会获取到观众在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果观众不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -1013,14 +1013,14 @@ signalClient.logout()
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [15. 观众更新频道号](#15-观众更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [15. 观众更新频道号](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/showroom-to-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [`CallAPI` 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/call-api)
-- [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
+- [`CallAPI` 参考](/zh-CN/api-reference/private-room)
+- [RTC API 参考](/zh-CN/api-reference/private-room)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。

@@ -81,6 +81,48 @@ const groupTitles = {
   platforms: '按平台构建',
 };
 
+const apiReferenceRedirectOverrides = [
+  [
+    '/zh-CN/realtime-media/transcoding/webhook/ncs-events',
+    '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+  ],
+  [
+    '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+    '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+  ],
+  ...[
+    ['auikaraoke', 'auikaraoke-api'],
+    ['auikaraoke', 'lyrics-api'],
+    ['ktv-scenario', 'ktv-api'],
+    ['ktv-scenario', 'lyrics-api'],
+    ['ktv-scenario', 'music-content-center'],
+    ['ktv-scenario', 'rtc-api'],
+    ['online-ktv-sdk', 'lyrics-api'],
+    ['online-ktv-sdk', 'music-content-center'],
+    ['online-ktv-sdk', 'rtc-api'],
+  ].flatMap(([solution, leaf]) => [
+    [
+      `/zh-CN/realtime-media/online-ktv/${solution}/api/${leaf}`,
+      `/zh-CN/api-reference/online-ktv/android/${solution}/api/${leaf}`,
+    ],
+    [
+      `/zh-CN/solutions/online-ktv/${solution}/reference/${leaf}`,
+      `/zh-CN/api-reference/online-ktv/android/${solution}/api/${leaf}`,
+    ],
+  ]),
+];
+
+const productIaPrefixRedirects = [
+  [
+    'realtime-media/recording/cloud-recording',
+    '/zh-CN/realtime-media/cloud-recording',
+  ],
+  [
+    'realtime-media/recording/local-server-recording',
+    '/zh-CN/realtime-media/local-server-recording',
+  ],
+];
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -756,7 +798,7 @@ function writeMetas(productDir, productTitle, originalMeta) {
 
 function buildRedirectMap(redirects) {
   return Object.fromEntries(
-    redirects
+    [...redirects, ...apiReferenceRedirectOverrides]
       .filter(([from, to]) => from !== to)
       .sort(([a], [b]) => a.localeCompare(b)),
   );
@@ -764,6 +806,7 @@ function buildRedirectMap(redirects) {
 
 function writeRedirects(redirects) {
   const redirectsByPath = buildRedirectMap(redirects);
+  const templateExpression = '$';
   const entries = Object.entries(redirectsByPath)
     .map(([from, to]) => {
       const key = from.replace(/^\/zh-CN\//, '');
@@ -773,7 +816,11 @@ function writeRedirects(redirects) {
 
   writeFile(
     'src/lib/zh-cn-product-ia-redirects.ts',
-    `const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {\n${entries}\n};\n\nexport function resolveZhCnProductIaRedirect(\n  locale: string,\n  tab: string,\n  slugSegments: string[],\n) {\n  if (locale !== 'zh-CN') {\n    return null;\n  }\n\n  return ZH_CN_PRODUCT_IA_REDIRECTS[\`${'${tab}'}/\${slugSegments.join('/')}\`] ?? null;\n}\n\nexport { ZH_CN_PRODUCT_IA_REDIRECTS };\n`,
+    `const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {\n${entries}\n};\n\nconst ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS: Array<[string, string]> = ${JSON.stringify(
+      productIaPrefixRedirects,
+      null,
+      2,
+    )};\n\nexport function resolveZhCnProductIaRedirect(\n  locale: string,\n  tab: string,\n  slugSegments: string[],\n) {\n  if (locale !== 'zh-CN') {\n    return null;\n  }\n\n  const path = \`${templateExpression}{tab}/${templateExpression}{slugSegments.join('/')}\`;\n\n  for (const [sourcePrefix, targetPrefix] of ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS) {\n    if (path === sourcePrefix || path.startsWith(\`${templateExpression}{sourcePrefix}/\`)) {\n      return \`${templateExpression}{targetPrefix}${templateExpression}{path.slice(sourcePrefix.length)}\`;\n    }\n  }\n\n  return ZH_CN_PRODUCT_IA_REDIRECTS[path] ?? null;\n}\n\nexport { ZH_CN_PRODUCT_IA_REDIRECTS };\n`,
   );
 }
 

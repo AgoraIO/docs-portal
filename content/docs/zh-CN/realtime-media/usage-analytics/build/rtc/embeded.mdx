@@ -4,8 +4,8 @@ description: "了解如何在水晶球中内嵌水晶球数据，包括适用场
 ---
 **水晶球内嵌**功能可以在你的内部系统中快速嵌入水晶球功能，仅需少量开发成本即可实现。具体包括：
 
-- 直接在内部系统中查看[水晶球功能列表页面](#featureList)，例如通话调查列表页面。
-- 直接在内部系统中查看[通话调查详情页面](#callSearchDetails)，包含通话体验质量页面和端到端详情页面。
+- 直接在内部系统中查看[水晶球功能列表页面](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded)，例如通话调查列表页面。
+- 直接在内部系统中查看[通话调查详情页面](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded)，包含通话体验质量页面和端到端详情页面。
 - 通过设置水晶球内嵌页面属性，在内部系统中实现你的业务功能。例如，结合内部系统的分级权限配置，为不同等级的员工设置不同水晶球内嵌页面的访问权限。
 
 :::warning[注意]
@@ -136,7 +136,7 @@ URL: https://analytics-lab.agora.io/api/analytics/research
 
 拼接示例： https://analytics-lab.agora.io/api/analytics/research?token=xxxxxxxxxxxxxxxxxxxxxx&cname=xxxxxxxxxxxxxxxxxxxxxxxx&fromUid=xxxxxx&toUid=xxxxxx
 
-拼接完成后，你需要内嵌通话调查详情页面 URL 至客户端。详见[内嵌水晶球页面至客户端](#embed)。
+拼接完成后，你需要内嵌通话调查详情页面 URL 至客户端。详见[内嵌水晶球页面至客户端](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded)。
 
 <a id="featureListWithAttributes"></a>
 ### 第二步：添加属性至水晶球功能列表页面 URL
@@ -202,7 +202,7 @@ URL: https://analytics-lab.agora.io/api/analytics/research
 
 </Slot>
 
-将上述参数与之前获取的[水晶球功能列表页面 URL](#featureList) 拼接，即可获取含页面属性的水晶球功能列表页面 URL。拼接示例：https://analytics-lab.agora.io/analytics/call/search?token=xxxxxxxxxxxxxxxxxxxxxx&locale=zh&timezone=UTC&showProjectSelector=true&projectId=xxxxxxxxx
+将上述参数与之前获取的[水晶球功能列表页面 URL](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded) 拼接，即可获取含页面属性的水晶球功能列表页面 URL。拼接示例：https://analytics-lab.agora.io/analytics/call/search?token=xxxxxxxxxxxxxxxxxxxxxx&locale=zh&timezone=UTC&showProjectSelector=true&projectId=xxxxxxxxx
 
 <a id="embed"></a>
 ### 第三步：内嵌水晶球页面至客户端
@@ -211,7 +211,7 @@ URL: https://analytics-lab.agora.io/api/analytics/research
 
 ![通过 iframe 内嵌水晶球页面的 JSX 示例](https://web-cdn.agora.io/docs-files/1677211708693)
 
-将[通话调查详情页面 URL](#callSearchDetails) 或[拼接的水晶球功能列表页面 URL](#featureListWithAttributes) 传入 `iframeUrl`，即可在客户端查看对应页面。
+将[通话调查详情页面 URL](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded) 或[拼接的水晶球功能列表页面 URL](/zh-CN/realtime-media/usage-analytics/build/rtc/embeded) 传入 `iframeUrl`，即可在客户端查看对应页面。
 
 ## 常见问题
 

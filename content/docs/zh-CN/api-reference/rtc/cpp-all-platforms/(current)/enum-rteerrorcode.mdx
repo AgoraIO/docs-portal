@@ -1,35 +1,60 @@
 ---
-title: "RteErrorCode"
-description: "RTE 相关的状态和错误码。"
+title: RteErrorCode
+description: RTE 相关的状态和错误码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_rteerrorcode
+  sourcePath: html-docs/rtc/Cpp/API/enum_rteerrorcode.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteerrorcode__parameters"></a>
 
 ## 枚举值
 
-### `kRteOk`
+<ParameterList>
+<a id="krteok"></a>
+<Parameter name="kRteOk">
 
 （0）：操作成功。
 
-### `kRteErrorDefault`
+</Parameter>
+<a id="krteerrordefault"></a>
+<Parameter name="kRteErrorDefault">
 
 （1）：通用错误，未提供具体原因。
 
-### `kRteErrorInvalidArgument`
+</Parameter>
+<a id="krteerrorinvalidargument"></a>
+<Parameter name="kRteErrorInvalidArgument">
 
 （2）：方法参数无效，例如包含非法字符或传入对象为 null。请重新设置参数。
 
-### `kRteErrorInvalidOperation`
+</Parameter>
+<a id="krteerrorinvalidoperation"></a>
+<Parameter name="kRteErrorInvalidOperation">
 
 （3）：当前状态不支持该操作，例如对象已被销毁或无效。
 
-### `kRteErrorNetworkError`
+</Parameter>
+<a id="krteerrornetworkerror"></a>
+<Parameter name="kRteErrorNetworkError">
 
 （4）：网络错误。请检查网络连接。
 
-### `kRteErrorAuthenticationFailed`
+</Parameter>
+<a id="krteerrorauthenticationfailed"></a>
+<Parameter name="kRteErrorAuthenticationFailed">
 
 （5）：Token 鉴权失败，可能原因包括 Token 无效或已过期。请检查 Token。
 
-### `kRteErrorStreamNotFound`
+</Parameter>
+<a id="krteerrorstreamnotfound"></a>
+<Parameter name="kRteErrorStreamNotFound">
 
 （6）：未找到媒体流，例如加入频道后 10 秒内未接收到主播端的媒体流。
+
+</Parameter>
+</ParameterList>

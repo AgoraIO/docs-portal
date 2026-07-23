@@ -1,0 +1,119 @@
+---
+title: agora::linuxsdk::VideoMixingLayout::Region结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/cpp/structagora_1_1linuxsdk_1_1_video_mixing_layout_1_1_region
+  sourcePath: html-docs/recording/cpp/structagora_1_1linuxsdk_1_1_video_mixing_layout_1_1_region.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+画面具体设置。
+
+## 构造及析构函数说明
+
+<a id="a19c9aaf87f2a34b34847b5f8251b1d6f"></a>
+
+### Region()
+
+<ApiSignature labels="inline">
+
+[agora::linuxsdk::VideoMixingLayout::Region::Region](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1linuxsdk-1-1-video-mixing-layout-1-1-region)()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a266ba0f2d7c462b50d1f04d2a1d46191"></a>
+
+### uid
+
+<ApiSignature>
+
+[uid_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a8ec0e86208531827f0014a30bb4ae395) agora::linuxsdk::VideoMixingLayout::Region::uid
+
+</ApiSignature>
+
+待显示在该画面的用户（通信模式）/主播（直播模式）的 UID。
+
+<a id="a72a01cd3d1919ee495426ea8fe152ed3"></a>
+
+### x
+
+<ApiSignature>
+
+double agora::linuxsdk::VideoMixingLayout::Region::x
+
+</ApiSignature>
+
+屏幕里该画面左上角的横坐标的相对值，取值范围是 [0.0,1.0]。
+
+<a id="a36eb5bf1e0b5e7ad8ec9f20cae31da3c"></a>
+
+### y
+
+<ApiSignature>
+
+double agora::linuxsdk::VideoMixingLayout::Region::y
+
+</ApiSignature>
+
+屏幕里该画面左上角的纵坐标的相对值，取值范围是 [0.0,1.0]。
+
+<a id="a8eae544892705bf7086ff34f23b49646"></a>
+
+### width
+
+<ApiSignature>
+
+double agora::linuxsdk::VideoMixingLayout::Region::width
+
+</ApiSignature>
+
+该画面宽度的相对值，取值范围是 [0.0,1.0]。
+
+<a id="af05b632c212688737c1f1eed8d12223f"></a>
+
+### height
+
+<ApiSignature>
+
+double agora::linuxsdk::VideoMixingLayout::Region::height
+
+</ApiSignature>
+
+该画面高度的相对值，取值范围是 [0.0,1.0]。
+
+<a id="ad8b5e8fb0aa19d6f630e5e71693d4501"></a>
+
+### alpha
+
+<ApiSignature>
+
+double agora::linuxsdk::VideoMixingLayout::Region::alpha
+
+</ApiSignature>
+
+图像的透明度。取值范围是 [0.0,1.0]。0.0 表示图像为透明的，1.0 表示图像为完全不透明的。
+
+<a id="a2abc9d702ee2a688297ae423a3e0bde3"></a>
+
+### renderMode
+
+<ApiSignature>
+
+int agora::linuxsdk::VideoMixingLayout::Region::renderMode
+
+</ApiSignature>
+
+画面显示模式：
+
+- RENDER_MODE_HIDDEN(0): (默认）裁剪模式。优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，则视频流会按照显示视窗的比例进行周边裁剪或图像拉伸后填满视窗。
+- RENDER_MODE_FIT(1): 缩放模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频尺寸与显示视窗尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满视窗，缩放后的视频四周会有一圈黑边。

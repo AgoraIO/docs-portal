@@ -1,10 +1,18 @@
 ---
-title: "RemoteAudioStats"
-description: "获取远端用户的音频统计信息。"
+title: RemoteAudioStats
+description: 获取远端用户的音频统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_remoteaudiostats
+  sourcePath: html-docs/rtc/Android/API/class_remoteaudiostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_remoteaudiostats__prototype"></a>
 
-```java
+```text
 public static class RemoteAudioStats {
     public int uid;
     public int quality;
@@ -38,62 +46,86 @@ public static class RemoteAudioStats {
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-### `quality`
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 远端用户发送音频流的质量。
 
-- 0：未知质量。
-- 1：音质极佳。
-- 2：网络质量看起来极好，但码率略低于极佳。
-- 3：通信略受影响。
-- 4：无法流畅通信。
-- 5：通信困难。
-- 6：网络连接已中断，无法通信。
-- 8：正在进行 Last-mile 网络探测。
+- `0`：未知质量。
+- `1`：音质极佳。
+- `2`：网络质量看起来极好，但码率略低于极佳。
+- `3`：通信略受影响。
+- `4`：无法流畅通信。
+- `5`：通信困难。
+- `6`：网络连接已中断，无法通信。
+- `8`：正在进行 Last-mile 网络探测。
 
-### `networkTransportDelay`
+</Parameter>
+<a id="networktransportdelay"></a>
+<Parameter name="networkTransportDelay">
 
 从发送端到接收端的网络传输延时（毫秒）。
 
-### `jitterBufferDelay`
+</Parameter>
+<a id="jitterbufferdelay"></a>
+<Parameter name="jitterBufferDelay">
 
 从音频接收端到抖动缓冲区的网络延时（毫秒）。
 
-:::info[注]
-当接收端是观众，且 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions) 中的 `audienceLatencyLevel` 为 1 时，该参数无效。
+:::note
+注： 当接收端是观众，且 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions) 中的 `audienceLatencyLevel` 为 1 时，该参数无效。
 :::
 
-### `audioLossRate`
+</Parameter>
+<a id="audiolossrate"></a>
+<Parameter name="audioLossRate">
 
 汇报周期内远端音频流的音频帧丢包率（%）。
 
-### `numChannels`
+</Parameter>
+<a id="numchannels"></a>
+<Parameter name="numChannels">
 
 音频声道数。
 
-### `receivedSampleRate`
+</Parameter>
+<a id="receivedsamplerate"></a>
+<Parameter name="receivedSampleRate">
 
 汇报周期内接收音频流的采样率。
 
-### `receivedBitrate`
+</Parameter>
+<a id="receivedbitrate"></a>
+<Parameter name="receivedBitrate">
 
 汇报周期内接收音频流的平均码率（Kbps）。
 
-### `totalFrozenTime`
+</Parameter>
+<a id="totalfrozentime"></a>
+<Parameter name="totalFrozenTime">
 
 远端用户加入频道后音频卡顿的总时长（毫秒）。在通话过程中，当音频帧丢包率达到 4% 时视为卡顿。
 
-### `frozenRate`
+</Parameter>
+<a id="frozenrate"></a>
+<Parameter name="frozenRate">
 
 音频可用时段内音频卡顿的总时间占比（%）。当远端用户加入频道后未停止发送音频流，且未关闭音频模块时，视为音频可用。
 
-### `mosValue`
+</Parameter>
+<a id="mosvalue"></a>
+<Parameter name="mosValue">
 
-汇报周期内远端音频流的质量，基于声网实时音频 MOS（Mean Opinion Score）评估方法。 取值范围为 [0, 500]，除以 100 后为 MOS 得分，范围为 0 到 5，数值越大音质越好。 MOS 分数与主观听感的对应关系如下：
+汇报周期内远端音频流的质量，基于声网实时音频 MOS（Mean Opinion Score）评估方法。
+取值范围为 [0, 500]，除以 100 后为 MOS 得分，范围为 0 到 5，数值越大音质越好。
+MOS 分数与主观听感的对应关系如下：
 
 - 大于 4：音质优秀，清晰流畅。
 - 3.5 到 4：音质良好，有轻微感知损伤但清晰。
@@ -102,43 +134,62 @@ public static class RemoteAudioStats {
 - 2 到 2.5：很差，偶发杂音和连续掉帧，通信困难。
 - 小于 2：极差，持续杂音，大量掉帧，通信基本无法实现。
 
-### `frozenRateByCustomPlcCount`
+</Parameter>
+<a id="frozenratebycustomplccount"></a>
+<Parameter name="frozenRateByCustomPlcCount">
 
 当连续出现 N 次音频丢包隐藏（PLC）时，视为一次卡顿。卡顿次数 = (n_plc - n) / m。
 
-### `plcCount`
+</Parameter>
+<a id="plccount"></a>
+<Parameter name="plcCount">
 
 音频丢包隐藏（PLC）的次数。
 
-### `totalActiveTime`
+</Parameter>
+<a id="totalactivetime"></a>
+<Parameter name="totalActiveTime">
 
 从开始通话到远端用户回调期间的总活跃时长（毫秒）。活跃时长指远端用户非静音状态的累计时间。
 
-### `publishDuration`
+</Parameter>
+<a id="publishduration"></a>
+<Parameter name="publishDuration">
 
 该远端音频流的总持续时长（毫秒）。
 
-### `qoeQuality`
+</Parameter>
+<a id="qoequality"></a>
+<Parameter name="qoeQuality">
 
 本地用户接收远端音频流时的服务质量（QoE）。
 
-- 0：本地用户体验良好。
-- 1：本地用户体验较差。
+- `0`：本地用户体验良好。
+- `1`：本地用户体验较差。
 
-### `qualityChangedReason`
+</Parameter>
+<a id="qualitychangedreason"></a>
+<Parameter name="qualityChangedReason">
 
 本地用户接收远端音频流体验较差的原因。
 
-- 0：无，表示本地用户体验良好。
-- 1：远端用户网络质量差。
-- 2：本地用户网络质量差。
-- 4：本地 Wi-Fi 或蜂窝网络信号差。
-- 8：本地用户同时开启 Wi-Fi 和蓝牙，导致信号互相干扰，影响音频传输质量。
+- `0`：无，表示本地用户体验良好。
+- `1`：远端用户网络质量差。
+- `2`：本地用户网络质量差。
+- `4`：本地 Wi-Fi 或蜂窝网络信号差。
+- `8`：本地用户同时开启 Wi-Fi 和蓝牙，导致信号互相干扰，影响音频传输质量。
 
-### `rxAudioBytes`
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
 
 网络处理前已接收的总音频字节数（字节），为累计值。
 
-### `e2eDelay`
+</Parameter>
+<a id="e2edelay"></a>
+<Parameter name="e2eDelay">
 
 端到端音频延迟（毫秒），即从远端用户采集音频到本地用户播放音频的时间。
+
+</Parameter>
+</ParameterList>

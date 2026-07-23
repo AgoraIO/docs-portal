@@ -1,45 +1,72 @@
 ---
-title: "PlayerState"
-description: "媒体播放器的状态。"
+title: PlayerState
+description: 媒体播放器的状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_rteplayerstate
+  sourcePath: html-docs/rtc/Android/API/enum_rteplayerstate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerstate__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v4.4.0 版本新增。
+:::
 
 <a id="enum_rteplayerstate__parameters"></a>
 
 ## 枚举值
 
-### `IDLE`
+<ParameterList>
+<a id="idle"></a>
+<Parameter name="IDLE">
 
 （0）：空闲状态。
 
-### `OPENING`
+</Parameter>
+<a id="opening"></a>
+<Parameter name="OPENING">
 
 （1）：正在打开 URL 资源。调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 后会返回该状态码。
 
-### `OPEN_COMPLETED`
+</Parameter>
+<a id="open_completed"></a>
+<Parameter name="OPEN_COMPLETED">
 
-（2）：已成功打开 URL 资源。 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 成功打开资源后会返回该状态码。
+（2）：已成功打开 URL 资源。[openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 成功打开资源后会返回该状态码。
 
-### `PLAYING`
+</Parameter>
+<a id="playing"></a>
+<Parameter name="PLAYING">
 
 （3）：正在播放。
 
-### `PAUSED`
+</Parameter>
+<a id="paused"></a>
+<Parameter name="PAUSED">
 
 （4）：播放已暂停。成功调用 [pause](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_pause_player) 后会返回该状态码。
 
-### `PLAYBACK_COMPLETED`
+</Parameter>
+<a id="playback_completed"></a>
+<Parameter name="PLAYBACK_COMPLETED">
 
 （5）：播放已完成。
 
-### `STOPPED`
+</Parameter>
+<a id="stopped"></a>
+<Parameter name="STOPPED">
 
 （6）：播放已停止。成功调用 [stop](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_stop_player) 后会返回该状态码。
 
-### `FAILED`
+</Parameter>
+<a id="failed"></a>
+<Parameter name="FAILED">
 
 （7）：播放失败。发生内部错误时会返回该状态码。收到该状态后需先调用 [stop](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_stop_player)，再调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 重新打开资源。
+
+</Parameter>
+</ParameterList>

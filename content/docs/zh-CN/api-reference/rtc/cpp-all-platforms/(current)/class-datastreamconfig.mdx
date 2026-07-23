@@ -1,10 +1,18 @@
 ---
-title: "DataStreamConfig"
-description: "用于配置数据流行为的结构体。"
+title: DataStreamConfig
+description: 用于配置数据流行为的结构体。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_datastreamconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_datastreamconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_datastreamconfig__prototype"></a>
 
-```cpp
+```text
 struct DataStreamConfig {
   bool syncWithAudio;
   bool ordered;
@@ -26,7 +34,9 @@ struct DataStreamConfig {
 
 ## 属性
 
-### `syncWithAudio`
+<ParameterList>
+<a id="syncwithaudio"></a>
+<Parameter name="syncWithAudio">
 
 是否将数据包与已发布的音频包同步。
 
@@ -35,7 +45,9 @@ struct DataStreamConfig {
 
 当设置为同步时，如果数据包延迟在音频延迟范围内，SDK 会在对应音频播放时触发 [onStreamMessage](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。
 
-### `ordered`
+</Parameter>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 是否保证接收端按发送顺序接收数据。
 
@@ -43,3 +55,6 @@ struct DataStreamConfig {
 - false：不保证接收端按发送顺序接收数据。
 
 如果希望接收端立即接收数据包，请不要将此参数设置为 true。
+
+</Parameter>
+</ParameterList>

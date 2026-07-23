@@ -1,10 +1,18 @@
 ---
-title: "FCodecCapInfo"
-description: "SDK 支持的编解码能力信息。"
+title: FCodecCapInfo
+description: SDK 支持的编解码能力信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_codeccapinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_codeccapinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_codeccapinfo__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FCodecCapInfo {
 	GENERATED_BODY()
@@ -40,11 +48,15 @@ public:
 
 ## 属性
 
-### `codecType`
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 视频编解码类型。详见 [EUABT_VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodectype)。
 
-### `codecCapMask`
+</Parameter>
+<a id="codeccapmask"></a>
+<Parameter name="codecCapMask">
 
 编解码类型的 bit mask：
 
@@ -54,6 +66,11 @@ public:
 - 1 &lt;&lt; 2：支持软件解码。
 - 1 &lt;&lt; 3：支持软件编码。
 
-### `codecLevels`
+</Parameter>
+<a id="codeclevels"></a>
+<Parameter name="codecLevels">
 
 SDK 支持的编解码能力等级。详见 [FCodecCapLevels](/zh-CN/api-reference/rtc/unreal-blueprint/class-codeccaplevels)。
+
+</Parameter>
+</ParameterList>

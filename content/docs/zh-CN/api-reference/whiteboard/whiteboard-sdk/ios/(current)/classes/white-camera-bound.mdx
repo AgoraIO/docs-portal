@@ -1,0 +1,225 @@
+---
+title: WhiteCameraBound Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteCameraBound
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteCameraBound.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhiteCameraBound.h |
+
+<a id="overview"></a>
+
+## Overview
+
+白板视角边界。
+
+视角边界指白板场景内，用户可以移动视角的范围。当视角超出视角边界时，视角会被拉回。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithCenter:minContent:maxContent:"></a>
+
+### `– initWithCenter:minContent:maxContent:`
+
+指定白板视角边界的中心点并初始化 `WhiteCameraBound` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithCenter:(CGPoint)*visionCenter* minContent:(WhiteContentModeConfig *)*minConfig* maxContent:(WhiteContentModeConfig *)*maxConfig*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="visionCenter">
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的坐标。
+
+</Parameter>
+<Parameter name="minConfig">
+
+视角边界的最小缩放设置。
+
+</Parameter>
+<Parameter name="maxConfig">
+
+视角边界的最小缩放设置。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCameraBound` 对象。
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/initWithFrame:minContent:maxContent:"></a>
+
+### `– initWithFrame:minContent:maxContent:`
+
+指定白板视角边界的框架并初始化 `WhiteCameraBound` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithFrame:(CGRect)*visionFrame* minContent:(WhiteContentModeConfig *)*minConfig* maxContent:(WhiteContentModeConfig *)*maxConfig*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="visionFrame">
+
+视角边界的框架（宽和高）。
+
+</Parameter>
+<Parameter name="minConfig">
+
+视角边界框架的最小值（Frame * miniScale）。
+
+</Parameter>
+<Parameter name="maxConfig">
+
+视角边界框架的最大值（Frame * maxScale）。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteCameraBound` 对象。
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/defaultMinContentModeScale:maxContentModeScale:"></a>
+
+### `+ defaultMinContentModeScale:maxContentModeScale:`
+
+设置视角边界的默认最小缩放比例。
+
+<ApiSignature>
+
+\+ (instancetype)defaultMinContentModeScale:(CGFloat)*miniScale* maxContentModeScale:(CGFloat)*maxScale*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="miniScale">
+
+视角边界的最小缩放比例。
+
+</Parameter>
+<Parameter name="maxScale">
+
+视角边界的最大缩放比例。
+
+</Parameter>
+</ParameterList>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/centerX"></a>
+
+### `centerX`
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。不填则默认为 0。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *centerX
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/centerY"></a>
+
+### `centerY`
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。不填则默认为 0。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *centerY
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/width"></a>
+
+### `width`
+
+视角边界的宽度，单位为像素。如果不填，则表示无限制。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *width
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/height"></a>
+
+### `height`
+
+视角边界的高度，单位为像素。如果不填，则表示无限制。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *height
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/maxContentMode"></a>
+
+### `maxContentMode`
+
+视角边界的最大缩放比例。最大值无上限。详见 [WhiteContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config)。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) WhiteContentModeConfig *maxContentMode
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`
+
+<a id="//api/name/minContentMode"></a>
+
+### `minContentMode`
+
+视角边界的最小缩放比例。最小值为 0。详见 [WhiteContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config)。
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) WhiteContentModeConfig *minContentMode
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteCameraBound.h`

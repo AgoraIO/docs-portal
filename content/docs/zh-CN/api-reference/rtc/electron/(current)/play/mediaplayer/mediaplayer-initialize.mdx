@@ -1,18 +1,27 @@
 ---
-title: "初始化"
-description: "初始化 API reference."
+title: 初始化
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_mediaplayer_initialize
+  sourcePath: html-docs/rtc/Electron/API/toc_mediaplayer_initialize.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_initialize"></a>
 
 <a id="api_imediaplayer_addlistener_imediaplayer"></a>
 
+<a id="ariaid-title2"></a>
+
 ## addListener
 
-添加一个 IMediaPlayerEvent 监听器。
+添加一个 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent) 监听器。
 
 <a id="api_imediaplayer_addlistener_imediaplayer__prototype"></a>
 
-```typescript
+```text
 addListener?<EventType extends keyof IMediaPlayerEvent>(
       eventType: EventType,
       listener: IMediaPlayerEvent[EventType]
@@ -27,23 +36,33 @@ addListener?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-#### `eventType`
+<ParameterList>
+<a id="eventtype"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
 
-#### `listener`
+</Parameter>
+<a id="listener"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。以添加 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 为例：
 
-```typescript
+```text
 const onPlayerSourceStateChanged = (connection: RtcConnection, elapsed: number) => {};
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_createmediaplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## createMediaPlayer
 
@@ -51,7 +70,7 @@ engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 
 <a id="api_irtcengine_createmediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract createMediaPlayer(): IMediaPlayer;
 ```
 
@@ -69,21 +88,29 @@ abstract createMediaPlayer(): IMediaPlayer;
 
 ### 参数
 
-#### `delegate`
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediaplayer__return_values"></a>
 
 ### 返回值
 
-- 方法调用成功：返回 IMediaPlayer 对象。
+- 方法调用成功：返回 [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediaplayer"></a>
+
+<a id="ariaid-title4"></a>
 
 ## destroyMediaPlayer
 
@@ -91,7 +118,7 @@ abstract createMediaPlayer(): IMediaPlayer;
 
 <a id="api_irtcengine_destroymediaplayer__prototype"></a>
 
-```typescript
+```text
 abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 ```
 
@@ -101,29 +128,37 @@ abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 
 ### 参数
 
-#### `mediaPlayer`
+<ParameterList>
+<a id="mediaplayer"></a>
+<Parameter name="mediaPlayer">
 
 [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediaplayer__return_values"></a>
 
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回媒体播放器 ID
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager"></a>
 
+<a id="ariaid-title5"></a>
+
 ## getMediaPlayerCacheManager
 
-获取 IMediaPlayerCacheManager 实例。
+获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__prototype"></a>
 
-```typescript
+```text
 export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
   return new IMediaPlayerCacheManagerImpl();
 }
@@ -133,8 +168,8 @@ export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
 
 在调用 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager) 类下的其他 API 前，你需要先调用该方法获取一个媒体播放器缓存管理器的实例。
 
-:::info[注]
-由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
+:::note
+注： 由于媒体播放器缓存管理器对象是单例模式，因此多次调用该方法将返回同一个实例。
 :::
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__timing"></a>
@@ -150,9 +185,12 @@ export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayer_removealllisteners_imediaplayer"></a>
+
+<a id="ariaid-title6"></a>
 
 ## removeAllListeners
 
@@ -160,7 +198,7 @@ export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
 
 <a id="api_imediaplayer_removealllisteners_imediaplayer__prototype"></a>
 
-```typescript
+```text
 removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
       eventType?: EventType
     ): void;
@@ -172,22 +210,30 @@ removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-#### `eventType`
+<ParameterList>
+<a id="eventtype-1"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_removelistener_imediaplayer"></a>
 
+<a id="ariaid-title7"></a>
+
 ## removeListener
 
-移除指定的 IMediaPlayerEvent 监听器。
+移除指定的 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent) 监听器。
 
 <a id="api_imediaplayer_removelistener_imediaplayer__prototype"></a>
 
-```typescript
+```text
 removeListener?<EventType extends keyof IMediaPlayerEvent>(
       eventType: EventType,
       listener: IMediaPlayerEvent[EventType]
@@ -200,19 +246,27 @@ removeListener?<EventType extends keyof IMediaPlayerEvent>(
 
 ### 参数
 
-#### `eventType`
+<ParameterList>
+<a id="eventtype-2"></a>
+<Parameter name="eventType">
 
 需要监听的目标事件名。详见 [IMediaPlayerEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayerevent)。
 
-#### `listener`
+</Parameter>
+<a id="listener-1"></a>
+<Parameter name="listener">
 
 `eventType` 对应的回调函数。必须传入 [addListener](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_addlistener_imediaplayer) 中传入的同一个函数对象。以取消监听 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 为例：
 
-```typescript
+```text
 const onPlayerSourceStateChanged = (state: MediaPlayerState, ec: MediaPlayerError) => {};
 engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 engine.removeListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 ```
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)

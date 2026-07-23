@@ -1,0 +1,317 @@
+---
+title: Class CloudDriveStore
+description: CloudDriveStore 类提供云盘相关能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_cloud_drive_index_loudDriveStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_cloud_drive_index_loudDriveStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Properties
+
+<a id="personalResources"></a>
+
+### personalResources
+
+personalResources: Map&lt;string,[CloudDriveResource](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-struct-loud-drive-resource)&gt;
+
+云盘个人资源文件列表
+
+<a id="uploadProgress"></a>
+
+### uploadProgress
+
+uploadProgress: Map&lt;string,[CloudDriveUploadingProgress](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-cloud-drive-struct-loud-drive-uploading-progress)&gt;
+
+云盘资源上传进度
+
+## Methods
+
+<a id="addPersonalResource"></a>
+
+### addPersonalResource
+
+<ApiSignature>
+
+addPersonalResource(resourceUuid: string, resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+将已上传的资源文件映射为云盘内的一个文件
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
+
+资源 UUID
+
+</Parameter>
+<Parameter name="resourceInfo" required>
+
+<ParameterType>
+
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+资源信息
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="calcResourceUuid"></a>
+
+### calcResourceUuid
+
+<ApiSignature>
+
+calcResourceUuid(resource: string | File): Promise&lt;string&gt;
+
+</ApiSignature>
+
+计算资源文件 UUID
+
+<ParameterList title="Parameters">
+<Parameter name="resource" type="string | File" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
+
+资源文件 UUID
+
+</ApiReturns>
+
+<a id="cancelUpload"></a>
+
+### cancelUpload
+
+<ApiSignature>
+
+cancelUpload(resourceUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+取消上传资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
+
+资源 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetchPersonalResources"></a>
+
+### fetchPersonalResources
+
+<ApiSignature>
+
+fetchPersonalResources(options: [CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)): Promise&lt;\{ list: never[]; total: number \}&gt;
+
+</ApiSignature>
+
+获取个人云盘资源
+
+<ParameterList title="Parameters">
+<Parameter name="options" required>
+
+<ParameterType>
+
+[CloudDrivePagingOption](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-paging-option)
+
+</ParameterType>
+
+分页参数
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ list: never[]; total: number \}&gt;
+
+</ApiReturnType>
+
+云盘资源分页信息
+
+</ApiReturns>
+
+<a id="removePersonalResources"></a>
+
+### removePersonalResources
+
+<ApiSignature>
+
+removePersonalResources(resourceUuids: string[]): Promise&lt;undefined&gt;
+
+</ApiSignature>
+
+移除个人资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuids" type="string[]" required>
+
+资源 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;undefined&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="retryUpload"></a>
+
+### retryUpload
+
+<ApiSignature>
+
+retryUpload(resourceUuid: string): void
+
+</ApiSignature>
+
+重新上传资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required>
+
+资源 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updatePersonalResource"></a>
+
+### updatePersonalResource
+
+<ApiSignature>
+
+updatePersonalResource(resourceUuid: string, resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info), "resourceName"&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新云盘文件信息
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="resourceInfo" required>
+
+<ParameterType>
+
+Pick & lt; [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="uploadPersonalResource"></a>
+
+### uploadPersonalResource
+
+<ApiSignature>
+
+uploadPersonalResource(file: File, progressUuid: string, ext: string, contentType: string, conversion?: Partial&lt;\{ canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \}&gt;): Promise&lt;undefined | \{ ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \}&gt;
+
+</ApiSignature>
+
+上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
+
+<ParameterList title="Parameters">
+<Parameter name="file" type="File" required>
+
+资源文件对象
+
+</Parameter>
+<Parameter name="progressUuid" type="string" required>
+
+上传 UUID
+
+</Parameter>
+<Parameter name="ext" type="string" required>
+
+资源扩展名
+
+</Parameter>
+<Parameter name="contentType" type="string" required>
+
+static: 静态， dynamic：动态
+
+</Parameter>
+<Parameter name="conversion" type="Partial &amp; lt; \&#123; canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \&#125; &amp; gt;" optional>
+
+转换选项
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;undefined | \{ ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \}&gt;
+
+</ApiReturnType>
+
+上传成功后的文件信息
+
+</ApiReturns>

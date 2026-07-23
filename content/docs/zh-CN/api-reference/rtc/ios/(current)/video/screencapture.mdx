@@ -1,10 +1,19 @@
 ---
-title: "屏幕采集"
-description: "屏幕采集 API reference."
+title: 屏幕采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_screencapture
+  sourcePath: html-docs/rtc/iOS/API/toc_screencapture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_screencapture"></a>
 
 <a id="api_irtcengine_queryscreencapturecapability"></a>
+
+<a id="ariaid-title2"></a>
 
 ## queryScreenCaptureCapability
 
@@ -12,15 +21,15 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
 
-```objectivec
+```text
 - (AgoraScreenCaptureFrameRateCapability)queryScreenCaptureCapability NS_SWIFT_NAME(queryScreenCaptureCapability());
 ```
 
 <a id="api_irtcengine_queryscreencapturecapability__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.2.0 版本新增。
+:::
 
 <a id="api_irtcengine_queryscreencapturecapability__scenario"></a>
 
@@ -38,13 +47,16 @@ description: "屏幕采集 API reference."
 
 ### 返回值
 
-- 方法调用成功，返回设备支持的最高帧率。详见 AgoraScreenCaptureFrameRateCapability。
+- 方法调用成功，返回设备支持的最高帧率。详见 [AgoraScreenCaptureFrameRateCapability](/zh-CN/api-reference/rtc/ios/enum-screencaptureframeratecapability)。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setScreenCaptureScenario:
 
@@ -52,7 +64,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```objectivec
+```text
 - (int)setScreenCaptureScenario:(AgoraScreenScenarioType)scenarioType  NS_SWIFT_NAME(setScreenCaptureScenario(_:));
 ```
 
@@ -60,29 +72,37 @@ description: "屏幕采集 API reference."
 
 调用该方法设置屏幕共享场景。SDK 会根据设置的场景优化共享的视频质量和用户体验。
 
-:::info[注]
-声网建议你在加入频道前调用此方法。
+:::note
+注： 声网建议你在加入频道前调用此方法。
 :::
 
 <a id="api_irtcengine_setscreencapturescenario__parameters"></a>
 
 ### 参数
 
-#### `scenarioType`
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
 屏幕共享场景。详见 [AgoraScreenScenarioType](/zh-CN/api-reference/rtc/ios/enum-screenscenariotype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setscreencapturescenario__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
+
+<a id="ariaid-title4"></a>
 
 ## startScreenCapture:
 
@@ -90,7 +110,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_startscreencapture__prototype"></a>
 
-```objectivec
+```text
 - (int)startScreenCapture:(AgoraScreenCaptureParameters2* _Nullable)parameters  NS_SWIFT_NAME(startScreenCapture(_:));
 ```
 
@@ -98,13 +118,16 @@ description: "屏幕采集 API reference."
 
 你可以调用该方法开始采集屏幕视频流。
 
-:::info[注]
+:::note
+注：
+
 - 在 iOS 平台，屏幕共享仅支持 iOS 12.0 及以上版本。
 - 如果你使用自定义音频源而非 SDK 采集音频，声网建议你在应用中添加保活处理逻辑，以避免应用进入后台后屏幕共享中断。
 - 此功能对设备性能要求较高，声网建议在 iPhone X 及以上机型上使用。
-- 此方法依赖 iOS 屏幕共享动态库 AgoraReplayKitExtension.xcframework。如果该动态库被删除，将无法正常启用屏幕共享。
-- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 setAudioScenario: 方法将音频应用场景设置为 AgoraAudioScenarioGameStreaming。
-- 屏幕共享流的计费基于 AgoraScreenVideoParameters 中的 dimensions：
+- 此方法依赖 iOS 屏幕共享动态库 `AgoraReplayKitExtension.xcframework`。如果该动态库被删除，将无法正常启用屏幕共享。
+- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 [setAudioScenario:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频应用场景设置为 `AgoraAudioScenarioGameStreaming`。
+- 屏幕共享流的计费基于 [AgoraScreenVideoParameters](/zh-CN/api-reference/rtc/ios/class-screenvideoparameters) 中的 `dimensions`：
+
   - 如果未传入该值，声网按 1280 × 720 计费。
   - 如果传入该值，声网按传入的值计费。
 :::
@@ -121,35 +144,44 @@ description: "屏幕采集 API reference."
 
 你可以在加入频道前或加入频道后调用此方法，具体区别如下：
 
-- 先调用此方法，再调用 joinChannelByToken 加入频道，并将 publishScreenCaptureVideo 设置为 YES，即可开始屏幕共享。
-- 加入频道后调用此方法，再调用 updateChannelWithMediaOptions 并将 publishScreenCaptureVideo 设置为 YES，即可开始屏幕共享。
+- 先调用此方法，再调用 `joinChannelByToken` 加入频道，并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
+- 加入频道后调用此方法，再调用 `updateChannelWithMediaOptions` 并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__related"></a>
 
 ### 相关回调
 
-当屏幕共享扩展进程的状态发生变化时，SDK 会触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调。当 `sourceType` 的类型为 `AgoraVideoSourceTypeScreen` 时， `state` 参数表示屏幕共享的状态。
+当屏幕共享扩展进程的状态发生变化时，SDK 会触发 [rtcEngine\:localVideoStateChangedOfState\:reason\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调。当 `sourceType` 的类型为 `AgoraVideoSourceTypeScreen` 时，`state` 参数表示屏幕共享的状态。
 
 <a id="api_irtcengine_startscreencapture__parameters"></a>
 
 ### 参数
 
-#### `parameters`
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
 
 屏幕共享的编码参数。详见 [AgoraScreenCaptureParameters2](/zh-CN/api-reference/rtc/ios/class-screencaptureparameters2)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startscreencapture__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数为 nil。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture"></a>
+
+<a id="ariaid-title5"></a>
 
 ## stopScreenCapture
 
@@ -157,7 +189,7 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```objectivec
+```text
 - (int)stopScreenCapture NS_SWIFT_NAME(stopScreenCapture());
 ```
 
@@ -169,8 +201,8 @@ description: "屏幕采集 API reference."
 
 适用于以下场景：
 
-- iOS：如果你通过调用 startScreenCapture: 开始屏幕采集，则需要调用此方法停止屏幕采集。
-- macOS：如果你通过调用 startScreenCaptureByWindowId:regionRect:captureParams: 或 startScreenCaptureByDisplayId:regionRect:captureParams: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- iOS：如果你通过调用 `startScreenCapture:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- macOS：如果你通过调用 `startScreenCaptureByWindowId:regionRect:captureParams:` 或 `startScreenCaptureByDisplayId:regionRect:captureParams:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -183,12 +215,15 @@ description: "屏幕采集 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencapture"></a>
+
+<a id="ariaid-title6"></a>
 
 ## updateScreenCapture:
 
@@ -196,30 +231,36 @@ description: "屏幕采集 API reference."
 
 <a id="api_irtcengine_updatescreencapture__prototype"></a>
 
-```objectivec
+```text
 - (int)updateScreenCapture:(AgoraScreenCaptureParameters2* _Nullable)parameters  NS_SWIFT_NAME(updateScreenCapture(_:));
 ```
 
 <a id="api_irtcengine_updatescreencapture__detailed_desc"></a>
 
-:::info[注]
-该方法仅适用于 iOS 11 及以上版本。
+:::note
+注： 该方法仅适用于 iOS 11 及以上版本。
 :::
 
 <a id="api_irtcengine_updatescreencapture__parameters"></a>
 
 ### 参数
 
-#### `parameters`
+<ParameterList>
+<a id="parameters-1"></a>
+<Parameter name="parameters">
 
 屏幕共享的配置参数。详见 [AgoraScreenCaptureParameters2](/zh-CN/api-reference/rtc/ios/class-screencaptureparameters2)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_updatescreencapture__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

@@ -1,10 +1,18 @@
 ---
-title: "AgoraVideoSubscriptionOptions"
-description: "视频订阅选项。"
+title: AgoraVideoSubscriptionOptions
+description: 视频订阅选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_videosubscriptionoptions
+  sourcePath: html-docs/rtc/macOS/API/class_videosubscriptionoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videosubscriptionoptions__prototype"></a>
 
-```objectivec
+```text
 __attribute__((visibility("default"))) @interface AgoraVideoSubscriptionOptions: NSObject
 @property (nonatomic, assign) AgoraVideoStreamType type;
 @property (nonatomic, assign) BOOL encodedFrameOnly;
@@ -15,13 +23,20 @@ __attribute__((visibility("default"))) @interface AgoraVideoSubscriptionOptions:
 
 ## 属性
 
-### `type`
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
 
 要订阅的视频流类型。默认值为 `AgoraVideoStreamTypeHigh`，表示订阅视频大流。详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/macos/enum-videostreamtype)。
 
-### `encodedFrameOnly`
+</Parameter>
+<a id="encodedframeonly"></a>
+<Parameter name="encodedFrameOnly">
 
 是否仅订阅编码后的视频帧：
 
 - YES：仅订阅编码后的视频数据（结构化数据），SDK 不解码或渲染原始视频数据。
 - NO：（默认）同时订阅原始视频数据和编码后的视频数据。
+
+</Parameter>
+</ParameterList>
