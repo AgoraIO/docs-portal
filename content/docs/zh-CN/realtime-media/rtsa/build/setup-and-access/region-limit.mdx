@@ -1,10 +1,7 @@
 ---
 title: "限定访问区域"
-description: "了解 RTSA 的配额、API 调用限制、并发限制和使用约束。"
 ---
-为适应不同国家或地区的法律法规，声网支持限定访问区域功能。
-
-开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能。开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
 
 例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
 
@@ -29,8 +26,6 @@ description: "了解 RTSA 的配额、API 调用限制、并发限制和使用�
 
 你需要在调用 `agora_rtc_init` 方法初始化 SDK 时，通过设置 `option` 参数中的 `area_code` 参数来指定访问区域。
 
-你需要在调用 `init` 方法初始化 SDK 时，通过设置 `option` 参数中的 `areaCode` 参数来指定访问区域。
-
 - `AREA_CODE_CN`: 中国大陆
 - `AREA_CODE_NA`: 北美
 - `AREA_CODE_EU`: 欧洲
@@ -47,7 +42,7 @@ description: "了解 RTSA 的配额、API 调用限制、并发限制和使用�
 
 参考如下示例代码在你的 App 中实现限定访问区域功能。
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-setup-and-access-region-limit-1"
+```c
 // 设置区域为北美
 rtc_service_option_t service_opt;
 service_opt.area_code = AREA_CODE_NA;
@@ -58,21 +53,8 @@ service_opt.area_code = AREA_CODE_NA;
 rval = agora_rtc_init(appid, &event_handler, &service_opt);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-setup-and-access-region-limit-1"
-// 设置区域为北美
-RtcServiceOptions options = new RtcServiceOptions();
-options.areaCode = AreaCode.AREA_CODE_NA;
-
-...
-
-// 初始化 SDK
-int ret = mRtcService.init(APPID, rtcEvent, options);
-```
-
 ## API 参考
 
 开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
 
 - [`agora_rtc_init`](/api-ref/rtsa/c/agora__rtc__api_8h#a6187076d897f0b56cb20942368c15aaa)
-
-- [`init`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#aab47fc030b290004c6d29a0a306db032)

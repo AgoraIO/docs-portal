@@ -1,18 +1,17 @@
 ---
-title: "申请和使用许可证"
-description: "了解 RTSA 中申请和使用许可证相关内容的适用场景、配置步骤、实现要点和注意事项。"
+title: "申请和使用 License"
 ---
-## 许可证介绍
+## License 介绍
 
 License 是声网服务的一种计费模式。在 IoT 场景中，声网通过设备 License 对单个设备进行收费，每个设备的 License 是唯一的。在 License 有效期内，不再对通话时长进行收费。
 
 通常 IoT 厂商会预估设备的出货量与音视频用量，向声网采购 License 并激活，再以一机一码的形式将 License 烧录在设备中。下图展示了设备 License 的整体使用流程：
 
-![license workflow](https://web-cdn.agora.io/docs-portal/img/rtsa/license.svg)
+![license workflow](/img/rtsa/license.svg)
 
 <a id="applyfor"></a>
 ## 使用流程
-### 1. 申请许可证
+### 1. 申请 License
 
 声网为每位开发者提供 10 个有效期为 6 个月的免费测试 License。如需申请使用 License，联系 sales@shengwang.cn 并提供以下信息：
 
@@ -20,14 +19,14 @@ License 是声网服务的一种计费模式。在 IoT 场景中，声网通过�
 | --- | --- |
 | 品类 | License 的品类：设备 License，用于绑定设备。 |
 | 企业 ID (CID) | 声网分配给每个企业 (组织) 的唯一标识。你可以[注册账号](/zh-CN/introduction/quickstart#注册账号)并在[控制台](https://console.shengwang.cn/settings/company)的账号设置页面获取 CID。 |
-| License 类型 | <Slot name="license-html-1-3-1" /> |
-| 库存量单位 (SKU) | <Slot name="license-html-1-4-1" /> |
-| 有效期 | <Slot name="license-html-1-5-1" /> |
+| License 类型 | <Slot name="license-html-0-3-1" /> |
+| 库存量单位 (SKU) | <Slot name="license-html-0-4-1" /> |
+| 有效期 | <Slot name="license-html-0-5-1" /> |
 | 申请数量 | 申请的 License 数量。 |
 | 启用 License 的项目 ID (App ID) 列表 | App ID 为声网分配给每个项目的唯一标识，从属于 CID。你可以为指定 App ID 启用 License 功能。你可以[创建项目](/zh-CN/introduction/quickstart#创建项目)并在[控制台](https://console.shengwang.cn/projects)的项目管理页面获取 App ID。 |
 | 是否设置最高同时在线人数 (PCU) 限制 | 启用 PCU 限制后，你可以限制 CID 或 App ID 维度上同时接入 SDK 的最大人数。 |
 
-<Slot for="license-html-1-3-1">
+<Slot for="license-html-0-3-1">
 
 License 的类型：
 
@@ -38,7 +37,7 @@ License 的类型：
 
 </Slot>
 
-<Slot for="license-html-1-4-1">
+<Slot for="license-html-0-4-1">
 
 设置 License 的能力集，包含以下参数：
 
@@ -53,7 +52,7 @@ License 的类型：
 
 </Slot>
 
-<Slot for="license-html-1-5-1">
+<Slot for="license-html-0-5-1">
 
 License 的有效期：
 
@@ -72,7 +71,7 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 为保障 License 的安全性，降低被盗用的风险，声网提供预授权功能。你需要向 sales@shengwang.cn 提供项目 App ID 和 `licenseKey` 进行预授权，将设备加入白名单。预授权完成后，License 额度会被消耗，只有白名单中的设备才能通过校验激活 License。
 
 <a id="activate"></a>
-### 3. 激活许可证
+### 3. 激活 License
 
 完成预授权后，调用 `activate` 接口激活 License。
 
@@ -88,10 +87,10 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `pid` | String | 由 SKU、有效期、品类定义的 License 激活标识。 |
-| `licenseKey` | String | <Slot name="license-html-2-2-2" /> |
+| `licenseKey` | String | <Slot name="license-html-1-2-2" /> |
 | `appid` | String | App ID，声网分配给每个项目的唯一标识。 |
 
-<Slot for="license-html-2-2-2">
+<Slot for="license-html-1-2-2">
 
 设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。
 
@@ -126,13 +125,13 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxx
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `pid` | String | 由 SKU、有效期、品类定义的 License 激活标识。 |
-| `license` | String | <Slot name="license-html-3-2-2" /> |
+| `license` | String | <Slot name="license-html-2-2-2" /> |
 | `licenseKey` | String | 设备的唯一标识。和你在 `activate` 接口中传入的 `licenseKey` 一致。 |
 | `expireTime` | String | License 的过期时间。 |
 | `activationTime` | String | License 的激活时间。 |
-| `skuView` | Array | <Slot name="license-html-3-6-2" /> |
+| `skuView` | Array | <Slot name="license-html-2-6-2" /> |
 
-<Slot for="license-html-3-2-2">
+<Slot for="license-html-2-2-2">
 
 激活的 License 的值。
 
@@ -142,7 +141,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxx
 
 </Slot>
 
-<Slot for="license-html-3-6-2">
+<Slot for="license-html-2-6-2">
 
 SKU 能力集，包含如下字段：
 
@@ -160,7 +159,7 @@ SKU 能力集，包含如下字段：
 
 <TabsContent value="others">
 
-请求失败。你可以根据返回的[响应状态码](/zh-CN/api-reference/api-ref/console/response-codes)和响应 Body 中 `message` 字段的描述排查错误。
+请求失败。你可以根据返回的[响应状态码](/zh-CN/introduction/api/response-code)和响应 Body 中 `message` 字段的描述排查错误。
 
 </TabsContent>
 </Tabs>
@@ -186,11 +185,11 @@ SKU 能力集，包含如下字段：
 ```
 
 <a id="use"></a>
-### 4. 使用许可证
+### 4. 使用 License
 
 成功激活 License 后，你需要在 SDK 中使用 License 并在设备中烧录 License，流程图如下：
 
-![use license](https://web-cdn.agora.io/docs-portal/img/rtsa/use-license.png)
+![use license](/img/rtsa/use-license.png)
 
 操作步骤如下：
 
@@ -210,14 +209,14 @@ SKU 能力集，包含如下字段：
    - 如果读取成功，则进行下一步。
    - 如果读取失败，则返回步骤 2 排查问题。
 
-4. 在 RTSA SDK 中，调用 `agora_rtc_init``init` 并在 `rtc_service_option_t``RtcServiceOptions` 的 `license_value``licenseValue` 参数中传入 License。
+4. 在 RTSA SDK 中，调用 `agora_rtc_init` 并在 `rtc_service_option_t` 的 `license_value` 参数中传入 License。
 
 5. RTSA SDK 会在用户加入频道时自动验证 License。
 
    - 如果 License 验证成功，则用户可以正常使用 SDK 的功能。
-   - 如果 License 验证失败，则用户会被踢出频道并收到 `on_license_validation_failure``onLicenseValidationFailure` 回调，你可以根据收到的错误码处理问题。
+   - 如果 License 验证失败，则用户会被踢出频道并收到 `on_license_validation_failure` 回调，你可以根据收到的错误码处理问题。
 
-### 5. 查询即将到期的许可证列表
+### 5. 查询即将到期的 License 列表
 
 能正常使用 License 后，你可以调用 `expiringLicense` 接口查询即将到期的 License 列表。
 
@@ -239,9 +238,9 @@ SKU 能力集，包含如下字段：
 | --- | --- | --- |
 | `page` | Int | （可选）分页页码。默认值为 1。 |
 | `size` | Int | （可选）每页查询的 License 数量。默认值为 100，最大值为 100。 |
-| `expiringLicenses` | Int | <Slot name="license-html-4-3-2" /> |
+| `expiringLicenses` | Int | <Slot name="license-html-3-3-2" /> |
 
-<Slot for="license-html-4-3-2">
+<Slot for="license-html-3-3-2">
 
 将要过期的天数，可设为如下值：
 
@@ -274,9 +273,9 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `count` | Int | 即将过期的 License 数量。 |
-| `licenseInfos` | []object | <Slot name="license-html-5-2-2" /> |
+| `licenseInfos` | []object | <Slot name="license-html-4-2-2" /> |
 
-<Slot for="license-html-5-2-2">
+<Slot for="license-html-4-2-2">
 
 由多组 Lisence 信息组成的数组，包含如下字段：
 
@@ -291,7 +290,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 
 <TabsContent value="others">
 
-请求失败。你可以根据返回的[响应状态码](/zh-CN/api-reference/api-ref/console/response-codes)和响应 Body 中 `message` 字段的描述排查错误。
+请求失败。你可以根据返回的[响应状态码](/zh-CN/introduction/api/response-code)和响应 Body 中 `message` 字段的描述排查错误。
 
 </TabsContent>
 </Tabs>
@@ -318,7 +317,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 ```
 
 <a id="renew"></a>
-### 6. 许可证续期
+### 6. License 续期
 
 如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 `renew` 接口续期 License。
 
@@ -335,11 +334,11 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 | --- | --- | --- |
 | `appid` | String | 声网分配给每个项目的唯一标识。 |
 | `renewId` | String | （可选）由 SKU、有效期、品类定义的 License 续期标识。联系 sales@shengwang.cn 获取。如果不填，则声网会按照项目级别、公司级别从高到低优先选择最早生成的 `renewId` 来执行续期操作。 |
-| `license` | String | <Slot name="license-html-6-3-2" /> |
+| `license` | String | <Slot name="license-html-5-3-2" /> |
 
-<Slot for="license-html-6-3-2">
+<Slot for="license-html-5-3-2">
 
-需要续期的 License 值。你可以在[激活接口](#license-激活)的 `license` 响应参数中获取。
+需要续期的 License 值。你可以在[激活接口](#activate)的 `license` 响应参数中获取。
 
     :::warning[注意]
     请注意区分大小写。
@@ -387,7 +386,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxx
 
 <TabsContent value="others">
 
-请求失败。你可以根据返回的[响应状态码](/zh-CN/api-reference/api-ref/console/response-codes)和响应 Body 中 `message` 字段的描述排查错误。
+请求失败。你可以根据返回的[响应状态码](/zh-CN/introduction/api/response-code)和响应 Body 中 `message` 字段的描述排查错误。
 
 </TabsContent>
 </Tabs>
@@ -411,7 +410,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxx
 }
 ```
 
-### 7. 查询许可证续期订单
+### 7. 查询 License 续期订单
 
 该方法可以查询指定 PID 下所有的续期订单，方便用户根据剩余数量和有效期等信息，确定使用哪一个 `renewId` 进行续期。
 
@@ -456,9 +455,9 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `count` | Int | 续期订单数量。 |
-| `list` | []object | <Slot name="license-html-9-2-2" /> |
+| `list` | []object | <Slot name="license-html-8-2-2" /> |
 
-<Slot for="license-html-9-2-2">
+<Slot for="license-html-8-2-2">
 
 由多组续期订单信息组成的数组，包含如下字段：
 
@@ -482,7 +481,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 
 <TabsContent value="others">
 
-请求失败。你可以根据返回的[响应状态码](/zh-CN/api-reference/api-ref/console/response-codes)和响应 Body 中 `message` 字段的描述排查错误。
+请求失败。你可以根据返回的[响应状态码](/zh-CN/introduction/api/response-code)和响应 Body 中 `message` 字段的描述排查错误。
 
 </TabsContent>
 </Tabs>
@@ -534,11 +533,11 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 
 #### 认证方式
 
-声网控制台 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求 Header 的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
+声网控制台 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求 Header 的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)。
 
 #### 调用频率限制
 
-对于每个声网账号（非每个 App ID），本页每个 API 的调用频率上限为每秒 10 次。如果调用频率超出限制，参考[如何处理服务端 RESTful API 调用超出频率限制](/zh-CN/api-reference/faq/integration/restful_api_call_frequency)优化调用频率。
+对于每个声网账号（非每个 App ID），本页每个 API 的调用频率上限为每秒 10 次。如果调用频率超出限制，参考[如何处理服务端 RESTful API 调用超出频率限制](/faq/integration-issues/restful-api-call-frequency)优化调用频率。
 
 <a id="switchdomain"></a>
 #### 域名切换
@@ -604,7 +603,7 @@ licenseKey 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。�
 用户需要先进行[预授权](#preauthenticate)，将设备的 `licenseKey` 添加到白名单，然后才能调用[激活接口](#activate)为某个设备激活 License。
 
 <a id="licensetype"></a>
-#### 测试许可证和正式许可证
+#### 测试 License 和正式 License
 
 为方便你测试和使用 SDK，声网提供测试 License 和正式 License，区别如下：
 
@@ -616,4 +615,4 @@ licenseKey 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。�
 1. 联系 sales@shengwang.cn 申请正式 License（下称“新 License”）。License 申请成功后在 License 用量页面查看 License 的 PID。
 2. 调用[激活接口](#activate)激活新的 License，在激活接口中传入新 License 的 PID、与老 License 一致的 `licenseKey`。
 3. 在设备中写入并读取新的 License。
-4. 在 SDK 中，调用 `agora_rtc_init``init` 并在 `rtc_service_option_t``RtcServiceOptions` 的 `license_value``licenseValue` 参数中传入新的 License。
+4. 在 SDK 中，调用 `agora_rtc_init` 并在 `rtc_service_option_t` 的 `license_value` 参数中传入新的 License。

@@ -1,6 +1,5 @@
 ---
 title: "更改音视频流传输状态"
-description: "了解如何在 RTSA 中更改音视频流传输状态，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 连接 Connection 并开始音视频流传输后，你可以暂停向指定或所有 Connection 发送流，也可以暂停接收指定或所有 Connection 的流，从而灵活调整音视频流传输状态。本文介绍如何更改音视频流传输状态。
 
@@ -11,14 +10,11 @@ description: "了解如何在 RTSA 中更改音视频流传输状态，包括适
 - `agora_rtc_mute_local_audio`：暂停发送本地音频流。
 - `agora_rtc_mute_local_video`：暂停发送本地视频流。
 
-- `muteLocalAudio`：暂停发送本地音频流。
-- `muteLocalVideo`：暂停发送本地视频流。
-
 你既可以通过传入 Connection ID 暂停或恢复向指定 Connection 发送数据；也可以将 Connection ID 设置为 0，暂停或恢复向所有 Connection 发送数据。
 
 示例代码如下：
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
+```c
 // 暂停向指定 Connection 发送音频流
 agora_rtc_mute_local_audio(12345, 1);
 // 恢复向指定 Connection 发送音频流
@@ -27,17 +23,6 @@ agora_rtc_mute_local_audio(12345, 0);
 agora_rtc_mute_local_video(12345, 1);
 // 恢复向指定 Connection 发送视频流
 agora_rtc_mute_local_video(12345, 0);
-```
-
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
-// 暂停向指定 Connection 发送音频流
-mRtcService.muteLocalAudio(12345, 1);
-// 恢复向指定 Connection 发送音频流
-mRtcService.muteLocalAudio(12345, 0);
-// 暂停向指定 Connection 发送视频流
-mRtcService.muteLocalVideo(12345, 1);
-// 恢复向指定 Connection 发送视频流
-mRtcService.muteLocalVideo(12345, 0);
 ```
 
 ## 接收端实现
@@ -63,27 +48,6 @@ static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool mut
 }
 ```
 
-发送端调用 `muteLocalAudio` 或 `muteLocalVideo` 方法更改本地音视频流传输状态后，同一 Connection ID 下的接收端会相应地收到以下回调：
-
-* `onUserMuteAudio`：提示远端用户是否暂停发送**音频**流。
-* `onUserMuteVideo`：提示远端用户是否暂停发送**视频**流。
-
-示例代码如下：
-
-```java
-@Override
-public void onUserMuteAudio(int connId, int uid, boolean muted) {
-	RtsaLiteDemo.d(TAG,
-			"<onUserMuteAudio> connId=" + connId + ", uid=" + uid + ", muted=" + muted);
-}
-
-@Override
-public void onUserMuteVideo(int connId, int uid, boolean muted) {
-	RtsaLiteDemo.d(TAG,
-			"<onUserMuteVideo> connId=" + connId + ", uid=" + uid + ", muted=" + muted);
-}
-```
-
 ### 暂停/恢复接收远端流
 
 调用以下方法暂停或恢复接收指定 Connection ID 中指定用户的音视频流：
@@ -91,14 +55,11 @@ public void onUserMuteVideo(int connId, int uid, boolean muted) {
 * `agora_rtc_mute_remote_audio`：暂停接收远端**音频**流。
 * `agora_rtc_mute_remote_video`：暂停接收远端**视频**流。
 
-* `muteRemoteAudio`：暂停接收远端**音频**流。
-* `muteRemoteVideo`：暂停接收远端**视频**流。
-
 你既可以通过填写 Connection ID，暂停接收指定 Connection 中指定用户的音视频流；也可以将 Connection ID 设置为 0，暂停接收所有 Connection 中指定用户的音视频流。
 
 示例代码如下：
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
+```c
 const uint32_t remote_uid = 789;
 
 // 暂停接收指定 Connection 中远端用户的音频流
@@ -111,19 +72,6 @@ agora_rtc_mute_remote_video (12345, remote_uid, 1);
 agora_rtc_mute_remote_video (12345, remote_uid, 0);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
-int remote_uid = 789;
-
-// 暂停接收指定 Connection 中远端用户的音频流
-mRtcService.muteRemoteAudio (12345, remote_uid, 1);
-// 恢复接收指定 Connection 中远端用户的音频流
-mRtcService.muteRemoteAudio (12345, remote_uid, 0);
-// 暂停接收指定 Connection 中远端用户的视频流
-mRtcService.muteRemoteVideo (12345, remote_uid, 1);
-// 恢复接收指定 Connection 中远端用户的视频流
-mRtcService.muteRemoteVideo (12345, remote_uid, 0);
-```
-
 ## API 参考
 
 开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
@@ -134,10 +82,3 @@ mRtcService.muteRemoteVideo (12345, remote_uid, 0);
 - [`agora_rtc_mute_remote_video`](/api-ref/rtsa/c/agora__rtc__api_8h#a894f5a102c66b20c408bb495ac424efa)
 - [`on_user_mute_audio`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#ab749491e46ce8d06aa69507ebb630bf9)
 - [`on_user_mute_video`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a7ba3bed4e4d97a4e39096f07d2333311)
-
-- [`muteLocalAudio`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#af006e362e612bdb98adc95bdc08eefd9)
-- [`muteLocalVideo`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#aabcc6ac3658ef50df7e947607c51e2f2)
-- [`muteRemoteAudio`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#a47a7f426c467d93e03f3f51291fe85b4)
-- [`muteRemoteVideo`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#a2a7361457f57b9673d217afa1f2d3fcc)
-- [`onUserMuteAudio`](/api-ref/rtsa/java/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events#acb31baf6018383eeedb6bb8c9aecc315)
-- [`onUserMuteVideo`](/api-ref/rtsa/java/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events#a78a9ff37d58c5cc59c7becd01bacc71d)
