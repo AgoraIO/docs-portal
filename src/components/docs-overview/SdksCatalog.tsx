@@ -79,7 +79,6 @@ const catalogCopy = {
       latest: 'Latest',
       legacy: 'Legacy',
       lite: 'Lite',
-      previous: 'Previous',
     },
   },
   'zh-CN': {
@@ -101,7 +100,6 @@ const catalogCopy = {
       latest: '最新',
       legacy: '旧版',
       lite: 'Lite',
-      previous: '历史版本',
     },
   },
 } as const;
@@ -463,7 +461,7 @@ function ProductCard({
   const activePlatform =
     group.platforms.find((entry) => entry.platformId === platformId) ??
     group.platforms[0];
-  const versions = activePlatform.product.versions;
+  const versions = getLatestVersions(activePlatform.product.versions);
   const activeVersion = versions[Number(versionIndex)] ?? versions[0];
   const command = activeVersion ? deriveInstallCommand(activeVersion) : null;
 
@@ -529,30 +527,36 @@ function ProductCard({
         <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
           {command ? command.tool : ' '}
         </span>
-        <span className="relative shrink-0">
-          <label className="sr-only" htmlFor={versionId}>
-            {copy.versionLabel(group.label)}
-          </label>
-          <select
-            className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-            id={versionId}
-            onChange={(event) => setVersionIndex(event.target.value)}
-            value={versionIndex}
-          >
-            {versions.map((version, index) => (
-              <option
-                key={getVersionKey(activePlatform.platformId, version)}
-                value={String(index)}
-              >
-                {getVersionMeta(version, index, locale).optionLabel}
-              </option>
-            ))}
-          </select>
-          <ChevronDownIcon
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-          />
-        </span>
+        {versions.length > 1 ? (
+          <span className="relative shrink-0">
+            <label className="sr-only" htmlFor={versionId}>
+              {copy.versionLabel(group.label)}
+            </label>
+            <select
+              className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+              id={versionId}
+              onChange={(event) => setVersionIndex(event.target.value)}
+              value={versionIndex}
+            >
+              {versions.map((version, index) => (
+                <option
+                  key={getVersionKey(activePlatform.platformId, version)}
+                  value={String(index)}
+                >
+                  {getVersionMeta(version, locale).optionLabel}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+          </span>
+        ) : activeVersion ? (
+          <span className="shrink-0 text-sm font-medium text-foreground">
+            {getVersionMeta(activeVersion, locale).optionLabel}
+          </span>
+        ) : null}
       </div>
 
       {activeVersion ? (
@@ -768,6 +772,23 @@ function getVersionKey(platformId: string, version: SdkDownloadVersion) {
   ].join('|');
 }
 
+function getLatestVersions(versions: readonly SdkDownloadVersion[]) {
+  const latestVersions: SdkDownloadVersion[] = [];
+
+  for (const version of versions) {
+    if (!isLatestVersion(version)) {
+      break;
+    }
+    latestVersions.push(version);
+  }
+
+  return latestVersions.length > 0 ? latestVersions : versions.slice(0, 1);
+}
+
+function isLatestVersion(version: SdkDownloadVersion) {
+  return /\(Latest\)|\bLatest\b|（最新）|\(最新\)/i.test(version.label);
+}
+
 function InstallArea({
   command,
   copy,
@@ -946,23 +967,16 @@ function productIconKind(
   return 'tools';
 }
 
-function getVersionMeta(
-  version: SdkDownloadVersion,
-  index: number,
-  locale: SdkCatalogLocale,
-) {
+function getVersionMeta(version: SdkDownloadVersion, locale: SdkCatalogLocale) {
   const copy = catalogCopy[locale];
   const compactLabel = version.label.trim().replace(/\s+/g, ' ');
-  const isLatest = /\(Latest\)|\bLatest\b|（最新）|\(最新\)/i.test(
-    compactLabel,
-  );
+  const isLatest = isLatestVersion(version);
   const isLite = /\bLite\b/i.test(compactLabel);
   const isLegacy = /\bLegacy\b|旧版/i.test(compactLabel);
   const states = [
     isLatest ? copy.states.latest : null,
     isLite ? copy.states.lite : null,
     isLegacy ? copy.states.legacy : null,
-    !isLatest && !isLegacy && index > 0 ? copy.states.previous : null,
   ].filter((state) => state !== null);
   const displayLabel = compactLabel
     .replace(/^version\s+/i, 'v')
