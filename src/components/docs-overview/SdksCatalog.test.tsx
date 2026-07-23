@@ -65,19 +65,45 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
-  it('updates the command when the version changes', () => {
+  it('only exposes the latest SDK version for download', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-    const select = within(voiceCard).getByRole('combobox', {
-      name: 'Voice SDK version',
-    });
+
+    expect(
+      within(voiceCard).getByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
+      ),
+    ).toBeVisible();
+    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+      ),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps current package variants without exposing previous versions', () => {
+    render(<SdksCatalog />);
+
+    const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    const select = within(videoCard).getByRole('combobox', {
+      name: 'Video SDK version',
+    }) as HTMLSelectElement;
+    const optionLabels = Array.from(select.options).map(
+      (option) => option.textContent,
+    );
+
+    expect(optionLabels).toEqual([
+      'v4.6.3 - Latest',
+      'v4.6.3 Lite - Latest, Lite',
+    ]);
 
     fireEvent.change(select, { target: { value: '1' } });
 
     expect(
-      within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+      within(videoCard).getByText(
+        "implementation 'io.agora.rtc:lite-sdk:4.6.3'",
       ),
     ).toBeVisible();
   });
@@ -358,6 +384,26 @@ describe('SdksCatalog', () => {
     expect(
       within(meetingCard).getByText('npm i fcr-ui-scene@3.1.0'),
     ).toBeVisible();
+  });
+
+  it('does not expose a superseded zh-CN SDK marked as latest', () => {
+    render(
+      <SdksCatalog locale="zh-CN" platform="flutter" product="signaling" />,
+    );
+
+    const signalingCard = screen.getByRole('article', {
+      name: 'Signaling SDK',
+    });
+
+    expect(
+      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+    ).toBeVisible();
+    expect(
+      within(signalingCard).queryByRole('combobox'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
+    ).not.toBeInTheDocument();
   });
 
   it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {

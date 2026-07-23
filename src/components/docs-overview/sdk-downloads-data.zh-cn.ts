@@ -3250,7 +3250,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             "id": "2.2.5-signaling-sdk-flutter",
-            "label": "版本 2.2.5 （最新）",
+            "label": "版本 2.2.5",
             "packageManager": "https://pub.dev/packages/agora_rtm/versions/2.2.5"
           },
           {
