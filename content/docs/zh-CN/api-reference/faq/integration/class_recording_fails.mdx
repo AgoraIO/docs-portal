@@ -3,7 +3,7 @@ title: "课堂录制失败怎么办？"
 ---
 发生录制失败时，你可以参考如下步骤排查故障原因：
 
-1. 请参考[配置录制功能](/doc/flexible-classroom/javascript/get-started/configure#%E9%85%8D%E7%BD%AE%E5%BD%95%E5%88%B6%E5%8A%9F%E8%83%BD)检查录制相关的配置是否正确，其中：
+1. 请参考[配置录制功能](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)检查录制相关的配置是否正确，其中：
     - 录制配置 `recordingConfig` 如果没有设置，则自动采用默认配置。
     - 存储配置 `storageConfig` 必须配置正确，尤其是 `vendor`、`region` 和 `endpoint` 字段正确且匹配。例如，你使用的第三方云存储服务区域为上海，则你发起请求的应用服务器也必须位于上海，参考以下示例：
 
@@ -13,11 +13,11 @@ title: "课堂录制失败怎么办？"
       endpoint:https://agora-recording.oss-cn-shanghai.aliyuncs.com
       ```
 
-2. 如果以上配置均正确依旧录制失败，请检查你使用的第三方云存储账号的公共读权限是否开启，详见[注意事项](/doc/flexible-classroom/javascript/get-started/configure#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+2. 如果以上配置均正确依旧录制失败，请检查你使用的第三方云存储账号的公共读权限是否开启，详见[注意事项](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)。
 
 3. 如果录制配置正确，且已开启公共读权限，依旧录制失败录制，声网建议你通过拼接页面录制的 URL，在本地浏览器中调试出具体报错原因。
 
-    1. 获取 Web 端调用 [`LaunchOption`](/api-ref/flexible-classroom/javascript/classroom-sdk#launchoption) 参数传入的录制页面的 URL `recordUrl` 的值 URL1。
+    1. 获取 Web 端调用 [`LaunchOption`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launchoption) 参数传入的录制页面的 URL `recordUrl` 的值 URL1。
 
 ![获取 URL 值](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/record-url.png)
 

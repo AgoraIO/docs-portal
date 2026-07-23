@@ -38,7 +38,7 @@ audio-quality = "high"
 集成小程序 SDK 时，你可以调用如下 API 实现上传，保存和打开日志：
 
 * 上传日志：
-如果你使用 v2.6.0 或更高版本的小程序 SDK，无需自己保存日志，可通过 [`uploadLogs`](/api-ref/rtc/mini-program/interfaces/log#uploadlogs) API 上传日志。
+如果你使用 v2.6.0 或更高版本的小程序 SDK，无需自己保存日志，可通过 [`uploadLogs`](/zh-CN/api-reference/rtc/mini-program/interfaces/log#uploadlogs) API 上传日志。
 
 * 保存日志：
 如果想要获取日志，需要将 text 保存在一个文件中。如果需要排查问题，可以将出现问题时间段的日志提供给声网支持人员。
@@ -81,7 +81,7 @@ client = AgoraRtc.createClient({mode: "live", codec: "h264"});
 
 ### WebView 中调用接口
 
-微信小程序可以在 WebView 网页中调用声网 Web SDK 4.x 的接口，详见 [Web SDK 4.x API 文档](/api-ref/rtc/javascript/overview)。
+微信小程序可以在 WebView 网页中调用声网 Web SDK 4.x 的接口，详见 [Web SDK 4.x API 文档](/zh-CN/api-reference/rtc/web/overview)。
 
 ### view 标签
 
@@ -97,12 +97,12 @@ client = AgoraRtc.createClient({mode: "live", codec: "h264"});
 
 通常，客户端初始化失败，会伴随着错误码 901 或 903，处理方法如下：
 
-- 901：出现错误码 901 绝大部分原因是没开小程序的服务权限，或没有配置域名，或 uid 参数格式不正确（uid 必须为整型）。请参考快速开始中的[准备开发环境](/doc/rtc/mini-program/get-started/quick-start#准备开发环境)完成设置后再尝试；
+- 901：出现错误码 901 绝大部分原因是没开小程序的服务权限，或没有配置域名，或 uid 参数格式不正确（uid 必须为整型）。请参考快速开始中的[准备开发环境](/zh-CN/realtime-media/rtc/get-started/quick-start)完成设置后再尝试；
 - 903：这个错误通常是网络原因引起的；也可能是因为鉴权失败，如没有填 Token，或 Token 无效导致的。请检查并填入有效的 Token 进行尝试。
 
 ### 错误码排查
 
-小程序 SDK 在调用 API 或运行时，可能会返回一个错误码对象，也可能会返回一个错误码。详细可以参考[错误码和警告码](/doc/rtc/mini-program/error-code) 进行排查。
+小程序 SDK 在调用 API 或运行时，可能会返回一个错误码对象，也可能会返回一个错误码。详细可以参考[错误码和警告码](/zh-CN/realtime-media/rtc/reference/error-code) 进行排查。
 
 ### 编译报错
 

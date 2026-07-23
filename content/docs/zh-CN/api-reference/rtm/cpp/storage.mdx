@@ -40,7 +40,7 @@ virtual void setChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
 | `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
@@ -126,7 +126,7 @@ virtual void getChannelMetadata(
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
 | `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。 |
-| `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。 |
 
 ### 接口方法
@@ -181,7 +181,7 @@ virtual void removeChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
 | `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
@@ -263,7 +263,7 @@ virtual void updateChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
 | `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
@@ -352,7 +352,7 @@ virtual void setUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | const char* | 必填 | - | 用户 ID。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
@@ -433,7 +433,7 @@ virtual void getUserMetadata(const char* userId, uint64_t& requestId) = 0;
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。 |
 
 ### 基本用法
@@ -481,7 +481,7 @@ virtual void removeUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | const char* | 必填 | - | 用户 ID。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
@@ -558,7 +558,7 @@ virtual void updateUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | const char* | 必填 | - | 用户 ID。 |
-| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
+| `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 

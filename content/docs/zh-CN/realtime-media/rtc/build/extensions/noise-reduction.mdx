@@ -130,7 +130,7 @@ AI 降噪插件依赖一些 [Wasm 文件](https://webassembly.org/)。为保证�
 
 ### 3. 注册插件
 
-调用 [`AgoraRTC.registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc.html#registerextensions) 方法并传入创建的 `AIDenoiserExtension` 实例注册 AI 降噪插件。你还可以监听 Wasm 文件加载失败的事件。
+调用 [`AgoraRTC.registerExtensions`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#registerextensions) 方法并传入创建的 `AIDenoiserExtension` 实例注册 AI 降噪插件。你还可以监听 Wasm 文件加载失败的事件。
 
 :::warning[注意]
 声网推荐你只创建一个 `AIDenoiserExtension` 实例。
@@ -169,7 +169,7 @@ denoiser.onloaderror = (e) => {
    // processor.disable();
    ```
 
-2. 调用 SDK 的 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 方法并指定 [`processorDestination`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#processordestination) 属性，将插件注入音频处理管道。
+2. 调用 SDK 的 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 方法并指定 [`processorDestination`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#processordestination) 属性，将插件注入音频处理管道。
 
    ```typescript
    // 创建音频轨道
@@ -315,7 +315,7 @@ disable(): void | Promise<void>;
 
 关闭 AI 降噪功能。
 
-该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
 
 #### setMode
 
@@ -329,7 +329,7 @@ setMode(mode: AIDenoiserProcessorMode): Promise<void>;
 
 你可以在 [onoverload](#onoverload) 回调中调用该方法切换至稳态降噪，降低开销。详见 [AIDenoiserProcessorMode](#aidenoiserprocessormode)。
 
-该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
 
 #### setLevel
 
@@ -341,7 +341,7 @@ setLevel(level: AIDenoiserProcessorLevel): Promise<void>;
 
 设置降噪强度，详见 [AIDenoiserProcessorLevel](#aidenoiserprocessorlevel)。
 
-该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
 
 #### setLatency
 
@@ -353,7 +353,7 @@ setLatency(latency: AIDenoiserProcessorLatency): Promise<void>;
 
 设置降噪时延等级，详见 [AIDenoiserProcessorLatency](#aidenoiserprocessorlatency)。
 
-该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
 
 #### dump
 
@@ -363,7 +363,7 @@ dump(): void;
 
 转储降噪处理过程中的音频数据，方便定位和分析降噪处理的问题。
 
-该方法必须在 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 之后调用。
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
 
 调用该方法会触发 9 次 `dump` 事件，返回插件在该方法调用前 30 秒和后 60 秒处理的音频数据，一共 9 个音频文件（详见音频文件说明）。然后触发 `dumpend` 事件，表示已结束音频数据的转储。
 

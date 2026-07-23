@@ -20,7 +20,7 @@ Go SDK 旨在帮助开发者更轻松集成声网 RESTful API。该 SDK 具有�
     - 为你的项目开通声网对话式 AI 引擎。
     - 获取 App ID：声网随机生成的字符串，用于识别你的项目和调用对话式智能体 RESTful API。
     - 获取客户 ID 和客户密钥：用于在调用对话式 AI 引擎 RESTful API 时进行 HTTP 鉴权。
-    - 生成临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)在你的 App 服务端生成 Token。
+    - 生成临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的 App 服务端生成 Token。
 - 已参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)集成 v4.5.1 及以上版本的实时互动 SDK，并在你的 App 中实现基本的实时音视频功能。
 - 已获取大语言模型 (LLM) 供应商的 API key 和回调 URL。
 - 已参考文本转语音 (TTS) 供应商的官方文档获取身份认证信息（Token、App ID 等）并了解相关参数配置方式。
@@ -282,11 +282,11 @@ const (
   - `llmURL`：LLM API 回调地址。
   - `llmAPIKey`：LLM API Key。
   - `llmModel`：大语言模型名。
-- TTS 参数配置：示例代码中以火山 TTS 为例，你可以根据实际情况选择其他 TTS 供应商，并参考 [`JoinPropertiesTTSBody`](/api-ref/convoai/go/go-api/struct#joinpropertiesttsbody) 了解具体配置方式。
+- TTS 参数配置：示例代码中以火山 TTS 为例，你可以根据实际情况选择其他 TTS 供应商，并参考 [`JoinPropertiesTTSBody`](/zh-CN/api-reference/conversational-ai/restclient-go/struct#joinpropertiesttsbody) 了解具体配置方式。
 
 ### 创建并初始化 Client
 
-在 `main` 函数中初始化声网配置，调用 [`NewClient`](/api-ref/convoai/go/go-api/client#newclient) 创建对话式 AI 引擎 REST Client，并设置日志输出格式：
+在 `main` 函数中初始化声网配置，调用 [`NewClient`](/zh-CN/api-reference/conversational-ai/restclient-go/client.go#newclient) 创建对话式 AI 引擎 REST Client，并设置日志输出格式：
 
 ```go
 func main() {
@@ -320,7 +320,7 @@ func main() {
 
 ### 创建对话式智能体
 
-使用 [`Join`](/api-ref/convoai/go/go-api/client#join) 方法创建对话式智能体，并传入 LLM 和 TTS 的配置参数（[`JoinPropertiesCustomLLMBody`](/api-ref/convoai/go/go-api/struct#joinpropertiescustomllmbody) 和 [`JoinPropertiesTTSBody`](/api-ref/convoai/go/go-api/struct#joinpropertiesttsbody)）：
+使用 [`Join`](/zh-CN/api-reference/conversational-ai/restclient-go/client.go#join) 方法创建对话式智能体，并传入 LLM 和 TTS 的配置参数（[`JoinPropertiesCustomLLMBody`](/zh-CN/api-reference/conversational-ai/restclient-go/struct#joinpropertiescustomllmbody) 和 [`JoinPropertiesTTSBody`](/zh-CN/api-reference/conversational-ai/restclient-go/struct#joinpropertiesttsbody)）：
 
 ```go
 // ... 前面的配置代码
@@ -410,7 +410,7 @@ defer func() {
 
 ### 列出当前对话式智能体
 
-使用 [`List`](/api-ref/convoai/go/go-api/client#list) 方法获取当前运行的对话式智能体列表：
+使用 [`List`](/zh-CN/api-reference/conversational-ai/restclient-go/client.go#list) 方法获取当前运行的对话式智能体列表：
 
 ```go
 // ... 前面的代码

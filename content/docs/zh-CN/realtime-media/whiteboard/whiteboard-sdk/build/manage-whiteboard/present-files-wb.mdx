@@ -21,8 +21,8 @@ description: "了解如何在互动白板 SDK 中展示文件，包括适用场�
   目前声网互动白板 SDK 支持在场景中插入并展示的图片或网页格式如下：
 
   - PNG、JPG/JPEG、WEBP 格式的静态图片。
-  - 由 PPT、PPTX、DOC、DOCX、PDF 格式（以 `%PDF` 开头）的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。你可以自行转换，也可以使用声网互动白板的[静态文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files#静态文档转换)。
-  - 由 PPTX 格式的源文件转换成的 HTML 网页。你必须使用声网互动白板的[动态文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files#动态文档转换)进行转换。
+  - 由 PPT、PPTX、DOC、DOCX、PDF 格式（以 `%PDF` 开头）的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。你可以自行转换，也可以使用声网互动白板的[静态文档转换服务](/zh-CN/realtime-media/whiteboard/concepts#静态文档转换)。
+  - 由 PPTX 格式的源文件转换成的 HTML 网页。你必须使用声网互动白板的[动态文档转换服务](/zh-CN/realtime-media/whiteboard/concepts#动态文档转换)进行转换。
 
 - **确保图片或网页的访问权限。**
 
@@ -40,9 +40,9 @@ description: "了解如何在互动白板 SDK 中展示文件，包括适用场�
 
 下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的示例项目基础上添加代码，介绍如何构建多个场景，展示一个六页、带动画效果的 PPTX 文件。
 
-1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
+1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
 
-2. 调用[查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)，从响应包体的 `previews` 参数中获取转换生成的 HTML 网页的 URL 地址。
+2. 调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)，从响应包体的 `previews` 参数中获取转换生成的 HTML 网页的 URL 地址。
 
 3. 在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行，构建新场景并实现场景切换：
 
@@ -149,16 +149,16 @@ whiteWebSdk
 
 互动白板 Web SDK API：
 
-- [`joinRoom`](/api-ref/whiteboard/javascript/classes/whitewebsdk#joinRoom)
-- [`putScenes`](/api-ref/whiteboard/javascript/interfaces/room#putScenes)
-- [`setScenePath`](/api-ref/whiteboard/javascript/interfaces/room#setScenePath)
-- [`setSceneIndex`](/api-ref/whiteboard/javascript/interfaces/room#setSceneIndex)
-- [`SceneState`](/api-ref/whiteboard/javascript/globals.html#scenestate)
+- [`joinRoom`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#joinroom)
+- [`putScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#putscenes)
+- [`setScenePath`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setscenepath)
+- [`setSceneIndex`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setsceneindex)
+- [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#sceneState)
 
 互动白板文档转换 RESTful API：
 
-- [发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)
-- [查询转换任务的进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)
+- [发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)
+- [查询转换任务的进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)
 
 ## 相关文档
 

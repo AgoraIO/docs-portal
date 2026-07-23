@@ -152,7 +152,7 @@ int registerListener(ICallkitMgr.ICallback callback);
 
 | 参数       | 描述                                |
 | ---------- | ----------------------------------- |
-| `callback`  | [ICallback](#ICallback) 对象。 |
+| `callback`  | [ICallback](#icallback) 对象。 |
 
 <a id="unregisterlistener"></a>
 ### unregisterListener
@@ -167,7 +167,7 @@ int unregisterListener(ICallkitMgr.ICallback callback);
 
 | 参数       | 描述                                |
 | ---------- | ----------------------------------- |
-| `callback`  | [ICallback](#ICallback) 对象。 |
+| `callback`  | [ICallback](#icallback) 对象。 |
 
 <a id="calldial"></a>
 ### callDial
@@ -397,7 +397,7 @@ int setAudioEffect(final AudioEffectId effectId);
 
 | 参数       | 描述                                                  |
 | ---------- | ----------------------------------------------------- |
-| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#AudioEffectId)。 |
+| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#audioeffectid)。 |
 
 **返回**
 
@@ -1018,7 +1018,7 @@ func callDial(
 
 | 参数 | 描述 |
 | --- | --- |
-| `device` | 要呼叫的设备，详见 [IotDevice](#iotdevice)。 |
+| `device` | 要呼叫的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/client-api/full#iotdevice)。 |
 | `attachMsg` | 呼叫时附带的信息。 |
 | `actionAck` | 通话中产生的事件，详见 [ActionAck](#actionack)。 |
 | `memberState` | <Slot name="call-ios-html-1-4-1" /> |
@@ -1262,7 +1262,7 @@ func setAudioEffect(effectId: AudioEffectId,result:@escaping(Int,String)->Void)
 
 | 参数       | 描述                                                  |
 | ---------- | ----------------------------------------------------- |
-| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#AudioEffectId)。 |
+| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#audioeffectid)。 |
 
 **返回**
 

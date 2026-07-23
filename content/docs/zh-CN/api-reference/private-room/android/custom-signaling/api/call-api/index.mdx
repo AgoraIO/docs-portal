@@ -45,7 +45,7 @@ fun initialize(config: CallConfig)
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `config`      | `CallConfig` | 初始化配置对象。详见 [`CallConfig`](#callconfig)。 |
+| `config`      | `CallConfig` | 初始化配置对象。详见 [`CallConfig`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callconfig)。 |
 
 <a id="deinitialize"></a>
 ### deinitialize
@@ -69,7 +69,7 @@ fun deinitialize(completion: (() -> Unit))
 fun renewToken(rtcToken: String)
 ```
 
-在收到 [`tokenPrivilegeWillExpire`](#tokenprivilegewillexpire) 回调后，你需要生成新的 Token，然后调用该方法将新的 Token 传给 SDK。
+在收到 [`tokenPrivilegeWillExpire`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#tokenprivilegewillexpire) 回调后，你需要生成新的 Token，然后调用该方法将新的 Token 传给 SDK。
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
@@ -98,7 +98,7 @@ fun prepareForCall(prepareConfig: PrepareConfig, completion: ((AGError?) -> Unit
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `prepareConfig`      | `PrepareConfig` | 通话配置对象，详见 [`PrepareConfig`](#prepareconfig)。 |
+| `prepareConfig`      | `PrepareConfig` | 通话配置对象，详见 [`PrepareConfig`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareconfig)。 |
 | `completion`      | Closure | 通话准备完成回调。 |
 
 <a id="addlistener"></a>
@@ -112,7 +112,7 @@ fun addListener(listener: ICallApiListener)
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `listener`      | `ICallApiListener` | 需要添加监听的事件回调。详见 [`ICallApiListener`](#icallapilistener)。 |
+| `listener`      | `ICallApiListener` | 需要添加监听的事件回调。详见 [`ICallApiListener`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#icallapilistener)。 |
 
 <a id="removelistener"></a>
 ### removeListener
@@ -125,7 +125,7 @@ fun removeListener(listener: ICallApiListener)
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `listener`      | `ICallApiListener` | 需要移除监听的事件回调。详见 [`ICallApiListener`](#icallapilistener)。 |
+| `listener`      | `ICallApiListener` | 需要移除监听的事件回调。详见 [`ICallApiListener`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#icallapilistener)。 |
 
 <a id="call"></a>
 ### call[1/2]
@@ -136,14 +136,14 @@ fun removeListener(listener: ICallApiListener)
 fun call(remoteUserId: Int, completion: ((AGError?) -> Unit)?)
 ```
 
-该方法由主叫调用，通过 [`prepareForCall`](#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
+该方法由主叫调用，通过 [`prepareForCall`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
 
 :::warning[注意]
 - 该方法仅在通话状态为 `prepared`，即空闲时调用才生效。
 - 成功发起通话后，只有当如下一种情况发生时，才能重新调用该方法发起通话：
   - 主叫调用 `cancelCall` 或 `hangup` 取消或挂断当前通话。
   - 被叫收到呼叫后调用 `reject` 拒绝接听通话。
-- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
+- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
 :::
 
 | 参数        | 类型     | 含义                 |
@@ -160,14 +160,14 @@ fun call(remoteUserId: Int, completion: ((AGError?) -> Unit)?)
 fun call(remoteUserId: UInt, callType: CallType, callExtension: Map<String, Any>, completion: ((AGError?) -> Unit)?)
 ```
 
-该方法由主叫调用，通过 [`prepareForCall`](#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
+该方法由主叫调用，通过 [`prepareForCall`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
 
 :::warning[注意]
 - 该方法仅在通话状态为 `prepared`，即空闲时调用才生效。
 - 成功发起通话后，只有当如下一种情况发生时，才能重新调用该方法发起通话：
   - 主叫调用 `cancelCall` 或 `hangup` 取消或挂断当前通话。
   - 被叫收到呼叫后调用 `reject` 拒绝接听通话。
-- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
+- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
 :::
 
 | 参数        | 类型     | 含义                 |
@@ -273,8 +273,8 @@ fun onCallStateChanged(state: CallStateType,
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `state`      | CallStateType | 状态类型。详见 [`CallStateType`](#callstatetype)。                             |
-| `stateReason`      | CallStateReason          | 状态变更的原因。详见[`CallStateReason`](#callstatereason)。 |
+| `state`      | CallStateType | 状态类型。详见 [`CallStateType`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callstatetype)。                             |
+| `stateReason`      | CallStateReason          | 状态变更的原因。详见[`CallStateReason`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callstatereason)。 |
 | `eventReason` | String     | 事件类型描述。 |
 | `eventInfo`   | Map&lt;String, Any&gt;       | 扩展信息，不同事件类型参数不同。 |
 
@@ -291,8 +291,8 @@ fun onCallEventChanged(event: CallEvent, eventReason: String?) {}
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `event`      | CallEvent | 状态类型。详见 [`CallEvent`](#callevent)。          |
-| `eventReason`      | String | 事件原因。该参数默认为 `null`。只有当报告特定 [`CallEvent`](#callevent) 时，才会有具体含义。例如，`event` 为 `108` 时，你可以通过这个枚举的描述来查看具体的含义。          |
+| `event`      | CallEvent | 状态类型。详见 [`CallEvent`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callevent)。          |
+| `eventReason`      | String | 事件原因。该参数默认为 `null`。只有当报告特定 [`CallEvent`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callevent) 时，才会有具体含义。例如，`event` 为 `108` 时，你可以通过这个枚举的描述来查看具体的含义。          |
 
 <a id="oncallerror"></a>
 ### onCallError
@@ -310,8 +310,8 @@ fun onCallError(errorEvent: CallErrorEvent,
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `errorEvent`      | CallErrorEvent | 错误事件。详见 [`CallErrorEvent`](#callerrorevent)。 |
-| `errorType`      | CallErrorCodeType | 错误码类型。详见 [`CallErrorCodeType`](#callerrorcodetype)。 |
+| `errorEvent`      | CallErrorEvent | 错误事件。详见 [`CallErrorEvent`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callerrorevent)。 |
+| `errorType`      | CallErrorCodeType | 错误码类型。详见 [`CallErrorCodeType`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callerrorcodetype)。 |
 | `errorCode`      | Int | 错误码。|
 | `message`      | String | 错误信息。|
 
@@ -388,7 +388,7 @@ RTC Token 即将要过期。
 fun tokenPrivilegeWillExpire()
 ```
 
-收到该回调后，你需要重新获取 RTC 服务的 Token，然后调用 [`renewToken`](#renewtoken) 将新的 Token 发送给 SDK。
+收到该回调后，你需要重新获取 RTC 服务的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#renewtoken) 将新的 Token 发送给 SDK。
 
 :::info[信息]
 如果你的信令 Token 与 RTC Token 过期时间一致，收到该回调即意味着信令 Token 也已过期。收到该回调后，你可以同步生成并更新信令 Token。例如，如果你使用的是声网的 RTM SDK 实现的信令通道，则可以重新[生成 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)，然后调用 `AgoraRtmClientKit.revewToken` 方法更新信令 Token。
@@ -408,7 +408,7 @@ fun callDebugInfo(message: String, logLevel: CallLogLevel) {}
 | 参数 | 类型 | 含义 |
 | --- | --- | --- |
 | `message` | String | 日志信息。 |
-| `logLevel` | CallLogLevel | 日志等级，详见 [`CallLogLevel`](#callloglevel)。 |
+| `logLevel` | CallLogLevel | 日志等级，详见 [`CallLogLevel`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#callloglevel)。 |
 
 <a id="isignalclient"></a>
 <a id="sendmessage"></a>
@@ -499,7 +499,7 @@ fun debugInfo(message: String, logLevel: Int)
 ## 类型定义
 ### CallConfig
 
-初始化配置对象，在 [`initialize`](#initialize) 中设置。
+初始化配置对象，在 [`initialize`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#initialize) 中设置。
 
 ```kotlin
 open class CallConfig(
@@ -530,7 +530,7 @@ open class CallConfig(
 <a id="prepareconfig"></a>
 ### PrepareConfig
 
-通话配置对象，在 [`prepareForCall`](#prepareforcall) 中设置。
+通话配置对象，在 [`prepareForCall`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#prepareforcall) 中设置。
 
 ```kotlin
 open class PrepareConfig(
@@ -560,7 +560,7 @@ RTC Token。
 
         :::warning[注意]
         - 你需要使用通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token.android)。
-                - 请确保生成通配 Token 时填的 `uid` 和 [`initialize`](#initialize) 中的 `userId` 一致。
+                - 请确保生成通配 Token 时填的 `uid` 和 [`initialize`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#initialize) 中的 `userId` 一致。
         :::
 
 </Slot>
@@ -586,7 +586,7 @@ RTC Token。
 <a id="callstatetype"></a>
 ### CallStateType
 
-通话状态枚举，在 [`onCallStateChanged`](#oncallstatechanged) 回调中报告。
+通话状态枚举，在 [`onCallStateChanged`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#oncallstatechanged) 回调中报告。
 
 | 枚举名  | 枚举值 | 描述         |
 |------|--------------|----|
@@ -600,7 +600,7 @@ RTC Token。
 <a id="callstatereason"></a>
 ### CallStateReason
 
-导致状态变更的原因，在 [`onCallStateChanged`](#oncallstatechanged) 回调中报告。
+导致状态变更的原因，在 [`onCallStateChanged`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#oncallstatechanged) 回调中报告。
 
 | 枚举名 | 枚举值 | 描述 |
 | --- | --- | --- |
@@ -655,7 +655,7 @@ RTC Token。
 <a id="callevent"></a>
 ### CallEvent
 
-详细事件，在 [`onCallEventChanged`](#oncalleventchanged) 回调中报告。
+详细事件，在 [`onCallEventChanged`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#oncalleventchanged) 回调中报告。
 
 | 枚举名 | 枚举值 | 描述 |
 | --- | --- | --- |
@@ -722,7 +722,7 @@ CallAPI v2.1 升级了 RTM SDK 至 v2.2 后，不再需要考虑该事件。
 <a id="callerrorevent"></a>
 ### CallErrorEvent
 
-呼叫错误事件。在 [`onCallError`](#oncallerror) 回调中报告。
+呼叫错误事件。在 [`onCallError`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#oncallerror) 回调中报告。
 
 | 枚举名 | 枚举值 | 描述 |
 | --- | --- | --- |
@@ -743,7 +743,7 @@ CallAPI v2.1 升级了 RTM SDK 至 v2.2 后，不再需要考虑该事件。
 <a id="callerrorcodetype"></a>
 ### CallErrorCodeType
 
-呼叫错误事件的错误码类型。在 [`onCallError`](#oncallerror) 回调中报告。
+呼叫错误事件的错误码类型。在 [`onCallError`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#oncallerror) 回调中报告。
 
 | 枚举名 | 枚举值  | 描述         |
 |------|--------------|---|
@@ -754,7 +754,7 @@ CallAPI v2.1 升级了 RTM SDK 至 v2.2 后，不再需要考虑该事件。
 <a id="callloglevel"></a>
 ### CallLogLevel
 
-日志等级，在 [`callDebugInfo`](#calldebuginfo) 回调中报告。
+日志等级，在 [`callDebugInfo`](/zh-CN/api-reference/private-room/android/custom-signaling/api/call-api#calldebuginfo) 回调中报告。
 
 | 枚举名 | 枚举值  | 描述         |
 |------|--------------|---|

@@ -384,23 +384,23 @@ engine.joinChannel(token, channelId, 0, option);
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/android/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/android/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/android/channel#onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 
-- 调用 [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#updateChannelMediaOptions) 更新 Token。
+- 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/android/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后在调用 [`joinChannel`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#leavechannel-22) 离开当前频道，然后在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/android/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/api-ref/rtc/android/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/android/channel#updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -436,7 +436,7 @@ class RtcEngineEventHandlerImpl extends IRtcEngineEventHandler {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -1362,21 +1362,21 @@ agoraKit.joinChannel(byToken: token, channelId: channelId, uid: uid, mediaOption
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/ios/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/ios/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
-- 调用 [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#updateChannelWithMediaOptions) 更新 Token。
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/ios/API/toc_channel#leaveChannel%20) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[2/4]) 时传入新的 Token 重新加入频道。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- 调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#updatechannelwithmediaoptions) 更新 Token。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/ios/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[2/4]) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/ios/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelExWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入多个频道，需要调用 [`updateChannelExWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -1409,7 +1409,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -2335,21 +2335,21 @@ agoraKit.joinChannel(byToken: token, channelId: channelId, uid: uid, mediaOption
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/macos/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/macos/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
-- 调用 [`updateChannelWithMediaOptions`](/api-ref/rtc/macos/API/toc_channel#updateChannelWithMediaOptions) 更新 Token。
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/macos/API/toc_channel#leaveChannel%20) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken%20[2/4]) 时传入新的 Token 重新加入频道。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- 调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/macos/channel#updatechannelwithmediaoptions) 更新 Token。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/macos/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken%20[2/4]) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/macos/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelExWithMediaOptions`](/api-ref/rtc/macos/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 加入多个频道，需要调用 [`updateChannelExWithMediaOptions`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -2382,7 +2382,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken%20[2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/macos/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken%20[2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -3303,7 +3303,7 @@ await client.join(options.appId, options.channel, token, uid);
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`token-privilege-will-expire `](/api-ref/rtc/javascript/interfaces/iagorartcclient#event_token_privilege_will_expire) 回调。收到该回调后，客户端需要从服务器获取新的 Token 并调用 `renewToken` 方法将新生成的 Token 传给 SDK。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`token-privilege-will-expire `](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_will_expire) 回调。收到该回调后，客户端需要从服务器获取新的 Token 并调用 `renewToken` 方法将新生成的 Token 传给 SDK。
 
 示例代码如下：
 
@@ -3315,7 +3315,7 @@ client.on("token-privilege-will-expire", async function () {
 });
 ```
 
-Token 过期时，SDK 会触发 [`token-privilege-did-expire`](/api-ref/rtc/javascript/interfaces/iagorartcclient#token-privilege-did-expire) 回调。收到该回调后，客户端需要从服务器获取新的 Token 并调用 `join` 方法，再使用新的 Token 重新加入频道。
+Token 过期时，SDK 会触发 [`token-privilege-did-expire`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#token-privilege-did-expire) 回调。收到该回调后，客户端需要从服务器获取新的 Token 并调用 `join` 方法，再使用新的 Token 重新加入频道。
 
 示例代码如下：
 
@@ -3340,7 +3340,7 @@ client.on("token-privilege-did-expire", async function () {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 只有用户角色为主播时可以在频道内发流。调用 [`setClientRole`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setclientrole) 方法，将角色 role 设为 "host" （主播）。
+- 只有用户角色为主播时可以在频道内发流。调用 [`setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法，将角色 role 设为 "host" （主播）。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -4263,23 +4263,23 @@ m_rtcEngine->joinChannel(token, channelId, uid, options);
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/windows/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/windows/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 
-- 调用 [`updateChannelMediaOptions`](/api-ref/rtc/windows/API/toc_channel#updateChannelMediaOptions) 更新 Token。
+- 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/windows/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#leavechannel-22) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/api-ref/rtc/windows/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#joinchannelex) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -4315,7 +4315,7 @@ public:
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
+- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -5244,23 +5244,23 @@ if (ret != Constants.ErrorCode.ERR_OK) {
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/harmonyos/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/harmonyos/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/harmonyos/channel#onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 
-- 调用 [`updateChannelMediaOptions`](/api-ref/rtc/harmonyos/API/toc_channel#updateChannelMediaOptions) 更新 Token。
+- 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/harmonyos/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`](/api-ref/rtc/harmonyos/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后在调用 [`joinChannel`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`](/api-ref/rtc/harmonyos/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后在调用 [`joinChannel`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/harmonyos/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/api-ref/rtc/harmonyos/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/harmonyos/channel#joinchannelex) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/harmonyos/channel#updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -5291,7 +5291,7 @@ config.mEventHandler.onTokenPrivilegeWillExpire =async  (oldToken: string) => {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannelWithOptions`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/harmonyos/channel#setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannelWithOptions`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -9283,23 +9283,23 @@ m_rtcEngine->joinChannel(token, channelId, uid, options);
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/unreal-cpp/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/unreal-cpp/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/unreal-cpp/channel#onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/unreal-cpp/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 
-- 调用 [`updateChannelMediaOptions`](/api-ref/rtc/unreal-cpp/API/toc_channel#updateChannelMediaOptions) 更新 Token。
+- 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/unreal-cpp/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/unreal-cpp/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/api-ref/rtc/unreal-cpp/API/toc_channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#leavechannel-22) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/unreal-cpp/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/api-ref/rtc/unreal-cpp/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/unreal-cpp/channel#joinchannelex) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/unreal-cpp/channel#updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -9335,7 +9335,7 @@ public:
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/unreal-cpp/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/api-ref/rtc/unreal-cpp/API/toc_channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
+- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -10258,23 +10258,23 @@ m_rtcEngine->joinChannel(token, channelId, uid, options);
 
 ### Token 过期处理
 
-使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/unreal-blueprint/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调。
 
-Token 过期时，SDK 会触发 [`onRequestToken`](/api-ref/rtc/unreal-blueprint/API/toc_channel.html#onRequestToken) 回调。
+Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#onrequesttoken) 回调。
 
 当收到上述回调后，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
 
 **单频道场景**
 
-- （推荐）调用 [`renewToken`](/api-ref/rtc/unreal-blueprint/API/toc_channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
+- （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 
-- 调用 [`updateChannelMediaOptions`](/api-ref/rtc/unreal-blueprint/API/toc_channel#updateChannelMediaOptions) 更新 Token。
+- 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/unreal-blueprint/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/api-ref/rtc/unreal-blueprint/API/toc_channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/api-ref/rtc/unreal-blueprint/API/toc_channel#leaveChannel%20[2/2]) 离开当前频道，然后再调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 并传入新的 Token 重新加入频道。
 
 **多频道场景**
 
-如果你调用了 [`joinChannelEx`](/api-ref/rtc/unreal-blueprint/API/toc_channel.html#joinChannelEx) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/api-ref/rtc/unreal-blueprint/API/toc_channel.html#updateChannelMediaOptionsEx) 方法来更新 Token。
+如果你调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#joinchannelex) 加入多个频道，需要调用 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#updatechannelmediaoptionsex) 方法来更新 Token。
 
 **示例代码**
 
@@ -10310,7 +10310,7 @@ public:
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/api-ref/rtc/unreal-blueprint/API/toc_channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/api-ref/rtc/unreal-blueprint/API/toc_channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
+- 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：

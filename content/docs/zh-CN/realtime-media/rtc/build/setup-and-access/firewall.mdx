@@ -183,7 +183,7 @@ description: "了解实时互动 RTC 在不同平台上的应对防火墙限制�
 
 #### 2. 客户端开启云代理功能
 
-成功开通后，在加入频道前调用 [`startProxyServer`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startproxyserver) 方法打开云代理功能并设置 `mode` 参数：
+成功开通后，在加入频道前调用 [`startProxyServer`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startproxyserver) 方法打开云代理功能并设置 `mode` 参数：
 
 - 设为 `3`：使用 UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。
 - 设为 `5`：（自 v4.9.0 起支持）使用 TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。
@@ -203,7 +203,7 @@ client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => {
 
 #### 3. 客户端关闭云代理功能
 
-如果需要关闭代理，请在离开频道后调用 [`stopProxyServer`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stopproxyserver)。
+如果需要关闭代理，请在离开频道后调用 [`stopProxyServer`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stopproxyserver)。
 
 ```javascript
 // 开启云代理并加入频道后
@@ -310,7 +310,7 @@ client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => {
 
 #### 3. 客户端开启云代理功能
 
-在加入频道前调用 [`startProxyServer`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startproxyserver) 方法打开云代理功能，测试是否能正常实现音视频通话或直播。
+在加入频道前调用 [`startProxyServer`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startproxyserver) 方法打开云代理功能，测试是否能正常实现音视频通话或直播。
 
 ```javascript
 const client = AgoraRTC.createClient({mode: 'live',codec: 'vp8'});
@@ -327,7 +327,7 @@ client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => {
 
 #### 4. 客户端关闭云代理功能
 
-如果需要关闭云代理，请在离开频道后调用 [`stopProxyServer`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stopproxyserver)。
+如果需要关闭云代理，请在离开频道后调用 [`stopProxyServer`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stopproxyserver)。
 
 ```javascript
 // 开启云代理并加入频道后

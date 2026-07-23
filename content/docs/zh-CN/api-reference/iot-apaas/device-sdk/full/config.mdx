@@ -792,8 +792,8 @@ typedef struct agora_iot_config {
 
 | 参数 | 描述 |
 | --- | --- |
-| `app_id` | 声网为 app 开发者签发的 App ID，详见[获取 App ID](https://docs.agora.io/cn/Agora%20Platform/token#get-an-app-id)。使用同一个 App ID 的 SDK 才能互通。 |
-| `product_id` | 你的产品 ID，即 Product Key。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| `app_id` | 声网为 app 开发者签发的 App ID，详见[获取 App ID](/zh-CN/introduction/quickstart#获取开发参数)。使用同一个 App ID 的 SDK 才能互通。 |
+| `product_id` | 你的产品 ID，即 Product Key。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | `client_id` | Client ID，用于呼叫。调用 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/full/device-manager#agoraiotregisterandbind) 注册设备成功后返回。 |
 | `domain` | 设备端域名。可以从 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/full/device-manager#agoraiotregisterandbind) 方法返回的 `agora_iot_device_info_t::domain` 参数获取。 |
 | `root_ca` | AWS 服务根证书。你可以将值设为示例项目中的 `CONFIG_AWS_ROOT_CA` 的值，也可以自行[申请一个 AWS 根证书](https://docs.aws.amazon.com/zh_cn/acm-pca/latest/userguide/PCACertInstall.html)。 |
@@ -810,7 +810,7 @@ typedef struct agora_iot_config {
 | `min_possible_bitrate` | 带宽探测的最小码率（bps）。该参数会影响 [cb_target_bitrate_changed](#cbtargetbitratechanged) 回调报告的值。 |
 | `enable_audio_config` | <Slot name="config-html-5-17-1" /> |
 | `audio_config` | 音频配置。详见 [agora_iot_audio_config_t](#agoraiotaudioconfigt) 结构体。 |
-| `slave_server_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Slave Server URL** 处获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| `slave_server_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Slave Server URL** 处获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | `call_cb` | 呼叫事件回调。详见 [agora_iot_call_callback_t](#agoraiotcall_callback_t) 结构体。 |
 | `ota_cb` | OTA 升级事件回调。详见 [agora_iot_ota_callback_t](#agoraiototacallbackt) 结构体。 |
 | `rtm_cb` | RTM 云信令事件回调。详见 [agora_iot_rtm_callback_t](#agoraiotrtmcallbackt) 结构体。 |

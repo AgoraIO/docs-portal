@@ -60,7 +60,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `rtm-sdk`。
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/android/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `ErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/android/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `ErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -163,7 +163,7 @@ v2 的事件通知类型有 8 种，如下所示：
 | `onLinkStateEvent`     | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                                        |
 | `onTokenPrivilegeWillExpire` | 接收客户端 Token 将要过期的事件通知。                                                                            |
 
-关于事件通知的更多信息及负载数据结构见[事件监听](/api-ref/rtm2/android/toc-configuration/configuration#事件监听)。
+关于事件通知的更多信息及负载数据结构见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 以监听频道消息 `onMessageEvent` 事件通知为例，示例代码如下：
 
@@ -748,7 +748,7 @@ v2 的事件通知类型有 8 种，如下所示：
 | `didReceiveLinkStateEvent`     | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                                        |
 | `tokenPrivilegeWillExpire` | 接收客户端 Token 将要过期的事件通知。                                                                            |
 
-关于事件通知的更多信息及负载数据结构见[事件监听](/api-ref/rtm2/ios/toc-configuration/configuration#事件监听)。
+关于事件通知的更多信息及负载数据结构见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 以监听频道消息 `didReceiveMessageEvent` 事件通知为例，示例代码如下：
 
@@ -1248,7 +1248,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `agora-rtm-sdk`。
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/javascript/toc-configuration/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/web/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -1327,7 +1327,7 @@ v2 的事件通知类型有 8 种，如下所示：
 | `linkState`     | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                                        |
 | <code className="index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                                                                             |
 
-关于事件通知的更多信息及负载数据结构见[事件监听](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听)。
+关于事件通知的更多信息及负载数据结构见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 以监听 `message` 事件通知为例，示例代码如下：
 
@@ -1838,7 +1838,7 @@ v2 的事件通知类型有 8 种，如下所示：
 | `onLinkStateEvent`     | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                                        |
 | `onTokenPrivilegeWillExpire` | 接收客户端 Token 将要过期的事件通知。                                                                            |
 
-关于事件通知的更多信息及负载数据结构见[事件监听](/api-ref/rtm2/cpp/toc-configuration/configuration#事件监听)。
+关于事件通知的更多信息及负载数据结构见[事件监听](/zh-CN/api-reference/rtm/cpp/configuration#事件监听)。
 
 以监听频道消息 `onMessageEvent` 事件通知为例，示例代码如下：
 

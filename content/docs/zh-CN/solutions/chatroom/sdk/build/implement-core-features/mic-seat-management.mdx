@@ -231,7 +231,7 @@ fun onSeatUpdated(roomId: String, attributeMap: Map<String, String>, fromId: Str
 
 ### 停止或恢复发送音频流
 
-标记麦位静音或取消静音后，通过声网实时互动 SDK 中 [`muteLocalAudioStream`](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送或恢复发送麦位上的连麦听众的音频流，以达到静音或取消静音的效果。
+标记麦位静音或取消静音后，通过声网实时互动 SDK 中 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送或恢复发送麦位上的连麦听众的音频流，以达到静音或取消静音的效果。
 
 ```kotlin
 // 参数 mute 为 true 代表静音
@@ -493,7 +493,7 @@ ChatRoomServiceImp.getSharedInstance().subscribeEvent(with: self)
 
 ### 切换用户角色
 
-不管是房主邀请，还是听众主动申请，在听众成为连麦听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) 方法将其角色从听众（`audience`）切换成主播（`broadcaster`），以让连麦听众拥有发送音频流的权限。
+不管是房主邀请，还是听众主动申请，在听众成为连麦听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将其角色从听众（`audience`）切换成主播（`broadcaster`），以让连麦听众拥有发送音频流的权限。
 
 ```swift
 rtcKit.setClientRole(.broadcaster)
@@ -550,7 +550,7 @@ func onSeatUpdated(roomId: String, mics: [VRRoomMic], from fromId: String) {
 
 ### 切换用户角色
 
-不管是连麦听众主动下麦还是被踢下麦，在连麦听众成为普通听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) 方法将其角色从主播（`broadcaster`）切换成听众（`audience`），以让其失去发送音频流的权限。
+不管是连麦听众主动下麦还是被踢下麦，在连麦听众成为普通听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将其角色从主播（`broadcaster`）切换成听众（`audience`），以让其失去发送音频流的权限。
 
 ```swift
 rtcKit.setClientRole(.audience)
@@ -608,7 +608,7 @@ func onSeatUpdated(roomId: String, mics: [VRRoomMic], from fromId: String) {
 
 ### 停止或恢复发送音频流
 
-标记麦位静音或取消静音后，通过声网实时互动 SDK 中 [`muteLocalAudioStream`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送或恢复发送麦位上的连麦听众的音频流，以达到静音或取消静音的效果。
+标记麦位静音或取消静音后，通过声网实时互动 SDK 中 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送或恢复发送麦位上的连麦听众的音频流，以达到静音或取消静音的效果。
 
 ```swift
 // 参数 mute 为 true 代表静音

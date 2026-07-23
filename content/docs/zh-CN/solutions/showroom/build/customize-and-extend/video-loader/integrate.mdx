@@ -41,7 +41,7 @@ description: "了解秀场直播在不同平台上的秒开秒切方式，包括
 
 ### 1. 初始化 RtcEngine
 
-调用 RTC SDK 中的 [`create`](/api-ref/rtc/android/API/toc_initialize#create%20[2/2]) 创建并初始化 `RtcEngine` 对象。
+调用 RTC SDK 中的 [`create`](/zh-CN/api-reference/rtc/android/initialize#create-22) 创建并初始化 `RtcEngine` 对象。
 
 ```kotlin
 // 初始化声网 RtcEngine
@@ -95,7 +95,7 @@ private val mRtcEngine by lazy {
 - `mRtcEngine`：之前初始化的 `RtcEngine` 对象。
 - `localUid`：本地用户的 `uid`。
 
-`OnRoomListScrollEventHandler` 对象监听到直播间列表的滑动事件后，会驱动 `OnRoomListScrollEventHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_preloadchannel)）。
+`OnRoomListScrollEventHandler` 对象监听到直播间列表的滑动事件后，会驱动 `OnRoomListScrollEventHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_preloadchannel)）。
 
 ```kotlin
 // 代码片段来源于 RoomListActivity
@@ -509,7 +509,7 @@ private lazy var listView: UICollectionView = {
 
 创建一个 `AGCollectionLoadingDelegateHandler` 对象，并将其作为直播间列表滑动事件的代理注册给直播间列表的 UI。创建 `AGCollectionLoadingDelegateHandler` 对象时，你需要在构造函数的 `localUid` 参数中传入本地用户的 `uid`。
 
-`AGCollectionLoadingDelegateHandler` 对象监听到直播间列表的滑动事件后，会驱动 `AGCollectionLoadingDelegateHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel)）。
+`AGCollectionLoadingDelegateHandler` 对象监听到直播间列表的滑动事件后，会驱动 `AGCollectionLoadingDelegateHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_preloadchannel)）。
 
 ```swift
 // 代码片段来源于房间列表的 ViewController

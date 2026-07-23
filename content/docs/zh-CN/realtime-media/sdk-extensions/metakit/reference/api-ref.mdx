@@ -2,7 +2,7 @@
 title: "键值说明"
 description: "查看 MetaKit 插件的键值说明，了解关键概念、参数说明、使用限制和接入注意事项。"
 ---
-通过声网 SDK v4.x 提供的 [`setExtensionProperty`](/api-ref/rtc/android/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value`，即可快速实现 `MetaKit` 插件的能力。其中：
+通过声网 SDK v4.x 提供的 [`setExtensionProperty`](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value`，即可快速实现 `MetaKit` 插件的能力。其中：
 
 通过声网 SDK v4.x 提供的 [`setExtensionPropertyWithVendor`](/api-ref/rtc/ios/API/toc_extension#setExtensionPropertyWithVendor) 方法，传入指定的 `key` 和 `value`，即可快速实现 `MetaKit` 插件的能力。其中：
 
@@ -42,9 +42,9 @@ description: "查看 MetaKit 插件的键值说明，了解关键概念、参数
 
 ### 开启场景视图的画面捕获
 
-使用该接口开启场景视图的画面捕获后，调用 [`joinChannel [2/2]`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 加入频道，即可将场景视图的视频流发布到频道中。
+使用该接口开启场景视图的画面捕获后，调用 [`joinChannel [2/2]`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道，即可将场景视图的视频流发布到频道中。
 
-使用该接口开启场景视图的画面捕获后，调用 [`joinChannelByToken [2/4]`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道，即可将场景视图的视频流发布到频道中。
+使用该接口开启场景视图的画面捕获后，调用 [`joinChannelByToken [2/4]`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道，即可将场景视图的视频流发布到频道中。
 
 - `key`：`enableSceneVideo`
 - `value`：Object。包含以下字段：
@@ -238,6 +238,7 @@ MetaKit 插件为虚拟形象提供了一套换装资源。
 </TabsContent>
 </Tabs>
 
+<a id="animoji"></a>
 ## Animoji 和 Sticker
 
 MetaKit 插件支持你对 Animoji、Sticker 进行形象切换。体验 Animoji 和 Sticker 相关功能，需要在[开启纹理请求](#开启纹理请求)或[添加场景视图](#添加场景视图)时将 `avatarMode` 设置为 `1`。

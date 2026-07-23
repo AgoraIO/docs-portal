@@ -402,7 +402,7 @@ public abstract int pushVideoFrameToDisplay(String displayId, AgoraVideoFrame fr
 **参数**
 
 - `displayId`：指定显示器的 ID。ID 需要由你的 Native 开发人员和 Unity 开发人员协商后规定。
-- `frame`：原始视频帧。详见 RTC SDK API 参考中的 [`AgoraVideoFrame`](https://docs.agora.io/cn/live-streaming-premium-4.x/API%20Reference/java_ng/API/rtc_api_data_type.html#class_externalvideoframe)。
+- `frame`：原始视频帧。详见 RTC SDK API 参考中的 [`AgoraVideoFrame`](/zh-CN/api-reference/rtc/android/class-externalvideoframe)。
 
 **返回值**
 
@@ -461,7 +461,7 @@ public abstract int enableSceneVideoCapture(TextureView view, boolean enable);
 
 开启或关闭场景渲染画面捕获。
 
-该方法用于开启或关闭场景渲染画面捕获。通过与 `RtcEngine` 的 [`joinChannel` [2/2]](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/API%20Reference/java_ng/API/toc_core_method.html#api_irtcengine_joinchannel2) 方法配合使用，可以将场景渲染的画面发布到 RTC 频道中。
+该方法用于开启或关闭场景渲染画面捕获。通过与 `RtcEngine` 的 [`joinChannel` [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 方法配合使用，可以将场景渲染的画面发布到 RTC 频道中。
 
 **参数**
 
@@ -821,7 +821,7 @@ public class MetaServiceConfig {
 }
 ```
 
-- `mRtcEngine`：`RtcEngine` 实例，创建方法详见 [`create` [1/2]](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/API%20Reference/java_ng/API/toc_core_method.html#api_irtcengine_create)。
+- `mRtcEngine`：`RtcEngine` 实例，创建方法详见 [`create` [1/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_create)。
 - `mAppId`：在声网控制台获取的 App ID。
 - `mRtmToken` ：用于登录声网 RTM 系统的动态密钥。开启动态鉴权后可用。
 - `mLocalDownloadPath` ：场景资源下载到本地的保存路径。
@@ -1035,7 +1035,7 @@ public class SceneDisplayConfig {
 
 ## 概述
 
-Meta SDK 是基于声网视频 SDK 开发的元系列特殊版 SDK。相比[视频 SDK](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/API%20Reference/ios_ng/API/rtc_api_overview_ng.html)，Meta SDK 中新增元系列相关的 API。
+Meta SDK 是基于声网视频 SDK 开发的元系列特殊版 SDK。相比[视频 SDK](/zh-CN/api-reference/rtc/ios/rtc-api-overview)，Meta SDK 中新增元系列相关的 API。
 
 <a id="agorametaservicekit"></a>
 ## AgoraMetaServiceKit
@@ -1352,7 +1352,7 @@ x
 **参数**
 
 - `displayId`：指定显示器的 ID。ID 需要由你的 Native 开发人员和 Unity 开发人员协商后规定。
-- `frame`：视频帧。详见 RTC SDK API 参考中的 [`AgoraVideoFrame`](https://docs.agora.io/cn/live-streaming-premium-4.x/API%20Reference/ios_ng/API/rtc_api_data_type.html#class_externalvideoframe)。
+- `frame`：视频帧。详见 RTC SDK API 参考中的 [`AgoraVideoFrame`](/zh-CN/api-reference/rtc/ios/class-externalvideoframe)。
 
 **返回值**
 
@@ -1436,7 +1436,7 @@ x
 
 开启或关闭场景渲染画面捕获。
 
-该方法用于开启或关闭场景渲染画面捕获。通过与 `AgoraRtcEngineKit` 的 [`joinChannelByToken` [1/2]](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/API%20Reference/ios_ng/API/toc_core_method.html#api_irtcengine_joinchannel) 方法配合使用，可以将场景渲染的画面发布到 RTC 频道中。
+该方法用于开启或关闭场景渲染画面捕获。通过与 `AgoraRtcEngineKit` 的 [`joinChannelByToken` [1/2]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 方法配合使用，可以将场景渲染的画面发布到 RTC 频道中。
 
 **参数**
 
@@ -1619,7 +1619,7 @@ x
 
 Token 即将过期回调。
 
-收到该回调后，你需要在服务器生成新的 Token，然后调用 [`renewToken`](#renewToken) 并在参数里传入新 Token。
+收到该回调后，你需要在服务器生成新的 Token，然后调用 [`renewToken`](#renewtoken) 并在参数里传入新 Token。
 
 <a id="ongetsceneassetsinforesult"></a>
 ### onGetSceneAssetsInfoResult
@@ -1804,7 +1804,7 @@ __attribute__((visibility("default"))) @interface AgoraMetaServiceConfig : NSObj
   - 使用 Int 型的 RTC 用户 ID，RTM 用户 ID 设为不同的数字字符串，并且自行维护二者的映射关系。
 - `delegate`：回调事件，详见 [`AgoraMetaEventDelegate`](#agorametaeventdelegate)。
 - `localDownloadPath` ：场景资源下载到本地的保存路径。
-- `rtcEngine`：`AgoraRtcEngineKit` 实例，创建方法详见 [`sharedEngineWithConfig`](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/API%20Reference/ios_ng/API/toc_core_method.html#api_irtcengine_initialize)。
+- `rtcEngine`：`AgoraRtcEngineKit` 实例，创建方法详见 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize)。
 
 <a id="agorametauserinfo"></a>
 ### AgoraMetaUserInfo

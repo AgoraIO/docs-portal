@@ -20,8 +20,8 @@ int agora_iot_register_and_bind(const char *host_url, const char *product_key, c
 
 | 参数 | 描述 |
 | --- | --- |
-| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
-| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | [in] `device_id` | <Slot name="device-manager-html-0-3-1" /> |
 | [in] `user_id` | 你的用户 ID。 |
 | [in] `device_nickname` | 设备昵称。客户端 SDK 的设备绑定列表会显示该昵称。你可以任意指定，通常建议与产品名称一致（请使用 UTF-8 编码设置中文名称）。如果使用了绑定功能，该名称将显示在客户端。你也可以在客户端为设备重新命名。 |
@@ -35,7 +35,7 @@ int agora_iot_register_and_bind(const char *host_url, const char *product_key, c
       - 阿拉伯数字： 0-9。
       - 特殊符号：`":"`、`"_"`、`"-"`。
 
-      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/license)获取免费或商业 License。
+      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/license)获取免费或商业 License。
 
 </Slot>
 
@@ -55,8 +55,8 @@ int agora_iot_query_user(const char *host_url,  const char *product_key, const c
 
 | 参数 | 描述 |
 | --- | --- |
-| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
-| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | [in] `device_id` | <Slot name="device-manager-html-1-3-1" /> |
 | [out] `user_id` | 与设备绑定的的用户 ID。 |
 
@@ -68,7 +68,7 @@ int agora_iot_query_user(const char *host_url,  const char *product_key, const c
       - 阿拉伯数字： 0-9。
       - 特殊符号：`":"`、`"_"`、`"-"`。
 
-      设备 ID 与 License 绑定。参考 [开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)获取免费或商业 License。
+      设备 ID 与 License 绑定。参考 [开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)获取免费或商业 License。
 
 </Slot>
 
@@ -93,10 +93,10 @@ int agora_iot_license_activate(const char *appid, const char *key, const char *s
 
 | 参数 | 描述 |
 | --- | --- |
-| [in] `appid` | 你的声网 App ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
-| [in] `key` | 你的 Restful API Customer ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
-| [in] `secret` | 你的 Restful API Customer Secret。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
-| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见 [开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| [in] `appid` | 你的声网 App ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `key` | 你的 Restful API Customer ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `secret` | 你的 Restful API Customer Secret。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见 [开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | [in] `device_id` | <Slot name="device-manager-html-2-5-1" /> |
 | [in] `pid` | 你的 PID。可以从声网灵隼控制台的用量查看页面中获取。 |
 | [out] `cert` | 激活成功后生成的证书。License 激活成功后，接口将返回获取到的 License 检验证书，用于 SDK 初始化的授权凭证，你需要保存证书到配置文件或 Flash 中，下次运行时从文件或 Flash 中获取证书。 |
@@ -109,7 +109,7 @@ int agora_iot_license_activate(const char *appid, const char *key, const char *s
       - 阿拉伯数字： 0-9。
       - 特殊符号：`":"`、`"_"`、`"-"`。
 
-      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/license)获取免费或商业 License。
+      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/license)获取免费或商业 License。
 
 </Slot>
 

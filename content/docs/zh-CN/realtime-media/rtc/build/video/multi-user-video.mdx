@@ -18,11 +18,11 @@ description: "了解如何在实时互动 RTC 中多人视频场景，包括适�
 
 ### 1. 发流端开启双流模式
 
-发流端在发布本地音视频轨道之前，调用 [`enableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#enabledualstream) 开启双流模式。开启双流模式后，SDK 会在发送视频流的同时，额外发送一路分辨率低、码率低的视频流。其中，原视频流称为大流，分辨率和码率更低的那路流则称为小流。
+发流端在发布本地音视频轨道之前，调用 [`enableDualStream`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 开启双流模式。开启双流模式后，SDK 会在发送视频流的同时，额外发送一路分辨率低、码率低的视频流。其中，原视频流称为大流，分辨率和码率更低的那路流则称为小流。
 
 大流的视频属性（Video Profile）理论上可以设置为所有 SDK 支持的视频属性，但声网建议使用不超过分辨率 640 x 480，帧率 15 fps 的视频属性。
 
-小流的视频属性默认固定为分辨率 160 × 120，帧率 15 fps，码率 50 Kbps。如果你不想要使用默认的小流视频属性，可以调 [`setLowStreamParameter`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setlowstreamparameter) 自定义小流的视频参数，防止因小流码率过高而造成带宽压力。
+小流的视频属性默认固定为分辨率 160 × 120，帧率 15 fps，码率 50 Kbps。如果你不想要使用默认的小流视频属性，可以调 [`setLowStreamParameter`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setlowstreamparameter) 自定义小流的视频参数，防止因小流码率过高而造成带宽压力。
 
 :::warning[注意]
 - 小流的分辨率（宽 x 高）比例需要和大流的分辨率（宽 x 高）比例相同。
@@ -31,7 +31,7 @@ description: "了解如何在实时互动 RTC 中多人视频场景，包括适�
 
 ### 2. 接收端设置订阅流类型
 
-接收端调用 [`setRemoteVideoStreamType`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setremotevideostreamtype) 订阅某一用户的视频大流，订阅其它用户的视频小流。声网建议你在界面布局里采用一大多小的窗口布局：大窗口显示大流的画面，小窗口显示小流的画面。
+接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setremotevideostreamtype) 订阅某一用户的视频大流，订阅其它用户的视频小流。声网建议你在界面布局里采用一大多小的窗口布局：大窗口显示大流的画面，小窗口显示小流的画面。
 
 :::warning[注意]
 - 桌面端最多订阅 4 路大流和 13 路小流。

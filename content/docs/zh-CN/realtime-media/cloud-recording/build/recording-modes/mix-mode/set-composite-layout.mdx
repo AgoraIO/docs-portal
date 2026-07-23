@@ -202,7 +202,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 ### 录制过程中更新合流布局
 
-在录制过程中，如果频道中的用户数量、大小流或用户角色发生变化，你可以随时调用 [`updateLayout`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-updateLayout) 方法更新录制合流布局。
+在录制过程中，如果频道中的用户数量、大小流或用户角色发生变化，你可以随时调用 [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 方法更新录制合流布局。
 
 需要注意的是，调用该方法传入字段会覆盖原来的布局设置。举例来说，如果你在开始录制时设置了 `backgroundColor` 为 `"#505E72"`（蓝灰色），调用该方法更新合流布局时如果不设置 `backgroundColor` 字段，背景色会变为默认值黑色。
 
@@ -301,5 +301,5 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 你可以参考以下方法了解字段详情：
 
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
-- [`updateLayout`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-updateLayout)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
+- [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout)

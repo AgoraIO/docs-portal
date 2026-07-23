@@ -28,7 +28,7 @@ URL 拉流播放指通过 URL 地址从远程服务器获取并播放媒体流�
 ### 1. 拼接 URL
 
 :::info[信息]
-如果你要播放的是 CDN 直播流或本地媒体文件，可直接跳过本步骤，前往步骤 2。支持播放的格式见[播放器支持的格式及协议](/zh-CN/realtime-media/rtc/build/audio/media-player#%E6%94%AF%E6%8C%81%E7%9A%84%E6%A0%BC%E5%BC%8F)。
+如果你要播放的是 CDN 直播流或本地媒体文件，可直接跳过本步骤，前往步骤 2。支持播放的格式见[播放器支持的格式及协议](/zh-CN/realtime-media/rtc/build/audio/media-player#支持的格式)。
 :::
 
 声网支持观众端直接打开特定的 URL 观看直播。你可以参考下列步骤来拼接一个直播 URL。
@@ -114,7 +114,7 @@ String encodedToken = Uri.encode(token);
 以下示例代码和 API 均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
 :::
 
-- 调用 [`Rte`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_rte) 来构造一个 `Rte` 对象实例。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 设置你的项目的 App ID，然后调用 [`InitMediaEngine`](/api-ref/rtc/windows/API/toc_rte_player#InitMediaEngine) 来创建并初始化 RTE 引擎。
+- 调用 [`Rte`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#rte) 来构造一个 `Rte` 对象实例。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 设置你的项目的 App ID，然后调用 [`InitMediaEngine`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#initmediaengine) 来创建并初始化 RTE 引擎。
 
   ```cpp
   // 创建一个 Config 对象实例
@@ -131,7 +131,7 @@ String encodedToken = Uri.encode(token);
   });
   ```
 
-- 如果你已经创建并初始化 RTC 引擎，可直接调用 [`GetFromBridge`](/api-ref/rtc/windows/API/toc_rte_player#GetFromBridge) 方法从现有的 RTC 引擎中桥接出一个 Rte 对象。
+- 如果你已经创建并初始化 RTC 引擎，可直接调用 [`GetFromBridge`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#getfrombridge) 方法从现有的 RTC 引擎中桥接出一个 Rte 对象。
 
   ```cpp
   rte::Rte *rte;
@@ -148,9 +148,9 @@ rte::Player* player = new rte::Player(rte);
 
 ### 4. 渲染主播视图
 
-1. 调用 [`Canvas`](/api-ref/rtc/windows/API/toc_rte_player#Canvas) 创建一个画布对象。
-2. 调用 [`AddView`](/api-ref/rtc/windows/API/toc_rte_player#AddView) 将一个视图（view）添加到画布中。
-3. 调用 [`SetCanvas`](/api-ref/rtc/windows/API/toc_rte_player#SetCanvas) 指定画布对象来显示视频。当视频流成功播放后，视频画面会显示在这个指定的画布上。
+1. 调用 [`Canvas`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#canvas) 创建一个画布对象。
+2. 调用 [`AddView`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#addview) 将一个视图（view）添加到画布中。
+3. 调用 [`SetCanvas`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setcanvas) 指定画布对象来显示视频。当视频流成功播放后，视频画面会显示在这个指定的画布上。
 
    ```cpp
    // 创建 Canvas 对象
@@ -162,10 +162,10 @@ rte::Player* player = new rte::Player(rte);
 
 ### 5. 打开 URL
 
-调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 来打开 URL 并播放。默认情况下成功打开 URL 后会自动开始播放，如果你想关闭自动播放，可以调用 [`SetAutoPlay`](/api-ref/rtc/windows/API/toc_rte_player#SetAutoPlay) 将 `auto_play` 设为 `false`。
+调用 [`OpenWithUrl`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#openwithurl) 来打开 URL 并播放。默认情况下成功打开 URL 后会自动开始播放，如果你想关闭自动播放，可以调用 [`SetAutoPlay`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setautoplay) 将 `auto_play` 设为 `false`。
 
 :::warning[注意]
-如果你打开 URL 失败，需要调用 [`Stop`](/api-ref/rtc/windows/API/toc_rte_player#Stop) 停止本次播放，然后再调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 重新打开。
+如果你打开 URL 失败，需要调用 [`Stop`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#stop) 停止本次播放，然后再调用 [`OpenWithUrl`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#openwithurl) 重新打开。
 :::
 
 ```cpp
@@ -175,18 +175,18 @@ player->OpenWithUrl("rte://{appid}/{appname}/{channelname}", 0, [](rte::Error* e
 
 ### 6. 切换播放源
 
-如果你播放的是 CDN URL 或本地的媒体文件，在播放过程中你可以调用 [`SwitchWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#SwitchWithUrl) 切换一个新的播放源。
+如果你播放的是 CDN URL 或本地的媒体文件，在播放过程中你可以调用 [`SwitchWithUrl`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#switchwithurl) 切换一个新的播放源。
 
 ```cpp
 player->SwitchWithUrl("rtmp://example.com/live/stream123", true, [](rte::Error* err) {
 });
 ```
 
-声网还支持在播放过程中设置播放音量，如果你播放的是本地媒体文件，还可以从指定位置开始播放、设置播放速度、循环播放次数等，详见 [API 文档](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_rte_player)。
+声网还支持在播放过程中设置播放音量，如果你播放的是本地媒体文件，还可以从指定位置开始播放、设置播放速度、循环播放次数等，详见 [API 文档](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#toc_rte_player)。
 
 ### 7. 暂停/停止播放
 
-如果需要终止播放，调用 [`Stop`](/api-ref/rtc/windows/API/toc_rte_player#Stop) 方法，如果需要暂停当前播放，调用 [`Pause`](/api-ref/rtc/windows/API/toc_rte_player#Pause) 方法。
+如果需要终止播放，调用 [`Stop`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#stop) 方法，如果需要暂停当前播放，调用 [`Pause`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#pause) 方法。
 
 ```cpp
 player->Pause();
@@ -359,12 +359,12 @@ curl -X POST "https://api.agora.io/v1/projects/{appid}/abr/config/layers/6" \
 
 此外，声网也支持手动切换到指定的视频质量层级，你可以自定义不同质量层级的视频流所对应的分辨率。SDK 会以你指定订阅的最低质量层级分辨率为下限，在此范围内根据网络状况动态调整分辨率。你可以通过下列 API 来进行设置：
 
-- [`SetAbrSubscriptionLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrSubscriptionLayer)：设置订阅某一质量层级的视频流。例如，如果你订阅的分辨率层级为 0，则 SDK 会订阅分辨率最高的视频流。
-- [`SetAbrFallbackLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrFallbackLayer)：设置订阅的视频流的回退层级。网络情况差时，SDK 会以你指定的回退层级为**下限**，在此范围内根据网络状况动态调整分辨率。同时，SDK 会持续监控网络质量，并在网络质量改善时恢复至你所订阅的视频流质量层级。
+- [`SetAbrSubscriptionLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrsubscriptionlayer)：设置订阅某一质量层级的视频流。例如，如果你订阅的分辨率层级为 0，则 SDK 会订阅分辨率最高的视频流。
+- [`SetAbrFallbackLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrfallbacklayer)：设置订阅的视频流的回退层级。网络情况差时，SDK 会以你指定的回退层级为**下限**，在此范围内根据网络状况动态调整分辨率。同时，SDK 会持续监控网络质量，并在网络质量改善时恢复至你所订阅的视频流质量层级。
 
 你可以参考下列步骤来实现：
 
-1. 调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 打开 URL 并播放。
+1. 调用 [`OpenWithUrl`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#openwithurl) 打开 URL 并播放。
 
    ```cpp
    // 频道名后拼接 _abr 表示启用自适应码率功能
@@ -375,7 +375,7 @@ curl -X POST "https://api.agora.io/v1/projects/{appid}/abr/config/layers/6" \
    });
    ```
 
-2. 调用 [`SetAbrSubscriptionLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrSubscriptionLayer) 设置订阅的视频质量层级。调用 [`SetAbrFallbackLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrFallbackLayer) 设置网络情况差时回退的视频质量层级。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 将设置应用到播放器中。
+2. 调用 [`SetAbrSubscriptionLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrsubscriptionlayer) 设置订阅的视频质量层级。调用 [`SetAbrFallbackLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrfallbacklayer) 设置网络情况差时回退的视频质量层级。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 将设置应用到播放器中。
 
    :::warning[注意]
    观众设置订阅的视频分辨率不得超过主播源视频的分辨率。

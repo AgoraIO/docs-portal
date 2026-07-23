@@ -120,7 +120,7 @@ url = client.get_current_url()
 
 ### Sub-clients
 
-`Agora` 和 `AsyncAgora` 都暴露了原始 API client，便于访问尚未被 `Agent` 或 `AgentSession` 封装的接口。大多数场景下，建议优先使用 [`Agent`](#agent) 与 [`AgentSession / AsyncAgentSession`](#agentsession--asyncagentsession) 这套高层 API。
+`Agora` 和 `AsyncAgora` 都暴露了原始 API client，便于访问尚未被 `Agent` 或 `AgentSession` 封装的接口。大多数场景下，建议优先使用 [`Agent`](#agent) 与 [`AgentSession / AsyncAgentSession`](#agentsession-asyncagentsession) 这套高层 API。
 
 | Property | Sync type | Async type | Description |
 |---|---|---|---|
@@ -164,7 +164,7 @@ Agent(
 )
 ```
 
-所有参数均为可选项。创建后可通过 [builder methods](#builder-methods-1) 配置各 vendor。
+所有参数均为可选项。创建后可通过 [builder methods](#builder-methods) 配置各 vendor。
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -189,7 +189,7 @@ Agent(
 
 #### `with_llm(vendor)`
 
-为级联流程设置 LLM vendor。可传入任意 [LLM vendor class](#llm-vendors-1)（`AliyunLLM`、`BytedanceLLM`、`DeepSeekLLM` 或 `TencentLLM`）的实例。
+为级联流程设置 LLM vendor。可传入任意 [LLM vendor class](#llm-vendors)（`AliyunLLM`、`BytedanceLLM`、`DeepSeekLLM` 或 `TencentLLM`）的实例。
 
 ```python
 with_llm(vendor: BaseLLM) -> Agent
@@ -197,7 +197,7 @@ with_llm(vendor: BaseLLM) -> Agent
 
 #### `with_tts(vendor)`
 
-设置 TTS vendor。该方法会记录 vendor 的 `sample_rate`，用于进行[数字人](#avatar-vendors-1)校验。
+设置 TTS vendor。该方法会记录 vendor 的 `sample_rate`，用于进行[数字人](#avatar-vendors)校验。
 
 ```python
 with_tts(vendor: BaseTTS) -> Agent
@@ -205,7 +205,7 @@ with_tts(vendor: BaseTTS) -> Agent
 
 #### `with_stt(vendor)`
 
-设置 STT vendor。可传入任意 [STT vendor class](#stt-vendors-1) 的实例。
+设置 STT vendor。可传入任意 [STT vendor class](#stt-vendors) 的实例。
 
 ```python
 with_stt(vendor: BaseSTT) -> Agent
@@ -272,7 +272,7 @@ with_greeting(greeting: str) -> Agent
 
 ### `create_session()`
 
-使用已绑定到 `Agent(client=...)` 的 client 创建一个 [`AgentSession`](#agentsession-asyncagentsession)。该方法不会启动智能体，需调用 [`session.start()`](#start-1) 让其入会。智能体实例名通过 `name` 参数在此传入，会在会话启动时发送给 Start Agent API。
+使用已绑定到 `Agent(client=...)` 的 client 创建一个 [`AgentSession`](#agentsession-asyncagentsession)。该方法不会启动智能体，需调用 [`session.start()`](#start) 让其入会。智能体实例名通过 `name` 参数在此传入，会在会话启动时发送给 Start Agent API。
 
 ```python
 create_session(
@@ -296,7 +296,7 @@ create_session(
 | `remote_uids` | `List[str]` | Yes | 智能体要监听并响应的远端用户 UID 列表 |
 | `name` | `Optional[str]` | No | 发送给 Start Agent API 的智能体实例名。省略时 SDK 自动生成 `agent-{timestamp}` |
 | `token` | `Optional[str]` | No | 预先构造好的 RTC+RTM token。不传则基于 app credentials 自动生成 |
-| `expires_in` | `Optional[int]` | No | token 有效期，单位为秒。仅在自动生成 token 时生效。有效范围为 1–86400。可使用 [`expires_in_hours()`](#expires_in_hours-expires_in_minutes) 提升可读性 |
+| `expires_in` | `Optional[int]` | No | token 有效期，单位为秒。仅在自动生成 token 时生效。有效范围为 1–86400。可使用 [`expires_in_hours()`](#expiresinhours-expiresinminutes) 提升可读性 |
 | `idle_timeout` | `Optional[int]` | No | 未检测到音频时，智能体自动退出前的秒数 |
 | `enable_string_uid` | `Optional[bool]` | No | 使用字符串 UID 而不是数值 UID |
 
@@ -366,7 +366,7 @@ Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningAction
 
 ## AgentSession / AsyncAgentSession
 
-`AgentSession`（sync）和 `AsyncAgentSession`（async）负责管理运行中智能体的完整生命周期。通常通过 [`agent.create_session()`](#create_session) 获取 session；也可在高级场景下直接构造。
+`AgentSession`（sync）和 `AsyncAgentSession`（async）负责管理运行中智能体的完整生命周期。通常通过 [`agent.create_session()`](#createsession) 获取 session；也可在高级场景下直接构造。
 
 ```python
 from agora_agent import AgentSession
@@ -633,7 +633,7 @@ from agora_agent import (
 
 ### LLM vendors
 
-与 [`with_llm()`](#with_llmvendor) 配合使用。LLM helper 均复用 OpenAI 兼容协议（`style=openai`），内部设置各自的 vendor 标识。CN 场景下这些 helper 均为 BYOK，要求传入 `base_url`、`model` 和 `api_key`。
+与 [`with_llm()`](#withllmvendor) 配合使用。LLM helper 均复用 OpenAI 兼容协议（`style=openai`），内部设置各自的 vendor 标识。CN 场景下这些 helper 均为 BYOK，要求传入 `base_url`、`model` 和 `api_key`。
 
 :::info
 `greeting_configs` 可接收 dict 或 `LlmGreetingConfigs`。在 v2.7 中，`greeting_configs.interruptable=False` 表示问候语不可被打断；`True` 则遵循全局 `interruption` 设置。
@@ -672,7 +672,7 @@ llm = AliyunLLM(
 
 ### TTS vendors
 
-与 [`with_tts()`](#with_ttsvendor) 配合使用。`sample_rate` 选项决定数字人兼容性，详见 [`with_avatar()`](#with_avatarvendor)。
+与 [`with_tts()`](#withttsvendor) 配合使用。`sample_rate` 选项决定数字人兼容性，详见 [`with_avatar()`](#withavatarvendor)。
 
 所有 TTS 类均支持 `skip_patterns` 和 `additional_params`。
 
@@ -809,7 +809,7 @@ from agora_agent import StepFunTTS
 
 ### STT vendors
 
-与 [`with_stt()`](#with_sttvendor) 配合使用。
+与 [`with_stt()`](#withsttvendor) 配合使用。
 
 #### FengmingSTT
 
@@ -895,7 +895,7 @@ from agora_agent import XfyunDialectSTT
 
 ### Avatar vendors
 
-与 [`with_avatar()`](#with_avatarvendor) 配合使用。
+与 [`with_avatar()`](#withavatarvendor) 配合使用。
 
 #### SenseTimeAvatar
 
@@ -928,7 +928,7 @@ from agora_agent.agentkit import expires_in_hours, expires_in_minutes
 
 ### `generate_convo_ai_token()`
 
-生成一个同时具备 RTC 和 RTM 权限的 Conversational AI token。这与 SDK 在 app-credentials 模式下自动生成的 token 相同。当你需要把预生成 token 传给 [`create_session()`](#create_session) 时，可以使用该方法。
+生成一个同时具备 RTC 和 RTM 权限的 Conversational AI token。这与 SDK 在 app-credentials 模式下自动生成的 token 相同。当你需要把预生成 token 传给 [`create_session()`](#createsession) 时，可以使用该方法。
 
 ```python
 generate_convo_ai_token(
@@ -993,7 +993,7 @@ generate_rtc_token(
 
 ### `expires_in_hours()` / `expires_in_minutes()`
 
-用于指定 token 生命周期的辅助函数。可与 [`create_session()`](#create_session) 或 token 生成函数配合使用。函数会校验输入值，并在超过声网上限 86400 秒（24 小时）时自动截断。
+用于指定 token 生命周期的辅助函数。可与 [`create_session()`](#createsession) 或 token 生成函数配合使用。函数会校验输入值，并在超过声网上限 86400 秒（24 小时）时自动截断。
 
 ```python
 expires_in_hours(hours: int) -> int
@@ -1059,7 +1059,7 @@ from agora_agent import Area
 
 ### `SpeakPriority`
 
-控制智能体在处理 [`say()`](#say-text-priority-none-interruptable-none) 调用时，相对于当前行为应如何处理消息。通过字符串传给 `session.say()`。
+控制智能体在处理 [`say()`](#saytext-prioritynone-interruptablenone) 调用时，相对于当前行为应如何处理消息。通过字符串传给 `session.say()`。
 
 | Value | Description |
 |---|---|

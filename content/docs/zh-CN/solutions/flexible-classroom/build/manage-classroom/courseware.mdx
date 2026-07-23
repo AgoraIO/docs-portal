@@ -19,10 +19,10 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
 如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
 
-1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置白板功能)。
 2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)。
-3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
-4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+3. 在你的 App 服务端调用 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
 
    白板资源转换服务返回的查询结果：
 
@@ -110,7 +110,7 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
    `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
 
-5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+5. 在你的客户端调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 时通过 [courseWareList](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
 
     ```json
     courseWareList: [
@@ -254,10 +254,10 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
 如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
 
-1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置白板功能)。
 2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)。
-3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
-4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+3. 在你的 App 服务端调用 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
 
    白板资源转换服务返回的查询结果：
 
@@ -345,7 +345,7 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
    `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
 
-5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+5. 在你的客户端调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 时通过 [courseWareList](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
 
     ```json
     courseWareList: [
@@ -489,10 +489,10 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
 如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
 
-1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置白板功能)。
 2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)。
-3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
-4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+3. 在你的 App 服务端调用 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
 
    白板资源转换服务返回的查询结果：
 
@@ -580,7 +580,7 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
    `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
 
-5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+5. 在你的客户端调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 时通过 [courseWareList](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
 
     ```json
     courseWareList: [
@@ -724,10 +724,10 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
 如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
 
-1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置白板功能)。
 2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)。
-3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
-4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+3. 在你的 App 服务端调用 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
 
    白板资源转换服务返回的查询结果：
 
@@ -815,7 +815,7 @@ description: "了解灵动课堂在不同平台上的上传课件方式，包括
 
    `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
 
-5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+5. 在你的客户端调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 时通过 [courseWareList](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
 
     ```json
     courseWareList: [

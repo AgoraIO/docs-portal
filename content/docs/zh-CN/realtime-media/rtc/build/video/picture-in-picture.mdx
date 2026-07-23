@@ -27,7 +27,7 @@ description: "了解实时互动 RTC 在不同平台上的画中画方式，包�
 
 ## 实现方法
 
-自声网 RTC Flutter SDK v6.6.2 起，声网提供 [`AgoraPipController`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agorapip) 控制器及相关配置项，用于在 Android 和 iOS 平台启用和管理画中画能力。本节介绍如何在 Flutter 项目中实现画中画功能。
+自声网 RTC Flutter SDK v6.6.2 起，声网提供 [`AgoraPipController`](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip) 控制器及相关配置项，用于在 Android 和 iOS 平台启用和管理画中画能力。本节介绍如何在 Flutter 项目中实现画中画功能。
 
 ### 完成平台端配置
 
@@ -123,7 +123,7 @@ final pipAutoEnterSupported = await _pip.pipIsAutoEnterSupported();
 
 ### 配置画中画参数
 
-调用 `pipSetup()` 配置画中画参数。你可以通过 [`AgoraPipOptions`](/api-ref/rtc/flutter/API/class_agorapipoptions) 为 Android 和 iOS 分别设置不同选项。
+调用 `pipSetup()` 配置画中画参数。你可以通过 [`AgoraPipOptions`](/zh-CN/api-reference/rtc/flutter/class-agorapipoptions) 为 Android 和 iOS 分别设置不同选项。
 
 <Tabs defaultValue="android" groupId="platform" persist>
 <TabsList>
@@ -218,7 +218,7 @@ await _pip.pipSetup(options);
 
 ### 监听画中画状态变化
 
-你可以通过实现 [`AgoraPipStateChangedObserver`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agorapipstatechangedobserver) 监听画中画状态变化，并根据 [`AgoraPipState`](/api-ref/rtc/flutter/API/enum_agorapipstate) 更新 UI 或执行异常处理逻辑。
+你可以通过实现 [`AgoraPipStateChangedObserver`](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver) 监听画中画状态变化，并根据 [`AgoraPipState`](/zh-CN/api-reference/rtc/flutter/enum-agorapipstate) 更新 UI 或执行异常处理逻辑。
 
 ```dart
 await _pip.registerPipStateChangedObserver(
@@ -323,20 +323,20 @@ await _pip.dispose();
 
 ### API 参考
 
-- [`AgoraPipController`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agorapip)
-- [`AgoraPipOptions`](/api-ref/rtc/flutter/API/class_agorapipoptions)
-- [`AgoraPipContentViewLayout`](/api-ref/rtc/flutter/API/class_agorapipcontentviewlayout)
-- [`AgoraPipVideoStream`](/api-ref/rtc/flutter/API/class_agorapipvideostream)
-- [`pipIsSupported`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipissupported)
-- [`pipIsAutoEnterSupported`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipisautoentersupported)
-- [`pipSetup`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipsetup)
-- [`pipStart`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipstart)
-- [`pipStop`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipstop)
-- [`pipDispose`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_pipdispose)
-- [`registerPipStateChangedObserver`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#api_agorapip_registerpipstatechangedobserver)
-- [`AgoraPipStateChangedObserver`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agorapipstatechangedobserver)
-- [`AgoraPipState`](/api-ref/rtc/flutter/API/enum_agorapipstate)
-- [`onPipStateChanged`](/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering#callback_agorapipstatechangedobserver_onpipstatechanged)
+- [`AgoraPipController`](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+- [`AgoraPipOptions`](/zh-CN/api-reference/rtc/flutter/class-agorapipoptions)
+- [`AgoraPipContentViewLayout`](/zh-CN/api-reference/rtc/flutter/class-agorapipcontentviewlayout)
+- [`AgoraPipVideoStream`](/zh-CN/api-reference/rtc/flutter/class-agorapipvideostream)
+- [`pipIsSupported`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipissupported)
+- [`pipIsAutoEnterSupported`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipisautoentersupported)
+- [`pipSetup`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipsetup)
+- [`pipStart`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipstart)
+- [`pipStop`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipstop)
+- [`pipDispose`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_pipdispose)
+- [`registerPipStateChangedObserver`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_agorapip_registerpipstatechangedobserver)
+- [`AgoraPipStateChangedObserver`](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)
+- [`AgoraPipState`](/zh-CN/api-reference/rtc/flutter/enum-agorapipstate)
+- [`onPipStateChanged`](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#callback_agorapipstatechangedobserver_onpipstatechanged)
 
 ### 示例项目
 
@@ -372,7 +372,7 @@ await _pip.dispose();
 
 ## 实现方法
 
-自声网 RTC React Native SDK v4.6.2 起，声网提供 [`AgoraPip`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapip) 控制器及相关配置项，用于在 Android 和 iOS 平台启用和管理画中画能力。本节介绍如何在 React Native 项目中实现画中画功能。
+自声网 RTC React Native SDK v4.6.2 起，声网提供 [`AgoraPip`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip) 控制器及相关配置项，用于在 Android 和 iOS 平台启用和管理画中画能力。本节介绍如何在 React Native 项目中实现画中画功能。
 
 ### 完成平台端配置
 <Tabs defaultValue="android" groupId="platform" persist>
@@ -463,7 +463,7 @@ const isPipAutoEnterSupported = pip.pipIsAutoEnterSupported();
 
 ### 配置画中画参数
 
-调用 `pipSetup` 配置画中画参数。你可以通过 [`AgoraPipOptions`](/api-ref/rtc/rn/API/class_agorapipoptions) 为 Android 和 iOS 分别设置不同选项。
+调用 `pipSetup` 配置画中画参数。你可以通过 [`AgoraPipOptions`](/zh-CN/api-reference/rtc/react-native/class-agorapipoptions) 为 Android 和 iOS 分别设置不同选项。
 
 <Tabs defaultValue="android" groupId="platform" persist>
 <TabsList>
@@ -572,7 +572,7 @@ iOS 平台支持设置画中画窗口尺寸、视频流布局和系统控制样�
 
 ### 监听画中画状态变化
 
-你可以通过实现 [`AgoraPipStateChangedObserver`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapipstatechangedobserver) 监听画中画状态变化，并根据 [`AgoraPipState`](/api-ref/rtc/rn/API/enum_agorapipstate) 更新 UI 或执行异常处理逻辑。
+你可以通过实现 [`AgoraPipStateChangedObserver`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapipstatechangedobserver) 监听画中画状态变化，并根据 [`AgoraPipState`](/zh-CN/api-reference/rtc/react-native/enum-agorapipstate) 更新 UI 或执行异常处理逻辑。
 
 ```typescript
 onPipStateChanged(state: AgoraPipState, error: string | null): void {
@@ -677,20 +677,20 @@ pip.release();
 
 ### API 参考
 
-- [`AgoraPip`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapip)
-- [`AgoraPipOptions`](/api-ref/rtc/rn/API/class_agorapipoptions)
-- [`AgoraPipContentViewLayout`](/api-ref/rtc/rn/API/class_agorapipcontentviewlayout)
+- [`AgoraPip`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapip)
+- [`AgoraPipOptions`](/zh-CN/api-reference/rtc/react-native/class-agorapipoptions)
+- [`AgoraPipContentViewLayout`](/zh-CN/api-reference/rtc/react-native/class-agorapipcontentviewlayout)
 - [`AgoraPipVideoStream`](/api-ref/rtc/rn/API/class_agorapipvideostream)
-- [`pipIsSupported`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipissupported)
-- [`pipIsAutoEnterSupported`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipisautoentersupported)
-- [`pipSetup`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipsetup)
-- [`pipStart`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipstart)
-- [`pipStop`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipstop)
-- [`pipDispose`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipdispose)
-- [`unregisterPipStateChangedObserver`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_unregisterpipstatechangedobserver)
-- [`AgoraPipStateChangedObserver`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapipstatechangedobserver)
-- [`AgoraPipState`](/api-ref/rtc/rn/API/enum_agorapipstate)
-- [`onPipStateChanged`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#callback_agorapipstatechangedobserver_onpipstatechanged)
+- [`pipIsSupported`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipissupported)
+- [`pipIsAutoEnterSupported`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipisautoentersupported)
+- [`pipSetup`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipsetup)
+- [`pipStart`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipstart)
+- [`pipStop`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipstop)
+- [`pipDispose`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_pipdispose)
+- [`unregisterPipStateChangedObserver`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_agorapip_unregisterpipstatechangedobserver)
+- [`AgoraPipStateChangedObserver`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_agorapipstatechangedobserver)
+- [`AgoraPipState`](/zh-CN/api-reference/rtc/react-native/enum-agorapipstate)
+- [`onPipStateChanged`](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#callback_agorapipstatechangedobserver_onpipstatechanged)
 
 ### 示例项目
 

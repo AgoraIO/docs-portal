@@ -26,7 +26,7 @@ description: "了解如何在实时互动 RTC 中频道秒开，包括适用场�
 
 具体操作如下：
 
-- 如果频道总数量不超过 10，通过 [`preload`](/api-ref/rtc/javascript/interfaces/iagorartc#preload) 方法对所有频道进行预加载。
+- 如果频道总数量不超过 10，通过 [`preload`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#preload) 方法对所有频道进行预加载。
 - 如果频道总数量超过 10，通过 `preload` 方法对仅前 10 个进行频道预加载。如果用户滑动频道列表，那么当滑动停止时，再通过 `preload` 方法对视野范围内的频道进行预加载。
 - `preload` 方法的 `token` 参数可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)，以加快后续加入频道的速度。
 
@@ -40,7 +40,7 @@ description: "了解如何在实时互动 RTC 中频道秒开，包括适用场�
 
 具体操作如下：
 
-- 调用 [`join`](/api-ref/rtc/javascript/interfaces/iagorartcclient#join) 加入频道，并订阅主播的音视频流。
+- 调用 [`join`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 加入频道，并订阅主播的音视频流。
 - 可以在预览的小窗口提前渲染视频。
 - `join` 方法的 `token` 参数可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)，以加快加入频道的速度。
 
@@ -98,11 +98,11 @@ await client.join(APP_ID, CNAME, TOKEN, UID / null, {
 当用户触碰频道入口完成有效点击后，进入频道，那么建议操作如下：
 
 - 当用户完成有效点击时，App 界面应该从“频道列表页面”切换到“单个频道页面”，建议你增加页面切换动画。
-- 音视频分别调用 [`IRemoteAudioTrack.play`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack#play) 和 [`IRemoteVideoTrack.play`](/api-ref/rtc/javascript/interfaces/iremotevideotrack) 方法，注意视频需要传入指定的 DOM 元素。
+- 音视频分别调用 [`IRemoteAudioTrack.play`](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#play) 和 [`IRemoteVideoTrack.play`](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack) 方法，注意视频需要传入指定的 DOM 元素。
 
 #### 2.3 不进入频道
 
-如果用户悬停频道入口后，移开鼠标，未完成有效点击，不进入频道，那么建议操作：调用 [`leave`](/api-ref/rtc/javascript/interfaces/iagorartcclient#leave) 离开频道。
+如果用户悬停频道入口后，移开鼠标，未完成有效点击，不进入频道，那么建议操作：调用 [`leave`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#leave) 离开频道。
 
 ## 注意事项
 

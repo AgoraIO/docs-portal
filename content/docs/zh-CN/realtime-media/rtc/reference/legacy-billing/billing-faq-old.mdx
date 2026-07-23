@@ -42,10 +42,10 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 不能。你在账单中看到的用量是你声网开发者账号下所有项目中所有用户的音视频时长用量总和。如需获取单个用户的用量，你可以使用 SDK 报告的如下统计数据：
 
-- Android：[`onRtcStats`](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `totalDuration` 属性。
-- iOS：[`reportRtcStats`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
-- Windows：[`onRtcStats`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
-- macOS: [`reportRtcStats`](/api-ref/rtc/macos/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+- Android：[`onRtcStats`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `totalDuration` 属性。
+- iOS：[`reportRtcStats`](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+- Windows：[`onRtcStats`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+- macOS: [`reportRtcStats`](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
 
 如果客户端在弱网环境下断开连接，则声网 RTC SDK 计算出来的通话时长可能不准确。你可以使用声网 RTM SDK 或其他信令系统来实现心跳机制，并获得客户端的断开时长，然后在声网 RTC SDK 获得的通话时长中减去客户端断开连接的时长，从而计算用户的通话时长。
 
@@ -80,11 +80,11 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 | 平台    | Class                                                        | 默认分辨率  |
 | ------- | ------------------------------------------------------------ | ----------- |
-| Android | [`ScreenCaptureParameters`](/api-ref/rtc/android/API/class_screencaptureparameters2) | 1280 × 720  |
-| iOS     | [`AgoraScreenCaptureParameters2`](/api-ref/rtc/ios/API/class_screencaptureparameters2) | 1280 × 720  |
-| Windows | [`ScreenCaptureParameters`](/api-ref/rtc/windows/API/class_screencaptureparameters) | 1920 x 1080 |
-| macOS   | [`AgoraScreenCaptureParameters`](/api-ref/rtc/macos/API/class_screencaptureparameters) | 1920 x 1080 |
-| Web     | [`ScreenVideoTrackInitConfig.encoderConfig`](/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig.html#encoderconfig) | 1920 × 1080 |
+| Android | [`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/android/class-screencaptureparameters2) | 1280 × 720  |
+| iOS     | [`AgoraScreenCaptureParameters2`](/zh-CN/api-reference/rtc/ios/class-screencaptureparameters2) | 1280 × 720  |
+| Windows | [`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters) | 1920 x 1080 |
+| macOS   | [`AgoraScreenCaptureParameters`](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters) | 1920 x 1080 |
+| Web     | [`ScreenVideoTrackInitConfig.encoderConfig`](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig#encoderconfig) | 1920 × 1080 |
 
   :::warning[注意]
   在 Web 端，由于设备和浏览器的限制，部分浏览器对设置的屏幕属性不一定能全部适配。当浏览器不支持用户设置的分辨率时，计量计费会以实际采集的分辨率为准。

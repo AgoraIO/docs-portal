@@ -215,7 +215,7 @@ AgoraRTC.registerExtensions([extension]);
     await processor.init();
     ```
 
-3. 在创建本地摄像头视频轨道后，调用 [`videoTrack.pipe`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack#pipe) 并指定 [`videoTrack.processorDestination`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack#processordestination) 属性，将插件注入到 SDK 的媒体处理管道中。
+3. 在创建本地摄像头视频轨道后，调用 [`videoTrack.pipe`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#pipe) 并指定 [`videoTrack.processorDestination`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#processordestination) 属性，将插件注入到 SDK 的媒体处理管道中。
 
     :::warning[注意]
     - 出于计算性能考虑，声网推荐在单个视频轨道上使用虚拟背景插件。
@@ -272,7 +272,7 @@ await processor.enable();
 await processor.disable();
 ```
 
-确定不再使用虚拟背景时，调用 [`videoTrack.unpipe`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack#unpipe)，将插件从当前视频轨道上移除。
+确定不再使用虚拟背景时，调用 [`videoTrack.unpipe`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#unpipe)，将插件从当前视频轨道上移除。
 
 ```typescript
 localTracks.videoTrack.unpipe();

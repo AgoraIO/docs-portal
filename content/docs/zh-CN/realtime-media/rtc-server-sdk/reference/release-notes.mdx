@@ -36,9 +36,9 @@ description: "查看 RTC 服务端 SDK 的版本更新、问题修复、行为�
 
 在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，该版本在 `ILocalAudioTrack` 类中新增了设置音频发送缓冲区的方法：
 
-- [`setMaxBufferedAudioFrameNumber`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_audio_track#a0f1adbf17ef048ba5c10d5dbbb4f8631)：设置音频发送缓冲区的最大容量。
-- [`ClearSenderBuffer`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_audio_track#a8e1c4f96b49e21c972e15344642453ec)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
-- [`setAudioFrameSendDelayMs`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_audio_track#a6f315590feb863960f7959ec7946890d)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
+- [`setMaxBufferedAudioFrameNumber`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a0f1adbf17ef048ba5c10d5dbbb4f8631)：设置音频发送缓冲区的最大容量。
+- [`ClearSenderBuffer`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a8e1c4f96b49e21c972e15344642453ec)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
+- [`setAudioFrameSendDelayMs`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a6f315590feb863960f7959ec7946890d)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
 
 #### 添加音频标记
 
@@ -46,7 +46,7 @@ description: "查看 RTC 服务端 SDK 的版本更新、问题修复、行为�
 
 #### 支持 22050 Hz 音频发送采样率
 
-该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`sendAudioPcmData`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_pcm_data_sender#a4d9b47199892e4f9d06abf7673f1fd12) 方法发送原始音频数据时设置。
+该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`sendAudioPcmData`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender#a4d9b47199892e4f9d06abf7673f1fd12) 方法发送原始音频数据时设置。
 
 #### 设置 SDK 全局定制化参数
 
@@ -308,28 +308,28 @@ chmod +x ./MediaStack/install_media.sh
 
 #### 音频 Metadata 数据
 
-该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`sendAudioMetadata`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) 方法进行发送，远端用户会在 [`onAudioMetadataReceived`](/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_local_user_observer#a84c4706b0f30c43b6274b480ceaa9638) 回调中接收到发送的信息。
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`sendAudioMetadata`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) 方法进行发送，远端用户会在 [`onAudioMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) 回调中接收到发送的信息。
 
 #### 原始音频数据支持 VAD
 
 为支持获取原始音频数据中的 VAD 信息，该版本新增重载的 [`registerAudioFrameObserver`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user#registerAudioFrameObserver()%20[2/2]) 方法，支持通过 `enableVad` 参数开启 VAD 监测功能。
 
-开启后，你可以通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_audio_frame_observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中的 `vadResult` 参数获取 VAD 状态信息。
+开启后，你可以通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中的 `vadResult` 参数获取 VAD 状态信息。
 
 #### 接收编码后的音频数据
 
 该版本新增支持接收编码后的音频数据。相关接口如下：
 
-- [`registerAudioEncodedFrameObserver`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user#aef2cc197030fcd418c10d35a692fd5a6)：注册编码后的音频数据观测器
-- [`IAudioEncodedFrameObserver`](/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_audio_encoded_frame_observer.html)：编码后的音频数据接口类。你可以在该接口类中，通过 [`onEncodedAudioFrameReceived`](/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_audio_encoded_frame_observer#a15dd0f01400dc3b630df2820dba6715b) 回调接收编码后的音频数据。
+- [`registerAudioEncodedFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#aef2cc197030fcd418c10d35a692fd5a6)：注册编码后的音频数据观测器
+- [`IAudioEncodedFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer)：编码后的音频数据接口类。你可以在该接口类中，通过 [`onEncodedAudioFrameReceived`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer#a15dd0f01400dc3b630df2820dba6715b) 回调接收编码后的音频数据。
 
 #### 外部视频源支持自定义颜色空间
 
-该版本在 [`ExternalVideoFrame`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_external_video_frame.html) 中增加 `colorSpace` 属性，支持对外部采集到的视频数据自定义颜色空间。
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame) 中增加 `colorSpace` 属性，支持对外部采集到的视频数据自定义颜色空间。
 
 #### 支持域名管理
 
-该版本在 [`AgoraServiceConfig`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_service_config.html) 中增加 `domainLimit` 参数，支持对连接的域名进行设置和管理。
+该版本在 [`AgoraServiceConfig`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config) 中增加 `domainLimit` 参数，支持对连接的域名进行设置和管理。
 
 ### 改进
 
@@ -337,14 +337,14 @@ chmod +x ./MediaStack/install_media.sh
 
 为提升音视频数据发送模块的易用性，该版本对如下接口和方法进行了优化：
 
-- `AgoraAudioPcmDataSender` 中，废弃了原来的 `send` 方法，新增 [`sendAudioPcmData`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_pcm_data_sender#a1a109d7059fdffdfebfa9dc476957ab4) 进行取代。
-- `AgoraAudioEncodedFrameSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedAudioFrame`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_encoded_frame_sender#a96ab51c07987dcf9adf7c1bc1a05c1e2) 进行取代。
-- `AgoraVideoEncodedImageSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedVideoImage`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_video_encoded_image_sender#ab9073bfd03dab3922d1594ce4bc507c8) 进行取代。
-- `AgoraVideoFrameSender` 中，移除 `send` 方法，新增 [`sendVideoFrame`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_video_frame_sender#a6cff413f3767180045f5bf3c9b2d1a04) 进行取代。
+- `AgoraAudioPcmDataSender` 中，废弃了原来的 `send` 方法，新增 [`sendAudioPcmData`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#a1a109d7059fdffdfebfa9dc476957ab4) 进行取代。
+- `AgoraAudioEncodedFrameSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedAudioFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender#a96ab51c07987dcf9adf7c1bc1a05c1e2) 进行取代。
+- `AgoraVideoEncodedImageSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedVideoImage`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender#ab9073bfd03dab3922d1594ce4bc507c8) 进行取代。
+- `AgoraVideoFrameSender` 中，移除 `send` 方法，新增 [`sendVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender#a6cff413f3767180045f5bf3c9b2d1a04) 进行取代。
 
 #### 新增 sendStreamMessage 重载
 
-该版本新增了 [`sendStreamMessage`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn#a1286a74a33789cc9777bf58a04f777c0) 的重载方法。和已有的 `sendStreamMessage` 相比，该方法删除了 `length` 参数，并将 `message` 的数据类型由 `String` 改为 `byte[]`。
+该版本新增了 [`sendStreamMessage`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) 的重载方法。和已有的 `sendStreamMessage` 相比，该方法删除了 `length` 参数，并将 `message` 的数据类型由 `String` 改为 `byte[]`。
 
 ### 问题修复
 
@@ -403,9 +403,9 @@ chmod +x ./MediaStack/install_media.sh
 
 在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，该版本在 `AgoraLocalAudioTrack` 类中新增了设置音频发送缓冲区的方法：
 
-- [`setMaxBufferedAudioFrameNumber`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_audio_track#a3e4526e6402becdd5f25573513ce6a36)：设置音频发送缓冲区的最大容量。
-- [`clearSenderBuffer`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_audio_track#a90054e0f30419b0ee2eea512db67f535)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
-- [`setSendDelayMs`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_audio_track#ac16dee95915656c401981f1107183370)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
+- [`setMaxBufferedAudioFrameNumber`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a3e4526e6402becdd5f25573513ce6a36)：设置音频发送缓冲区的最大容量。
+- [`clearSenderBuffer`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a90054e0f30419b0ee2eea512db67f535)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
+- [`setSendDelayMs`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#ac16dee95915656c401981f1107183370)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
 
 #### 添加音频标记
 
@@ -413,11 +413,11 @@ chmod +x ./MediaStack/install_media.sh
 
 #### 支持 22050 Hz 音频发送采样率
 
-该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`AgoraAudioPcmDataSender.send`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_pcm_data_sender#acc86f76c61b53307024b3d768bdc8c13) 方法发送原始音频数据时设置。
+该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`AgoraAudioPcmDataSender.send`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#acc86f76c61b53307024b3d768bdc8c13) 方法发送原始音频数据时设置。
 
 #### 设置 SDK 全局定制化参数
 
-该版本在 `AgoraService` 类中新增了 [`getAgoraParameter`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_service#af776ee9767ecb895b3e7aec2e38d1c0c) 方法。该方法和 `AgoraRtcConn` 类中的 [`getAgoraParameter`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn#a4887841b3c2232730440ad6ca3d74570) 方法的区别是：
+该版本在 `AgoraService` 类中新增了 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#af776ee9767ecb895b3e7aec2e38d1c0c) 方法。该方法和 `AgoraRtcConn` 类中的 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a4887841b3c2232730440ad6ca3d74570) 方法的区别是：
 
 - `AgoraService.getAgoraParameter` 对 SDK 全局有效。
 - `AgoraRtcConn.getAgoraParameter` 仅对当前 Connection 有效。
@@ -471,18 +471,18 @@ chmod +x ./MediaStack/install_media.sh
 
 #### 音频 Metadata 数据
 
-该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`send_audio_metadata`](/api-ref/rtc-server-sdk/python/python-api/localuser#sendaudiometadata) 方法进行发送，远端用户会在 [`on_audio_meta_data_received`](/api-ref/rtc-server-sdk/python/python-api/localuserobserver#onaudiometadatareceived) 回调中接收到发送的信息。
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`send_audio_metadata`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#sendaudiometadata) 方法进行发送，远端用户会在 [`on_audio_meta_data_received`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onaudiometadatareceived) 回调中接收到发送的信息。
 
 #### 外部视频源能力扩展
 
-该版本在 [`ExternalVideoFrame`](/api-ref/rtc-server-sdk/python/python-api/apidatatype#externalvideoframe) 中增加了如下字段：
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#externalvideoframe) 中增加了如下字段：
 
 - `fill_alpha_buffer` 和 `alpha_buffer`，支持 Alpha 数据通道。
 - `color_space`，支持对外部采集到的视频数据自定义颜色空间。
 
 #### 数据流加密
 
-该版本新增 [`enable_encryption`](/api-ref/rtc-server-sdk/python/python-api/rtcconnection#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`on_encryption_error`](/api-ref/rtc-server-sdk/python/python-api/irtcconnectionobserver#onencryptionerror) 得知。
+该版本新增 [`enable_encryption`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`on_encryption_error`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onencryptionerror) 得知。
 
 ## 2.1.0 版
 
@@ -526,18 +526,18 @@ chmod +x ./MediaStack/install_media.sh
 
 #### 音频 Metadata 数据
 
-该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`SendAudioMetadata`](/api-ref/rtc-server-sdk/go/go-api/localuser#sendaudiometadata) 方法进行发送，远端用户会在 [`OnAudioMetadataReceived`](/api-ref/rtc-server-sdk/go/go-api/localuserobserver#onaudiometadatareceived) 回调中接收到发送的信息。
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`SendAudioMetadata`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#sendaudiometadata) 方法进行发送，远端用户会在 [`OnAudioMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onaudiometadatareceived) 回调中接收到发送的信息。
 
 #### 外部视频源能力扩展
 
-该版本在 [`ExternalVideoFrame`](/api-ref/rtc-server-sdk/go/go-api/apidatatype#externalvideoframe) 中增加了如下字段：
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#externalvideoframe) 中增加了如下字段：
 
 - `FillAlphaBuffer` 和 `AlphaMode`，支持 Alpha 数据通道。
 - `ColorSpace`，支持对外部采集到的视频数据自定义颜色空间。
 
 #### 数据流加密
 
-该版本新增 [`EnableEncryption`](/api-ref/rtc-server-sdk/go/go-api/rtcconnection#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`OnEncryptionError`](/api-ref/rtc-server-sdk/go/go-api/rtcconnectionobserver#onencryptionerror) 得知。
+该版本新增 [`EnableEncryption`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`OnEncryptionError`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onencryptionerror) 得知。
 
 ## 2.1.0 版
 

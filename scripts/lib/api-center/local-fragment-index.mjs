@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { maskFencedCode } from '../markdown-code.mjs';
 
 const ROUTE_GROUP = /^\(.+\)$/;
 
@@ -48,11 +49,39 @@ function comparisonKey(value) {
     .replace(/[^\p{Letter}\p{Number}]/gu, '');
 }
 
+function fragmentComparisonKeys(value) {
+  const raw = decode(String(value ?? '').replace(/^#/, ''));
+  const variants = new Set([raw]);
+  const withoutGeneratedSuffix = raw.replace(/-\d+$/, '');
+  if (withoutGeneratedSuffix !== raw) variants.add(withoutGeneratedSuffix);
+
+  for (const variant of [...variants]) {
+    const withoutOwner = variant.replace(
+      /^(?:api|callback)_[^_]+_/i,
+      '',
+    );
+    if (withoutOwner !== variant) variants.add(withoutOwner);
+  }
+  for (const variant of [...variants]) {
+    const withoutType = variant.replace(
+      /^(?:class|struct|interface|enum)_/i,
+      '',
+    );
+    if (withoutType !== variant) variants.add(withoutType);
+  }
+  for (const variant of [...variants]) {
+    const withoutMemberKind = variant.replace(
+      /_(?:method|property|function)$/i,
+      '',
+    );
+    if (withoutMemberKind !== variant) variants.add(withoutMemberKind);
+  }
+
+  return new Set([...variants].map(comparisonKey).filter(Boolean));
+}
+
 function maskCode(source) {
-  return String(source).replace(
-    /(^|\n)(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\2[^\n]*(?=\n|$)/g,
-    (match) => match.replace(/[^\n]/g, ' '),
-  );
+  return maskFencedCode(source);
 }
 
 export function targetPathToRoute(targetPath) {
@@ -93,21 +122,32 @@ export function findBestFragmentAnchor(anchors, requested) {
   if (!raw) return null;
   if (anchors.has(raw)) return raw;
   const rawLower = raw.toLowerCase();
-  const rawKey = comparisonKey(raw);
-  const scored = [];
+  const directKey = comparisonKey(raw);
+  const directMatches = [];
   for (const anchor of anchors) {
-    const lower = anchor.toLowerCase();
-    const key = comparisonKey(anchor);
-    let score = 0;
-    if (lower === rawLower) score = 90;
-    else if (rawKey && key === rawKey) score = 80;
-    else if (rawKey.length >= 4 && key.endsWith(rawKey)) score = 70;
-    else if (key.length >= 4 && rawKey.endsWith(key)) score = 60;
-    if (score) scored.push({ anchor, score });
+    if (anchor.toLowerCase() === rawLower) return anchor;
+    if (directKey && comparisonKey(anchor) === directKey) {
+      directMatches.push(anchor);
+    }
   }
-  const bestScore = Math.max(0, ...scored.map((item) => item.score));
-  const best = scored.filter((item) => item.score === bestScore);
-  return best.length === 1 ? best[0].anchor : null;
+  if (directMatches.length === 1) return directMatches[0];
+  if (directMatches.length > 1) return null;
+
+  const requestedKeys = fragmentComparisonKeys(raw);
+  const canonicalMatches = [...anchors].filter((anchor) =>
+    requestedKeys.has(comparisonKey(anchor)),
+  );
+  if (canonicalMatches.length === 1) return canonicalMatches[0];
+  if (canonicalMatches.length > 1) return null;
+
+  const matches = [];
+  for (const anchor of anchors) {
+    const anchorKeys = fragmentComparisonKeys(anchor);
+    if ([...anchorKeys].some((key) => requestedKeys.has(key))) {
+      matches.push(anchor);
+    }
+  }
+  return matches.length === 1 ? matches[0] : null;
 }
 
 export function collectSamePageFragments(source) {
@@ -141,15 +181,58 @@ function headingCandidates(source) {
   return candidates;
 }
 
+function isContainedHeadingMatch(candidate, fragment) {
+  const fragmentTitle = cleanHeadingText(decode(fragment).replace(/^#/, ''));
+  const fragmentKey = comparisonKey(fragmentTitle);
+  const candidateKey = candidate.key;
+  if (
+    !fragmentKey ||
+    !candidateKey ||
+    (!candidateKey.includes(fragmentKey) && !fragmentKey.includes(candidateKey))
+  ) {
+    return false;
+  }
+  if (/\p{Script=Han}/u.test(`${candidate.title}${fragmentTitle}`)) {
+    return true;
+  }
+  if (fragmentKey.length >= candidateKey.length) return false;
+  return (candidate.title.toLowerCase().match(/[a-z0-9]+/g) ?? []).includes(
+    fragmentKey,
+  );
+}
+
+function doxygenHeadingKey(fragment) {
+  const decoded = decode(String(fragment ?? '').replace(/^#/, ''));
+  const normalized = decoded
+    .replace(/^(?:class|struct|interface|enum)_/i, '')
+    .replace(/_(?:method|property|function)$/i, '');
+  if (normalized === decoded) return null;
+  return comparisonKey(normalized);
+}
+
 function findHeadingForFragment(candidates, fragment) {
   const key = comparisonKey(fragment);
   if (!key) return null;
   const exact = candidates.filter((candidate) => candidate.key === key);
   if (exact.length === 1) return exact[0];
-  const contained = candidates.filter(
-    (candidate) =>
-      candidate.key.length >= 4 &&
-      (candidate.key.includes(key) || key.includes(candidate.key)),
+  const withoutGeneratedSuffix = comparisonKey(
+    decode(fragment).replace(/-\d+$/, ''),
+  );
+  if (withoutGeneratedSuffix !== key) {
+    const generated = candidates.filter(
+      (candidate) => candidate.key === withoutGeneratedSuffix,
+    );
+    if (generated.length === 1) return generated[0];
+  }
+  const doxygenKey = doxygenHeadingKey(fragment);
+  if (doxygenKey) {
+    const doxygen = candidates.filter(
+      (candidate) => candidate.key === doxygenKey,
+    );
+    if (doxygen.length === 1) return doxygen[0];
+  }
+  const contained = candidates.filter((candidate) =>
+    isContainedHeadingMatch(candidate, fragment),
   );
   return contained.length === 1 ? contained[0] : null;
 }
@@ -161,7 +244,15 @@ export function insertFragmentAliases(source, requestedFragments) {
   const inserted = [];
   const unresolved = [];
   for (const requested of new Set([...requestedFragments].map(decode))) {
-    if (!requested || findBestFragmentAnchor(existing, requested)) continue;
+    if (!requested || existing.has(requested)) continue;
+    const needsStableAlias =
+      /-\d+$/.test(requested) ||
+      /^(?:class|struct|interface|enum)_.+_(?:method|property|function)$/i.test(
+        requested,
+      );
+    if (!needsStableAlias && findBestFragmentAnchor(existing, requested)) {
+      continue;
+    }
     const heading = findHeadingForFragment(candidates, requested);
     if (!heading) {
       unresolved.push(requested);
@@ -269,7 +360,7 @@ export function collectLocalFragmentReferences(source, sourceRoute) {
 
 export async function rewriteLocalFragmentLinks(
   source,
-  { fragmentIndex, sourceRoute },
+  { fragmentIndex, preserveUnresolved = false, sourceRoute },
 ) {
   const warnings = [];
   const replacements = [];
@@ -282,6 +373,14 @@ export async function rewriteLocalFragmentLinks(
     const anchors = await fragmentIndex.anchorsFor(parsed.route);
     if (!anchors) continue;
     const mapped = findBestFragmentAnchor(anchors, parsed.fragment);
+    if (!mapped && preserveUnresolved) {
+      warnings.push({
+        from: match[2],
+        to: match[2],
+        unresolved: true,
+      });
+      continue;
+    }
     const href = mapped
       ? `${parsed.route === sourceRoute && match[2].startsWith('#') ? '' : parsed.route}#${mapped}`
       : parsed.route;

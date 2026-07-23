@@ -30,10 +30,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果用户希望自己的音频流不参与选流，无论其声音大小都需要传输至接收端时，你可以选择下列其中一种方式来设置：
 
-- 调用 [`joinChannel`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -47,10 +47,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`joinChannel`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)
-- [`joinChannelWithUserAccount`[2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelMediaOptions`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2)
+- [`joinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -82,10 +82,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果你希望自己的音频流不参与选流，即无论其声音大小都需要传输至接收端，你可以选择下列方式之一进行设置：
 
-- 调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelByToken`[4/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 或 [`joinChannelByToken`[4/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -100,9 +100,9 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 ### API 参考
 
 - [`joinChannelByToken`[2/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel)
-- [`joinChannelByToken`[4/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannelByToken`[4/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -134,10 +134,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果你希望自己的音频流不参与选流，即无论其声音大小都需要传输至接收端，你可以选择下列方式之一进行设置：
 
-- 调用 [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelByToken`[4/4]](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelWithMediaOptions`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 或 [`joinChannelByToken`[4/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `mediaOptions` 参数将 `AgoraRtcChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -152,9 +152,9 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 ### API 参考
 
 - [`joinChannelByToken`[2/4]](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_joinchannel)
-- [`joinChannelByToken`[4/4]](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelWithMediaOptions`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannelByToken`[4/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -224,10 +224,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果用户希望自己的音频流不参与选流，无论其声音大小都需要传输至接收端时，你可以选择下列其中一种方式来设置：
 
-- 调用 [`joinChannel`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelMediaOptions`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -241,10 +241,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`joinChannel`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannel2)
-- [`joinChannelWithUserAccount`[2/2]](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelMediaOptions`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel2)
+- [`joinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -276,10 +276,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果用户希望自己的音频流不参与选流，无论其声音大小都需要传输至接收端时，你可以选择下列其中一种方式来设置：
 
-- 调用 [`joinChannel`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelMediaOptions`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannel`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/electron/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -293,10 +293,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`joinChannel`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_joinchannel2)
-- [`joinChannelWithUserAccount`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelMediaOptions`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/electron/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannel`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2)
+- [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -328,10 +328,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果你希望自己的音频流不参与选流，即无论其声音大小都需要传输至接收端，你可以选择下列方式之一进行设置：
 
-- 调用 [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2) 或 [`JoinChannelWithUserAccount`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`UpdateChannelMediaOptions`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 或 [`JoinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`UpdateChannelMediaOptions`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`SetParameters`](/api-ref/rtc/unity/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`SetParameters`](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -345,10 +345,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2)
-- [`JoinChannelWithUserAccount`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`UpdateChannelMediaOptions`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`SetParameters`](/api-ref/rtc/unity/API/toc_network#api_irtcengine_setparameters)
+- [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2)
+- [`JoinChannelWithUserAccount`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`UpdateChannelMediaOptions`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions)
+- [`SetParameters`](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -380,10 +380,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果用户希望自己的音频流不参与选流，无论其声音大小都需要传输至接收端时，你可以选择下列其中一种方式来设置：
 
-- 调用 [`joinChannel`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelMediaOptions`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannel`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -397,10 +397,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`joinChannel`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannel2)
-- [`joinChannelWithUserAccount`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelMediaOptions`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannel`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2)
+- [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_setparameters)
 
 </PlatformStructured>
 
@@ -432,10 +432,10 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 如果用户希望自己的音频流不参与选流，无论其声音大小都需要传输至接收端时，你可以选择下列其中一种方式来设置：
 
-- 调用 [`joinChannel`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
-- 在加入频道后调用 [`updateChannelMediaOptions`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 调用 [`joinChannel`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 或 [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannelwithuseraccount2) 加入频道，通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
+- 在加入频道后调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_updatechannelmediaoptions)，然后通过 `options` 参数将 `ChannelMediaOptions` 中的 `isAudioFilterable` 设为 `false`。
 
-此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/api-ref/rtc/rn/API/toc_network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
+此外，如果某一个接收端希望其接收的音频流不受音强选流功能控制，需要拉取所有订阅的远端音频流，可以调用 [`setParameters`](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_setparameters) 方法通过 JSON 选项进行设置，详情请[联系技术支持](https://ticket.shengwang.cn)。
 
 **场景示例**
 
@@ -449,9 +449,9 @@ description: "了解实时互动 RTC 在不同平台上的音强选流方式，�
 
 ### API 参考
 
-- [`joinChannel`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_joinchannel2)
-- [`joinChannelWithUserAccount`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_joinchannelwithuseraccount2)
-- [`updateChannelMediaOptions`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`setParameters`](/api-ref/rtc/rn/API/toc_network#api_irtcengine_setparameters)
+- [`joinChannel`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2)
+- [`joinChannelWithUserAccount`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_updatechannelmediaoptions)
+- [`setParameters`](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_setparameters)
 
 </PlatformStructured>

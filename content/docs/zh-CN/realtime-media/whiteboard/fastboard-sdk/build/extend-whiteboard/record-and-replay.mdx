@@ -46,13 +46,13 @@ Fastboard Android SDK 对回放功能提供了轻量级封装，通过 `FastRepl
 
 1. 已在项目中集成声网 Fastboard SDK。详见[快速开始](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
 2. 已获取有效的 App Identifier 和 Room Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 ## 实现录制功能
 
 ### 开启录制
 
-要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)创建支持录制的房间。
+要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)创建支持录制的房间。
 
 以下示例展示如何通过服务端 API 创建支持录制的房间：
 
@@ -500,12 +500,12 @@ whiteSdk.isPlayable(playerConfig, new Promise<Boolean>() {
 
 ### API 参考
 
-- [`Player.play`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#play) - 开始播放
-- [`Player.pause`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#pause) - 暂停播放
-- [`Player.seekToScheduleTime`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#seekToScheduleTime) - 跳转播放位置
-- [`Player.setPlaybackSpeed`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#setPlaybackSpeed) - 设置播放速度
-- [`Player.setObserverMode`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#setObserverMode) - 设置观看模式
-- [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)
+- [`Player.play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#play) - 开始播放
+- [`Player.pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#pause) - 暂停播放
+- [`Player.seekToScheduleTime`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#seektoscheduletime) - 跳转播放位置
+- [`Player.setPlaybackSpeed`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#setplaybackspeed) - 设置播放速度
+- [`Player.setObserverMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player#setobservermode) - 设置观看模式
+- [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)
 
 ### 相关文档
 
@@ -557,13 +557,13 @@ Fastboard iOS SDK 本身专注于实时互动白板房间的快速创建和管�
 
 1. 已在项目中集成声网 Fastboard SDK。详见[快速开始](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
 2. 已获取有效的 App Identifier 和 Room Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 ## 实现录制功能
 
 ### 开启录制
 
-要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)创建支持录制的房间。
+要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)创建支持录制的房间。
 
 以下示例展示如何通过服务端 API 创建支持录制的房间：
 
@@ -910,12 +910,12 @@ extension CombineReplayViewController: WhiteCombineDelegate {
 
 ### API 参考
 
-- [`WhiteSDK.createReplayerWithConfig`](/api-ref/whiteboard/ios/Classes/WhiteSDK#createReplayerWithConfig:callbacks:completionHandler:) - 创建回放播放器
-- [`WhitePlayer.play`](/api-ref/whiteboard/ios/Classes/WhitePlayer#play) - 开始播放
-- [`WhitePlayer.pause`](/api-ref/whiteboard/ios/classes/whiteplayer#pause) - 暂停播放
-- [`WhitePlayer.seekToScheduleTime`](/api-ref/whiteboard/ios/Classes/WhitePlayer#seekToScheduleTime:) - 跳转播放位置
-- [`WhitePlayer.setObserverMode`](/api-ref/whiteboard/ios/Classes/WhitePlayer#setObserverMode:) - 设置观看模式
-- [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)
+- [`WhiteSDK.createReplayerWithConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#createreplayerwithconfigcallbackscompletionhandler) - 创建回放播放器
+- [`WhitePlayer.play`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player#play) - 开始播放
+- [`WhitePlayer.pause`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player#pause) - 暂停播放
+- [`WhitePlayer.seekToScheduleTime`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player#seektoscheduletime) - 跳转播放位置
+- [`WhitePlayer.setObserverMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player#setobservermode) - 设置观看模式
+- [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)
 
 ### 相关文档
 
@@ -964,13 +964,13 @@ Fastboard SDK 基于底层 Whiteboard SDK 的回放能力，提供了更易用�
 
 1. 已在项目中集成声网 Fastboard SDK。详见[快速开始](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
 2. 已获取有效的 App Identifier 和 Room Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 ## 实现录制功能
 
 ### 开启录制
 
-要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)创建支持录制的房间：
+要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)创建支持录制的房间：
 
 ```javascript
 var url = "https://api.netless.link/v5/rooms";
@@ -1284,7 +1284,7 @@ console.log("当前状态:", combinePlayer.combinedStatus);
 
 - [`replayFastboard`](/zh-CN/api-reference/whiteboard/fastboard/web#replayfastboard) - 创建回放播放器
 - [`createReplayUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createreplayui) - 创建回放 UI
-- [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)
+- [POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)
 
 ### 相关文档
 

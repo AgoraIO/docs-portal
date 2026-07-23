@@ -21,14 +21,14 @@ agora_iot_dp_result_e agora_iot_dp_register_dp_query_handler(agora_iot_handle_t 
 
 注册属性查询回调。
 
-你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。
+你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
 
 #### 参数
 
 | 参数 | 描述 |
 | --- | --- |
 | [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
-| [in] `dp_id` | 属性 ID。即控制台**功能定义**页面的功能标识符。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| [in] `dp_id` | 属性 ID。即控制台**功能定义**页面的功能标识符。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | [in] `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。  |
 | [in] `callback` | 属性查询回调。详见 [on_dp_query_callback](#ondpquerycallback)。 |
 | [in] `args` | 回调参数。 |
@@ -48,14 +48,14 @@ agora_iot_dp_result_e agora_iot_dp_register_dp_cmd_handler(agora_iot_handle_t ha
 
 注册属性命令回调。
 
-你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。
+你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
 
 #### 参数
 
 | 参数 | 描述 |
 | --- | --- |
 | [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
-| [in] `dp_id` | 属性 ID。即控制台**属性定义**页面的属性标识符。参考[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)在控制台创建属性。 |
+| [in] `dp_id` | 属性 ID。即控制台**属性定义**页面的属性标识符。参考[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)在控制台创建属性。 |
 | [in] `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。  |
 | [in] `callback` | 属性命令回调。详见 [on_dp_cmd_callback](#ondpquerycallback)。 |
 | [in] `args` | 回调参数。 |
@@ -73,7 +73,7 @@ agora_iot_dp_result_e agora_iot_dp_publish(agora_iot_handle_t handle, agora_dp_i
 
 发布一个属性。
 
-你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。
+你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
 
 #### 参数
 
@@ -93,7 +93,7 @@ agora_iot_dp_result_e agora_iot_dp_publish(agora_iot_handle_t handle, agora_dp_i
 agora_iot_dp_result_e agora_iot_dp_publish_all(agora_iot_handle_t handle);
 ```
 
-发布全部属性。你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。
+发布全部属性。你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
 
 在发布全部属性之前，确保你已经调用 [agora_iot_dp_register_dp_query_handler](#agoraiotdpregisterdpqueryhandler) 注册了属性回调。
 
@@ -202,7 +202,7 @@ typedef struct agora_dp_info {
 
 | 参数 | 描述 |
 | --- | --- |
-| `dp_id` | 属性 ID。即控制台**功能定义**页面的属性标识符。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| `dp_id` | 属性 ID。即控制台**功能定义**页面的属性标识符。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
 | `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。 |
 | `dp_value` | 属性的值。详见 [agora_dp_value_t](#agoradpvaluet)。 |
 

@@ -16,7 +16,7 @@ description: "了解云端录制中设置单流不转码录制相关内容的适
 
 ### 开始录制
 
-调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法开始云端录制。
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法开始云端录制。
 
 以下介绍开始单流音频不转码录制请求的关键配置，确保你进行正确设置以实现预期的录制效果。
 
@@ -88,7 +88,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 
 ### 停止录制
 
-录制完成后，调用 [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
+录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
 
 #### 请求示例
 

@@ -28,7 +28,7 @@ info:
 
     ## 响应状态码
 
-    调用弹幕玩法 RESTful API 可能返回的响应状态码详见[响应状态码](/zh-CN/realtime-media/danmaku/response-code)。
+    调用弹幕玩法 RESTful API 可能返回的响应状态码详见[响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)。
 servers:
 - url: https://{domain}/v2/projects/{appid}
   description: ''
@@ -37,11 +37,11 @@ servers:
       description: |-
         API 域名。分为以下两种：
 
-        - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+        - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
         - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
       default: ''
     appid:
-      description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+      description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
       default: ''
 paths:
   /cloud-bullet-game/api/live-data/games:
@@ -89,11 +89,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -189,11 +189,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -238,13 +238,13 @@ paths:
                       - 1234
                     token:
                       type: string
-                      description: 云游戏推流使用的 RTC Token，生成方法详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。
+                      description: 云游戏推流使用的 RTC Token，生成方法详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
                     channel_name:
                       type: string
                       description: 云游戏推流频道名。
                     encryption:
                       type: object
-                      description: RTC 内置加密设置。详见[`enableEncrption`](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption)。
+                      description: RTC 内置加密设置。详见[`enableEncrption`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_enableencryption)。
                       properties:
                         mode:
                           type: string
@@ -303,11 +303,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -375,11 +375,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -446,11 +446,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -525,11 +525,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -713,11 +713,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -808,11 +808,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -861,11 +861,11 @@ paths:
             description: |-
               API 域名。分为以下两种：
 
-              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/best-practice/rest-availability)。
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
               - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
             default: ''
           appid:
-            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/get-started/enable-service#获取开发参数)。
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
       - position: after-description
@@ -925,7 +925,7 @@ components:
     Authorization:
       name: Authorization
       in: header
-      description: 发送 HTTP 请求时，你需要将用于游戏推流使用的 RTC Token 填入 HTTP 请求头部的 `Authorization` 字段。Token 生成方式请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。
+      description: 发送 HTTP 请求时，你需要将用于游戏推流使用的 RTC Token 填入 HTTP 请求头部的 `Authorization` 字段。Token 生成方式请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
       required: true
       schema:
         type: string
@@ -1001,7 +1001,7 @@ components:
     err_no:
       type: integer
       title: err_no
-      description: 请求错误码，`0` 表示请求成功，非 `0` 表示请求失败，对应的错误原因和解决方案详见[响应状态码](/zh-CN/realtime-media/danmaku/response-code)。
+      description: 请求错误码，`0` 表示请求成功，非 `0` 表示请求失败，对应的错误原因和解决方案详见[响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)。
       examples:
       - 0
     err_msg:

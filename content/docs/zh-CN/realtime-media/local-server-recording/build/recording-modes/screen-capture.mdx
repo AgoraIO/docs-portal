@@ -92,7 +92,7 @@ videoFrameCaptureConfig.jpgFileStorePath = "/tmp/screenshots/"; // 确保目录�
 
 ### 获取截取的视频帧
 
-加入频道后，你就可以在 [`IRecorderVideoFrameObserver`](/api-ref/recording/cpp/irecordervideoframeobserver) 接口类中，通过各视频帧格式对应的回调来接收截图数据：
+加入频道后，你就可以在 [`IRecorderVideoFrameObserver`](/zh-CN/api-reference/local-server-recording/cpp/irecordervideoframeobserver) 接口类中，通过各视频帧格式对应的回调来接收截图数据：
 
 ```cpp
 class RecorderVideoFrameObserver : public agora::rtc::IRecorderVideoFrameObserver {
@@ -136,8 +136,8 @@ recorder->enableRecorderVideoFrameCapture(false, videoFrameCaptureConfig);
 
 ### 视频订阅选项设置
 
-在使用截图功能时，当截图格式设置为 YUV、JPG 帧或 JPG 文件时，在调用 [`subscribeVideo`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribevideo)
-或 [`subscribeAllVideo`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribeallvideo) 时，需要将 `VideoSubscriptionOptions.encodedFrameOnly`
+在使用截图功能时，当截图格式设置为 YUV、JPG 帧或 JPG 文件时，在调用 [`subscribeVideo`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#subscribevideo)
+或 [`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#subscribeallvideo) 时，需要将 `VideoSubscriptionOptions.encodedFrameOnly`
 设置为 `false`（默认值为 `false`）。
 
 ### 录制与截图独立
@@ -146,10 +146,10 @@ SDK 支持只截图不录制视频。是否录制通过 `startRecording` 方法�
 
 ## API 参考
 
-- [`enableRecorderVideoFrameCapture`](/api-ref/recording/cpp/iagoramediartcrecorder#enablerecordervideoframecapture)
-- [`RecorderVideoFrameCaptureConfig`](/api-ref/recording/cpp/struct#recordervideoframecaptureconfig)
-- [`IRecorderVideoFrameObserver`](/api-ref/recording/cpp/irecordervideoframeobserver)
-- [`VideoFrameCaptureType`](/api-ref/recording/cpp/enum#videoframecapturetype)
+- [`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#enablerecordervideoframecapture)
+- [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/cpp/struct#recordervideoframecaptureconfig)
+- [`IRecorderVideoFrameObserver`](/zh-CN/api-reference/local-server-recording/cpp/irecordervideoframeobserver)
+- [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/cpp/enum#videoframecapturetype)
 
 </PlatformStructured>
 
@@ -253,7 +253,7 @@ videoFrameCaptureConfig.setJpgFileStorePath("/tmp/screenshots/"); // 确保目�
 
 ### 获取截取的视频帧
 
-加入频道后，你就可以在 [`IRecorderVideoFrameObserver`](/api-ref/recording/java/irecordervideoframeobserver) 接口类中，通过各视频帧格式对应的回调来接收截图数据：
+加入频道后，你就可以在 [`IRecorderVideoFrameObserver`](/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver) 接口类中，通过各视频帧格式对应的回调来接收截图数据：
 
 ```java
 public class VideoFrameObserver implements IRecorderVideoFrameObserver {
@@ -302,8 +302,8 @@ agoraMediaRtcRecorder.enableRecorderVideoFrameCapture(false, videoFrameCaptureCo
 
 ### 视频订阅选项设置
 
-在使用截图功能时，当截图格式设置为 YUV、JPG 帧或 JPG 文件时，在调用 [`subscribeVideo`](/api-ref/recording/java/agoramediartcrecorder#subscribevideo)
-或 [`subscribeAllVideo`](/api-ref/recording/java/agoramediartcrecorder#subscribeallvideo) 时，需要将 `VideoSubscriptionOptions.encodedFrameOnly`
+在使用截图功能时，当截图格式设置为 YUV、JPG 帧或 JPG 文件时，在调用 [`subscribeVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribevideo)
+或 [`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeallvideo) 时，需要将 `VideoSubscriptionOptions.encodedFrameOnly`
 设置为 `false`（默认值为 `false`）。
 
 ```java
@@ -319,9 +319,9 @@ SDK 支持只截图不录制视频。是否录制通过 `startRecording` 方法�
 
 ## API 参考
 
-- [`enableRecorderVideoFrameCapture`](/api-ref/recording/java/agoramediartcrecorder#enablerecordervideoframecapture)
-- [`RecorderVideoFrameCaptureConfig`](/api-ref/recording/java/struct#recordervideoframecaptureconfig)
-- [`IRecorderVideoFrameObserver`](/api-ref/recording/java/irecordervideoframeobserver)
-- [`VideoFrameCaptureType`](/api-ref/recording/java/enum#videoframecapturetype)
+- [`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enablerecordervideoframecapture)
+- [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/java/struct#recordervideoframecaptureconfig)
+- [`IRecorderVideoFrameObserver`](/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver)
+- [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/java/enum#videoframecapturetype)
 
 </PlatformStructured>

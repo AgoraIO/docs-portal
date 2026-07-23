@@ -175,7 +175,7 @@ description: "查看云端录制的云端录制存储参数参考，了解关键
 
 本节介绍媒体流输出模式。
 
-调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 开启单流录制时，你可以在 `clientRequest` 字段中的 `recordingConfig.streamMode` 字段设置媒体流的输出模式。`streamMode` 的支持取值和各模式对比如下：
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 开启单流录制时，你可以在 `clientRequest` 字段中的 `recordingConfig.streamMode` 字段设置媒体流的输出模式。`streamMode` 的支持取值和各模式对比如下：
 
 | streamMode | 描述 | 生成索引文件 | 生成切片文件 | 视频编码 | 音频编码 | 支持的功能 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -223,9 +223,9 @@ description: "查看云端录制的云端录制存储参数参考，了解关键
 
 默认情况下，云端录制会订阅频道内所有发布的音视频流。你也可以使用 API 进行灵活的用户 ID 订阅。此外，你还可以分别设置音频和视频的订阅白名单或黑名单，并在录制过程中更新订阅名单：
 
-- 在开始录制时：你可以通过 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法中的相关字段设置订阅的黑白名单。
+- 在开始录制时：你可以通过 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的相关字段设置订阅的黑白名单。
 
-- 在录制过程中：你可以通过 [`update`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-update) 方法中的 `streamSubscribe` 字段更新订阅名单。
+- 在录制过程中：你可以通过 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法中的 `streamSubscribe` 字段更新订阅名单。
 
 ### 音频订阅名单
 

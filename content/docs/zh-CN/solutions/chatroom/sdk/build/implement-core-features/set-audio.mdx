@@ -8,7 +8,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 ## 设置高音质
 
-高音质会给语聊房带来更好的音频体验。专业的音频直播间需要主播使用声卡进行音频采集，以获取更好的语音效果。你可以参考如下示例代码，调用声网实时互动 SDK 中的 [`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) 方法来为专业直播和普通直播设置高音质：
+高音质会给语聊房带来更好的音频体验。专业的音频直播间需要主播使用声卡进行音频采集，以获取更好的语音效果。你可以参考如下示例代码，调用声网实时互动 SDK 中的 [`setAudioProfile`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)、[`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 方法来为专业直播和普通直播设置高音质：
 
 - （专业直播）当主播使用声卡采集音频时，设置高音质：
 
@@ -52,7 +52,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 如果主播使用的音乐文件是本地文件或在线文件，播放方式有如下两种：
 
-- 调用声网实时互动 SDK 中的 [`startAudioMixing`](/api-ref/rtc/android/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
+- 调用声网实时互动 SDK 中的 [`startAudioMixing`](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
 
 - 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)来播放文件。
 
@@ -62,9 +62,9 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 1. 联系 sales@shengwang.cn 开通声网版权音乐和内容中心服务。
 
-2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/doc/online-ktv/android/implementation/music-content-center)。
+2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
 
-3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/android/API/toc_drm) 预加载歌曲，再通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/doc/online-ktv/android/ktv-scenario/implementation/get-music)。
+3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/zh-CN/api-reference/rtc/android/play/drm#toc_drm) 预加载歌曲，再通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/get-music)。
 
 4. 如果需要展示歌词，你可以通过版权音乐 API 和 `SongCode` 来获取歌词文件地址，获取后你就可以展示歌词。详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 
@@ -79,16 +79,16 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 3. 通过[声网音频自采集功能](/zh-CN/realtime-media/rtc/build/audio/custom-audio-source)将你之前获取的原始音频数据发送给声网实时互动 SDK。声网实时互动 SDK 内部会自动将麦克风采集到的声音和第三方版权音乐的歌曲声混合，并发送到声网 RTC 频道中，频道内的听众都可以听到这个混音。
 
 :::info[信息]
-在自采集音频时，你需要将 [`createCustomAudioTrack`](/api-ref/rtc/android/API/toc_audio_custom_capturenrendering#api_imediaengine_createcustomaudiotrack) 方法中的 `enableLocalPlayback` 字段设置为 `true`，以使第三方音频可以在本地播放。
+在自采集音频时，你需要将 [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#createcustomaudiotrack) 方法中的 `enableLocalPlayback` 字段设置为 `true`，以使第三方音频可以在本地播放。
 :::
 
 ## 增加音量波纹提示
 
 语聊房中的音量波纹提示功能可以让房间的听众看到谁正在发言。该功能的实现流程如下：
 
-1. 调用声网实时互动 SDK 中的 [`enableAudioVolumeIndication`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication) 方法启用音量提示功能，建议你在启用音量提示时设置音量提示时间间隔为 500 毫秒。
+1. 调用声网实时互动 SDK 中的 [`enableAudioVolumeIndication`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 方法启用音量提示功能，建议你在启用音量提示时设置音量提示时间间隔为 500 毫秒。
 
-2. 你可以从 SDK 触发的 [`onAudioVolumeIndication`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调获得本地和远端讲话者的音量信息。建议你在 `volume` 值大于 20 时给出音量提示并在 UI 上制作音量对应的波纹效果。
+2. 你可以从 SDK 触发的 [`onAudioVolumeIndication`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调获得本地和远端讲话者的音量信息。建议你在 `volume` 值大于 20 时给出音量提示并在 UI 上制作音量对应的波纹效果。
 
 </PlatformStructured>
 
@@ -99,7 +99,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 ## 设置高音质
 
-高音质会给语聊房带来更好的音频体验。专业的音频直播间需要主播使用声卡进行音频采集，以获取更好的语音效果。你可以参考如下示例代码，调用声网实时互动 SDK 中的 [`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters) 方法来为专业直播和普通直播设置高音质：
+高音质会给语聊房带来更好的音频体验。专业的音频直播间需要主播使用声卡进行音频采集，以获取更好的语音效果。你可以参考如下示例代码，调用声网实时互动 SDK 中的 [`setAudioProfile`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)、[`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 方法来为专业直播和普通直播设置高音质：
 
 - （专业直播）当主播使用声卡采集音频时，设置高音质：
 
@@ -143,7 +143,7 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 如果主播使用的音乐文件是本地文件或在线文件，播放方式有如下两种：
 
-- 调用声网实时互动 SDK 中的 [`startAudioMixing`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
+- 调用声网实时互动 SDK 中的 [`startAudioMixing`](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放文件。
 
 - 使用声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放文件。
 
@@ -153,9 +153,9 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 
 1. 联系 sales@shengwang.cn 开通声网版权音乐和内容中心服务。
 
-2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/doc/online-ktv/ios/implementation/music-content-center)。
+2. 在你的业务服务器中，通过 RESTful API 向声网内容中心获取歌曲详细信息，并将信息保存在你的服务端。详见[声网内容中心 RESTful API](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
 
-3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/api-ref/rtc/ios/API/toc_drm) 预加载歌曲，通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/doc/online-ktv/ios/ktv-scenario/implementation/get-music)。
+3. 在你的业务客户端中，增加歌曲搜索和点歌的功能。当用户点击播放某首歌曲时，你需要获得歌曲的 `SongCode`（标识音乐资源的编号），然后通过声网实时互动 SDK 中的[版权音乐 API](/zh-CN/api-reference/rtc/ios/play/drm#toc_drm) 预加载歌曲，通过声网实时互动 SDK 中的[内置媒体播放器](/zh-CN/realtime-media/rtc/build/audio/media-player)播放歌曲。详见[点歌](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/get-music)。
 
 4. 如果需要展示歌词，你可以通过版权音乐 API 和 `SongCode` 来获取歌词文件地址，获取后你就可以展示歌词。详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 
@@ -170,15 +170,15 @@ description: "了解语聊房在不同平台上的音频进阶功能方式，包
 3. 通过[声网音频自采集功能](/zh-CN/realtime-media/rtc/build/audio/custom-audio-source)将你之前获取的原始音频数据发送给声网实时互动 SDK。声网实时互动 SDK 内部会自动将麦克风采集到的声音和第三方版权音乐的歌曲声混合，并发送到声网 RTC 频道中，频道内的听众都可以听到这个混音。
 
 :::info[信息]
-在自采集音频时，你需要将 [`createCustomAudioTrack`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_createcustomaudiotrack) 方法中的 `enableLocalPlayback` 字段设置为 `true`，以使第三方音频可以在本地播放。
+在自采集音频时，你需要将 [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法中的 `enableLocalPlayback` 字段设置为 `true`，以使第三方音频可以在本地播放。
 :::
 
 ## 增加音量波纹提示
 
 语聊房中的音量波纹提示功能可以让房间的听众看到谁正在发言。该功能的实现流程如下：
 
-1. 调用声网实时互动 SDK 中的 [`enableAudioVolumeIndication`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication) 方法启用音量提示功能，建议你在启用音量提示时设置音量提示时间间隔为 500 毫秒。
+1. 调用声网实时互动 SDK 中的 [`enableAudioVolumeIndication`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 方法启用音量提示功能，建议你在启用音量提示时设置音量提示时间间隔为 500 毫秒。
 
-2. 你可以从 SDK 触发的 [`reportAudioVolumeIndicationOfSpeakers`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调获得本地和远端讲话者的音量信息。建议你在 `volume` 值大于 20 时给出音量提示并在 UI 上制作音量对应的波纹效果。
+2. 你可以从 SDK 触发的 [`reportAudioVolumeIndicationOfSpeakers`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调获得本地和远端讲话者的音量信息。建议你在 `volume` 值大于 20 时给出音量提示并在 UI 上制作音量对应的波纹效果。
 
 </PlatformStructured>

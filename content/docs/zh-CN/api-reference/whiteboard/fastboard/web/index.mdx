@@ -354,12 +354,12 @@ insertDocs(title: string, response: ProjectorResponse): Promise<string | undefin
 
 在白板子窗口中插入并展示文档。该方法适用于[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
 
-成功发起文档转换任务并调用[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
+成功发起文档转换任务并调用[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
 
 **参数**
 
 - `title`：子窗口标题。
-- `response`：[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)请求成功时返回的响应包体。
+- `response`：[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)请求成功时返回的响应包体。
 
 **返回**
 
@@ -374,10 +374,10 @@ insertDocs(params: InsertDocsParams): Promise<string | undefined>;
 
 在白板子窗口中插入并展示文档。
 
-成功[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)后， 可以调用该方法，传入转换后文档的相关参数，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
+成功[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)后， 可以调用该方法，传入转换后文档的相关参数，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
 
 :::info[信息]
-对比 `insertDocs [1/2]`，`insertDocs [2/2]` 需要手动传入少量参数，而不是直接传入[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)的响应包体。
+对比 `insertDocs [1/2]`，`insertDocs [2/2]` 需要手动传入少量参数，而不是直接传入[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)的响应包体。
 :::
 
 **参数**
@@ -717,7 +717,7 @@ export interface FastboardOptions {
 
 - `sdkConfig`: （必需）Object。`WhiteWebSdk` 实例的配置，必须传入以下参数：
   - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-  - `region`：String。数据中心，必须与[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)时设置的数据中心一致。取值如下：
+  - `region`：String。数据中心，必须与[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时设置的数据中心一致。取值如下：
     - `cn-hz`：中国杭州，服务区覆盖其他数据中心未覆盖的地区。
     - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
     - `sg`：新加坡，服务区覆盖新加坡、东亚、东南亚。
@@ -725,11 +725,11 @@ export interface FastboardOptions {
     - `eu`：欧洲（法兰克福），服务区覆盖欧洲。
 - `joinRoom`: Object。（必需）加入房间的参数设置，必须传入以下参数：
   - `uid`: String。用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户的 `uid` 唯一。
-  - `uuid`: String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
+  - `uuid`: String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)请求成功后响应包体中 `uuid` 参数的值。
   - `roomToken`: String 型。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
-    - 调用[生成 Room Token ](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+    - 调用[生成 Room Token ](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
     - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
-  - `callbacks`：（可选）白板房间的事件回调，详见 [`RoomCallbacks`](/api-ref/whiteboard/javascript/globals#roomcallbacks)。
+  - `callbacks`：（可选）白板房间的事件回调，详见 [`RoomCallbacks`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks)。
 - `managerConfig`: （可选）Object。[WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount) 配置选项。
 - `netlessApps`：（可选）Object。官方内置或自定义的 Fastboard 插件，详见[注册和使用 Fastboard 插件](https://github.com/netless-io/fastboard/blob/main/README-zh.md#%E6%B3%A8%E5%86%8C%E4%B8%8E%E4%BD%BF%E7%94%A8-apps)。
 - `enableAppliancePlugin`: （可选）启用 `appliance-plugin` 插件，详见 [`AppliancePluginOptions`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0)。
@@ -759,16 +759,16 @@ export interface FastboardReplayOptions {
 
 - `sdkConfig`: （必需）Object。`WhiteWebSdk` 实例的配置，必须传入以下参数：
   - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-  - `region`：String。数据中心，必须与[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)时设置的数据中心一致。取值如下：
+  - `region`：String。数据中心，必须与[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时设置的数据中心一致。取值如下：
     - `cn-hz`：中国杭州，服务区覆盖其他数据中心未覆盖的地区。
     - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
     - `sg`：新加坡，服务区覆盖新加坡、东亚、东南亚。
     - `in-mum`：印度孟买，服务区覆盖印度。
     - `eu`：欧洲（法兰克福），服务区覆盖欧洲。
 - `replayRoom`：Object。（必需）加入房间的参数设置，必须传入以下参数：
-  - `room`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
+  - `room`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)请求成功后响应包体中 `uuid` 参数的值。
   - `roomToken`：String 型。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
-    - 调用[生成 Room Token ](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+    - 调用[生成 Room Token ](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
     - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
   - `beginTimestamp`：Number。回放开始时间，单位为毫秒。
   - `duration`：Number。回放持续时间，单位为毫秒。
@@ -895,8 +895,8 @@ export interface InsertDocsDynamic {
 `InsertDocsDynamic` 接口包含以下属性：
 
 - `fileType`: String。文档类型，取值为 `"pptx"`，表示动态文档。
-- `scenePath`: String。白板场景路径，建议填 `"/pptx/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 请求成功时响应包体中 `uuid` 参数的值。
-- `taskId`: String。文档转换任务的 UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 请求成功时响应包体中 `uuid` 参数的值。
+- `scenePath`: String。白板场景路径，建议填 `"/pptx/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
+- `taskId`: String。文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
 - `title`: （可选）String。窗口标题
 - `url`: String。转换后文档的存储路径，例如，`"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert“`。
 
@@ -916,13 +916,13 @@ export interface InsertDocsStatic {
 `InsertDocsStatic` 接口包含以下属性：
 
 - `fileType`：String。文档类型，取值为 `"pdf"`，表示静态文档。
-- `scenePath`: String。白板场景路径，建议填 `"/pdf/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 请求成功时响应包体中 `uuid` 参数的值。
+- `scenePath`: String。白板场景路径，建议填 `"/pdf/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
 - `scenes`: SceneDefinition[]。白板场景内容，即待展示的文档。由多个 object 组成，每个 object 表示一页文件，必须包含如下参数：
   - `name`：String。场景名字。
   - `ppt`：PptDescription。PPT 描述，包含以下属性：
     - `width`：Number。文件的宽度，单位为像素。
     - `height`：Number。文件的高度，单位为像素。
-    - `src`：String。该页文件的 URL 地址，即[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 返回的响应包体中 `images` 字段下 `url` 的值。
+    - `src`：String。该页文件的 URL 地址，即[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 返回的响应包体中 `images` 字段下 `url` 的值。
 - `title`: （可选）String。窗口标题。
 
 <a id="mountprops"></a>

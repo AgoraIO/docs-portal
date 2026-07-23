@@ -26,10 +26,10 @@ description: "了解实时互动 RTC 在不同平台上的面部捕捉插件方�
 
 ### 开启面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/android/API/toc_extension#enableExtension) 以启用面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/android/extension#enableextension) 以启用面部捕捉插件。
 
 :::info[信息]
-- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/api-ref/rtc/android/API/toc_extension#enableExtension) 的时机控制在加入频道前。
+- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/zh-CN/api-reference/rtc/android/extension#enableextension) 的时机控制在加入频道前。
 - 启用面部捕捉的媒体源（即参数 `sourceType`）仅支持设为 `PRIMARY_CAMERA_SOURCE`（默认）或 `CUSTOM_VIDEO_SOURCE`。
 :::
 
@@ -43,7 +43,7 @@ rtcEngine.enableExtension("agora_video_filters_face_capture",
 
 ### 设置面部捕捉插件鉴权参数
 
-调用 [`setExtensionProperty`](/api-ref/rtc/android/API/toc_extension#setExtensionProperty) 设置鉴权参数以确保插件正常运行。
+调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/android/extension#setextensionproperty) 设置鉴权参数以确保插件正常运行。
 
 ```java
 rtcEngine.setExtensionProperty(
@@ -57,7 +57,7 @@ rtcEngine.setExtensionProperty(
 
 ### 获取面部信息
 
-通过 [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
+通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
 
 :::warning[注意]
 目前面部捕捉功能一次只输出一张人脸, 你需要在触发回调后，单独申请内存保存面部信息并在其他线程处理，否则可能会导致裸数据回调丢帧。
@@ -126,7 +126,7 @@ public boolean onCaptureVideoFrame(int sourceType, VideoFrame videoFrame) {
 
 ### 关闭面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/android/API/toc_extension#enableExtension) 以关闭面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/android/extension#enableextension) 以关闭面部捕捉插件。
 
 ```java
 rtcEngine.enableExtension("agora_video_filters_face_capture",
@@ -144,11 +144,11 @@ rtcEngine.enableExtension("agora_video_filters_face_capture",
 
 ### API 参考
 
-- [`addExtension`](/api-ref/rtc/android/API/toc_extension#addExtension)
-- [`registerExtension`](/api-ref/rtc/android/API/toc_extension#registerExtension)
-- [`enableExtension`](/api-ref/rtc/android/API/toc_extension#enableExtension)
-- [`setExtensionProperty`](/api-ref/rtc/android/API/toc_extension#setExtensionProperty)
-- [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`addExtension`](/zh-CN/api-reference/rtc/android/extension#addextension)
+- [`registerExtension`](/zh-CN/api-reference/rtc/android/extension#registerextension)
+- [`enableExtension`](/zh-CN/api-reference/rtc/android/extension#enableextension)
+- [`setExtensionProperty`](/zh-CN/api-reference/rtc/android/extension#setextensionproperty)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
 
 </PlatformStructured>
 
@@ -177,10 +177,10 @@ rtcEngine.enableExtension("agora_video_filters_face_capture",
 
 ### 开启面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/ios/API/toc_extension#enableExtension) 以启用面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 以启用面部捕捉插件。
 
 :::info[信息]
-- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/api-ref/rtc/ios/API/toc_extension#enableExtension) 的时机控制在加入频道前。
+- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 的时机控制在加入频道前。
 - 启用面部捕捉的媒体源（即参数 `sourceType`）仅支持设为 `AgoraMediaSourceTypePrimaryCamera`（默认）或 `AgoraMediaSourceTypeCustomVideo`。
 :::
 
@@ -192,7 +192,7 @@ agoraKit.enableExtension(
 
 ### 设置面部捕捉插件鉴权参数
 
-调用 [`setExtensionProperty`](/api-ref/rtc/ios/API/toc_extension#setExtensionProperty) 设置鉴权参数以确保插件正常运行。
+调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproperty) 设置鉴权参数以确保插件正常运行。
 
 ```swift
 agoraKit.setExtensionProperty(
@@ -203,7 +203,7 @@ agoraKit.setExtensionProperty(
 
 ### 获取面部信息
 
-通过 [`onCaptureVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
+通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
 
 :::warning[注意]
 目前面部捕捉功能一次只输出一张人脸, 你需要在触发回调后，单独申请内存保存面部信息并在其他线程处理，否则可能会导致裸数据回调丢帧。
@@ -268,7 +268,7 @@ func onCapture(_ videoFrame: AgoraOutputVideoFrame, sourceType: AgoraVideoSource
 
 ### 关闭面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/ios/API/toc_extension#enableExtension) 以关闭面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 以关闭面部捕捉插件。
 
 ```swift
 agoraKit.enableExtension(
@@ -284,10 +284,10 @@ agoraKit.enableExtension(
 
 ### API 参考
 
-- [`registerExtension`](/api-ref/rtc/ios/API/toc_extension#registerExtension)
-- [`enableExtension`](/api-ref/rtc/ios/API/toc_extension#enableExtension)
-- [`setExtensionProperty`](/api-ref/rtc/ios/API/toc_extension#setExtensionProperty)
-- [`onCaptureVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`registerExtension`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_registerextension)
+- [`enableExtension`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension)
+- [`setExtensionProperty`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproperty)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
 
 </PlatformStructured>
 
@@ -316,10 +316,10 @@ agoraKit.enableExtension(
 
 ### 开启面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/macos/API/toc_extension#enableExtension) 以启用面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_enableextension) 以启用面部捕捉插件。
 
 :::info[信息]
-- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/api-ref/rtc/macos/API/toc_extension#enableExtension) 的时机控制在加入频道前。
+- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_enableextension) 的时机控制在加入频道前。
 - 启用面部捕捉的媒体源（即参数 `sourceType`）仅支持设为 `AgoraMediaSourceTypePrimaryCamera`（默认）或 `AgoraMediaSourceTypeCustomVideo`。
 :::
 
@@ -331,7 +331,7 @@ agoraKit.enableExtension(
 
 ### 设置面部捕捉插件鉴权参数
 
-调用 [`setExtensionProperty`](/api-ref/rtc/macos/API/toc_extension#setExtensionProperty) 设置鉴权参数以确保插件正常运行。
+调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_setextensionproperty) 设置鉴权参数以确保插件正常运行。
 
 ```swift
 agoraKit.setExtensionProperty(
@@ -342,7 +342,7 @@ agoraKit.setExtensionProperty(
 
 ### 获取面部信息
 
-通过 [`onCaptureVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
+通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
 
 :::warning[注意]
 目前面部捕捉功能一次只输出一张人脸, 你需要在触发回调后，单独申请内存保存面部信息并在其他线程处理，否则可能会导致裸数据回调丢帧。
@@ -407,7 +407,7 @@ func onCapture(_ videoFrame: AgoraOutputVideoFrame, sourceType: AgoraVideoSource
 
 ### 关闭面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/macos/API/toc_extension#enableExtension) 以关闭面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_enableextension) 以关闭面部捕捉插件。
 
 ```swift
 agoraKit.enableExtension(
@@ -423,10 +423,10 @@ agoraKit.enableExtension(
 
 ### API 参考
 
-- [`registerExtension`](/api-ref/rtc/macos/API/toc_extension#registerExtension)
-- [`enableExtension`](/api-ref/rtc/macos/API/toc_extension#enableExtension)
-- [`setExtensionProperty`](/api-ref/rtc/macos/API/toc_extension#setExtensionProperty)
-- [`onCaptureVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`registerExtension`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_registerextension)
+- [`enableExtension`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_enableextension)
+- [`setExtensionProperty`](/zh-CN/api-reference/rtc/macos/extension#api_irtcengine_setextensionproperty)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
 
 </PlatformStructured>
 
@@ -455,10 +455,10 @@ agoraKit.enableExtension(
 
 ### 开启面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/windows/API/toc_extension#enableExtension) 以启用面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#enableextension) 以启用面部捕捉插件。
 
 :::info[信息]
-- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/api-ref/rtc/windows/API/toc_extension#enableExtension) 的时机控制在加入频道前。
+- 首次启用面部捕捉插件会产生一定的延迟，为保证频道内使用面部捕捉功能的流畅性，建议首次调用 [`enableExtension`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#enableextension) 的时机控制在加入频道前。
 - 启用面部捕捉的媒体源（即参数 `type`）仅支持设为 `PRIMARY_CAMERA_SOURCE`（默认）或 `CUSTOM_VIDEO_SOURCE`。
 :::
 
@@ -470,7 +470,7 @@ m_rtcEngine.enableExtension(
 
 ### 设置面部捕捉插件鉴权参数
 
-调用 [`setExtensionProperty`](/api-ref/rtc/windows/API/toc_extension#setExtensionProperty) 设置鉴权参数以确保插件正常运行。
+调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#setextensionproperty) 设置鉴权参数以确保插件正常运行。
 
 ```cpp
 m_rtcEngine.setExtensionProperty(
@@ -482,7 +482,7 @@ m_rtcEngine.setExtensionProperty(
 
 ### 获取面部信息
 
-通过 [`onCaptureVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
+通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取包含面部信息的原始视频数据。
 
 :::warning[注意]
 目前面部捕捉功能一次只输出一张人脸, 你需要在触发回调后，单独申请内存保存面部信息并在其他线程处理，否则可能会导致裸数据回调丢帧。
@@ -548,7 +548,7 @@ bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType,
 
 ### 关闭面部捕捉插件
 
-调用 [`enableExtension`](/api-ref/rtc/windows/API/toc_extension#enableExtension) 以关闭面部捕捉插件。
+调用 [`enableExtension`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#enableextension) 以关闭面部捕捉插件。
 
 ```cpp
 m_rtcEngine.enableExtension(
@@ -564,10 +564,10 @@ m_rtcEngine.enableExtension(
 
 ### API 参考
 
-- [`loadExtensionProvider`](/api-ref/rtc/windows/API/toc_extension#loadExtensionProvider)
-- [`registerExtension`](/api-ref/rtc/windows/API/toc_extension#registerExtension)
-- [`enableExtension`](/api-ref/rtc/windows/API/toc_extension#enableExtension)
-- [`setExtensionProperty`](/api-ref/rtc/windows/API/toc_extension#setExtensionProperty)
-- [`onCaptureVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`loadExtensionProvider`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#loadextensionprovider)
+- [`registerExtension`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#registerextension)
+- [`enableExtension`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#enableextension)
+- [`setExtensionProperty`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#setextensionproperty)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
 
 </PlatformStructured>

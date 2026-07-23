@@ -37,11 +37,12 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 - 由于云端录制仅录制浏览器窗口可见部分，该 Web 页面需要全部可见。如果浏览器有滚动条，录制的始终是网页未滚动状态下的首屏。
 - 如需还原主播端看到的全部内容，你需要将主播端的操作同步到应用中。
 
+<a id="实现页面录制并推流到-cdn"></a>
 ## 实现页面录制
 
 ### 1. 申请录制服务器资源
 
-在开始录制前，必须调用 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法请求用于云端录制的服务器资源。
+在开始录制前，必须调用 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法请求用于云端录制的服务器资源。
 
 你需要在 `acquire` 中设置如下字段：
 
@@ -79,7 +80,7 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 
 <TabsContent value="Webpage recording only">
 
-在调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 时，将 `mode` 参数设置为 `web`，表示使用页面录制服务。
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 时，将 `mode` 参数设置为 `web`，表示使用页面录制服务。
 
 需要设置页面录制 `clientRequest` 中的如下参数：
 
@@ -149,14 +150,14 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 
 <TabsContent value="push to CDN">
 
-在调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法时，将 `mode` 参数设置为 `web`，表示启用页面录制模式。
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，将 `mode` 参数设置为 `web`，表示启用页面录制模式。
 
 实现页面录制并推流到 CDN 需要设置 `clientRequest` 中的如下参数：
 
 | 字段                     | 配置内容     |
 | :----------------------- | :----------- |
 | `storageConfig`         | 第三方云存储 |
-| `extensionServiceConfig` | 扩展服务设置。如果要进行页面录制并推流到 CDN，你需要分别将 `serviceName` 设置为 `"web_recorder_service"`（页面录制）和 `"rtmp_publish_service"`（推流到 CDN），并设置页面录制和推流到 CDN 相关字段。具体参见 [`extensionServiceConfig`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 文档。 |
+| `extensionServiceConfig` | 扩展服务设置。如果要进行页面录制并推流到 CDN，你需要分别将 `serviceName` 设置为 `"web_recorder_service"`（页面录制）和 `"rtmp_publish_service"`（推流到 CDN），并设置页面录制和推流到 CDN 相关字段。具体参见 [`extensionServiceConfig`](/zh-CN/api-reference/api-ref/cloud-recording/start) 文档。 |
 
 请求示例如下：
 
@@ -231,7 +232,7 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 
 ### 3. 停止录制
 
-录制完成后，调用 [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。如果需要推流到 CDN，请在录制及推流完成后调用 `stop` 方法离开频道，停止录制和推流。
+录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。如果需要推流到 CDN，请在录制及推流完成后调用 `stop` 方法离开频道，停止录制和推流。
 
 :::error[警告]
 页面录制停止前会持续计费，请根据实际业务情况设置合理的 `maxRecordingHour`，或主动停止页面录制。
@@ -353,9 +354,9 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 
 你可以参考以下方法了解字段详情：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
-- [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop)
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
+- [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop)
 
 ### 常见问题
 

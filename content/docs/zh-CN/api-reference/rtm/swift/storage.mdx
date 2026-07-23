@@ -54,7 +54,7 @@ setChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-0-6-4" /> |
@@ -202,7 +202,7 @@ getChannelMetadata(
 
 |  属性  |  类型  | 描述      |
 | ---- | ------ | --------- |
-|     `data`     |      `AgoraRtmMetadata`     | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+|     `data`     |      `AgoraRtmMetadata`     | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 
 ### 接口方法
 
@@ -300,7 +300,7 @@ removeChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-2-6-4" /> |
@@ -429,7 +429,7 @@ updateChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-3-6-4" /> |
@@ -574,7 +574,7 @@ setUserMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | 当前用户的 `userId` | 用户 ID。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-4-4-4" /> |
 
@@ -703,7 +703,7 @@ getUserMetadata(userId: String, completion completionBlock: AgoraRtmGetMetadataB
 
 | 属性   | 类型                  | 描述   |
 | ----- | ---------------- | ----- |
-| `data` | `AgoraRtmMetadata` | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 
 ### 基本用法
 
@@ -786,7 +786,7 @@ removeUserMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | 当前用户的 `userId` | 用户 ID。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-6-4-4" /> |
 
@@ -901,7 +901,7 @@ updateUserMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | 当前用户的 `userId` | 用户 ID。 |
-| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-swift-html-7-4-4" /> |
 

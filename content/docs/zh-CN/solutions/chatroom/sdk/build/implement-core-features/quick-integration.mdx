@@ -184,7 +184,7 @@ public void login(String uid,String token,CallBack callBack){
 参考如下步骤初始化 `RtcEngine`：
 
 1. 根据[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
-2. 调用声网 RTC SDK 中的 [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) 方法创建并初始化 `RtcEngine`。
+2. 调用声网 RTC SDK 中的 [`create`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 方法创建并初始化 `RtcEngine`。
 
 ```kotlin
 // 初始化配置
@@ -274,9 +274,9 @@ val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
         }
         ```
 
-    - 调用声网 RTC SDK 中 `RtcEngine` 类的 `joinChannel` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
+    - 调用声网 RTC SDK 中 `RtcEngine` 类的 `joinChannel` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2)。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
 
-      你还可以调用 [`setChannelProfile`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) 为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）配置语聊房的推荐音效参数。
+      你还可以调用 [`setChannelProfile`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)、[`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）配置语聊房的推荐音效参数。
 
         ```kotlin
         // 实现房间内的语音互动
@@ -333,13 +333,13 @@ val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
     })
     ```
 
-2. 调用 `RtcEngine` 类的 [`leaveChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_leavechannel) 方法离开 RTC 频道。
+2. 调用 `RtcEngine` 类的 [`leaveChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_leavechannel) 方法离开 RTC 频道。
 
     ```kotlin
     rtcEngine?.leaveChannel()
     ```
 
-3. 调用 [`leaveChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a4f2c430782206971480c73a49311b1437) 离开聊天室，调用 [`asyncDestroyChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html?transId=194274c0-bee4-11ed-b167-a39cc89dc96e#a0d50d2e34d9992fc3f8ea1c82e2db1a) 销毁聊天室。调用 [`destroy`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_release) 销毁 RTC 引擎。
+3. 调用 [`leaveChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a4f2c430782206971480c73a49311b1437) 离开聊天室，调用 [`asyncDestroyChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html?transId=194274c0-bee4-11ed-b167-a39cc89dc96e#a0d50d2e34d9992fc3f8ea1c82e2db1a) 销毁聊天室。调用 [`destroy`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_release) 销毁 RTC 引擎。
 
     ```kotlin
     ChatroomIMManager.getInstance().leaveChatRoom(roomKitBean.chatroomId)
@@ -510,7 +510,7 @@ ChatRoomServiceImp.getSharedInstance().fetchRoomList(page: 0) { error, rooms in
 参考如下步骤初始化 `AgoraRtcEngineKit`：
 
 1. 根据[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
-2. 调用声网 RTC SDK 中的 [`sharedEngineWithAppId`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) 方法创建并初始化 `AgoraRtcEngineKit`。
+2. 调用声网 RTC SDK 中的 [`sharedEngineWithAppId`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) 方法创建并初始化 `AgoraRtcEngineKit`。
 
 ```swift
 let rtcKit: AgoraRtcEngineKit = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCenter.AppId, delegate: nil)
@@ -580,7 +580,7 @@ let rtcKit: AgoraRtcEngineKit = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCen
 
     - 调用声网 RTC SDK 中 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[1/4])。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
 
-      你还可以调用 [`setChannelProfile`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters) 来为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）设置语聊房的最佳音效。
+      你还可以调用 [`setChannelProfile`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)、[`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 来为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）设置语聊房的最佳音效。
 
         ```swift
         // 实现房间内的语音互动
@@ -636,13 +636,13 @@ let rtcKit: AgoraRtcEngineKit = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCen
     }
     ```
 
-2. 调用 `AgoraRtcEngineKit` 类的 [`leaveChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_leavechannel) 方法离开 RTC 频道。
+2. 调用 `AgoraRtcEngineKit` 类的 [`leaveChannel`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel) 方法离开 RTC 频道。
 
     ```swift
     rtcKit.leaveChannel(nil)
     ```
 
-3. 调用 [`leaveChatroom:completion:`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#ae9b671ece1a36ad8ac26375d91755467) 离开聊天室，调用 [`destroyChatroom:`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#a1e3a6bacf44a96ff37b34d2068c84386) 销毁聊天室。调用 [`destroy`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_release) 销毁 RTC 引擎。
+3. 调用 [`leaveChatroom:completion:`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#ae9b671ece1a36ad8ac26375d91755467) 离开聊天室，调用 [`destroyChatroom:`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#a1e3a6bacf44a96ff37b34d2068c84386) 销毁聊天室。调用 [`destroy`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) 销毁 RTC 引擎。
 
     ```swift
     AgoraChatClient.shared().roomManager?.leaveChatroom(currentRoomId, completion: { error in

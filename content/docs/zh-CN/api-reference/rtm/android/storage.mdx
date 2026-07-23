@@ -44,7 +44,7 @@ void setChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-0-6-4" /> |
@@ -123,7 +123,7 @@ void getChannelMetadata(
 
 调用结果回调：
 
-    - 调用成功：执行 `onSuccess` 方法并返回 [`Metadata `](#Metadata) 查询结果。
+    - 调用成功：执行 `onSuccess` 方法并返回 [`Metadata `](#metadata) 查询结果。
     - 调用失败：执行 `onFailure` 方法。
 
 </Slot>
@@ -180,7 +180,7 @@ void removeChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-2-6-4" /> |
@@ -260,7 +260,7 @@ void updateChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-3-6-4" /> |
@@ -344,7 +344,7 @@ void setUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-4-4-4" /> |
 
@@ -416,7 +416,7 @@ void getUserMetadata(
 
 调用结果回调：
 
-    - 调用成功：执行 `onSuccess` 方法并返回 [`Metadata `](#Metadata) 查询结果。
+    - 调用成功：执行 `onSuccess` 方法并返回 [`Metadata `](#metadata) 查询结果。
     - 调用失败：执行 `onFailure` 方法。
 
 </Slot>
@@ -465,7 +465,7 @@ void removeUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-6-4-4" /> |
 
@@ -539,7 +539,7 @@ void updateUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="storage-android-html-7-4-4" /> |
 

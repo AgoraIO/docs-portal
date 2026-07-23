@@ -33,8 +33,8 @@ description: "了解实时互动 RTC 在不同平台上的设置人声效果方�
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- [`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#setAudioScenario)：将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
-- [`setAudioProfile`[2/2]](/api-ref/rtc/android/API/toc_audio_basic#setAudioProfile%20[2/2])：将音频编码属性设置为高音质编码：
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#setaudioscenario)：将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
+- [`setAudioProfile`[2/2]](/zh-CN/api-reference/rtc/android/audio/audio-basic#setaudioprofile-22)：将音频编码属性设置为高音质编码：
    - 使用单声道传输：设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`
    - 使用立体声传输：设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO`
 
@@ -53,7 +53,7 @@ mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(Constants.AudioProfil
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -91,7 +91,7 @@ mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(Constants.AudioProfil
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -129,7 +129,7 @@ mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(Constants.AudioProfil
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -151,7 +151,7 @@ mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(Constants.AudioProfil
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -204,22 +204,22 @@ mRtcEngine.setLocalVoiceReverb(Constants.AUDIO_REVERB_TYPE.fromInt(4), 78);
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#setAudioScenario)
-- [`setAudioProfile`[2/2]](/api-ref/rtc/android/API/toc_audio_basic#setAudioProfile%20[2/2])
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#setaudioscenario)
+- [`setAudioProfile`[2/2]](/zh-CN/api-reference/rtc/android/audio/audio-basic#setaudioprofile-22)
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/android/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -254,7 +254,7 @@ mRtcEngine.setLocalVoiceReverb(Constants.AUDIO_REVERB_TYPE.fromInt(4), 78);
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#setAudioScenario)：将音频场景设置为高音质场景 `AgoraAudioScenarioGameStreaming` (3)。
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#setaudioscenario)：将音频场景设置为高音质场景 `AgoraAudioScenarioGameStreaming` (3)。
 - [`setAudioProfile`[2/2]](/api-ref/rtc/ios/API/toc_audio_basic#setAudioProfile%20[2/2])：将音频编码属性设置为高音质编码：
    - 使用单声道传输：设为 `AgoraAudioProfileMusicHighQuality`
    - 使用立体声传输：设为 `AgoraAudioProfileMusicHighQualityStereo`
@@ -275,7 +275,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -314,7 +314,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -352,7 +352,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -374,7 +374,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -426,22 +426,22 @@ agoraKit.setLocalVoiceReverbOf(.strength, withValue: 45)
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#setAudioScenario)
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#setaudioscenario)
 - [`setAudioProfile`[2/2]](/api-ref/rtc/ios/API/toc_audio_basic#setAudioProfile%20[2/2])
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -476,7 +476,7 @@ agoraKit.setLocalVoiceReverbOf(.strength, withValue: 45)
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- [`setAudioScenario`](/api-ref/rtc/macos/API/toc_audio_basic#setAudioScenario)：将音频场景设置为高音质场景 `AgoraAudioScenarioGameStreaming` (3)。
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/macos/audio/audio-basic#setaudioscenario)：将音频场景设置为高音质场景 `AgoraAudioScenarioGameStreaming` (3)。
 - [`setAudioProfile`[2/2]](/api-ref/rtc/macos/API/toc_audio_basic#setAudioProfile%20[2/2])：将音频编码属性设置为高音质编码：
    - 使用单声道传输：设为 `AgoraAudioProfileMusicHighQuality`
    - 使用立体声传输：设为 `AgoraAudioProfileMusicHighQualityStereo`
@@ -497,7 +497,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -536,7 +536,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -574,7 +574,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -596,7 +596,7 @@ agoraKit.setAudioProfile(.musicHighQaulityStereo)
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -648,22 +648,22 @@ agoraKit.setLocalVoiceReverbOf(.strength, withValue: 45)
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/macos/API/toc_audio_basic#setAudioScenario)
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/macos/audio/audio-basic#setaudioscenario)
 - [`setAudioProfile`[2/2]](/api-ref/rtc/macos/API/toc_audio_basic#setAudioProfile%20[2/2])
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/macos/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -698,8 +698,8 @@ agoraKit.setLocalVoiceReverbOf(.strength, withValue: 45)
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- [`setAudioScenario`](/api-ref/rtc/windows/API/toc_audio_basic#setAudioScenario)：将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
-- [`setAudioProfile`[2/2]](/api-ref/rtc/windows/API/toc_audio_basic#setAudioProfile%20[2/2])：将音频编码属性设置为高音质编码：
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#setaudioscenario)：将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
+- [`setAudioProfile`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#setaudioprofile-22)：将音频编码属性设置为高音质编码：
    - 使用单声道传输：设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`
    - 使用立体声传输：设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO`
 
@@ -718,7 +718,7 @@ m_rtcEngine = createAgoraRtcEngine();
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -756,7 +756,7 @@ m_rtcEngine = createAgoraRtcEngine();
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -794,7 +794,7 @@ m_rtcEngine = createAgoraRtcEngine();
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -816,7 +816,7 @@ m_rtcEngine = createAgoraRtcEngine();
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -868,22 +868,22 @@ m_rtcEngine->setLocalVoiceReverb(AUDIO_REVERB_STRENGTH, 78);
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/windows/API/toc_audio_basic#setAudioScenario)
-- [`setAudioProfile`[2/2]](/api-ref/rtc/windows/API/toc_audio_basic#setAudioProfile%20[2/2])
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#setaudioscenario)
+- [`setAudioProfile`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#setaudioprofile-22)
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/windows/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -918,8 +918,8 @@ m_rtcEngine->setLocalVoiceReverb(AUDIO_REVERB_STRENGTH, 78);
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- 调用 [`setAudioScenario`](/api-ref/rtc/electron/API/toc_audio_basic#setAudioScenario) 将音频场景设置为高音质场景 `AudioScenarioGameStreaming` (3)。
-- 调用 [`setAudioProfile`](/api-ref/rtc/electron/API/toc_audio_basic#setAudioProfile) 将音频编码属性设置为高音质编码，其中：
+- 调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#setaudioscenario) 将音频场景设置为高音质场景 `AudioScenarioGameStreaming` (3)。
+- 调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#setaudioprofile) 将音频编码属性设置为高音质编码，其中：
    - 使用单声道传输设为 `AudioProfileMusicHighQuality`
    - 使用立体声传输设为 `AudioProfileMusicHighQualityStereo`
 
@@ -938,7 +938,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -976,7 +976,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -1014,7 +1014,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -1036,7 +1036,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -1088,22 +1088,22 @@ rtcEngine.setLocalVoiceReverb(AudioReverbType.AudioReverbStrength, 78);
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/electron/API/toc_audio_basic#setAudioScenario)
-- [`setAudioProfile`](/api-ref/rtc/electron/API/toc_audio_basic#setAudioProfile)
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#setaudioscenario)
+- [`setAudioProfile`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#setaudioprofile)
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/electron/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -1138,13 +1138,13 @@ rtcEngine.setLocalVoiceReverb(AudioReverbType.AudioReverbStrength, 78);
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- 调用 [`SetAudioScenario`](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
-- 调用 [`SetAudioProfile`[2/2]](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设置为高音质编码，其中：
+- 调用 [`SetAudioScenario`](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。
+- 调用 [`SetAudioProfile`[2/2]](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioprofile2) 将音频编码属性设置为高音质编码，其中：
    - 使用单声道传输设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`
    - 使用立体声传输设为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO`
 
 :::warning[注意]
-请在调用 [`CreateAgoraRtcEngine`](/api-ref/rtc/unity/API/toc_initialize#api_createagorartcengine) 创建 `IRtcEngine` 对象之后再设置音频场景和编码属性。
+请在调用 [`CreateAgoraRtcEngine`](/zh-CN/api-reference/rtc/unity/initialize#createagorartcengine) 创建 `IRtcEngine` 对象之后再设置音频场景和编码属性。
 :::
 
 ```csharp
@@ -1161,7 +1161,7 @@ RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
 
 ### 美声
 
-调用 [`SetVoiceBeautifierPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`SetVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -1201,7 +1201,7 @@ RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
 
 ### 音效
 
-调用 [`SetAudioEffectPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`SetAudioEffectPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -1239,7 +1239,7 @@ RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
 
 ### 变声
 
-调用 [`SetAudioEffectPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`SetVoiceConversionPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`SetAudioEffectPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`SetVoiceConversionPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -1261,7 +1261,7 @@ RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
 
 ### 自定义人声效果
 
-调用 [`SetLocalVoicePitch`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`SetLocalVoiceEqualization`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`SetLocalVoiceReverb`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`SetLocalVoicePitch`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`SetLocalVoiceEqualization`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`SetLocalVoiceReverb`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -1318,22 +1318,22 @@ RtcEngine.SetLocalVoiceReverb(AUDIO_REVERB_TYPE.AUDIO_REVERB_STRENGTH, 78);
 
 #### 设置音频场景和编码属性
 
-- [`SetAudioScenario`](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioscenario)
-- [`SetAudioProfile`[2/2]](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`SetAudioScenario`](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioscenario)
+- [`SetAudioProfile`[2/2]](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioprofile2)
 
 #### 预设人声效果
 
-  - [`SetVoiceBeautifierPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`SetAudioEffectPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`SetVoiceConversionPreset`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`SetAudioEffectParameters`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`SetVoiceBeautifierParameters`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`SetVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`SetAudioEffectPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`SetVoiceConversionPreset`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`SetAudioEffectParameters`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`SetVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`SetLocalVoicePitch`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`SetLocalVoiceEqualization`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`SetLocalVoiceReverb`](/api-ref/rtc/unity/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`SetLocalVoicePitch`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`SetLocalVoiceEqualization`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`SetLocalVoiceReverb`](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
 
@@ -1368,8 +1368,8 @@ RtcEngine.SetLocalVoiceReverb(AUDIO_REVERB_TYPE.AUDIO_REVERB_STRENGTH, 78);
 
 为了获得更好的人声效果，声网推荐你在实现人声效果前先调用以下方法：
 
-- 调用 [`setAudioScenario`](/api-ref/rtc/rn/API/toc_audio_basic#setAudioScenario) 将音频场景设置为高音质场景 `AudioScenarioGameStreaming` (3)。
-- 调用 [`setAudioProfile`](/api-ref/rtc/rn/API/toc_audio_basic#setAudioProfile) 将音频编码属性设置为高音质编码，其中：
+- 调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#setaudioscenario) 将音频场景设置为高音质场景 `AudioScenarioGameStreaming` (3)。
+- 调用 [`setAudioProfile`](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#setaudioprofile) 将音频编码属性设置为高音质编码，其中：
    - 使用单声道传输设为 `AudioProfileMusicHighQuality`
    - 使用立体声传输设为 `AudioProfileMusicHighQualityStereo`
 
@@ -1388,7 +1388,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 美声
 
-调用 [`setVoiceBeautifierPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 语聊美声
 
@@ -1426,7 +1426,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 音效
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 方法，设置曲风音效、空间塑造、电音音效等效果。
 
 - 曲风音效
 
@@ -1464,7 +1464,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 变声
 
-调用 [`setAudioEffectPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
+调用 [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 和 [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 方法，分别实现基础变声和进阶变声效果。
 
 - 基础变声
 
@@ -1486,7 +1486,7 @@ rtcEngine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
 
 ### 自定义人声效果
 
-调用 [`setLocalVoicePitch`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
+调用 [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)、[`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) 和 [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)，以调整音调、均衡和混响效果，来自定义人声效果。
 
 以下示例代码展示如何通过手动设置参数值把原始人声变成绿巨人的声音：
 
@@ -1538,21 +1538,21 @@ rtcEngine.setLocalVoiceReverb(AudioReverbType.AudioReverbStrength, 78);
 
 #### 设置音频场景和编码属性
 
-- [`setAudioScenario`](/api-ref/rtc/rn/API/toc_audio_basic#setAudioScenario)
-- [`setAudioProfile`](/api-ref/rtc/rn/API/toc_audio_basic#setAudioProfile)
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#setaudioscenario)
+- [`setAudioProfile`](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#setaudioprofile)
 
 #### 预设人声效果
 
-  - [`setVoiceBeautifierPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset)
-  - [`setAudioEffectPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setaudioeffectpreset)
-  - [`setVoiceConversionPreset`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setvoiceconversionpreset)
-  - [`setAudioEffectParameters`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setaudioeffectparameters)
-  - [`setVoiceBeautifierParameters`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setvoicebeautifierparameters)
+  - [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [`setVoiceConversionPreset`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [`setAudioEffectParameters`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [`setVoiceBeautifierParameters`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
 
 #### 自定义人声效果
 
-- [`setLocalVoicePitch`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch)
-- [`setLocalVoiceEqualization`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoiceequalization)
-- [`setLocalVoiceReverb`](/api-ref/rtc/rn/API/toc_audio_effect#api_irtcengine_setlocalvoicereverb)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>

@@ -257,11 +257,11 @@ engine.leaveChannelEx(connection);
 
 ### API 参考
 
-- [`createCustomVideoTrack`](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack)
-- [`destroyCustomVideoTrack`](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack)
-- [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/android/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
-- [`joinChannelEx`](/api-ref/rtc/android/API/toc_channel#api_irtcengineex_joinchannelex)
-- [`pushExternalVideoFrameById`[2/2]](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#pushExternalVideoFrameById%20[2/2])
+- [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [`destroyCustomVideoTrack`](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [`getCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex)
+- [`pushExternalVideoFrameById`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#pushexternalvideoframebyid-22)
 
 </PlatformStructured>
 
@@ -370,7 +370,7 @@ NetworkManager.shared.generateToken(channelName: channelName, uid: uid) { token 
 调用 `pushExternalVideoFrame`[1/2] 将采集到的视频帧通过视频轨道推送至 SDK。其中，`videoTrackId` 要与步骤 2 加入频道时指定视频轨道 ID 一致，`AgoraVideoFrame` 中可以设置视频帧的像素格式、数据类型和时间戳等参数。
 
 :::info[信息]
-- 以下代码演示推送 CVPixelBufferRef 格式的视频数据。其他支持的视频帧格式详见 [`AgoraVideoFrame`](/api-ref/rtc/ios/API/class_externalvideoframe) 的 `format`。
+- 以下代码演示推送 CVPixelBufferRef 格式的视频数据。其他支持的视频帧格式详见 [`AgoraVideoFrame`](/zh-CN/api-reference/rtc/ios/class-externalvideoframe) 的 `format`。
 - 为确保音视频同步，声网建议你将 `AgoraVideoFrame` 的 `time`（时间戳）设置为系统 Monotonic Time。你可以调用 `getCurrentMonotonicTimeInMs` 获取当前的 Monotonic Time。
 :::
 
@@ -452,11 +452,11 @@ agoraKit.leaveChannelEx(connection) { state in
 
 ### API 参考
 
-- [`createCustomVideoTrack`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack)
-- [`destroyCustomVideoTrack`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [`destroyCustomVideoTrack`](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
 - [`pushExternalVideoFrame`[1/2]](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#pushExternalVideoFrame%20[1/2])
-- [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
-- [`joinChannelExByToken`[1/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_joinchannelex)
+- [`getCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`joinChannelExByToken`[1/2]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex)
 
 </PlatformStructured>
 
@@ -565,7 +565,7 @@ NetworkManager.shared.generateToken(channelName: channelName, uid: uid) { token 
 调用 `pushExternalVideoFrame`[1/2] 将采集到的视频帧通过视频轨道推送至 SDK。其中，`videoTrackId` 要与步骤 2 加入频道时指定视频轨道 ID 一致，`AgoraVideoFrame` 中可以设置视频帧的像素格式、数据类型和时间戳等参数。
 
 :::info[信息]
-- 以下代码演示推送 CVPixelBufferRef 格式的视频数据。其他支持的视频帧格式详见 [`AgoraVideoFrame`](/api-ref/rtc/macos/API/class_externalvideoframe) 的 `format`。
+- 以下代码演示推送 CVPixelBufferRef 格式的视频数据。其他支持的视频帧格式详见 [`AgoraVideoFrame`](/zh-CN/api-reference/rtc/macos/class-externalvideoframe) 的 `format`。
 - 为确保音视频同步，声网建议你将 `AgoraVideoFrame` 的 `time`（时间戳）设置为系统 Monotonic Time。你可以调用 `getCurrentMonotonicTimeInMs` 获取当前的 Monotonic Time。
 :::
 
@@ -647,11 +647,11 @@ agoraKit.leaveChannelEx(connection) { state in
 
 ### API 参考
 
-- [`createCustomVideoTrack`](/api-ref/rtc/macos/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack)
-- [`destroyCustomVideoTrack`](/api-ref/rtc/macos/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [`destroyCustomVideoTrack`](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
 - [`pushExternalVideoFrame`[1/2]](/api-ref/rtc/macos/API/toc_video_custom_capturenrendering#pushExternalVideoFrame%20[1/2])
-- [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
-- [`joinChannelExByToken`[1/2]](/api-ref/rtc/macos/API/toc_channel#api_irtcengineex_joinchannelex)
+- [`getCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`joinChannelExByToken`[1/2]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex)
 
 </PlatformStructured>
 
@@ -694,8 +694,8 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: false })
 
 ## API 参考
 
-- [`createCustomVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomvideotrack)
-- [`LocalVideoTrack`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack.html)
+- [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomvideotrack)
+- [`LocalVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
 
 </PlatformStructured>
 
@@ -800,7 +800,7 @@ m_yuvReaders[trackIndex].start(std::bind(&MultiVideoSourceTracksYUVReaderHander:
 调用 `pushVideoFrame` 将采集到的视频帧通过视频轨道推送至 SDK。其中， `videoTrackId` 要与步骤 2 加入频道时指定视频轨道 ID 一致，`videoFrame` 中可以设置视频帧的像素格式、数据类型和时间戳等参数。
 
 :::info[信息]
-- 以下代码演示将 YUV 格式转换为 I420 格式的原始视频数据。声网视频自采集还支持推送其他格式的外部视频帧，详见 [`VIDEO_PIXEL_FORMAT`](/api-ref/rtc/windows/API/enum_videopixelformat)。
+- 以下代码演示将 YUV 格式转换为 I420 格式的原始视频数据。声网视频自采集还支持推送其他格式的外部视频帧，详见 [`VIDEO_PIXEL_FORMAT`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videopixelformat)。
 - 为确保音视频同步，声网建议你将 `videoFrame` 的时间戳参数设置为系统 Monotonic Time。你可以调用 `getCurrentMonotonicTimeInMs` 获取当前的 Monotonic Time。
 :::
 
@@ -898,11 +898,11 @@ m_rtcEngine->leaveChannelEx(m_trackConnections[trackIndex]);
 
 ### API 参考
 
-- [`createCustomVideoTrack`](/api-ref/rtc/windows/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack)
-- [`destroyCustomVideoTrack`](/api-ref/rtc/windows/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack)
-- [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
-- [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel#api_irtcengineex_joinchannelex)
-- [`pushVideoFrame`](/api-ref/rtc/windows/API/toc_video_custom_capturenrendering#api_imediaengine_pushvideoframe)
+- [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [`destroyCustomVideoTrack`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [`getCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex)
+- [`pushVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#pushvideoframe)
 
 </PlatformStructured>
 
@@ -1190,10 +1190,10 @@ private void OnDestroy()
 
 ### API 参考
 
-- [`CreateCustomVideoTrack`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack)
-- [`DestroyCustomVideoTrack`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack)
-- [`GetCurrentMonotonicTimeInMs`](/api-ref/rtc/unity/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
-- [`JoinChannelEx`](/api-ref/rtc/unity/API/toc_channel#api_irtcengineex_joinchannelex)
-- [`PushVideoFrame`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_imediaengine_pushvideoframe)
+- [`CreateCustomVideoTrack`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [`DestroyCustomVideoTrack`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [`GetCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`JoinChannelEx`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex)
+- [`PushVideoFrame`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe)
 
 </PlatformStructured>

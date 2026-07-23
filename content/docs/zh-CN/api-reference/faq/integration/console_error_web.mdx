@@ -36,7 +36,7 @@ title: "如何处理常见的 Web 浏览器控制台报错？"
 
 | 错误原因                                                     | 解决办法                                                     |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| 使用的浏览器不完全支持 WebRTC。                              | 使用 Web SDK [支持的浏览器](/doc/rtc/javascript/overview/browser-compatibility)。 |
+| 使用的浏览器不完全支持 WebRTC。                              | 使用 Web SDK [支持的浏览器](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。 |
 | 使用了某些浏览器插件，导致 WebRTC 无法获取本地 Candidate。   | 关闭浏览器插件。                                             |
 | 用户的网关防火墙禁用了 UDP 协议或者禁用了 10000 以上的 UDP 端口。 | 关闭防火墙或者使用云代理服务。 |
 | 用户使用了 VPN。                                             | 关闭 VPN。                                                   |
@@ -132,12 +132,12 @@ Candidate 是指用于媒体传输的候选地址，包含 IP 地址和端口信
 
 ### 解决办法
 
-根据是否开启[云代理](https://docs.agora.io/cn/Interactive%20Broadcast/cloud_proxy_web?platform=Web)，建立连接时会使用不同类型的 candidate，因此解决办法也不同。
+根据是否开启[云代理](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall#云代理方案)，建立连接时会使用不同类型的 candidate，因此解决办法也不同。
 
 - 如果你开启了云代理，SDK 会从 TURN Server 获取 relay candidate，所以你需要检查是否已经将声网指定的云代理 IP 地址和端口添加到白名单，并确保客户端可以正常连接到 TURN Server。
 - 如果没有开启云代理功能，SDK 会从本地设备获取 host candidate。获取失败通常是由于安全策略设置导致的，你可以进行以下排查。
   - 检查浏览器是否安装了禁用 WebRTC 的插件。
-  - 确保本地设备的防火墙设置未禁用 UDP，且已经将[指定的域名和端口](https://docs.agora.io/cn/Agora%20Platform/firewall?platform=All%20Platforms#web-sdk)添加到白名单。
+  - 确保本地设备的防火墙设置未禁用 UDP，且已经将[指定的域名和端口](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)添加到白名单。
 
 ## P2P lost
 

@@ -8,7 +8,7 @@ description: "了解如何在实时互动 RTC 中加入和离开频道，包括�
 
 ## 创建 AgoraRTCClient 对象
 
-调用 [`AgoraRTC.createClient`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createclient) 即可创建 `AgoraRTCClient` 对象。在创建 `AgoraRTCClient` 时，你需要指定使用的编码格式 (`codec`) 以及频道场景 (`mode`)。
+调用 [`AgoraRTC.createClient`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createclient) 即可创建 `AgoraRTCClient` 对象。在创建 `AgoraRTCClient` 时，你需要指定使用的编码格式 (`codec`) 以及频道场景 (`mode`)。
 
 ```javascript
 const client = AgoraRTC.createClient({
@@ -48,11 +48,11 @@ const client = AgoraRTC.createClient({
 
 **直播场景**
 
-`"live"`（直播场景）适用于发布端很少但是订阅端很多的场景，这种场景下 SDK 定义了两种用户角色：观众（默认）和主播。主播能够发送和接收音视频，观众不能发送、只能接收音视频。你可以通过设置 `createClient` 的 [`role`](/api-ref/rtc/javascript/interfaces/clientconfig.html#role) 参数来指定用户角色，也可以调用 [`setClientRole`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setclientrole) 来动态修改用户角色。
+`"live"`（直播场景）适用于发布端很少但是订阅端很多的场景，这种场景下 SDK 定义了两种用户角色：观众（默认）和主播。主播能够发送和接收音视频，观众不能发送、只能接收音视频。你可以通过设置 `createClient` 的 [`role`](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#role) 参数来指定用户角色，也可以调用 [`setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 来动态修改用户角色。
 
 ## 加入频道
 
-创建 `AgoraRTCClient` 对象后，就可以调用 [`AgoraRTCClient.join`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#join) 加入频道。你需要注意：
+创建 `AgoraRTCClient` 对象后，就可以调用 [`AgoraRTCClient.join`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 加入频道。你需要注意：
 
 - 该方法为异步方法，使用时需要配合 `Promise` 或 `async/await`。
 - 设置 `join` 方法的第四个参数 `uid` 时，如果不传入任何值，声网会为这个加入的本地用户自动分配一个 Number 型的用户 ID 作为其唯一的身份标识。你也可以通过该参数自行指定一个 Number 型的用户 ID。
@@ -71,7 +71,7 @@ await client.join("APPID", "CHANNEL", "TOKEN", 393939);
 
 ## 离开频道
 
-调用 [`AgoraRTCClient.leave`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#leave) 可以离开当前频道。该方法可以在任何时候调用，包括正在加入频道时或者正在重连时。该方法为异步方法，使用时需要配合 `Promise` 或 `async/await`。
+调用 [`AgoraRTCClient.leave`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#leave) 可以离开当前频道。该方法可以在任何时候调用，包括正在加入频道时或者正在重连时。该方法为异步方法，使用时需要配合 `Promise` 或 `async/await`。
 
 调用 `leave` 后，SDK 会立刻销毁与当前频道相关的对象，包括订阅的远端用户对象、远端轨道对象、记录连接状态的对象等。如果需要再次加入频道，在调用 `leave` 后再调用 `join` 即可。
 

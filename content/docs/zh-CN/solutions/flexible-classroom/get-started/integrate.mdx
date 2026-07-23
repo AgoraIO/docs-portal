@@ -57,7 +57,7 @@ description: "了解如何快速接入灵动课堂，完成环境准备、参数
     AgoraSDKInitUtils.initSDK(this);
     ```
 
-4. 调用 [`AgoraClassroomSDK.launch`](/api-ref/flexible-classroom/android/classroom-sdk#launch) 方法启动课堂。示例代码如下：
+4. 调用 [`AgoraClassroomSDK.launch`](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk#launch) 方法启动课堂。示例代码如下：
 
     ```kotlin
     // 启动教室前，需要动态申请 `Manifest.permission.RECORD_AUDIO` 和 `Manifest.permission.CAMERA` 权限
@@ -127,7 +127,7 @@ description: "了解如何快速接入灵动课堂，完成环境准备、参数
     }
     ```
 
-5. 调用 AgoraClassroomSDK 的 [`exit`](/api-ref/flexible-classroom/android/classroom-sdk#exit) 方法关闭灵动课堂。示例代码如下：
+5. 调用 AgoraClassroomSDK 的 [`exit`](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk#exit) 方法关闭灵动课堂。示例代码如下：
 
         ```kotlin
         AgoraClassroomSDK.exit()
@@ -198,7 +198,7 @@ description: "了解如何快速接入灵动课堂，完成环境准备、参数
     AgoraSDKInitUtils.initSDK(this)
     ```
 
-4. 调用 [AgoraOnlineClassroomSDK.launch](/api-ref/flexible-classroom/android/classroom-sdk#launch) 方法启动课堂，AgoraOnlineClassroomSDK 和 AgoraClassroomSDK参数是一样的。示例代码如下：
+4. 调用 [AgoraOnlineClassroomSDK.launch](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk#launch) 方法启动课堂，AgoraOnlineClassroomSDK 和 AgoraClassroomSDK参数是一样的。示例代码如下：
 
     ```kotlin
     // 启动教室前，需要动态申请 `Manifest.permission.RECORD_AUDIO` 和 `Manifest.permission.CAMERA` 权限
@@ -243,7 +243,7 @@ description: "了解如何快速接入灵动课堂，完成环境准备、参数
     }
     ```
 
-5. 调用 AgoraClassroomSDK 的 [`exit`](/api-ref/flexible-classroom/android/classroom-sdk#exit) 方法关闭灵动课堂。示例代码如下：
+5. 调用 AgoraClassroomSDK 的 [`exit`](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk#exit) 方法关闭灵动课堂。示例代码如下：
 
         ```kotlin
         AgoraClassroomSDK.exit()
@@ -363,7 +363,7 @@ import AgoraClassroomSDK_iOS
 import <AgoraClassroomSDK_iOS/AgoraClassroomSDK.h>
 ```
 
-4. 调用 [`AgoraClassroomSDK.launch`](/api-ref/flexible-classroom/ios/classroom-sdk#launch) 方法启动教育场景的灵动课堂。示例代码如下：
+4. 调用 [`AgoraClassroomSDK.launch`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk#launch) 方法启动教育场景的灵动课堂。示例代码如下：
 
 ```swift tab="Swift" tabGroup="language"
 let launchConfig = AgoraEduLaunchConfig(userName: userName,          // 用户名
@@ -430,7 +430,7 @@ agora_ui_mode = AgoraUIModeAgoraLight              /* 设置界面显示模式�
 agora_ui_language = @"zh-Hans"                     /* 设置界面语言，可设为 "zh-Hans" 或 "en"。如果不设置，界面语言跟随系统语言。*/
 ```
 
-6. 调用 [`AgoraClassroomSDK.exit`](/api-ref/flexible-classroom/ios/classroom-sdk#exit) 方法关闭教育场景的灵动课堂。示例代码如下：
+6. 调用 [`AgoraClassroomSDK.exit`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk#exit) 方法关闭教育场景的灵动课堂。示例代码如下：
 
 ```swift tab="Swift" tabGroup="language"
 AgoraClassroomSDK.exit()
@@ -529,7 +529,7 @@ import AgoraProctorSDK
 import <AgoraProctorSDK/AgoraProctorSDK.h>
 ```
 
-4. 调用 [`AgoraProctorSDK.launch`](/api-ref/flexible-classroom/ios/proctor-sdk#launch) 方法启动监考场景的灵动课堂。示例代码如下：
+4. 调用 [`AgoraProctorSDK.launch`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk#launch) 方法启动监考场景的灵动课堂。示例代码如下：
 
 <Tabs defaultValue="swift" groupId="language" persist>
 <TabsList>
@@ -786,7 +786,7 @@ end
         } from 'agora-plugin-gallery/classroom'
         ```
 
-    3. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/api-ref/flexible-classroom/javascript/classroom-sdk#config) 和 [AgoraEduSDK.launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法启动课堂。
+    3. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#config) 和 [AgoraEduSDK.launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法启动课堂。
 
     :::warning[注意]
     灵动课堂依赖项 `agora-electron-sdk` 包含原生 Node.js 模块，不建议使用 webpack 等构建工具二次编译，否则可能出现 Node.js 模块找不到的错误。建议在项目配置里将这两个库设置为外部依赖，例如添加 webpack 配置，参考以下示例：
@@ -812,7 +812,7 @@ end
     <script src="https://download.agora.io/edu-apaas/release/edu_widget@X.Y.Z.bundle.js"></script>
     ```
 
-2. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/api-ref/flexible-classroom/javascript/classroom-sdk#config) 和 [AgoraEduSDK.launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法启动课堂。
+2. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#config) 和 [AgoraEduSDK.launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法启动课堂。
 
 </TabsContent>
 </Tabs>
@@ -887,7 +887,7 @@ end
 声网提供的客户端临时 Token 生成器仅适用于 App 的快速测试。在正式环境中，为确保安全，你必须参考[使用 Token 鉴权文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)，在服务端部署并生成 Token。生成的 Token 中传入的 `userId` 需要与 `launch` 方法中传入的参数 `userUuid` 保持一致，否则该 Token 无效。
 :::
 
-其他参数取值详见 [LaunchOption 说明](/api-ref/flexible-classroom/javascript/classroom-sdk#launchoption)。
+其他参数取值详见 [LaunchOption 说明](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launchoption)。
 
 :::info[信息]
 调用 `launch` 函数会返回一个 `unmount` 函数。当你的 App 路由变更导致页面卸载时，需要调用这个 `unmount` 方法来断开房间连接，回收资源。
@@ -1005,7 +1005,7 @@ end
     } from 'agora-plugin-gallery/proctor'
     ```
 
-3. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/api-ref/flexible-classroom/javascript/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/api-ref/flexible-classroom/javascript/proctor-sdk#launch) 方法启动课堂。
+3. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk#launch) 方法启动课堂。
 
 </TabsContent>
 
@@ -1019,7 +1019,7 @@ end
     <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@X.Y.Z.bundle.js"></script>
     ```
 
-2. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/api-ref/flexible-classroom/javascript/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/api-ref/flexible-classroom/javascript/proctor-sdk#launch) 方法启动课堂。
+2. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk#launch) 方法启动课堂。
 
 </TabsContent>
 </Tabs>

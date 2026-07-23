@@ -40,7 +40,7 @@ description: "了解实时互动 RTC 在不同平台上的预防和处理炸房�
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/android/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -85,7 +85,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -108,7 +108,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -160,7 +160,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/ios/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -205,7 +205,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -228,7 +228,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -280,7 +280,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/macos/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -325,7 +325,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -348,7 +348,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/macos/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/macos/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -400,7 +400,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/windows/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -445,7 +445,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -468,7 +468,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -520,7 +520,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/harmonyos/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -565,7 +565,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -588,7 +588,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/harmonyos/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/harmonyos/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/harmonyos/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -640,7 +640,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/electron/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -685,7 +685,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -708,7 +708,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/electron/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/electron/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/electron/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -760,7 +760,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/unity/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -805,7 +805,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -828,7 +828,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/unity/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -880,7 +880,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/flutter/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/flutter/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -925,7 +925,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -948,7 +948,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/flutter/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/flutter/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
@@ -1000,7 +1000,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **定期更新 Token**
 
-Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/rn/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc/react-native/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
 
 :::warning[注意]
 - 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
@@ -1045,7 +1045,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
   </Slot>
 
 :::info[信息]
-如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/zh-CN/api-reference/faq/integration/token_cohost#相关文档)。
 :::
 
 使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
@@ -1068,7 +1068,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 **停止发流**
 
-当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/rn/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/zh-CN/api-reference/rtc/react-native/channel#setclientrole) 将用户角色设为观众，取消其发流权限。
 
 **将非法用户踢出频道**
 
