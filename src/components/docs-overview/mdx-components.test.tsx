@@ -148,7 +148,7 @@ describe('overview MDX components', () => {
       components.SolutionCardGrid as SolutionCardGridComponent;
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
 
-    render(
+    const { container } = render(
       <SolutionCardGrid>
         <SolutionCard
           description="Build realtime voice experiences."
@@ -166,6 +166,10 @@ describe('overview MDX components', () => {
     ).toHaveAttribute('href', '/en/realtime-media/voice');
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
+    expect(container.querySelector('section')).toHaveClass(
+      'w-[var(--content-max)]',
+      'max-w-full',
+    );
   });
 
   it('supports multiple labeled actions that share one target', () => {
