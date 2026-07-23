@@ -595,7 +595,7 @@ function SolutionCardGrid({
   return (
     <section
       className={cn(
-        'not-prose my-8 grid gap-4',
+        'not-prose my-8 grid w-[var(--content-max)] max-w-full gap-4',
         size === 'small'
           ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
           : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
