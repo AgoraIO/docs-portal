@@ -1071,7 +1071,15 @@ describe('API Center navigation runner', () => {
       sidebarIndexTitle: 'C',
     });
     expect(rtsaMeta.pages).toEqual(['!test', 'c']);
-    expect(rtsaCurrentMeta.pages).toEqual(['overview', 'agora-rtc-api-8h']);
+    expect(rtsaCurrentMeta.pages).toEqual([
+      'overview',
+      {
+        type: 'group',
+        title: 'API 详情',
+        sidebarHidden: true,
+        pages: ['agora-rtc-api-8h'],
+      },
+    ]);
     expect(overview.indexOf('实时互动 RTC')).toBeLessThan(
       overview.indexOf('即时通讯 IM'),
     );

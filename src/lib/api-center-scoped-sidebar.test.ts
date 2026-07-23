@@ -446,7 +446,7 @@ describe('API Center scoped sidebars', () => {
     ]);
   });
 
-  it('keeps the live RTSA C Doxygen reference inside its platform scope', async () => {
+  it('keeps RTSA C detail pages reachable without listing them in the platform sidebar', async () => {
     const payload = await loadApiReferencePayload([
       'rtsa',
       'c',
@@ -468,16 +468,7 @@ describe('API Center scoped sidebars', () => {
       },
     });
     const sidebarTitles = collectTitles(payload.sidebar);
-    expect(sidebarTitles).toEqual(
-      expect.arrayContaining([
-        'API 参考',
-        'agora_rtc_api.h 文件参考',
-        'agora_rtc_event_handler_t结构体 参考',
-      ]),
-    );
-    expect(sidebarTitles).not.toEqual(
-      expect.arrayContaining(['SDK 下载', 'Recipe', '常见问题']),
-    );
+    expect(sidebarTitles).toEqual(['API 参考']);
 
     const toc = payload.toc.map((item) => ({
       depth: item.depth,

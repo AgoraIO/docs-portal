@@ -619,7 +619,7 @@ function addRtsaScopeMetaPlans(metaByPath, manifest) {
   );
   if (!entry) return;
   const currentDirectory = `${API_REFERENCE_ROOT}/rtsa/c/(current)`;
-  const evidencePages = unique(
+  const referencePages = unique(
     (manifest.pageEvidence ?? [])
       .map((page) => page.sourceResolution?.targetPath)
       .filter(
@@ -628,11 +628,7 @@ function addRtsaScopeMetaPlans(metaByPath, manifest) {
           path.posix.dirname(targetPath) === currentDirectory,
       )
       .map((targetPath) => path.posix.basename(targetPath, '.mdx')),
-  );
-  const currentPages = unique([
-    'overview',
-    ...evidencePages.filter((page) => page !== 'overview'),
-  ]);
+  ).filter((page) => page !== 'overview');
 
   createMetaAccumulator(metaByPath, {
     metaPath: `${API_REFERENCE_ROOT}/rtsa/meta.json`,
@@ -658,7 +654,19 @@ function addRtsaScopeMetaPlans(metaByPath, manifest) {
     metaPath: `${currentDirectory}/meta.json`,
     rootRoute: '/zh-CN/api-reference/rtsa/c',
     title: `${entry.product} ${entry.label}`,
-    pages: currentPages,
+    pages: [
+      'overview',
+      ...(referencePages.length > 0
+        ? [
+            {
+              type: 'group',
+              title: 'API 详情',
+              sidebarHidden: true,
+              pages: referencePages,
+            },
+          ]
+        : []),
+    ],
   });
 }
 
