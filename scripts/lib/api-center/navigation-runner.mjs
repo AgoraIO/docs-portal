@@ -2308,6 +2308,7 @@ export async function runApiCenterNavigation({
           })
       : null;
     if (existingMetaSource !== null) {
+      // Existing OpenAPI meta is outside this run; keep its prior ledger entry.
       run.retainPreviousOwnershipRecord(plan.metaPath);
       continue;
     }
